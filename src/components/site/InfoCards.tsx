@@ -113,37 +113,6 @@ function ReceiptStackVisual() {
   );
 }
 
-function ReceiptCard({
-  className,
-  logo,
-  name,
-  sub,
-  amount,
-  tax,
-}: {
-  className?: string;
-  logo: string;
-  name: string;
-  sub: string;
-  amount: string;
-  tax: string;
-}) {
-  return (
-    <div
-      className={`flex w-[280px] items-center gap-3 rounded-2xl bg-white px-4 py-3 shadow-[0_8px_24px_-8px_rgba(0,0,0,0.12)] ${className ?? ""}`}
-    >
-      <img src={logo} alt={name} className="size-10 shrink-0 rounded-md object-cover" />
-      <div className="flex min-w-0 flex-1 flex-col">
-        <span className="font-display text-sm font-semibold text-black">{name}</span>
-        <span className="font-display text-xs text-[#9192a1]">{sub}</span>
-      </div>
-      <div className="flex flex-col items-end">
-        <span className="font-display text-sm font-semibold text-black">{amount}</span>
-        <span className="font-display text-xs text-[#9192a1]">{tax}</span>
-      </div>
-    </div>
-  );
-}
 
 function PhoneVisual({ src, alt }: { src: string; alt: string }) {
   return (
