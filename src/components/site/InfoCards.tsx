@@ -2,6 +2,7 @@ import widgetReceipts from "@/assets/figma/widget-receipts.svg";
 import widgetReports from "@/assets/figma/widget-reports.svg";
 import widgetScan from "@/assets/figma/widget-scan.svg";
 import widgetMileage from "@/assets/figma/widget-mileage.svg";
+import widgetHomeOffice from "@/assets/figma/widget-home-office.svg";
 import phoneReports from "@/assets/figma/ic-phone-reports.webp";
 import phoneExport from "@/assets/figma/ic-phone-export.webp";
 import phoneHomeOffice from "@/assets/figma/ic-phone-home-office.webp";
@@ -70,12 +71,13 @@ export function InfoCards() {
               className="block h-auto w-full"
             />
           </div>
-          <FeatureRow
-            imageSide="left"
-            visual={<HomeOfficeVisual />}
-            title="Track your expenses for the Home Office"
-            body="After setting up your workspace in your flat or house, you may be able to reclaim some of the costs incurred. A portion of your rent and utility bills may also be reclaimable. Find out what amount is available to you."
-          />
+          <div className="overflow-hidden rounded-[32px]">
+            <img
+              src={widgetHomeOffice}
+              alt="Track your expenses for the Home Office"
+              className="block h-auto w-full"
+            />
+          </div>
         </div>
       </div>
     </section>
