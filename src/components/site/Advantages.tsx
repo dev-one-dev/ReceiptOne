@@ -1,8 +1,15 @@
-import { Clock, Car, FileText, FolderOpen, Smartphone } from "lucide-react";
-import { ThumbsUp } from "lucide-react";
+import {
+  Clock,
+  Car,
+  FileText,
+  FolderOpen,
+  Smartphone,
+  ThumbsUp,
+  type LucideIcon,
+} from "lucide-react";
 
 type Advantage = {
-  Icon: React.ComponentType<{ className?: string }>;
+  Icon: LucideIcon;
   title: string;
   body: string;
 };
