@@ -19,12 +19,12 @@ export function InfoCards() {
       <div className="mx-auto w-full max-w-[1240px]">
         {/* --- Header --- */}
         <div className="relative mx-auto flex max-w-[720px] flex-col items-center gap-4 pb-20 text-center">
-          <span className="inline-flex items-center gap-2 rounded-full bg-black px-4 py-1.5 font-display text-xs font-semibold uppercase tracking-wider text-white">
+          <span className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-black px-4 py-1.5 font-display text-xs font-semibold uppercase tracking-wider text-white">
             <BoltIcon /> BENEFITS
           </span>
           <h2 className="font-display text-[56px] font-semibold leading-[60px] tracking-[-0.02em] text-black">
             Turn Receipt Chaos<br />
-            Into <span className="text-[#fb9130]">Gold</span>
+            Into Tax <span className="text-[#fb9130]">Gold</span>
           </h2>
           <p className="max-w-[560px] font-display text-base leading-6 text-[#7e8890]">
             Stop losing money on missed deductions. Our AI finds every dollar
