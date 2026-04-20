@@ -7,6 +7,7 @@ import phoneHomeOffice from "@/assets/figma/ic-phone-home-office.webp";
 import receiptPhoto from "@/assets/figma/ic-receipt-photo.webp";
 import mapImg from "@/assets/figma/ic-map.webp";
 import carImg from "@/assets/figma/ic-car.webp";
+import doodleBg from "@/assets/figma/doodle-bg.jpg";
 
 /**
  * InfoCards — pixel-mapped from Figma node 29:26476
