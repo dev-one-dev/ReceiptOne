@@ -56,7 +56,7 @@ const plans: Plan[] = [
 
 export function Pricing() {
   return (
-    <section className="mx-auto w-full max-w-[1100px] px-6 pt-16 pb-20 md:pt-24 md:pb-28">
+    <section id="pricing" className="mx-auto w-full max-w-[1100px] px-6 pt-16 pb-20 md:pt-24 md:pb-28">
       {/* Pill */}
       <div className="flex justify-center">
         <span className="inline-flex items-center gap-1.5 rounded-full bg-black px-4 py-2 font-display text-[12px] font-semibold text-white">
