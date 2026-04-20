@@ -7,6 +7,7 @@ import phoneHomeOffice from "@/assets/figma/ic-phone-home-office.webp";
 import receiptPhoto from "@/assets/figma/ic-receipt-photo.webp";
 import mapImg from "@/assets/figma/ic-map.webp";
 import carImg from "@/assets/figma/ic-car.webp";
+import doodleBg from "@/assets/figma/doodle-bg.jpg";
 
 /**
  * InfoCards — pixel-mapped from Figma node 29:26476
@@ -18,12 +19,12 @@ export function InfoCards() {
       <div className="mx-auto w-full max-w-[1240px]">
         {/* --- Header --- */}
         <div className="relative mx-auto flex max-w-[720px] flex-col items-center gap-4 pb-20 text-center">
-          <span className="inline-flex items-center gap-2 rounded-full bg-black px-4 py-1.5 font-display text-xs font-semibold uppercase tracking-wider text-white">
+          <span className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-black px-4 py-1.5 font-display text-xs font-semibold uppercase tracking-wider text-white">
             <BoltIcon /> BENEFITS
           </span>
           <h2 className="font-display text-[56px] font-semibold leading-[60px] tracking-[-0.02em] text-black">
             Turn Receipt Chaos<br />
-            Into <span className="text-[#fb9130]">Gold</span>
+            Into Tax <span className="text-[#fb9130]">Gold</span>
           </h2>
           <p className="max-w-[560px] font-display text-base leading-6 text-[#7e8890]">
             Stop losing money on missed deductions. Our AI finds every dollar
@@ -110,12 +111,20 @@ function FeatureRow({
 /* ----------------- Visuals ----------------- */
 
 function ReceiptStackVisual() {
-  // Stacked tilted receipt cards on a dotted-pattern background
+  // Stacked tilted receipt cards on a doodle-pattern background.
+  // Receipts overflow the rounded container on the left side (per Figma).
   return (
-    <div className="relative h-[480px] w-full max-w-[480px] rounded-[32px] bg-[#f5f4f0]">
-      <DottedBg />
+    <div
+      className="relative h-[480px] w-full max-w-[480px] rounded-[32px] bg-[#f5f4f0]"
+      style={{
+        backgroundImage: `url(${doodleBg})`,
+        backgroundSize: "480px 480px",
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "center",
+      }}
+    >
       <ReceiptCard
-        className="absolute left-1/2 top-[80px] -translate-x-[60%] -rotate-[8deg]"
+        className="absolute left-0 top-[70px] -translate-x-[35%] -rotate-[8deg]"
         logo={logoMcdonalds}
         name="McDonalds"
         sub="Restaurants"
@@ -123,7 +132,7 @@ function ReceiptStackVisual() {
         tax="+ tax CAD1.25"
       />
       <ReceiptCard
-        className="absolute left-1/2 top-[200px] -translate-x-[40%] rotate-[2deg]"
+        className="absolute left-1/2 top-[200px] -translate-x-[30%] rotate-[2deg]"
         logo={logoEsso}
         name="Esso"
         sub="Petroleum & Gas"
@@ -131,7 +140,7 @@ function ReceiptStackVisual() {
         tax="+ tax CAD1.25"
       />
       <ReceiptCard
-        className="absolute left-1/2 top-[320px] -translate-x-[35%] rotate-[6deg]"
+        className="absolute left-0 top-[330px] -translate-x-[30%] rotate-[6deg]"
         logo={logoSaudia}
         name="Saudia"
         sub="Airlines"
@@ -315,11 +324,12 @@ function DottedBg() {
   return (
     <div
       aria-hidden="true"
-      className="absolute inset-0 opacity-40"
+      className="absolute inset-0 opacity-50"
       style={{
-        backgroundImage:
-          "radial-gradient(circle, rgba(0,0,0,0.08) 1px, transparent 1px)",
-        backgroundSize: "16px 16px",
+        backgroundImage: `url(${doodleBg})`,
+        backgroundSize: "480px 480px",
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "center",
       }}
     />
   );
