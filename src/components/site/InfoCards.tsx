@@ -1,5 +1,6 @@
 import widgetReceipts from "@/assets/figma/widget-receipts.svg";
 import widgetReports from "@/assets/figma/widget-reports.svg";
+import widgetScan from "@/assets/figma/widget-scan.svg";
 import phoneReports from "@/assets/figma/ic-phone-reports.webp";
 import phoneExport from "@/assets/figma/ic-phone-export.webp";
 import phoneHomeOffice from "@/assets/figma/ic-phone-home-office.webp";
@@ -54,12 +55,13 @@ export function InfoCards() {
               className="block h-auto w-full"
             />
           </div>
-          <FeatureRow
-            imageSide="left"
-            visual={<ScanVisual />}
-            title="Scan on mobile. Run everything on desktop."
-            body="Snap a receipt with your phone and move on — ReceiptOne takes care of the rest. AI extracts the data, categorizes expenses, and fills in missing details automatically. Back at your desk, you can search, filter, and turn everything into polished expense reports in one click."
-          />
+          <div className="overflow-hidden rounded-[32px]">
+            <img
+              src={widgetScan}
+              alt="Scan on mobile. Run everything on desktop."
+              className="block h-auto w-full"
+            />
+          </div>
           <FeatureRow
             imageSide="right"
             visual={<MileageVisual />}
