@@ -1,6 +1,7 @@
 import widgetReceipts from "@/assets/figma/widget-receipts.svg";
 import widgetReports from "@/assets/figma/widget-reports.svg";
 import widgetScan from "@/assets/figma/widget-scan.svg";
+import widgetMileage from "@/assets/figma/widget-mileage.svg";
 import phoneReports from "@/assets/figma/ic-phone-reports.webp";
 import phoneExport from "@/assets/figma/ic-phone-export.webp";
 import phoneHomeOffice from "@/assets/figma/ic-phone-home-office.webp";
@@ -62,12 +63,13 @@ export function InfoCards() {
               className="block h-auto w-full"
             />
           </div>
-          <FeatureRow
-            imageSide="right"
-            visual={<MileageVisual />}
-            title="Mileage tracker right on your phone"
-            body="Record the miles or kilometres you've covered directly on your smartphone. On any day, you can add new distance travelled. Soon, we will add the ability to track distance in real-time at the push of a button."
-          />
+          <div className="overflow-hidden rounded-[32px]">
+            <img
+              src={widgetMileage}
+              alt="Mileage tracker right on your phone"
+              className="block h-auto w-full"
+            />
+          </div>
           <FeatureRow
             imageSide="left"
             visual={<HomeOfficeVisual />}
