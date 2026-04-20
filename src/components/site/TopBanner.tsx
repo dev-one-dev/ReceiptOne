@@ -106,32 +106,3 @@ function DashedLoop({ className }: { className?: string }) {
     </svg>
   );
 }
-  return (
-    <svg
-      viewBox="0 0 320 120"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      className={className}
-      width={320}
-      height={120}
-      aria-hidden="true"
-    >
-      <path
-        d="M40 110 C 20 70, 30 20, 70 15 C 110 12, 115 60, 80 75 C 60 82, 50 78, 55 90 C 60 100, 120 100, 200 100 L 305 100"
-        stroke="#9192a1"
-        strokeWidth="1.2"
-        strokeDasharray="5 5"
-        strokeLinecap="round"
-        fill="none"
-      />
-      <path
-        d="M298 94 L 308 100 L 298 106"
-        stroke="#9192a1"
-        strokeWidth="1.2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        fill="none"
-      />
-    </svg>
-  );
-}
