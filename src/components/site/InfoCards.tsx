@@ -41,7 +41,7 @@ export function InfoCards() {
         </div>
 
         {/* --- Feature rows --- */}
-        <div className="flex flex-col gap-32">
+        <div className="flex flex-col gap-8">
           <FeatureRow
             imageSide="left"
             visual={<ReceiptStackVisual />}
@@ -93,13 +93,13 @@ function FeatureRow({
 }) {
   return (
     <div
-      className={`grid grid-cols-1 items-center gap-12 md:grid-cols-2 md:gap-20 ${
+      className={`grid grid-cols-1 items-center gap-8 overflow-hidden rounded-[32px] border border-black/5 bg-white p-8 md:grid-cols-2 md:gap-12 md:p-10 ${
         imageSide === "right" ? "md:[&>div:first-child]:order-1" : ""
       }`}
     >
       <div className="flex justify-center">{visual}</div>
-      <div className="flex max-w-[480px] flex-col gap-4">
-        <h3 className="font-display text-[40px] font-semibold leading-[44px] tracking-[-0.02em] text-black">
+      <div className="flex max-w-[460px] flex-col gap-4 md:px-4">
+        <h3 className="font-display text-[36px] font-semibold leading-[40px] tracking-[-0.02em] text-black">
           {title}
         </h3>
         <p className="font-display text-base leading-6 text-[#7e8890]">{body}</p>
