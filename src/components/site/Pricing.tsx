@@ -98,7 +98,7 @@ export function Pricing() {
       </ul>
 
       {/* Plans */}
-      <div className="mt-12 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="mx-auto mt-12 grid max-w-[720px] grid-cols-1 gap-5 px-1 pt-4 sm:grid-cols-2 lg:grid-cols-3">
         {plans.map((p) => (
           <PlanCard key={p.name} plan={p} />
         ))}
@@ -114,13 +114,13 @@ function PlanCard({ plan }: { plan: Plan }) {
 
   return (
     <article
-      className="relative flex flex-col overflow-hidden rounded-[24px] bg-white"
+      className="relative flex h-[440px] flex-col rounded-[24px] bg-white"
       style={ringStyle}
     >
       {/* Badge */}
       {plan.badge && (
         <span
-          className={`absolute -top-3 left-5 inline-flex items-center rounded-full px-3 py-1 font-display text-[11px] font-semibold leading-none text-white ${
+          className={`absolute -top-2.5 left-4 z-10 inline-flex items-center rounded-full px-2.5 py-1 font-display text-[10px] font-semibold leading-none text-white ${
             plan.badge.color === "orange" ? "bg-[#fb9130]" : "bg-[#35ac67]"
           }`}
         >
@@ -128,41 +128,41 @@ function PlanCard({ plan }: { plan: Plan }) {
         </span>
       )}
 
-      <div className="px-6 pt-7 pb-5">
-        <h3 className="font-display text-[24px] font-semibold leading-[28px] tracking-[-0.02em] text-black">
+      <div className="px-5 pt-6 pb-4">
+        <h3 className="font-display text-[22px] font-semibold leading-[26px] tracking-[-0.02em] text-black">
           {plan.name}
         </h3>
-        <p className="mt-2 min-h-[44px] font-display text-[13px] leading-[1.45] text-[#7e8890]">
+        <p className="mt-1.5 min-h-[36px] font-display text-[12px] leading-[1.45] text-[#7e8890]">
           {plan.desc}
         </p>
 
-        <div className="mt-5 flex items-baseline gap-1.5">
-          <span className="font-display text-[32px] font-semibold leading-none tracking-[-0.02em] text-black">
+        <div className="mt-4 flex items-baseline gap-1">
+          <span className="font-display text-[26px] font-semibold leading-none tracking-[-0.02em] text-black">
             {plan.price}
           </span>
-          <span className="font-display text-[13px] text-[#7e8890]">
+          <span className="font-display text-[12px] text-[#7e8890]">
             {plan.per}
           </span>
         </div>
-        <div className="mt-1.5 font-display text-[12px] text-[#9192a1] line-through">
+        <div className="mt-1 font-display text-[11px] text-[#9192a1] line-through">
           {plan.oldPrice}
         </div>
 
         <button
           type="button"
-          className="mt-5 w-full rounded-full bg-black py-3 font-display text-[14px] font-semibold text-white transition hover:bg-black/85"
+          className="mt-4 w-full rounded-full bg-black py-2.5 font-display text-[13px] font-semibold text-white transition hover:bg-black/85"
         >
           Subscribe
         </button>
       </div>
 
       {/* Beaver */}
-      <div className="mt-auto flex items-end justify-center px-3 pb-0">
+      <div className="relative mt-auto flex h-[200px] items-end justify-center overflow-hidden rounded-b-[24px]">
         <img
           src={plan.image}
           alt={`${plan.name} plan beaver`}
           loading="lazy"
-          className="block h-auto w-full max-w-[260px] select-none object-contain"
+          className="block h-[230px] w-auto max-w-none select-none object-contain object-bottom"
           draggable={false}
         />
       </div>
