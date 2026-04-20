@@ -104,20 +104,39 @@ function LogoWordmark() {
 }
 
 function FlagCanada({ className }: { className?: string }) {
+  // Circular USA flag (matches Figma design — "US & Canada" market)
   return (
     <svg
       className={className}
       viewBox="0 0 24 24"
       xmlns="http://www.w3.org/2000/svg"
-      aria-label="Canada"
+      aria-label="United States"
       role="img"
     >
-      <circle cx="12" cy="12" r="12" fill="#fff" />
-      <path d="M0 6h6v12H0zM18 6h6v12h-6z" fill="#D52B1E" />
-      <path
-        d="M12 7.5l-.55 1.05c-.06.12-.18.1-.3.07l-.78-.2.32 1.27c.07.27-.13.36-.23.4l-.5.05.86.7c.1.08.07.15.04.27l-.18.7 1.16-.13c.15-.02.16.07.16.16l-.07 1.66h.46l-.04-1.66c0-.09 0-.18.16-.16l1.16.13-.18-.7c-.03-.12-.06-.19.04-.27l.86-.7-.5-.05c-.1-.04-.3-.13-.23-.4l.32-1.27-.78.2c-.12.03-.24.05-.3-.07L12 7.5z"
-        fill="#D52B1E"
-      />
+      <defs>
+        <clipPath id="flagCircle">
+          <circle cx="12" cy="12" r="12" />
+        </clipPath>
+      </defs>
+      <g clipPath="url(#flagCircle)">
+        <rect width="24" height="24" fill="#fff" />
+        {Array.from({ length: 7 }).map((_, i) => (
+          <rect key={i} y={i * 1.85 * 2} width="24" height="1.85" fill="#B22234" />
+        ))}
+        <rect width="11" height="13" fill="#3C3B6E" />
+        {/* Star field — simplified dots */}
+        {Array.from({ length: 5 }).flatMap((_, row) =>
+          Array.from({ length: 5 }).map((__, col) => (
+            <circle
+              key={`s-${row}-${col}`}
+              cx={1.2 + col * 2.1 + (row % 2 ? 1.05 : 0)}
+              cy={1.2 + row * 2.4}
+              r={0.45}
+              fill="#fff"
+            />
+          )),
+        )}
+      </g>
     </svg>
   );
 }
