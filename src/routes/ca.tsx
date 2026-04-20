@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Header } from "@/components/site/Header";
+import { TopBanner } from "@/components/site/TopBanner";
 
 export const Route = createFileRoute("/ca")({
   head: () => ({
@@ -26,10 +27,10 @@ function CanadaPage() {
   return (
     <main className="min-h-screen bg-[#f5f4f0] font-sans text-black antialiased">
       <Header />
-      {/* Sections 1–9 will be added one-by-one via MCP imports. */}
+      <TopBanner />
+      {/* Sections 2–9 will be added one-by-one via MCP imports. */}
       <div className="mx-auto max-w-[900px] px-8 py-24 text-center text-sm text-black/40">
-        Sections coming next: TopBanner → Numbers → InfoCards → Not All →
-        Advantages → App Banner → Pricing → FAQ → Footer.
+        Next: Numbers → InfoCards → Not All → Advantages → App Banner → Pricing → FAQ → Footer.
       </div>
     </main>
   );
