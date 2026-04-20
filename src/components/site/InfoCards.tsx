@@ -1,4 +1,5 @@
 import widgetReceipts from "@/assets/figma/widget-receipts.svg";
+import widgetReports from "@/assets/figma/widget-reports.svg";
 import phoneReports from "@/assets/figma/ic-phone-reports.webp";
 import phoneExport from "@/assets/figma/ic-phone-export.webp";
 import phoneHomeOffice from "@/assets/figma/ic-phone-home-office.webp";
