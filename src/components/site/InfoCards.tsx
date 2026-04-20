@@ -111,12 +111,15 @@ function FeatureRow({
 /* ----------------- Visuals ----------------- */
 
 function ReceiptStackVisual() {
+  // SVG is 960x480 — only the left half (480x480) holds the visual; crop via overflow
   return (
-    <img
-      src={widgetReceipts}
-      alt="Receipts auto-categorized by ReceiptOne"
-      className="h-auto w-full max-w-[960px]"
-    />
+    <div className="relative h-[480px] w-full max-w-[480px] overflow-hidden">
+      <img
+        src={widgetReceipts}
+        alt="Receipts auto-categorized by ReceiptOne"
+        className="absolute left-0 top-0 h-[480px] w-[960px] max-w-none"
+      />
+    </div>
   );
 }
 
