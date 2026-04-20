@@ -79,25 +79,20 @@ export function InfoCards() {
 /* ----------------- Layout primitives ----------------- */
 
 function FeatureRow({
-  imageSide,
   visual,
   title,
   body,
 }: {
-  imageSide: "left" | "right";
+  imageSide?: "left" | "right";
   visual: React.ReactNode;
   title: string;
   body: string;
 }) {
   return (
-    <div
-      className={`grid grid-cols-1 items-center gap-8 overflow-hidden rounded-[32px] border border-black/5 bg-white p-8 md:grid-cols-2 md:gap-12 md:p-10 ${
-        imageSide === "right" ? "md:[&>div:first-child]:order-1" : ""
-      }`}
-    >
+    <div className="flex flex-col gap-10 overflow-hidden rounded-[32px] bg-white p-6 md:p-8">
       <div className="flex justify-center">{visual}</div>
-      <div className="flex max-w-[460px] flex-col gap-4 md:px-4">
-        <h3 className="font-display text-[36px] font-semibold leading-[40px] tracking-[-0.02em] text-black">
+      <div className="flex max-w-[560px] flex-col gap-4 px-2 md:px-4">
+        <h3 className="font-display text-[40px] font-semibold leading-[44px] tracking-[-0.02em] text-black">
           {title}
         </h3>
         <p className="font-display text-base leading-6 text-[#7e8890]">{body}</p>
@@ -109,43 +104,12 @@ function FeatureRow({
 /* ----------------- Visuals ----------------- */
 
 function ReceiptStackVisual() {
-  // Stacked tilted receipt cards on a doodle-pattern background.
-  // Receipts overflow the rounded container on the left side (per Figma).
   return (
-    <div
-      className="relative h-[480px] w-full max-w-[480px] rounded-[32px] bg-[#f5f4f0]"
-      style={{
-        backgroundImage: `url(${doodleBg})`,
-        backgroundSize: "480px 480px",
-        backgroundRepeat: "no-repeat",
-        backgroundPosition: "center",
-      }}
-    >
-      <ReceiptCard
-        className="absolute left-0 top-[70px] -translate-x-[35%] -rotate-[8deg]"
-        logo={logoMcdonalds}
-        name="McDonalds"
-        sub="Restaurants"
-        amount="CAD 31.00"
-        tax="+ tax CAD1.25"
-      />
-      <ReceiptCard
-        className="absolute left-1/2 top-[200px] -translate-x-[30%] rotate-[2deg]"
-        logo={logoEsso}
-        name="Esso"
-        sub="Petroleum & Gas"
-        amount="CAD40.00"
-        tax="+ tax CAD1.25"
-      />
-      <ReceiptCard
-        className="absolute left-0 top-[330px] -translate-x-[30%] rotate-[6deg]"
-        logo={logoSaudia}
-        name="Saudia"
-        sub="Airlines"
-        amount="CAD400.00"
-        tax="+ tax CAD14.33"
-      />
-    </div>
+    <img
+      src={widgetReceipts}
+      alt="Receipts auto-categorized by ReceiptOne"
+      className="h-auto w-full max-w-[960px]"
+    />
   );
 }
 
