@@ -5,6 +5,7 @@ import { Numbers } from "@/components/site/Numbers";
 import { InfoCards } from "@/components/site/InfoCards";
 import { NotAll } from "@/components/site/NotAll";
 import { Advantages } from "@/components/site/Advantages";
+import { AppBanner } from "@/components/site/AppBanner";
 
 export const Route = createFileRoute("/ca")({
   head: () => ({
