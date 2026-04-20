@@ -1,16 +1,16 @@
-import beaverReceipt from "@/assets/figma/beaver-receipt.png";
+import beaverHero from "@/assets/figma/hero-beaver.webp";
+import avatar1 from "@/assets/figma/avatar-1.webp";
+import avatar2 from "@/assets/figma/avatar-2.webp";
+import avatar3 from "@/assets/figma/avatar-3.webp";
+import avatar4 from "@/assets/figma/avatar-4.webp";
 
 /**
  * TopBanner — pixel-mapped from Figma node 29:26474
- * Centered hero: H1 (Inter Tight 64/64, -1 tracking), subhead, CTA, beaver hero image,
- * decorative dashed loop + script caption "7 days free trial available",
- * social-proof avatar stack at the bottom.
  */
 export function TopBanner() {
   return (
     <section className="relative w-full px-8 pt-[120px]">
       <div className="relative mx-auto flex w-full max-w-[960px] flex-col items-center gap-12">
-        {/* Headline + sub + CTA */}
         <div className="relative flex w-full flex-col items-center gap-4">
           <h1 className="text-center font-display text-[64px] font-semibold leading-[64px] tracking-[-0.01em] text-black">
             Track expenses, store receipts, and generate tax-ready reports –
@@ -18,11 +18,10 @@ export function TopBanner() {
           </h1>
 
           <p className="w-[402px] max-w-full text-center font-display text-[20px] leading-7 tracking-[-0.02em] text-[#9192a1]">
-            Built for freelancers, self-employed, and small businesses in
-            Canada
+            Built for freelancers, self-employed, and small businesses in the
+            US &amp; Canada
           </p>
 
-          {/* Decorative dashed loop + script caption — absolute, pinned to the left of the CTA */}
           <DashedLoop className="pointer-events-none absolute left-1/2 top-[160px] hidden -translate-x-[340px] md:block" />
           <p className="pointer-events-none absolute left-1/2 top-[230px] hidden w-[160px] -translate-x-[395px] -rotate-[6deg] text-center font-script text-[20px] leading-5 tracking-[-0.02em] text-[#9192a1] md:block">
             7 days free trial available
@@ -36,23 +35,21 @@ export function TopBanner() {
           </button>
         </div>
 
-        {/* Hero image (beaver) */}
         <div className="relative w-full">
           <img
-            src={beaverReceipt}
-            alt="Beaver mascot reading a paper receipt"
-            className="mx-auto block w-full max-w-[640px] mix-blend-darken"
+            src={beaverHero}
+            alt="Beaver mascot wearing a Canadian cap, reading a receipt"
+            className="mx-auto block w-full max-w-[720px] mix-blend-darken"
             loading="eager"
           />
         </div>
 
-        {/* Social proof */}
         <div className="flex items-center gap-[9px]">
           <div className="flex items-center pr-6">
-            <Avatar gradient="from-amber-200 to-orange-400" initial="J" />
-            <Avatar gradient="from-rose-200 to-rose-400" initial="M" offset />
-            <Avatar gradient="from-sky-200 to-sky-400" initial="A" offset />
-            <Avatar gradient="from-emerald-200 to-emerald-400" initial="L" offset />
+            <Avatar src={avatar1} alt="User 1" />
+            <Avatar src={avatar2} alt="User 2" offset />
+            <Avatar src={avatar3} alt="User 3" offset />
+            <Avatar src={avatar4} alt="User 4" offset />
           </div>
           <div className="flex w-36 flex-col">
             <span className="font-display text-base font-semibold leading-5 text-black">
@@ -68,32 +65,26 @@ export function TopBanner() {
   );
 }
 
-/* --- Helpers --- */
-
 function Avatar({
-  gradient,
-  initial,
+  src,
+  alt,
   offset = false,
 }: {
-  gradient: string;
-  initial: string;
+  src: string;
+  alt: string;
   offset?: boolean;
 }) {
   return (
-    <div
-      className={`relative size-12 overflow-hidden rounded-full border-[3px] border-white bg-gradient-to-br ${gradient} ${
-        offset ? "-ml-6" : ""
-      }`}
-    >
-      <span className="absolute inset-0 flex items-center justify-center font-display text-sm font-semibold text-white/90">
-        {initial}
-      </span>
-    </div>
+    <img
+      src={src}
+      alt={alt}
+      className={`size-12 rounded-full border-[3px] border-white object-cover ${offset ? "-ml-6" : ""}`}
+      loading="lazy"
+    />
   );
 }
 
 function DashedLoop({ className }: { className?: string }) {
-  // Hand-drawn-ish open loop pointing toward the CTA
   return (
     <svg
       viewBox="0 0 220 140"
