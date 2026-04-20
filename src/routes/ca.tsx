@@ -8,6 +8,7 @@ import { Advantages } from "@/components/site/Advantages";
 import { AppBanner } from "@/components/site/AppBanner";
 import { Pricing } from "@/components/site/Pricing";
 import { Faq } from "@/components/site/Faq";
+import { Footer } from "@/components/site/Footer";
 
 export const Route = createFileRoute("/ca")({
   head: () => ({
@@ -42,10 +43,7 @@ function CanadaPage() {
       <AppBanner />
       <Pricing />
       <Faq />
-      {/* Section 9 Footer will be added next via MCP. */}
-      <div className="mx-auto max-w-[900px] px-8 py-16 text-center text-sm text-black/40">
-        Next: Footer.
-      </div>
+      <Footer />
     </main>
   );
 }
