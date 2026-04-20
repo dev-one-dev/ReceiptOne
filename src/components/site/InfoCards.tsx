@@ -111,12 +111,20 @@ function FeatureRow({
 /* ----------------- Visuals ----------------- */
 
 function ReceiptStackVisual() {
-  // Stacked tilted receipt cards on a dotted-pattern background
+  // Stacked tilted receipt cards on a doodle-pattern background.
+  // Receipts overflow the rounded container on the left side (per Figma).
   return (
-    <div className="relative h-[480px] w-full max-w-[480px] rounded-[32px] bg-[#f5f4f0]">
-      <DottedBg />
+    <div
+      className="relative h-[480px] w-full max-w-[480px] rounded-[32px] bg-[#f5f4f0]"
+      style={{
+        backgroundImage: `url(${doodleBg})`,
+        backgroundSize: "480px 480px",
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "center",
+      }}
+    >
       <ReceiptCard
-        className="absolute left-1/2 top-[80px] -translate-x-[60%] -rotate-[8deg]"
+        className="absolute left-0 top-[70px] -translate-x-[35%] -rotate-[8deg]"
         logo={logoMcdonalds}
         name="McDonalds"
         sub="Restaurants"
@@ -124,7 +132,7 @@ function ReceiptStackVisual() {
         tax="+ tax CAD1.25"
       />
       <ReceiptCard
-        className="absolute left-1/2 top-[200px] -translate-x-[40%] rotate-[2deg]"
+        className="absolute left-1/2 top-[200px] -translate-x-[30%] rotate-[2deg]"
         logo={logoEsso}
         name="Esso"
         sub="Petroleum & Gas"
@@ -132,7 +140,7 @@ function ReceiptStackVisual() {
         tax="+ tax CAD1.25"
       />
       <ReceiptCard
-        className="absolute left-1/2 top-[320px] -translate-x-[35%] rotate-[6deg]"
+        className="absolute left-0 top-[330px] -translate-x-[30%] rotate-[6deg]"
         logo={logoSaudia}
         name="Saudia"
         sub="Airlines"
