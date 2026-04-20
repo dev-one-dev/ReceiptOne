@@ -50,7 +50,7 @@ const plans: Plan[] = [
     oldPrice: "CAD 129,99 /year",
     image: beaverYear,
     badge: { label: "Save 18%", color: "green" },
-    ringColor: "#3aa17e",
+    ringColor: "#35ac67",
   },
 ];
 
@@ -66,20 +66,20 @@ export function Pricing() {
       </div>
 
       {/* Title */}
-      <h2 className="mt-5 text-center font-display text-[40px] font-bold leading-[1.05] tracking-[-0.02em] text-black md:text-[56px]">
+      <h2 className="mt-5 text-center font-display text-[40px] font-semibold leading-[1] tracking-[-0.02em] text-black md:text-[56px]">
         Start Free.
         <br />
         Save <span className="text-[#fb9130]">Thousands</span>
       </h2>
 
       {/* Subtitle */}
-      <p className="mx-auto mt-4 max-w-[420px] text-center font-display text-[14px] leading-[1.55] text-[#7e8890] md:text-[15px]">
+      <p className="mx-auto mt-4 max-w-[380px] text-center font-display text-[14px] leading-[1.5] text-[#7e8890] md:text-[15px]">
         Built for freelancers, self-employed, and small businesses in the US &
         Canada
       </p>
 
       {/* What's included */}
-      <h3 className="mt-12 text-center font-display text-[18px] font-bold text-black">
+      <h3 className="mt-14 text-center font-display text-[18px] font-semibold text-black">
         What's included in your subscription
       </h3>
       <ul className="mx-auto mt-5 grid max-w-[640px] grid-cols-1 gap-x-10 gap-y-3 sm:grid-cols-2">
@@ -89,7 +89,7 @@ export function Pricing() {
             className="flex items-start gap-2 font-display text-[13px] text-black/80"
           >
             <Check
-              className="mt-0.5 h-4 w-4 flex-shrink-0 text-[#3aa17e]"
+              className="mt-0.5 h-4 w-4 flex-shrink-0 text-[#35ac67]"
               strokeWidth={2.5}
             />
             <span>{f}</span>
@@ -120,8 +120,8 @@ function PlanCard({ plan }: { plan: Plan }) {
       {/* Badge */}
       {plan.badge && (
         <span
-          className={`absolute -top-3 left-6 inline-flex items-center rounded-full px-3 py-1 font-display text-[11px] font-semibold text-white ${
-            plan.badge.color === "orange" ? "bg-[#fb9130]" : "bg-[#3aa17e]"
+          className={`absolute -top-3 left-5 inline-flex items-center rounded-full px-3 py-1 font-display text-[11px] font-semibold leading-none text-white ${
+            plan.badge.color === "orange" ? "bg-[#fb9130]" : "bg-[#35ac67]"
           }`}
         >
           {plan.badge.label}
@@ -129,22 +129,22 @@ function PlanCard({ plan }: { plan: Plan }) {
       )}
 
       <div className="px-6 pt-7 pb-5">
-        <h3 className="font-display text-[24px] font-bold leading-tight text-black">
+        <h3 className="font-display text-[24px] font-semibold leading-[28px] tracking-[-0.02em] text-black">
           {plan.name}
         </h3>
-        <p className="mt-2 min-h-[40px] font-display text-[13px] leading-[1.4] text-[#7e8890]">
+        <p className="mt-2 min-h-[44px] font-display text-[13px] leading-[1.45] text-[#7e8890]">
           {plan.desc}
         </p>
 
-        <div className="mt-5 flex items-baseline gap-1">
-          <span className="font-display text-[28px] font-bold leading-none text-black">
+        <div className="mt-5 flex items-baseline gap-1.5">
+          <span className="font-display text-[32px] font-semibold leading-none tracking-[-0.02em] text-black">
             {plan.price}
           </span>
           <span className="font-display text-[13px] text-[#7e8890]">
             {plan.per}
           </span>
         </div>
-        <div className="mt-1 font-display text-[12px] text-[#9192a1] line-through">
+        <div className="mt-1.5 font-display text-[12px] text-[#9192a1] line-through">
           {plan.oldPrice}
         </div>
 
