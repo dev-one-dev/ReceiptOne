@@ -79,6 +79,7 @@ export function InfoCards() {
 /* ----------------- Layout primitives ----------------- */
 
 function FeatureRow({
+  imageSide = "left",
   visual,
   title,
   body,
@@ -89,10 +90,16 @@ function FeatureRow({
   body: string;
 }) {
   return (
-    <div className="flex flex-col gap-10 overflow-hidden rounded-[32px] bg-white p-6 md:p-8">
-      <div className="flex justify-center">{visual}</div>
-      <div className="flex max-w-[560px] flex-col gap-4 px-2 md:px-4">
-        <h3 className="font-display text-[40px] font-semibold leading-[44px] tracking-[-0.02em] text-black">
+    <div className="grid grid-cols-1 items-center gap-8 overflow-hidden rounded-[32px] bg-white p-6 md:grid-cols-2 md:gap-12 md:p-10">
+      <div className={`flex justify-center ${imageSide === "right" ? "md:order-2" : ""}`}>
+        {visual}
+      </div>
+      <div
+        className={`flex max-w-[440px] flex-col gap-4 md:px-4 ${
+          imageSide === "right" ? "md:order-1" : ""
+        }`}
+      >
+        <h3 className="font-display text-[32px] font-semibold leading-[36px] tracking-[-0.02em] text-black">
           {title}
         </h3>
         <p className="font-display text-base leading-6 text-[#7e8890]">{body}</p>
