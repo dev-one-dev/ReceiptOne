@@ -1,4 +1,6 @@
 import { Link } from "@tanstack/react-router";
+import logoMark from "@/assets/figma/logo-mark.svg";
+import logoWordmark from "@/assets/figma/logo-wordmark.svg";
 
 /**
  * Header — pixel-mapped from Figma node 29:26473
@@ -76,31 +78,11 @@ export function Header() {
 /* ---------- Inline SVGs (no external assets needed) ---------- */
 
 function LogoMark() {
-  // Black rounded square with stylised "R" — matches Figma R_COLOR_WORK bubble.
-  return (
-    <span className="inline-flex size-10 items-center justify-center rounded-[10px] bg-black text-white">
-      <svg
-        viewBox="0 0 24 24"
-        className="size-5"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        aria-hidden="true"
-      >
-        <path
-          d="M6 4h7.2c2.65 0 4.8 2.06 4.8 4.6 0 1.95-1.27 3.62-3.07 4.27L18.5 20H15l-3.2-6.6H9.3V20H6V4zm3.3 2.7v4.1h3.6c1.18 0 2.1-.9 2.1-2.05s-.92-2.05-2.1-2.05H9.3z"
-          fill="currentColor"
-        />
-      </svg>
-    </span>
-  );
+  return <img src={logoMark} alt="" aria-hidden className="block size-10" />;
 }
 
 function LogoWordmark() {
-  return (
-    <span className="font-display text-[18px] font-semibold leading-6 tracking-tight text-black">
-      ReceiptOne
-    </span>
-  );
+  return <img src={logoWordmark} alt="ReceiptOne" className="block h-6 w-auto" />;
 }
 
 function FlagCanada({ className }: { className?: string }) {
