@@ -58,6 +58,18 @@ function USAPage() {
               height: `${(548 / 1180) * 100}%`,
               mixBlendMode: "darken",
               objectFit: "cover",
+              background: "transparent",
+            }}
+          />
+          <div
+            className="absolute"
+            style={{
+              left: `${(240 / 1440) * 100}%`,
+              top: `${(504 / 1180) * 100}%`,
+              width: `${(960 / 1440) * 100}%`,
+              height: `${(548 / 1180) * 100}%`,
+              background: "#f5f4f0",
+              zIndex: 1,
             }}
           />
         </div>
