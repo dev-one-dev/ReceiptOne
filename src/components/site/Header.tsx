@@ -33,11 +33,11 @@ export function Header() {
   };
 
   const scrollTo = (id: string) => (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
     const el = document.getElementById(id);
     if (el) {
-      e.preventDefault();
-      el.scrollIntoView({ behavior: "smooth", block: "start" });
-      history.replaceState(null, "", `#${id}`);
+      const top = el.getBoundingClientRect().top + window.scrollY - 100;
+      window.scrollTo({ top, behavior: "smooth" });
     }
   };
 
