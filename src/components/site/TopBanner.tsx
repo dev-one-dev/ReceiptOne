@@ -1,4 +1,4 @@
-import beaverVideo from "@/assets/figma/hero-beaver.mp4";
+import beaverHero from "@/assets/figma/hero-beaver.webp";
 import avatar1 from "@/assets/figma/avatar-1.webp";
 import avatar2 from "@/assets/figma/avatar-2.webp";
 import avatar3 from "@/assets/figma/avatar-3.webp";
@@ -36,14 +36,11 @@ export function TopBanner() {
         </div>
 
         <div className="relative w-full">
-          <video
-            src={beaverVideo}
-            autoPlay
-            loop
-            muted
-            playsInline
+          <img
+            src={beaverHero}
+            alt="Beaver mascot wearing a Canadian cap, reading a receipt"
             className="mx-auto block w-full max-w-[720px] mix-blend-darken"
-            aria-label="Beaver mascot animation"
+            loading="eager"
           />
         </div>
 
