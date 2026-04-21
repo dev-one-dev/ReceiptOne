@@ -86,38 +86,30 @@ function LogoWordmark() {
 }
 
 function FlagCanada({ className }: { className?: string }) {
-  // Circular USA flag (matches Figma design — "US & Canada" market)
+  // Circular Canadian flag — red bars on sides, white center, red maple leaf
   return (
     <svg
       className={className}
       viewBox="0 0 24 24"
       xmlns="http://www.w3.org/2000/svg"
-      aria-label="United States"
+      aria-label="Canada"
       role="img"
     >
       <defs>
-        <clipPath id="flagCircle">
+        <clipPath id="flagCircleCa">
           <circle cx="12" cy="12" r="12" />
         </clipPath>
       </defs>
-      <g clipPath="url(#flagCircle)">
+      <g clipPath="url(#flagCircleCa)">
         <rect width="24" height="24" fill="#fff" />
-        {Array.from({ length: 7 }).map((_, i) => (
-          <rect key={i} y={i * 1.85 * 2} width="24" height="1.85" fill="#B22234" />
-        ))}
-        <rect width="11" height="13" fill="#3C3B6E" />
-        {/* Star field — simplified dots */}
-        {Array.from({ length: 5 }).flatMap((_, row) =>
-          Array.from({ length: 5 }).map((__, col) => (
-            <circle
-              key={`s-${row}-${col}`}
-              cx={1.2 + col * 2.1 + (row % 2 ? 1.05 : 0)}
-              cy={1.2 + row * 2.4}
-              r={0.45}
-              fill="#fff"
-            />
-          )),
-        )}
+        <rect x="0" y="0" width="6" height="24" fill="#D52B1E" />
+        <rect x="18" y="0" width="6" height="24" fill="#D52B1E" />
+        {/* Stylized maple leaf */}
+        <path
+          fill="#D52B1E"
+          d="M12 5.5l.7 1.7 1.8-.5-.6 1.8 1.7.6-1.4 1.2 1.6 1.5-2.6.2.4 1.7-1.6-.7-1.6.7.4-1.7-2.6-.2 1.6-1.5-1.4-1.2 1.7-.6-.6-1.8 1.8.5z"
+        />
+        <rect x="11.6" y="11" width="0.8" height="6" fill="#D52B1E" />
       </g>
     </svg>
   );

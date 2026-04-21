@@ -53,7 +53,7 @@ const cards: Card[] = [
 
 export function NotAll() {
   return (
-    <section className="mx-auto w-full max-w-[1200px] px-6 pt-16 pb-8 md:pt-24 md:pb-12">
+    <section className="mx-auto w-full max-w-[1240px] px-8 pt-16 pb-8 md:pt-24 md:pb-12">
       {/* Section title with side rules */}
       <div className="mb-10 flex items-center gap-4 md:mb-14">
         <div className="h-px flex-1 bg-black/15" />
