@@ -6,7 +6,7 @@ import infoCardsUsSvg from "@/assets/figma/info-cards-us.svg";
 import { NotAll } from "@/components/site/NotAll";
 import { Advantages } from "@/components/site/Advantages";
 import { AppBanner } from "@/components/site/AppBanner";
-import { Pricing } from "@/components/site/Pricing";
+import pricingUsSvg from "@/assets/figma/pricing-us.svg";
 import { Faq } from "@/components/site/Faq";
 import { Footer } from "@/components/site/Footer";
 
@@ -55,7 +55,15 @@ function USAPage() {
       <NotAll />
       <Advantages />
       <AppBanner region="us" />
-      <Pricing />
+      <section id="pricing" className="mx-auto w-full max-w-[1440px] scroll-mt-28 px-6">
+        <div className="relative w-full overflow-hidden" style={{ aspectRatio: "1440 / 1110" }}>
+          <img
+            src={pricingUsSvg}
+            alt="Pricing — Week, Month (Most Popular), Year"
+            className="absolute inset-x-0 top-0 block w-full"
+          />
+        </div>
+      </section>
       <Faq />
       <Footer />
     </main>
