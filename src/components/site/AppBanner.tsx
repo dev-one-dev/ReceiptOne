@@ -6,23 +6,25 @@ export function AppBanner({ region = "ca" }: { region?: "ca" | "us" }) {
   return (
     <section id="apps" className="w-full scroll-mt-28">
       <div
-        className="relative mx-auto block"
-        style={{ width: "fit-content", containerType: "inline-size" }}
+        className="relative w-full"
+        style={{ aspectRatio: "1440 / 560", containerType: "inline-size" }}
       >
         <img
           src={src}
           alt="Get your personal receipt manager in your phone — download on the App Store or Google Play"
-          className="block h-auto w-full"
+          className="absolute inset-0 block h-full w-full"
         />
-        {/* Overlay the phone emoji on top of the placeholder square baked into the SVG */}
+        {/* Overlay the phone emoji on top of the placeholder square baked into the SVG.
+            Position is computed from the SVG viewBox (1440x560): the placeholder square
+            is centered around (608, 380). */}
         <span
           aria-hidden="true"
           className="pointer-events-none absolute select-none leading-none"
           style={{
-            left: "14.8%",
-            top: "37.3%",
+            left: `${(608 / 1440) * 100}%`,
+            top: `${(380 / 560) * 100}%`,
             transform: "translate(-50%, -50%)",
-            fontSize: "4cqw",
+            fontSize: "4.4cqw",
             fontFamily:
               '"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif',
           }}
