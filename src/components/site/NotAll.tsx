@@ -78,7 +78,7 @@ export function NotAll() {
                 {c.body}
               </p>
             </div>
-            <div className="mt-6 flex items-end justify-center px-4">
+            <div className="mt-auto flex items-end justify-center px-4 pt-6">
               <img
                 src={c.image}
                 alt={c.alt}
