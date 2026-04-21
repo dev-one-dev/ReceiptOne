@@ -40,7 +40,7 @@ function USAPage() {
       <InfoCards />
       <NotAll />
       <Advantages />
-      <AppBanner />
+      <AppBanner region="us" />
       <Pricing />
       <Faq />
       <Footer />
