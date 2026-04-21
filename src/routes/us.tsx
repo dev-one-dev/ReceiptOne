@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Header } from "@/components/site/Header";
 import topBannerUsSvg from "@/assets/figma/top-banner-us.svg";
 import { Numbers } from "@/components/site/Numbers";
-import { InfoCards } from "@/components/site/InfoCards";
+import infoCardsUsSvg from "@/assets/figma/info-cards-us.svg";
 import { NotAll } from "@/components/site/NotAll";
 import { Advantages } from "@/components/site/Advantages";
 import { AppBanner } from "@/components/site/AppBanner";
@@ -43,7 +43,15 @@ function USAPage() {
         />
       </section>
       <Numbers />
-      <InfoCards />
+      <section id="benefits" className="w-full">
+        <div className="mx-auto w-full max-w-[1440px]">
+          <img
+            src={infoCardsUsSvg}
+            alt="Turn Receipt Chaos Into Tax Gold — benefits"
+            className="block h-auto w-full"
+          />
+        </div>
+      </section>
       <NotAll />
       <Advantages />
       <AppBanner region="us" />
