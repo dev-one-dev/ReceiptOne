@@ -302,23 +302,5 @@ function CursorIcon() {
 }
 
 function DashedCurve({ className }: { className?: string }) {
-  return (
-    <svg
-      viewBox="0 0 140 80"
-      width={140}
-      height={80}
-      fill="none"
-      className={className}
-      aria-hidden="true"
-    >
-      <path
-        d="M5 70 C 30 80, 90 70, 130 30 C 135 25, 130 10, 110 15"
-        stroke="#9192a1"
-        strokeWidth="1.2"
-        strokeDasharray="4 5"
-        strokeLinecap="round"
-        fill="none"
-      />
-    </svg>
-  );
+  return <img src={dashedCurve} alt="" aria-hidden="true" className={className} />;
 }
