@@ -9,27 +9,27 @@ import avatar4 from "@/assets/figma/avatar-4.webp";
  */
 export function TopBanner() {
   return (
-    <section className="relative w-full px-8 pt-[120px]">
-      <div className="relative mx-auto flex w-full max-w-[960px] flex-col items-center gap-12">
-        <div className="relative flex w-full flex-col items-center gap-4">
-          <h1 className="text-center font-display text-[64px] font-semibold leading-[64px] tracking-[-0.01em] text-black">
+    <section className="relative w-full px-8 pt-[88px]">
+      <div className="relative mx-auto flex w-full max-w-[960px] flex-col items-center gap-8">
+        <div className="relative flex w-full flex-col items-center gap-3">
+          <h1 className="text-center font-display text-[56px] font-semibold leading-[1.05] tracking-[-0.02em] text-black md:text-[64px]">
             Track expenses, store receipts, and generate tax-ready reports –
             all in one place
           </h1>
 
-          <p className="w-[402px] max-w-full text-center font-display text-[20px] leading-7 tracking-[-0.02em] text-[#9192a1]">
+          <p className="w-[402px] max-w-full text-center font-display text-[18px] leading-7 tracking-[-0.02em] text-[#9192a1]">
             Built for freelancers, self-employed, and small businesses in the
             US &amp; Canada
           </p>
 
-          <DashedLoop className="pointer-events-none absolute left-1/2 top-[200px] hidden -translate-x-[340px] md:block" />
-          <p className="pointer-events-none absolute left-1/2 top-[260px] hidden w-[160px] -translate-x-[460px] -rotate-[6deg] text-center font-script text-[20px] leading-5 tracking-[-0.02em] text-[#9192a1] md:block">
+          <DashedLoop className="pointer-events-none absolute left-1/2 top-[210px] hidden -translate-x-[300px] md:block" />
+          <p className="pointer-events-none absolute left-1/2 top-[268px] hidden w-[140px] -translate-x-[400px] -rotate-[6deg] text-center font-script text-[18px] leading-5 tracking-[-0.02em] text-[#9192a1] md:block">
             7 days free trial available
           </p>
 
           <button
             type="button"
-            className="mt-2 inline-flex items-center justify-center rounded-2xl bg-black px-12 py-[18px] font-display text-base font-semibold leading-5 text-white transition-opacity hover:opacity-90"
+            className="mt-1 inline-flex items-center justify-center rounded-2xl bg-black px-7 py-3.5 font-display text-[15px] font-semibold leading-5 text-white transition-opacity hover:opacity-90"
           >
             Claim your free trial
           </button>
@@ -38,7 +38,7 @@ export function TopBanner() {
         <div className="relative w-full">
           <video
             src={beaverHeroVideo}
-            className="mx-auto block w-full max-w-[720px] mix-blend-darken"
+            className="mx-auto block w-full max-w-[460px] mix-blend-darken"
             autoPlay
             loop
             muted
