@@ -9,7 +9,7 @@ import avatar4 from "@/assets/figma/avatar-4.webp";
  */
 export function TopBanner() {
   return (
-    <section className="relative w-full px-8 pt-[160px]">
+    <section className="relative w-full px-8 pt-[200px]">
       <div className="relative mx-auto flex w-full max-w-[960px] flex-col items-center gap-8">
         <div className="relative flex w-full flex-col items-center gap-3">
           <h1 className="text-center font-display text-[56px] font-semibold leading-[1.05] tracking-[-0.02em] text-black md:text-[64px]">
