@@ -1,35 +1,5 @@
-import beaverPhoneFolders from "@/assets/figma/na-beaver-phone-folders.webp";
-import beaverGlasses from "@/assets/figma/na-beaver-glasses.webp";
-import beaverThinking from "@/assets/figma/na-beaver-thinking.webp";
 import testimonialRowUs from "@/assets/figma/testimonial-row-us.svg";
-
-type Card = {
-  title: string;
-  body: string;
-  image: string;
-  alt: string;
-};
-
-const cards: Card[] = [
-  {
-    title: "Turn Organized Receipts into Audit-Ready Reports",
-    body: "Export structured reports in PDF or Excel, complete with totals and receipt links for your accountant.",
-    image: beaverPhoneFolders,
-    alt: "Beaver with phone and folders",
-  },
-  {
-    title: "Invite Your Accountant for Max. Efficiency",
-    body: "ReceiptOne organizes your receipts and gives your accountant free access to your archive, saving time.",
-    image: beaverGlasses,
-    alt: "Beaver with glasses holding a sheet",
-  },
-  {
-    title: "Plug ReceiptOne Into Your Workflow",
-    body: "Simplify your finances with ReceiptOne. It integrates with QuickBooks and Google Drive for easy syncing and reporting.",
-    image: beaverThinking,
-    alt: "Beaver thinking",
-  },
-];
+import testimonialRowUs2 from "@/assets/figma/testimonial-row-us-2.svg";
 
 export function NotAllUS() {
   return (
@@ -50,33 +20,12 @@ export function NotAllUS() {
         className="block h-auto w-full"
       />
 
-      {/* Remaining cards */}
-      <div className="mt-[60px] grid grid-cols-1 gap-x-[24px] gap-y-[60px] sm:grid-cols-2 lg:grid-cols-3">
-        {cards.map((c) => (
-          <article
-            key={c.title}
-            className="flex flex-col overflow-hidden rounded-[32px] bg-white"
-          >
-            <div className="px-[26px] pt-[40px]">
-              <h3 className="font-display text-[22px] font-bold leading-[1.15] tracking-[-0.01em] text-black">
-                {c.title}
-              </h3>
-              <p className="mt-[16px] font-display text-[14px] leading-[1.5] text-[#7e8890]">
-                {c.body}
-              </p>
-            </div>
-            <div className="mt-auto flex items-end justify-center px-4 pt-6">
-              <img
-                src={c.image}
-                alt={c.alt}
-                loading="lazy"
-                className="block h-auto w-full max-w-[380px] select-none object-contain"
-                draggable={false}
-              />
-            </div>
-          </article>
-        ))}
-      </div>
+      {/* Second three cards as a single static SVG row */}
+      <img
+        src={testimonialRowUs2}
+        alt="Turn organized receipts into audit-ready reports, invite your accountant, plug ReceiptOne into your workflow"
+        className="mt-[60px] block h-auto w-full"
+      />
     </section>
   );
 }
