@@ -1,4 +1,5 @@
 import beaverHeroVideo from "@/assets/figma/hero-beaver.mp4";
+import titleSvg from "@/assets/figma/top-banner-title.svg";
 import avatar1 from "@/assets/figma/avatar-1.webp";
 import avatar2 from "@/assets/figma/avatar-2.webp";
 import avatar3 from "@/assets/figma/avatar-3.webp";
@@ -12,10 +13,15 @@ export function TopBanner() {
     <section className="relative w-full px-8 pt-[120px]">
       <div className="relative mx-auto flex w-full max-w-[960px] flex-col items-center gap-12">
         <div className="relative flex w-full flex-col items-center gap-4">
-          <h1 className="text-center font-display text-[64px] font-semibold leading-[64px] tracking-[-0.01em] text-black">
-            Track expenses, store receipts, and generate tax-ready reports –
-            all in one place
+          <h1 className="sr-only">
+            Track expenses, store receipts, and generate tax-ready reports – all in one place
           </h1>
+          <img
+            src={titleSvg}
+            alt=""
+            aria-hidden="true"
+            className="block w-full max-w-[960px]"
+          />
 
           <p className="w-[402px] max-w-full text-center font-display text-[20px] leading-7 tracking-[-0.02em] text-[#9192a1]">
             Built for freelancers, self-employed, and small businesses in the
