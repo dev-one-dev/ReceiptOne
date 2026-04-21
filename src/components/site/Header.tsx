@@ -172,3 +172,30 @@ function FlagCanada({ className }: { className?: string }) {
     </svg>
   );
 }
+
+function FlagUSA({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-label="USA"
+      role="img"
+    >
+      <defs>
+        <clipPath id="flagCircleUS">
+          <circle cx="12" cy="12" r="12" />
+        </clipPath>
+      </defs>
+      <g clipPath="url(#flagCircleUS)">
+        <rect width="24" height="24" fill="#fff" />
+        {/* 7 red stripes */}
+        {[0, 2, 4, 6, 8, 10, 12].map((y) => (
+          <rect key={y} y={y * (24 / 13)} width="24" height={24 / 13} fill="#B22234" />
+        ))}
+        {/* Blue canton */}
+        <rect width="11" height={24 / 13 * 7} fill="#3C3B6E" />
+      </g>
+    </svg>
+  );
+}
