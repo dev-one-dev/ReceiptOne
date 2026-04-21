@@ -6,8 +6,8 @@ export function AppBanner({ region = "ca" }: { region?: "ca" | "us" }) {
   return (
     <section id="apps" className="w-full scroll-mt-28">
       <div
-        className="relative w-full"
-        style={{ aspectRatio: "1440 / 560", containerType: "inline-size" }}
+        className="relative mx-auto"
+        style={{ width: "min(100%, 880px)", aspectRatio: "1440 / 560", containerType: "inline-size" }}
       >
         <img
           src={src}
