@@ -32,12 +32,11 @@ export function Header() {
     }
   };
 
-  const scrollTo = (id: string) => (e: React.MouseEvent<HTMLAnchorElement>) => {
+  const scrollTo = (id: string) => () => {
     const el = document.getElementById(id);
     if (el) {
-      e.preventDefault();
-      el.scrollIntoView({ behavior: "smooth", block: "start" });
-      history.replaceState(null, "", `#${id}`);
+      const top = el.getBoundingClientRect().top + window.scrollY - 100;
+      window.scrollTo({ top, behavior: "smooth" });
     }
   };
 
@@ -60,24 +59,24 @@ export function Header() {
         {/* Center nav links */}
         <ul className="flex items-center gap-6 font-sans text-sm leading-5 text-black">
           <li>
-            <a href="#benefits" onClick={scrollTo("benefits")} className="transition-opacity hover:opacity-70">
+            <button type="button" onClick={scrollTo("benefits")} className="transition-opacity hover:opacity-70">
               Benefits
-            </a>
+            </button>
           </li>
           <li>
-            <a href="#apps" onClick={scrollTo("apps")} className="transition-opacity hover:opacity-70">
+            <button type="button" onClick={scrollTo("apps")} className="transition-opacity hover:opacity-70">
               Apps
-            </a>
+            </button>
           </li>
           <li>
-            <a href="#pricing" onClick={scrollTo("pricing")} className="transition-opacity hover:opacity-70">
+            <button type="button" onClick={scrollTo("pricing")} className="transition-opacity hover:opacity-70">
               Pricing
-            </a>
+            </button>
           </li>
           <li>
-            <a href="#faq" onClick={scrollTo("faq")} className="transition-opacity hover:opacity-70">
+            <button type="button" onClick={scrollTo("faq")} className="transition-opacity hover:opacity-70">
               FAQ
-            </a>
+            </button>
           </li>
         </ul>
 
