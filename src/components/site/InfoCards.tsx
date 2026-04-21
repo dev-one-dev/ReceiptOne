@@ -10,6 +10,7 @@ import receiptPhoto from "@/assets/figma/ic-receipt-photo.webp";
 import mapImg from "@/assets/figma/ic-map.webp";
 import carImg from "@/assets/figma/ic-car.webp";
 import doodleBg from "@/assets/figma/doodle-bg.jpg";
+import infoArrow from "@/assets/figma/info-arrow.svg";
 
 /**
  * InfoCards — pixel-mapped from Figma node 29:26476
@@ -34,11 +35,16 @@ export function InfoCards() {
           </p>
 
           {/* Decorative script + dashed loop top-right */}
-          <div className="pointer-events-none absolute right-0 top-0 hidden w-[160px] flex-col items-end gap-2 md:flex">
+          <div className="pointer-events-none absolute right-0 top-0 hidden w-[240px] flex-col items-end gap-2 md:flex">
             <p className="rotate-[6deg] text-right font-script text-[20px] leading-5 tracking-[-0.02em] text-[#9192a1]">
               Works in all<br />50 states &amp;<br />13 provinces
             </p>
-            <DashedCurve className="-mt-2" />
+            <img
+              src={infoArrow}
+              alt=""
+              aria-hidden="true"
+              className="-mt-2 w-[239px] h-auto"
+            />
           </div>
         </div>
 
