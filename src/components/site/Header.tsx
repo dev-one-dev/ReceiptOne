@@ -32,6 +32,15 @@ export function Header() {
     }
   };
 
+  const scrollTo = (id: string) => (e: React.MouseEvent<HTMLAnchorElement>) => {
+    const el = document.getElementById(id);
+    if (el) {
+      e.preventDefault();
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+      history.replaceState(null, "", `#${id}`);
+    }
+  };
+
   return (
     <header className="flex w-full justify-center px-8 pt-8">
       <nav
@@ -51,22 +60,22 @@ export function Header() {
         {/* Center nav links */}
         <ul className="flex items-center gap-6 font-sans text-sm leading-5 text-black">
           <li>
-            <a href="#benefits" className="transition-opacity hover:opacity-70">
+            <a href="#benefits" onClick={scrollTo("benefits")} className="transition-opacity hover:opacity-70">
               Benefits
             </a>
           </li>
           <li>
-            <a href="#apps" className="transition-opacity hover:opacity-70">
+            <a href="#apps" onClick={scrollTo("apps")} className="transition-opacity hover:opacity-70">
               Apps
             </a>
           </li>
           <li>
-            <a href="#pricing" className="transition-opacity hover:opacity-70">
+            <a href="#pricing" onClick={scrollTo("pricing")} className="transition-opacity hover:opacity-70">
               Pricing
             </a>
           </li>
           <li>
-            <a href="#faq" className="transition-opacity hover:opacity-70">
+            <a href="#faq" onClick={scrollTo("faq")} className="transition-opacity hover:opacity-70">
               FAQ
             </a>
           </li>
