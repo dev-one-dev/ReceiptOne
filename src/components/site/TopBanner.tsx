@@ -22,8 +22,8 @@ export function TopBanner() {
             US &amp; Canada
           </p>
 
-          <DashedLoop className="pointer-events-none absolute left-1/2 top-[210px] hidden -translate-x-[300px] md:block" />
-          <p className="pointer-events-none absolute left-1/2 top-[268px] hidden w-[140px] -translate-x-[400px] -rotate-[6deg] text-center font-script text-[18px] leading-5 tracking-[-0.02em] text-[#9192a1] md:block">
+          <DashedLoop className="pointer-events-none absolute left-1/2 top-[200px] hidden -translate-x-[320px] md:block" />
+          <p className="pointer-events-none absolute left-1/2 top-[300px] hidden w-[160px] -translate-x-[330px] -rotate-[6deg] text-center font-script text-[18px] leading-5 tracking-[-0.02em] text-[#9192a1] md:block">
             7 days free trial available
           </p>
 
