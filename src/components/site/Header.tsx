@@ -73,7 +73,7 @@ export function Header() {
         </ul>
 
         {/* Right cluster */}
-        <div className="flex w-[250px] shrink-0 items-center justify-end gap-3">
+        <div className="flex shrink-0 flex-nowrap items-center justify-end gap-3">
           <div ref={wrapRef} className="relative">
             <button
               type="button"
@@ -117,13 +117,13 @@ export function Header() {
           </div>
           <button
             type="button"
-            className="rounded-full border border-black px-6 py-2.5 font-display text-sm font-semibold leading-5 text-black transition-colors hover:bg-black/5"
+            className="shrink-0 whitespace-nowrap rounded-full border border-black px-6 py-2.5 font-display text-sm font-semibold leading-5 text-black transition-colors hover:bg-black/5"
           >
             Log in
           </button>
           <button
             type="button"
-            className="rounded-full bg-black px-6 py-2.5 font-display text-sm font-semibold leading-5 text-white transition-opacity hover:opacity-90"
+            className="shrink-0 whitespace-nowrap rounded-full bg-black px-6 py-2.5 font-display text-sm font-semibold leading-5 text-white transition-opacity hover:opacity-90"
           >
             Join now
           </button>
