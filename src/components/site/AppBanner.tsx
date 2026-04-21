@@ -16,10 +16,10 @@ export function AppBanner({ region = "ca" }: { region?: "ca" | "us" }) {
           aria-hidden="true"
           className="pointer-events-none absolute select-none leading-none"
           style={{
-            left: "42.2%",
-            top: "71.4%",
+            left: "14.8%",
+            top: "37.3%",
             transform: "translate(-50%, -50%)",
-            fontSize: "4.4cqw",
+            fontSize: "4cqw",
             fontFamily:
               '"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif',
           }}
