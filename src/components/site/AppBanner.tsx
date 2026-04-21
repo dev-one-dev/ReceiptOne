@@ -21,8 +21,8 @@ export function AppBanner({ region = "ca" }: { region?: "ca" | "us" }) {
           aria-hidden="true"
           className="pointer-events-none absolute select-none leading-none"
           style={{
-            left: `${(608 / 1440) * 100}%`,
-            top: `${(380 / 560) * 100}%`,
+            left: `${(209 / 1440) * 100}%`,
+            top: `${(210 / 560) * 100}%`,
             transform: "translate(-50%, -50%)",
             fontSize: "4.4cqw",
             fontFamily:
