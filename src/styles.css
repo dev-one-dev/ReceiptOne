@@ -145,3 +145,6 @@
     color: var(--color-foreground);
   }
 }
+
+html { scroll-behavior: smooth; }
+
