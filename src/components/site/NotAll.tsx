@@ -68,7 +68,7 @@ export function NotAll() {
         {cards.map((c) => (
           <article
             key={c.title}
-            className="flex h-[560px] flex-col overflow-hidden rounded-[32px] bg-white"
+            className="flex flex-col overflow-hidden rounded-[32px] bg-white"
           >
             <div className="px-[26px] pt-[40px]">
               <h3 className="font-display text-[22px] font-bold leading-[1.15] tracking-[-0.01em] text-black">
@@ -78,12 +78,12 @@ export function NotAll() {
                 {c.body}
               </p>
             </div>
-            <div className="mt-auto flex items-end justify-center px-4">
+            <div className="mt-6 flex items-end justify-center px-4">
               <img
                 src={c.image}
                 alt={c.alt}
                 loading="lazy"
-                className="block h-auto w-full max-w-[340px] select-none object-contain"
+                className="block h-auto w-full max-w-[380px] select-none object-contain"
                 draggable={false}
               />
             </div>
