@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Header } from "@/components/site/Header";
-import topBannerUsSvg from "@/assets/figma/top-banner-us.svg";
+import { TopBannerUS } from "@/components/site/TopBannerUS";
 import { Numbers } from "@/components/site/Numbers";
 import infoCardsUsSvg from "@/assets/figma/info-cards-us.svg";
 import { NotAllUS } from "@/components/site/NotAllUS";
@@ -35,13 +35,7 @@ function USAPage() {
   return (
     <main className="min-h-screen bg-[#f5f4f0] font-sans text-black antialiased">
       <Header />
-      <section className="w-full">
-        <img
-          src={topBannerUsSvg}
-          alt="Track expenses, store receipts, and generate tax-ready reports — built for freelancers, self-employed, and small businesses in the US"
-          className="block h-auto w-full"
-        />
-      </section>
+      <TopBannerUS />
       <Numbers />
       <section id="benefits" className="w-full">
         <div className="mx-auto w-full max-w-[1440px]">
