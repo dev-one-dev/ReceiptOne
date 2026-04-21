@@ -3,7 +3,7 @@ import { Header } from "@/components/site/Header";
 import topBannerUsSvg from "@/assets/figma/top-banner-us.svg";
 import { Numbers } from "@/components/site/Numbers";
 import infoCardsUsSvg from "@/assets/figma/info-cards-us.svg";
-import { NotAll } from "@/components/site/NotAll";
+import { NotAllUS } from "@/components/site/NotAllUS";
 import { Advantages } from "@/components/site/Advantages";
 import { AppBanner } from "@/components/site/AppBanner";
 import pricingUsSvg from "@/assets/figma/pricing-us.svg";
@@ -52,7 +52,7 @@ function USAPage() {
           />
         </div>
       </section>
-      <NotAll />
+      <NotAllUS />
       <Advantages />
       <AppBanner region="us" />
       <section id="pricing" className="mx-auto w-full max-w-[1440px] scroll-mt-28 px-6">
