@@ -2,11 +2,10 @@ import pricingSvg from "@/assets/figma/pricing.svg";
 
 export function Pricing() {
   return (
-    <section className="mx-auto w-full max-w-[1238px] px-6">
-      {/* Crop bottom whitespace baked into the SVG (1238x1106 viewBox, content ends ~y=620) */}
+    <section className="mx-auto w-full max-w-[1440px] px-6">
       <div
         className="relative w-full overflow-hidden"
-        style={{ aspectRatio: "1238 / 640" }}
+        style={{ aspectRatio: "1440 / 1632" }}
       >
         <img
           src={pricingSvg}
