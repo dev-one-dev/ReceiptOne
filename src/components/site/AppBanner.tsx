@@ -5,7 +5,10 @@ export function AppBanner({ region = "ca" }: { region?: "ca" | "us" }) {
   const src = region === "us" ? appBannerUsSvg : appBannerSvg;
   return (
     <section id="apps" className="w-full scroll-mt-28">
-      <div className="relative w-full" style={{ containerType: "inline-size" }}>
+      <div
+        className="relative mx-auto block"
+        style={{ width: "fit-content", containerType: "inline-size" }}
+      >
         <img
           src={src}
           alt="Get your personal receipt manager in your phone — download on the App Store or Google Play"
