@@ -1,6 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Header } from "@/components/site/Header";
-import topBannerUsSvg from "@/assets/figma/top-banner-us.svg";
 import heroEagleVideo from "@/assets/figma/hero-eagle-us.mp4";
 import { Numbers } from "@/components/site/Numbers";
 import infoCardsUsSvg from "@/assets/figma/info-cards-us.svg";
@@ -38,11 +37,6 @@ function USAPage() {
       <Header />
       <section className="w-full">
         <div className="relative mx-auto w-full" style={{ aspectRatio: "1440 / 1180" }}>
-          <img
-            src={topBannerUsSvg}
-            alt="Track expenses, store receipts, and generate tax-ready reports — built for freelancers, self-employed, and small businesses in the US"
-            className="absolute inset-0 block h-full w-full"
-          />
           <video
             src={heroEagleVideo}
             autoPlay
@@ -50,15 +44,8 @@ function USAPage() {
             muted
             playsInline
             aria-label="Eagle mascot reading a receipt"
-            className="absolute"
-            style={{
-              left: `${(240 / 1440) * 100}%`,
-              top: `${(504 / 1180) * 100}%`,
-              width: `${(960 / 1440) * 100}%`,
-              height: `${(548 / 1180) * 100}%`,
-              mixBlendMode: "darken",
-              objectFit: "cover",
-            }}
+            className="absolute inset-0 h-full w-full"
+            style={{ objectFit: "contain" }}
           />
         </div>
       </section>
