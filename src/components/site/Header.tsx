@@ -131,18 +131,18 @@ export function Header() {
               </div>
             )}
           </div>
-          <button
-            type="button"
+          <Link
+            to="/login"
             className="shrink-0 whitespace-nowrap rounded-full border border-black px-6 py-2.5 font-display text-sm font-semibold leading-5 text-black transition-colors hover:bg-black/5"
           >
             Log in
-          </button>
-          <button
-            type="button"
+          </Link>
+          <Link
+            to="/signup"
             className="shrink-0 whitespace-nowrap rounded-full bg-black px-6 py-2.5 font-display text-sm font-semibold leading-5 text-white transition-opacity hover:opacity-90"
           >
             Join now
-          </button>
+          </Link>
         </div>
       </nav>
     </header>
