@@ -1,16 +1,23 @@
 import { useCallback } from "react";
 import { Link } from "@tanstack/react-router";
 import footerSvg from "@/assets/figma/footer.svg";
+import footerUsSvg from "@/assets/figma/footer-us.svg";
 
-export function Footer() {
+type FooterProps = {
+  region?: "ca" | "us";
+};
+
+export function Footer({ region = "ca" }: FooterProps) {
   const scrollToTop = useCallback(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
 
+  const footerAsset = region === "us" ? footerUsSvg : footerSvg;
+
   return (
     <footer className="relative w-full">
       <img
-        src={footerSvg}
+        src={footerAsset}
         alt="Claim your free trial now — ReceiptOne"
         className="block h-auto w-full"
       />
@@ -26,6 +33,18 @@ export function Footer() {
         to="/privacy"
         aria-label="Terms of Use"
         className="absolute left-[36%] top-[88.5%] h-[4.8%] w-[11%] rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+      />
+
+      <Link
+        to="/login"
+        aria-label="Log in"
+        className="absolute left-[61.5%] top-[88%] h-[5.4%] w-[9.6%] rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+      />
+
+      <Link
+        to="/signup"
+        aria-label="Join now"
+        className="absolute left-[73%] top-[88%] h-[5.4%] w-[11.5%] rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
       />
 
       <Link
