@@ -18,9 +18,9 @@ export function AppBanner({ region = "ca" }: { region?: "ca" | "us" }) {
             aria-hidden="true"
             className="pointer-events-none absolute left-1/2 top-1/2 inline-flex items-center justify-center text-[clamp(24px,4.5vw,64px)] leading-none"
             style={{
-              width: "clamp(28px,3.4vw,48px)",
-              height: "clamp(28px,3.4vw,48px)",
-              transform: "translate(-332%, -118%)",
+              width: "clamp(38px,4.8vw,68px)",
+              height: "clamp(38px,4.8vw,68px)",
+              transform: "translate(-362%, -121%)",
             }}
           >
             📱
