@@ -3,6 +3,7 @@ import appBannerCaSvg from "@/assets/figma/app-banner-ca.svg";
 import appBannerUsSvg from "@/assets/figma/app-banner-us.svg";
 
 export function AppBanner({ region = "ca" }: { region?: "ca" | "us" }) {
+  const isCanada = region === "ca";
   const src = region === "us" ? appBannerUsSvg : appBannerCaSvg || appBannerSvg;
 
   return (
@@ -14,6 +15,17 @@ export function AppBanner({ region = "ca" }: { region?: "ca" | "us" }) {
           className="block h-full w-full"
           loading="lazy"
         />
+        {isCanada ? (
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute flex items-center justify-center bg-black"
+            style={{ left: "24.95%", top: "32.15%", width: "2.95%", height: "8.2%" }}
+          >
+            <span className="leading-none" style={{ fontSize: "clamp(12px, 1.75vw, 28px)" }}>
+              📱
+            </span>
+          </div>
+        ) : null}
       </div>
     </section>
   );
