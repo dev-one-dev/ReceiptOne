@@ -21,44 +21,38 @@ export function AppBanner({ region = "ca" }: { region?: "ca" | "us" }) {
               className="pointer-events-none absolute bg-foreground"
               style={{
                 left: "19.4%",
-                top: "20.5%",
-                width: "28.8%",
-                height: "58.1%",
+                top: "20.45%",
+                width: "29.15%",
+                height: "39.6%",
               }}
             />
             <div
               className="pointer-events-none absolute text-background"
               style={{
-                left: "19.75%",
-                top: "21.25%",
-                width: "29.5%",
+                left: "22.55%",
+                top: "27.2%",
+                width: "22.95%",
               }}
             >
               <p
-                className="m-0 text-balance font-sans font-medium leading-[1.05]"
-                style={{ fontSize: "clamp(8px, 1.55vw, 25px)" }}
+                className="m-0 font-sans font-semibold leading-[1.02]"
+                style={{ fontSize: "clamp(8px, 1.68vw, 24px)" }}
               >
                 <span className="block">Get your personal</span>
-                <span className="block">receipt manager</span>
+                <span className="block">receipt manager in</span>
                 <span className="block whitespace-nowrap">
-                  in your <span aria-hidden="true">📱</span>phone
+                  your <span aria-hidden="true">📱</span>phone
                 </span>
               </p>
+              <p
+                className="mt-[0.45em] font-sans font-normal text-background/70"
+                style={{ fontSize: "clamp(4.5px, 0.84vw, 12px)", lineHeight: 1.35 }}
+              >
+                Snap receipts, auto-categorize expenses, track mileage,
+                <br />
+                and export accountant-ready reports in seconds.
+              </p>
             </div>
-            <span
-              aria-hidden="true"
-              className="pointer-events-none absolute inline-flex items-center justify-center leading-none"
-              style={{
-                left: "23.15%",
-                top: "69.15%",
-                width: "3.8%",
-                height: "9.8%",
-                transform: "translate(-50%, -50%)",
-                fontSize: "clamp(18px, 2vw, 30px)",
-              }}
-            >
-              📱
-            </span>
           </>
         ) : null}
       </div>
