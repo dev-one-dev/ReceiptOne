@@ -4,6 +4,13 @@ import appBannerUsSvg from "@/assets/figma/app-banner-us.svg";
 export function AppBanner({ region = "ca" }: { region?: "ca" | "us" }) {
   const src = region === "us" ? appBannerUsSvg : appBannerSvg;
   const showPhoneOverlay = region === "ca";
+  const caPhonePlaceholderStyle = {
+    left: "31.6667%",
+    top: "72.1429%",
+    width: "8.3333%",
+    height: "7.1429%",
+    transform: "translate(-50%, -50%)",
+  } as const;
 
   return (
     <section id="apps" className="w-full scroll-mt-28">
@@ -16,13 +23,12 @@ export function AppBanner({ region = "ca" }: { region?: "ca" | "us" }) {
         {showPhoneOverlay ? (
           <span
             aria-hidden="true"
-            className="pointer-events-none absolute left-1/2 top-1/2 inline-flex items-center justify-center text-[clamp(24px,4.5vw,64px)] leading-none"
+            className="pointer-events-none absolute inline-flex items-center justify-center leading-none"
             style={{
-              width: "clamp(34px,4.4vw,62px)",
-              height: "clamp(34px,4.4vw,62px)",
-              borderRadius: "8px",
+              ...caPhonePlaceholderStyle,
+              fontSize: "clamp(18px,2.2vw,30px)",
+              borderRadius: "clamp(6px,0.65vw,10px)",
               backgroundColor: "#000",
-              transform: "translate(-360%, -120%)",
             }}
           >
             📱
