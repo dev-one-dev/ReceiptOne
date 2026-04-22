@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { Link, createFileRoute } from "@tanstack/react-router";
 
 const scopeItems = [
@@ -227,4 +228,348 @@ function TermsPage() {
             </p>
           </div>
           <p className="mt-6 text-sm text-muted-foreground">
-            Privacy requests and questions:{
+            Privacy requests and questions:{" "}
+            <a className="font-medium text-foreground underline underline-offset-4" href="mailto:support@receipt-one.com">
+              support@receipt-one.com
+            </a>
+          </p>
+        </header>
+
+        <div className="grid gap-10 py-10 lg:grid-cols-[minmax(0,1fr)_280px] lg:gap-14">
+          <div className="space-y-10">
+            <PolicySection number="1" title="Scope">
+              <p>
+                This Privacy Policy applies to personal information collected through the Services, including when you:
+              </p>
+              <BulletList items={scopeItems} />
+            </PolicySection>
+
+            <PolicySection number="2" title="Information We Collect">
+              <SubSection title="2.1 Information You Provide Directly">
+                <BulletList items={directInformation} />
+              </SubSection>
+
+              <SubSection title="2.2 Receipt, Expense, and Tax-Related Data">
+                <p>To provide expense tracking, organization, and reporting functionality, we may collect and process:</p>
+                <BulletList items={taxData} />
+                <p>
+                  <strong>Sensitive personal information:</strong> Receipt images, expense records, and uploaded
+                  documents may contain financial information and other sensitive business information. We process this
+                  information only as reasonably necessary to provide, secure, maintain, and improve the Services and
+                  for other purposes described in this Privacy Policy.
+                </p>
+              </SubSection>
+
+              <SubSection title="2.3 Payment Information">
+                <p>ReceiptOne does not collect or store full payment card numbers through the mobile application.</p>
+                <p>
+                  Payments for mobile subscriptions are processed by third-party platforms such as Apple App Store and
+                  Google Play Store. We receive limited subscription metadata from those platforms, such as plan type,
+                  renewal status, country, transaction identifiers, and subscription status.
+                </p>
+                <p>
+                  If additional web billing or payment processors are introduced in the future, this Privacy Policy will
+                  be updated accordingly.
+                </p>
+              </SubSection>
+
+              <SubSection title="2.4 Automatically Collected Information">
+                <BulletList items={autoCollected} />
+              </SubSection>
+
+              <SubSection title="2.5 Device Permissions">
+                <DataTable headers={["Permission", "Purpose", "Can be revoked?"]} rows={devicePermissions} />
+                <p>You may revoke device permissions through your device settings. If you do so, certain features may be limited or unavailable.</p>
+              </SubSection>
+
+              <SubSection title="2.6 Categories of Personal Information for California Residents">
+                <p>For purposes of the CCPA/CPRA, we may collect the following categories of personal information:</p>
+                <DataTable headers={["Category", "Examples"]} rows={californiaCategories} />
+                <p>
+                  We do not use sensitive personal information to infer characteristics about individuals. We use it
+                  only for limited purposes reasonably necessary to provide the Services, maintain security, detect
+                  errors or fraud, comply with law, and perform other permitted business purposes.
+                </p>
+              </SubSection>
+            </PolicySection>
+
+            <PolicySection number="3" title="How We Use Personal Information">
+              <p>We use personal information for the following purposes:</p>
+              <BulletList items={usageItems} />
+              <p>Where permitted by law, we may also use de-identified or aggregated information for analytics, research, service improvement, and business operations.</p>
+              <p>
+                <strong>Important:</strong> ReceiptOne provides organizational and informational tools only and does not
+                provide legal, accounting, tax, or financial advice.
+              </p>
+            </PolicySection>
+
+            <PolicySection number="4" title="AI-Assisted and Automated Processing">
+              <p>ReceiptOne uses automated tools and AI-assisted processing to:</p>
+              <BulletList items={aiItems} />
+              <p><strong>Limitations of AI processing:</strong></p>
+              <BulletList items={aiLimitations} />
+            </PolicySection>
+
+            <PolicySection number="5" title="How We Share Personal Information">
+              <p>
+                <strong>We do not sell personal information. We do not share personal information for cross-context behavioral advertising.</strong>
+              </p>
+              <p>We may disclose personal information to the following categories of recipients for business or operational purposes:</p>
+              <BulletList items={sharingRecipients} />
+              <p><strong>Examples of service providers used in connection with the Services:</strong></p>
+              <DataTable headers={["Provider", "Purpose"]} rows={providers} />
+              <p>
+                We instruct all service providers to process personal information on our behalf and for limited purposes
+                related to providing and supporting the Services, subject to applicable contracts, confidentiality
+                obligations, and security requirements.
+              </p>
+              <p>
+                <strong>Corporate transactions:</strong> We may also disclose personal information in connection with a
+                merger, financing, acquisition, reorganization, sale of assets, bankruptcy, or similar corporate
+                transaction, subject to appropriate safeguards where required by law.
+              </p>
+            </PolicySection>
+
+            <PolicySection number="6" title="International and Cross-Border Processing">
+              <p>ReceiptOne uses service providers and cloud-based infrastructure that may process or store personal information in:</p>
+              <BulletList items={countries} />
+              <p>
+                <strong>Legal implications:</strong> As a result, personal information may be subject to the laws of
+                those jurisdictions, including lawful access requests by courts, regulators, or law enforcement
+                authorities.
+              </p>
+              <p>
+                We use contractual, technical, and organizational safeguards that are appropriate to the sensitivity of
+                the information and the nature of the processing, including Standard Contractual Clauses or equivalent
+                mechanisms where required by law.
+              </p>
+            </PolicySection>
+
+            <PolicySection number="7" title="Data Retention">
+              <p>
+                We retain personal information for as long as reasonably necessary for the purposes described in this
+                Privacy Policy, including to provide the Services and comply with legal, accounting, tax, security,
+                dispute resolution, and enforcement obligations.
+              </p>
+              <p><strong>General retention periods:</strong></p>
+              <DataTable headers={["Data type", "Retention period"]} rows={retentionRows} />
+              <p>
+                <strong>Important note regarding service provider caching:</strong> Despite deletion from our active
+                systems, our service providers (including Google Cloud and OpenAI) may retain hashed, logged, or cached
+                copies of data for a limited period (typically up to 30 days) for security, abuse prevention, and fraud
+                detection purposes. After such period, residual copies are deleted or rendered unreadable.
+              </p>
+            </PolicySection>
+
+            <PolicySection number="8" title="Your Privacy Rights">
+              <SubSection title="8.1 Canada (PIPEDA and Quebec Law 25)">
+                <p>You have the right to:</p>
+                <BulletList items={canadaRights} />
+              </SubSection>
+
+              <SubSection title="8.2 United States (California and other states)">
+                <p>Depending on your state of residence and subject to applicable exceptions, you may have the right to:</p>
+                <BulletList items={usRights} />
+                <p>
+                  Because ReceiptOne does not sell personal information or share personal information for cross-context
+                  behavioral advertising, we do not offer a “Do Not Sell or Share” mechanism for activities that we do
+                  not engage in.
+                </p>
+              </SubSection>
+
+              <SubSection title="8.3 How to Submit Requests">
+                <p>
+                  You may submit privacy requests by contacting <strong>support@receipt-one.com</strong> with the
+                  subject line <strong>“Privacy Request”</strong>.
+                </p>
+                <p>In your request, please include:</p>
+                <BulletList items={requestItems} />
+                <p>
+                  <strong>Authorized agents:</strong> Where required by law, authorized agents may submit requests on
+                  behalf of individuals, subject to appropriate verification and written authorization.
+                </p>
+              </SubSection>
+
+              <SubSection title="8.4 Verification and Appeals">
+                <p><strong>Verification process:</strong> To protect your personal information, we will verify your identity before fulfilling a request. Verification may include:</p>
+                <BulletList items={verificationItems} />
+                <p>If we cannot verify your identity or authority to act, we may deny or limit the request as permitted by law.</p>
+                <p><strong>Appeals process:</strong> If we deny a request, we will provide you with a clear explanation of the basis for denial and information about how you may appeal that decision.</p>
+                <p>To appeal, please reply to our denial notice or contact us at support@receipt-one.com with “Appeal” in the subject line.</p>
+                <p><strong>Response timing:</strong> We will respond to verified requests within the timeframes required by applicable law (typically 30 days for PIPEDA, 45 days for CCPA/CPRA, with possible extensions where permitted).</p>
+              </SubSection>
+            </PolicySection>
+
+            <PolicySection number="9" title="Consent">
+              <SubSection title="9.1 General Consent">
+                <p>
+                  By creating an account, uploading receipts or documents, enabling optional features, or otherwise
+                  using the Services, you consent to the collection, use, and disclosure of personal information as
+                  described in this Privacy Policy, except where applicable law requires a different form of consent.
+                </p>
+              </SubSection>
+
+              <SubSection title="9.2 Express Consent for Quebec Residents and Sensitive Information">
+                <p><strong>For residents of Quebec (Canada):</strong> Where required by Quebec&apos;s Law 25, we obtain express consent before collecting, using, or disclosing your personal information.</p>
+                <p><strong>For sensitive personal information (all users):</strong> Where required by applicable law, we obtain express consent before collecting, using, or disclosing financial or expense-related data contained in receipts, reports, and uploaded documents.</p>
+                <p><strong>How express consent is obtained:</strong></p>
+                <BulletList items={consentActions} />
+                <p>You may withdraw express consent at any time by contacting us. If you withdraw consent for processing that is necessary to provide the Services, some features or the Services themselves may no longer be available.</p>
+              </SubSection>
+
+              <SubSection title="9.3 Withdrawal of Consent">
+                <p>You may withdraw consent for certain processing by:</p>
+                <BulletList items={withdrawalItems} />
+                <p>If you withdraw consent for processing that is necessary to provide the Services, some features or the Services themselves may no longer be available.</p>
+              </SubSection>
+            </PolicySection>
+
+            <PolicySection number="10" title="Security Safeguards">
+              <p>We implement administrative, technical, and organizational safeguards designed to protect personal information, including:</p>
+              <DataTable headers={["Measure", "Description"]} rows={securityRows} />
+              <p>
+                <strong>Limitation:</strong> No method of transmission over the Internet or method of electronic storage
+                is completely secure. Accordingly, we cannot guarantee absolute security. In the event of a data breach
+                affecting your personal information, we will notify you and relevant authorities as required by
+                applicable law.
+              </p>
+            </PolicySection>
+
+            <PolicySection number="11" title="Children’s Privacy">
+              <p>
+                The Services are intended for adults and business users and are not directed to children under the age
+                of 18 (or the age of majority in your jurisdiction).
+              </p>
+              <p>
+                We do not knowingly collect personal information from children. If you believe a child has provided
+                personal information to us, please contact us immediately so that we can review and delete such
+                information.
+              </p>
+            </PolicySection>
+
+            <PolicySection number="12" title="Changes to This Privacy Policy">
+              <p>We may update this Privacy Policy from time to time to reflect changes in:</p>
+              <BulletList items={changeItems} />
+              <p><strong>Notification of material changes:</strong></p>
+              <BulletList items={notificationItems} />
+            </PolicySection>
+
+            <PolicySection number="13" title="Contact Information">
+              <p><strong>Privacy Contact / Data Protection Officer (DPO) responsibilities</strong> are handled by the ReceiptOne privacy team.</p>
+              <div className="rounded-2xl border border-border bg-card p-5">
+                <p className="text-sm text-muted-foreground">Email</p>
+                <a className="mt-1 block font-medium text-foreground underline underline-offset-4" href="mailto:support@receipt-one.com">
+                  support@receipt-one.com
+                </a>
+                <p className="mt-4 text-sm text-muted-foreground">Subject line for privacy matters</p>
+                <p className="mt-1 font-medium">Privacy Request</p>
+              </div>
+              <div className="space-y-3 text-sm leading-6 text-muted-foreground">
+                <p>
+                  <strong className="text-foreground">Regulatory complaints (Canada):</strong>{" "}
+                  <a className="underline underline-offset-4" href="https://www.priv.gc.ca/en/report-a-concern/" target="_blank" rel="noreferrer">
+                    Office of the Privacy Commissioner of Canada
+                  </a>
+                </p>
+                <p>
+                  <strong className="text-foreground">Regulatory complaints (Quebec):</strong>{" "}
+                  <a className="underline underline-offset-4" href="https://www.cai.gouv.qc.ca/" target="_blank" rel="noreferrer">
+                    Commission d&apos;accès à l&apos;information du Québec (CAI)
+                  </a>
+                </p>
+                <p>
+                  <strong className="text-foreground">Regulatory complaints (California):</strong>{" "}
+                  <a className="underline underline-offset-4" href="https://oag.ca.gov/privacy" target="_blank" rel="noreferrer">
+                    California Attorney General
+                  </a>
+                </p>
+              </div>
+              <p className="text-sm text-muted-foreground">© 2026 ReceiptOne. All rights reserved.</p>
+            </PolicySection>
+          </div>
+
+          <aside className="lg:sticky lg:top-6 lg:self-start">
+            <div className="rounded-3xl border border-border bg-card p-6">
+              <p className="font-display text-lg font-semibold">Summary</p>
+              <div className="mt-4 space-y-4 text-sm leading-6 text-muted-foreground">
+                <p>This page contains the uploaded privacy policy text formatted for the web.</p>
+                <p>It covers Canada and U.S. privacy obligations, retention, security, and request handling.</p>
+                <p>
+                  For privacy requests, email{" "}
+                  <a className="font-medium text-foreground underline underline-offset-4" href="mailto:support@receipt-one.com">
+                    support@receipt-one.com
+                  </a>
+                  .
+                </p>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </article>
+    </main>
+  );
+}
+
+function PolicySection({ number, title, children }: { number: string; title: string; children: ReactNode }) {
+  return (
+    <section className="space-y-4 border-b border-border/70 pb-10 last:border-b-0 last:pb-0">
+      <div className="space-y-2">
+        <p className="text-sm font-medium text-muted-foreground">Section {number}</p>
+        <h2 className="font-display text-2xl font-semibold tracking-normal sm:text-3xl">{title}</h2>
+      </div>
+      <div className="space-y-4 text-base leading-7 text-muted-foreground">{children}</div>
+    </section>
+  );
+}
+
+function SubSection({ title, children }: { title: string; children: ReactNode }) {
+  return (
+    <section className="space-y-4">
+      <h3 className="font-display text-xl font-semibold tracking-normal text-foreground">{title}</h3>
+      <div className="space-y-4 text-base leading-7 text-muted-foreground">{children}</div>
+    </section>
+  );
+}
+
+function BulletList({ items }: { items: string[] }) {
+  return (
+    <ul className="space-y-2 pl-5">
+      {items.map((item) => (
+        <li key={item} className="list-disc marker:text-foreground">
+          {item}
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+function DataTable({ headers, rows }: { headers: string[]; rows: string[][] }) {
+  return (
+    <div className="overflow-hidden rounded-2xl border border-border">
+      <div className="overflow-x-auto">
+        <table className="min-w-full divide-y divide-border text-left text-sm">
+          <thead className="bg-muted/50 text-foreground">
+            <tr>
+              {headers.map((header) => (
+                <th key={header} className="px-4 py-3 font-medium sm:px-5">
+                  {header}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-border bg-card text-muted-foreground">
+            {rows.map((row) => (
+              <tr key={row.join("-")} className="align-top">
+                {row.map((cell) => (
+                  <td key={cell} className="px-4 py-3 sm:px-5">
+                    {cell}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
