@@ -16,22 +16,20 @@ export function AppBanner({ region = "ca" }: { region?: "ca" | "us" }) {
           loading="lazy"
         />
         {isCanada ? (
-          <>
+          <div aria-hidden="true" className="pointer-events-none absolute inset-0">
             <div
-              aria-hidden="true"
-              className="pointer-events-none absolute bg-foreground"
-              style={{ left: "24.15%", top: "30.9%", width: "4.55%", height: "12.7%" }}
+              className="absolute bg-foreground"
+              style={{ left: "19.5%", top: "21.2%", width: "25.5%", height: "31.5%" }}
             />
-            <div
-              aria-hidden="true"
-              className="pointer-events-none absolute flex items-center justify-center"
-              style={{ left: "24.95%", top: "32.05%", width: "2.9%", height: "7.8%" }}
+            <p
+              className="absolute font-display font-semibold leading-[0.96] text-background"
+              style={{ left: "20.5%", top: "22.2%", width: "22.8%", fontSize: "clamp(8px, 1.9vw, 30px)" }}
             >
-              <span className="leading-none" style={{ fontSize: "clamp(12px, 1.85vw, 30px)" }}>
-                📱
-              </span>
-            </div>
-          </>
+              <span className="block">Get your personal</span>
+              <span className="block">receipt manager in</span>
+              <span className="block">your 📱phone</span>
+            </p>
+          </div>
         ) : null}
       </div>
     </section>
