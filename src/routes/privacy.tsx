@@ -1,5 +1,7 @@
 import type { ReactNode } from "react";
 import { Link, createFileRoute } from "@tanstack/react-router";
+import logoMark from "@/assets/figma/logo-mark.svg";
+import logoWordmark from "@/assets/figma/logo-wordmark.svg";
 
 const collectedInformation = [
   "Identifiers: name, email address, account ID, country, and province/state",
@@ -91,8 +93,11 @@ function PrivacyPage() {
     <main className="min-h-screen bg-background text-foreground">
       <div className="border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8">
-          <div>
-            <p className="font-display text-lg font-semibold">ReceiptOne</p>
+          <div className="flex items-center gap-3">
+            <Link to="/ca" className="flex items-center gap-2">
+              <img src={logoMark} alt="" aria-hidden className="block size-10" />
+              <img src={logoWordmark} alt="ReceiptOne" className="block h-6 w-auto" />
+            </Link>
             <p className="text-sm text-muted-foreground">Privacy Policy</p>
           </div>
           <Link
@@ -132,15 +137,15 @@ function PrivacyPage() {
 
         <div className="grid gap-10 py-10 lg:grid-cols-[minmax(0,1fr)_300px] lg:gap-14">
           <div className="space-y-10">
-            <PolicySection number="20" title="Information We Collect">
+            <PolicySection number="1" title="Information We Collect">
               <BulletList items={collectedInformation} />
             </PolicySection>
 
-            <PolicySection number="21" title="Purposes of Processing">
+            <PolicySection number="2" title="Purposes of Processing">
               <BulletList items={processingPurposes} />
             </PolicySection>
 
-            <PolicySection number="22" title="Disclosure of Personal Information">
+            <PolicySection number="3" title="Disclosure of Personal Information">
               <p>
                 We may disclose personal information to service providers that perform services on our behalf.
               </p>
@@ -152,7 +157,7 @@ function PrivacyPage() {
               </p>
             </PolicySection>
 
-            <PolicySection number="23" title="Third-Party Processors and Countries of Processing">
+            <PolicySection number="4" title="Third-Party Processors and Countries of Processing">
               <SubSection title="Countries of processing">
                 <BulletList items={processingCountries} />
               </SubSection>
@@ -165,7 +170,7 @@ function PrivacyPage() {
               </p>
             </PolicySection>
 
-            <PolicySection number="24" title="Data Retention">
+            <PolicySection number="5" title="Data Retention">
               <p>
                 We retain personal information while your account is active. After account deletion, ReceiptOne deletes
                 or anonymizes your data within <strong className="text-foreground">90 days</strong>, except where
@@ -174,7 +179,7 @@ function PrivacyPage() {
               </p>
             </PolicySection>
 
-            <PolicySection number="25" title="Your Privacy Rights — United States">
+            <PolicySection number="6" title="Your Privacy Rights — United States">
               <BulletList items={usRights} />
               <p>
                 To exercise your rights, email{" "}
@@ -185,7 +190,7 @@ function PrivacyPage() {
               </p>
             </PolicySection>
 
-            <PolicySection number="26" title="Your Privacy Rights — Canada">
+            <PolicySection number="7" title="Your Privacy Rights — Canada">
               <BulletList items={canadaRights} />
               <p>
                 Requests can be submitted at{" "}
@@ -196,11 +201,11 @@ function PrivacyPage() {
               </p>
             </PolicySection>
 
-            <PolicySection number="27" title="Security Measures">
+            <PolicySection number="8" title="Security Measures">
               <BulletList items={securityMeasures} />
             </PolicySection>
 
-            <PolicySection number="28" title="Data Breach Notification">
+            <PolicySection number="9" title="Data Breach Notification">
               <p>
                 In the event of a material data breach involving personal information, ReceiptOne will notify affected
                 users within <strong className="text-foreground">72 hours</strong> of confirmation, via email and
@@ -208,14 +213,14 @@ function PrivacyPage() {
               </p>
             </PolicySection>
 
-            <PolicySection number="29" title="Children's Privacy">
+            <PolicySection number="10" title="Children's Privacy">
               <p>
                 The Services are not intended for individuals under 18. We do not knowingly collect personal
                 information from minors. If we learn that we have done so, we will delete it immediately.
               </p>
             </PolicySection>
 
-            <PolicySection number="30" title="Changes to Privacy Disclosures">
+            <PolicySection number="11" title="Changes to Privacy Disclosures">
               <p>We may update these privacy disclosures in response to:</p>
               <BulletList items={updateTriggers} />
               <p>Material changes will be communicated as required by applicable law.</p>
@@ -226,7 +231,7 @@ function PrivacyPage() {
             <div className="rounded-3xl border border-border bg-card p-6">
               <p className="font-display text-lg font-semibold">Summary</p>
               <div className="mt-4 space-y-4 text-sm leading-6 text-muted-foreground">
-                <p>This page covers Sections 20–30 from the uploaded legal document.</p>
+                  <p>This page covers Sections 1–11 from the uploaded legal document.</p>
                 <p>It includes data collection, processors, retention, security, and privacy rights.</p>
                 <p>
                   Privacy contact:{" "}

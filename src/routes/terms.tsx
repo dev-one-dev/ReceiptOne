@@ -1,5 +1,7 @@
 import type { ReactNode } from "react";
 import { Link, createFileRoute } from "@tanstack/react-router";
+import logoMark from "@/assets/figma/logo-mark.svg";
+import logoWordmark from "@/assets/figma/logo-wordmark.svg";
 
 const scopeItems = [
   "Create an account",
@@ -197,8 +199,11 @@ function TermsPage() {
     <main className="min-h-screen bg-background text-foreground">
       <div className="border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
-          <div>
-            <p className="font-display text-lg font-semibold">ReceiptOne</p>
+          <div className="flex items-center gap-3">
+            <Link to="/ca" className="flex items-center gap-2">
+              <img src={logoMark} alt="" aria-hidden className="block size-10" />
+              <img src={logoWordmark} alt="ReceiptOne" className="block h-6 w-auto" />
+            </Link>
             <p className="text-sm text-muted-foreground">Privacy Policy</p>
           </div>
           <Link
