@@ -19,16 +19,26 @@ export function AppBanner({ region = "ca" }: { region?: "ca" | "us" }) {
           <div aria-hidden="true" className="pointer-events-none absolute inset-0">
             <div
               className="absolute bg-foreground"
-              style={{ left: "19.5%", top: "21.2%", width: "25.5%", height: "31.5%" }}
+              style={{ left: "18.7%", top: "19.3%", width: "27.9%", height: "34.4%" }}
             />
-            <p
-              className="absolute font-display font-semibold leading-[0.96] text-background"
-              style={{ left: "20.5%", top: "22.2%", width: "22.8%", fontSize: "clamp(8px, 1.9vw, 30px)" }}
+            <div
+              className="absolute text-background"
+              style={{ left: "19.35%", top: "20.4%", width: "24.9%" }}
             >
-              <span className="block">Get your personal</span>
-              <span className="block">receipt manager in</span>
-              <span className="block">your 📱phone</span>
-            </p>
+              <p className="font-display text-[clamp(11px,2.28vw,39px)] font-semibold leading-[0.96]">
+                <span className="block">Get your personal</span>
+                <span className="block">receipt manager in</span>
+                <span className="block">your 📱phone</span>
+              </p>
+              <p
+                className="font-sans text-[clamp(5px,0.86vw,14px)] leading-[1.45] opacity-80"
+                style={{ marginTop: "clamp(4px, 1vw, 14px)", maxWidth: "96%" }}
+              >
+                Snap receipts, auto-categorize expenses, track mileage,
+                <br />
+                and export accountant-ready reports in seconds.
+              </p>
+            </div>
           </div>
         ) : null}
       </div>
