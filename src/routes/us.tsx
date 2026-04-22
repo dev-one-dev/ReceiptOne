@@ -8,7 +8,7 @@ import { Advantages } from "@/components/site/Advantages";
 import { AppBanner } from "@/components/site/AppBanner";
 import pricingUsSvg from "@/assets/figma/pricing-us.svg";
 import { Faq } from "@/components/site/Faq";
-import footerUsSvg from "@/assets/figma/footer-us.svg";
+import { Footer } from "@/components/site/Footer";
 
 export const Route = createFileRoute("/us")({
   head: () => ({
@@ -59,9 +59,7 @@ function USAPage() {
         </div>
       </section>
       <Faq />
-      <footer className="w-full">
-        <img src={footerUsSvg} alt="Claim your free trial now — ReceiptOne" className="block h-auto w-full" />
-      </footer>
+      <Footer region="us" />
     </main>
   );
 }
