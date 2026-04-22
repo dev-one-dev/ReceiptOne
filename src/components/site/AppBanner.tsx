@@ -29,24 +29,32 @@ export function AppBanner({ region = "ca" }: { region?: "ca" | "us" }) {
             <div
               className="pointer-events-none absolute text-background"
               style={{
-                left: "22.55%",
-                top: "27.2%",
-                width: "22.95%",
+                left: "22.1%",
+                top: "24.9%",
+                width: "22.4%",
               }}
             >
               <p
-                className="m-0 font-sans font-semibold leading-[1.02]"
-                style={{ fontSize: "clamp(8px, 1.68vw, 24px)" }}
+                className="m-0 max-w-full font-sans font-semibold leading-[0.96]"
+                style={{ fontSize: "clamp(11px, 2vw, 38px)" }}
               >
                 <span className="block">Get your personal</span>
                 <span className="block">receipt manager in</span>
                 <span className="block whitespace-nowrap">
-                  your <span aria-hidden="true">📱</span>phone
+                  your{" "}
+                  <span
+                    aria-hidden="true"
+                    className="inline-block leading-none"
+                    style={{ fontSize: "0.9em", transform: "translateY(0.04em)" }}
+                  >
+                    📱
+                  </span>
+                  phone
                 </span>
               </p>
               <p
-                className="mt-[0.45em] font-sans font-normal text-background/70"
-                style={{ fontSize: "clamp(4.5px, 0.84vw, 12px)", lineHeight: 1.35 }}
+                className="mt-[0.52em] max-w-full font-sans font-normal text-background/70"
+                style={{ fontSize: "clamp(6px, 0.94vw, 16px)", lineHeight: 1.35 }}
               >
                 Snap receipts, auto-categorize expenses, track mileage,
                 <br />
