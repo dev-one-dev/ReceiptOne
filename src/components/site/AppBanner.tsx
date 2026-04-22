@@ -3,7 +3,6 @@ import appBannerCaSvg from "@/assets/figma/app-banner-ca.svg";
 import appBannerUsSvg from "@/assets/figma/app-banner-us.svg";
 
 export function AppBanner({ region = "ca" }: { region?: "ca" | "us" }) {
-  const isCanada = region === "ca";
   const src = region === "us" ? appBannerUsSvg : appBannerCaSvg || appBannerSvg;
 
   return (
@@ -15,32 +14,6 @@ export function AppBanner({ region = "ca" }: { region?: "ca" | "us" }) {
           className="block h-full w-full"
           loading="lazy"
         />
-        {isCanada ? (
-          <div aria-hidden="true" className="pointer-events-none absolute inset-0">
-            <div
-              className="absolute bg-foreground"
-              style={{ left: "18.7%", top: "19.3%", width: "27.9%", height: "34.4%" }}
-            />
-            <div
-              className="absolute text-background"
-              style={{ left: "19.35%", top: "20.4%", width: "24.9%" }}
-            >
-              <p className="font-display text-[clamp(11px,2.28vw,39px)] font-semibold leading-[0.96]">
-                <span className="block">Get your personal</span>
-                <span className="block">receipt manager in</span>
-                <span className="block">your 📱phone</span>
-              </p>
-              <p
-                className="font-sans text-[clamp(5px,0.86vw,14px)] leading-[1.45] opacity-80"
-                style={{ marginTop: "clamp(4px, 1vw, 14px)", maxWidth: "96%" }}
-              >
-                Snap receipts, auto-categorize expenses, track mileage,
-                <br />
-                and export accountant-ready reports in seconds.
-              </p>
-            </div>
-          </div>
-        ) : null}
       </div>
     </section>
   );
