@@ -29,26 +29,32 @@ export function AppBanner({ region = "ca" }: { region?: "ca" | "us" }) {
             <div
               className="pointer-events-none absolute text-background"
               style={{
-                left: "19.8%",
-                top: "21.5%",
-                width: "27.5%",
+                left: "19.75%",
+                top: "21.25%",
+                width: "29.5%",
               }}
             >
               <p
                 className="m-0 text-balance font-sans font-medium leading-[1.05]"
-                style={{ fontSize: "clamp(9px, 1.75vw, 28px)" }}
+                style={{ fontSize: "clamp(8px, 1.55vw, 25px)" }}
               >
-                Get your personal receipt manager in your <span aria-hidden="true">📱</span>phone
+                <span className="block">Get your personal</span>
+                <span className="block">receipt manager</span>
+                <span className="block whitespace-nowrap">
+                  in your <span aria-hidden="true">📱</span>phone
+                </span>
               </p>
             </div>
             <span
               aria-hidden="true"
               className="pointer-events-none absolute inline-flex items-center justify-center leading-none"
               style={{
-                left: "22.92%",
-                top: "69.64%",
+                left: "23.15%",
+                top: "69.15%",
+                width: "3.8%",
+                height: "9.8%",
                 transform: "translate(-50%, -50%)",
-                fontSize: "clamp(22px, 4vw, 58px)",
+                fontSize: "clamp(18px, 2vw, 30px)",
               }}
             >
               📱
