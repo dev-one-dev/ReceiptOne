@@ -156,7 +156,6 @@ html { scroll-behavior: smooth; }
   display: flex;
   width: max-content;
   align-items: center;
-  gap: var(--marquee-gap);
   will-change: transform;
 }
 
@@ -165,7 +164,11 @@ html { scroll-behavior: smooth; }
   flex-shrink: 0;
   align-items: center;
   gap: var(--marquee-gap);
-  padding-right: var(--marquee-gap);
+}
+
+.numbers-spacer {
+  width: clamp(1rem, 2vw, 1.75rem);
+  flex-shrink: 0;
 }
 
 @media (min-width: 640px) {
