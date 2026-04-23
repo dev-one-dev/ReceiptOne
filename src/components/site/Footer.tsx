@@ -27,31 +27,31 @@ export function Footer({ region = "ca" }: FooterProps) {
         type="button"
         onClick={scrollToTop}
         aria-label="Back to top"
-        className="absolute left-1/2 top-[6%] z-10 h-[14%] w-[28%] -translate-x-1/2 cursor-pointer rounded-[40px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+        className="absolute left-[16%] top-[86%] z-10 h-[10%] w-[19%] cursor-pointer rounded-[20px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
       />
 
       <Link
         to="/privacy"
         aria-label="Terms of Use"
-        className="absolute left-[34.8%] top-[87.4%] z-10 h-[6.2%] w-[13%] rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+        className="absolute left-[42.5%] top-[88.5%] z-10 h-[5%] w-[8%] rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
       />
 
       <Link
         to="/login"
         aria-label="Log in"
-        className={`${hotspotClassName} left-[61%] top-[86.9%] h-[7%] w-[10.8%]`}
+        className={`${hotspotClassName} left-[38%] top-[64%] h-[10%] w-[11.5%] !rounded-[40px]`}
       />
 
       <Link
         to="/signup"
         aria-label="Join now"
-        className={`${hotspotClassName} left-[72.6%] top-[86.9%] h-[7%] w-[13%]`}
+        className={`${hotspotClassName} left-[50.5%] top-[64%] h-[10%] w-[11.5%] !rounded-[40px]`}
       />
 
       <Link
         to="/terms"
         aria-label="Privacy Policy"
-        className="absolute left-[52.2%] top-[87.4%] z-10 h-[6.2%] w-[13.2%] rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+        className="absolute left-[51%] top-[88.5%] z-10 h-[5%] w-[9%] rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
       />
     </footer>
   );
