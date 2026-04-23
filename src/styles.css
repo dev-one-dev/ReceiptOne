@@ -190,6 +190,82 @@ html { scroll-behavior: smooth; }
   }
 }
 
+/* ============================================================
+ * Global modern interactions for buttons & links on /ca and /us
+ * Scoped to [data-interactive-page] containers so we don't
+ * affect unrelated routes (login/signup/legal).
+ * ============================================================ */
+
+[data-interactive-page] a,
+[data-interactive-page] button {
+  transition:
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 0.3s ease,
+    color 0.3s ease,
+    opacity 0.3s ease,
+    filter 0.3s ease;
+  will-change: transform;
+}
+
+[data-interactive-page] a:focus-visible,
+[data-interactive-page] button:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.12);
+  border-radius: 12px;
+}
+
+/* Solid CTA-like buttons (dark pill buttons): subtle lift + glow */
+[data-interactive-page] a.bg-black:hover,
+[data-interactive-page] button.bg-black:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 12px 28px -10px rgba(0, 0, 0, 0.45),
+    0 4px 10px -4px rgba(0, 0, 0, 0.25);
+  filter: brightness(1.08);
+}
+
+[data-interactive-page] a.bg-black:active,
+[data-interactive-page] button.bg-black:active {
+  transform: translateY(0) scale(0.98);
+  transition-duration: 0.12s;
+}
+
+/* Generic buttons (non-dark): gentle lift */
+[data-interactive-page] button:not(.bg-black):not([data-no-anim]):hover {
+  transform: translateY(-1px);
+}
+
+[data-interactive-page] button:not(.bg-black):not([data-no-anim]):active {
+  transform: translateY(0) scale(0.97);
+  transition-duration: 0.12s;
+}
+
+/* Inline text links inside paragraphs/lists: animated underline */
+[data-interactive-page] p a:not(.bg-black):not([data-no-anim]),
+[data-interactive-page] li a:not(.bg-black):not([data-no-anim]) {
+  position: relative;
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 0% 1.5px;
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  transition: background-size 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+[data-interactive-page] p a:not(.bg-black):not([data-no-anim]):hover,
+[data-interactive-page] li a:not(.bg-black):not([data-no-anim]):hover {
+  background-size: 100% 1.5px;
+}
+
+/* Respect users that prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  [data-interactive-page] a,
+  [data-interactive-page] button {
+    transition: none !important;
+    transform: none !important;
+  }
+}
+
 .numbers-pill {
   --marquee-gap: 3rem;
 }
