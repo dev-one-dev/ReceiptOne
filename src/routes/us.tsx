@@ -10,6 +10,7 @@ import { Pricing } from "@/components/site/Pricing";
 import { Faq } from "@/components/site/Faq";
 import { Footer } from "@/components/site/Footer";
 import { SuggestFeatureWidget } from "@/components/site/SuggestFeatureWidget";
+import { useRevealOnScroll } from "@/hooks/use-reveal-on-scroll";
 
 export const Route = createFileRoute("/us")({
   head: () => ({
@@ -33,12 +34,13 @@ export const Route = createFileRoute("/us")({
 });
 
 function USAPage() {
+  useRevealOnScroll();
   return (
     <main data-interactive-page className="min-h-screen bg-[#f5f4f0] font-sans text-black antialiased">
       <Header />
-      <TopBannerUS />
-      <Numbers />
-      <section id="benefits" className="w-full">
+      <div data-reveal><TopBannerUS /></div>
+      <div data-reveal><Numbers /></div>
+      <section id="benefits" data-reveal className="w-full">
         <div className="mx-auto w-full max-w-[1440px]">
           <img
             src={infoCardsUsSvg}
@@ -47,12 +49,12 @@ function USAPage() {
           />
         </div>
       </section>
-      <NotAllUS />
-      <Advantages />
-      <AppBanner region="us" />
-      <Pricing region="us" />
-      <Faq />
-      <Footer region="us" />
+      <div data-reveal><NotAllUS /></div>
+      <div data-reveal><Advantages /></div>
+      <div data-reveal><AppBanner region="us" /></div>
+      <div data-reveal><Pricing region="us" /></div>
+      <div data-reveal><Faq /></div>
+      <div data-reveal><Footer region="us" /></div>
       <SuggestFeatureWidget region="us" />
     </main>
   );
