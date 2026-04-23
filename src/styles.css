@@ -157,6 +157,41 @@ html { scroll-behavior: smooth; }
   }
 }
 
+@keyframes loopDraw {
+  0% {
+    clip-path: inset(0 100% 0 0);
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.6;
+  }
+  100% {
+    clip-path: inset(0 0 0 0);
+    opacity: 0.6;
+  }
+}
+
+@keyframes loopFloat {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-3px) rotate(-1.5deg);
+  }
+}
+
+@keyframes loopFadeIn {
+  from {
+    opacity: 0;
+    transform: translate(-420px, 6px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-420px, 0);
+  }
+}
+
 .numbers-pill {
   --marquee-gap: 3rem;
 }
