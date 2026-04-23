@@ -147,3 +147,49 @@ html { scroll-behavior: smooth; }
     color: var(--color-foreground);
   }
 }
+
+@keyframes numbers-marquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.numbers-pill {
+  --marquee-gap: 3rem;
+}
+
+.numbers-track {
+  display: flex;
+  width: max-content;
+  align-items: center;
+  gap: var(--marquee-gap);
+  animation: numbers-marquee 30s linear infinite;
+  will-change: transform;
+}
+
+.numbers-pill:hover .numbers-track {
+  animation-play-state: paused;
+}
+
+.numbers-group {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: var(--marquee-gap);
+  padding-right: var(--marquee-gap);
+}
+
+@media (min-width: 640px) {
+  .numbers-pill {
+    --marquee-gap: 4rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .numbers-pill {
+    --marquee-gap: 5rem;
+  }
+}
