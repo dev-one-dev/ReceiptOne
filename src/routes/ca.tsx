@@ -34,7 +34,7 @@ export const Route = createFileRoute("/ca")({
 
 function CanadaPage() {
   return (
-    <main className="min-h-screen bg-[#f5f4f0] font-sans text-black antialiased">
+    <main data-interactive-page className="min-h-screen bg-[#f5f4f0] font-sans text-black antialiased">
       <Header />
       <TopBanner />
       <Numbers />
