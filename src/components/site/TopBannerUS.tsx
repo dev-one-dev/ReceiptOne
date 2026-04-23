@@ -54,18 +54,25 @@ export function TopBannerUS() {
           />
         </div>
 
-        <div className="flex items-center gap-[9px]">
+        <div className="group/users relative flex cursor-pointer items-center gap-[9px] rounded-2xl px-3 py-2 transition-all duration-500 ease-out hover:bg-black/[0.03] hover:shadow-[0_8px_30px_-12px_rgba(0,0,0,0.18)]">
           <div className="flex items-center pr-6">
-            <Avatar src={avatar1} alt="User 1" />
-            <Avatar src={avatar2} alt="User 2" offset />
-            <Avatar src={avatar3} alt="User 3" offset />
-            <Avatar src={avatar4} alt="User 4" offset />
+            <Avatar src={avatar1} alt="User 1" delay={0} />
+            <Avatar src={avatar2} alt="User 2" offset delay={60} />
+            <Avatar src={avatar3} alt="User 3" offset delay={120} />
+            <Avatar src={avatar4} alt="User 4" offset delay={180} />
           </div>
           <div className="flex w-36 flex-col">
-            <span className="font-display text-base font-semibold leading-5 text-black">
-              More 3.000 users
+            <span className="font-display text-base font-semibold leading-5 text-black transition-transform duration-500 ease-out group-hover/users:-translate-y-px">
+              More{" "}
+              <span className="relative inline-block">
+                <span className="relative z-10 transition-colors duration-500 group-hover/users:text-[#f97316]">
+                  3.000
+                </span>
+                <span className="absolute inset-x-0 bottom-0.5 h-1.5 origin-left scale-x-0 bg-[#fed7aa] transition-transform duration-500 ease-out group-hover/users:scale-x-100" />
+              </span>{" "}
+              users
             </span>
-            <span className="font-display text-base leading-6 text-[#9192a1]">
+            <span className="font-display text-base leading-6 text-[#9192a1] transition-colors duration-500 group-hover/users:text-black">
               keeping their money
             </span>
           </div>
@@ -79,16 +86,19 @@ function Avatar({
   src,
   alt,
   offset = false,
+  delay = 0,
 }: {
   src: string;
   alt: string;
   offset?: boolean;
+  delay?: number;
 }) {
   return (
     <img
       src={src}
       alt={alt}
-      className={`size-12 rounded-full border-[3px] border-white object-cover ${offset ? "-ml-6" : ""}`}
+      className={`size-12 rounded-full border-[3px] border-white object-cover shadow-sm transition-all duration-500 ease-out group-hover/users:-translate-y-1 group-hover/users:shadow-lg group-hover/users:[transform:translateY(-4px)_rotate(-4deg)] hover:!translate-y-[-8px] hover:!scale-110 hover:!rotate-0 hover:z-20 hover:ring-2 hover:ring-black/10 ${offset ? "-ml-6" : ""}`}
+      style={{ transitionDelay: `${delay}ms` }}
       loading="lazy"
     />
   );
