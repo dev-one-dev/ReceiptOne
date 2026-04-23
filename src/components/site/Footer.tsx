@@ -27,7 +27,7 @@ export function Footer({ region = "ca" }: FooterProps) {
         type="button"
         onClick={scrollToTop}
         aria-label="Back to top"
-        className="absolute left-1/2 top-[8%] z-10 h-[34%] w-[19%] -translate-x-1/2 cursor-pointer rounded-[40px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+        className="absolute left-1/2 top-[6%] z-10 h-[14%] w-[28%] -translate-x-1/2 cursor-pointer rounded-[40px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
       />
 
       <Link
