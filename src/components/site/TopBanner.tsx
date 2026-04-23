@@ -45,7 +45,7 @@ export function TopBanner() {
           <video
             src={beaverHeroVideo}
             style={{ background: "transparent" }}
-            className="mx-auto block w-full max-w-[400px] mix-blend-multiply"
+            className="mx-auto block w-full max-w-[800px] mix-blend-multiply"
             autoPlay
             loop
             muted
