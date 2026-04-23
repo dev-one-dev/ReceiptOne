@@ -16,16 +16,16 @@ export function Numbers() {
   return (
     <section className="w-full px-4 py-10 sm:px-6 md:px-8" aria-label="Key product statistics">
       <div className="mx-auto w-full max-w-[1240px]">
-        <div className="group relative overflow-hidden rounded-[40px] bg-white py-8 sm:rounded-[52px] sm:py-10 md:py-[42px]">
-          {/* Edge fades — sit above the moving track to mask cut-off text */}
+        <div className="numbers-pill group relative overflow-hidden rounded-[40px] bg-white py-8 sm:rounded-[52px] sm:py-10 md:py-[42px]">
+          {/* Edge fades — mask cut-off text */}
           <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-12 bg-gradient-to-r from-white to-transparent sm:w-20" />
           <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-12 bg-gradient-to-l from-white to-transparent sm:w-20" />
 
-          <div className="flex w-max items-center gap-12 pl-12 motion-safe:animate-[numbers-marquee_30s_linear_infinite] group-hover:[animation-play-state:paused] sm:gap-16 sm:pl-20 md:gap-20">
+          <div className="numbers-track flex w-max items-center">
             {[0, 1].map((copy) => (
               <div
                 key={copy}
-                className="flex shrink-0 items-center gap-12 sm:gap-16 md:gap-20"
+                className="numbers-group flex shrink-0 items-center"
                 aria-hidden={copy === 1}
               >
                 {STATS.map((s) => (
@@ -39,8 +39,24 @@ export function Numbers() {
 
       <style>{`
         @keyframes numbers-marquee {
-          from { transform: translateX(0); }
-          to   { transform: translateX(-50%); }
+          0%   { transform: translate3d(0, 0, 0); }
+          100% { transform: translate3d(-50%, 0, 0); }
+        }
+        .numbers-track {
+          gap: var(--marquee-gap, 3rem);
+          animation: numbers-marquee 30s linear infinite;
+          will-change: transform;
+        }
+        .numbers-group {
+          gap: var(--marquee-gap, 3rem);
+          padding-right: var(--marquee-gap, 3rem);
+        }
+        .numbers-pill { --marquee-gap: 3rem; }
+        @media (min-width: 640px) { .numbers-pill { --marquee-gap: 4rem; } }
+        @media (min-width: 768px) { .numbers-pill { --marquee-gap: 5rem; } }
+        .group:hover .numbers-track { animation-play-state: paused; }
+        @media (prefers-reduced-motion: reduce) {
+          .numbers-track { animation: none; }
         }
       `}</style>
     </section>
