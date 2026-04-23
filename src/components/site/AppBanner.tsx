@@ -64,6 +64,34 @@ export function AppBanner({ region = "ca" }: { region?: "ca" | "us" }) {
             style={{ width: "100%", height: "100%" }}
           />
         </a>
+        {/* App Store button overlay */}
+        <a
+          href={APP_STORE_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Download on the App Store"
+          className="absolute rounded-[8px] transition-transform hover:scale-[1.03]"
+          style={{
+            left: `${(400 / 1440) * 100}%`,
+            top: `${(360 / 560) * 100}%`,
+            width: `${(128 / 1440) * 100}%`,
+            height: `${(42 / 560) * 100}%`,
+          }}
+        />
+        {/* Google Play button overlay */}
+        <a
+          href={GOOGLE_PLAY_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Get it on Google Play"
+          className="absolute rounded-[8px] transition-transform hover:scale-[1.03]"
+          style={{
+            left: `${(536 / 1440) * 100}%`,
+            top: `${(360 / 560) * 100}%`,
+            width: `${(128 / 1440) * 100}%`,
+            height: `${(42 / 560) * 100}%`,
+          }}
+        />
       </div>
     </section>
   );
