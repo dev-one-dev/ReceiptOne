@@ -34,7 +34,7 @@ export const Route = createFileRoute("/us")({
 
 function USAPage() {
   return (
-    <main className="min-h-screen bg-[#f5f4f0] font-sans text-black antialiased">
+    <main data-interactive-page className="min-h-screen bg-[#f5f4f0] font-sans text-black antialiased">
       <Header />
       <TopBannerUS />
       <Numbers />
