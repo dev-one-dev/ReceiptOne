@@ -1,4 +1,4 @@
-import { MessageCircle, Plus, Minus } from "lucide-react";
+import { MessageCircle, Plus } from "lucide-react";
 import { useState } from "react";
 
 type QA = { q: string; a: string };
@@ -71,7 +71,9 @@ export function Faq() {
           return (
             <li
               key={it.q}
-              className="rounded-[20px] bg-white px-5 py-4 md:px-6 md:py-5"
+              className={`group rounded-[20px] bg-white px-5 py-4 transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-[0_12px_32px_-12px_rgba(0,0,0,0.12)] md:px-6 md:py-5 ${
+                isOpen ? "shadow-[0_18px_40px_-18px_rgba(0,0,0,0.18)] ring-1 ring-black/5" : ""
+              }`}
             >
               <button
                 type="button"
@@ -79,26 +81,34 @@ export function Faq() {
                 aria-expanded={isOpen}
                 className="flex w-full items-center justify-between gap-4 text-left"
               >
-                <span className="font-display text-[15px] font-semibold text-black md:text-[16px]">
+                <span className="font-display text-[15px] font-semibold text-black transition-colors duration-200 md:text-[16px]">
                   {it.q}
                 </span>
                 <span
-                  className={`flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full transition ${
-                    isOpen ? "bg-black text-white" : "bg-black/10 text-black"
+                  className={`flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full transition-all duration-300 ease-out ${
+                    isOpen
+                      ? "rotate-45 scale-110 bg-black text-white"
+                      : "bg-black/10 text-black group-hover:bg-black/20"
                   }`}
                 >
-                  {isOpen ? (
-                    <Minus className="h-4 w-4" strokeWidth={2.5} />
-                  ) : (
-                    <Plus className="h-4 w-4" strokeWidth={2.5} />
-                  )}
+                  <Plus className="h-4 w-4" strokeWidth={2.5} />
                 </span>
               </button>
-              {isOpen && (
-                <p className="mt-3 font-display text-[14px] leading-[1.55] text-[#7e8890] md:text-[15px]">
+              <div
+                className={`grid transition-all duration-300 ease-out ${
+                  isOpen
+                    ? "mt-3 grid-rows-[1fr] opacity-100"
+                    : "mt-0 grid-rows-[0fr] opacity-0"
+                }`}
+              >
+                <p
+                  className={`overflow-hidden font-display text-[14px] leading-[1.55] text-[#7e8890] md:text-[15px] ${
+                    isOpen ? "translate-y-0" : "-translate-y-1"
+                  } transition-transform duration-300 ease-out`}
+                >
                   {it.a}
                 </p>
-              )}
+              </div>
             </li>
           );
         })}
