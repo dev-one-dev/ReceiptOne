@@ -10,6 +10,7 @@ import { Pricing } from "@/components/site/Pricing";
 import { Faq } from "@/components/site/Faq";
 import { Footer } from "@/components/site/Footer";
 import { SuggestFeatureWidget } from "@/components/site/SuggestFeatureWidget";
+import { useRevealOnScroll } from "@/hooks/use-reveal-on-scroll";
 
 export const Route = createFileRoute("/ca")({
   head: () => ({
@@ -33,18 +34,19 @@ export const Route = createFileRoute("/ca")({
 });
 
 function CanadaPage() {
+  useRevealOnScroll();
   return (
     <main data-interactive-page className="min-h-screen bg-[#f5f4f0] font-sans text-black antialiased">
       <Header />
-      <TopBanner />
-      <Numbers />
-      <InfoCards />
-      <NotAll />
-      <Advantages />
-      <AppBanner />
-      <Pricing />
-      <Faq />
-      <Footer />
+      <div data-reveal><TopBanner /></div>
+      <div data-reveal><Numbers /></div>
+      <div data-reveal><InfoCards /></div>
+      <div data-reveal><NotAll /></div>
+      <div data-reveal><Advantages /></div>
+      <div data-reveal><AppBanner /></div>
+      <div data-reveal><Pricing /></div>
+      <div data-reveal><Faq /></div>
+      <div data-reveal><Footer /></div>
       <SuggestFeatureWidget region="ca" />
     </main>
   );
