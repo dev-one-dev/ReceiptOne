@@ -1,4 +1,5 @@
 import beaverHeroVideo from "@/assets/figma/hero-beaver.mp4";
+import beaverHeroVideoTransparent from "@/assets/figma/hero-beaver-transparent.webm";
 import avatar1 from "@/assets/figma/avatar-1.webp";
 import avatar2 from "@/assets/figma/avatar-2.webp";
 import avatar3 from "@/assets/figma/avatar-3.webp";
@@ -43,15 +44,17 @@ export function TopBanner() {
 
         <div className="relative w-full">
           <video
-            src={beaverHeroVideo}
             style={{ background: "transparent" }}
-            className="mx-auto block w-full max-w-[1200px] bg-transparent object-contain mix-blend-darken"
+            className="mx-auto block w-full max-w-[1200px] bg-transparent object-contain"
             autoPlay
             loop
             muted
             playsInline
             aria-label="Beaver mascot wearing a Canadian cap, reading a receipt"
-          />
+          >
+            <source src={beaverHeroVideoTransparent} type="video/webm" />
+            <source src={beaverHeroVideo} type="video/mp4" />
+          </video>
         </div>
 
         <div className="group/users relative flex cursor-pointer items-center gap-[9px] rounded-2xl px-3 py-2 transition-all duration-500 ease-out hover:bg-black/[0.03] hover:shadow-[0_8px_30px_-12px_rgba(0,0,0,0.18)]">
