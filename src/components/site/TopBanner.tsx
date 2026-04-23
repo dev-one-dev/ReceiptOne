@@ -41,11 +41,11 @@ export function TopBanner() {
           </a>
         </div>
 
-        <div className="relative w-full overflow-hidden">
+        <div className="relative w-full">
           <video
             src={beaverHeroVideo}
             style={{ background: "transparent" }}
-            className="mx-auto block w-full max-w-[460px] origin-center scale-[1.55] mix-blend-multiply"
+            className="mx-auto block w-full max-w-[720px] mix-blend-multiply"
             autoPlay
             loop
             muted
