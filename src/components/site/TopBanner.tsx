@@ -27,12 +27,18 @@ export function TopBanner() {
             7 days free trial available
           </p>
 
-          <button
-            type="button"
+          <a
+            href="#apps"
+            onClick={(e) => {
+              e.preventDefault();
+              document
+                .getElementById("apps")
+                ?.scrollIntoView({ behavior: "smooth", block: "start" });
+            }}
             className="mt-1 inline-flex items-center justify-center rounded-2xl bg-black px-7 py-3.5 font-display text-[15px] font-semibold leading-5 text-white transition-opacity hover:opacity-90"
           >
             Claim your free trial
-          </button>
+          </a>
         </div>
 
         <div className="relative w-full">
