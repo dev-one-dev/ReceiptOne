@@ -36,8 +36,12 @@ export const Route = createFileRoute("/us")({
 function USAPage() {
   useRevealOnScroll();
   return (
-    <main data-interactive-page className="min-h-screen bg-[#f5f4f0] font-sans text-black antialiased">
-      <Header />
+    <main
+      data-interactive-page
+      data-reveal-root
+      className="min-h-screen bg-[#f5f4f0] font-sans text-black antialiased"
+    >
+      <div data-reveal-skip><Header /></div>
       <div data-reveal><TopBannerUS /></div>
       <div data-reveal><Numbers /></div>
       <section id="benefits" data-reveal className="w-full">
