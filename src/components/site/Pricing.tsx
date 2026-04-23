@@ -1,4 +1,5 @@
 import pricingSvg from "@/assets/figma/pricing.svg";
+import pricingUsSvg from "@/assets/figma/pricing-us.svg";
 
 // Card boxes from the Figma SVG (viewBox 1440x1632, displayed crop 1440x1110)
 const CARDS = [
@@ -16,7 +17,12 @@ const BTN_H = 56;
 const VB_W = 1440;
 const VB_H = 1110;
 
-export function Pricing() {
+export function Pricing({ region = "ca" }: { region?: "ca" | "us" }) {
+  const src = region === "us" ? pricingUsSvg : pricingSvg;
+  const alt =
+    region === "us"
+      ? "Pricing — Week, Month (Most Popular), Year"
+      : "Pricing — Week CAD 4.99, Month CAD 9.99 (Most Popular), Year CAD 99.99 (Save 18%)";
   return (
     <section
       id="pricing"
@@ -27,8 +33,8 @@ export function Pricing() {
         style={{ aspectRatio: `${VB_W} / ${VB_H}` }}
       >
         <img
-          src={pricingSvg}
-          alt="Pricing — Week CAD 4.99, Month CAD 9.99 (Most Popular), Year CAD 99.99 (Save 18%)"
+          src={src}
+          alt={alt}
           className="absolute inset-x-0 top-0 block w-full"
         />
         {CARDS.map((c) => (
