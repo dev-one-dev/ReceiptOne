@@ -47,12 +47,12 @@ export function AppBanner({ region = "ca" }: { region?: "ca" | "us" }) {
           target="_blank"
           rel="noopener noreferrer"
           aria-label={qrLabel}
-          className="absolute flex items-center justify-center rounded-[10px] bg-white p-[0.6%] shadow-sm transition-transform hover:scale-[1.03]"
+          className="absolute flex items-center justify-center bg-white shadow-sm transition-transform hover:scale-[1.03]"
           style={{
-            left: "5.9%",
-            top: "63.5%",
-            width: "10.6%",
-            aspectRatio: "1 / 1",
+            left: `${(288 / 1440) * 100}%`,
+            top: `${(348 / 560) * 100}%`,
+            width: `${(84 / 1440) * 100}%`,
+            height: `${(84 / 560) * 100}%`,
           }}
         >
           <QRCodeSVG
