@@ -9,6 +9,7 @@ import { AppBanner } from "@/components/site/AppBanner";
 import { Pricing } from "@/components/site/Pricing";
 import { Faq } from "@/components/site/Faq";
 import { Footer } from "@/components/site/Footer";
+import { SuggestFeatureWidget } from "@/components/site/SuggestFeatureWidget";
 
 export const Route = createFileRoute("/ca")({
   head: () => ({
@@ -44,6 +45,7 @@ function CanadaPage() {
       <Pricing />
       <Faq />
       <Footer />
+      <SuggestFeatureWidget region="ca" />
     </main>
   );
 }
