@@ -44,7 +44,7 @@ export function TopBanner() {
         <div className="relative w-full">
           <video
             src={beaverHeroVideo}
-            className="mx-auto block w-full max-w-[460px] mix-blend-darken"
+            className="mx-auto block w-full max-w-[640px] mix-blend-multiply [mask-image:radial-gradient(ellipse_at_center,_black_60%,_transparent_100%)]"
             autoPlay
             loop
             muted
