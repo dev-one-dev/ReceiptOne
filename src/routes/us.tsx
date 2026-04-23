@@ -9,6 +9,7 @@ import { AppBanner } from "@/components/site/AppBanner";
 import pricingUsSvg from "@/assets/figma/pricing-us.svg";
 import { Faq } from "@/components/site/Faq";
 import { Footer } from "@/components/site/Footer";
+import { SuggestFeatureWidget } from "@/components/site/SuggestFeatureWidget";
 
 export const Route = createFileRoute("/us")({
   head: () => ({
@@ -60,6 +61,7 @@ function USAPage() {
       </section>
       <Faq />
       <Footer region="us" />
+      <SuggestFeatureWidget region="us" />
     </main>
   );
 }
