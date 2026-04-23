@@ -4,7 +4,7 @@
  * Pauses on hover; respects prefers-reduced-motion.
  */
 
-import { useEffect, useRef } from "react";
+import { useState } from "react";
 
 const STATS = [
   { value: "4.8", label: "Average rating" },
@@ -15,76 +15,30 @@ const STATS = [
 ] as const;
 
 export function Numbers() {
-  const trackRef = useRef<HTMLDivElement | null>(null);
-  const groupRef = useRef<HTMLDivElement | null>(null);
-  const pausedRef = useRef(false);
-
-  useEffect(() => {
-    const track = trackRef.current;
-    const group = groupRef.current;
-
-    if (!track || !group) return;
-
-    let frameId = 0;
-    let lastTime = 0;
-    let offset = 0;
-    let groupWidth = group.offsetWidth;
-    const speed = 84;
-
-    const resizeObserver = new ResizeObserver(() => {
-      groupWidth = group.offsetWidth;
-      if (groupWidth > 0) {
-        offset = offset % groupWidth;
-      }
-    });
-
-    resizeObserver.observe(group);
-
-    const animate = (time: number) => {
-      if (!lastTime) lastTime = time;
-      const delta = (time - lastTime) / 1000;
-      lastTime = time;
-
-      if (!pausedRef.current && groupWidth > 0) {
-        offset += speed * delta;
-        if (offset >= groupWidth) {
-          offset -= groupWidth;
-        }
-        track.style.transform = `translate3d(${-offset}px, 0, 0)`;
-      }
-
-      frameId = window.requestAnimationFrame(animate);
-    };
-
-    frameId = window.requestAnimationFrame(animate);
-
-    return () => {
-      window.cancelAnimationFrame(frameId);
-      resizeObserver.disconnect();
-    };
-  }, []);
+  const [paused, setPaused] = useState(false);
 
   return (
     <section className="w-full px-4 py-10 sm:px-6 md:px-8" aria-label="Key product statistics">
       <div className="mx-auto w-full max-w-[1240px]">
         <div
           className="numbers-pill relative overflow-hidden rounded-[40px] bg-white py-8 sm:rounded-[52px] sm:py-10 md:py-[42px]"
-          onMouseEnter={() => {
-            pausedRef.current = true;
-          }}
-          onMouseLeave={() => {
-            pausedRef.current = false;
-          }}
+          onMouseEnter={() => setPaused(true)}
+          onMouseLeave={() => setPaused(false)}
         >
           {/* Edge fades — mask cut-off text */}
           <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-12 bg-gradient-to-r from-white to-transparent sm:w-20" />
           <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-12 bg-gradient-to-l from-white to-transparent sm:w-20" />
 
-          <div ref={trackRef} className="numbers-track">
+          <div
+            className="numbers-track"
+            style={{
+              animation: "numbers-marquee 14s linear infinite",
+              animationPlayState: paused ? "paused" : "running",
+            }}
+          >
             {[0, 1].map((copy) => (
               <div
                 key={copy}
-                ref={copy === 0 ? groupRef : undefined}
                 className="numbers-group"
                 aria-hidden={copy === 1}
               >
