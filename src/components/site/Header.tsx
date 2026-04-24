@@ -59,7 +59,16 @@ export function Header() {
         aria-label="Primary"
       >
         {/* Logo container — fixed 250px to balance the right cluster */}
-        <Link to={isUS ? "/us" : "/ca"} className="flex w-[250px] shrink-0 items-center gap-2">
+        <Link
+          to={isUS ? "/us" : "/ca"}
+          onClick={(e) => {
+            if (location.pathname === (isUS ? "/us" : "/ca")) {
+              e.preventDefault();
+            }
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          }}
+          className="flex w-[250px] shrink-0 items-center gap-2"
+        >
           <LogoMark />
           <LogoWordmark />
         </Link>
