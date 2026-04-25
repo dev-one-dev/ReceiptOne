@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import testimonialRowUs from "@/assets/figma/testimonial-row-us.svg";
 import testimonialRowUs2 from "@/assets/figma/testimonial-row-us-2.svg";
 
@@ -22,10 +22,47 @@ const rowTwoTiles = [
   "Plug ReceiptOne into your workflow",
 ];
 
-function TileRow({ src, alt, tiles }: { src: string; alt: string; tiles: string[] }) {
-  const wrapRef = useRef<HTMLDivElement>(null);
+/**
+ * Detect environment capabilities once per mount.
+ *  - hasFinePointer: enables 3D tilt + spotlight (mouse users only)
+ *  - prefersReducedMotion: disables tilt/float/spotlight, keeps a static fade
+ */
+function useMotionCapabilities() {
+  const [caps, setCaps] = useState({ hasFinePointer: false, prefersReducedMotion: false });
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const fine = window.matchMedia("(hover: hover) and (pointer: fine)");
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const update = () =>
+      setCaps({ hasFinePointer: fine.matches, prefersReducedMotion: reduce.matches });
+    update();
+    fine.addEventListener("change", update);
+    reduce.addEventListener("change", update);
+    return () => {
+      fine.removeEventListener("change", update);
+      reduce.removeEventListener("change", update);
+    };
+  }, []);
+  return caps;
+}
 
-  const handleMove = (e: React.PointerEvent<HTMLDivElement>) => {
+function Tile({
+  label,
+  index,
+  hasFinePointer,
+  prefersReducedMotion,
+}: {
+  label: string;
+  index: number;
+  hasFinePointer: boolean;
+  prefersReducedMotion: boolean;
+}) {
+  const ref = useRef<HTMLButtonElement>(null);
+  const [active, setActive] = useState(false);
+  const timeoutRef = useRef<number | null>(null);
+
+  const handleMove = (e: React.PointerEvent<HTMLButtonElement>) => {
+    if (!hasFinePointer || prefersReducedMotion) return;
     const el = e.currentTarget;
     const r = el.getBoundingClientRect();
     const x = ((e.clientX - r.left) / r.width) * 100;
@@ -37,60 +74,137 @@ function TileRow({ src, alt, tiles }: { src: string; alt: string; tiles: string[
     el.style.setProperty("--rx", `${rx}deg`);
     el.style.setProperty("--ry", `${ry}deg`);
   };
-  const handleLeave = (e: React.PointerEvent<HTMLDivElement>) => {
+
+  const handleLeave = (e: React.PointerEvent<HTMLButtonElement>) => {
+    if (!hasFinePointer || prefersReducedMotion) return;
     const el = e.currentTarget;
     el.style.setProperty("--rx", `0deg`);
     el.style.setProperty("--ry", `0deg`);
   };
 
+  const triggerActive = () => {
+    setActive(true);
+    if (timeoutRef.current) window.clearTimeout(timeoutRef.current);
+    timeoutRef.current = window.setTimeout(() => setActive(false), 700);
+  };
+
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) window.clearTimeout(timeoutRef.current);
+    };
+  }, []);
+
+  // Conditional class composition for capabilities
+  const tiltStyle =
+    hasFinePointer && !prefersReducedMotion
+      ? {
+          transform:
+            "perspective(1200px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) translateZ(0)",
+          transformStyle: "preserve-3d" as const,
+        }
+      : undefined;
+
+  // Coarse-pointer (mobile/tablet): subtle floating animation, staggered
+  const floatClass =
+    !hasFinePointer && !prefersReducedMotion
+      ? "animate-[notall-float_6s_ease-in-out_infinite]"
+      : "";
+
   return (
-    <div ref={wrapRef} className="relative grid grid-cols-3 gap-2" style={{ perspective: "1200px" }}>
+    <button
+      ref={ref}
+      type="button"
+      data-reveal
+      role="button"
+      aria-label={label}
+      aria-pressed={active}
+      onPointerMove={handleMove}
+      onPointerLeave={handleLeave}
+      onClick={triggerActive}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          triggerActive();
+        }
+      }}
+      className={`group pointer-events-auto relative cursor-pointer rounded-[28px] bg-transparent text-left transition-[transform,box-shadow] duration-500 ease-out hover:shadow-[0_28px_60px_-24px_rgba(0,0,0,0.28)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#3b82f6] focus-visible:ring-offset-4 focus-visible:ring-offset-white motion-reduce:transition-none ${
+        active ? "shadow-[0_24px_60px_-18px_rgba(59,130,246,0.45)]" : ""
+      } ${floatClass}`}
+      style={{
+        ...tiltStyle,
+        transitionDelay: `${index * 60}ms`,
+        animationDelay: floatClass ? `${index * 350}ms` : undefined,
+      }}
+    >
+      {/* Spotlight glow — fine pointer only, suppressed when reduced motion */}
+      {hasFinePointer && !prefersReducedMotion && (
+        <span
+          aria-hidden
+          className="pointer-events-none absolute inset-0 rounded-[28px] opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+          style={{
+            background:
+              "radial-gradient(280px circle at var(--mx,50%) var(--my,50%), rgba(59,130,246,0.18), transparent 60%)",
+          }}
+        />
+      )}
+
+      {/* Gradient border — appears on hover, on focus, and on active click */}
+      <span
+        aria-hidden
+        className={`pointer-events-none absolute inset-0 rounded-[28px] transition-opacity duration-500 group-hover:opacity-100 group-focus-visible:opacity-100 ${
+          active ? "opacity-100" : "opacity-0"
+        }`}
+        style={{
+          padding: "1px",
+          background:
+            "linear-gradient(135deg, rgba(59,130,246,0.55), rgba(168,85,247,0.45), rgba(236,72,153,0.4))",
+          WebkitMask:
+            "linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)",
+          WebkitMaskComposite: "xor",
+          maskComposite: "exclude",
+        }}
+      />
+
+      {/* Active click ripple/pulse */}
+      {active && !prefersReducedMotion && (
+        <span
+          aria-hidden
+          className="pointer-events-none absolute inset-0 rounded-[28px] animate-[notall-pulse_700ms_ease-out]"
+          style={{
+            background:
+              "radial-gradient(circle at 50% 50%, rgba(59,130,246,0.22), transparent 65%)",
+          }}
+        />
+      )}
+    </button>
+  );
+}
+
+function TileRow({ src, alt, tiles }: { src: string; alt: string; tiles: string[] }) {
+  const { hasFinePointer, prefersReducedMotion } = useMotionCapabilities();
+
+  return (
+    <div
+      className="relative grid grid-cols-3 gap-2"
+      style={{ perspective: "1200px" }}
+      role="group"
+      aria-label={alt}
+    >
       <img
         src={src}
         alt={alt}
         className="pointer-events-none col-span-3 block h-auto w-full"
       />
-      {/* Per-card hover hotspots overlayed on top of the SVG */}
+      {/* Per-card hotspots overlayed on top of the SVG */}
       <div className="pointer-events-none absolute inset-0 grid grid-cols-3 gap-[2.5%] px-[1%]">
         {tiles.map((label, i) => (
-          <div
+          <Tile
             key={label}
-            data-reveal
-            aria-label={label}
-            onPointerMove={handleMove}
-            onPointerLeave={handleLeave}
-            className="group pointer-events-auto relative rounded-[28px] transition-[transform,box-shadow] duration-500 ease-out hover:shadow-[0_28px_60px_-24px_rgba(0,0,0,0.28)] motion-reduce:transition-none"
-            style={{
-              transform:
-                "perspective(1200px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) translateZ(0)",
-              transformStyle: "preserve-3d",
-              transitionDelay: `${i * 60}ms`,
-            }}
-          >
-            {/* Spotlight glow */}
-            <div
-              aria-hidden
-              className="absolute inset-0 rounded-[28px] opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-              style={{
-                background:
-                  "radial-gradient(280px circle at var(--mx,50%) var(--my,50%), rgba(59,130,246,0.18), transparent 60%)",
-              }}
-            />
-            {/* Gradient border on hover */}
-            <div
-              aria-hidden
-              className="absolute inset-0 rounded-[28px] opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-              style={{
-                padding: "1px",
-                background:
-                  "linear-gradient(135deg, rgba(59,130,246,0.55), rgba(168,85,247,0.45), rgba(236,72,153,0.4))",
-                WebkitMask:
-                  "linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)",
-                WebkitMaskComposite: "xor",
-                maskComposite: "exclude",
-              }}
-            />
-          </div>
+            label={label}
+            index={i}
+            hasFinePointer={hasFinePointer}
+            prefersReducedMotion={prefersReducedMotion}
+          />
         ))}
       </div>
     </div>
