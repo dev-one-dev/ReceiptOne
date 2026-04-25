@@ -64,11 +64,14 @@ export function NotAll() {
       </div>
 
       {/* 3-column grid (2 on tablet, 1 on mobile) */}
-      <div className="grid grid-cols-1 gap-x-[24px] gap-y-[60px] sm:grid-cols-2 lg:grid-cols-3">
+      <div
+        data-reveal-root
+        className="grid grid-cols-1 gap-x-[24px] gap-y-[60px] sm:grid-cols-2 lg:grid-cols-3"
+      >
         {cards.map((c) => (
           <article
             key={c.title}
-            className="flex flex-col overflow-hidden rounded-[32px] bg-white"
+            className="group flex flex-col overflow-hidden rounded-[32px] bg-white shadow-[0_1px_2px_rgba(0,0,0,0.04)] transition-all duration-500 ease-out hover:-translate-y-2 hover:shadow-[0_24px_48px_-16px_rgba(0,0,0,0.18)] motion-reduce:transition-none motion-reduce:hover:transform-none"
           >
             <div className="px-[26px] pt-[40px]">
               <h3 className="font-display text-[22px] font-bold leading-[1.15] tracking-[-0.01em] text-black">
@@ -78,12 +81,12 @@ export function NotAll() {
                 {c.body}
               </p>
             </div>
-            <div className="mt-auto flex items-end justify-center px-4 pt-6">
+            <div className="mt-auto flex items-end justify-center overflow-hidden px-4 pt-6">
               <img
                 src={c.image}
                 alt={c.alt}
                 loading="lazy"
-                className="block h-auto w-full max-w-[380px] select-none object-contain"
+                className="block h-auto w-full max-w-[380px] select-none object-contain transition-transform duration-500 ease-out group-hover:scale-[1.06] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
                 draggable={false}
               />
             </div>

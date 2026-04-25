@@ -15,16 +15,18 @@ export function NotAllUS() {
 
       {/* First three cards as a single static SVG row */}
       <img
+        data-reveal
         src={testimonialRowUs}
         alt="Build expense reports, earn more from every mile you drive, turn your home office into real deductions"
-        className="block h-auto w-full"
+        className="block h-auto w-full transition-transform duration-500 ease-out hover:-translate-y-1 hover:scale-[1.01] motion-reduce:transition-none motion-reduce:hover:transform-none"
       />
 
       {/* Second three cards as a single static SVG row */}
       <img
+        data-reveal
         src={testimonialRowUs2}
         alt="Turn organized receipts into audit-ready reports, invite your accountant, plug ReceiptOne into your workflow"
-        className="mt-[60px] block h-auto w-full"
+        className="mt-[60px] block h-auto w-full transition-transform duration-500 ease-out hover:-translate-y-1 hover:scale-[1.01] motion-reduce:transition-none motion-reduce:hover:transform-none"
       />
     </section>
   );
