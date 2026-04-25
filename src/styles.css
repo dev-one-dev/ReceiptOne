@@ -400,3 +400,21 @@ html { scroll-behavior: smooth; }
     animation: none !important;
   }
 }
+
+/* Footer — animated background line + gentle float */
+@keyframes footer-line {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+
+@keyframes footer-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [class*="animate-[footer-line"],
+  [class*="animate-[footer-float"] {
+    animation: none !important;
+  }
+}
