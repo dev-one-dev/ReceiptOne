@@ -1146,7 +1146,7 @@ function SectionAccordion({
   const onlyCA = section.regions?.length === 1 && section.regions[0] === "ca";
 
   return (
-    <div id={id} className="overflow-hidden rounded-xl border border-border bg-background scroll-mt-24">
+    <div id={id} className="group/section overflow-hidden rounded-xl border border-border bg-background scroll-mt-24">
       <button
         type="button"
         onClick={onToggle}
@@ -1164,10 +1164,20 @@ function SectionAccordion({
           {onlyUS && <RegionTag tone="us">US</RegionTag>}
           {onlyCA && <RegionTag tone="ca">CA</RegionTag>}
         </div>
-        <ChevronDown
-          className={`size-4 shrink-0 transition-transform ${isOpen ? "rotate-180" : ""}`}
-          aria-hidden
-        />
+        <div className="flex items-center gap-1">
+          <span className="group">
+            <AnchorButton
+              hash={id}
+              region={region}
+              label={`Copy link to ${section.title}`}
+              className="opacity-0 group-hover/section:opacity-100"
+            />
+          </span>
+          <ChevronDown
+            className={`size-4 shrink-0 transition-transform ${isOpen ? "rotate-180" : ""}`}
+            aria-hidden
+          />
+        </div>
       </button>
       {isOpen && (
         <div
