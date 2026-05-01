@@ -818,31 +818,24 @@ const PARTS: PartEntry[] = [
 /* --------------------------------- Page --------------------------------- */
 
 function TermsPage() {
-  const [region, setRegion] = useState<Region>("all");
-  const [openSections, setOpenSections] = useState<Set<string>>(() => new Set());
-  const [openParts, setOpenParts] = useState<Set<string>>(() => new Set(PARTS.map((p) => p.id)));
+  const allPartIds = useMemo(() => PARTS.map((p) => p.id), []);
+  const {
+    region,
+    setRegion,
+    openParts,
+    openSections,
+    setOpenParts,
+    setOpenSections,
+    toggleSection,
+    togglePart,
+  } = useLegalUIState("legal:terms", allPartIds);
   const [tocOpen, setTocOpen] = useState(false);
+  const printRestoreRef = useRef<{ parts: Set<string>; sections: Set<string> } | null>(null);
 
   const allSectionIds = useMemo(
     () => PARTS.flatMap((p) => p.sections.map((s) => sectionId(s))),
     [],
   );
-
-  const toggleSection = (id: string) =>
-    setOpenSections((prev) => {
-      const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
-      return next;
-    });
-
-  const togglePart = (id: string) =>
-    setOpenParts((prev) => {
-      const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
-      return next;
-    });
 
   const expandAll = () => {
     setOpenSections(new Set(allSectionIds));
@@ -850,6 +843,30 @@ function TermsPage() {
   };
   const collapseAll = () => {
     setOpenSections(new Set());
+  };
+
+  const handleBeforePrint = () => {
+    printRestoreRef.current = {
+      parts: new Set(openParts),
+      sections: new Set(openSections),
+    };
+    // Open every applicable section/part for the active region.
+    setOpenParts(new Set(PARTS.map((p) => p.id)));
+    setOpenSections(
+      new Set(
+        PARTS.flatMap((p) =>
+          p.sections.filter((s) => isApplicable(s, region)).map((s) => sectionId(s)),
+        ),
+      ),
+    );
+  };
+  const handleAfterPrint = () => {
+    const snap = printRestoreRef.current;
+    if (snap) {
+      setOpenParts(snap.parts);
+      setOpenSections(snap.sections);
+      printRestoreRef.current = null;
+    }
   };
 
   const scrollToId = (id: string) => {
