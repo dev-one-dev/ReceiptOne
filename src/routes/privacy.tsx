@@ -661,8 +661,6 @@ function DataTable({ headers, rows }: { headers: string[]; rows: string[][] }) {
             ))}
           </tbody>
         </table>
-      </name>
-        </table>
       </div>
     </div>
   );
