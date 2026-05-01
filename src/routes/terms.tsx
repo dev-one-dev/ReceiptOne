@@ -65,6 +65,52 @@ export const Route = createFileRoute("/terms")({
 
 /* ----------------------------- Content model ----------------------------- */
 
+const TERMS_SUMMARY: SummaryItem[] = [
+  {
+    title: "Who can use it",
+    body: "Self-employed individuals, contractors, and small businesses. You must be of legal age and accept these Terms.",
+  },
+  {
+    title: "Your account",
+    body: "Keep credentials secure. You're responsible for activity on your account and the accuracy of data you upload.",
+  },
+  {
+    title: "Subscriptions & billing",
+    body: "Paid plans are billed via Apple App Store or Google Play. Renewals, refunds, and cancellations follow each store's policies.",
+  },
+  {
+    title: "Acceptable use",
+    body: "No misuse, reverse engineering, scraping, or uploading unlawful content. We may suspend accounts that violate the Terms.",
+  },
+  {
+    title: "AI & OCR outputs",
+    body: "OCR/AI assist with classification and extraction. Always review outputs — you are responsible for tax and accounting decisions.",
+  },
+  {
+    title: "Not professional advice",
+    body: "ReceiptOne is a recordkeeping tool, not legal, tax, or accounting advice. Consult a professional for your situation.",
+  },
+  {
+    title: "Liability",
+    body: "Services are provided 'as is'. Liability is limited to the maximum extent permitted by applicable law.",
+    region: "all",
+  },
+  {
+    title: "Canada — governing law",
+    body: "Quebec residents retain mandatory consumer protections. Disputes governed by the laws of the applicable Canadian province.",
+    region: "ca",
+  },
+  {
+    title: "United States — arbitration",
+    body: "Disputes are resolved by binding individual arbitration with a class-action waiver, except where prohibited by law.",
+    region: "us",
+  },
+  {
+    title: "Changes & termination",
+    body: "We may update the Terms; material changes will be notified. You may stop using the Services at any time.",
+  },
+];
+
 const PARTS: PartEntry[] = [
   {
     id: "part-a",
