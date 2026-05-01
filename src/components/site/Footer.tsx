@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import footerSvg from "@/assets/figma/footer.svg";
 import footerUsSvg from "@/assets/figma/footer-us.svg";
+import { ROUTES } from "@/lib/routes";
 
 type FooterProps = {
   region?: "ca" | "us";
@@ -119,13 +120,13 @@ export function Footer({ region = "ca" }: FooterProps) {
       </button>
 
       <Link
-        to="/privacy"
+        to={ROUTES.terms}
         aria-label="Terms of Use"
         className="absolute left-[42.5%] top-[88.5%] z-10 h-[5%] w-[8%] rounded-md transition-transform duration-300 hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary motion-reduce:hover:scale-100"
       />
 
       <Link
-        to="/login"
+        to={ROUTES.login}
         aria-label="Log in"
         className={`${hotspotClassName} left-[38%] top-[64%] h-[10%] w-[11.5%] overflow-hidden !rounded-[40px] hover:shadow-[0_14px_36px_-12px_rgba(59,130,246,0.5)] ${
           !reduced ? "animate-[claim-glow_3.2s_ease-in-out_infinite]" : ""
@@ -144,7 +145,7 @@ export function Footer({ region = "ca" }: FooterProps) {
       </Link>
 
       <Link
-        to="/signup"
+        to={ROUTES.signup}
         aria-label="Join now"
         className={`${hotspotClassName} left-[50.5%] top-[64%] h-[10%] w-[11.5%] overflow-hidden !rounded-[40px] hover:shadow-[0_14px_36px_-12px_rgba(168,85,247,0.55)] ${
           !reduced ? "animate-[claim-glow_3.2s_ease-in-out_infinite]" : ""
@@ -164,7 +165,7 @@ export function Footer({ region = "ca" }: FooterProps) {
       </Link>
 
       <Link
-        to="/terms"
+        to={ROUTES.privacy}
         aria-label="Privacy Policy"
         className="absolute left-[51%] top-[88.5%] z-10 h-[5%] w-[9%] rounded-md transition-transform duration-300 hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary motion-reduce:hover:scale-100"
       />
