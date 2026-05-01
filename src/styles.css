@@ -418,3 +418,20 @@ html { scroll-behavior: smooth; }
     animation: none !important;
   }
 }
+
+/*
+ * Print stylesheet for legal pages (/terms, /privacy).
+ * - Hides app chrome (sticky header, TOC sidebar, toolbars).
+ * - Forces all accordion panels open.
+ * - Removes background colors so legal text prints crisply.
+ */
+@media print {
+  body { background: white !important; color: black !important; }
+  .print\:hidden { display: none !important; }
+  /* Force accordions open during print regardless of state */
+  [data-region-applicable="false"] { opacity: 1 !important; }
+  aside, .sticky { position: static !important; }
+  /* Avoid breaking inside a section header */
+  h1, h2, h3 { break-after: avoid; }
+  section { break-inside: avoid-page; }
+}

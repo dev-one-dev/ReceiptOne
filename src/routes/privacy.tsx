@@ -1,7 +1,79 @@
-import { type ReactNode } from "react";
+import React, { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { Link, createFileRoute } from "@tanstack/react-router";
+import { ChevronDown, ChevronsDownUp, ChevronsUpDown, ListTree, X } from "lucide-react";
 import logoMark from "@/assets/figma/logo-mark.svg";
 import logoWordmark from "@/assets/figma/logo-wordmark.svg";
+import {
+  AnchorButton,
+  PrintButton,
+  RegionSwitcher,
+  RegionTag,
+  useLegalUIState,
+  type Region,
+} from "@/components/site/legal/shared";
+
+/* ----------------------------- Section catalog ---------------------------- */
+
+/**
+ * Lightweight catalog so the TOC, accordion, region filtering, and Print
+ * features work without restructuring the inline section text below.
+ * `regions` flags subsections that apply only to one jurisdiction.
+ */
+type RegionMap = Record<string, "us" | "ca" | "all">;
+
+const SECTIONS: { number: string; title: string; subsections?: { id: string; title: string; region?: "us" | "ca" }[] }[] = [
+  { number: "1", title: "Scope" },
+  {
+    number: "2",
+    title: "Information We Collect",
+    subsections: [
+      { id: "2.1", title: "2.1 Information You Provide Directly" },
+      { id: "2.2", title: "2.2 Receipt, Expense, and Tax-Related Data" },
+      { id: "2.3", title: "2.3 Payment Information" },
+      { id: "2.4", title: "2.4 Automatically Collected Information" },
+      { id: "2.5", title: "2.5 Device Permissions" },
+      { id: "2.6", title: "2.6 Categories of Personal Information for California Residents", region: "us" },
+    ],
+  },
+  { number: "3", title: "How We Use Personal Information" },
+  { number: "4", title: "AI-Assisted and Automated Processing" },
+  { number: "5", title: "How We Share Personal Information" },
+  { number: "6", title: "International and Cross-Border Processing" },
+  { number: "7", title: "Data Retention" },
+  {
+    number: "8",
+    title: "Your Privacy Rights",
+    subsections: [
+      { id: "8.1", title: "8.1 Canada (PIPEDA and Quebec Law 25)", region: "ca" },
+      { id: "8.2", title: "8.2 United States (California and other states)", region: "us" },
+      { id: "8.3", title: "8.3 How to Submit Requests" },
+      { id: "8.4", title: "8.4 Verification and Appeals" },
+    ],
+  },
+  {
+    number: "9",
+    title: "Consent",
+    subsections: [
+      { id: "9.1", title: "9.1 General Consent" },
+      { id: "9.2", title: "9.2 Express Consent for Quebec Residents and Sensitive Information", region: "ca" },
+      { id: "9.3", title: "9.3 Withdrawal of Consent" },
+    ],
+  },
+  { number: "10", title: "Security Safeguards" },
+  { number: "11", title: "Children's Privacy" },
+  { number: "12", title: "Changes to This Privacy Policy" },
+  { number: "13", title: "Contact Information" },
+];
+
+const SUBSECTION_REGIONS: RegionMap = SECTIONS.reduce<RegionMap>((acc, s) => {
+  s.subsections?.forEach((ss) => {
+    acc[ss.id] = ss.region ?? "all";
+  });
+  return acc;
+}, {});
+
+const sectionAnchorId = (n: string) => `section-${n}`;
+const subsectionAnchorId = (id: string) => `section-${id.replace(".", "-")}`;
 
 export const Route = createFileRoute("/privacy")({
   head: () => ({
@@ -25,27 +97,92 @@ export const Route = createFileRoute("/privacy")({
 });
 
 function PrivacyPage() {
+  const allPartIds = useMemo(() => ["privacy-all"], []);
+  const {
+    region,
+    setRegion,
+    openSections,
+    setOpenSections,
+    toggleSection,
+  } = useLegalUIState("legal:privacy", allPartIds);
+  const [tocOpen, setTocOpen] = useState(false);
+  const printRestoreRef = useRef<Set<string> | null>(null);
+
+  const allSectionAnchors = useMemo(
+    () => SECTIONS.flatMap((s) => [sectionAnchorId(s.number), ...(s.subsections?.map((ss) => subsectionAnchorId(ss.id)) ?? [])]),
+    [],
+  );
+
+  const expandAll = () => setOpenSections(new Set(allSectionAnchors));
+  const collapseAll = () => setOpenSections(new Set());
+
+  const handleBeforePrint = () => {
+    printRestoreRef.current = new Set(openSections);
+    setOpenSections(new Set(allSectionAnchors));
+  };
+  const handleAfterPrint = () => {
+    if (printRestoreRef.current) {
+      setOpenSections(printRestoreRef.current);
+      printRestoreRef.current = null;
+    }
+  };
+
+  const scrollToId = (id: string) => {
+    setOpenSections((prev) => {
+      const next = new Set(prev);
+      next.add(id);
+      // Also open the parent section if `id` is a subsection.
+      const parent = SECTIONS.find((s) => s.subsections?.some((ss) => subsectionAnchorId(ss.id) === id));
+      if (parent) next.add(sectionAnchorId(parent.number));
+      return next;
+    });
+    requestAnimationFrame(() => {
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+    setTocOpen(false);
+  };
+
+  // Open section if URL has a hash on mount.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const hash = window.location.hash.replace("#", "");
+    if (hash) scrollToId(hash);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <main className="min-h-screen bg-background text-foreground">
-      <div className="border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
-        <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
+      <div className="sticky top-0 z-30 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 print:hidden">
+        <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-3">
             <Link to="/ca" className="flex items-center gap-2">
               <img src={logoMark} alt="" aria-hidden className="block size-10" />
               <img src={logoWordmark} alt="ReceiptOne" className="block h-6 w-auto" />
             </Link>
-            <p className="text-sm text-muted-foreground">Privacy Policy</p>
+            <p className="hidden text-sm text-muted-foreground sm:block">Privacy Policy</p>
           </div>
-          <Link
-            to="/ca"
-            className="rounded-full border border-border bg-card px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground"
-          >
-            Back to site
-          </Link>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => setTocOpen(true)}
+              className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground lg:hidden"
+              aria-label="Open table of contents"
+            >
+              <ListTree className="size-4" />
+              Contents
+            </button>
+            <Link
+              to="/ca"
+              className="hidden rounded-full border border-border bg-card px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground sm:inline-block"
+            >
+              Back to site
+            </Link>
+          </div>
         </div>
       </div>
 
-      <article className="mx-auto max-w-4xl px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
+      <article className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8 lg:py-12">
         <header className="border-b border-border pb-8">
           <p className="text-sm font-medium text-muted-foreground">Last updated: April 23, 2026</p>
           <h1 className="mt-3 font-display text-4xl font-semibold tracking-normal sm:text-5xl">
@@ -78,9 +215,40 @@ function PrivacyPage() {
               support@receipt-one.com
             </a>
           </p>
+
+          <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <RegionSwitcher region={region} onChange={setRegion} />
+            <div className="flex flex-wrap items-center gap-2">
+              <button
+                type="button"
+                onClick={expandAll}
+                className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground print:hidden"
+              >
+                <ChevronsUpDown className="size-4" />
+                Expand all
+              </button>
+              <button
+                type="button"
+                onClick={collapseAll}
+                className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground print:hidden"
+              >
+                <ChevronsDownUp className="size-4" />
+                Collapse all
+              </button>
+              <PrintButton onBeforePrint={handleBeforePrint} onAfterPrint={handleAfterPrint} />
+            </div>
+          </div>
         </header>
 
-        <div className="space-y-12 py-10">
+        <div className="grid gap-10 py-10 lg:grid-cols-[260px_minmax(0,1fr)] lg:gap-14">
+          <aside className="hidden lg:block">
+            <div className="sticky top-24 max-h-[calc(100vh-7rem)] overflow-y-auto pr-2">
+              <PrivacyTOC region={region} onJump={scrollToId} />
+            </div>
+          </aside>
+
+          <PrivacyContext.Provider value={{ region, openSections, toggleSection }}>
+          <div className="space-y-4">
           <Section number="1" title="Scope">
             <p>This Privacy Policy applies to personal information collected through the Services, including when you:</p>
             <BulletList
@@ -596,28 +764,191 @@ function PrivacyPage() {
             </div>
             <p className="text-sm text-muted-foreground">© 2026 ReceiptOne. All rights reserved.</p>
           </Section>
+          </div>
+          </PrivacyContext.Provider>
         </div>
       </article>
+
+      {tocOpen && (
+        <div className="fixed inset-0 z-50 lg:hidden print:hidden" role="dialog" aria-modal="true">
+          <div className="absolute inset-0 bg-black/60" onClick={() => setTocOpen(false)} />
+          <div className="absolute right-0 top-0 h-full w-[85%] max-w-sm overflow-y-auto border-l border-border bg-background p-5 shadow-2xl">
+            <div className="mb-4 flex items-center justify-between">
+              <p className="font-display text-lg font-semibold">Contents</p>
+              <button
+                type="button"
+                onClick={() => setTocOpen(false)}
+                className="rounded-full border border-border p-2 transition-colors hover:bg-accent hover:text-accent-foreground"
+                aria-label="Close"
+              >
+                <X className="size-4" />
+              </button>
+            </div>
+            <PrivacyTOC region={region} onJump={scrollToId} />
+          </div>
+        </div>
+      )}
     </main>
   );
 }
 
-function Section({ number, title, children }: { number: string; title: string; children: ReactNode }) {
+/* --------------------------------- Context -------------------------------- */
+
+type PrivacyCtx = {
+  region: Region;
+  openSections: Set<string>;
+  toggleSection: (id: string) => void;
+};
+
+const PrivacyContext = React.createContext<PrivacyCtx | null>(null);
+const usePrivacyCtx = () => {
+  const ctx = React.useContext(PrivacyContext);
+  if (!ctx) throw new Error("Section/SubSection must be rendered inside PrivacyContext");
+  return ctx;
+};
+
+/* ----------------------------- Table of contents -------------------------- */
+
+function PrivacyTOC({ region, onJump }: { region: Region; onJump: (id: string) => void }) {
+  const visible = (r?: "us" | "ca") => region === "all" || !r || r === region;
   return (
-    <section className="space-y-4">
-      <div className="space-y-1">
-        <p className="text-sm font-medium text-muted-foreground">Section {number}</p>
-        <h2 className="font-display text-2xl font-semibold tracking-normal sm:text-3xl">{title}</h2>
-      </div>
-      <div className="space-y-4 text-base leading-7 text-muted-foreground">{children}</div>
+    <nav aria-label="Table of contents" className="space-y-5 text-sm">
+      <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+        Privacy Policy
+      </p>
+      <ul className="space-y-3 border-l border-border pl-3">
+        {SECTIONS.map((s) => {
+          const id = sectionAnchorId(s.number);
+          const subs = s.subsections?.filter((ss) => visible(ss.region)) ?? [];
+          return (
+            <li key={s.number}>
+              <div className="group flex items-start gap-1">
+                <button
+                  type="button"
+                  onClick={() => onJump(id)}
+                  className="flex-1 text-left leading-snug text-muted-foreground transition-colors hover:text-foreground"
+                >
+                  <span className="mr-1 text-foreground/70">{s.number}.</span>
+                  {s.title}
+                </button>
+                <AnchorButton hash={id} region={region} label={`Copy link to section ${s.number}`} />
+              </div>
+              {subs.length > 0 && (
+                <ul className="mt-1 space-y-1 border-l border-border/60 pl-3">
+                  {subs.map((ss) => {
+                    const sid = subsectionAnchorId(ss.id);
+                    return (
+                      <li key={ss.id}>
+                        <div className="group flex items-start gap-1">
+                          <button
+                            type="button"
+                            onClick={() => onJump(sid)}
+                            className="flex-1 text-left text-xs leading-snug text-muted-foreground/80 transition-colors hover:text-foreground"
+                          >
+                            {ss.title}
+                            {ss.region === "us" && <RegionTag tone="us">US</RegionTag>}
+                            {ss.region === "ca" && <RegionTag tone="ca">CA</RegionTag>}
+                          </button>
+                          <AnchorButton hash={sid} region={region} label={`Copy link to ${ss.title}`} />
+                        </div>
+                      </li>
+                    );
+                  })}
+                </ul>
+              )}
+            </li>
+          );
+        })}
+      </ul>
+    </nav>
+  );
+}
+
+/* ----------------------------- Section accordion -------------------------- */
+
+function Section({ number, title, children }: { number: string; title: string; children: ReactNode }) {
+  const { openSections, toggleSection } = usePrivacyCtx();
+  const id = sectionAnchorId(number);
+  const isOpen = openSections.has(id);
+  return (
+    <section
+      id={id}
+      className="group/section overflow-hidden rounded-xl border border-border bg-background scroll-mt-24"
+    >
+      <button
+        type="button"
+        onClick={() => toggleSection(id)}
+        aria-expanded={isOpen}
+        aria-controls={`${id}-panel`}
+        className="flex w-full items-center justify-between gap-3 px-4 py-3 text-left transition-colors hover:bg-accent/40 sm:px-5 sm:py-4"
+      >
+        <div className="flex flex-1 items-baseline gap-3">
+          <span className="font-mono text-xs font-semibold text-muted-foreground sm:text-sm">
+            {number.padStart(2, "0")}
+          </span>
+          <h2 className="font-display text-base font-semibold tracking-normal sm:text-lg">{title}</h2>
+        </div>
+        <div className="flex items-center gap-1">
+          <span className="group">
+            <AnchorButton
+              hash={id}
+              region={usePrivacyCtxRegion()}
+              label={`Copy link to section ${number}`}
+              className="opacity-0 group-hover/section:opacity-100"
+            />
+          </span>
+          <ChevronDown
+            className={`size-4 shrink-0 transition-transform ${isOpen ? "rotate-180" : ""}`}
+            aria-hidden
+          />
+        </div>
+      </button>
+      {isOpen && (
+        <div
+          id={`${id}-panel`}
+          className="space-y-4 border-t border-border bg-background px-4 py-4 text-base leading-7 text-muted-foreground sm:px-5 sm:py-5"
+        >
+          {children}
+        </div>
+      )}
     </section>
   );
 }
 
+const usePrivacyCtxRegion = () => usePrivacyCtx().region;
+
 function SubSection({ title, children }: { title: string; children: ReactNode }) {
+  const { region } = usePrivacyCtx();
+  // Detect "8.1", "9.2", etc. at the start of the title.
+  const idMatch = title.match(/^(\d+\.\d+)/);
+  const subId = idMatch ? idMatch[1] : title;
+  const anchorId = subsectionAnchorId(subId);
+  const subRegion = SUBSECTION_REGIONS[subId];
+  const applicable = !subRegion || subRegion === "all" || region === "all" || region === subRegion;
+
   return (
-    <section className="space-y-3">
-      <h3 className="font-display text-xl font-semibold tracking-normal text-foreground">{title}</h3>
+    <section
+      id={anchorId}
+      data-region-applicable={applicable ? "true" : "false"}
+      className={`group/sub scroll-mt-24 space-y-3 rounded-lg border p-4 transition-all ${
+        applicable
+          ? "border-border/60 bg-card/40"
+          : "border-dashed border-border/40 bg-muted/10 opacity-60 print:opacity-100"
+      }`}
+    >
+      <div className="flex items-center justify-between gap-2">
+        <h3 className="font-display text-lg font-semibold tracking-normal text-foreground">
+          {title}
+          {subRegion === "us" && <RegionTag tone="us">US</RegionTag>}
+          {subRegion === "ca" && <RegionTag tone="ca">CA</RegionTag>}
+        </h3>
+        <AnchorButton
+          hash={anchorId}
+          region={region}
+          label={`Copy link to ${title}`}
+          className="opacity-0 group-hover/sub:opacity-100"
+        />
+      </div>
       <div className="space-y-3 text-base leading-7 text-muted-foreground">{children}</div>
     </section>
   );

@@ -3,8 +3,15 @@ import { Link, createFileRoute } from "@tanstack/react-router";
 import { ChevronDown, ChevronsDownUp, ChevronsUpDown, ListTree, X } from "lucide-react";
 import logoMark from "@/assets/figma/logo-mark.svg";
 import logoWordmark from "@/assets/figma/logo-wordmark.svg";
-
-type Region = "all" | "us" | "ca";
+import {
+  AnchorButton,
+  PrintButton,
+  RegionParagraph,
+  RegionSwitcher,
+  RegionTag,
+  useLegalUIState,
+  type Region,
+} from "@/components/site/legal/shared";
 
 type SectionEntry = {
   number?: string;
@@ -811,31 +818,24 @@ const PARTS: PartEntry[] = [
 /* --------------------------------- Page --------------------------------- */
 
 function TermsPage() {
-  const [region, setRegion] = useState<Region>("all");
-  const [openSections, setOpenSections] = useState<Set<string>>(() => new Set());
-  const [openParts, setOpenParts] = useState<Set<string>>(() => new Set(PARTS.map((p) => p.id)));
+  const allPartIds = useMemo(() => PARTS.map((p) => p.id), []);
+  const {
+    region,
+    setRegion,
+    openParts,
+    openSections,
+    setOpenParts,
+    setOpenSections,
+    toggleSection,
+    togglePart,
+  } = useLegalUIState("legal:terms", allPartIds);
   const [tocOpen, setTocOpen] = useState(false);
+  const printRestoreRef = useRef<{ parts: Set<string>; sections: Set<string> } | null>(null);
 
   const allSectionIds = useMemo(
     () => PARTS.flatMap((p) => p.sections.map((s) => sectionId(s))),
     [],
   );
-
-  const toggleSection = (id: string) =>
-    setOpenSections((prev) => {
-      const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
-      return next;
-    });
-
-  const togglePart = (id: string) =>
-    setOpenParts((prev) => {
-      const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
-      return next;
-    });
 
   const expandAll = () => {
     setOpenSections(new Set(allSectionIds));
@@ -843,6 +843,30 @@ function TermsPage() {
   };
   const collapseAll = () => {
     setOpenSections(new Set());
+  };
+
+  const handleBeforePrint = () => {
+    printRestoreRef.current = {
+      parts: new Set(openParts),
+      sections: new Set(openSections),
+    };
+    // Open every applicable section/part for the active region.
+    setOpenParts(new Set(PARTS.map((p) => p.id)));
+    setOpenSections(
+      new Set(
+        PARTS.flatMap((p) =>
+          p.sections.filter((s) => isApplicable(s, region)).map((s) => sectionId(s)),
+        ),
+      ),
+    );
+  };
+  const handleAfterPrint = () => {
+    const snap = printRestoreRef.current;
+    if (snap) {
+      setOpenParts(snap.parts);
+      setOpenSections(snap.sections);
+      printRestoreRef.current = null;
+    }
   };
 
   const scrollToId = (id: string) => {
@@ -930,7 +954,7 @@ function TermsPage() {
               <button
                 type="button"
                 onClick={expandAll}
-                className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground"
+                className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground print:hidden"
               >
                 <ChevronsUpDown className="size-4" />
                 Expand all
@@ -938,11 +962,12 @@ function TermsPage() {
               <button
                 type="button"
                 onClick={collapseAll}
-                className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground"
+                className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground print:hidden"
               >
                 <ChevronsDownUp className="size-4" />
                 Collapse all
               </button>
+              <PrintButton onBeforePrint={handleBeforePrint} onAfterPrint={handleAfterPrint} />
             </div>
           </div>
         </header>
@@ -1003,26 +1028,32 @@ function TableOfContents({ region, onJump }: { region: Region; onJump: (id: stri
         const visible = part.sections.filter((s) => isApplicable(s, region));
         return (
           <div key={part.id}>
-            <button
-              type="button"
-              onClick={() => onJump(part.id)}
-              className="block w-full text-left text-xs font-semibold uppercase tracking-widest text-muted-foreground transition-colors hover:text-foreground"
-            >
-              {part.label} — {part.title}
-            </button>
+            <div className="group flex items-center gap-1">
+              <button
+                type="button"
+                onClick={() => onJump(part.id)}
+                className="flex-1 text-left text-xs font-semibold uppercase tracking-widest text-muted-foreground transition-colors hover:text-foreground"
+              >
+                {part.label} — {part.title}
+              </button>
+              <AnchorButton hash={part.id} region={region} label={`Copy link to ${part.label}`} />
+            </div>
             <ul className="mt-2 space-y-1 border-l border-border pl-3">
               {visible.map((s) => {
                 const id = sectionId(s);
                 return (
                   <li key={id}>
-                    <button
-                      type="button"
-                      onClick={() => onJump(id)}
-                      className="block w-full text-left leading-snug text-muted-foreground transition-colors hover:text-foreground"
-                    >
-                      {s.number ? <span className="mr-1 text-foreground/70">{s.number}.</span> : null}
-                      {s.title}
-                    </button>
+                    <div className="group flex items-start gap-1">
+                      <button
+                        type="button"
+                        onClick={() => onJump(id)}
+                        className="flex-1 text-left leading-snug text-muted-foreground transition-colors hover:text-foreground"
+                      >
+                        {s.number ? <span className="mr-1 text-foreground/70">{s.number}.</span> : null}
+                        {s.title}
+                      </button>
+                      <AnchorButton hash={id} region={region} label={`Copy link to section ${s.number ?? s.title}`} />
+                    </div>
                   </li>
                 );
               })}
@@ -1115,7 +1146,7 @@ function SectionAccordion({
   const onlyCA = section.regions?.length === 1 && section.regions[0] === "ca";
 
   return (
-    <div id={id} className="overflow-hidden rounded-xl border border-border bg-background scroll-mt-24">
+    <div id={id} className="group/section overflow-hidden rounded-xl border border-border bg-background scroll-mt-24">
       <button
         type="button"
         onClick={onToggle}
@@ -1133,10 +1164,20 @@ function SectionAccordion({
           {onlyUS && <RegionTag tone="us">US</RegionTag>}
           {onlyCA && <RegionTag tone="ca">CA</RegionTag>}
         </div>
-        <ChevronDown
-          className={`size-4 shrink-0 transition-transform ${isOpen ? "rotate-180" : ""}`}
-          aria-hidden
-        />
+        <div className="flex items-center gap-1">
+          <span className="group">
+            <AnchorButton
+              hash={id}
+              region={region}
+              label={`Copy link to ${section.title}`}
+              className="opacity-0 group-hover/section:opacity-100"
+            />
+          </span>
+          <ChevronDown
+            className={`size-4 shrink-0 transition-transform ${isOpen ? "rotate-180" : ""}`}
+            aria-hidden
+          />
+        </div>
       </button>
       {isOpen && (
         <div
@@ -1151,77 +1192,6 @@ function SectionAccordion({
 }
 
 /* ------------------------------- Helpers --------------------------------- */
-
-function RegionSwitcher({ region, onChange }: { region: Region; onChange: (r: Region) => void }) {
-  const opts: { value: Region; label: string; flag: string }[] = [
-    { value: "all", label: "All", flag: "🌐" },
-    { value: "us", label: "United States", flag: "🇺🇸" },
-    { value: "ca", label: "Canada", flag: "🇨🇦" },
-  ];
-  return (
-    <div
-      role="radiogroup"
-      aria-label="Jurisdiction"
-      className="inline-flex items-center gap-1 rounded-full border border-border bg-card p-1"
-    >
-      {opts.map((o) => {
-        const active = region === o.value;
-        return (
-          <button
-            key={o.value}
-            type="button"
-            role="radio"
-            aria-checked={active}
-            onClick={() => onChange(o.value)}
-            className={`inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-sm font-medium transition-colors ${
-              active
-                ? "bg-foreground text-background"
-                : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
-            }`}
-          >
-            <span aria-hidden>{o.flag}</span>
-            {o.label}
-          </button>
-        );
-      })}
-    </div>
-  );
-}
-
-function RegionTag({ children, tone }: { children: ReactNode; tone: "us" | "ca" }) {
-  const cls =
-    tone === "us"
-      ? "border-blue-500/40 bg-blue-500/10 text-blue-600 dark:text-blue-300"
-      : "border-red-500/40 bg-red-500/10 text-red-600 dark:text-red-300";
-  return (
-    <span className={`ml-2 inline-flex items-center rounded-full border px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider ${cls}`}>
-      {children}
-    </span>
-  );
-}
-
-function RegionParagraph({
-  active,
-  label,
-  children,
-}: {
-  active: boolean;
-  label: string;
-  children: ReactNode;
-}) {
-  return (
-    <div
-      className={`rounded-lg border p-4 transition-colors ${
-        active
-          ? "border-foreground/30 bg-accent/40 text-foreground"
-          : "border-border bg-background text-muted-foreground"
-      }`}
-    >
-      <p className="mb-1 text-xs font-semibold uppercase tracking-widest text-muted-foreground">{label}</p>
-      <p className="leading-7">{children}</p>
-    </div>
-  );
-}
 
 function RegionInline({
   region,
