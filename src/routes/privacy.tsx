@@ -665,3 +665,4 @@ function DataTable({ headers, rows }: { headers: string[]; rows: string[][] }) {
     </div>
   );
 }
+
