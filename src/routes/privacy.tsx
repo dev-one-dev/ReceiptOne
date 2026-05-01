@@ -1,7 +1,79 @@
-import { type ReactNode } from "react";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { Link, createFileRoute } from "@tanstack/react-router";
+import { ChevronDown, ChevronsDownUp, ChevronsUpDown, ListTree, X } from "lucide-react";
 import logoMark from "@/assets/figma/logo-mark.svg";
 import logoWordmark from "@/assets/figma/logo-wordmark.svg";
+import {
+  AnchorButton,
+  PrintButton,
+  RegionSwitcher,
+  RegionTag,
+  useLegalUIState,
+  type Region,
+} from "@/components/site/legal/shared";
+
+/* ----------------------------- Section catalog ---------------------------- */
+
+/**
+ * Lightweight catalog so the TOC, accordion, region filtering, and Print
+ * features work without restructuring the inline section text below.
+ * `regions` flags subsections that apply only to one jurisdiction.
+ */
+type RegionMap = Record<string, "us" | "ca" | "all">;
+
+const SECTIONS: { number: string; title: string; subsections?: { id: string; title: string; region?: "us" | "ca" }[] }[] = [
+  { number: "1", title: "Scope" },
+  {
+    number: "2",
+    title: "Information We Collect",
+    subsections: [
+      { id: "2.1", title: "2.1 Information You Provide Directly" },
+      { id: "2.2", title: "2.2 Receipt, Expense, and Tax-Related Data" },
+      { id: "2.3", title: "2.3 Payment Information" },
+      { id: "2.4", title: "2.4 Automatically Collected Information" },
+      { id: "2.5", title: "2.5 Device Permissions" },
+      { id: "2.6", title: "2.6 Categories of Personal Information for California Residents", region: "us" },
+    ],
+  },
+  { number: "3", title: "How We Use Personal Information" },
+  { number: "4", title: "AI-Assisted and Automated Processing" },
+  { number: "5", title: "How We Share Personal Information" },
+  { number: "6", title: "International and Cross-Border Processing" },
+  { number: "7", title: "Data Retention" },
+  {
+    number: "8",
+    title: "Your Privacy Rights",
+    subsections: [
+      { id: "8.1", title: "8.1 Canada (PIPEDA and Quebec Law 25)", region: "ca" },
+      { id: "8.2", title: "8.2 United States (California and other states)", region: "us" },
+      { id: "8.3", title: "8.3 How to Submit Requests" },
+      { id: "8.4", title: "8.4 Verification and Appeals" },
+    ],
+  },
+  {
+    number: "9",
+    title: "Consent",
+    subsections: [
+      { id: "9.1", title: "9.1 General Consent" },
+      { id: "9.2", title: "9.2 Express Consent for Quebec Residents and Sensitive Information", region: "ca" },
+      { id: "9.3", title: "9.3 Withdrawal of Consent" },
+    ],
+  },
+  { number: "10", title: "Security Safeguards" },
+  { number: "11", title: "Children's Privacy" },
+  { number: "12", title: "Changes to This Privacy Policy" },
+  { number: "13", title: "Contact Information" },
+];
+
+const SUBSECTION_REGIONS: RegionMap = SECTIONS.reduce<RegionMap>((acc, s) => {
+  s.subsections?.forEach((ss) => {
+    acc[ss.id] = ss.region ?? "all";
+  });
+  return acc;
+}, {});
+
+const sectionAnchorId = (n: string) => `section-${n}`;
+const subsectionAnchorId = (id: string) => `section-${id.replace(".", "-")}`;
 
 export const Route = createFileRoute("/privacy")({
   head: () => ({
