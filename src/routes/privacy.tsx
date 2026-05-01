@@ -929,34 +929,32 @@ function Section({ number, title, children }: { number: string; title: string; c
       id={id}
       className="group/section overflow-hidden rounded-xl border border-border bg-background scroll-mt-24"
     >
-      <button
-        type="button"
-        onClick={() => toggleSection(id)}
-        aria-expanded={isOpen}
-        aria-controls={`${id}-panel`}
-        className="flex w-full items-center justify-between gap-3 px-4 py-3 text-left transition-colors hover:bg-accent/40 sm:px-5 sm:py-4"
-      >
-        <div className="flex flex-1 items-baseline gap-3">
-          <span className="font-mono text-xs font-semibold text-muted-foreground sm:text-sm">
-            {number.padStart(2, "0")}
-          </span>
-          <h2 className="font-display text-base font-semibold tracking-normal sm:text-lg">{title}</h2>
-        </div>
-        <div className="flex items-center gap-1">
-          <span className="group">
-            <AnchorButton
-              hash={id}
-              region={usePrivacyCtxRegion()}
-              label={`Copy link to section ${number}`}
-              className="opacity-0 group-hover/section:opacity-100"
-            />
-          </span>
+      <div className="relative flex items-center gap-2 pr-3">
+        <button
+          type="button"
+          onClick={() => toggleSection(id)}
+          aria-expanded={isOpen}
+          aria-controls={`${id}-panel`}
+          className="flex flex-1 items-center justify-between gap-3 px-4 py-3 text-left transition-colors hover:bg-accent/40 sm:px-5 sm:py-4"
+        >
+          <div className="flex flex-1 items-baseline gap-3">
+            <span className="font-mono text-xs font-semibold text-muted-foreground sm:text-sm">
+              {number.padStart(2, "0")}
+            </span>
+            <h2 className="font-display text-base font-semibold tracking-normal sm:text-lg">{title}</h2>
+          </div>
           <ChevronDown
             className={`size-4 shrink-0 transition-transform ${isOpen ? "rotate-180" : ""}`}
             aria-hidden
           />
-        </div>
-      </button>
+        </button>
+        <AnchorButton
+          hash={id}
+          region={usePrivacyCtxRegion()}
+          label={`Copy link to section ${number}`}
+          className="opacity-0 group-hover/section:opacity-100"
+        />
+      </div>
       {isOpen && (
         <div
           id={`${id}-panel`}
