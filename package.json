@@ -7,8 +7,9 @@
     "dev": "vite dev",
     "build": "vite build",
     "build:dev": "vite build --mode development",
-    "prebuild": "node scripts/check-routes.mjs",
+    "prebuild": "node scripts/check-routes.mjs && node scripts/generate-sitemap.mjs",
     "check:routes": "node scripts/check-routes.mjs",
+    "sitemap": "node scripts/generate-sitemap.mjs",
     "preview": "vite preview",
     "lint": "eslint .",
     "format": "prettier --write ."
