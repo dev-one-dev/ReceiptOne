@@ -180,10 +180,10 @@ export function SuggestFeatureWidget({ region }: { region: Region }) {
           type="button"
           onClick={() => setOpen(true)}
           aria-label="Suggest a feature"
-          className="fixed bottom-6 right-6 z-40 inline-flex items-center gap-2 rounded-full bg-black px-5 py-3 font-display text-sm font-semibold text-white shadow-[0_8px_24px_rgba(0,0,0,0.18)] transition-all hover:scale-[1.02] hover:opacity-90 sm:bottom-8 sm:right-8"
+          className="fixed bottom-4 right-4 z-40 inline-flex max-w-[calc(100vw-2rem)] items-center gap-2 rounded-full bg-black px-4 py-2.5 font-display text-sm font-semibold text-white shadow-[0_8px_24px_rgba(0,0,0,0.18)] transition-all hover:scale-[1.02] hover:opacity-90 sm:bottom-8 sm:right-8 sm:px-5 sm:py-3"
         >
           <SparkIcon />
-          Suggest a feature
+          <span className="truncate sm:max-w-none">Suggest a feature</span>
         </button>
       )}
 
@@ -193,7 +193,7 @@ export function SuggestFeatureWidget({ region }: { region: Region }) {
           ref={panelRef}
           role="dialog"
           aria-label="Suggest a feature"
-          className="fixed bottom-6 right-6 z-40 w-[min(92vw,420px)] overflow-hidden rounded-3xl border border-black/[0.08] bg-white shadow-[0_24px_60px_rgba(0,0,0,0.18)] sm:bottom-8 sm:right-8"
+          className="fixed bottom-4 right-4 z-40 w-[min(calc(100vw-2rem),420px)] overflow-hidden rounded-3xl border border-black/[0.08] bg-white shadow-[0_24px_60px_rgba(0,0,0,0.18)] sm:bottom-8 sm:right-8"
         >
           {/* Header */}
           <div className="flex items-center justify-between border-b border-black/5 bg-white px-5 py-4">

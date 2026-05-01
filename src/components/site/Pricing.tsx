@@ -26,7 +26,7 @@ export function Pricing({ region = "ca" }: { region?: "ca" | "us" }) {
   return (
     <section
       id="pricing"
-      className="mx-auto w-full max-w-[1440px] scroll-mt-28 px-6"
+      className="mx-auto w-full max-w-[1440px] scroll-mt-28 px-3 sm:px-6"
     >
       <div
         className="relative w-full overflow-hidden"

@@ -213,8 +213,8 @@ function TileRow({ src, alt, tiles }: { src: string; alt: string; tiles: string[
 
 export function NotAllUS() {
   return (
-    <section className="mx-auto w-full max-w-[960px] px-6 pt-[78px] pb-[132px]">
-      <div className="mb-[78px] flex items-center gap-4">
+    <section className="mx-auto w-full max-w-[960px] px-4 pt-12 pb-20 sm:px-6 sm:pt-[78px] sm:pb-[132px]">
+      <div className="mb-10 flex items-center gap-4 sm:mb-[78px]">
         <div className="h-px flex-1 bg-black/15" />
         <h2 className="font-display text-[15px] font-medium tracking-wide text-[#7e8890]">
           And this is not all

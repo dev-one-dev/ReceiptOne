@@ -50,7 +50,7 @@ export function Faq() {
   const [open, setOpen] = useState<number | null>(1);
 
   return (
-    <section id="faq" className="mx-auto w-full max-w-[760px] scroll-mt-28 px-6 pt-4 pb-16 md:pt-8 md:pb-20">
+    <section id="faq" className="mx-auto w-full max-w-[760px] scroll-mt-28 px-4 pt-4 pb-16 sm:px-6 md:pt-8 md:pb-20">
       {/* Pill */}
       <div className="flex justify-center">
         <span className="inline-flex items-center gap-1.5 rounded-full bg-black px-4 py-2 font-display text-[12px] font-semibold text-white">
@@ -60,7 +60,7 @@ export function Faq() {
       </div>
 
       {/* Title */}
-      <h2 className="mt-5 text-center font-display text-[40px] font-bold leading-[1.05] tracking-[-0.02em] text-black md:text-[56px]">
+      <h2 className="mt-5 px-1 text-center font-display text-[28px] font-bold leading-[1.08] tracking-[-0.02em] text-black sm:text-[40px] md:text-[56px]">
         Questions you’ll likely ask
       </h2>
 

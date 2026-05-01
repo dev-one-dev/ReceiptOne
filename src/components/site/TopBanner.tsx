@@ -10,15 +10,15 @@ import avatar4 from "@/assets/figma/avatar-4.webp";
  */
 export function TopBanner() {
   return (
-    <section className="relative w-full px-8 pt-[200px]">
-      <div className="relative mx-auto flex w-full max-w-[960px] flex-col items-center gap-8">
+    <section className="relative w-full px-4 pt-[112px] sm:px-6 sm:pt-[140px] lg:px-8 lg:pt-[200px]">
+      <div className="relative mx-auto flex w-full max-w-[960px] flex-col items-center gap-6 sm:gap-8">
         <div className="relative flex w-full flex-col items-center gap-3">
-          <h1 className="text-center font-display text-[56px] font-semibold leading-[1.05] tracking-[-0.02em] text-black md:text-[64px]">
+          <h1 className="text-center font-display text-[30px] font-semibold leading-[1.08] tracking-[-0.02em] text-black sm:text-[40px] md:text-[52px] lg:text-[56px] xl:text-[64px]">
             Track expenses, store receipts, and generate tax-ready reports –
             all in one place
           </h1>
 
-          <p className="w-[402px] max-w-full text-center font-display text-[18px] leading-7 tracking-[-0.02em] text-[#9192a1]">
+          <p className="max-w-full px-1 text-center font-display text-base leading-6 tracking-[-0.02em] text-[#9192a1] sm:text-lg sm:leading-7">
             Built for freelancers, self-employed, and small businesses in the
             US &amp; Canada
           </p>
@@ -36,7 +36,7 @@ export function TopBanner() {
                 .getElementById("apps")
                 ?.scrollIntoView({ behavior: "smooth", block: "start" });
             }}
-            className="mt-1 inline-flex items-center justify-center rounded-2xl bg-black px-7 py-3.5 font-display text-[15px] font-semibold leading-5 text-white transition-opacity hover:opacity-90"
+            className="mt-1 inline-flex items-center justify-center rounded-2xl bg-black px-5 py-3 font-display text-sm font-semibold leading-5 text-white transition-opacity hover:opacity-90 sm:px-7 sm:py-3.5 sm:text-[15px]"
           >
             Claim your free trial
           </a>
@@ -57,14 +57,14 @@ export function TopBanner() {
           </video>
         </div>
 
-        <div className="group/users relative flex cursor-pointer items-center gap-[9px] rounded-2xl px-3 py-2 transition-all duration-500 ease-out hover:bg-black/[0.03] hover:shadow-[0_8px_30px_-12px_rgba(0,0,0,0.18)]">
-          <div className="flex items-center pr-6">
+        <div className="group/users relative flex w-full max-w-md cursor-pointer flex-col items-center gap-3 rounded-2xl px-3 py-2 transition-all duration-500 ease-out hover:bg-black/[0.03] hover:shadow-[0_8px_30px_-12px_rgba(0,0,0,0.18)] sm:max-w-none sm:flex-row sm:gap-[9px]">
+          <div className="flex items-center pr-0 sm:pr-6">
             <Avatar src={avatar1} alt="User 1" delay={0} />
             <Avatar src={avatar2} alt="User 2" offset delay={60} />
             <Avatar src={avatar3} alt="User 3" offset delay={120} />
             <Avatar src={avatar4} alt="User 4" offset delay={180} />
           </div>
-          <div className="flex w-36 flex-col">
+          <div className="flex w-full flex-col text-center sm:w-36 sm:text-left">
             <span className="font-display text-base font-semibold leading-5 text-black transition-transform duration-500 ease-out group-hover/users:-translate-y-px">
               More{" "}
               <span className="relative inline-block">
@@ -106,7 +106,6 @@ function Avatar({
     />
   );
 }
-
 function DashedLoop({ className }: { className?: string }) {
   return (
     <svg
@@ -132,3 +131,4 @@ function DashedLoop({ className }: { className?: string }) {
     </svg>
   );
 }
+
