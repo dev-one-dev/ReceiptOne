@@ -97,27 +97,92 @@ export const Route = createFileRoute("/privacy")({
 });
 
 function PrivacyPage() {
+  const allPartIds = useMemo(() => ["privacy-all"], []);
+  const {
+    region,
+    setRegion,
+    openSections,
+    setOpenSections,
+    toggleSection,
+  } = useLegalUIState("legal:privacy", allPartIds);
+  const [tocOpen, setTocOpen] = useState(false);
+  const printRestoreRef = useRef<Set<string> | null>(null);
+
+  const allSectionAnchors = useMemo(
+    () => SECTIONS.flatMap((s) => [sectionAnchorId(s.number), ...(s.subsections?.map((ss) => subsectionAnchorId(ss.id)) ?? [])]),
+    [],
+  );
+
+  const expandAll = () => setOpenSections(new Set(allSectionAnchors));
+  const collapseAll = () => setOpenSections(new Set());
+
+  const handleBeforePrint = () => {
+    printRestoreRef.current = new Set(openSections);
+    setOpenSections(new Set(allSectionAnchors));
+  };
+  const handleAfterPrint = () => {
+    if (printRestoreRef.current) {
+      setOpenSections(printRestoreRef.current);
+      printRestoreRef.current = null;
+    }
+  };
+
+  const scrollToId = (id: string) => {
+    setOpenSections((prev) => {
+      const next = new Set(prev);
+      next.add(id);
+      // Also open the parent section if `id` is a subsection.
+      const parent = SECTIONS.find((s) => s.subsections?.some((ss) => subsectionAnchorId(ss.id) === id));
+      if (parent) next.add(sectionAnchorId(parent.number));
+      return next;
+    });
+    requestAnimationFrame(() => {
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+    setTocOpen(false);
+  };
+
+  // Open section if URL has a hash on mount.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const hash = window.location.hash.replace("#", "");
+    if (hash) scrollToId(hash);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <main className="min-h-screen bg-background text-foreground">
-      <div className="border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
-        <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
+      <div className="sticky top-0 z-30 border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 print:hidden">
+        <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-3">
             <Link to="/ca" className="flex items-center gap-2">
               <img src={logoMark} alt="" aria-hidden className="block size-10" />
               <img src={logoWordmark} alt="ReceiptOne" className="block h-6 w-auto" />
             </Link>
-            <p className="text-sm text-muted-foreground">Privacy Policy</p>
+            <p className="hidden text-sm text-muted-foreground sm:block">Privacy Policy</p>
           </div>
-          <Link
-            to="/ca"
-            className="rounded-full border border-border bg-card px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground"
-          >
-            Back to site
-          </Link>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => setTocOpen(true)}
+              className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground lg:hidden"
+              aria-label="Open table of contents"
+            >
+              <ListTree className="size-4" />
+              Contents
+            </button>
+            <Link
+              to="/ca"
+              className="hidden rounded-full border border-border bg-card px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground sm:inline-block"
+            >
+              Back to site
+            </Link>
+          </div>
         </div>
       </div>
 
-      <article className="mx-auto max-w-4xl px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
+      <article className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8 lg:py-12">
         <header className="border-b border-border pb-8">
           <p className="text-sm font-medium text-muted-foreground">Last updated: April 23, 2026</p>
           <h1 className="mt-3 font-display text-4xl font-semibold tracking-normal sm:text-5xl">
@@ -150,9 +215,40 @@ function PrivacyPage() {
               support@receipt-one.com
             </a>
           </p>
+
+          <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <RegionSwitcher region={region} onChange={setRegion} />
+            <div className="flex flex-wrap items-center gap-2">
+              <button
+                type="button"
+                onClick={expandAll}
+                className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground print:hidden"
+              >
+                <ChevronsUpDown className="size-4" />
+                Expand all
+              </button>
+              <button
+                type="button"
+                onClick={collapseAll}
+                className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground print:hidden"
+              >
+                <ChevronsDownUp className="size-4" />
+                Collapse all
+              </button>
+              <PrintButton onBeforePrint={handleBeforePrint} onAfterPrint={handleAfterPrint} />
+            </div>
+          </div>
         </header>
 
-        <div className="space-y-12 py-10">
+        <div className="grid gap-10 py-10 lg:grid-cols-[260px_minmax(0,1fr)] lg:gap-14">
+          <aside className="hidden lg:block">
+            <div className="sticky top-24 max-h-[calc(100vh-7rem)] overflow-y-auto pr-2">
+              <PrivacyTOC region={region} onJump={scrollToId} />
+            </div>
+          </aside>
+
+          <PrivacyContext.Provider value={{ region, openSections, toggleSection }}>
+          <div className="space-y-4">
           <Section number="1" title="Scope">
             <p>This Privacy Policy applies to personal information collected through the Services, including when you:</p>
             <BulletList
