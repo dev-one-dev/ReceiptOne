@@ -1028,26 +1028,32 @@ function TableOfContents({ region, onJump }: { region: Region; onJump: (id: stri
         const visible = part.sections.filter((s) => isApplicable(s, region));
         return (
           <div key={part.id}>
-            <button
-              type="button"
-              onClick={() => onJump(part.id)}
-              className="block w-full text-left text-xs font-semibold uppercase tracking-widest text-muted-foreground transition-colors hover:text-foreground"
-            >
-              {part.label} — {part.title}
-            </button>
+            <div className="group flex items-center gap-1">
+              <button
+                type="button"
+                onClick={() => onJump(part.id)}
+                className="flex-1 text-left text-xs font-semibold uppercase tracking-widest text-muted-foreground transition-colors hover:text-foreground"
+              >
+                {part.label} — {part.title}
+              </button>
+              <AnchorButton hash={part.id} region={region} label={`Copy link to ${part.label}`} />
+            </div>
             <ul className="mt-2 space-y-1 border-l border-border pl-3">
               {visible.map((s) => {
                 const id = sectionId(s);
                 return (
                   <li key={id}>
-                    <button
-                      type="button"
-                      onClick={() => onJump(id)}
-                      className="block w-full text-left leading-snug text-muted-foreground transition-colors hover:text-foreground"
-                    >
-                      {s.number ? <span className="mr-1 text-foreground/70">{s.number}.</span> : null}
-                      {s.title}
-                    </button>
+                    <div className="group flex items-start gap-1">
+                      <button
+                        type="button"
+                        onClick={() => onJump(id)}
+                        className="flex-1 text-left leading-snug text-muted-foreground transition-colors hover:text-foreground"
+                      >
+                        {s.number ? <span className="mr-1 text-foreground/70">{s.number}.</span> : null}
+                        {s.title}
+                      </button>
+                      <AnchorButton hash={id} region={region} label={`Copy link to section ${s.number ?? s.title}`} />
+                    </div>
                   </li>
                 );
               })}
