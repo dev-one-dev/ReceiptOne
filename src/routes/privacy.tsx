@@ -810,6 +810,16 @@ function PrivacyPage() {
           </Section>
           </div>
           </PrivacyContext.Provider>
+
+          <aside className="hidden lg:block">
+            <div className="sticky top-24 max-h-[calc(100vh-7rem)] overflow-y-auto pr-1">
+              <LegalSummary
+                subtitle="Privacy Policy"
+                items={PRIVACY_SUMMARY}
+                region={region}
+              />
+            </div>
+          </aside>
         </div>
       </article>
 
