@@ -64,7 +64,7 @@ export function TopBannerUS() {
             <Avatar src={avatar3} alt="User 3" offset delay={120} />
             <Avatar src={avatar4} alt="User 4" offset delay={180} />
           </div>
-          <div className="flex w-full flex-col text-center sm:w-36 sm:text-left">
+          <div className="flex w-full flex-col text-center sm:w-auto">
             <span className="font-display text-base font-semibold leading-5 text-black transition-transform duration-500 ease-out group-hover/users:-translate-y-px">
               More{" "}
               <span className="relative inline-block">
