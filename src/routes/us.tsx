@@ -41,9 +41,15 @@ function USAPage() {
       data-reveal-root
       className="min-h-screen overflow-x-hidden bg-[#f5f4f0] font-sans text-black antialiased"
     >
-      <div data-reveal-skip><Header /></div>
-      <div data-reveal><TopBannerUS /></div>
-      <div data-reveal><Numbers /></div>
+      <div data-reveal-skip>
+        <Header />
+      </div>
+      <div data-reveal>
+        <TopBannerUS />
+      </div>
+      <div data-reveal>
+        <Numbers />
+      </div>
       <section id="benefits" data-reveal className="w-full">
         <div className="mx-auto w-full max-w-[1440px]">
           <img
@@ -53,12 +59,24 @@ function USAPage() {
           />
         </div>
       </section>
-      <div data-reveal><NotAllUS /></div>
-      <div data-reveal><Advantages /></div>
-      <div data-reveal><AppBanner region="us" /></div>
-      <div data-reveal><Pricing region="us" /></div>
-      <div data-reveal><Faq /></div>
-      <div data-reveal><Footer region="us" /></div>
+      <div data-reveal>
+        <NotAllUS />
+      </div>
+      <div data-reveal>
+        <Advantages />
+      </div>
+      <div data-reveal>
+        <AppBanner region="us" />
+      </div>
+      <div data-reveal>
+        <Pricing region="us" />
+      </div>
+      <div data-reveal>
+        <Faq />
+      </div>
+      <div data-reveal>
+        <Footer region="us" />
+      </div>
       <SuggestFeatureWidget region="us" />
     </main>
   );

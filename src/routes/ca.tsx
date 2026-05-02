@@ -41,16 +41,36 @@ function CanadaPage() {
       data-reveal-root
       className="min-h-screen overflow-x-hidden bg-[#f5f4f0] font-sans text-black antialiased"
     >
-      <div data-reveal-skip><Header /></div>
-      <div data-reveal><TopBanner /></div>
-      <div data-reveal><Numbers /></div>
-      <div data-reveal><InfoCards /></div>
-      <div data-reveal><NotAll /></div>
-      <div data-reveal><Advantages /></div>
-      <div data-reveal><AppBanner /></div>
-      <div data-reveal><Pricing /></div>
-      <div data-reveal><Faq /></div>
-      <div data-reveal><Footer /></div>
+      <div data-reveal-skip>
+        <Header />
+      </div>
+      <div data-reveal>
+        <TopBanner />
+      </div>
+      <div data-reveal>
+        <Numbers />
+      </div>
+      <div data-reveal>
+        <InfoCards />
+      </div>
+      <div data-reveal>
+        <NotAll />
+      </div>
+      <div data-reveal>
+        <Advantages />
+      </div>
+      <div data-reveal>
+        <AppBanner />
+      </div>
+      <div data-reveal>
+        <Pricing />
+      </div>
+      <div data-reveal>
+        <Faq />
+      </div>
+      <div data-reveal>
+        <Footer />
+      </div>
       <SuggestFeatureWidget region="ca" />
     </main>
   );
