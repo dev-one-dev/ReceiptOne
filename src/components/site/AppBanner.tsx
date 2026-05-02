@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { QRCodeSVG } from "qrcode.react";
-import appBannerCaArt from "@/assets/figma/app-banner-ca.svg?url";
-import appBannerUsArt from "@/assets/figma/app-banner-us.svg?url";
+import appBannerCaArt from "@/assets/figma/app-banner-ca.webp";
+import appBannerUsArt from "@/assets/figma/app-banner-us.webp";
 
 const APP_STORE_URL = "https://apps.apple.com/app/receiptone/id0000000000";
 const GOOGLE_PLAY_URL = "https://play.google.com/store/apps/details?id=com.receiptone.app";
