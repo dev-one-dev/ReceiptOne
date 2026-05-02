@@ -12,6 +12,7 @@
     "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": false,
     "noEmit": true,
+    "tsBuildInfoFile": "/tmp/receiptone.tsbuildinfo",
 
     /* Linting */
     "skipLibCheck": true,
