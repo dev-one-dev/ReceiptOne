@@ -13,7 +13,7 @@ export function Numbers() {
 
   return (
     <section className="w-full px-4 py-10 sm:px-6 md:px-8" aria-label="Key product statistics">
-      <div className="mx-auto w-full max-w-[1240px]">
+      <div className="mx-auto w-full max-w-[960px]">
         <div
           className="relative overflow-hidden rounded-[40px] bg-card py-8 sm:rounded-[52px] sm:py-10 md:py-[42px]"
           onMouseEnter={() => setPaused(true)}
