@@ -1,4 +1,4 @@
-import infoCardsArt from "@/assets/figma/info-cards.webp";
+import infoCardsSvg from "@/assets/figma/info-cards.svg";
 
 /**
  * InfoCards — pixel-mapped from Figma 03-InfoCards.svg (1440x2976)
@@ -9,7 +9,7 @@ export function InfoCards() {
     <section id="benefits" className="w-full">
       <div className="mx-auto w-full max-w-[1440px]">
         <img
-          src={infoCardsArt}
+          src={infoCardsSvg}
           alt="Turn Receipt Chaos Into Tax Gold — benefits"
           className="block h-auto w-full"
         />
