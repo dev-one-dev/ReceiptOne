@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { QRCodeSVG } from "qrcode.react";
-import appBannerCaArt from "@/assets/figma/app-banner-ca-replacement.svg?url";
+import appBannerCaArt from "@/assets/figma/app-banner-ca.svg?url";
 import appBannerUsArt from "@/assets/figma/app-banner-us.svg?url";
 
 const APP_STORE_URL = "https://apps.apple.com/app/receiptone/id0000000000";
@@ -179,7 +179,7 @@ export function AppBanner({ region = "ca" }: { region?: "ca" | "us" }) {
     >
       <div className="mx-auto flex w-full max-w-[1440px] justify-center px-4 py-10 md:px-8 md:py-[80px]">
         <div className="relative w-full" style={{ aspectRatio: `${ART_W} / ${ART_H}` }}>
-          {region === "us" ? (
+          {region === "us" || region === "ca" ? (
             <a
               href={qrUrl}
               target="_blank"
