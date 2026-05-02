@@ -211,44 +211,6 @@ export function AppBanner({ region = "ca" }: { region?: "ca" | "us" }) {
 
   const artSrc = region === "ca" ? appBannerCaArt : appBannerUsArt;
 
-  // The US Figma export already bakes in headline, copy, QR, store badges
-  // and the phone mockups. Render the artwork on its own — no HTML overlay
-  // needed, otherwise text and CTAs would duplicate.
-  if (region === "us") {
-    return (
-      <section
-        id="apps"
-        data-region={region}
-        className="w-full scroll-mt-28"
-        aria-labelledby="app-banner-heading"
-      >
-        <div className="mx-auto flex w-full max-w-[1440px] justify-center px-4 py-10 md:px-8 md:py-[80px]">
-          <a
-            href={qrUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={qrLabel}
-            className="relative block w-full"
-            style={{ aspectRatio: `${ART_W} / ${ART_H}` }}
-          >
-            <h2 id="app-banner-heading" className="sr-only">
-              Get your personal receipt manager in your phone
-            </h2>
-            <img
-              src={artSrc}
-              alt="Get your personal receipt manager in your phone — download ReceiptOne on the App Store or Google Play"
-              className="absolute inset-0 h-full w-full object-contain"
-              width={ART_W}
-              height={ART_H}
-              loading="lazy"
-              decoding="async"
-            />
-          </a>
-        </div>
-      </section>
-    );
-  }
-
   return (
     <section
       id="apps"
@@ -261,39 +223,64 @@ export function AppBanner({ region = "ca" }: { region?: "ca" | "us" }) {
           className="relative w-full"
           style={{ aspectRatio: `${ART_W} / ${ART_H}` }}
         >
-          <img
-            src={artSrc}
-            alt=""
-            className="pointer-events-none absolute inset-0 h-full w-full object-cover"
-            width={ART_W}
-            height={ART_H}
-            loading="lazy"
-            decoding="async"
-            aria-hidden
-          />
-          <div
-            className="pointer-events-none absolute z-[1] bg-black"
-            style={{
-              left: pctX(CARD_X),
-              top: pctY(CARD_Y),
-              width: pctX(LEFT_COL_W),
-              height: pctY(CARD_H),
-              borderTopLeftRadius: 32,
-              borderBottomLeftRadius: 32,
-            }}
-            aria-hidden
-          />
-          <div
-            className="absolute z-[2] flex flex-col justify-center gap-6 px-5 py-8 sm:gap-8 sm:px-8 sm:py-10 md:gap-8 md:px-10 md:py-12"
-            style={{
-              left: pctX(CARD_X),
-              top: pctY(CARD_Y),
-              width: pctX(LEFT_COL_W),
-              height: pctY(CARD_H),
-            }}
-          >
-            <BannerCopyAndCtas qrUrl={qrUrl} qrLabel={qrLabel} />
-          </div>
+          {region === "us" ? (
+            <a
+              href={qrUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={qrLabel}
+              className="absolute inset-0 block"
+            >
+              <h2 id="app-banner-heading" className="sr-only">
+                Get your personal receipt manager in your phone
+              </h2>
+              <img
+                src={artSrc}
+                alt="Get your personal receipt manager in your phone — download ReceiptOne on the App Store or Google Play"
+                className="absolute inset-0 h-full w-full object-contain"
+                width={ART_W}
+                height={ART_H}
+                loading="lazy"
+                decoding="async"
+              />
+            </a>
+          ) : (
+            <>
+              <img
+                src={artSrc}
+                alt=""
+                className="pointer-events-none absolute inset-0 h-full w-full object-cover"
+                width={ART_W}
+                height={ART_H}
+                loading="lazy"
+                decoding="async"
+                aria-hidden
+              />
+              <div
+                className="pointer-events-none absolute z-[1] bg-black"
+                style={{
+                  left: pctX(CARD_X),
+                  top: pctY(CARD_Y),
+                  width: pctX(LEFT_COL_W),
+                  height: pctY(CARD_H),
+                  borderTopLeftRadius: 32,
+                  borderBottomLeftRadius: 32,
+                }}
+                aria-hidden
+              />
+              <div
+                className="absolute z-[2] flex flex-col justify-center gap-6 px-5 py-8 sm:gap-8 sm:px-8 sm:py-10 md:gap-8 md:px-10 md:py-12"
+                style={{
+                  left: pctX(CARD_X),
+                  top: pctY(CARD_Y),
+                  width: pctX(LEFT_COL_W),
+                  height: pctY(CARD_H),
+                }}
+              >
+                <BannerCopyAndCtas qrUrl={qrUrl} qrLabel={qrLabel} />
+              </div>
+            </>
+          )}
         </div>
       </div>
     </section>
