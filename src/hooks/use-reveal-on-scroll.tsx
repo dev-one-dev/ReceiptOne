@@ -15,21 +15,15 @@ export function useRevealOnScroll() {
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    const prefersReduced = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
+    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     const collect = (): HTMLElement[] => {
       const set = new Set<HTMLElement>();
-      document
-        .querySelectorAll<HTMLElement>("[data-reveal]")
-        .forEach((el) => set.add(el));
-      document
-        .querySelectorAll<HTMLElement>("[data-reveal-root] > *")
-        .forEach((el) => {
-          if (el.hasAttribute("data-reveal-skip")) return;
-          set.add(el);
-        });
+      document.querySelectorAll<HTMLElement>("[data-reveal]").forEach((el) => set.add(el));
+      document.querySelectorAll<HTMLElement>("[data-reveal-root] > *").forEach((el) => {
+        if (el.hasAttribute("data-reveal-skip")) return;
+        set.add(el);
+      });
       return Array.from(set);
     };
 
@@ -42,7 +36,8 @@ export function useRevealOnScroll() {
       // Sort by vertical position so the wave goes top → bottom.
       const sorted = [...els].sort(
         (a, b) =>
-          a.getBoundingClientRect().top + window.scrollY -
+          a.getBoundingClientRect().top +
+          window.scrollY -
           (b.getBoundingClientRect().top + window.scrollY),
       );
 

@@ -30,7 +30,8 @@ type PartEntry = {
   sections: SectionEntry[];
 };
 
-const sectionId = (s: SectionEntry) => (s.number ? `section-${s.number}` : `section-${slug(s.title)}`);
+const sectionId = (s: SectionEntry) =>
+  s.number ? `section-${s.number}` : `section-${slug(s.title)}`;
 const slug = (s: string) =>
   s
     .toLowerCase()
@@ -123,11 +124,11 @@ const PARTS: PartEntry[] = [
         content: () => (
           <>
             <p>
-              These Terms apply to your access to and use of ReceiptOne and all related features, content, support
-              tools, and associated services that we make available from time to time (collectively, the
-              &quot;Services&quot;). By creating an account, clicking to accept, downloading, installing, accessing,
-              or using the Services, you agree to be bound by these Terms and our Privacy &amp; Data Protection
-              provisions in Part B.
+              These Terms apply to your access to and use of ReceiptOne and all related features,
+              content, support tools, and associated services that we make available from time to
+              time (collectively, the &quot;Services&quot;). By creating an account, clicking to
+              accept, downloading, installing, accessing, or using the Services, you agree to be
+              bound by these Terms and our Privacy &amp; Data Protection provisions in Part B.
             </p>
             <p>If you do not agree to these Terms, you must not access or use the Services.</p>
           </>
@@ -156,14 +157,16 @@ const PARTS: PartEntry[] = [
           <>
             <p>You must be at least 18 years old to use the Services.</p>
             <p>
-              The Services are intended only for users located in the United States and Canada. We do not actively
-              offer the Services in the European Economic Area, the United Kingdom, or Switzerland. If you access
-              the Services from another jurisdiction, you do so at your own risk and are responsible for compliance
-              with local law to the extent applicable.
+              The Services are intended only for users located in the United States and Canada. We
+              do not actively offer the Services in the European Economic Area, the United Kingdom,
+              or Switzerland. If you access the Services from another jurisdiction, you do so at
+              your own risk and are responsible for compliance with local law to the extent
+              applicable.
             </p>
             <p>
-              You represent and warrant that you are legally capable of entering into a binding agreement and that
-              your use of the Services does not violate any applicable law or contractual restriction.
+              You represent and warrant that you are legally capable of entering into a binding
+              agreement and that your use of the Services does not violate any applicable law or
+              contractual restriction.
             </p>
           </>
         ),
@@ -174,14 +177,15 @@ const PARTS: PartEntry[] = [
         content: () => (
           <>
             <p>
-              ReceiptOne is a general-purpose expense tracking and reporting platform. Depending on your plan and
-              product version, the Services may include receipt scanning, OCR-based text extraction, expense
-              categorization and tagging, mileage tracking, home office allocation tools, analytics, bulk upload
-              tools, referral functionality, and report generation and export in formats such as PDF or CSV.
+              ReceiptOne is a general-purpose expense tracking and reporting platform. Depending on
+              your plan and product version, the Services may include receipt scanning, OCR-based
+              text extraction, expense categorization and tagging, mileage tracking, home office
+              allocation tools, analytics, bulk upload tools, referral functionality, and report
+              generation and export in formats such as PDF or CSV.
             </p>
             <p>
-              The Services are productivity and record-organization tools only. They are not a substitute for
-              professional advice or independent review of your records.
+              The Services are productivity and record-organization tools only. They are not a
+              substitute for professional advice or independent review of your records.
             </p>
           </>
         ),
@@ -192,24 +196,26 @@ const PARTS: PartEntry[] = [
         content: () => (
           <>
             <p>
-              ReceiptOne is not a tax preparer, accounting firm, law firm, bookkeeping service, payroll provider,
-              investment adviser, or financial adviser.
+              ReceiptOne is not a tax preparer, accounting firm, law firm, bookkeeping service,
+              payroll provider, investment adviser, or financial adviser.
             </p>
             <p>
-              The Services do not provide tax, accounting, legal, or financial advice; do not guarantee compliance
-              with IRS, CRA, or other authority requirements; and do not guarantee that any deduction, expense
-              classification, tax position, report, or estimate is correct, complete, or legally available to you.
+              The Services do not provide tax, accounting, legal, or financial advice; do not
+              guarantee compliance with IRS, CRA, or other authority requirements; and do not
+              guarantee that any deduction, expense classification, tax position, report, or
+              estimate is correct, complete, or legally available to you.
             </p>
             <p>
-              All OCR outputs, AI-generated categorizations, classifications, rate applications, calculations,
-              recommendations, and reports are estimates only and may contain errors, omissions, outdated
-              assumptions, or inaccurate interpretations of user-provided information.
+              All OCR outputs, AI-generated categorizations, classifications, rate applications,
+              calculations, recommendations, and reports are estimates only and may contain errors,
+              omissions, outdated assumptions, or inaccurate interpretations of user-provided
+              information.
             </p>
             <p>
-              You are solely responsible for reviewing the Services output, validating all data, deciding whether a
-              deduction or credit applies, determining how to characterize any expense, meeting filing and
-              recordkeeping obligations, and consulting a licensed accountant, tax preparer, lawyer, or other
-              qualified adviser where appropriate.
+              You are solely responsible for reviewing the Services output, validating all data,
+              deciding whether a deduction or credit applies, determining how to characterize any
+              expense, meeting filing and recordkeeping obligations, and consulting a licensed
+              accountant, tax preparer, lawyer, or other qualified adviser where appropriate.
             </p>
           </>
         ),
@@ -220,13 +226,13 @@ const PARTS: PartEntry[] = [
         content: () => (
           <>
             <p>
-              You are responsible for maintaining the confidentiality of your credentials and for all activities
-              that occur under your account. You must promptly notify us if you believe your account has been
-              compromised or used without authorization.
+              You are responsible for maintaining the confidentiality of your credentials and for
+              all activities that occur under your account. You must promptly notify us if you
+              believe your account has been compromised or used without authorization.
             </p>
             <p>
-              You agree to provide accurate, current, and complete information and to keep your account details
-              reasonably up to date.
+              You agree to provide accurate, current, and complete information and to keep your
+              account details reasonably up to date.
             </p>
           </>
         ),
@@ -237,16 +243,20 @@ const PARTS: PartEntry[] = [
         content: () => (
           <>
             <p>
-              You retain ownership of the content you upload, submit, store, or generate through the Services,
-              including receipt images, expense data, mileage records, files, and notes (&quot;User Content&quot;).
+              You retain ownership of the content you upload, submit, store, or generate through the
+              Services, including receipt images, expense data, mileage records, files, and notes
+              (&quot;User Content&quot;).
             </p>
             <p>
-              You grant ReceiptOne a limited, non-exclusive, revocable, worldwide license to host, store,
-              reproduce, transmit, process, analyze, and display User Content solely as reasonably necessary to
-              provide, secure, maintain, support, troubleshoot, and improve the Services for you, to comply with
-              law, and to enforce these Terms.
+              You grant ReceiptOne a limited, non-exclusive, revocable, worldwide license to host,
+              store, reproduce, transmit, process, analyze, and display User Content solely as
+              reasonably necessary to provide, secure, maintain, support, troubleshoot, and improve
+              the Services for you, to comply with law, and to enforce these Terms.
             </p>
-            <p>Except as described in these Terms, ReceiptOne does not claim ownership of your User Content.</p>
+            <p>
+              Except as described in these Terms, ReceiptOne does not claim ownership of your User
+              Content.
+            </p>
           </>
         ),
       },
@@ -256,19 +266,20 @@ const PARTS: PartEntry[] = [
         content: () => (
           <>
             <p>
-              ReceiptOne may use automated tools, including OCR, rules-based systems, and AI-assisted
-              classification, to operate the Services.
+              ReceiptOne may use automated tools, including OCR, rules-based systems, and
+              AI-assisted classification, to operate the Services.
             </p>
             <p>
-              We do not use your User Content to train or fine-tune public or shared third-party foundation models
-              for general use. When we use third-party processors to provide OCR or AI-enabled features, we
-              configure those services for service delivery purposes and contractual processing on our behalf,
-              subject to applicable provider terms and data protection controls.
+              We do not use your User Content to train or fine-tune public or shared third-party
+              foundation models for general use. When we use third-party processors to provide OCR
+              or AI-enabled features, we configure those services for service delivery purposes and
+              contractual processing on our behalf, subject to applicable provider terms and data
+              protection controls.
             </p>
             <p>
-              We may use service telemetry, de-identified or aggregated information, and operational performance
-              data to debug, secure, maintain, measure, and improve the Services, provided that such use does not
-              materially change the ownership of your User Content.
+              We may use service telemetry, de-identified or aggregated information, and operational
+              performance data to debug, secure, maintain, measure, and improve the Services,
+              provided that such use does not materially change the ownership of your User Content.
             </p>
           </>
         ),
@@ -279,22 +290,22 @@ const PARTS: PartEntry[] = [
         content: () => (
           <>
             <p>
-              You agree not to use the Services for unlawful, fraudulent, deceptive, infringing, or abusive
-              purposes.
+              You agree not to use the Services for unlawful, fraudulent, deceptive, infringing, or
+              abusive purposes.
             </p>
             <p>
-              You must not upload false, fabricated, altered, or misleading records for the purpose of
-              misrepresentation, evading taxes, or defrauding another person or authority.
+              You must not upload false, fabricated, altered, or misleading records for the purpose
+              of misrepresentation, evading taxes, or defrauding another person or authority.
             </p>
             <p>
-              You must not reverse engineer, interfere with, disable, overburden, scrape, probe, exploit, or
-              attempt to bypass the security or technical protections of the Services, except to the limited
-              extent such restriction is prohibited by applicable law.
+              You must not reverse engineer, interfere with, disable, overburden, scrape, probe,
+              exploit, or attempt to bypass the security or technical protections of the Services,
+              except to the limited extent such restriction is prohibited by applicable law.
             </p>
             <p>
-              You may not use the Services in a manner that would require ReceiptOne to become subject to HIPAA,
-              GLBA, FISMA, PCI DSS, or other industry-specific regulatory obligations that the Services are not
-              designed to satisfy.
+              You may not use the Services in a manner that would require ReceiptOne to become
+              subject to HIPAA, GLBA, FISMA, PCI DSS, or other industry-specific regulatory
+              obligations that the Services are not designed to satisfy.
             </p>
           </>
         ),
@@ -305,24 +316,26 @@ const PARTS: PartEntry[] = [
         content: () => (
           <>
             <p>
-              Certain features require a paid subscription. If you purchase through the Apple App Store or Google
-              Play Store, billing, cancellation, refund handling, and payment method management are governed
-              primarily by the applicable storefront terms and policies.
+              Certain features require a paid subscription. If you purchase through the Apple App
+              Store or Google Play Store, billing, cancellation, refund handling, and payment method
+              management are governed primarily by the applicable storefront terms and policies.
             </p>
             <p>
-              Unless otherwise disclosed at purchase, subscriptions automatically renew at the end of each billing
-              cycle until cancelled. Cancellation generally takes effect at the end of the current paid period,
-              unless the applicable storefront or law provides otherwise.
+              Unless otherwise disclosed at purchase, subscriptions automatically renew at the end
+              of each billing cycle until cancelled. Cancellation generally takes effect at the end
+              of the current paid period, unless the applicable storefront or law provides
+              otherwise.
             </p>
             <p>
-              ReceiptOne does not receive, store, or process your full payment card details when purchases are
-              made through Apple or Google. We may receive limited subscription metadata such as plan type,
-              renewal status, transaction identifiers, country, and subscription state necessary to provide
-              access, detect fraud, and support billing-related service logic.
+              ReceiptOne does not receive, store, or process your full payment card details when
+              purchases are made through Apple or Google. We may receive limited subscription
+              metadata such as plan type, renewal status, transaction identifiers, country, and
+              subscription state necessary to provide access, detect fraud, and support
+              billing-related service logic.
             </p>
             <p>
-              Except where required by law, by the relevant app marketplace, or expressly stated in an offer, fees
-              are non-refundable.
+              Except where required by law, by the relevant app marketplace, or expressly stated in
+              an offer, fees are non-refundable.
             </p>
           </>
         ),
@@ -333,19 +346,19 @@ const PARTS: PartEntry[] = [
         content: () => (
           <>
             <p>
-              If ReceiptOne offers referral rewards, promotional credits, bonus days, discounts, trials, or
-              similar incentives, those offers are subject to additional program-specific terms that may appear
-              in-app or on the website.
+              If ReceiptOne offers referral rewards, promotional credits, bonus days, discounts,
+              trials, or similar incentives, those offers are subject to additional program-specific
+              terms that may appear in-app or on the website.
             </p>
             <p>
-              Unless expressly stated otherwise, promotional rewards: (a) have no cash value; (b) are
-              non-transferable; (c) may be revoked in cases of fraud, abuse, chargeback, refund, duplicate account
-              activity, self-referral, or violation of program rules; and (d) may be modified, suspended, or
-              discontinued at any time to the extent permitted by law.
+              Unless expressly stated otherwise, promotional rewards: (a) have no cash value; (b)
+              are non-transferable; (c) may be revoked in cases of fraud, abuse, chargeback, refund,
+              duplicate account activity, self-referral, or violation of program rules; and (d) may
+              be modified, suspended, or discontinued at any time to the extent permitted by law.
             </p>
             <p>
-              Where a referral program applies a benefit to a future renewal period rather than the current paid
-              term, that future application timing will control.
+              Where a referral program applies a benefit to a future renewal period rather than the
+              current paid term, that future application timing will control.
             </p>
           </>
         ),
@@ -356,14 +369,15 @@ const PARTS: PartEntry[] = [
         content: () => (
           <>
             <p>
-              Except for User Content, the Services and all related software, code, databases, interfaces,
-              designs, text, graphics, logos, trademarks, service marks, compilations, and other materials are
-              owned by ReceiptOne or its licensors and are protected by intellectual property and other laws.
+              Except for User Content, the Services and all related software, code, databases,
+              interfaces, designs, text, graphics, logos, trademarks, service marks, compilations,
+              and other materials are owned by ReceiptOne or its licensors and are protected by
+              intellectual property and other laws.
             </p>
             <p>
-              Subject to your compliance with these Terms, ReceiptOne grants you a limited, non-exclusive,
-              non-transferable, revocable right to use the Services for your internal personal or business
-              record-management purposes.
+              Subject to your compliance with these Terms, ReceiptOne grants you a limited,
+              non-exclusive, non-transferable, revocable right to use the Services for your internal
+              personal or business record-management purposes.
             </p>
           </>
         ),
@@ -374,15 +388,16 @@ const PARTS: PartEntry[] = [
         content: () => (
           <>
             <p>
-              The Services may interoperate with or depend on third-party services, platforms, hosting providers,
-              analytics tools, app marketplaces, mapping or OCR providers, AI providers, storage providers, or
-              other integrations. ReceiptOne is not responsible for third-party services, and your use of
-              third-party functionality may also be governed by separate third-party terms and privacy notices.
+              The Services may interoperate with or depend on third-party services, platforms,
+              hosting providers, analytics tools, app marketplaces, mapping or OCR providers, AI
+              providers, storage providers, or other integrations. ReceiptOne is not responsible for
+              third-party services, and your use of third-party functionality may also be governed
+              by separate third-party terms and privacy notices.
             </p>
             <p>
-              We are not responsible for outages, errors, delays, unavailability, price changes, policy changes,
-              or data handling practices of third-party platforms, except to the extent required by applicable
-              law.
+              We are not responsible for outages, errors, delays, unavailability, price changes,
+              policy changes, or data handling practices of third-party platforms, except to the
+              extent required by applicable law.
             </p>
           </>
         ),
@@ -393,18 +408,20 @@ const PARTS: PartEntry[] = [
         content: () => (
           <>
             <p>
-              TO THE MAXIMUM EXTENT PERMITTED BY LAW, THE SERVICES ARE PROVIDED &quot;AS IS&quot; AND &quot;AS
-              AVAILABLE,&quot; WITHOUT WARRANTIES OF ANY KIND, WHETHER EXPRESS, IMPLIED, STATUTORY, OR OTHERWISE.
+              TO THE MAXIMUM EXTENT PERMITTED BY LAW, THE SERVICES ARE PROVIDED &quot;AS IS&quot;
+              AND &quot;AS AVAILABLE,&quot; WITHOUT WARRANTIES OF ANY KIND, WHETHER EXPRESS,
+              IMPLIED, STATUTORY, OR OTHERWISE.
             </p>
             <p>
-              TO THE MAXIMUM EXTENT PERMITTED BY LAW, RECEIPTONE DISCLAIMS ALL IMPLIED WARRANTIES, INCLUDING
-              MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, TITLE, NON-INFRINGEMENT, QUIET ENJOYMENT,
-              ACCURACY, COMPLETENESS, AND ANY WARRANTY ARISING FROM COURSE OF DEALING OR USAGE OF TRADE.
+              TO THE MAXIMUM EXTENT PERMITTED BY LAW, RECEIPTONE DISCLAIMS ALL IMPLIED WARRANTIES,
+              INCLUDING MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, TITLE, NON-INFRINGEMENT,
+              QUIET ENJOYMENT, ACCURACY, COMPLETENESS, AND ANY WARRANTY ARISING FROM COURSE OF
+              DEALING OR USAGE OF TRADE.
             </p>
             <p>
-              Without limiting the foregoing, ReceiptOne does not warrant that the Services will be uninterrupted,
-              error-free, secure, current, or suitable for any tax, accounting, audit, financing, legal, or
-              regulatory purpose.
+              Without limiting the foregoing, ReceiptOne does not warrant that the Services will be
+              uninterrupted, error-free, secure, current, or suitable for any tax, accounting,
+              audit, financing, legal, or regulatory purpose.
             </p>
           </>
         ),
@@ -415,29 +432,34 @@ const PARTS: PartEntry[] = [
         content: (region) => (
           <>
             <p>
-              TO THE MAXIMUM EXTENT PERMITTED BY LAW, RECEIPTONE AND ITS AFFILIATES, OFFICERS, DIRECTORS,
-              EMPLOYEES, CONTRACTORS, LICENSORS, AND SERVICE PROVIDERS SHALL NOT BE LIABLE FOR ANY INDIRECT,
-              INCIDENTAL, SPECIAL, EXEMPLARY, CONSEQUENTIAL, OR PUNITIVE DAMAGES, OR FOR ANY LOSS OF PROFITS,
-              REVENUE, DATA, GOODWILL, TAX BENEFITS, OR BUSINESS OPPORTUNITIES, ARISING OUT OF OR RELATING TO THE
-              SERVICES OR THESE TERMS.
+              TO THE MAXIMUM EXTENT PERMITTED BY LAW, RECEIPTONE AND ITS AFFILIATES, OFFICERS,
+              DIRECTORS, EMPLOYEES, CONTRACTORS, LICENSORS, AND SERVICE PROVIDERS SHALL NOT BE
+              LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, CONSEQUENTIAL, OR PUNITIVE
+              DAMAGES, OR FOR ANY LOSS OF PROFITS, REVENUE, DATA, GOODWILL, TAX BENEFITS, OR
+              BUSINESS OPPORTUNITIES, ARISING OUT OF OR RELATING TO THE SERVICES OR THESE TERMS.
             </p>
             <p>
-              TO THE MAXIMUM EXTENT PERMITTED BY LAW, RECEIPTONE SHALL NOT BE LIABLE FOR TAX PENALTIES, MISSED
-              DEDUCTIONS, COMPLIANCE FAILURES, AUDIT OUTCOMES, USER FILING DECISIONS, OR RELIANCE ON OCR, AI,
-              CATEGORIZATION, ESTIMATES, OR REPORT OUTPUTS.
+              TO THE MAXIMUM EXTENT PERMITTED BY LAW, RECEIPTONE SHALL NOT BE LIABLE FOR TAX
+              PENALTIES, MISSED DEDUCTIONS, COMPLIANCE FAILURES, AUDIT OUTCOMES, USER FILING
+              DECISIONS, OR RELIANCE ON OCR, AI, CATEGORIZATION, ESTIMATES, OR REPORT OUTPUTS.
             </p>
             <p>
-              TO THE MAXIMUM EXTENT PERMITTED BY LAW, RECEIPTONE&apos;S TOTAL AGGREGATE LIABILITY FOR ALL CLAIMS
-              ARISING OUT OF OR RELATING TO THE SERVICES OR THESE TERMS SHALL NOT EXCEED THE GREATER OF: (A) THE
-              AMOUNT YOU PAID TO RECEIPTONE FOR THE SERVICES IN THE 12 MONTHS PRECEDING THE EVENT GIVING RISE TO
-              THE CLAIM; OR (B){" "}
-              <RegionInline region={region} us="USD $100" ca="the CAD equivalent of USD $100" both="USD $100 (or the CAD equivalent)" />
+              TO THE MAXIMUM EXTENT PERMITTED BY LAW, RECEIPTONE&apos;S TOTAL AGGREGATE LIABILITY
+              FOR ALL CLAIMS ARISING OUT OF OR RELATING TO THE SERVICES OR THESE TERMS SHALL NOT
+              EXCEED THE GREATER OF: (A) THE AMOUNT YOU PAID TO RECEIPTONE FOR THE SERVICES IN THE
+              12 MONTHS PRECEDING THE EVENT GIVING RISE TO THE CLAIM; OR (B){" "}
+              <RegionInline
+                region={region}
+                us="USD $100"
+                ca="the CAD equivalent of USD $100"
+                both="USD $100 (or the CAD equivalent)"
+              />
               .
             </p>
             <p>
-              Nothing in these Terms excludes or limits liability that cannot lawfully be excluded or limited,
-              including liability for gross negligence, willful misconduct, fraud, or death or personal injury
-              caused by negligence where such exclusion is prohibited.
+              Nothing in these Terms excludes or limits liability that cannot lawfully be excluded
+              or limited, including liability for gross negligence, willful misconduct, fraud, or
+              death or personal injury caused by negligence where such exclusion is prohibited.
             </p>
           </>
         ),
@@ -448,20 +470,20 @@ const PARTS: PartEntry[] = [
         content: () => (
           <>
             <p>
-              ReceiptOne may suspend or terminate your access to the Services, in whole or in part, immediately or
-              at a later time, if we reasonably believe that you have violated these Terms, created risk for
-              ReceiptOne or others, engaged in fraud or abuse, or if we are required to do so by law or by a
-              third-party platform on which the Services depend.
+              ReceiptOne may suspend or terminate your access to the Services, in whole or in part,
+              immediately or at a later time, if we reasonably believe that you have violated these
+              Terms, created risk for ReceiptOne or others, engaged in fraud or abuse, or if we are
+              required to do so by law or by a third-party platform on which the Services depend.
             </p>
             <p>
-              You may stop using the Services at any time. If a self-service delete function is available in the
-              product, you may also request deletion through the account settings or by contacting us using the
-              details in these Terms.
+              You may stop using the Services at any time. If a self-service delete function is
+              available in the product, you may also request deletion through the account settings
+              or by contacting us using the details in these Terms.
             </p>
             <p>
-              Terms that by their nature should survive termination will survive, including provisions relating to
-              ownership, disclaimers, limitation of liability, dispute resolution, accrued payment obligations,
-              and data retention required by law.
+              Terms that by their nature should survive termination will survive, including
+              provisions relating to ownership, disclaimers, limitation of liability, dispute
+              resolution, accrued payment obligations, and data retention required by law.
             </p>
           </>
         ),
@@ -473,26 +495,29 @@ const PARTS: PartEntry[] = [
         content: () => (
           <>
             <p>
-              If you are located in the United States, any dispute, claim, or controversy arising out of or
-              relating to these Terms or the Services will be resolved by final and binding individual
-              arbitration, except that either party may bring an eligible claim in small claims court and either
-              party may seek injunctive or equitable relief for misuse of intellectual property, confidential
-              information, or unauthorized access to systems.
+              If you are located in the United States, any dispute, claim, or controversy arising
+              out of or relating to these Terms or the Services will be resolved by final and
+              binding individual arbitration, except that either party may bring an eligible claim
+              in small claims court and either party may seek injunctive or equitable relief for
+              misuse of intellectual property, confidential information, or unauthorized access to
+              systems.
             </p>
             <p>
-              Arbitration will be administered by the American Arbitration Association under its Consumer
-              Arbitration Rules. Arbitration may occur remotely, in the county of your residence, or in another
-              mutually agreed location.
+              Arbitration will be administered by the American Arbitration Association under its
+              Consumer Arbitration Rules. Arbitration may occur remotely, in the county of your
+              residence, or in another mutually agreed location.
             </p>
             <p>
-              You and ReceiptOne waive any right to participate in a class action, class arbitration, mass
-              arbitration to the fullest extent permitted by law, or representative proceeding.
+              You and ReceiptOne waive any right to participate in a class action, class
+              arbitration, mass arbitration to the fullest extent permitted by law, or
+              representative proceeding.
             </p>
             <p>
-              You may opt out of arbitration within 30 days of first accepting these Terms by sending an email to
-              support@receipt-one.com with the subject line &quot;Arbitration Opt-Out&quot; and your account email
-              address. If any portion of this section is found unenforceable, the unenforceable portion will be
-              severed and the remainder enforced to the maximum extent permitted by law.
+              You may opt out of arbitration within 30 days of first accepting these Terms by
+              sending an email to support@receipt-one.com with the subject line &quot;Arbitration
+              Opt-Out&quot; and your account email address. If any portion of this section is found
+              unenforceable, the unenforceable portion will be severed and the remainder enforced to
+              the maximum extent permitted by law.
             </p>
           </>
         ),
@@ -504,16 +529,18 @@ const PARTS: PartEntry[] = [
           <div className="space-y-4">
             {(region === "all" || region === "us") && (
               <RegionParagraph active={region === "us"} label="United States">
-                For users located in the United States, these Terms are governed by the federal laws of the United
-                States and the laws of the State of Delaware, excluding conflict-of-law rules, except to the
-                extent non-waivable consumer protection laws of your state of residence apply.
+                For users located in the United States, these Terms are governed by the federal laws
+                of the United States and the laws of the State of Delaware, excluding
+                conflict-of-law rules, except to the extent non-waivable consumer protection laws of
+                your state of residence apply.
               </RegionParagraph>
             )}
             {(region === "all" || region === "ca") && (
               <RegionParagraph active={region === "ca"} label="Canada">
-                For users located in Canada, these Terms are governed by the federal laws of Canada and the laws
-                of the Province of Ontario, excluding conflict-of-law rules, except to the extent non-waivable
-                consumer protection laws of your province or territory apply.
+                For users located in Canada, these Terms are governed by the federal laws of Canada
+                and the laws of the Province of Ontario, excluding conflict-of-law rules, except to
+                the extent non-waivable consumer protection laws of your province or territory
+                apply.
               </RegionParagraph>
             )}
           </div>
@@ -525,15 +552,15 @@ const PARTS: PartEntry[] = [
         content: () => (
           <>
             <p>
-              We may revise these Terms from time to time. If we make material changes, we will provide notice by
-              reasonable means, such as in-app notice, email, or another prominent communication, before the
-              changes take effect when required by law.
+              We may revise these Terms from time to time. If we make material changes, we will
+              provide notice by reasonable means, such as in-app notice, email, or another prominent
+              communication, before the changes take effect when required by law.
             </p>
             <p>
-              Unless otherwise required by law, your continued use of the Services after the effective date of
-              revised Terms constitutes acceptance of the revised Terms. If you do not agree to the revised Terms,
-              you must stop using the Services and cancel any subscription before the revised Terms become
-              effective.
+              Unless otherwise required by law, your continued use of the Services after the
+              effective date of revised Terms constitutes acceptance of the revised Terms. If you do
+              not agree to the revised Terms, you must stop using the Services and cancel any
+              subscription before the revised Terms become effective.
             </p>
           </>
         ),
@@ -550,10 +577,10 @@ const PARTS: PartEntry[] = [
         title: "Scope of the Privacy Notice",
         content: () => (
           <p>
-            This Part B describes how ReceiptOne collects, uses, discloses, stores, and protects personal
-            information in connection with the Services. It is intended to support disclosure expectations for
-            users in the United States and Canada and should be supplemented if product features, integrations, or
-            target geographies materially change.
+            This Part B describes how ReceiptOne collects, uses, discloses, stores, and protects
+            personal information in connection with the Services. It is intended to support
+            disclosure expectations for users in the United States and Canada and should be
+            supplemented if product features, integrations, or target geographies materially change.
           </p>
         ),
       },
@@ -563,27 +590,27 @@ const PARTS: PartEntry[] = [
         content: () => (
           <>
             <p>
-              <strong>Identifiers and profile information:</strong> such as name, email address, account ID,
-              country, province/state, and account preferences.
+              <strong>Identifiers and profile information:</strong> such as name, email address,
+              account ID, country, province/state, and account preferences.
             </p>
             <p>
-              <strong>Financial and records information:</strong> such as receipt images, OCR text outputs,
-              merchant information, dates, expense categories, mileage records, reports, uploaded files, and
-              related user-entered notes or metadata.
+              <strong>Financial and records information:</strong> such as receipt images, OCR text
+              outputs, merchant information, dates, expense categories, mileage records, reports,
+              uploaded files, and related user-entered notes or metadata.
             </p>
             <p>
-              <strong>Technical and device information:</strong> such as IP address, device identifiers, app
-              identifiers, browser type, operating system, crash logs, diagnostics, telemetry, authentication
-              events, and usage logs.
+              <strong>Technical and device information:</strong> such as IP address, device
+              identifiers, app identifiers, browser type, operating system, crash logs, diagnostics,
+              telemetry, authentication events, and usage logs.
             </p>
             <p>
-              <strong>Subscription and transaction metadata:</strong> such as plan type, storefront status,
-              renewal state, purchase tokens or transaction references, and related billing events from Apple or
-              Google.
+              <strong>Subscription and transaction metadata:</strong> such as plan type, storefront
+              status, renewal state, purchase tokens or transaction references, and related billing
+              events from Apple or Google.
             </p>
             <p>
-              <strong>Support and communications data:</strong> such as messages you send to support, feedback,
-              survey responses, and troubleshooting information.
+              <strong>Support and communications data:</strong> such as messages you send to
+              support, feedback, survey responses, and troubleshooting information.
             </p>
           </>
         ),
@@ -593,9 +620,9 @@ const PARTS: PartEntry[] = [
         title: "Sources of Information",
         content: () => (
           <p>
-            We collect information directly from you, automatically from your use of the Services and your device,
-            from app marketplace providers in connection with subscription status, and from service providers or
-            integrations you use through the Services.
+            We collect information directly from you, automatically from your use of the Services
+            and your device, from app marketplace providers in connection with subscription status,
+            and from service providers or integrations you use through the Services.
           </p>
         ),
       },
@@ -605,14 +632,15 @@ const PARTS: PartEntry[] = [
         content: () => (
           <>
             <p>
-              We process personal information to provide, operate, authenticate, secure, maintain, support,
-              troubleshoot, and improve the Services; perform OCR and AI-assisted categorization; generate reports
-              requested by users; administer subscriptions and account status; detect fraud and abuse; communicate
-              with users; comply with law; enforce our Terms; and establish, exercise, or defend legal claims.
+              We process personal information to provide, operate, authenticate, secure, maintain,
+              support, troubleshoot, and improve the Services; perform OCR and AI-assisted
+              categorization; generate reports requested by users; administer subscriptions and
+              account status; detect fraud and abuse; communicate with users; comply with law;
+              enforce our Terms; and establish, exercise, or defend legal claims.
             </p>
             <p>
-              Where required by law, we will seek consent for particular processing activities or provide
-              additional notices and choices.
+              Where required by law, we will seek consent for particular processing activities or
+              provide additional notices and choices.
             </p>
           </>
         ),
@@ -623,20 +651,21 @@ const PARTS: PartEntry[] = [
         content: () => (
           <>
             <p>
-              We may disclose personal information to service providers and processors that perform services on
-              our behalf, such as hosting, authentication, storage, OCR, AI processing, diagnostics, customer
-              support, analytics, communications, and security monitoring.
+              We may disclose personal information to service providers and processors that perform
+              services on our behalf, such as hosting, authentication, storage, OCR, AI processing,
+              diagnostics, customer support, analytics, communications, and security monitoring.
             </p>
             <p>
-              We may also disclose information: (a) if required by law, subpoena, court order, or lawful request;
-              (b) in connection with a merger, acquisition, financing, reorganization, sale of assets, bankruptcy,
-              or similar transaction; (c) to protect rights, property, safety, or security; or (d) with your
-              direction or consent.
+              We may also disclose information: (a) if required by law, subpoena, court order, or
+              lawful request; (b) in connection with a merger, acquisition, financing,
+              reorganization, sale of assets, bankruptcy, or similar transaction; (c) to protect
+              rights, property, safety, or security; or (d) with your direction or consent.
             </p>
             <p>
-              ReceiptOne does not sell personal information for money. ReceiptOne also does not share personal
-              information for cross-context behavioral advertising based on the current product scope unless and
-              until we provide a specific notice and any legally required opt-out mechanism.
+              ReceiptOne does not sell personal information for money. ReceiptOne also does not
+              share personal information for cross-context behavioral advertising based on the
+              current product scope unless and until we provide a specific notice and any legally
+              required opt-out mechanism.
             </p>
           </>
         ),
@@ -647,21 +676,21 @@ const PARTS: PartEntry[] = [
         content: () => (
           <>
             <p>
-              As of the effective date of these Terms, ReceiptOne may use the following categories of
-              subprocessors: authentication and backend providers (such as Firebase/Google Cloud), OCR and
-              machine-learning providers (such as Google Cloud Vision and Vertex AI), AI-assisted classification
-              providers (such as OpenAI), and logo or content display utilities (such as Logo.dev), together with
-              infrastructure, logging, monitoring, and communication vendors reasonably necessary to operate the
-              Services.
+              As of the effective date of these Terms, ReceiptOne may use the following categories
+              of subprocessors: authentication and backend providers (such as Firebase/Google
+              Cloud), OCR and machine-learning providers (such as Google Cloud Vision and Vertex
+              AI), AI-assisted classification providers (such as OpenAI), and logo or content
+              display utilities (such as Logo.dev), together with infrastructure, logging,
+              monitoring, and communication vendors reasonably necessary to operate the Services.
             </p>
             <p>
-              Personal information processed by such providers may include receipt images, OCR text, merchant
-              names, amounts, dates, usage logs, identifiers, and subscription metadata, depending on the specific
-              function being performed.
+              Personal information processed by such providers may include receipt images, OCR text,
+              merchant names, amounts, dates, usage logs, identifiers, and subscription metadata,
+              depending on the specific function being performed.
             </p>
             <p>
-              We require service providers acting on our behalf to process information under contractual or
-              platform controls appropriate to their role.
+              We require service providers acting on our behalf to process information under
+              contractual or platform controls appropriate to their role.
             </p>
           </>
         ),
@@ -672,15 +701,16 @@ const PARTS: PartEntry[] = [
         content: () => (
           <>
             <p>
-              Your personal information may be stored or processed in the United States and, depending on service
-              configuration, may also be processed in Canada or other jurisdictions where our service providers or
-              their infrastructure operate. Those jurisdictions may have different privacy laws than the place
-              where you reside.
+              Your personal information may be stored or processed in the United States and,
+              depending on service configuration, may also be processed in Canada or other
+              jurisdictions where our service providers or their infrastructure operate. Those
+              jurisdictions may have different privacy laws than the place where you reside.
             </p>
             <p>
-              By using the Services, you understand that your information may be transferred to and processed in
-              countries outside your home jurisdiction, subject to applicable legal safeguards and the contractual
-              arrangements we use with service providers where required.
+              By using the Services, you understand that your information may be transferred to and
+              processed in countries outside your home jurisdiction, subject to applicable legal
+              safeguards and the contractual arrangements we use with service providers where
+              required.
             </p>
           </>
         ),
@@ -691,16 +721,16 @@ const PARTS: PartEntry[] = [
         content: () => (
           <>
             <p>
-              We retain personal information for as long as reasonably necessary for the purposes described in
-              these Terms, including to maintain your account, provide the Services, meet legal and tax retention
-              obligations, resolve disputes, enforce agreements, and support legitimate business records
-              management.
+              We retain personal information for as long as reasonably necessary for the purposes
+              described in these Terms, including to maintain your account, provide the Services,
+              meet legal and tax retention obligations, resolve disputes, enforce agreements, and
+              support legitimate business records management.
             </p>
             <p>
-              Where operationally feasible, account deletion requests will trigger deletion or anonymization of
-              personal information within a commercially reasonable period. Some information may be retained
-              longer in backups, logs, legal holds, fraud-prevention records, tax records, or where required or
-              permitted by law.
+              Where operationally feasible, account deletion requests will trigger deletion or
+              anonymization of personal information within a commercially reasonable period. Some
+              information may be retained longer in backups, logs, legal holds, fraud-prevention
+              records, tax records, or where required or permitted by law.
             </p>
           </>
         ),
@@ -711,24 +741,28 @@ const PARTS: PartEntry[] = [
         content: () => (
           <>
             <p>
-              Depending on your jurisdiction, you may have rights to request access to, correction of, deletion
-              of, or information about the personal information we hold about you, and to withdraw consent where
-              consent is the legal basis for processing, subject to legal and contractual limitations.
+              Depending on your jurisdiction, you may have rights to request access to, correction
+              of, deletion of, or information about the personal information we hold about you, and
+              to withdraw consent where consent is the legal basis for processing, subject to legal
+              and contractual limitations.
             </p>
             <p>
-              Users in certain United States jurisdictions may have additional rights concerning categories of
-              information, categories of recipients, and non-discrimination for exercising privacy rights.
-              California residents may also have rights regarding sharing or sale if those concepts become
-              applicable to ReceiptOne in the future.
+              Users in certain United States jurisdictions may have additional rights concerning
+              categories of information, categories of recipients, and non-discrimination for
+              exercising privacy rights. California residents may also have rights regarding sharing
+              or sale if those concepts become applicable to ReceiptOne in the future.
             </p>
             <p>
               To exercise privacy rights, contact{" "}
-              <a className="font-medium text-foreground underline underline-offset-4" href="mailto:privacy@receipt-one.com">
+              <a
+                className="font-medium text-foreground underline underline-offset-4"
+                href="mailto:privacy@receipt-one.com"
+              >
                 privacy@receipt-one.com
               </a>{" "}
-              or use any in-app privacy request mechanism we make available. We may need to verify your identity
-              before fulfilling a request. Authorized agents may be required to provide proof of authority where
-              applicable.
+              or use any in-app privacy request mechanism we make available. We may need to verify
+              your identity before fulfilling a request. Authorized agents may be required to
+              provide proof of authority where applicable.
             </p>
           </>
         ),
@@ -738,10 +772,10 @@ const PARTS: PartEntry[] = [
         title: "Security",
         content: () => (
           <p>
-            ReceiptOne uses reasonable administrative, technical, and organizational safeguards designed to
-            protect personal information, including encryption in transit, access controls, logging, and role-based
-            restrictions. No method of transmission or storage is completely secure, and we cannot guarantee
-            absolute security.
+            ReceiptOne uses reasonable administrative, technical, and organizational safeguards
+            designed to protect personal information, including encryption in transit, access
+            controls, logging, and role-based restrictions. No method of transmission or storage is
+            completely secure, and we cannot guarantee absolute security.
           </p>
         ),
       },
@@ -750,11 +784,11 @@ const PARTS: PartEntry[] = [
         title: "Incident and Breach Notifications",
         content: () => (
           <p>
-            If ReceiptOne confirms a security incident involving personal information for which notice is required
-            by applicable law, we will provide notice to affected individuals and regulators as required by
-            applicable law and within the timeframes that law requires. Any specific notice period stated in a
-            policy or support communication is subject to the facts of the incident, required investigation time,
-            and legal obligations.
+            If ReceiptOne confirms a security incident involving personal information for which
+            notice is required by applicable law, we will provide notice to affected individuals and
+            regulators as required by applicable law and within the timeframes that law requires.
+            Any specific notice period stated in a policy or support communication is subject to the
+            facts of the incident, required investigation time, and legal obligations.
           </p>
         ),
       },
@@ -763,9 +797,10 @@ const PARTS: PartEntry[] = [
         title: "Children's Privacy",
         content: () => (
           <p>
-            The Services are not intended for individuals under 18 years of age, and we do not knowingly collect
-            personal information from children. If we learn that a child has provided personal information in
-            violation of these Terms, we will take commercially reasonable steps to delete it.
+            The Services are not intended for individuals under 18 years of age, and we do not
+            knowingly collect personal information from children. If we learn that a child has
+            provided personal information in violation of these Terms, we will take commercially
+            reasonable steps to delete it.
           </p>
         ),
       },
@@ -774,9 +809,9 @@ const PARTS: PartEntry[] = [
         title: "Changes to Privacy Disclosures",
         content: () => (
           <p>
-            We may update the privacy disclosures in these Terms from time to time to reflect changes in the
-            Services, legal obligations, or our processing practices. Material changes will be communicated as
-            required by law.
+            We may update the privacy disclosures in these Terms from time to time to reflect
+            changes in the Services, legal obligations, or our processing practices. Material
+            changes will be communicated as required by law.
           </p>
         ),
       },
@@ -793,13 +828,15 @@ const PARTS: PartEntry[] = [
         content: () => (
           <>
             <p>
-              These Terms constitute the entire agreement between you and ReceiptOne regarding the Services and
-              supersede prior or contemporaneous understandings on the same subject matter, except for any
-              additional terms expressly incorporated by reference or presented for a specific feature.
+              These Terms constitute the entire agreement between you and ReceiptOne regarding the
+              Services and supersede prior or contemporaneous understandings on the same subject
+              matter, except for any additional terms expressly incorporated by reference or
+              presented for a specific feature.
             </p>
             <p>
-              If any provision of these Terms is found unenforceable, that provision will be enforced to the
-              maximum extent permissible and the remaining provisions will remain in full force and effect.
+              If any provision of these Terms is found unenforceable, that provision will be
+              enforced to the maximum extent permissible and the remaining provisions will remain in
+              full force and effect.
             </p>
             <p>Failure to enforce any provision is not a waiver of future enforcement.</p>
           </>
@@ -819,11 +856,13 @@ const PARTS: PartEntry[] = [
             />
             {(region === "all" || region === "us") && (
               <p>
-                Arbitration opt-out (U.S. only): support@receipt-one.com, subject line: &quot;Arbitration
-                Opt-Out&quot;.
+                Arbitration opt-out (U.S. only): support@receipt-one.com, subject line:
+                &quot;Arbitration Opt-Out&quot;.
               </p>
             )}
-            <BulletList items={["Mailing address: [INSERT FULL LEGAL NOTICE ADDRESS BEFORE PUBLIC RELEASE]."]} />
+            <BulletList
+              items={["Mailing address: [INSERT FULL LEGAL NOTICE ADDRESS BEFORE PUBLIC RELEASE]."]}
+            />
           </>
         ),
       },
@@ -831,10 +870,11 @@ const PARTS: PartEntry[] = [
         title: "Execution Note",
         content: () => (
           <p>
-            Before publishing this document in the mobile app, web app, Apple App Store, or Google Play listing,
-            replace all bracketed placeholders with final company details, confirm that the listed processors and
-            data flows match the deployed architecture, and separately prepare any program-specific terms for
-            referrals, promotions, or team/business plans if those features are enabled.
+            Before publishing this document in the mobile app, web app, Apple App Store, or Google
+            Play listing, replace all bracketed placeholders with final company details, confirm
+            that the listed processors and data flows match the deployed architecture, and
+            separately prepare any program-specific terms for referrals, promotions, or
+            team/business plans if those features are enabled.
           </p>
         ),
       },
@@ -843,9 +883,9 @@ const PARTS: PartEntry[] = [
         content: () => (
           <>
             <p>
-              This appendix is optional and should be removed before public release if you want a cleaner
-              customer-facing version. It is included here because the request was to produce a stronger final
-              draft based on legal review findings.
+              This appendix is optional and should be removed before public release if you want a
+              cleaner customer-facing version. It is included here because the request was to
+              produce a stronger final draft based on legal review findings.
             </p>
             <BulletList
               items={[
@@ -988,11 +1028,12 @@ function TermsPage() {
           </h1>
           <div className="mt-6 max-w-3xl space-y-4 text-base leading-7 text-muted-foreground">
             <p>
-              These Legal Terms (&quot;Terms&quot;) form a legally binding agreement between you and ReceiptOne
-              governing your access to and use of the ReceiptOne mobile application, web application, and related
-              services. These Terms are intended for a United States and Canada launch and are drafted to reduce
-              product, privacy, and consumer-law risk for the current scope of the Services. Company-identifying
-              details marked for completion must be finalized before public release.
+              These Legal Terms (&quot;Terms&quot;) form a legally binding agreement between you and
+              ReceiptOne governing your access to and use of the ReceiptOne mobile application, web
+              application, and related services. These Terms are intended for a United States and
+              Canada launch and are drafted to reduce product, privacy, and consumer-law risk for
+              the current scope of the Services. Company-identifying details marked for completion
+              must be finalized before public release.
             </p>
           </div>
 
@@ -1043,11 +1084,7 @@ function TermsPage() {
 
           <aside className="hidden lg:block">
             <div className="sticky top-24 max-h-[calc(100vh-7rem)] overflow-y-auto pr-1">
-              <LegalSummary
-                subtitle="Terms of Use"
-                items={TERMS_SUMMARY}
-                region={region}
-              />
+              <LegalSummary subtitle="Terms of Use" items={TERMS_SUMMARY} region={region} />
             </div>
           </aside>
         </div>
@@ -1107,10 +1144,16 @@ function TableOfContents({ region, onJump }: { region: Region; onJump: (id: stri
                         onClick={() => onJump(id)}
                         className="flex-1 text-left leading-snug text-muted-foreground transition-colors hover:text-foreground"
                       >
-                        {s.number ? <span className="mr-1 text-foreground/70">{s.number}.</span> : null}
+                        {s.number ? (
+                          <span className="mr-1 text-foreground/70">{s.number}.</span>
+                        ) : null}
                         {s.title}
                       </button>
-                      <AnchorButton hash={id} region={region} label={`Copy link to section ${s.number ?? s.title}`} />
+                      <AnchorButton
+                        hash={id}
+                        region={region}
+                        label={`Copy link to section ${s.number ?? s.title}`}
+                      />
                     </div>
                   </li>
                 );
@@ -1152,8 +1195,12 @@ function PartBlock({
         className="flex w-full items-center justify-between gap-4 rounded-2xl bg-muted/30 px-5 py-4 text-left transition-colors hover:bg-muted/50"
       >
         <div ref={headingRef}>
-          <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">{part.label}</p>
-          <h2 className="mt-1 font-display text-xl font-semibold tracking-normal sm:text-2xl">{part.title}</h2>
+          <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+            {part.label}
+          </p>
+          <h2 className="mt-1 font-display text-xl font-semibold tracking-normal sm:text-2xl">
+            {part.title}
+          </h2>
           <p className="mt-1 text-xs text-muted-foreground">
             {visible.length} section{visible.length === 1 ? "" : "s"}
           </p>
@@ -1204,7 +1251,10 @@ function SectionAccordion({
   const onlyCA = section.regions?.length === 1 && section.regions[0] === "ca";
 
   return (
-    <div id={id} className="group/section overflow-hidden rounded-xl border border-border bg-background scroll-mt-24">
+    <div
+      id={id}
+      className="group/section overflow-hidden rounded-xl border border-border bg-background scroll-mt-24"
+    >
       <div className="flex items-center gap-2 pr-3">
         <button
           type="button"
@@ -1219,7 +1269,9 @@ function SectionAccordion({
                 {section.number.padStart(2, "0")}
               </span>
             )}
-            <h3 className="font-display text-base font-semibold tracking-normal sm:text-lg">{section.title}</h3>
+            <h3 className="font-display text-base font-semibold tracking-normal sm:text-lg">
+              {section.title}
+            </h3>
             {onlyUS && <RegionTag tone="us">US</RegionTag>}
             {onlyCA && <RegionTag tone="ca">CA</RegionTag>}
           </div>

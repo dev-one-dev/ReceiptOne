@@ -2,7 +2,9 @@
 @source "../src";
 @import "tw-animate-css";
 
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+}
 
 @custom-variant dark (&:is(.dark *));
 
@@ -214,8 +216,7 @@ html { scroll-behavior: smooth; }
   opacity: 1;
   transform: translate3d(0, 0, 0) scale(1);
   filter: blur(0);
-  animation: revealGlow 1.6s cubic-bezier(0.16, 1, 0.3, 1)
-    var(--reveal-delay, 0ms) both;
+  animation: revealGlow 1.6s cubic-bezier(0.16, 1, 0.3, 1) var(--reveal-delay, 0ms) both;
 }
 
 @keyframes revealGlow {
@@ -353,14 +354,27 @@ html { scroll-behavior: smooth; }
 
 /* NotAll tiles — coarse-pointer floating + active click pulse */
 @keyframes notall-float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-4px); }
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
 }
 
 @keyframes notall-pulse {
-  0% { opacity: 0; transform: scale(0.96); }
-  40% { opacity: 1; }
-  100% { opacity: 0; transform: scale(1.04); }
+  0% {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  40% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.04);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -372,25 +386,42 @@ html { scroll-behavior: smooth; }
 
 /* Claim button — modern animated CTA */
 @keyframes claim-glow {
-  0%, 100% {
-    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.45),
-                0 8px 24px -8px rgba(59, 130, 246, 0.4);
+  0%,
+  100% {
+    box-shadow:
+      0 0 0 0 rgba(59, 130, 246, 0.45),
+      0 8px 24px -8px rgba(59, 130, 246, 0.4);
   }
   50% {
-    box-shadow: 0 0 0 10px rgba(59, 130, 246, 0),
-                0 12px 32px -8px rgba(168, 85, 247, 0.55);
+    box-shadow:
+      0 0 0 10px rgba(59, 130, 246, 0),
+      0 12px 32px -8px rgba(168, 85, 247, 0.55);
   }
 }
 
 @keyframes claim-shimmer {
-  0% { transform: translateX(-100%); opacity: 0; }
-  20% { opacity: 1; }
-  100% { transform: translateX(100%); opacity: 0; }
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
 }
 
 @keyframes claim-ripple {
-  0% { opacity: 0.9; transform: scale(0.8); }
-  100% { opacity: 0; transform: scale(1.3); }
+  0% {
+    opacity: 0.9;
+    transform: scale(0.8);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.3);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -403,13 +434,22 @@ html { scroll-behavior: smooth; }
 
 /* Footer — animated background line + gentle float */
 @keyframes footer-line {
-  0% { background-position: 0% 50%; }
-  100% { background-position: 200% 50%; }
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 200% 50%;
+  }
 }
 
 @keyframes footer-float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-3px); }
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -426,12 +466,28 @@ html { scroll-behavior: smooth; }
  * - Removes background colors so legal text prints crisply.
  */
 @media print {
-  body { background: white !important; color: black !important; }
-  .print\:hidden { display: none !important; }
+  body {
+    background: white !important;
+    color: black !important;
+  }
+  .print\:hidden {
+    display: none !important;
+  }
   /* Force accordions open during print regardless of state */
-  [data-region-applicable="false"] { opacity: 1 !important; }
-  aside, .sticky { position: static !important; }
+  [data-region-applicable="false"] {
+    opacity: 1 !important;
+  }
+  aside,
+  .sticky {
+    position: static !important;
+  }
   /* Avoid breaking inside a section header */
-  h1, h2, h3 { break-after: avoid; }
-  section { break-inside: avoid-page; }
+  h1,
+  h2,
+  h3 {
+    break-after: avoid;
+  }
+  section {
+    break-inside: avoid-page;
+  }
 }
