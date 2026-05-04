@@ -56,25 +56,25 @@ export function TopBanner() {
           </video>
         </div>
 
-        <div className="group/users relative mx-auto flex cursor-pointer flex-col items-center gap-3 rounded-2xl px-3 py-2 transition-all duration-500 ease-out hover:bg-black/[0.03] hover:shadow-[0_8px_30px_-12px_rgba(0,0,0,0.18)] sm:flex-row sm:gap-[9px]">
-          <div className="flex items-center pr-0 sm:pr-4">
+        <div className="group/users relative mx-auto flex w-fit cursor-pointer flex-col items-center justify-center gap-2 rounded-2xl px-3 py-2 transition-[background-color,box-shadow,transform] duration-[450ms] ease-[cubic-bezier(0.22,1,0.36,1)] hover:bg-black/[0.03] hover:shadow-[0_10px_30px_-14px_rgba(0,0,0,0.18)] sm:flex-row sm:items-center sm:gap-[14px]">
+          <div className="flex items-center justify-center">
             <Avatar src={avatar1} alt="User 1" delay={0} />
             <Avatar src={avatar2} alt="User 2" offset delay={60} />
             <Avatar src={avatar3} alt="User 3" offset delay={120} />
             <Avatar src={avatar4} alt="User 4" offset delay={180} />
           </div>
-          <div className="flex flex-col text-center sm:text-left">
-            <span className="font-display text-base font-semibold leading-5 text-black transition-transform duration-500 ease-out group-hover/users:-translate-y-px">
+          <div className="flex flex-col items-center text-center sm:items-start sm:text-left">
+            <span className="font-display text-base font-semibold leading-5 text-black transition-transform duration-[450ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover/users:-translate-y-px">
               More{" "}
               <span className="relative inline-block">
-                <span className="relative z-10 transition-colors duration-500 group-hover/users:text-[#f97316]">
+                <span className="relative z-10 transition-colors duration-[450ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover/users:text-[#f97316]">
                   3.000
                 </span>
-                <span className="absolute inset-x-0 bottom-0.5 h-1.5 origin-left scale-x-0 bg-[#fed7aa] transition-transform duration-500 ease-out group-hover/users:scale-x-100" />
+                <span className="absolute inset-x-0 bottom-0.5 h-1.5 origin-left scale-x-0 bg-[#fed7aa] transition-transform duration-[550ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover/users:scale-x-100" />
               </span>{" "}
               users
             </span>
-            <span className="font-display text-base leading-6 text-[#9192a1] transition-colors duration-500 group-hover/users:text-black">
+            <span className="font-display text-base leading-6 text-[#9192a1] transition-colors duration-[450ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover/users:text-black">
               keeping their money
             </span>
           </div>
@@ -99,7 +99,7 @@ function Avatar({
     <img
       src={src}
       alt={alt}
-      className={`size-12 rounded-full border-[3px] border-white object-cover shadow-sm transition-all duration-500 ease-out group-hover/users:-translate-y-1 group-hover/users:shadow-lg group-hover/users:[transform:translateY(-4px)_rotate(-4deg)] hover:!translate-y-[-8px] hover:!scale-110 hover:!rotate-0 hover:z-20 hover:ring-2 hover:ring-black/10 ${offset ? "-ml-6" : ""}`}
+      className={`size-11 rounded-full border-[3px] border-white object-cover shadow-sm transition-[transform,box-shadow] duration-[450ms] ease-[cubic-bezier(0.22,1,0.36,1)] will-change-transform group-hover/users:-translate-y-1 group-hover/users:shadow-lg hover:!translate-y-[-8px] hover:!scale-110 hover:z-20 hover:ring-2 hover:ring-black/10 ${offset ? "-ml-3" : ""}`}
       style={{ transitionDelay: `${delay}ms` }}
       loading="lazy"
     />
