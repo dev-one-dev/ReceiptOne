@@ -169,7 +169,7 @@ export function NotAll() {
   const [rowRef, rowKey] = useReplayOnVisible<HTMLDivElement>(0.2);
 
   // SVG is 1440x1325. Card rects (from path data):
-  //   Row1: y=172..732 (h=560)   Row2: y=796..1324 (h=528)
+  //   Row1: y=172..732 (h=560)   Row2: y=764..1324 (h=560)
   //   Cols: x=240..544, 568..872, 896..1200 (w=304, gap=24)
   const SVG_W = 1440;
   const SVG_H = 1325;
@@ -180,10 +180,10 @@ export function NotAll() {
   ];
   const cardRows: Array<[number, number]> = [
     [172, 732],
-    [796, 1324],
+    [764, 1324],
   ];
-  // Divider line y inside each card (text/beaver separator)
-  const dividerYs = [454, 1046];
+  // Divider line y inside each card (text/beaver separator) — baked image edge
+  const dividerYs = [454.5, 1046.5];
 
   return (
     <section className="mx-auto w-full max-w-[1440px] px-3 pt-0 pb-20 sm:px-6 sm:pt-2 sm:pb-[132px]">
@@ -207,10 +207,10 @@ export function NotAll() {
               aria-hidden
               className="pointer-events-none absolute"
               style={{
-                top: `${(dy / SVG_H) * 100}%`,
-                left: `${((x0 + 16) / SVG_W) * 100}%`,
-                width: `${((x1 - x0 - 32) / SVG_W) * 100}%`,
-                height: "0.45%",
+                top: `${((dy - 2) / SVG_H) * 100}%`,
+                left: `${((x0 + 1) / SVG_W) * 100}%`,
+                width: `${((x1 - x0 - 2) / SVG_W) * 100}%`,
+                height: `${(5 / SVG_H) * 100}%`,
                 background: "#ffffff",
               }}
             />
