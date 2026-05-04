@@ -7,6 +7,42 @@ import avatar4 from "@/assets/figma/avatar-4.webp";
 import containerCa from "@/assets/figma/topbanner-container-ca.svg";
 import trialCa from "@/assets/figma/topbanner-trial-ca.svg";
 import { useReplayOnVisible } from "@/hooks/use-replay-on-visible";
+import type { CSSProperties } from "react";
+
+/**
+ * Button geometry inside the Figma container SVG (viewBox 960×364).
+ * Top-left corner of the "Claim your free trial" button rect: (356, 308).
+ * We expose tweakable CSS vars so the arrow can be aligned without code edits.
+ */
+const CONTAINER_VB_W = 960;
+const CONTAINER_VB_H = 364;
+const BTN_X = 356;
+const BTN_Y = 308;
+
+// Loop SVG (viewBox 239×106) — coordinates of the arrow tip (drawing endpoint).
+const ARROW_TIP_X = 3; // arrowhead tip lands near left edge of svg
+const ARROW_TIP_Y = 103;
+// Coordinates of the loop's "anchor" end (start of the curve, near button corner).
+const ARROW_ANCHOR_X = 238;
+const ARROW_ANCHOR_Y = 103;
+
+const topBannerVars = {
+  // Button anchor as % of container, derived from the SVG.
+  "--tb-btn-x": `${(BTN_X / CONTAINER_VB_W) * 100}%`,
+  "--tb-btn-y": `${(BTN_Y / CONTAINER_VB_H) * 100}%`,
+  // Arrow loop sizing — scales with container so the anchor stays glued to the button.
+  "--tb-arrow-w": "clamp(140px, 24.9%, 239px)",
+  "--tb-arrow-tip-x": `${(ARROW_TIP_X / 239) * 100}%`,
+  "--tb-arrow-tip-y": `${(ARROW_TIP_Y / 106) * 100}%`,
+  "--tb-arrow-anchor-x": `${(ARROW_ANCHOR_X / 239) * 100}%`,
+  "--tb-arrow-anchor-y": `${(ARROW_ANCHOR_Y / 106) * 100}%`,
+  // Pixel nudges (override here to fine-tune without touching JSX).
+  "--tb-arrow-dx": "0px",
+  "--tb-arrow-dy": "0px",
+  "--tb-trial-w": "clamp(78px, 12.3%, 118px)",
+  "--tb-trial-dx": "-12px",
+  "--tb-trial-dy": "-4px",
+} as CSSProperties;
 
 /**
  * TopBanner — pixel-mapped from Figma node 29:26474
@@ -16,19 +52,39 @@ export function TopBanner() {
   return (
     <section className="relative w-full px-4 pt-[112px] sm:px-6 sm:pt-[140px] lg:px-8 lg:pt-[200px]">
       <div className="relative mx-auto flex w-full max-w-[960px] flex-col items-center gap-6 sm:gap-8">
-        <div ref={loopRef} className="relative flex w-full flex-col items-center">
+        <div ref={loopRef} className="relative flex w-full flex-col items-center" style={topBannerVars}>
           <img
             src={containerCa}
             alt="Track expenses, store receipts, and generate tax-ready reports — built for freelancers, self-employed, and small businesses in the US & Canada"
             className="block h-auto w-full select-none"
             draggable={false}
           />
-          <DashedLoopCa key={`loop-${loopKey}`} className="pointer-events-none absolute left-1/2 bottom-[12%] hidden w-[239px] -translate-x-[362px] lg:block" />
+          <DashedLoopCa
+            key={`loop-${loopKey}`}
+            className="pointer-events-none absolute hidden lg:block"
+            style={{
+              left: "var(--tb-btn-x)",
+              top: "var(--tb-btn-y)",
+              width: "var(--tb-arrow-w)",
+              // Aspect ratio of the loop svg (239:106) so width drives height.
+              aspectRatio: "239 / 106",
+              transform:
+                "translate(calc(-1 * var(--tb-arrow-anchor-x) + var(--tb-arrow-dx)), calc(-1 * var(--tb-arrow-anchor-y) + var(--tb-arrow-dy)))",
+            }}
+          />
           <img
             key={`trial-${loopKey}`}
             src={trialCa}
             alt="7 days free trial available"
-            className="pointer-events-none absolute left-1/2 bottom-[2%] hidden w-[118px] -translate-x-[420px] select-none opacity-0 [animation:loopFadeIn_0.6s_ease-out_1.4s_forwards] lg:block"
+            className="pointer-events-none absolute hidden select-none opacity-0 [animation:loopFadeIn_0.6s_ease-out_1.4s_forwards] lg:block"
+            style={{
+              // Anchor under the arrow tip — slightly left of the button.
+              left: "var(--tb-btn-x)",
+              top: "var(--tb-btn-y)",
+              width: "var(--tb-trial-w)",
+              transform:
+                "translate(calc(-1 * var(--tb-arrow-w) - 100% + var(--tb-arrow-tip-x) + var(--tb-trial-dx)), calc(-1 * var(--tb-arrow-w) * 106 / 239 + var(--tb-arrow-tip-y) + var(--tb-trial-dy)))",
+            }}
             draggable={false}
           />
           <a
