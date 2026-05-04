@@ -199,6 +199,12 @@ function TileRow({ src, alt, tiles }: { src: string; alt: string; tiles: string[
         alt={alt}
         className="pointer-events-none col-span-3 block h-auto w-full"
       />
+      {/* Cover the baked-in divider line between text and eagle in each card */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute left-0 right-0"
+        style={{ top: "49.6%", height: "1.6%", background: "#ffffff" }}
+      />
       {/* Per-card hotspots overlayed on top of the SVG */}
       <div className="pointer-events-none absolute inset-0 grid grid-cols-3 gap-[2.5%] px-[1%]">
         {tiles.map((label, i) => (
