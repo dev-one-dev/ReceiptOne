@@ -5,6 +5,8 @@ import avatar2 from "@/assets/figma/avatar-2.webp";
 import avatar3 from "@/assets/figma/avatar-3.webp";
 import avatar4 from "@/assets/figma/avatar-4.webp";
 import containerCa from "@/assets/figma/topbanner-container-ca.svg";
+import loopCa from "@/assets/figma/topbanner-loop-ca.svg";
+import trialCa from "@/assets/figma/topbanner-trial-ca.svg";
 
 /**
  * TopBanner — pixel-mapped from Figma node 29:26474
@@ -18,6 +20,19 @@ export function TopBanner() {
             src={containerCa}
             alt="Track expenses, store receipts, and generate tax-ready reports — built for freelancers, self-employed, and small businesses in the US & Canada"
             className="block h-auto w-full select-none"
+            draggable={false}
+          />
+          <img
+            src={loopCa}
+            alt=""
+            aria-hidden="true"
+            className="pointer-events-none absolute left-1/2 bottom-[10%] hidden w-[239px] -translate-x-[340px] select-none md:block"
+            draggable={false}
+          />
+          <img
+            src={trialCa}
+            alt="7 days free trial available"
+            className="pointer-events-none absolute left-1/2 bottom-[2%] hidden w-[118px] -translate-x-[420px] select-none md:block"
             draggable={false}
           />
           <a
