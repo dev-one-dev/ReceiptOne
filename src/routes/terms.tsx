@@ -71,10 +71,6 @@ export const Route = createFileRoute("/terms")({
   },
   component: TermsPage,
 });
-    ],
-  }),
-  component: TermsPage,
-});
 
 /* ----------------------------- Content model ----------------------------- */
 
