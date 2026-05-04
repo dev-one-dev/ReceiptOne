@@ -1,4 +1,4 @@
-import pricingSvg from "@/assets/figma/pricing.svg";
+import pricingSvg from "@/assets/figma/pricing-ca.svg";
 import pricingUsSvg from "@/assets/figma/pricing-us.svg";
 
 // Card boxes from the Figma SVG (viewBox 1440x1632, displayed crop 1440x1110)
