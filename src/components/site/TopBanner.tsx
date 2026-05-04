@@ -85,9 +85,11 @@ export function TopBanner() {
     const wrap = containerRef.current;
     if (!img || !wrap) return;
     const measure = () => {
-      const w = img.clientWidth;
-      const h = img.clientHeight;
-      if (!w || !h) return;
+      const rect = img.getBoundingClientRect();
+      const w = rect.width || img.clientWidth;
+      // Fall back to ratio if intrinsic height isn't laid out yet.
+      const h = rect.height || img.clientHeight || (w * CONTAINER_VB_H) / CONTAINER_VB_W;
+      if (!w) return;
       setBtnPx({
         x: (BTN_X / CONTAINER_VB_W) * w,
         y: (BTN_Y / CONTAINER_VB_H) * h,
