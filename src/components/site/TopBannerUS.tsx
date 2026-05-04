@@ -22,7 +22,7 @@ export function TopBannerUS() {
             all in one place
           </h1>
 
-          <p className="max-w-full px-1 text-center font-display text-base leading-6 tracking-[-0.02em] text-[#9192a1] sm:text-lg sm:leading-7">
+          <p className="mx-auto max-w-[420px] px-1 text-center font-display text-base leading-6 tracking-[-0.02em] text-[#9192a1] sm:text-lg sm:leading-7">
             Built for freelancers, self-employed, and small businesses in the US
           </p>
 
