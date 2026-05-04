@@ -60,14 +60,14 @@ export function TopBannerUS() {
           </video>
         </div>
 
-        <div className="group/users relative flex w-full max-w-md cursor-pointer flex-col items-center gap-3 rounded-2xl px-3 py-2 transition-all duration-500 ease-out hover:bg-black/[0.03] hover:shadow-[0_8px_30px_-12px_rgba(0,0,0,0.18)] sm:max-w-none sm:flex-row sm:gap-[9px]">
+        <div className="group/users relative mx-auto flex w-full max-w-md cursor-pointer flex-col items-center justify-center gap-3 rounded-2xl px-3 py-2 transition-all duration-500 ease-out hover:bg-black/[0.03] hover:shadow-[0_8px_30px_-12px_rgba(0,0,0,0.18)] sm:w-auto sm:flex-row sm:gap-[9px]">
           <div className="flex items-center pr-0 sm:pr-6">
             <Avatar src={avatar1} alt="User 1" delay={0} />
             <Avatar src={avatar2} alt="User 2" offset delay={60} />
             <Avatar src={avatar3} alt="User 3" offset delay={120} />
             <Avatar src={avatar4} alt="User 4" offset delay={180} />
           </div>
-          <div className="flex w-full flex-col text-center sm:w-36 sm:text-left">
+          <div className="flex w-full flex-col text-center sm:w-auto sm:text-left">
             <span className="font-display text-base font-semibold leading-5 text-black transition-transform duration-500 ease-out group-hover/users:-translate-y-px">
               More{" "}
               <span className="relative inline-block">
