@@ -164,7 +164,7 @@ function Avatar({
     />
   );
 }
-function DashedLoop({ className }: { className?: string }) {
+function DashedLoop({ className, style }: { className?: string; style?: CSSProperties }) {
   return (
     <svg
       width="239"
@@ -173,6 +173,7 @@ function DashedLoop({ className }: { className?: string }) {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       className={className}
+      style={style}
       aria-hidden="true"
     >
       <path
@@ -189,7 +190,7 @@ function DashedLoop({ className }: { className?: string }) {
   );
 }
 
-function DashedLoopCa({ className }: { className?: string }) {
+function DashedLoopCa({ className, style }: { className?: string; style?: CSSProperties }) {
   return (
     <svg
       width="239"
@@ -198,6 +199,7 @@ function DashedLoopCa({ className }: { className?: string }) {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       className={className}
+      style={style}
       aria-hidden="true"
     >
       <path
