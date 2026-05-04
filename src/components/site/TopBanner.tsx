@@ -23,12 +23,12 @@ export function TopBanner() {
             className="block h-auto w-full select-none"
             draggable={false}
           />
-          <DashedLoopCa key={`loop-${loopKey}`} className="pointer-events-none absolute left-1/2 bottom-[10%] hidden w-[239px] -translate-x-[340px] md:block" />
+          <DashedLoopCa key={`loop-${loopKey}`} className="pointer-events-none absolute left-1/2 bottom-[10%] hidden w-[239px] -translate-x-[340px] lg:block" />
           <img
             key={`trial-${loopKey}`}
             src={trialCa}
             alt="7 days free trial available"
-            className="pointer-events-none absolute left-1/2 bottom-[2%] hidden w-[118px] -translate-x-[420px] select-none opacity-0 [animation:loopFadeIn_0.6s_ease-out_1.4s_forwards] md:block"
+            className="pointer-events-none absolute left-1/2 bottom-[2%] hidden w-[118px] -translate-x-[420px] select-none opacity-0 [animation:loopFadeIn_0.6s_ease-out_1.4s_forwards] lg:block"
             draggable={false}
           />
           <a
