@@ -5,6 +5,58 @@ import avatar2 from "@/assets/figma/avatar-2.webp";
 import avatar3 from "@/assets/figma/avatar-3.webp";
 import avatar4 from "@/assets/figma/avatar-4.webp";
 import { useReplayOnVisible } from "@/hooks/use-replay-on-visible";
+import type { CSSProperties } from "react";
+import { useEffect } from "react";
+
+/**
+ * Loop SVG geometry (viewBox 239×106).
+ * The "anchor" end of the curve sits near (238, 103) — that point is glued to
+ * the top-left corner of the "Claim your free trial" button. The arrow tip is
+ * near (3, 103), where the "7 days free trial available" label is anchored.
+ */
+const LOOP_VB_W = 239;
+const LOOP_VB_H = 106;
+const ARROW_TIP_X = 3;
+const ARROW_TIP_Y = 103;
+const ARROW_ANCHOR_X = 238;
+const ARROW_ANCHOR_Y = 103;
+const LOOP_ASPECT = LOOP_VB_W / LOOP_VB_H;
+const TIP_DX_RATIO = (ARROW_TIP_X - ARROW_ANCHOR_X) / LOOP_VB_W;
+const TIP_DY_RATIO = (ARROW_TIP_Y - ARROW_ANCHOR_Y) / LOOP_VB_W;
+
+const topBannerUsVars = {
+  "--tb-anchor-x-ratio": `${ARROW_ANCHOR_X / LOOP_VB_W}`,
+  "--tb-anchor-y-ratio": `${ARROW_ANCHOR_Y / LOOP_VB_H}`,
+  "--tb-tip-dx-ratio": `${TIP_DX_RATIO}`,
+  "--tb-tip-dy-ratio": `${TIP_DY_RATIO}`,
+} as CSSProperties;
+
+/**
+ * Per-breakpoint sizing for the US arrow + trial label. Mirrors the CA banner
+ * so the animation looks identical across mobile/tablet/desktop.
+ */
+const TOP_BANNER_US_LOOP_CSS = `
+[data-tb-us-loop] {
+  --tb-arrow-w: 140px;
+  --tb-arrow-dx: 0px;
+  --tb-arrow-dy: 0px;
+  --tb-trial-w: 86px;
+  --tb-trial-dx: 0px;
+  --tb-trial-dy: 0px;
+}
+@media (min-width: 768px) {
+  [data-tb-us-loop] {
+    --tb-arrow-w: 180px;
+    --tb-trial-w: 96px;
+  }
+}
+@media (min-width: 1024px) {
+  [data-tb-us-loop] {
+    --tb-arrow-w: 239px;
+    --tb-trial-w: 118px;
+  }
+}
+`;
 
 /**
  * TopBannerUS — US variant of the hero banner.
@@ -13,6 +65,14 @@ import { useReplayOnVisible } from "@/hooks/use-replay-on-visible";
  */
 export function TopBannerUS() {
   const [loopRef, loopKey] = useReplayOnVisible<HTMLDivElement>(0.4);
+  useEffect(() => {
+    const id = "top-banner-us-loop-css";
+    if (document.getElementById(id)) return;
+    const style = document.createElement("style");
+    style.id = id;
+    style.textContent = TOP_BANNER_US_LOOP_CSS;
+    document.head.appendChild(style);
+  }, []);
   return (
     <section className="relative w-full px-4 pt-[112px] sm:px-6 sm:pt-[140px] lg:px-8 lg:pt-[200px]">
       <div className="relative mx-auto flex w-full max-w-[960px] flex-col items-center gap-6 sm:gap-8">
@@ -26,23 +86,42 @@ export function TopBannerUS() {
             Built for freelancers, self-employed, and small businesses in the US
           </p>
 
-          <DashedLoop key={`loop-${loopKey}`} className="pointer-events-none absolute left-1/2 top-[180px] hidden -translate-x-[340px] lg:block" />
-          <p key={`trial-${loopKey}`} className="pointer-events-none absolute left-1/2 top-[300px] hidden w-[160px] -translate-x-[420px] text-center font-script text-[20px] leading-[1.2] tracking-[-0.02em] text-[#9192a1] opacity-0 [animation:loopFadeIn_0.6s_ease-out_1.4s_forwards] lg:block">
-            7 days free trial available
-          </p>
-
-          <a
-            href="#apps"
-            onClick={(e) => {
-              e.preventDefault();
-              document
-                .getElementById("apps")
-                ?.scrollIntoView({ behavior: "smooth", block: "start" });
-            }}
-            className="mt-1 inline-flex items-center justify-center rounded-2xl bg-black px-5 py-3 font-display text-sm font-semibold leading-5 text-white transition-opacity hover:opacity-90 sm:px-7 sm:py-3.5 sm:text-[15px]"
+          <div
+            data-tb-us-loop
+            className="relative mt-1 inline-block"
+            style={topBannerUsVars}
           >
-            Claim your free trial
-          </a>
+            <a
+              href="#apps"
+              onClick={(e) => {
+                e.preventDefault();
+                document
+                  .getElementById("apps")
+                  ?.scrollIntoView({ behavior: "smooth", block: "start" });
+              }}
+              className="inline-flex items-center justify-center rounded-2xl bg-black px-5 py-3 font-display text-sm font-semibold leading-5 text-white transition-opacity hover:opacity-90 sm:px-7 sm:py-3.5 sm:text-[15px]"
+            >
+              Claim your free trial
+            </a>
+            <DashedLoop
+              key={`loop-${loopKey}`}
+              className="pointer-events-none absolute left-0 top-0 hidden md:block"
+              style={{
+                width: "var(--tb-arrow-w)",
+                aspectRatio: `${LOOP_ASPECT}`,
+                transform: `translate(calc(-1 * var(--tb-anchor-x-ratio) * var(--tb-arrow-w) + var(--tb-arrow-dx)), calc(-1 * var(--tb-anchor-y-ratio) * var(--tb-arrow-w) / ${LOOP_ASPECT} + var(--tb-arrow-dy)))`,
+              }}
+            />
+            <p
+              key={`trial-${loopKey}`}
+              className="pointer-events-none absolute left-0 top-0 hidden w-[var(--tb-trial-w)] text-right font-script text-[18px] leading-[1.15] tracking-[-0.02em] text-[#9192a1] opacity-0 [animation:loopFadeIn_0.6s_ease-out_1.4s_forwards] md:block"
+              style={{
+                transform: `translate(calc(var(--tb-tip-dx-ratio) * var(--tb-arrow-w) - 100% + var(--tb-trial-dx)), calc(var(--tb-tip-dy-ratio) * var(--tb-arrow-w) - 50% + var(--tb-trial-dy)))`,
+              }}
+            >
+              7 days free trial available
+            </p>
+          </div>
         </div>
 
         <div className="relative w-full">
@@ -109,7 +188,7 @@ function Avatar({
     />
   );
 }
-function DashedLoop({ className }: { className?: string }) {
+function DashedLoop({ className, style }: { className?: string; style?: CSSProperties }) {
   return (
     <svg
       width="239"
@@ -118,6 +197,7 @@ function DashedLoop({ className }: { className?: string }) {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       className={className}
+      style={style}
       aria-hidden="true"
     >
       <path
