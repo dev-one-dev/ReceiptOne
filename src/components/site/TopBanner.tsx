@@ -8,6 +8,7 @@ import containerCa from "@/assets/figma/topbanner-container-ca.svg";
 import trialCa from "@/assets/figma/topbanner-trial-ca.svg";
 import { useReplayOnVisible } from "@/hooks/use-replay-on-visible";
 import type { CSSProperties } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 
 /**
  * Button geometry inside the Figma container SVG (viewBox 960×364).
@@ -26,42 +27,135 @@ const ARROW_TIP_Y = 103;
 const ARROW_ANCHOR_X = 238;
 const ARROW_ANCHOR_Y = 103;
 
-const topBannerVars = {
-  // Button anchor as % of container, derived from the SVG.
-  "--tb-btn-x": `${(BTN_X / CONTAINER_VB_W) * 100}%`,
-  "--tb-btn-y": `${(BTN_Y / CONTAINER_VB_H) * 100}%`,
-  // Arrow loop sizing — scales with container so the anchor stays glued to the button.
-  "--tb-arrow-w": "clamp(140px, 24.9%, 239px)",
+/**
+ * Static CSS-vars that describe the geometry of the loop SVG + the button rect
+ * inside the Figma container. Per-breakpoint tweaks (size + pixel nudges) live
+ * in the `[data-tb-loop]` rules below.
+ */
+const topBannerStaticVars = {
   "--tb-arrow-tip-x": `${(ARROW_TIP_X / 239) * 100}%`,
   "--tb-arrow-tip-y": `${(ARROW_TIP_Y / 106) * 100}%`,
   "--tb-arrow-anchor-x": `${(ARROW_ANCHOR_X / 239) * 100}%`,
   "--tb-arrow-anchor-y": `${(ARROW_ANCHOR_Y / 106) * 100}%`,
-  // Pixel nudges (override here to fine-tune without touching JSX).
-  "--tb-arrow-dx": "0px",
-  "--tb-arrow-dy": "0px",
-  "--tb-trial-w": "clamp(78px, 12.3%, 118px)",
-  "--tb-trial-dx": "-12px",
-  "--tb-trial-dy": "-4px",
 } as CSSProperties;
+
+/**
+ * Per-breakpoint defaults for the arrow + trial label.
+ * Override these (size of the loop, pixel nudges) without touching JSX.
+ */
+const TOP_BANNER_LOOP_CSS = `
+[data-tb-loop] {
+  --tb-arrow-w: 140px;
+  --tb-arrow-dx: 0px;
+  --tb-arrow-dy: 0px;
+  --tb-trial-w: 86px;
+  --tb-trial-dx: -8px;
+  --tb-trial-dy: -4px;
+}
+@media (min-width: 768px) {
+  [data-tb-loop] {
+    --tb-arrow-w: 130px;
+    --tb-trial-w: 78px;
+    --tb-trial-dx: 4px;
+  }
+}
+@media (min-width: 1024px) {
+  [data-tb-loop] {
+    --tb-arrow-w: 239px;
+    --tb-trial-w: 118px;
+    --tb-trial-dx: -12px;
+  }
+}
+`;
 
 /**
  * TopBanner — pixel-mapped from Figma node 29:26474
  */
 export function TopBanner() {
   const [loopRef, loopKey] = useReplayOnVisible<HTMLDivElement>(0.4);
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const imgRef = useRef<HTMLImageElement | null>(null);
+  const [btnPx, setBtnPx] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
+
+  // Measure the rendered SVG container and project the baked-in button rect
+  // (BTN_X / BTN_Y in viewBox units) into pixel coords relative to the wrapper.
+  // ResizeObserver keeps the arrow glued to the button on any layout change.
+  useLayoutEffect(() => {
+    const img = imgRef.current;
+    const wrap = containerRef.current;
+    if (!img || !wrap) return;
+    const measure = () => {
+      const rect = img.getBoundingClientRect();
+      const w = rect.width || img.clientWidth;
+      // Fall back to ratio if intrinsic height isn't laid out yet.
+      const h = rect.height || img.clientHeight || (w * CONTAINER_VB_H) / CONTAINER_VB_W;
+      if (!w) return;
+      setBtnPx({
+        x: (BTN_X / CONTAINER_VB_W) * w,
+        y: (BTN_Y / CONTAINER_VB_H) * h,
+      });
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(img);
+    window.addEventListener("resize", measure);
+    if (!img.complete) img.addEventListener("load", measure);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("resize", measure);
+      img.removeEventListener("load", measure);
+    };
+  }, []);
+
+  // One-time injection of the breakpoint stylesheet.
+  useEffect(() => {
+    const id = "top-banner-loop-css";
+    if (document.getElementById(id)) return;
+    const style = document.createElement("style");
+    style.id = id;
+    style.textContent = TOP_BANNER_LOOP_CSS;
+    document.head.appendChild(style);
+  }, []);
+
+  const dynamicVars: CSSProperties = {
+    ...topBannerStaticVars,
+    "--tb-btn-x": `${btnPx.x}px`,
+    "--tb-btn-y": `${btnPx.y}px`,
+  } as CSSProperties;
+
   return (
     <section className="relative w-full px-4 pt-[112px] sm:px-6 sm:pt-[140px] lg:px-8 lg:pt-[200px]">
       <div className="relative mx-auto flex w-full max-w-[960px] flex-col items-center gap-6 sm:gap-8">
-        <div ref={loopRef} className="relative flex w-full flex-col items-center" style={topBannerVars}>
+        <div
+          ref={(node) => {
+            loopRef.current = node;
+            containerRef.current = node;
+          }}
+          data-tb-loop
+          className="relative flex w-full flex-col items-center"
+          style={dynamicVars}
+        >
           <img
+            ref={imgRef}
             src={containerCa}
             alt="Track expenses, store receipts, and generate tax-ready reports — built for freelancers, self-employed, and small businesses in the US & Canada"
             className="block h-auto w-full select-none"
             draggable={false}
+            onLoad={(e) => {
+              const img = e.currentTarget;
+              const w = img.clientWidth;
+              const h = img.clientHeight;
+              if (w && h) {
+                setBtnPx({
+                  x: (BTN_X / CONTAINER_VB_W) * w,
+                  y: (BTN_Y / CONTAINER_VB_H) * h,
+                });
+              }
+            }}
           />
           <DashedLoopCa
             key={`loop-${loopKey}`}
-            className="pointer-events-none absolute hidden lg:block"
+            className="pointer-events-none absolute hidden md:block"
             style={{
               left: "var(--tb-btn-x)",
               top: "var(--tb-btn-y)",
@@ -76,7 +170,7 @@ export function TopBanner() {
             key={`trial-${loopKey}`}
             src={trialCa}
             alt="7 days free trial available"
-            className="pointer-events-none absolute hidden select-none opacity-0 [animation:loopFadeIn_0.6s_ease-out_1.4s_forwards] lg:block"
+            className="pointer-events-none absolute hidden select-none opacity-0 [animation:loopFadeIn_0.6s_ease-out_1.4s_forwards] md:block"
             style={{
               // Anchor under the arrow tip — slightly left of the button.
               left: "var(--tb-btn-x)",
