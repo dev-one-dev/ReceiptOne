@@ -8,7 +8,7 @@ import containerCa from "@/assets/figma/topbanner-container-ca.svg";
 import trialCa from "@/assets/figma/topbanner-trial-ca.svg";
 import { useReplayOnVisible } from "@/hooks/use-replay-on-visible";
 import type { CSSProperties } from "react";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect } from "react";
 
 /**
  * Button geometry inside the Figma container SVG (viewBox 960×364).
@@ -27,16 +27,27 @@ const ARROW_TIP_Y = 103;
 const ARROW_ANCHOR_X = 238;
 const ARROW_ANCHOR_Y = 103;
 
+// Button top-left as percentages of the container SVG. Wrapper height === img
+// height (img is the only flow child), so % positioning is exact.
+const BTN_X_PCT = (BTN_X / CONTAINER_VB_W) * 100;
+const BTN_Y_PCT = (BTN_Y / CONTAINER_VB_H) * 100;
+// Arrow tip offset from the anchor (in loop-svg units).
+const TIP_DX_RATIO = (ARROW_TIP_X - ARROW_ANCHOR_X) / 239; // negative
+const TIP_DY_RATIO = (ARROW_TIP_Y - ARROW_ANCHOR_Y) / 239; // 0
+const LOOP_ASPECT = 239 / 106;
+
 /**
  * Static CSS-vars that describe the geometry of the loop SVG + the button rect
  * inside the Figma container. Per-breakpoint tweaks (size + pixel nudges) live
  * in the `[data-tb-loop]` rules below.
  */
 const topBannerStaticVars = {
-  "--tb-arrow-tip-x": `${(ARROW_TIP_X / 239) * 100}%`,
-  "--tb-arrow-tip-y": `${(ARROW_TIP_Y / 106) * 100}%`,
-  "--tb-arrow-anchor-x": `${(ARROW_ANCHOR_X / 239) * 100}%`,
-  "--tb-arrow-anchor-y": `${(ARROW_ANCHOR_Y / 106) * 100}%`,
+  "--tb-btn-x": `${BTN_X_PCT}%`,
+  "--tb-btn-y": `${BTN_Y_PCT}%`,
+  "--tb-anchor-x-ratio": `${ARROW_ANCHOR_X / 239}`,
+  "--tb-anchor-y-ratio": `${ARROW_ANCHOR_Y / 106}`,
+  "--tb-tip-dx-ratio": `${TIP_DX_RATIO}`,
+  "--tb-tip-dy-ratio": `${TIP_DY_RATIO}`,
 } as CSSProperties;
 
 /**
@@ -49,21 +60,19 @@ const TOP_BANNER_LOOP_CSS = `
   --tb-arrow-dx: 0px;
   --tb-arrow-dy: 0px;
   --tb-trial-w: 86px;
-  --tb-trial-dx: -8px;
-  --tb-trial-dy: -4px;
+  --tb-trial-dx: 0px;
+  --tb-trial-dy: 0px;
 }
 @media (min-width: 768px) {
   [data-tb-loop] {
-    --tb-arrow-w: 130px;
-    --tb-trial-w: 78px;
-    --tb-trial-dx: 4px;
+    --tb-arrow-w: 180px;
+    --tb-trial-w: 96px;
   }
 }
 @media (min-width: 1024px) {
   [data-tb-loop] {
     --tb-arrow-w: 239px;
     --tb-trial-w: 118px;
-    --tb-trial-dx: -12px;
   }
 }
 `;
@@ -73,40 +82,6 @@ const TOP_BANNER_LOOP_CSS = `
  */
 export function TopBanner() {
   const [loopRef, loopKey] = useReplayOnVisible<HTMLDivElement>(0.4);
-  const containerRef = useRef<HTMLDivElement | null>(null);
-  const imgRef = useRef<HTMLImageElement | null>(null);
-  const [btnPx, setBtnPx] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
-
-  // Measure the rendered SVG container and project the baked-in button rect
-  // (BTN_X / BTN_Y in viewBox units) into pixel coords relative to the wrapper.
-  // ResizeObserver keeps the arrow glued to the button on any layout change.
-  useLayoutEffect(() => {
-    const img = imgRef.current;
-    const wrap = containerRef.current;
-    if (!img || !wrap) return;
-    const measure = () => {
-      const rect = img.getBoundingClientRect();
-      const w = rect.width || img.clientWidth;
-      // Fall back to ratio if intrinsic height isn't laid out yet.
-      const h = rect.height || img.clientHeight || (w * CONTAINER_VB_H) / CONTAINER_VB_W;
-      if (!w) return;
-      setBtnPx({
-        x: (BTN_X / CONTAINER_VB_W) * w,
-        y: (BTN_Y / CONTAINER_VB_H) * h,
-      });
-    };
-    measure();
-    const ro = new ResizeObserver(measure);
-    ro.observe(img);
-    window.addEventListener("resize", measure);
-    if (!img.complete) img.addEventListener("load", measure);
-    return () => {
-      ro.disconnect();
-      window.removeEventListener("resize", measure);
-      img.removeEventListener("load", measure);
-    };
-  }, []);
-
   // One-time injection of the breakpoint stylesheet.
   useEffect(() => {
     const id = "top-banner-loop-css";
@@ -117,53 +92,32 @@ export function TopBanner() {
     document.head.appendChild(style);
   }, []);
 
-  const dynamicVars: CSSProperties = {
-    ...topBannerStaticVars,
-    "--tb-btn-x": `${btnPx.x}px`,
-    "--tb-btn-y": `${btnPx.y}px`,
-  } as CSSProperties;
-
   return (
     <section className="relative w-full px-4 pt-[112px] sm:px-6 sm:pt-[140px] lg:px-8 lg:pt-[200px]">
       <div className="relative mx-auto flex w-full max-w-[960px] flex-col items-center gap-6 sm:gap-8">
         <div
-          ref={(node) => {
-            loopRef.current = node;
-            containerRef.current = node;
-          }}
+          ref={loopRef}
           data-tb-loop
           className="relative flex w-full flex-col items-center"
-          style={dynamicVars}
+          style={topBannerStaticVars}
         >
           <img
-            ref={imgRef}
             src={containerCa}
             alt="Track expenses, store receipts, and generate tax-ready reports — built for freelancers, self-employed, and small businesses in the US & Canada"
             className="block h-auto w-full select-none"
             draggable={false}
-            onLoad={(e) => {
-              const img = e.currentTarget;
-              const w = img.clientWidth;
-              const h = img.clientHeight;
-              if (w && h) {
-                setBtnPx({
-                  x: (BTN_X / CONTAINER_VB_W) * w,
-                  y: (BTN_Y / CONTAINER_VB_H) * h,
-                });
-              }
-            }}
           />
           <DashedLoopCa
             key={`loop-${loopKey}`}
             className="pointer-events-none absolute hidden md:block"
             style={{
-              left: "var(--tb-btn-x)",
-              top: "var(--tb-btn-y)",
+              left: `${BTN_X_PCT}%`,
+              top: `${BTN_Y_PCT}%`,
               width: "var(--tb-arrow-w)",
-              // Aspect ratio of the loop svg (239:106) so width drives height.
-              aspectRatio: "239 / 106",
+              aspectRatio: `${LOOP_ASPECT}`,
+              // Anchor (right end of curve) snaps to button top-left corner.
               transform:
-                "translate(calc(-1 * var(--tb-arrow-anchor-x) + var(--tb-arrow-dx)), calc(-1 * var(--tb-arrow-anchor-y) + var(--tb-arrow-dy)))",
+                `translate(calc(-1 * var(--tb-anchor-x-ratio) * var(--tb-arrow-w) + var(--tb-arrow-dx)), calc(-1 * var(--tb-anchor-y-ratio) * var(--tb-arrow-w) / ${LOOP_ASPECT} + var(--tb-arrow-dy)))`,
             }}
           />
           <img
@@ -172,12 +126,13 @@ export function TopBanner() {
             alt="7 days free trial available"
             className="pointer-events-none absolute hidden select-none opacity-0 [animation:loopFadeIn_0.6s_ease-out_1.4s_forwards] md:block"
             style={{
-              // Anchor under the arrow tip — slightly left of the button.
-              left: "var(--tb-btn-x)",
-              top: "var(--tb-btn-y)",
+              // Trial label is anchored at the arrow tip, with its right edge
+              // touching the arrowhead so the arrow visibly points to the text.
+              left: `${BTN_X_PCT}%`,
+              top: `${BTN_Y_PCT}%`,
               width: "var(--tb-trial-w)",
               transform:
-                "translate(calc(-1 * var(--tb-arrow-w) - 100% + var(--tb-arrow-tip-x) + var(--tb-trial-dx)), calc(-1 * var(--tb-arrow-w) * 106 / 239 + var(--tb-arrow-tip-y) + var(--tb-trial-dy)))",
+                `translate(calc(var(--tb-tip-dx-ratio) * var(--tb-arrow-w) - 100% + var(--tb-trial-dx)), calc(var(--tb-tip-dy-ratio) * var(--tb-arrow-w) - 50% + var(--tb-trial-dy)))`,
             }}
             draggable={false}
           />
