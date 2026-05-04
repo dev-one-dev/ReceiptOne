@@ -64,6 +64,7 @@ const TOP_BANNER_LOOP_CSS = `
     --tb-arrow-w: 239px;
     --tb-trial-w: 118px;
     --tb-trial-dx: -12px;
+    --tb-trial-dy: 18px;
   }
 }
 `;
