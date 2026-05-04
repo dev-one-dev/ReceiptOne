@@ -4,6 +4,7 @@ import avatar1 from "@/assets/figma/avatar-1.webp";
 import avatar2 from "@/assets/figma/avatar-2.webp";
 import avatar3 from "@/assets/figma/avatar-3.webp";
 import avatar4 from "@/assets/figma/avatar-4.webp";
+import { useReplayOnVisible } from "@/hooks/use-replay-on-visible";
 
 /**
  * TopBannerUS — US variant of the hero banner.
@@ -11,10 +12,11 @@ import avatar4 from "@/assets/figma/avatar-4.webp";
  * and uses US-specific copy.
  */
 export function TopBannerUS() {
+  const [loopRef, loopKey] = useReplayOnVisible<HTMLDivElement>(0.4);
   return (
     <section className="relative w-full px-4 pt-[112px] sm:px-6 sm:pt-[140px] lg:px-8 lg:pt-[200px]">
       <div className="relative mx-auto flex w-full max-w-[960px] flex-col items-center gap-6 sm:gap-8">
-        <div className="relative flex w-full flex-col items-center gap-3">
+        <div ref={loopRef} className="relative flex w-full flex-col items-center gap-3">
           <h1 className="text-center font-display text-[30px] font-semibold leading-[1.08] tracking-[-0.02em] text-black sm:text-[40px] md:text-[52px] lg:text-[56px] xl:text-[64px]">
             Track expenses, store receipts, and generate tax-ready reports –
             all in one place
@@ -24,8 +26,8 @@ export function TopBannerUS() {
             Built for freelancers, self-employed, and small businesses in the US
           </p>
 
-          <DashedLoop className="pointer-events-none absolute left-1/2 top-[180px] hidden -translate-x-[340px] md:block" />
-          <p className="pointer-events-none absolute left-1/2 top-[300px] hidden w-[160px] -translate-x-[420px] text-center font-script text-[20px] leading-[1.2] tracking-[-0.02em] text-[#9192a1] opacity-0 [animation:loopFadeIn_0.6s_ease-out_1.4s_forwards] md:block">
+          <DashedLoop key={`loop-${loopKey}`} className="pointer-events-none absolute left-1/2 top-[180px] hidden -translate-x-[340px] md:block" />
+          <p key={`trial-${loopKey}`} className="pointer-events-none absolute left-1/2 top-[300px] hidden w-[160px] -translate-x-[420px] text-center font-script text-[20px] leading-[1.2] tracking-[-0.02em] text-[#9192a1] opacity-0 [animation:loopFadeIn_0.6s_ease-out_1.4s_forwards] md:block">
             7 days free trial available
           </p>
 
