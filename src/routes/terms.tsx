@@ -43,21 +43,34 @@ const isApplicable = (s: SectionEntry, region: Region) => {
 };
 
 export const Route = createFileRoute("/terms")({
-  head: () => ({
-    meta: [
-      { title: "ReceiptOne — Terms of Use" },
-      {
-        name: "description",
-        content:
-          "ReceiptOne Terms of Use, Privacy & Data Protection, and Final Provisions for users in the United States and Canada.",
-      },
-      { property: "og:title", content: "ReceiptOne — Terms of Use" },
-      {
-        property: "og:description",
-        content:
-          "Legally binding Terms of Use governing access to ReceiptOne, including privacy, billing, dispute resolution, and contact information.",
-      },
-      { property: "og:type", content: "website" },
+  head: () => {
+    const seo = pageSEO({
+      path: "/terms",
+      title: "Terms of Service | ReceiptOne",
+      description:
+        "Read the ReceiptOne Terms of Service for users in the United States and Canada.",
+      ogTitle: "Terms of Service | ReceiptOne",
+      ogDescription:
+        "Legally binding Terms of Service governing access to ReceiptOne, including billing, dispute resolution, and contact information.",
+    });
+    return {
+      meta: seo.meta,
+      links: seo.links,
+      scripts: [
+        {
+          type: "application/ld+json",
+          children: JSON.stringify(
+            breadcrumbJsonLd([
+              { name: "Home", path: "/" },
+              { name: "Terms of Service", path: "/terms" },
+            ]),
+          ),
+        },
+      ],
+    };
+  },
+  component: TermsPage,
+});
     ],
   }),
   component: TermsPage,
