@@ -14,6 +14,7 @@ import {
   type SummaryItem,
   type Region,
 } from "@/components/site/legal/shared";
+import { pageSEO, breadcrumbJsonLd } from "@/lib/seo";
 
 type SectionEntry = {
   number?: string;
