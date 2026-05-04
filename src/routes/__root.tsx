@@ -1,6 +1,7 @@
 import { Outlet, Link, createRootRoute, HeadContent, Scripts } from "@tanstack/react-router";
 
 import appCss from "../styles.css?url";
+import { organizationJsonLd, websiteJsonLd } from "@/lib/seo";
 
 function NotFoundComponent() {
   return (
@@ -29,28 +30,35 @@ export const Route = createRootRoute({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "This application imports and displays Figma designs, enabling interactive elements and dynamic content." },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "This application imports and displays Figma designs, enabling interactive elements and dynamic content." },
-      { property: "og:type", content: "website" },
-      { property: "og:url", content: "https://receipt-one.com/" },
-      { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
-      { name: "twitter:title", content: "Lovable App" },
-      { name: "twitter:description", content: "This application imports and displays Figma designs, enabling interactive elements and dynamic content." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/d249a5d8-b985-4b4b-88cd-bf66621406c2/id-preview-60809a27--c3daaa9c-4a2a-4c75-b06b-6b4389cc6e87.lovable.app-1776985820292.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/d249a5d8-b985-4b4b-88cd-bf66621406c2/id-preview-60809a27--c3daaa9c-4a2a-4c75-b06b-6b4389cc6e87.lovable.app-1776985820292.png" },
+      { title: "ReceiptOne | Receipt, Expense & Mileage Tracker" },
+      {
+        name: "description",
+        content:
+          "ReceiptOne helps freelancers and small businesses organize receipts, track mileage, manage expenses, and export tax-ready reports.",
+      },
+      { name: "author", content: "ReceiptOne" },
+      { name: "theme-color", content: "#f5f4f0" },
+      { name: "format-detection", content: "telephone=no" },
+      // Per-route head() overrides og/twitter tags below for shareable pages.
+      { property: "og:site_name", content: "ReceiptOne" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
-      { rel: "canonical", href: "https://receipt-one.com/" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Inter+Tight:wght@500;600;700;800&family=Grape+Nuts&display=swap",
+      },
+    ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify(organizationJsonLd),
+      },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify(websiteJsonLd),
       },
     ],
   }),
