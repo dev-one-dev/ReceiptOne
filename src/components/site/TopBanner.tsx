@@ -5,7 +5,6 @@ import avatar2 from "@/assets/figma/avatar-2.webp";
 import avatar3 from "@/assets/figma/avatar-3.webp";
 import avatar4 from "@/assets/figma/avatar-4.webp";
 import containerCa from "@/assets/figma/topbanner-container-ca.svg";
-import loopCa from "@/assets/figma/topbanner-loop-ca.svg";
 import trialCa from "@/assets/figma/topbanner-trial-ca.svg";
 
 /**
@@ -22,17 +21,11 @@ export function TopBanner() {
             className="block h-auto w-full select-none"
             draggable={false}
           />
-          <img
-            src={loopCa}
-            alt=""
-            aria-hidden="true"
-            className="pointer-events-none absolute left-1/2 bottom-[10%] hidden w-[239px] -translate-x-[340px] select-none md:block"
-            draggable={false}
-          />
+          <DashedLoopCa className="pointer-events-none absolute left-1/2 bottom-[10%] hidden w-[239px] -translate-x-[340px] md:block" />
           <img
             src={trialCa}
             alt="7 days free trial available"
-            className="pointer-events-none absolute left-1/2 bottom-[2%] hidden w-[118px] -translate-x-[420px] select-none md:block"
+            className="pointer-events-none absolute left-1/2 bottom-[2%] hidden w-[118px] -translate-x-[420px] select-none opacity-0 [animation:loopFadeIn_0.6s_ease-out_1.4s_forwards] md:block"
             draggable={false}
           />
           <a
