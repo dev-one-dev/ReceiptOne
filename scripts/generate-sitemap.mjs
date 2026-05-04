@@ -14,11 +14,12 @@ const PRIORITY = {
   "/": { p: "1.0", c: "weekly" },
   "/ca": { p: "0.9", c: "weekly" },
   "/us": { p: "0.9", c: "weekly" },
-  "/terms": { p: "0.5", c: "monthly" },
-  "/privacy": { p: "0.5", c: "monthly" },
-  "/login": { p: "0.3", c: "yearly" },
-  "/signup": { p: "0.3", c: "yearly" },
+  "/terms": { p: "0.3", c: "monthly" },
+  "/privacy": { p: "0.3", c: "monthly" },
 };
+
+/** Routes excluded from sitemap (noindex or non-public). */
+const EXCLUDE = new Set(["/login", "/signup"]);
 
 function fileToRoutePath(name) {
   const base = name.replace(/\.(t|j)sx?$/, "");
@@ -48,6 +49,7 @@ function collect(dir, prefix = "") {
 const routes = collect(ROUTES_DIR);
 const lastmod = new Date().toISOString().split("T")[0];
 const urls = routes
+  .filter((p) => !EXCLUDE.has(p))
   .sort()
   .map((path) => {
     const meta = PRIORITY[path] ?? { p: "0.6", c: "monthly" };
