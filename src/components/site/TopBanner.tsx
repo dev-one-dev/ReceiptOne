@@ -54,9 +54,9 @@ const TOP_BANNER_LOOP_CSS = `
 }
 @media (min-width: 768px) {
   [data-tb-loop] {
-    --tb-arrow-w: 190px;
-    --tb-trial-w: 102px;
-    --tb-trial-dx: -10px;
+    --tb-arrow-w: 160px;
+    --tb-trial-w: 90px;
+    --tb-trial-dx: -6px;
   }
 }
 @media (min-width: 1024px) {
