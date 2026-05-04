@@ -8,14 +8,14 @@ const CARDS = [
   { label: "Year plan", x: 896, btnX: 912, accent: "rgba(34,197,94,0.35)" },
 ] as const;
 
-const CARD_Y = 600;
+const CARD_Y = 592;
 const CARD_W = 304;
-const CARD_H = 544;
-const BTN_Y = 776;
+const CARD_H = 576;
+const BTN_Y = 800;
 const BTN_W = 272;
 const BTN_H = 56;
 const VB_W = 1440;
-const VB_H = 1110;
+const VB_H = 1656;
 
 export function Pricing({ region = "ca" }: { region?: "ca" | "us" }) {
   const src = region === "us" ? pricingUsSvg : pricingSvg;
