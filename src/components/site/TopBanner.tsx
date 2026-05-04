@@ -23,7 +23,7 @@ export function TopBanner() {
             className="block h-auto w-full select-none"
             draggable={false}
           />
-          <DashedLoopCa key={`loop-${loopKey}`} className="pointer-events-none absolute left-1/2 bottom-[34%] hidden w-[239px] -translate-x-[455px] lg:block" />
+          <DashedLoopCa key={`loop-${loopKey}`} className="pointer-events-none absolute left-1/2 bottom-[28%] hidden w-[239px] -translate-x-[226px] lg:block" />
           <img
             key={`trial-${loopKey}`}
             src={trialCa}
