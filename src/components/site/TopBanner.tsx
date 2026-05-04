@@ -4,6 +4,7 @@ import avatar1 from "@/assets/figma/avatar-1.webp";
 import avatar2 from "@/assets/figma/avatar-2.webp";
 import avatar3 from "@/assets/figma/avatar-3.webp";
 import avatar4 from "@/assets/figma/avatar-4.webp";
+import containerCa from "@/assets/figma/topbanner-container-ca.svg";
 
 /**
  * TopBanner — pixel-mapped from Figma node 29:26474
@@ -12,22 +13,13 @@ export function TopBanner() {
   return (
     <section className="relative w-full px-4 pt-[112px] sm:px-6 sm:pt-[140px] lg:px-8 lg:pt-[200px]">
       <div className="relative mx-auto flex w-full max-w-[960px] flex-col items-center gap-6 sm:gap-8">
-        <div className="relative flex w-full flex-col items-center gap-3">
-          <h1 className="text-center font-display text-[30px] font-semibold leading-[1.08] tracking-[-0.02em] text-black sm:text-[40px] md:text-[52px] lg:text-[56px] xl:text-[64px]">
-            Track expenses, store receipts, and generate tax-ready reports –
-            all in one place
-          </h1>
-
-          <p className="max-w-full px-1 text-center font-display text-base leading-6 tracking-[-0.02em] text-[#9192a1] sm:text-lg sm:leading-7">
-            Built for freelancers, self-employed, and small businesses in the
-            US &amp; Canada
-          </p>
-
-          <DashedLoop className="pointer-events-none absolute left-1/2 bottom-[8px] hidden -translate-x-[280px] md:block" />
-          <p className="pointer-events-none absolute left-1/2 bottom-[10px] hidden w-[120px] -translate-x-[360px] text-center font-script text-[18px] leading-[1.2] tracking-[-0.02em] text-[#9192a1] opacity-0 [animation:loopFadeIn_0.6s_ease-out_1.4s_forwards] md:block">
-            7 days free trial available
-          </p>
-
+        <div className="relative flex w-full flex-col items-center">
+          <img
+            src={containerCa}
+            alt="Track expenses, store receipts, and generate tax-ready reports — built for freelancers, self-employed, and small businesses in the US & Canada"
+            className="block h-auto w-full select-none"
+            draggable={false}
+          />
           <a
             href="#apps"
             onClick={(e) => {
@@ -36,10 +28,9 @@ export function TopBanner() {
                 .getElementById("apps")
                 ?.scrollIntoView({ behavior: "smooth", block: "start" });
             }}
-            className="mt-1 inline-flex items-center justify-center rounded-2xl bg-black px-5 py-3 font-display text-sm font-semibold leading-5 text-white transition-opacity hover:opacity-90 sm:px-7 sm:py-3.5 sm:text-[15px]"
-          >
-            Claim your free trial
-          </a>
+            aria-label="Claim your free trial"
+            className="absolute inset-0"
+          />
         </div>
 
         <div className="relative w-full">
