@@ -168,13 +168,22 @@ export function NotAll() {
   const { hasFinePointer, prefersReducedMotion } = useMotionCapabilities();
   const [rowRef, rowKey] = useReplayOnVisible<HTMLDivElement>(0.2);
 
-  // Card region within the 1440x1325 SVG (cards start ~y=172, end ~y=1232).
-  // Two rows of cards with a gap roughly at y≈760-820. We render the SVG
-  // as background and overlay a 2x3 grid aligned to that region.
-  const cardsTopPct = 172 / 1325; // ≈ 12.98%
-  const cardsBottomPct = 1 - 1232 / 1325; // ≈ 7.02%
-  const cardsLeftPct = 240 / 1440; // ≈ 16.67%
-  const cardsRightPct = 1 - 1200 / 1440; // ≈ 16.67%
+  // SVG is 1440x1325. Card rects (from path data):
+  //   Row1: y=172..732 (h=560)   Row2: y=796..1324 (h=528)
+  //   Cols: x=240..544, 568..872, 896..1200 (w=304, gap=24)
+  const SVG_W = 1440;
+  const SVG_H = 1325;
+  const cardCols: Array<[number, number]> = [
+    [240, 544],
+    [568, 872],
+    [896, 1200],
+  ];
+  const cardRows: Array<[number, number]> = [
+    [172, 732],
+    [796, 1324],
+  ];
+  // Divider line y inside each card (text/beaver separator)
+  const dividerYs = [454, 1046];
 
   return (
     <section className="mx-auto w-full max-w-[1440px] px-3 pt-0 pb-20 sm:px-6 sm:pt-2 sm:pb-[132px]">
@@ -190,37 +199,48 @@ export function NotAll() {
           className="pointer-events-none block h-auto w-full select-none"
           draggable={false}
         />
-        {/* Cover the baked-in divider lines between text and beaver in each row */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute left-0 right-0"
-          style={{ top: `${(454 / 1325) * 100}%`, height: "0.4%", background: "#ffffff" }}
-        />
-        <div
-          aria-hidden
-          className="pointer-events-none absolute left-0 right-0"
-          style={{ top: `${(1046 / 1325) * 100}%`, height: "0.4%", background: "#ffffff" }}
-        />
-        {/* 2x3 grid of hotspots overlayed on top of the SVG */}
-        <div
-          className="pointer-events-none absolute grid grid-cols-3 grid-rows-2 gap-x-[2.5%] gap-y-[2%]"
-          style={{
-            top: `${cardsTopPct * 100}%`,
-            bottom: `${cardsBottomPct * 100}%`,
-            left: `${cardsLeftPct * 100}%`,
-            right: `${cardsRightPct * 100}%`,
-          }}
-        >
-          {tiles.map((label, i) => (
-            <Tile
-              key={label}
-              label={label}
-              index={i}
-              hasFinePointer={hasFinePointer}
-              prefersReducedMotion={prefersReducedMotion}
+        {/* Cover the baked-in divider lines INSIDE each card only (not across the gaps) */}
+        {dividerYs.map((dy, ri) =>
+          cardCols.map(([x0, x1], ci) => (
+            <div
+              key={`div-${ri}-${ci}`}
+              aria-hidden
+              className="pointer-events-none absolute"
+              style={{
+                top: `${(dy / SVG_H) * 100}%`,
+                left: `${((x0 + 16) / SVG_W) * 100}%`,
+                width: `${((x1 - x0 - 32) / SVG_W) * 100}%`,
+                height: "0.45%",
+                background: "#ffffff",
+              }}
             />
-          ))}
-        </div>
+          )),
+        )}
+        {/* Per-card hotspots aligned exactly to each card rect */}
+        {cardRows.map(([y0, y1], ri) =>
+          cardCols.map(([x0, x1], ci) => {
+            const i = ri * 3 + ci;
+            return (
+              <div
+                key={`tile-${i}`}
+                className="absolute"
+                style={{
+                  top: `${(y0 / SVG_H) * 100}%`,
+                  left: `${(x0 / SVG_W) * 100}%`,
+                  width: `${((x1 - x0) / SVG_W) * 100}%`,
+                  height: `${((y1 - y0) / SVG_H) * 100}%`,
+                }}
+              >
+                <Tile
+                  label={tiles[i]}
+                  index={i}
+                  hasFinePointer={hasFinePointer}
+                  prefersReducedMotion={prefersReducedMotion}
+                />
+              </div>
+            );
+          }),
+        )}
       </div>
     </section>
   );
