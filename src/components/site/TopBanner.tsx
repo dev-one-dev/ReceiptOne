@@ -6,23 +6,26 @@ import avatar3 from "@/assets/figma/avatar-3.webp";
 import avatar4 from "@/assets/figma/avatar-4.webp";
 import containerCa from "@/assets/figma/topbanner-container-ca.svg";
 import trialCa from "@/assets/figma/topbanner-trial-ca.svg";
+import { useReplayOnVisible } from "@/hooks/use-replay-on-visible";
 
 /**
  * TopBanner — pixel-mapped from Figma node 29:26474
  */
 export function TopBanner() {
+  const [loopRef, loopKey] = useReplayOnVisible<HTMLDivElement>(0.4);
   return (
     <section className="relative w-full px-4 pt-[112px] sm:px-6 sm:pt-[140px] lg:px-8 lg:pt-[200px]">
       <div className="relative mx-auto flex w-full max-w-[960px] flex-col items-center gap-6 sm:gap-8">
-        <div className="relative flex w-full flex-col items-center">
+        <div ref={loopRef} className="relative flex w-full flex-col items-center">
           <img
             src={containerCa}
             alt="Track expenses, store receipts, and generate tax-ready reports — built for freelancers, self-employed, and small businesses in the US & Canada"
             className="block h-auto w-full select-none"
             draggable={false}
           />
-          <DashedLoopCa className="pointer-events-none absolute left-1/2 bottom-[10%] hidden w-[239px] -translate-x-[340px] md:block" />
+          <DashedLoopCa key={`loop-${loopKey}`} className="pointer-events-none absolute left-1/2 bottom-[10%] hidden w-[239px] -translate-x-[340px] md:block" />
           <img
+            key={`trial-${loopKey}`}
             src={trialCa}
             alt="7 days free trial available"
             className="pointer-events-none absolute left-1/2 bottom-[2%] hidden w-[118px] -translate-x-[420px] select-none opacity-0 [animation:loopFadeIn_0.6s_ease-out_1.4s_forwards] md:block"
