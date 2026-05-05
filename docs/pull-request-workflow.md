@@ -1,10 +1,10 @@
 # Pull Request Workflow
 
-This document explains how Pavel submits code changes and how Andrew reviews and approves them.
+This document explains how contributors submit code changes and how reviewers approve and merge them.
 
 ## Why pull requests?
 
-Direct pushes to `main` bypass code quality checks. With pull requests, the CI pipeline runs automatically and must pass green before any code lands on `main`.
+Every push to `main` deploys directly to production via Vercel. Direct pushes to `main` bypass code quality checks and ship untested code immediately. With pull requests, changes are reviewed before anything reaches production.
 
 ## One issue, one PR
 
@@ -33,11 +33,11 @@ This automatically closes the issue when the PR is merged.
 
 ---
 
-## Pavel — Submitting a pull request
+## Contributor — Submitting a pull request
 
 ### Step 1 — Never work directly on main
 
-Before starting any work, create a new branch:
+`main` is protected — it deploys to production on every merge. Always branch off it:
 
 ```bash
 git checkout main
@@ -101,7 +101,7 @@ Fix the issues, then push again to the same branch — the PR updates automatica
 
 ```bash
 git add src/routes/ca.tsx
-git commit -m "fix(layout): also fix overflow on us route"
+git commit -m "fix(layout): also apply overflow fix to us route"
 git push origin feat/your-feature-name
 ```
 
@@ -109,11 +109,11 @@ CI will re-run. Repeat until green.
 
 ### Step 7 — Request review
 
-Once CI is green, message Andrew that the PR is ready for review.
+Once CI is green, assign a reviewer or post in the team channel that the PR is ready.
 
 ---
 
-## Andrew — Reviewing and approving a pull request
+## Reviewer — Reviewing and approving a pull request
 
 **See open pull requests:**
 

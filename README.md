@@ -296,6 +296,10 @@ A `wrangler.jsonc` is also present for optional **Cloudflare Workers** deploymen
 2. Set environment variables (`VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY`)
 3. Deploy — Vercel auto-detects the Nitro/Vite output
 
+> **Every merge to `main` deploys to production automatically.**
+> Never push directly to `main`. Always work on a branch and open a pull request.
+> See [docs/pull-request-workflow.md](./docs/pull-request-workflow.md) for the full process.
+
 ---
 
 ## Known Issues
