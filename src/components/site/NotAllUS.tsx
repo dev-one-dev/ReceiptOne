@@ -1,6 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import testimonialRowUs from "@/assets/figma/testimonial-row-us.svg";
 import testimonialRowUs2 from "@/assets/figma/testimonial-row-us-2.svg";
+import { useMotionCapabilities } from "@/hooks/use-motion-capabilities";
 
 /**
  * Each SVG row contains 3 cards baked together. We overlay 3 invisible "tile"
@@ -22,29 +23,6 @@ const rowTwoTiles = [
   "Plug ReceiptOne into your workflow",
 ];
 
-/**
- * Detect environment capabilities once per mount.
- *  - hasFinePointer: enables 3D tilt + spotlight (mouse users only)
- *  - prefersReducedMotion: disables tilt/float/spotlight, keeps a static fade
- */
-function useMotionCapabilities() {
-  const [caps, setCaps] = useState({ hasFinePointer: false, prefersReducedMotion: false });
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    const fine = window.matchMedia("(hover: hover) and (pointer: fine)");
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const update = () =>
-      setCaps({ hasFinePointer: fine.matches, prefersReducedMotion: reduce.matches });
-    update();
-    fine.addEventListener("change", update);
-    reduce.addEventListener("change", update);
-    return () => {
-      fine.removeEventListener("change", update);
-      reduce.removeEventListener("change", update);
-    };
-  }, []);
-  return caps;
-}
 
 function Tile({
   label,

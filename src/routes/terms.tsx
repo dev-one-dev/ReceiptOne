@@ -1,5 +1,5 @@
-import type { ReactNode } from "react";
 import { Link, createFileRoute } from "@tanstack/react-router";
+import { PolicySection, BulletList } from "@/components/site/PolicyHelpers";
 import logoMark from "@/assets/figma/logo-mark.svg";
 import logoWordmark from "@/assets/figma/logo-wordmark.svg";
 
@@ -59,16 +59,16 @@ function TermsPage() {
         </header>
 
         <div className="space-y-0 py-10">
-          <TermsSection number="1" title="Eligibility">
+          <PolicySection number="1" title="Eligibility">
             <p>
               You must be at least 18 years old (or the age of majority in your jurisdiction) to use the Services. By using the Services, you represent that you meet this requirement and that any information you provide is accurate.
             </p>
             <p>
               The Services are intended for individuals, self-employed persons, contractors, and small businesses seeking to track expenses, receipts, and mileage for personal or business purposes.
             </p>
-          </TermsSection>
+          </PolicySection>
 
-          <TermsSection number="2" title="Account Registration">
+          <PolicySection number="2" title="Account Registration">
             <p>You must create an account to access most features of the Services. You agree to:</p>
             <BulletList items={[
               "Provide accurate, complete, and current registration information",
@@ -77,9 +77,9 @@ function TermsPage() {
               "Accept responsibility for all activity that occurs under your account",
             ]} />
             <p>We reserve the right to suspend or terminate accounts that violate these Terms or that we reasonably believe are being used fraudulently or abusively.</p>
-          </TermsSection>
+          </PolicySection>
 
-          <TermsSection number="3" title="Subscriptions and Billing">
+          <PolicySection number="3" title="Subscriptions and Billing">
             <p>
               Certain features of the Services require a paid subscription. Subscriptions are offered on a monthly or annual basis and are processed through third-party platforms (Apple App Store or Google Play Store) or directly through our web platform.
             </p>
@@ -92,9 +92,9 @@ function TermsPage() {
             <p>
               Free trials, where offered, convert to paid subscriptions at the end of the trial period unless cancelled. We will provide notice before any trial period ends.
             </p>
-          </TermsSection>
+          </PolicySection>
 
-          <TermsSection number="4" title="Acceptable Use">
+          <PolicySection number="4" title="Acceptable Use">
             <p>You agree to use the Services only for lawful purposes and in accordance with these Terms. You must not:</p>
             <BulletList items={[
               "Use the Services to upload, store, or process content that is illegal, fraudulent, or violates any third party's rights",
@@ -104,9 +104,9 @@ function TermsPage() {
               "Reverse engineer, decompile, or disassemble any part of the Services",
               "Resell or sublicense access to the Services without written authorization",
             ]} />
-          </TermsSection>
+          </PolicySection>
 
-          <TermsSection number="5" title="Your Content">
+          <PolicySection number="5" title="Your Content">
             <p>
               You retain ownership of all receipts, documents, expense data, and other content you upload or create within the Services ("Your Content"). By using the Services, you grant us a limited, non-exclusive, royalty-free licence to store, process, and display Your Content solely to provide and improve the Services.
             </p>
@@ -116,36 +116,36 @@ function TermsPage() {
             <p>
               <strong>Important:</strong> ReceiptOne provides organizational and informational tools only. We do not provide legal, accounting, tax, or financial advice.
             </p>
-          </TermsSection>
+          </PolicySection>
 
-          <TermsSection number="6" title="Intellectual Property">
+          <PolicySection number="6" title="Intellectual Property">
             <p>
               The Services, including all software, designs, text, graphics, logos, and other content created by us, are owned by ReceiptOne and protected by copyright, trademark, and other intellectual property laws.
             </p>
             <p>
               These Terms do not grant you any rights to use our trademarks, logos, or brand elements without our prior written consent.
             </p>
-          </TermsSection>
+          </PolicySection>
 
-          <TermsSection number="7" title="Disclaimers">
+          <PolicySection number="7" title="Disclaimers">
             <p>
               THE SERVICES ARE PROVIDED "AS IS" AND "AS AVAILABLE" WITHOUT WARRANTIES OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR NON-INFRINGEMENT.
             </p>
             <p>
               We do not warrant that the Services will be uninterrupted, error-free, or free of viruses or other harmful components. OCR and AI-assisted outputs are provided for informational purposes only and may not be accurate.
             </p>
-          </TermsSection>
+          </PolicySection>
 
-          <TermsSection number="8" title="Limitation of Liability">
+          <PolicySection number="8" title="Limitation of Liability">
             <p>
               TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, RECEIPTONE AND ITS AFFILIATES, OFFICERS, EMPLOYEES, AND AGENTS SHALL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES, INCLUDING LOSS OF DATA, REVENUE, OR PROFITS, ARISING OUT OF OR RELATED TO YOUR USE OF THE SERVICES.
             </p>
             <p>
               IN NO EVENT SHALL OUR TOTAL LIABILITY TO YOU FOR ALL CLAIMS EXCEED THE AMOUNTS PAID BY YOU TO US IN THE TWELVE (12) MONTHS PRECEDING THE CLAIM.
             </p>
-          </TermsSection>
+          </PolicySection>
 
-          <TermsSection number="9" title="Termination">
+          <PolicySection number="9" title="Termination">
             <p>
               You may stop using the Services and close your account at any time through your account settings or by contacting support@receipt-one.com.
             </p>
@@ -155,9 +155,9 @@ function TermsPage() {
             <p>
               Upon termination, your right to use the Services immediately ceases. Sections 5–8 and 10–12 survive termination.
             </p>
-          </TermsSection>
+          </PolicySection>
 
-          <TermsSection number="10" title="Privacy">
+          <PolicySection number="10" title="Privacy">
             <p>
               Your use of the Services is also governed by our{" "}
               <Link to="/privacy" className="font-medium text-foreground underline underline-offset-4">
@@ -165,24 +165,24 @@ function TermsPage() {
               </Link>
               , which is incorporated into these Terms by reference.
             </p>
-          </TermsSection>
+          </PolicySection>
 
-          <TermsSection number="11" title="Governing Law and Dispute Resolution">
+          <PolicySection number="11" title="Governing Law and Dispute Resolution">
             <p>
               These Terms are governed by the laws of the Province of Ontario, Canada, without regard to its conflict of law provisions. If you are located in the United States, you agree that any dispute shall be resolved under applicable federal and state laws of the jurisdiction in which you reside.
             </p>
             <p>
               Before initiating any formal dispute, you agree to contact us at support@receipt-one.com to attempt to resolve the matter informally. If we cannot resolve the dispute within 30 days, either party may pursue available legal remedies.
             </p>
-          </TermsSection>
+          </PolicySection>
 
-          <TermsSection number="12" title="Changes to These Terms">
+          <PolicySection number="12" title="Changes to These Terms">
             <p>
               We may update these Terms from time to time. We will revise the "Last updated" date and, for material changes, provide additional notice through the Services or by email. Continued use of the Services after changes become effective constitutes your acceptance of the updated Terms.
             </p>
-          </TermsSection>
+          </PolicySection>
 
-          <TermsSection number="13" title="Contact">
+          <PolicySection number="13" title="Contact">
             <div className="rounded-2xl border border-border bg-card p-5">
               <p className="text-sm text-muted-foreground">Email</p>
               <a className="mt-1 block font-medium text-foreground underline underline-offset-4" href="mailto:support@receipt-one.com">
@@ -192,33 +192,10 @@ function TermsPage() {
               <p className="mt-1 font-medium">Terms of Service</p>
             </div>
             <p className="text-sm text-muted-foreground">© 2026 ReceiptOne. All rights reserved.</p>
-          </TermsSection>
+          </PolicySection>
         </div>
       </article>
     </main>
   );
 }
 
-function TermsSection({ number, title, children }: { number: string; title: string; children: ReactNode }) {
-  return (
-    <section className="space-y-4 border-b border-border/70 pb-10 pt-10 first:pt-0 last:border-b-0 last:pb-0">
-      <div className="space-y-2">
-        <p className="text-sm font-medium text-muted-foreground">Section {number}</p>
-        <h2 className="font-display text-2xl font-semibold tracking-normal sm:text-3xl">{title}</h2>
-      </div>
-      <div className="space-y-4 text-base leading-7 text-muted-foreground">{children}</div>
-    </section>
-  );
-}
-
-function BulletList({ items }: { items: string[] }) {
-  return (
-    <ul className="space-y-2 pl-5">
-      {items.map((item) => (
-        <li key={item} className="list-disc marker:text-foreground">
-          {item}
-        </li>
-      ))}
-    </ul>
-  );
-}

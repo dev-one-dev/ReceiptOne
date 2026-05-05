@@ -45,12 +45,6 @@ export function Numbers() {
         </div>
       </div>
 
-      <style>{`
-        @keyframes numbers-marquee {
-          from { transform: translate3d(0, 0, 0); }
-          to { transform: translate3d(-50%, 0, 0); }
-        }
-      `}</style>
     </section>
   );
 }
