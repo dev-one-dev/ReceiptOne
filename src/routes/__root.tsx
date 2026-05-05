@@ -1,6 +1,7 @@
 import { Outlet, Link, createRootRoute, HeadContent, Scripts } from "@tanstack/react-router";
 
 import appCss from "../styles.css?url";
+import logoMark from "../assets/figma/logo-mark.svg?url";
 
 function NotFoundComponent() {
   return (
@@ -43,6 +44,8 @@ export const Route = createRootRoute({
       { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/d249a5d8-b985-4b4b-88cd-bf66621406c2/id-preview-60809a27--c3daaa9c-4a2a-4c75-b06b-6b4389cc6e87.lovable.app-1776985820292.png" },
     ],
     links: [
+      { rel: "icon", type: "image/svg+xml", href: logoMark },
+      { rel: "shortcut icon", href: logoMark },
       { rel: "stylesheet", href: appCss },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
