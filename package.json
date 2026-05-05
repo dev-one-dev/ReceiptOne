@@ -11,6 +11,7 @@
     "check:routes": "node scripts/check-routes.mjs",
     "sitemap": "node scripts/generate-sitemap.mjs",
     "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
     "lint": "eslint .",
     "format": "prettier --write ."
   },
