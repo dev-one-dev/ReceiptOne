@@ -45,8 +45,6 @@ export const Route = createRootRoute({
     ],
     links: [
       { rel: "stylesheet", href: appCss },
-      // Иконка теперь управляется роутером
-      { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
@@ -64,7 +62,7 @@ function RootShell({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <head>
-        {/* HeadContent автоматически вставит favicon из секции links выше */}
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
         <HeadContent />
       </head>
       <body>
