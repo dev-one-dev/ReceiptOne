@@ -7,29 +7,53 @@ import { NotAll } from "@/components/site/NotAll";
 import { Advantages } from "@/components/site/Advantages";
 import { AppBanner } from "@/components/site/AppBanner";
 import { Pricing } from "@/components/site/Pricing";
-import { Faq } from "@/components/site/Faq";
+import { Faq, faqItems } from "@/components/site/Faq";
 import { Footer } from "@/components/site/Footer";
+import { HowItWorks } from "@/components/site/HowItWorks";
+import { WhoItsFor } from "@/components/site/WhoItsFor";
+import { TrustSection } from "@/components/site/TrustSection";
+import { FinalCta } from "@/components/site/FinalCta";
 import { SuggestFeatureWidget } from "@/components/site/SuggestFeatureWidget";
 import { useRevealOnScroll } from "@/hooks/use-reveal-on-scroll";
+import {
+  pageSEO,
+  HREFLANG_US_CA,
+  softwareApplicationJsonLd,
+  breadcrumbJsonLd,
+  faqJsonLd,
+} from "@/lib/seo";
 
 export const Route = createFileRoute("/ca")({
-  head: () => ({
-    meta: [
-      { title: "ReceiptOne Canada — Track expenses, store receipts, generate tax-ready reports" },
-      {
-        name: "description",
-        content:
-          "Built for freelancers, self-employed, and small businesses in Canada. Track expenses, store receipts and generate tax-ready reports — all in one place.",
-      },
-      { property: "og:title", content: "ReceiptOne Canada" },
-      {
-        property: "og:description",
-        content:
-          "Track expenses, store receipts and generate tax-ready reports. Built for Canadian freelancers and small businesses.",
-      },
-      { property: "og:type", content: "website" },
-    ],
-  }),
+  head: () => {
+    const seo = pageSEO({
+      path: "/ca",
+      title:
+        "ReceiptOne Canada | Receipt, Expense & Mileage Tracker for CRA Records",
+      description:
+        "Organize receipts, track expenses and mileage, and export tax-ready reports for Canadian freelancers, contractors, and small businesses.",
+      ogTitle: "ReceiptOne Canada | Receipt, Expense & Mileage Tracker",
+      ogDescription:
+        "Organize receipts, mileage, expenses, and accountant-ready reports for Canadian freelancers and small businesses.",
+      hreflang: HREFLANG_US_CA,
+    });
+    return {
+      meta: seo.meta,
+      links: seo.links,
+      scripts: [
+        { type: "application/ld+json", children: JSON.stringify(softwareApplicationJsonLd("ca")) },
+        {
+          type: "application/ld+json",
+          children: JSON.stringify(
+            breadcrumbJsonLd([
+              { name: "Home", path: "/" },
+              { name: "Canada", path: "/ca" },
+            ]),
+          ),
+        },
+        { type: "application/ld+json", children: JSON.stringify(faqJsonLd(faqItems)) },
+      ],
+    };
+  },
   component: CanadaPage,
 });
 
@@ -39,17 +63,21 @@ function CanadaPage() {
     <main
       data-interactive-page
       data-reveal-root
-      className="min-h-screen overflow-x-clip bg-[#f5f4f0] font-sans text-black antialiased"
+      className="min-h-screen overflow-x-hidden bg-[#f5f4f0] font-sans text-black antialiased"
     >
       <div data-reveal-skip><Header /></div>
       <div data-reveal><TopBanner /></div>
       <div data-reveal><Numbers /></div>
       <div data-reveal><InfoCards /></div>
       <div data-reveal><NotAll /></div>
+      <div data-reveal><HowItWorks region="ca" /></div>
       <div data-reveal><Advantages /></div>
+      <div data-reveal><WhoItsFor region="ca" /></div>
       <div data-reveal><AppBanner /></div>
       <div data-reveal><Pricing /></div>
+      <div data-reveal><TrustSection region="ca" /></div>
       <div data-reveal><Faq /></div>
+      <div data-reveal><FinalCta /></div>
       <div data-reveal><Footer /></div>
       <SuggestFeatureWidget region="ca" />
     </main>

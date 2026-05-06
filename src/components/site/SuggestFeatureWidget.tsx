@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
@@ -67,7 +67,18 @@ export function SuggestFeatureWidget({ region }: { region: Region }) {
   const [loading, setLoading] = useState(false);
   const [preview, setPreview] = useState<AiPreview | null>(null);
   const [successMsg, setSuccessMsg] = useState("");
+  const panelRef = useRef<HTMLDivElement>(null);
   const deviceId = useMemo(getDeviceId, []);
+
+  useEffect(() => {
+    function onClick(e: MouseEvent) {
+      if (open && panelRef.current && !panelRef.current.contains(e.target as Node)) {
+        // don't auto-close to avoid losing input; require explicit close
+      }
+    }
+    document.addEventListener("mousedown", onClick);
+    return () => document.removeEventListener("mousedown", onClick);
+  }, [open]);
 
   const reset = () => {
     setStep("input");
@@ -179,6 +190,7 @@ export function SuggestFeatureWidget({ region }: { region: Region }) {
       {/* Panel */}
       {open && (
         <div
+          ref={panelRef}
           role="dialog"
           aria-label="Suggest a feature"
           className="fixed bottom-4 right-4 z-40 w-[min(calc(100vw-2rem),420px)] overflow-hidden rounded-3xl border border-black/[0.08] bg-white shadow-[0_24px_60px_rgba(0,0,0,0.18)] sm:bottom-8 sm:right-8"

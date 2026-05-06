@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import footerSvg from "@/assets/figma/footer.svg";
 import footerUsSvg from "@/assets/figma/footer-us.svg";
+import { ROUTES } from "@/lib/routes";
 
 type FooterProps = {
   region?: "ca" | "us";
@@ -46,6 +47,8 @@ export function Footer({ region = "ca" }: FooterProps) {
   };
 
   const footerAsset = region === "us" ? footerUsSvg : footerSvg;
+  const hotspotClassName =
+    "group absolute z-10 block rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-4 focus-visible:ring-offset-white transition-transform duration-500 ease-out hover:scale-[1.04] motion-reduce:transition-none motion-reduce:hover:scale-100";
 
   return (
     <footer
@@ -83,8 +86,6 @@ export function Footer({ region = "ca" }: FooterProps) {
         className={`relative z-[1] block h-auto w-full ${
           !reduced ? "animate-[footer-float_9s_ease-in-out_infinite]" : ""
         }`}
-        loading="lazy"
-        decoding="async"
       />
 
       <button
@@ -119,25 +120,52 @@ export function Footer({ region = "ca" }: FooterProps) {
       </button>
 
       <Link
-        to="/terms"
+        to={ROUTES.terms}
         aria-label="Terms of Use"
         className="absolute left-[42.5%] top-[88.5%] z-10 h-[5%] w-[8%] rounded-md transition-transform duration-300 hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary motion-reduce:hover:scale-100"
       />
 
       <Link
-        to="/login"
+        to={ROUTES.login}
         aria-label="Log in"
-        className="absolute left-[38%] top-[64%] z-10 h-[10%] w-[11.5%] rounded-[40px] bg-transparent transition-colors duration-200 hover:bg-white/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-4 focus-visible:ring-offset-white"
-      />
+        className={`${hotspotClassName} left-[38%] top-[64%] h-[10%] w-[11.5%] overflow-hidden !rounded-[40px] hover:shadow-[0_14px_36px_-12px_rgba(59,130,246,0.5)] ${
+          !reduced ? "animate-[claim-glow_3.2s_ease-in-out_infinite]" : ""
+        }`}
+      >
+        {!reduced && (
+          <span
+            aria-hidden
+            className="pointer-events-none absolute inset-0 -translate-x-full opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-hover:animate-[claim-shimmer_1.4s_ease-in-out_infinite]"
+            style={{
+              background:
+                "linear-gradient(110deg, transparent 30%, rgba(255,255,255,0.55) 50%, transparent 70%)",
+            }}
+          />
+        )}
+      </Link>
 
       <Link
-        to="/signup"
+        to={ROUTES.signup}
         aria-label="Join now"
-        className="absolute left-[50.5%] top-[64%] z-10 h-[10%] w-[11.5%] rounded-[40px] bg-transparent transition-colors duration-200 hover:bg-white/15 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-4 focus-visible:ring-offset-white"
-      />
+        className={`${hotspotClassName} left-[50.5%] top-[64%] h-[10%] w-[11.5%] overflow-hidden !rounded-[40px] hover:shadow-[0_14px_36px_-12px_rgba(168,85,247,0.55)] ${
+          !reduced ? "animate-[claim-glow_3.2s_ease-in-out_infinite]" : ""
+        }`}
+        style={{ animationDelay: "1.1s" }}
+      >
+        {!reduced && (
+          <span
+            aria-hidden
+            className="pointer-events-none absolute inset-0 -translate-x-full opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-hover:animate-[claim-shimmer_1.4s_ease-in-out_infinite]"
+            style={{
+              background:
+                "linear-gradient(110deg, transparent 30%, rgba(255,255,255,0.55) 50%, transparent 70%)",
+            }}
+          />
+        )}
+      </Link>
 
       <Link
-        to="/privacy"
+        to={ROUTES.privacy}
         aria-label="Privacy Policy"
         className="absolute left-[51%] top-[88.5%] z-10 h-[5%] w-[9%] rounded-md transition-transform duration-300 hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary motion-reduce:hover:scale-100"
       />

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { QRCodeSVG } from "qrcode.react";
-import appBannerCaArt from "@/assets/figma/app-banner-ca-replacement.svg?url";
+import appBannerCaArt from "@/assets/figma/app-banner-ca.svg?url";
 import appBannerUsArt from "@/assets/figma/app-banner-us.svg?url";
 
 const APP_STORE_URL = "https://apps.apple.com/app/receiptone/id0000000000";
@@ -211,6 +211,44 @@ export function AppBanner({ region = "ca" }: { region?: "ca" | "us" }) {
 
   const artSrc = region === "ca" ? appBannerCaArt : appBannerUsArt;
 
+  // The US Figma export already bakes in headline, copy, QR, store badges
+  // and the phone mockups. Render the artwork on its own — no HTML overlay
+  // needed, otherwise text and CTAs would duplicate.
+  if (region === "us" || region === "ca") {
+    return (
+      <section
+        id="apps"
+        data-region={region}
+        className="w-full scroll-mt-28"
+        aria-labelledby="app-banner-heading"
+      >
+        <div className="mx-auto flex w-full max-w-[1440px] justify-center px-4 py-10 md:px-8 md:py-[80px]">
+          <a
+            href={qrUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={qrLabel}
+            className="relative block w-full"
+            style={{ aspectRatio: `${ART_W} / ${ART_H}` }}
+          >
+            <h2 id="app-banner-heading" className="sr-only">
+              Get your personal receipt manager in your phone
+            </h2>
+            <img
+              src={artSrc}
+              alt="Get your personal receipt manager in your phone — download ReceiptOne on the App Store or Google Play"
+              className="absolute inset-0 h-full w-full object-contain"
+              width={ART_W}
+              height={ART_H}
+              loading="lazy"
+              decoding="async"
+            />
+          </a>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section
       id="apps"
@@ -229,8 +267,6 @@ export function AppBanner({ region = "ca" }: { region?: "ca" | "us" }) {
             className="pointer-events-none absolute inset-0 h-full w-full object-cover"
             width={ART_W}
             height={ART_H}
-            loading="lazy"
-            decoding="async"
             loading="lazy"
             decoding="async"
             aria-hidden

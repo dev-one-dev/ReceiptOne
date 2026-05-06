@@ -75,8 +75,7 @@ export function useRevealOnScroll() {
 
     elements.forEach((el) => io.observe(el));
 
-    // Watch for newly added reveal blocks scoped to the reveal root only.
-    const revealRoot = document.querySelector("[data-reveal-root]");
+    // Watch for newly added blocks (e.g. async content) and reveal them too.
     const mo = new MutationObserver(() => {
       const next = collect();
       const fresh = next.filter((el) => !elements.includes(el));
@@ -85,7 +84,7 @@ export function useRevealOnScroll() {
       fresh.forEach((el) => io.observe(el));
       elements = next;
     });
-    if (revealRoot) mo.observe(revealRoot, { childList: true });
+    mo.observe(document.body, { childList: true, subtree: true });
 
     return () => {
       io.disconnect();

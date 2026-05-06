@@ -1,4 +1,4 @@
-import pricingSvg from "@/assets/figma/pricing.svg";
+import pricingSvg from "@/assets/figma/pricing-ca.svg";
 import pricingUsSvg from "@/assets/figma/pricing-us.svg";
 
 // Card boxes from the Figma SVG (viewBox 1440x1632, displayed crop 1440x1110)
@@ -8,14 +8,14 @@ const CARDS = [
   { label: "Year plan", x: 896, btnX: 912, accent: "rgba(34,197,94,0.35)" },
 ] as const;
 
-const CARD_Y = 600;
+const CARD_Y = 624;
 const CARD_W = 304;
 const CARD_H = 544;
-const BTN_Y = 776;
+const BTN_Y = 800;
 const BTN_W = 272;
 const BTN_H = 56;
 const VB_W = 1440;
-const VB_H = 1110;
+const VB_H = 1200;
 
 export function Pricing({ region = "ca" }: { region?: "ca" | "us" }) {
   const src = region === "us" ? pricingUsSvg : pricingSvg;
@@ -36,8 +36,6 @@ export function Pricing({ region = "ca" }: { region?: "ca" | "us" }) {
           src={src}
           alt={alt}
           className="absolute inset-x-0 top-0 block w-full"
-          loading="lazy"
-          decoding="async"
         />
         {CARDS.map((c) => (
           <button

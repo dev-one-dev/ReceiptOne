@@ -1,9 +1,10 @@
 import { MessageCircle, Plus } from "lucide-react";
 import { useState } from "react";
 
-type QA = { q: string; a: string };
+export type QA = { q: string; a: string };
 
-const items: QA[] = [
+/** Shared FAQ list (used both for UI rendering and FAQPage JSON-LD). */
+export const faqItems: QA[] = [
   {
     q: "How does receipt scanning work?",
     a: "Snap a photo or upload a file — our AI extracts the merchant, date, total and tax amounts automatically and files the receipt for you.",
@@ -46,7 +47,7 @@ const items: QA[] = [
   },
 ];
 
-export function Faq() {
+export function Faq({ items = faqItems }: { items?: QA[] } = {}) {
   const [open, setOpen] = useState<number | null>(1);
 
   return (

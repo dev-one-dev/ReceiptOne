@@ -57,11 +57,11 @@ export function Numbers() {
 
 function Stat({ value, label }: { value: string; label: string }) {
   return (
-    <div className="flex min-w-[120px] shrink-0 flex-col items-start sm:min-w-[136px] md:min-w-[156px]">
-      <p className="font-display text-2xl font-semibold leading-8 tracking-[-0.01em] text-foreground sm:text-[28px] md:text-[32px]">
+    <div className="flex shrink-0 flex-col items-start">
+      <p className="font-display text-xl font-semibold leading-7 tracking-[-0.01em] text-foreground sm:text-[26px] sm:leading-8 md:text-[32px] md:leading-9">
         {value}
       </p>
-      <p className="max-w-[12ch] text-pretty font-display text-sm leading-5 text-muted-foreground md:text-base md:leading-6">
+      <p className="whitespace-nowrap font-display text-xs leading-4 text-muted-foreground sm:text-sm sm:leading-5 md:text-base md:leading-6">
         {label}
       </p>
     </div>

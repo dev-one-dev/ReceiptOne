@@ -1,8 +1,7 @@
 import { Outlet, Link, createRootRoute, HeadContent, Scripts } from "@tanstack/react-router";
-import { Toaster } from "sonner";
 
 import appCss from "../styles.css?url";
-import logoMark from "../assets/figma/logo-mark.svg?url";
+import { organizationJsonLd, websiteJsonLd } from "@/lib/seo";
 
 function NotFoundComponent() {
   return (
@@ -31,18 +30,35 @@ export const Route = createRootRoute({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "ReceiptOne — Receipt, Expense & Mileage Tracker" },
-      { name: "description", content: "Track expenses, store receipts, and generate tax-ready reports. Built for freelancers, self-employed, and small businesses in Canada and the USA." },
+      { title: "ReceiptOne | Receipt, Expense & Mileage Tracker" },
+      {
+        name: "description",
+        content:
+          "ReceiptOne helps freelancers and small businesses organize receipts, track mileage, manage expenses, and export tax-ready reports.",
+      },
       { name: "author", content: "ReceiptOne" },
+      { name: "theme-color", content: "#f5f4f0" },
+      { name: "format-detection", content: "telephone=no" },
+      // Per-route head() overrides og/twitter tags below for shareable pages.
+      { property: "og:site_name", content: "ReceiptOne" },
     ],
     links: [
-      { rel: "icon", type: "image/svg+xml", href: logoMark },
       { rel: "stylesheet", href: appCss },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Inter+Tight:wght@500;600;700;800&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Inter+Tight:wght@500;600;700;800&family=Grape+Nuts&display=swap",
+      },
+    ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify(organizationJsonLd),
+      },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify(websiteJsonLd),
       },
     ],
   }),
@@ -55,7 +71,6 @@ function RootShell({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <head>
-        <link rel="icon" type="image/svg+xml" href={logoMark} />
         <HeadContent />
       </head>
       <body>
@@ -67,10 +82,5 @@ function RootShell({ children }: { children: React.ReactNode }) {
 }
 
 function RootComponent() {
-  return (
-    <>
-      <Outlet />
-      <Toaster richColors position="bottom-right" />
-    </>
-  );
+  return <Outlet />;
 }

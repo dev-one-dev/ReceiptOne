@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import testimonialRowUs from "@/assets/figma/testimonial-row-us.svg";
 import testimonialRowUs2 from "@/assets/figma/testimonial-row-us-2.svg";
+import { useReplayOnVisible } from "@/hooks/use-replay-on-visible";
 
 /**
  * Each SVG row contains 3 cards baked together. We overlay 3 invisible "tile"
@@ -182,10 +183,13 @@ function Tile({
 
 function TileRow({ src, alt, tiles }: { src: string; alt: string; tiles: string[] }) {
   const { hasFinePointer, prefersReducedMotion } = useMotionCapabilities();
+  const [rowRef, rowKey] = useReplayOnVisible<HTMLDivElement>(0.25);
 
   return (
     <div
-      className="relative grid grid-cols-3 gap-2"
+      ref={rowRef}
+      key={rowKey}
+      className="notall-row is-visible relative grid grid-cols-3 gap-2"
       style={{ perspective: "1200px" }}
       role="group"
       aria-label={alt}
@@ -194,8 +198,12 @@ function TileRow({ src, alt, tiles }: { src: string; alt: string; tiles: string[
         src={src}
         alt={alt}
         className="pointer-events-none col-span-3 block h-auto w-full"
-        loading="lazy"
-        decoding="async"
+      />
+      {/* Cover the baked-in divider line between text and eagle in each card */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute left-0 right-0"
+        style={{ top: "49.6%", height: "1.6%", background: "#ffffff" }}
       />
       {/* Per-card hotspots overlayed on top of the SVG */}
       <div className="pointer-events-none absolute inset-0 grid grid-cols-3 gap-[2.5%] px-[1%]">
@@ -214,14 +222,19 @@ function TileRow({ src, alt, tiles }: { src: string; alt: string; tiles: string[
 }
 
 export function NotAllUS() {
+  const [headerRef, headerKey] = useReplayOnVisible<HTMLDivElement>(0.4);
   return (
-    <section className="mx-auto w-full max-w-[960px] px-4 pt-12 pb-20 sm:px-6 sm:pt-[78px] sm:pb-[132px]">
-      <div className="mb-10 flex items-center gap-4 sm:mb-[78px]">
-        <div className="h-px flex-1 bg-black/15" />
-        <h2 className="font-display text-[15px] font-medium tracking-wide text-[#7e8890]">
+    <section className="mx-auto w-full max-w-[960px] px-4 pt-4 pb-20 sm:px-6 sm:pt-8 sm:pb-[132px]">
+      <div
+        ref={headerRef}
+        key={headerKey}
+        className="notall-divider is-visible mb-10 flex items-center gap-4 sm:mb-[78px]"
+      >
+        <div className="notall-line h-px flex-1 bg-black/15" />
+        <h2 className="notall-title font-display text-[15px] font-medium tracking-wide text-[#7e8890]">
           And this is not all
         </h2>
-        <div className="h-px flex-1 bg-black/15" />
+        <div className="notall-line right h-px flex-1 bg-black/15" />
       </div>
 
       <TileRow

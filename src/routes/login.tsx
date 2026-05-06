@@ -1,16 +1,18 @@
 import { Link, createFileRoute } from "@tanstack/react-router";
 import logoMark from "@/assets/figma/logo-mark.svg";
 import logoWordmark from "@/assets/figma/logo-wordmark.svg";
+import { pageSEO } from "@/lib/seo";
 
 export const Route = createFileRoute("/login")({
-  head: () => ({
-    meta: [
-      { title: "ReceiptOne Login" },
-      { name: "description", content: "Sign in to your ReceiptOne account." },
-      { property: "og:title", content: "ReceiptOne Login" },
-      { property: "og:description", content: "Sign in to your ReceiptOne account." },
-    ],
-  }),
+  head: () => {
+    const seo = pageSEO({
+      path: "/login",
+      title: "Log in | ReceiptOne",
+      description: "Sign in to your ReceiptOne account.",
+      noIndex: true,
+    });
+    return { meta: seo.meta, links: seo.links };
+  },
   component: LoginPage,
 });
 
