@@ -1,7 +1,0 @@
-msg = message
-msg = re.sub(br"\nCo-authored-by: Alexd-y[^\n]*", b"", msg)
-msg = re.sub(br"\nCo-authored-by: lovable-dev\[bot\][^\n]*", b"", msg)
-msg = re.sub(br"\nCo-authored-by: cursoragent[^\n]*", b"", msg)
-msg = re.sub(br"\nCo-authored-by: Cursor <cursoragent@cursor\.com>", b"", msg)
-msg = re.sub(br"\nX-Lovable-Edit-ID:[^\n]*", b"", msg)
-return msg
