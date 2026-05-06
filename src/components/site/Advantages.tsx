@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import advantagesSvg from "@/assets/figma/advantages.svg";
+import advantagesSvg from "@/assets/figma/advantages.webp";
 
 /** Tile rectangles in the SVG viewBox (1440×1056) */
 const TILES = [
@@ -197,6 +197,10 @@ export function Advantages() {
           src={advantagesSvg}
           alt="What is our advantages — Save 10+ hours, never miss mileage deductions, accountant-ready reports, documentation ready, mobile + web in sync"
           className="pointer-events-none block h-full w-full"
+          loading="lazy"
+          decoding="async"
+          width={1440}
+          height={1056}
         />
 
         {TILES.map((tile, i) => (

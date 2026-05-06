@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import footerSvg from "@/assets/figma/footer.svg";
-import footerUsSvg from "@/assets/figma/footer-us.svg";
+import footerSvg from "@/assets/figma/footer.webp";
+import footerUsSvg from "@/assets/figma/footer-us.webp";
 import { ROUTES } from "@/lib/routes";
 
 type FooterProps = {
@@ -86,6 +86,10 @@ export function Footer({ region = "ca" }: FooterProps) {
         className={`relative z-[1] block h-auto w-full ${
           !reduced ? "animate-[footer-float_9s_ease-in-out_infinite]" : ""
         }`}
+        loading="lazy"
+        decoding="async"
+        width={1440}
+        height={772}
       />
 
       <button

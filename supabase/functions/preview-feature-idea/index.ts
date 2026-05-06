@@ -29,7 +29,7 @@ serve(async (req) => {
 
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
-    const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+    const SUPABASE_ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY")!;
     if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY not configured");
 
     // 1) Ask AI to normalize into title + description via tool calling
@@ -96,7 +96,7 @@ serve(async (req) => {
     const description: string = (args?.description || input).slice(0, 220);
 
     // 2) Find similar ideas via simple keyword search
-    const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
+    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
     const tokens = title
       .toLowerCase()
       .replace(/[^a-z0-9 ]/g, " ")
@@ -126,7 +126,7 @@ serve(async (req) => {
   } catch (e) {
     console.error("preview-feature-idea error", e);
     return new Response(
-      JSON.stringify({ error: e instanceof Error ? e.message : "Unknown error" }),
+      JSON.stringify({ error: "An unexpected error occurred. Please try again." }),
       { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } },
     );
   }

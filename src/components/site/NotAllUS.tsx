@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import testimonialRowUs from "@/assets/figma/testimonial-row-us.svg";
-import testimonialRowUs2 from "@/assets/figma/testimonial-row-us-2.svg";
+import testimonialRowUs from "@/assets/figma/testimonial-row-us.webp";
+import testimonialRowUs2 from "@/assets/figma/testimonial-row-us-2.webp";
 import { useReplayOnVisible } from "@/hooks/use-replay-on-visible";
 
 /**
@@ -198,6 +198,10 @@ function TileRow({ src, alt, tiles }: { src: string; alt: string; tiles: string[
         src={src}
         alt={alt}
         className="pointer-events-none col-span-3 block h-auto w-full"
+        loading="lazy"
+        decoding="async"
+        width={960}
+        height={560}
       />
       {/* Cover the baked-in divider line between text and eagle in each card */}
       <div

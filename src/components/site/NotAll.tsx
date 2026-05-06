@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import notAllCa from "@/assets/figma/not-all-ca.svg";
+import notAllCa from "@/assets/figma/not-all-ca.webp";
 import { useReplayOnVisible } from "@/hooks/use-replay-on-visible";
 
 /**
@@ -198,6 +198,10 @@ export function NotAll() {
           alt="And this is not all — six ReceiptOne benefit cards for Canadian users"
           className="pointer-events-none block h-auto w-full select-none"
           draggable={false}
+          loading="lazy"
+          decoding="async"
+          width={1440}
+          height={1325}
         />
         {/* Cover the baked-in divider lines INSIDE each card only (not across the gaps) */}
         {dividerYs.map((dy, ri) =>

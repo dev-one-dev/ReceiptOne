@@ -1,5 +1,6 @@
 import eagleHeroVideo from "@/assets/figma/hero-eagle.mp4";
-import eagleHeroVideoTransparent from "@/assets/figma/hero-eagle-transparent.webm";
+import eagleHeroVideoTransparent from "@/assets/figma/hero-eagle-alpha.webm";
+import eagleHeroPoster from "@/assets/figma/hero-eagle-poster.png";
 import avatar1 from "@/assets/figma/avatar-1.webp";
 import avatar2 from "@/assets/figma/avatar-2.webp";
 import avatar3 from "@/assets/figma/avatar-3.webp";
@@ -132,6 +133,8 @@ export function TopBannerUS() {
             loop
             muted
             playsInline
+            preload="metadata"
+            poster={eagleHeroPoster}
             aria-label="Eagle mascot wearing a USA cap, reading a receipt"
           >
             <source src={eagleHeroVideoTransparent} type="video/webm" />

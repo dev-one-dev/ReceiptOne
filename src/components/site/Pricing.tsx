@@ -1,5 +1,5 @@
-import pricingSvg from "@/assets/figma/pricing-ca.svg";
-import pricingUsSvg from "@/assets/figma/pricing-us.svg";
+import pricingSvg from "@/assets/figma/pricing-ca.webp";
+import pricingUsSvg from "@/assets/figma/pricing-us.webp";
 
 // Card boxes from the Figma SVG (viewBox 1440x1632, displayed crop 1440x1110)
 const CARDS = [
@@ -36,6 +36,10 @@ export function Pricing({ region = "ca" }: { region?: "ca" | "us" }) {
           src={src}
           alt={alt}
           className="absolute inset-x-0 top-0 block w-full"
+          loading="lazy"
+          decoding="async"
+          width={1440}
+          height={1656}
         />
         {CARDS.map((c) => (
           <button

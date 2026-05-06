@@ -9,10 +9,6 @@ import { AppBanner } from "@/components/site/AppBanner";
 import { Pricing } from "@/components/site/Pricing";
 import { Faq, faqItems } from "@/components/site/Faq";
 import { Footer } from "@/components/site/Footer";
-import { HowItWorks } from "@/components/site/HowItWorks";
-import { WhoItsFor } from "@/components/site/WhoItsFor";
-import { TrustSection } from "@/components/site/TrustSection";
-import { FinalCta } from "@/components/site/FinalCta";
 import { SuggestFeatureWidget } from "@/components/site/SuggestFeatureWidget";
 import { useRevealOnScroll } from "@/hooks/use-reveal-on-scroll";
 import {
@@ -70,14 +66,10 @@ function CanadaPage() {
       <div data-reveal><Numbers /></div>
       <div data-reveal><InfoCards /></div>
       <div data-reveal><NotAll /></div>
-      <div data-reveal><HowItWorks region="ca" /></div>
       <div data-reveal><Advantages /></div>
-      <div data-reveal><WhoItsFor region="ca" /></div>
       <div data-reveal><AppBanner /></div>
       <div data-reveal><Pricing /></div>
-      <div data-reveal><TrustSection region="ca" /></div>
       <div data-reveal><Faq /></div>
-      <div data-reveal><FinalCta /></div>
       <div data-reveal><Footer /></div>
       <SuggestFeatureWidget region="ca" />
     </main>

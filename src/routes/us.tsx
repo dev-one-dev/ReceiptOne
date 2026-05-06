@@ -2,17 +2,13 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Header } from "@/components/site/Header";
 import { TopBannerUS } from "@/components/site/TopBannerUS";
 import { Numbers } from "@/components/site/Numbers";
-import infoCardsUsSvg from "@/assets/figma/info-cards-us.svg";
+import infoCardsUsImg from "@/assets/figma/info-cards-us.webp";
 import { NotAllUS } from "@/components/site/NotAllUS";
 import { Advantages } from "@/components/site/Advantages";
 import { AppBanner } from "@/components/site/AppBanner";
 import { Pricing } from "@/components/site/Pricing";
 import { Faq, faqItems } from "@/components/site/Faq";
 import { Footer } from "@/components/site/Footer";
-import { HowItWorks } from "@/components/site/HowItWorks";
-import { WhoItsFor } from "@/components/site/WhoItsFor";
-import { TrustSection } from "@/components/site/TrustSection";
-import { FinalCta } from "@/components/site/FinalCta";
 import { SuggestFeatureWidget } from "@/components/site/SuggestFeatureWidget";
 import { useRevealOnScroll } from "@/hooks/use-reveal-on-scroll";
 import {
@@ -71,21 +67,21 @@ function USAPage() {
       <section id="benefits" data-reveal className="w-full">
         <div className="mx-auto w-full max-w-[1440px]">
           <img
-            src={infoCardsUsSvg}
+            src={infoCardsUsImg}
             alt="Turn Receipt Chaos Into Tax Gold — benefits"
             className="block h-auto w-full"
+            loading="lazy"
+            decoding="async"
+            width={1440}
+            height={2976}
           />
         </div>
       </section>
       <div data-reveal><NotAllUS /></div>
-      <div data-reveal><HowItWorks region="us" /></div>
       <div data-reveal><Advantages /></div>
-      <div data-reveal><WhoItsFor region="us" /></div>
       <div data-reveal><AppBanner region="us" /></div>
       <div data-reveal><Pricing region="us" /></div>
-      <div data-reveal><TrustSection region="us" /></div>
       <div data-reveal><Faq /></div>
-      <div data-reveal><FinalCta /></div>
       <div data-reveal><Footer region="us" /></div>
       <SuggestFeatureWidget region="us" />
     </main>
