@@ -11,7 +11,6 @@ type FooterProps = {
 export function Footer({ region = "ca" }: FooterProps) {
   const [topActive, setTopActive] = useState(false);
   const topTimeoutRef = useRef<number | null>(null);
-  const sectionRef = useRef<HTMLElement | null>(null);
   const [reduced, setReduced] = useState(false);
 
   useEffect(() => {
@@ -36,56 +35,16 @@ export function Footer({ region = "ca" }: FooterProps) {
     };
   }, []);
 
-  const handleSectionMove = (e: React.PointerEvent<HTMLElement>) => {
-    if (reduced) return;
-    const el = e.currentTarget;
-    const r = el.getBoundingClientRect();
-    const x = ((e.clientX - r.left) / r.width) * 100;
-    const y = ((e.clientY - r.top) / r.height) * 100;
-    el.style.setProperty("--fmx", `${x}%`);
-    el.style.setProperty("--fmy", `${y}%`);
-  };
-
-  const footerAsset = region === "us" ? footerUsSvg : footerSvg;
+const footerAsset = region === "us" ? footerUsSvg : footerSvg;
   const hotspotClassName =
     "group absolute z-10 block rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-4 focus-visible:ring-offset-white transition-transform duration-500 ease-out hover:-translate-y-0.5 hover:scale-[1.04] motion-reduce:transition-none motion-reduce:hover:translate-y-0 motion-reduce:hover:scale-100";
 
   return (
-    <footer
-      ref={sectionRef}
-      onPointerMove={handleSectionMove}
-      className="relative w-full overflow-hidden"
-    >
-      {/* Animated aurora glow that follows the cursor */}
-      {!reduced && (
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0 z-0 opacity-70 transition-opacity duration-700"
-          style={{
-            background:
-              "radial-gradient(600px circle at var(--fmx,50%) var(--fmy,40%), rgba(59,130,246,0.18), transparent 60%)",
-          }}
-        />
-      )}
-      {!reduced && (
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-x-0 top-0 z-0 h-px"
-          style={{
-            background:
-              "linear-gradient(90deg, transparent, rgba(59,130,246,0.6), rgba(168,85,247,0.6), rgba(236,72,153,0.6), transparent)",
-            backgroundSize: "200% 100%",
-            animation: "footer-line 6s linear infinite",
-          }}
-        />
-      )}
-
+    <footer className="relative w-full overflow-hidden">
       <img
         src={footerAsset}
         alt="Claim your free trial now — ReceiptOne"
-        className={`relative z-[1] block h-auto w-full ${
-          !reduced ? "animate-[footer-float_9s_ease-in-out_infinite]" : ""
-        }`}
+        className="relative z-[1] block h-auto w-full"
         loading="lazy"
         decoding="async"
         width={1440}
