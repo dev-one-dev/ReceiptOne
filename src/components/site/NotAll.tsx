@@ -11,7 +11,7 @@ export function NotAll() {
   const dividerYs = [454.5, 1046.5];
 
   return (
-    <section className="mx-auto w-full max-w-[1440px] px-3 pt-0 pb-20 sm:px-6 sm:pt-2 sm:pb-[132px]">
+    <section className="mx-auto w-full max-w-[1440px] -mt-8 px-3 pt-0 pb-20 sm:-mt-14 sm:px-6 sm:pb-[132px]">
       <div className="relative">
         <img
           src={notAllCa}
