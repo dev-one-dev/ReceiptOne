@@ -13,9 +13,9 @@ export function Numbers() {
 
   return (
     <section className="w-full px-4 py-10 sm:px-6 md:px-8" aria-label="Key product statistics">
-      <div className="mx-auto w-full max-w-[1240px]">
+      <div className="mx-auto w-full max-w-[760px]">
         <div
-          className="relative overflow-hidden rounded-[40px] bg-card py-8 sm:rounded-[52px] sm:py-10 md:py-[42px]"
+          className="relative overflow-hidden rounded-[32px] bg-card py-6 sm:rounded-[40px] sm:py-8"
           onMouseEnter={() => setPaused(true)}
           onMouseLeave={() => setPaused(false)}
         >
@@ -33,7 +33,7 @@ export function Numbers() {
             {[0, 1].map((copy) => (
               <div
                 key={copy}
-                className="flex shrink-0 items-center gap-8 px-4 sm:gap-12 sm:px-6 md:gap-16 md:px-8"
+                className="flex shrink-0 items-center gap-8 px-4 sm:gap-12 sm:px-6"
                 aria-hidden={copy === 1}
               >
                 {STATS.map((stat) => (
@@ -52,10 +52,10 @@ export function Numbers() {
 function Stat({ value, label }: { value: string; label: string }) {
   return (
     <div className="flex shrink-0 flex-col items-start">
-      <p className="font-display text-xl font-semibold leading-7 tracking-[-0.01em] text-foreground sm:text-[26px] sm:leading-8 md:text-[32px] md:leading-9">
+      <p className="font-display text-xl font-semibold leading-7 tracking-[-0.01em] text-foreground sm:text-[22px] sm:leading-8">
         {value}
       </p>
-      <p className="whitespace-nowrap font-display text-xs leading-4 text-muted-foreground sm:text-sm sm:leading-5 md:text-base md:leading-6">
+      <p className="whitespace-nowrap font-display text-xs leading-4 text-muted-foreground sm:text-sm sm:leading-5">
         {label}
       </p>
     </div>
