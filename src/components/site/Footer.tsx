@@ -37,7 +37,7 @@ export function Footer({ region = "ca" }: FooterProps) {
 
 const footerAsset = region === "us" ? footerUsSvg : footerSvg;
   const hotspotClassName =
-    "group absolute z-10 block rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-4 focus-visible:ring-offset-white transition-transform duration-500 ease-out hover:-translate-y-0.5 hover:scale-[1.04] motion-reduce:transition-none motion-reduce:hover:translate-y-0 motion-reduce:hover:scale-100";
+    "absolute z-10 block rounded-[40px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-4 focus-visible:ring-offset-white";
 
   return (
     <footer className="relative w-full overflow-hidden">
@@ -91,41 +91,14 @@ const footerAsset = region === "us" ? footerUsSvg : footerSvg;
       <Link
         to={ROUTES.login}
         aria-label="Log in"
-        className={`${hotspotClassName} left-[38%] top-[64%] h-[10%] w-[11.5%] overflow-hidden !rounded-[40px] hover:shadow-[0_14px_36px_-12px_rgba(59,130,246,0.5)] ${
-          !reduced ? "animate-[claim-glow_3.2s_ease-in-out_infinite]" : ""
-        }`}
-      >
-        {!reduced && (
-          <span
-            aria-hidden
-            className="pointer-events-none absolute inset-0 -translate-x-full opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-hover:animate-[claim-shimmer_1.4s_ease-in-out_infinite]"
-            style={{
-              background:
-                "linear-gradient(110deg, transparent 30%, rgba(255,255,255,0.55) 50%, transparent 70%)",
-            }}
-          />
-        )}
-      </Link>
+        className={`${hotspotClassName} left-[38%] top-[64%] h-[10%] w-[11.5%]`}
+      />
 
       <Link
         to={ROUTES.signup}
         aria-label="Join now"
-        className={`${hotspotClassName} left-[50.5%] top-[64%] h-[10%] w-[11.5%] overflow-hidden !rounded-[40px] hover:shadow-[0_14px_36px_-12px_rgba(168,85,247,0.55)] ${
-          !reduced ? "animate-[claim-glow_3.2s_ease-in-out_infinite]" : ""
-        }`}
-        style={{ animationDelay: "1.1s" }}
-      >
-        {!reduced && (
-          <span
-            aria-hidden
-            className="pointer-events-none absolute inset-0 -translate-x-full opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-hover:animate-[claim-shimmer_1.4s_ease-in-out_infinite]"
-            style={{
-              background:
-                "linear-gradient(110deg, transparent 30%, rgba(255,255,255,0.55) 50%, transparent 70%)",
-            }}
-          />
-        )}
-      </Link>
+        className={`${hotspotClassName} left-[50.5%] top-[64%] h-[10%] w-[11.5%]`}
+      />
 
       <Link
         to={ROUTES.privacy}
