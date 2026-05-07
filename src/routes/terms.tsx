@@ -1243,14 +1243,3 @@ function RegionInline({
   return <>{both}</>;
 }
 
-function BulletList({ items }: { items: string[] }) {
-  return (
-    <ul className="space-y-2 pl-5">
-      {items.map((item) => (
-        <li key={item} className="list-disc marker:text-foreground">
-          {item}
-        </li>
-      ))}
-    </ul>
-  );
-}
