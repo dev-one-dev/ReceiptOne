@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { Link, createFileRoute } from "@tanstack/react-router";
 import { ChevronDown, ChevronsDownUp, ChevronsUpDown, ListTree, X } from "lucide-react";
+import { BulletList } from "@/components/site/PolicyHelpers";
 import logoMark from "@/assets/figma/logo-mark.svg";
 import logoWordmark from "@/assets/figma/logo-wordmark.svg";
 import {
@@ -1242,14 +1243,3 @@ function RegionInline({
   return <>{both}</>;
 }
 
-function BulletList({ items }: { items: string[] }) {
-  return (
-    <ul className="space-y-2 pl-5">
-      {items.map((item) => (
-        <li key={item} className="list-disc marker:text-foreground">
-          {item}
-        </li>
-      ))}
-    </ul>
-  );
-}

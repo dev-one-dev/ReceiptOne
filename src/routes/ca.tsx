@@ -59,7 +59,7 @@ function CanadaPage() {
     <main
       data-interactive-page
       data-reveal-root
-      className="min-h-screen overflow-x-hidden bg-[#f5f4f0] font-sans text-black antialiased"
+      className="min-h-screen overflow-x-clip bg-[#f5f4f0] font-sans text-black antialiased"
     >
       <div data-reveal-skip><Header /></div>
       <div data-reveal><TopBanner /></div>
