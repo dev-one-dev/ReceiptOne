@@ -130,12 +130,16 @@ export function SuggestFeatureWidget({ region }: { region: Region }) {
         .select("id")
         .single();
       if (error) throw error;
-      // Auto-vote for own idea
+      // Auto-vote is best-effort — a failure must not mask the successful idea creation
       if (idea?.id) {
-        await supabase.from("feature_votes").insert({ idea_id: idea.id, device_id: deviceId });
-        const voted = getVotedSet();
-        voted.add(idea.id);
-        persistVotedSet(voted);
+        const { error: voteError } = await supabase
+          .from("feature_votes")
+          .insert({ idea_id: idea.id, device_id: deviceId });
+        if (!voteError) {
+          const voted = getVotedSet();
+          voted.add(idea.id);
+          persistVotedSet(voted);
+        }
       }
       setSuccessMsg("Your idea was submitted");
       setStep("success");
