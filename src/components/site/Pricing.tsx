@@ -213,7 +213,7 @@ function PlanCard({ plan }: { plan: Plan }) {
             aria-hidden
             loading="eager"
             decoding="async"
-            className="pointer-events-none absolute bottom-0 -right-48 z-0 w-96 select-none object-contain sm:-right-52 sm:w-[26rem]"
+            className="pointer-events-none absolute bottom-0 -right-28 z-0 w-96 select-none object-contain sm:-right-32 sm:w-[26rem]"
           />
         )}
 
