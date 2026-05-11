@@ -131,7 +131,7 @@ export function Pricing({ region = "ca" }: { region?: Region }) {
   return (
     <section
       id="pricing"
-      className="w-full scroll-mt-28 px-4 pt-5 pb-12 sm:px-6 sm:pt-7 sm:pb-16 lg:px-8"
+      className="w-full scroll-mt-28 px-4 pt-12 pb-12 sm:px-6 sm:pt-16 sm:pb-16 lg:px-8"
     >
       <div className="mx-auto w-full max-w-[1200px]">
 

@@ -32,7 +32,7 @@ const TESTIMONIALS = [
 
 export function Testimonials() {
   return (
-    <section className="w-full px-4 pt-8 pb-12 sm:px-6 sm:pt-12 sm:pb-16 lg:px-8">
+    <section className="w-full px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
       <div className="mx-auto w-full max-w-[1200px]">
 
         <div className="mb-12 text-center">
