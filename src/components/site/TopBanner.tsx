@@ -42,7 +42,7 @@ export function TopBanner() {
         </p>
 
         {/* Primary CTA */}
-        <div className="flex flex-col items-center gap-3">
+        <div className="flex w-full flex-col items-start gap-3">
 
           {/* Desktop: single row [text] [arrow] [button] */}
           <div className="hidden items-center gap-3 md:flex">
@@ -74,21 +74,8 @@ export function TopBanner() {
           </p>
 
           <p className="font-sans text-sm text-black/40">
-            No credit card required · Cancel anytime
+            No credit card required · Cancel anytime · Secure cloud backup
           </p>
-        </div>
-
-        {/* Trust micro-badges */}
-        <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
-          {TRUST_BADGES.map((b) => (
-            <span
-              key={b.text}
-              className="flex items-center gap-1.5 font-sans text-sm text-black/45"
-            >
-              <b.Icon />
-              {b.text}
-            </span>
-          ))}
         </div>
 
         {/* Product visual — beaver mascot */}
@@ -139,27 +126,6 @@ export function TopBanner() {
   );
 }
 
-const TRUST_BADGES = [
-  { text: "CRA compliant", Icon: ShieldCheckIcon },
-  { text: "Secure cloud backup", Icon: CloudIcon },
-] as const;
-
-function ShieldCheckIcon() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-      <path d="m9 12 2 2 4-4" />
-    </svg>
-  );
-}
-
-function CloudIcon() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-      <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z" />
-    </svg>
-  );
-}
 
 function DashedLoopArrow({ className }: { className?: string }) {
   return (
