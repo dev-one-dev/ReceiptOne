@@ -120,11 +120,6 @@ export function Trust({ region = "ca" }: { region?: Region }) {
           ))}
         </div>
 
-        {/* Bottom trust note */}
-        <p className="mt-12 text-center font-sans text-sm text-white/30">
-          Trusted by 3,000+ Canadian freelancers, contractors, and small
-          businesses to keep their finances organized.
-        </p>
 
       </div>
     </section>
