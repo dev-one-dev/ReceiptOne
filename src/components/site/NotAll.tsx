@@ -46,7 +46,7 @@ const FEATURES = [
 
 export function NotAll() {
   return (
-    <section className="w-full px-4 pt-12 pb-4 sm:px-6 sm:pt-16 sm:pb-6 lg:px-8">
+    <section className="w-full px-4 pt-4 pb-4 sm:px-6 sm:pt-6 sm:pb-6 lg:px-8">
       <div className="mx-auto w-full max-w-[1200px]">
 
         {/* Header */}
