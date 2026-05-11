@@ -1,3 +1,7 @@
+import avatar1 from "@/assets/figma/avatar-1.webp";
+import avatar2 from "@/assets/figma/avatar-2.webp";
+import avatar3 from "@/assets/figma/avatar-3.webp";
+
 const TESTIMONIALS = [
   {
     quote:
@@ -5,7 +9,7 @@ const TESTIMONIALS = [
     name: "Maria Chen",
     role: "Freelance Graphic Designer",
     location: "Vancouver, BC",
-    initial: "M",
+    avatar: avatar1,
   },
   {
     quote:
@@ -13,7 +17,7 @@ const TESTIMONIALS = [
     name: "David Okonkwo",
     role: "Independent IT Contractor",
     location: "Toronto, ON",
-    initial: "D",
+    avatar: avatar2,
   },
   {
     quote:
@@ -21,7 +25,7 @@ const TESTIMONIALS = [
     name: "Sophie Tremblay",
     role: "Studio Owner",
     location: "Montréal, QC",
-    initial: "S",
+    avatar: avatar3,
   },
 ] as const;
 
@@ -57,9 +61,15 @@ export function Testimonials() {
               </blockquote>
 
               <figcaption className="flex items-center gap-3">
-                <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-black font-display text-sm font-semibold text-white">
-                  {t.initial}
-                </div>
+                <img
+                  src={t.avatar}
+                  alt={t.name}
+                  className="size-10 shrink-0 rounded-full object-cover"
+                  width={40}
+                  height={40}
+                  loading="lazy"
+                  decoding="async"
+                />
                 <div>
                   <p className="font-display text-sm font-semibold text-black">{t.name}</p>
                   <p className="font-sans text-xs text-black/45">
