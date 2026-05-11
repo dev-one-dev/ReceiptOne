@@ -66,7 +66,51 @@ export const CATEGORIZED_FAQ: { category: string; items: QA[] }[] = [
 
 /* ----------------------------- Accordion list ----------------------------- */
 
-/** Standalone accordion list — each instance manages its own open state. */
+/**
+ * FaqAccordion — standalone accordion list with stable, jitter-free interactions.
+ *
+ * ANIMATION STABILITY — what was changed and why:
+ *
+ * 1. REMOVED: hover:-translate-y-0.5 on the <li> card.
+ *    The original hover effect physically lifted the entire card upward by 2px.
+ *    Because all cards sit in a stacked list, this vertical shift caused the
+ *    cards below to visually "jump" relative to the hovered one, making the
+ *    whole list feel unstable. Replaced with a pure background-color tint
+ *    (hover:bg-black/[0.015]) which signals interactivity without moving anything.
+ *
+ * 2. REMOVED: transition-all on the <li> card.
+ *    `transition-all` intercepts EVERY CSS property change, including any
+ *    transform triggered during click/focus. Scoped to only the three properties
+ *    that actually change: box-shadow, background-color, border-color.
+ *    This prevents the browser from animating accidental transform side-effects.
+ *
+ * 3. REMOVED: scale-110 on the icon toggle button.
+ *    When a question was clicked, the + icon scaled up 10% as it rotated to ×.
+ *    That scale change altered the button's painted size and nudged the question
+ *    text next to it, causing a visible horizontal "pop." The icon now only
+ *    rotates (rotate-45) with no scale change — visually clear, physically stable.
+ *
+ * 4. REMOVED: -translate-y-1 / translate-y-0 on the answer <p>.
+ *    The answer text had a CSS translate applied (-4px when closed, 0 when open)
+ *    intended as a subtle entrance effect. In practice it caused a micro-bounce
+ *    during the grid-rows expansion: the text started 4px above its final position
+ *    and snapped into place, creating a jitter visible on slower devices. Removed
+ *    entirely — the grid-rows height animation alone gives a clean reveal.
+ *
+ * 5. SCOPED: transition-[transform,background-color,color] on the icon.
+ *    Previously transition-all, which animated every property including layout-
+ *    affecting ones. Now only the properties that genuinely change are transitioned.
+ *
+ * 6. SCOPED: transition-[grid-template-rows,opacity] on the answer drawer.
+ *    The drawer expands via grid-template-rows (0fr → 1fr) and fades via opacity.
+ *    Those are the only two properties that change, so transition-all was narrowed
+ *    to just these two. This prevents any accidental layout recalculations from
+ *    being caught by a broader transition.
+ *
+ * Each instance manages its own open index (useState<number | null>) so multiple
+ * FaqAccordion components on the same page (e.g. one per category on /faq) are
+ * fully independent and do not interfere with each other.
+ */
 export function FaqAccordion({ items }: { items: QA[] }) {
   const [open, setOpen] = useState<number | null>(null);
 
@@ -77,6 +121,11 @@ export function FaqAccordion({ items }: { items: QA[] }) {
         return (
           <li
             key={it.q}
+            /*
+             * transition-[box-shadow,background-color,border-color] — intentionally
+             * narrow. We only animate the three visual properties that change on
+             * hover/open. transform is excluded to prevent card-lift side effects.
+             */
             className={`group rounded-3xl bg-white px-5 py-4 shadow-sm transition-[box-shadow,background-color,border-color] duration-200 hover:bg-black/[0.015] md:px-6 md:py-5 ${
               isOpen
                 ? "shadow-[0_18px_40px_-18px_rgba(0,0,0,0.18)] ring-1 ring-black/5"
@@ -93,6 +142,11 @@ export function FaqAccordion({ items }: { items: QA[] }) {
                 {it.q}
               </span>
               <span
+                /*
+                 * rotate-45 only — no scale-110. Scale was removed because growing
+                 * the icon pushed surrounding text sideways on click, causing a
+                 * visible positional jump in the question row.
+                 */
                 className={`flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full transition-[transform,background-color,color] duration-200 ${
                   isOpen
                     ? "rotate-45 bg-black text-white"
@@ -103,12 +157,28 @@ export function FaqAccordion({ items }: { items: QA[] }) {
               </span>
             </button>
             <div
+              /*
+               * Height animation via grid-template-rows (0fr → 1fr) is the most
+               * performant collapse technique: it avoids height:auto transitions
+               * (which require JS measurement) and doesn't trigger layout reflow
+               * in surrounding list items. overflow-hidden on the child <p> clips
+               * content cleanly at grid-rows-[0fr] without needing clip-path.
+               * transition-[grid-template-rows,opacity] is scoped to exactly the
+               * two properties that change — nothing else is animated.
+               */
               className={`grid transition-[grid-template-rows,opacity] duration-300 ease-out ${
                 isOpen
                   ? "mt-3 grid-rows-[1fr] opacity-100"
                   : "mt-0 grid-rows-[0fr] opacity-0"
               }`}
             >
+              {/*
+               * overflow-hidden is required on this <p> so that at grid-rows-[0fr]
+               * the text is invisible (clipped to zero height) rather than leaking
+               * outside the collapsed grid row. No transform applied — the old
+               * -translate-y-1 entrance effect was removed because it caused a
+               * vertical micro-bounce during the expand animation.
+               */}
               <p className="overflow-hidden font-display text-[14px] leading-[1.55] text-[#7e8890] md:text-[15px]">
                 {it.a}
               </p>
