@@ -1,3 +1,4 @@
+import infocardsHeading from "@/assets/figma/infocards-heading.png";
 import abScreenReceipts from "@/assets/figma/feat-receipts.png";
 import abScreenMileage from "@/assets/figma/feat-mileage.png";
 import icPhoneReports from "@/assets/figma/feat-reports.png";
@@ -47,16 +48,14 @@ export function InfoCards() {
     <section id="benefits" className="w-full px-4 pt-16 pb-4 sm:px-6 sm:pt-20 sm:pb-6 lg:px-8">
       <div className="mx-auto w-full max-w-[1200px]">
 
-        {/* Header */}
-        <div className="mb-14 text-center sm:mb-16">
-          <p className="font-sans text-xs font-semibold uppercase tracking-widest text-black/35">
-            Features
-          </p>
-          <h2 className="mt-3 font-display text-3xl font-semibold leading-tight tracking-tight text-black sm:text-4xl lg:text-[2.75rem]">
-            Turn receipts chaos into tax gold
-          </h2>
-
-
+        {/* Header image */}
+        <div className="mb-10 flex justify-center sm:mb-12">
+          <img
+            src={infocardsHeading}
+            alt="Turn Receipt Chaos Into Tax Gold — Stop losing money on missed deductions"
+            className="w-full max-w-[860px]"
+            draggable={false}
+          />
         </div>
 
         {/* Feature cards */}
