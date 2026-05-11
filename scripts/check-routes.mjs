@@ -40,13 +40,19 @@ function collectRouteFiles(dir, prefix = "") {
 }
 
 function extractTreeRoutes(source) {
-  // Parse the `fullPaths: '/' | '/ca' | ... ` union literal.
-  const m = source.match(/fullPaths:\s*([^\n]+)/);
-  if (!m) throw new Error(`Could not find fullPaths union in ${TREE_FILE}`);
-  return m[1]
-    .split("|")
-    .map((s) => s.trim().replace(/['";]/g, ""))
-    .filter(Boolean);
+  // Handles both single-line and multi-line fullPaths union formats that the
+  // TanStack router plugin can emit depending on version.
+  const block = source.match(/fullPaths:([\s\S]*?)(?=\s+fileRoutesByTo\s*:)/);
+  if (!block) throw new Error(`Could not find fullPaths union in ${TREE_FILE}`);
+  const paths = [];
+  const re = /'([^']+)'/g;
+  let m;
+  while ((m = re.exec(block[1])) !== null) {
+    // Normalize trailing slash so "articles/" and "articles" compare equal.
+    const p = m[1] === "/" ? "/" : m[1].replace(/\/$/, "");
+    paths.push(p);
+  }
+  return paths;
 }
 
 const fileRoutes = new Set(collectRouteFiles(ROUTES_DIR));

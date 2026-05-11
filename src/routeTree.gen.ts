@@ -56,7 +56,7 @@ const IndexRoute = IndexRouteImport.update({
 } as any)
 const ArticlesIndexRoute = ArticlesIndexRouteImport.update({
   id: '/articles/',
-  path: '/articles',
+  path: '/articles/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ArticlesSlugRoute = ArticlesSlugRouteImport.update({
@@ -67,84 +67,88 @@ const ArticlesSlugRoute = ArticlesSlugRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/articles': typeof ArticlesIndexRoute
-  '/articles/$slug': typeof ArticlesSlugRoute
   '/ca': typeof CaRoute
   '/login': typeof LoginRoute
   '/privacy': typeof PrivacyRoute
   '/signup': typeof SignupRoute
   '/terms': typeof TermsRoute
   '/us': typeof UsRoute
+  '/articles/$slug': typeof ArticlesSlugRoute
+  '/articles/': typeof ArticlesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/articles': typeof ArticlesIndexRoute
-  '/articles/$slug': typeof ArticlesSlugRoute
   '/ca': typeof CaRoute
   '/login': typeof LoginRoute
   '/privacy': typeof PrivacyRoute
   '/signup': typeof SignupRoute
   '/terms': typeof TermsRoute
   '/us': typeof UsRoute
+  '/articles/$slug': typeof ArticlesSlugRoute
+  '/articles': typeof ArticlesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/articles/': typeof ArticlesIndexRoute
-  '/articles/$slug': typeof ArticlesSlugRoute
   '/ca': typeof CaRoute
   '/login': typeof LoginRoute
   '/privacy': typeof PrivacyRoute
   '/signup': typeof SignupRoute
   '/terms': typeof TermsRoute
   '/us': typeof UsRoute
+  '/articles/$slug': typeof ArticlesSlugRoute
+  '/articles/': typeof ArticlesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/articles' | '/articles/$slug' | '/ca' | '/login' | '/privacy' | '/signup' | '/terms' | '/us'
-  fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/articles' | '/articles/$slug' | '/ca' | '/login' | '/privacy' | '/signup' | '/terms' | '/us'
-  id:
-    | '__root__'
+  fullPaths:
     | '/'
-    | '/articles/'
-    | '/articles/$slug'
     | '/ca'
     | '/login'
     | '/privacy'
     | '/signup'
     | '/terms'
     | '/us'
+    | '/articles/$slug'
+    | '/articles/'
+  fileRoutesByTo: FileRoutesByTo
+  to:
+    | '/'
+    | '/ca'
+    | '/login'
+    | '/privacy'
+    | '/signup'
+    | '/terms'
+    | '/us'
+    | '/articles/$slug'
+    | '/articles'
+  id:
+    | '__root__'
+    | '/'
+    | '/ca'
+    | '/login'
+    | '/privacy'
+    | '/signup'
+    | '/terms'
+    | '/us'
+    | '/articles/$slug'
+    | '/articles/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  ArticlesIndexRoute: typeof ArticlesIndexRoute
-  ArticlesSlugRoute: typeof ArticlesSlugRoute
   CaRoute: typeof CaRoute
   LoginRoute: typeof LoginRoute
   PrivacyRoute: typeof PrivacyRoute
   SignupRoute: typeof SignupRoute
   TermsRoute: typeof TermsRoute
   UsRoute: typeof UsRoute
+  ArticlesSlugRoute: typeof ArticlesSlugRoute
+  ArticlesIndexRoute: typeof ArticlesIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/articles/': {
-      id: '/articles/'
-      path: '/articles'
-      fullPath: '/articles'
-      preLoaderRoute: typeof ArticlesIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/articles/$slug': {
-      id: '/articles/$slug'
-      path: '/articles/$slug'
-      fullPath: '/articles/$slug'
-      preLoaderRoute: typeof ArticlesSlugRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/us': {
       id: '/us'
       path: '/us'
@@ -194,19 +198,33 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/articles/': {
+      id: '/articles/'
+      path: '/articles'
+      fullPath: '/articles/'
+      preLoaderRoute: typeof ArticlesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/articles/$slug': {
+      id: '/articles/$slug'
+      path: '/articles/$slug'
+      fullPath: '/articles/$slug'
+      preLoaderRoute: typeof ArticlesSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  ArticlesIndexRoute: ArticlesIndexRoute,
-  ArticlesSlugRoute: ArticlesSlugRoute,
   CaRoute: CaRoute,
   LoginRoute: LoginRoute,
   PrivacyRoute: PrivacyRoute,
   SignupRoute: SignupRoute,
   TermsRoute: TermsRoute,
   UsRoute: UsRoute,
+  ArticlesSlugRoute: ArticlesSlugRoute,
+  ArticlesIndexRoute: ArticlesIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
