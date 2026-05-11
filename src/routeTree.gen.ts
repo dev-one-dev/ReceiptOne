@@ -16,6 +16,8 @@ import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as CaRouteImport } from './routes/ca'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ArticlesIndexRouteImport } from './routes/articles/index'
+import { Route as ArticlesSlugRouteImport } from './routes/articles/$slug'
 
 const UsRoute = UsRouteImport.update({
   id: '/us',
@@ -52,9 +54,21 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ArticlesIndexRoute = ArticlesIndexRouteImport.update({
+  id: '/articles/',
+  path: '/articles',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ArticlesSlugRoute = ArticlesSlugRouteImport.update({
+  id: '/articles/$slug',
+  path: '/articles/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/articles': typeof ArticlesIndexRoute
+  '/articles/$slug': typeof ArticlesSlugRoute
   '/ca': typeof CaRoute
   '/login': typeof LoginRoute
   '/privacy': typeof PrivacyRoute
@@ -64,6 +78,8 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/articles': typeof ArticlesIndexRoute
+  '/articles/$slug': typeof ArticlesSlugRoute
   '/ca': typeof CaRoute
   '/login': typeof LoginRoute
   '/privacy': typeof PrivacyRoute
@@ -74,6 +90,8 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/articles/': typeof ArticlesIndexRoute
+  '/articles/$slug': typeof ArticlesSlugRoute
   '/ca': typeof CaRoute
   '/login': typeof LoginRoute
   '/privacy': typeof PrivacyRoute
@@ -83,12 +101,14 @@ export interface FileRoutesById {
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/ca' | '/login' | '/privacy' | '/signup' | '/terms' | '/us'
+  fullPaths: '/' | '/articles' | '/articles/$slug' | '/ca' | '/login' | '/privacy' | '/signup' | '/terms' | '/us'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/ca' | '/login' | '/privacy' | '/signup' | '/terms' | '/us'
+  to: '/' | '/articles' | '/articles/$slug' | '/ca' | '/login' | '/privacy' | '/signup' | '/terms' | '/us'
   id:
     | '__root__'
     | '/'
+    | '/articles/'
+    | '/articles/$slug'
     | '/ca'
     | '/login'
     | '/privacy'
@@ -99,6 +119,8 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ArticlesIndexRoute: typeof ArticlesIndexRoute
+  ArticlesSlugRoute: typeof ArticlesSlugRoute
   CaRoute: typeof CaRoute
   LoginRoute: typeof LoginRoute
   PrivacyRoute: typeof PrivacyRoute
@@ -109,6 +131,20 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/articles/': {
+      id: '/articles/'
+      path: '/articles'
+      fullPath: '/articles'
+      preLoaderRoute: typeof ArticlesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/articles/$slug': {
+      id: '/articles/$slug'
+      path: '/articles/$slug'
+      fullPath: '/articles/$slug'
+      preLoaderRoute: typeof ArticlesSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/us': {
       id: '/us'
       path: '/us'
@@ -163,6 +199,8 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ArticlesIndexRoute: ArticlesIndexRoute,
+  ArticlesSlugRoute: ArticlesSlugRoute,
   CaRoute: CaRoute,
   LoginRoute: LoginRoute,
   PrivacyRoute: PrivacyRoute,
