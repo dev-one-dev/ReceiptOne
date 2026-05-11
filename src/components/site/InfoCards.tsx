@@ -3,6 +3,8 @@ import abScreenMileage from "@/assets/figma/feat-mileage.png";
 import icPhoneReports from "@/assets/figma/feat-reports.png";
 import icPhoneExport from "@/assets/figma/feat-export.png";
 import icPhoneHomeOffice from "@/assets/figma/feat-home-office.png";
+import provinceText from "@/assets/figma/province-text.svg";
+import provinceArrow from "@/assets/figma/province-arrow.svg";
 
 const FEATURES = [
   {
@@ -57,11 +59,9 @@ export function InfoCards() {
           </h2>
 
           {/* Decorative script label — desktop only */}
-          <div className="pointer-events-none absolute right-0 top-0 hidden w-[160px] flex-col items-end gap-2 md:flex">
-            <p className="rotate-[6deg] text-right font-script text-[20px] leading-5 tracking-[-0.02em] text-[#9192a1]">
-              Works in all<br />50 states &amp;<br />13 provinces
-            </p>
-            <DashedCurve className="-mt-2" />
+          <div className="pointer-events-none absolute right-0 top-0 hidden flex-col items-end md:flex">
+            <img src={provinceText} alt="" aria-hidden width={148} className="w-[148px]" draggable={false} />
+            <img src={provinceArrow} alt="" aria-hidden width={120} className="-mt-2 w-[120px]" draggable={false} />
           </div>
         </div>
 
@@ -112,24 +112,3 @@ export function InfoCards() {
   );
 }
 
-function DashedCurve({ className }: { className?: string }) {
-  return (
-    <svg
-      viewBox="0 0 140 80"
-      width={140}
-      height={80}
-      fill="none"
-      className={className}
-      aria-hidden="true"
-    >
-      <path
-        d="M5 70 C 30 80, 90 70, 130 30 C 135 25, 130 10, 110 15"
-        stroke="#9192a1"
-        strokeWidth="1.2"
-        strokeDasharray="4 5"
-        strokeLinecap="round"
-        fill="none"
-      />
-    </svg>
-  );
-}
