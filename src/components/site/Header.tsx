@@ -122,14 +122,13 @@ export function Header() {
                   Apps
                 </button>
               ) : (
-                <a
-                  href={/iPhone|iPad|iPod/i.test(typeof navigator !== "undefined" ? navigator.userAgent : "") ? "https://apps.apple.com/app/receiptone/id0000000000" : "https://play.google.com/store/apps/details?id=com.receiptone.app"}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <button
+                  type="button"
+                  onClick={scrollTo("pricing")}
                   className="rounded-md px-0.5 py-1 transition-opacity hover:opacity-70"
                 >
                   Download
-                </a>
+                </button>
               )}
             </li>
             <li>
@@ -262,15 +261,9 @@ export function Header() {
                   Apps
                 </button>
               ) : (
-                <a
-                  href={/iPhone|iPad|iPod/i.test(typeof navigator !== "undefined" ? navigator.userAgent : "") ? "https://apps.apple.com/app/receiptone/id0000000000" : "https://play.google.com/store/apps/details?id=com.receiptone.app"}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={mobileNavBtnClass}
-                  onClick={() => setMobileNavOpen(false)}
-                >
+                <button type="button" className={mobileNavBtnClass} onClick={scrollTo("pricing")}>
                   Download
-                </a>
+                </button>
               )}
               <button type="button" className={mobileNavBtnClass} onClick={scrollTo("pricing")}>
                 Pricing
