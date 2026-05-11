@@ -3,8 +3,6 @@ import abScreenMileage from "@/assets/figma/feat-mileage.png";
 import icPhoneReports from "@/assets/figma/feat-reports.png";
 import icPhoneExport from "@/assets/figma/feat-export.png";
 import icPhoneHomeOffice from "@/assets/figma/feat-home-office.png";
-import provinceText from "@/assets/figma/province-text.png";
-import provinceArrow from "@/assets/figma/province-arrow.png";
 
 const FEATURES = [
   {
@@ -50,7 +48,7 @@ export function InfoCards() {
       <div className="mx-auto w-full max-w-[1200px]">
 
         {/* Header */}
-        <div className="relative mb-14 text-center sm:mb-16">
+        <div className="mb-14 text-center sm:mb-16">
           <p className="font-sans text-xs font-semibold uppercase tracking-widest text-white/35">
             Features
           </p>
@@ -58,15 +56,7 @@ export function InfoCards() {
             Turn receipts chaos into tax gold
           </h2>
 
-          {/* Province annotation — right-0 of header, top aligned to "gold" midline.
-              Eyebrow (~16px) + mt-3 (12px) + half h2 line-height (~28px) ≈ 56px. */}
-          <div
-            className="pointer-events-none absolute right-0 top-14 hidden md:flex md:flex-col md:items-end"
-            aria-hidden="true"
-          >
-            <img src={provinceText} alt="" draggable={false} className="w-[88px]" />
-            <img src={provinceArrow} alt="" draggable={false} className="mt-1 w-[108px]" />
-          </div>
+
         </div>
 
         {/* Feature rows */}
