@@ -222,7 +222,7 @@ export function AppBanner({ region = "ca" }: { region?: "ca" | "us" }) {
         className="w-full scroll-mt-28"
         aria-labelledby="app-banner-heading"
       >
-        <div className="mx-auto flex w-full max-w-[1440px] justify-center px-4 pt-3 pb-0 md:px-8 md:pt-5 md:pb-0">
+        <div className="mx-auto flex w-full max-w-[1440px] justify-center px-4 pt-1.5 pb-0 md:px-8 md:pt-2.5 md:pb-0">
           <a
             href={qrUrl}
             target="_blank"
