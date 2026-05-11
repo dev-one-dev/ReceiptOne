@@ -55,14 +55,29 @@ export function InfoCards() {
             Features
           </p>
           <h2 className="mt-3 font-display text-3xl font-semibold leading-tight tracking-tight text-white sm:text-4xl lg:text-[2.75rem]">
-            Turn receipts chaos into tax gold
+            Turn receipts chaos into tax{" "}
+            <span className="relative inline-block">
+              gold
+              {/* Province callout — anchored to the right edge of "gold", desktop only */}
+              <span
+                className="pointer-events-none absolute left-[calc(100%+10px)] top-1/2 hidden -translate-y-full md:flex md:flex-col"
+                aria-hidden="true"
+              >
+                <img
+                  src={provinceText}
+                  alt=""
+                  draggable={false}
+                  className="w-[78px] self-start"
+                />
+                <img
+                  src={provinceArrow}
+                  alt=""
+                  draggable={false}
+                  className="-mt-2 w-[108px]"
+                />
+              </span>
+            </span>
           </h2>
-
-          {/* Decorative script label — desktop only */}
-          <div className="pointer-events-none absolute right-0 top-0 hidden flex-col items-end md:flex">
-            <img src={provinceText} alt="" aria-hidden width={148} className="w-[148px]" draggable={false} />
-            <img src={provinceArrow} alt="" aria-hidden width={120} className="-mt-2 w-[120px]" draggable={false} />
-          </div>
         </div>
 
         {/* Feature rows */}
