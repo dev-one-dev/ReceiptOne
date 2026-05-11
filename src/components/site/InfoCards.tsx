@@ -49,11 +49,11 @@ export function InfoCards() {
       <div className="mx-auto w-full max-w-[1200px]">
 
         {/* Header image */}
-        <div className="mb-10 flex justify-center sm:mb-12">
+        <div className="mb-10 flex justify-center sm:mb-14">
           <img
             src={infocardsHeading}
             alt="Turn Receipt Chaos Into Tax Gold — Stop losing money on missed deductions"
-            className="w-full max-w-[860px]"
+            className="w-full mix-blend-multiply"
             draggable={false}
           />
         </div>
