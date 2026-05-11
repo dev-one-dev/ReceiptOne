@@ -9,19 +9,20 @@ export function Advantages() {
       <div className="mx-auto w-full max-w-[1200px]">
 
         {/* Header */}
-        <div className="mb-10 flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
-          <div>
-            <p className="font-sans text-xs font-semibold uppercase tracking-widest text-black/35">
-              Why ReceiptOne
-            </p>
-            <h2 className="mt-2 font-display text-3xl font-semibold leading-tight tracking-tight text-black sm:text-4xl lg:text-[2.75rem]">
-              Less admin.<br className="hidden sm:block" /> More money in your pocket.
-            </h2>
-          </div>
+        <div className="mb-10 flex flex-col items-center text-center">
+          <p className="font-sans text-xs font-semibold uppercase tracking-widest text-black/35">
+            Benefits
+          </p>
+          <h2 className="mt-2 font-display text-3xl font-semibold leading-tight tracking-tight text-black sm:text-4xl lg:text-[2.75rem]">
+            Maximized deductions, zero effort
+          </h2>
+          <p className="mt-3 max-w-2xl text-base leading-relaxed text-black/55 sm:text-lg">
+            Stop leaving money on the table. ReceiptOne identifies every deductible cent and categorizes it according to CRA rules, so you claim the biggest refund possible.
+          </p>
           <a
             href="#apps"
             onClick={scrollToApps}
-            className="shrink-0 inline-flex items-center justify-center rounded-full bg-black px-6 py-3 font-display text-sm font-semibold text-white shadow-[0_4px_16px_rgba(0,0,0,0.15)] transition-all hover:scale-[1.02] hover:opacity-90"
+            className="mt-6 inline-flex items-center justify-center rounded-full bg-black px-6 py-3 font-display text-sm font-semibold text-white shadow-[0_4px_16px_rgba(0,0,0,0.15)] transition-all hover:scale-[1.02] hover:opacity-90"
           >
             Claim your free trial
           </a>
@@ -34,7 +35,7 @@ export function Advantages() {
           <BentoCard className="col-span-12 md:col-span-8">
             <CardLabel>Save time</CardLabel>
             <CardTitle>Save 10+ hours every month</CardTitle>
-            <CardDesc>No more end-of-month receipt chaos. Snap as you go — ReceiptOne handles the sorting, categorizing, and tax tracking.</CardDesc>
+            <CardDesc>Capture expenses in seconds, any time. ReceiptOne sorts every purchase, tracks GST/HST by province, and keeps your books current — without touching a spreadsheet.</CardDesc>
             <AccentPanel bg="bg-black" textColor="text-white">
               <Stat value="10h+" label="saved monthly" light />
             </AccentPanel>

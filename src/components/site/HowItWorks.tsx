@@ -48,17 +48,17 @@ export function HowItWorks({ region = "ca" }: { region?: Region }) {
   const steps = region === "us" ? US_STEPS : CA_STEPS;
   const heading =
     region === "us"
-      ? "From receipt chaos to tax-ready in three steps"
-      : "From receipt chaos to CRA-ready in three steps";
+      ? "Three steps to tax-ready reports"
+      : "Three steps to tax peace of mind";
   const sub =
     region === "us"
-      ? "No accountant on retainer required. ReceiptOne does the heavy lifting so you can focus on your work."
-      : "No accountant on retainer required. ReceiptOne handles GST/HST tracking and CRA reporting so you can focus on your work.";
+      ? "Point your camera, forward that email, upload that PDF. ReceiptOne reads, sorts, and reports — no manual entry, no spreadsheets, no tax-season scramble."
+      : "Point your camera, forward that email, upload that PDF. ReceiptOne reads, sorts, and reports — no manual entry, no spreadsheets, no year-end scramble.";
 
   return (
     <section
       id="how-it-works"
-      className="w-full px-4 pt-8 pb-8 sm:px-6 sm:pt-10 sm:pb-10 lg:px-8 lg:pt-12 lg:pb-12"
+      className="w-full bg-white px-4 pt-8 pb-8 sm:px-6 sm:pt-10 sm:pb-10 lg:px-8 lg:pt-12 lg:pb-12"
     >
       <div className="mx-auto w-full max-w-[1200px]">
         <div className="mx-auto max-w-2xl text-center">
