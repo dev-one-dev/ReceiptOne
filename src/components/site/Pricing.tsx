@@ -154,11 +154,13 @@ export function Pricing({ region = "ca" }: { region?: Region }) {
 
 function PlanCard({ plan }: { plan: Plan }) {
   const isPopular = plan.popular === true;
+  const hasBadge = isPopular || !!plan.badge;
 
   return (
     <div
       className={[
         "relative flex flex-col rounded-3xl p-7",
+        hasBadge ? "pt-10" : "",
         isPopular
           ? "bg-black text-white ring-2 ring-black"
           : "border border-black/[0.07] bg-white text-black shadow-[0_2px_12px_rgba(0,0,0,0.06)]",
@@ -171,9 +173,9 @@ function PlanCard({ plan }: { plan: Plan }) {
         </span>
       )}
 
-      {/* Save badge */}
+      {/* Best Deal badge */}
       {plan.badge && !isPopular && (
-        <span className="mb-4 inline-flex self-start rounded-full bg-[#fed7aa] px-3 py-1 font-sans text-xs font-semibold text-black">
+        <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-[#fed7aa] px-4 py-1 font-sans text-xs font-semibold text-black shadow-[0_4px_12px_rgba(0,0,0,0.10)]">
           {plan.badge}
         </span>
       )}
