@@ -48,8 +48,8 @@ export function InfoCards() {
     <section id="benefits" className="w-full px-4 pt-16 pb-4 sm:px-6 sm:pt-20 sm:pb-6 lg:px-8">
       <div className="mx-auto w-full max-w-[1200px]">
 
-        {/* Header image */}
-        <div className="mb-10 flex justify-center sm:mb-14">
+        {/* Header image — negative margins bleed past the content column */}
+        <div className="-mx-4 mb-10 sm:-mx-6 sm:mb-14 lg:-mx-8">
           <img
             src={infocardsHeading}
             alt="Turn Receipt Chaos Into Tax Gold — Stop losing money on missed deductions"
