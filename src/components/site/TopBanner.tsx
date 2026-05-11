@@ -68,14 +68,6 @@ export function TopBanner() {
     <section className="relative w-full px-4 pt-28 sm:px-6 sm:pt-36 lg:px-8 lg:pt-44">
       <div className="relative mx-auto flex w-full max-w-[960px] flex-col items-center gap-8 text-center">
 
-        {/* Eyebrow */}
-        <div className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-white px-4 py-1.5 shadow-sm">
-          <span className="size-2 shrink-0 rounded-full bg-emerald-500" aria-hidden />
-          <span className="font-sans text-sm text-black/70">
-            Trusted by 3,000+ Canadian freelancers
-          </span>
-        </div>
-
         {/* H1 */}
         <h1 className="font-display text-[clamp(2.4rem,6vw,4.5rem)] font-bold leading-[1.06] tracking-tight text-black">
           Turn receipts into{" "}
