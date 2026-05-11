@@ -15,6 +15,7 @@ export const ROUTES = {
   home: "/",
   ca: "/ca",
   us: "/us",
+  faq: "/faq",
   login: "/login",
   signup: "/signup",
   terms: "/terms",

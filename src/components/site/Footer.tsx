@@ -12,8 +12,8 @@ const PRODUCT_LINKS = [
   { label: "How It Works", href: "#how-it-works" },
   { label: "Benefits", href: "#benefits" },
   { label: "Pricing", href: "#pricing" },
-  { label: "FAQ", href: "#faq" },
   { label: "Articles", href: "/articles" },
+  { label: "Help Center", href: "/faq" },
 ];
 
 const COMPANY_LINKS_CA = [
