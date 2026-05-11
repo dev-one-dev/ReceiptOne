@@ -58,23 +58,28 @@ export function InfoCards() {
             Turn receipts chaos into tax{" "}
             <span className="relative inline-block">
               gold
-              {/* Province callout — anchored to the right edge of "gold", desktop only */}
+              {/* Province callout — desktop only.
+                  Arrow left-edge sits right after "gold". Province text
+                  is overlaid at the arrowhead (upper-right of the arrow image).
+                  top-0 keeps everything inside the dark section (no upward bleed). */}
               <span
-                className="pointer-events-none absolute left-[calc(100%+10px)] top-1/2 hidden -translate-y-full md:flex md:flex-col"
+                className="pointer-events-none absolute left-[calc(100%+6px)] top-0 hidden md:inline-block"
                 aria-hidden="true"
               >
-                <img
-                  src={provinceText}
-                  alt=""
-                  draggable={false}
-                  className="w-[78px] self-start"
-                />
-                <img
-                  src={provinceArrow}
-                  alt=""
-                  draggable={false}
-                  className="-mt-2 w-[108px]"
-                />
+                <span className="relative block">
+                  <img
+                    src={provinceArrow}
+                    alt=""
+                    draggable={false}
+                    className="block w-[112px]"
+                  />
+                  <img
+                    src={provinceText}
+                    alt=""
+                    draggable={false}
+                    className="absolute -top-9 right-0 w-[74px]"
+                  />
+                </span>
               </span>
             </span>
           </h2>
