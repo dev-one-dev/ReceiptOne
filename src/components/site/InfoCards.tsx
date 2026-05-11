@@ -3,8 +3,8 @@ import abScreenMileage from "@/assets/figma/feat-mileage.png";
 import icPhoneReports from "@/assets/figma/feat-reports.png";
 import icPhoneExport from "@/assets/figma/feat-export.png";
 import icPhoneHomeOffice from "@/assets/figma/feat-home-office.png";
-import provinceText from "@/assets/figma/province-text.svg";
-import provinceArrow from "@/assets/figma/province-arrow.svg";
+import provinceText from "@/assets/figma/province-text.png";
+import provinceArrow from "@/assets/figma/province-arrow.png";
 
 const FEATURES = [
   {
@@ -55,34 +55,17 @@ export function InfoCards() {
             Features
           </p>
           <h2 className="mt-3 font-display text-3xl font-semibold leading-tight tracking-tight text-white sm:text-4xl lg:text-[2.75rem]">
-            Turn receipts chaos into tax{" "}
-            <span className="relative inline-block">
-              gold
-              {/* Province callout — desktop only.
-                  Arrow left-edge sits right after "gold". Province text
-                  is overlaid at the arrowhead (upper-right of the arrow image).
-                  top-0 keeps everything inside the dark section (no upward bleed). */}
-              <span
-                className="pointer-events-none absolute left-[calc(100%+6px)] top-0 hidden md:inline-block"
-                aria-hidden="true"
-              >
-                <span className="relative block">
-                  <img
-                    src={provinceArrow}
-                    alt=""
-                    draggable={false}
-                    className="block w-[112px]"
-                  />
-                  <img
-                    src={provinceText}
-                    alt=""
-                    draggable={false}
-                    className="absolute -top-9 right-0 w-[74px]"
-                  />
-                </span>
-              </span>
-            </span>
+            Turn receipts chaos into tax gold
           </h2>
+
+          {/* Province annotation — desktop only */}
+          <div
+            className="pointer-events-none absolute right-0 top-6 hidden md:flex md:flex-col md:items-end"
+            aria-hidden="true"
+          >
+            <img src={provinceText} alt="" draggable={false} className="w-[90px]" />
+            <img src={provinceArrow} alt="" draggable={false} className="mt-1 w-[110px]" />
+          </div>
         </div>
 
         {/* Feature rows */}
