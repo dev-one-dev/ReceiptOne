@@ -145,7 +145,7 @@ export function Pricing({ region = "ca" }: { region?: Region }) {
         </div>
 
         <p className="mt-8 text-center font-sans text-sm text-black/35">
-          All plans include a 7-day free trial · Prices in {plans[0].currency}
+          All plans include a 7-day free trial · Cancel anytime · Prices in {plans[0].currency}
         </p>
       </div>
     </section>

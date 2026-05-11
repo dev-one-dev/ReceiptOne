@@ -130,7 +130,7 @@ export function TopBanner() {
           </p>
 
           <p className="font-sans text-sm text-black/40">
-            No credit card required · Cancel anytime · Secure cloud backup
+            Cancel anytime · Secure cloud backup
           </p>
         </div>
 
