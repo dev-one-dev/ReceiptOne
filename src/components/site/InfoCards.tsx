@@ -55,38 +55,18 @@ export function InfoCards() {
             Features
           </p>
           <h2 className="mt-3 font-display text-3xl font-semibold leading-tight tracking-tight text-white sm:text-4xl lg:text-[2.75rem]">
-            Turn receipts chaos into tax{" "}
-            {/*
-              Wrap "gold" so the annotation is anchored to it — it follows
-              the word to a new line if the heading wraps on smaller screens.
-              top-1/2 + -translate-y-[55%] centers the group on "gold"'s
-              midline without going above the dark section background.
-            */}
-            <span className="relative inline-block">
-              gold
-              <span
-                className="pointer-events-none absolute left-[calc(100%+6px)] top-1/2 hidden -translate-y-[55%] md:block"
-                aria-hidden="true"
-              >
-                <span className="relative block rotate-[2deg]">
-                  {/* Arrow: tail at left (touches "gold"), head at upper-right */}
-                  <img
-                    src={provinceArrow}
-                    alt=""
-                    draggable={false}
-                    className="block w-[96px]"
-                  />
-                  {/* Province text sits at the arrowhead (upper-right of arrow) */}
-                  <img
-                    src={provinceText}
-                    alt=""
-                    draggable={false}
-                    className="absolute -top-5 right-0 w-[72px]"
-                  />
-                </span>
-              </span>
-            </span>
+            Turn receipts chaos into tax gold
           </h2>
+
+          {/* Province annotation — right-0 of header, top aligned to "gold" midline.
+              Eyebrow (~16px) + mt-3 (12px) + half h2 line-height (~28px) ≈ 56px. */}
+          <div
+            className="pointer-events-none absolute right-0 top-14 hidden md:flex md:flex-col md:items-end"
+            aria-hidden="true"
+          >
+            <img src={provinceText} alt="" draggable={false} className="w-[88px]" />
+            <img src={provinceArrow} alt="" draggable={false} className="mt-1 w-[108px]" />
+          </div>
         </div>
 
         {/* Feature rows */}
