@@ -3,7 +3,7 @@
  * No React imports — pure TypeScript data layer.
  */
 import { SITE_URL } from "@/lib/seo";
-import beaverPaperUrl from "@/assets/figma/beaver-paper.png";
+import recordKeepingUrl from "@/assets/figma/record keeping.png";
 
 export type ContentBlock =
   | { type: "p"; text: string }
@@ -307,8 +307,8 @@ export const ARTICLES: Article[] = [
     readTime: 5,
     publishedAt: "2025-04-07",
     author: { name: "Sarah Tremblay", role: "CPA, Tax Advisor" },
-    imageUrl: beaverPaperUrl,
-    imageAlt: "Beaver character holding a stack of organised documents",
+    imageUrl: recordKeepingUrl,
+    imageAlt: "File folders and organised documents for CRA record keeping",
     tags: ["record keeping", "CRA", "receipts", "6 years", "audit"],
     body: [
       {
