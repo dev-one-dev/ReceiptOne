@@ -4,6 +4,9 @@ import logoMark from "@/assets/figma/logo-mark.svg";
 import logoWordmark from "@/assets/figma/logo-wordmark.svg";
 import { ROUTES } from "@/lib/routes";
 
+const APP_STORE_URL = "https://apps.apple.com/app/receiptone/id0000000000";
+const GOOGLE_PLAY_URL = "https://play.google.com/store/apps/details?id=com.receiptone.app";
+
 type FooterProps = {
   region?: "ca" | "us";
 };
@@ -34,6 +37,25 @@ const SOCIAL = [
 
 function scrollToTop() {
   window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function FooterAppleGlyph() {
+  return (
+    <svg className="h-[16px] w-[16px] shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+      <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z" />
+    </svg>
+  );
+}
+
+function FooterGooglePlayMark() {
+  return (
+    <svg className="h-[16px] w-[16px] shrink-0" viewBox="0 0 29.4 32" fill="none" aria-hidden>
+      <path fill="#00D9FF" d="M13.3 15.1 1.1 2.9C.4 3.6 0 4.6 0 5.7v20.7c0 1 .4 2 1.1 2.7l12.2-12.2v-.8Z" />
+      <path fill="#FFD23D" d="m27.5 13.8-5.1-3L14.3 15v2l8.1 4.7 5.1-3c1.6-.9 1.6-3.1 0-4Z" />
+      <path fill="#FF3A44" d="M14.3 17v2L2.1 31.2c.7.7 1.7 1.1 2.8 1.1.6 0 1.2-.1 1.7-.4l12.2-7V17h-4.5Z" />
+      <path fill="#00F076" d="M14.3 15 4.8.8C4.3.4 3.7.2 3.1.2 2 .2 1 .6.3 1.3L14.3 15Z" />
+    </svg>
+  );
 }
 
 export function Footer({ region = "ca" }: FooterProps) {
@@ -79,6 +101,36 @@ export function Footer({ region = "ca" }: FooterProps) {
                   <Icon className="size-4" />
                 </a>
               ))}
+            </div>
+
+            {/* Store badges */}
+            <div className="mt-4 flex flex-wrap items-center gap-2">
+              <a
+                href={APP_STORE_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Download ReceiptOne on the App Store"
+                className="inline-flex h-9 items-center gap-2 rounded-xl border border-white/15 bg-white/[0.07] px-3 font-display text-white transition-colors hover:bg-white/[0.13]"
+              >
+                <FooterAppleGlyph />
+                <span className="flex flex-col items-start">
+                  <span className="text-[7px] font-normal leading-none text-white/45">Download on the</span>
+                  <span className="text-[11px] font-semibold leading-tight">App Store</span>
+                </span>
+              </a>
+              <a
+                href={GOOGLE_PLAY_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Get ReceiptOne on Google Play"
+                className="inline-flex h-9 items-center gap-2 rounded-xl border border-white/15 bg-white/[0.07] px-3 font-display text-white transition-colors hover:bg-white/[0.13]"
+              >
+                <FooterGooglePlayMark />
+                <span className="flex flex-col items-start">
+                  <span className="text-[7px] font-normal leading-none text-white/45">GET IT ON</span>
+                  <span className="text-[11px] font-semibold leading-tight">Google Play</span>
+                </span>
+              </a>
             </div>
           </div>
 
