@@ -58,7 +58,7 @@ export function HowItWorks({ region = "ca" }: { region?: Region }) {
   return (
     <section
       id="how-it-works"
-      className="w-full px-4 pt-8 pb-16 sm:px-6 sm:pt-10 sm:pb-20 lg:px-8 lg:pt-12 lg:pb-28"
+      className="w-full px-4 pt-8 pb-8 sm:px-6 sm:pt-10 sm:pb-10 lg:px-8 lg:pt-12 lg:pb-12"
     >
       <div className="mx-auto w-full max-w-[1200px]">
         <div className="mx-auto max-w-2xl text-center">
