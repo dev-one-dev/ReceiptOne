@@ -1,8 +1,8 @@
-import abScreenReceipts from "@/assets/figma/ab-screen-receipts.webp";
-import abScreenMileage from "@/assets/figma/ab-screen-mileage.webp";
-import icPhoneReports from "@/assets/figma/ic-phone-reports.webp";
-import icPhoneExport from "@/assets/figma/ic-phone-export.webp";
-import icPhoneHomeOffice from "@/assets/figma/ic-phone-home-office.webp";
+import abScreenReceipts from "@/assets/figma/feat-receipts.png";
+import abScreenMileage from "@/assets/figma/feat-mileage.png";
+import icPhoneReports from "@/assets/figma/feat-reports.png";
+import icPhoneExport from "@/assets/figma/feat-export.png";
+import icPhoneHomeOffice from "@/assets/figma/feat-home-office.png";
 
 const FEATURES = [
   {
