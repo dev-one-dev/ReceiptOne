@@ -45,7 +45,7 @@ export function Advantages() {
             <CardTitle>Never miss a mileage deduction</CardTitle>
             <CardDesc>Every trip logged and the CRA per-kilometre rate applied automatically.</CardDesc>
             <AccentPanel bg="bg-[#fed7aa]" textColor="text-black">
-              <Stat value="67.5¢" label="/ km, tracked" />
+              <Stat value="73¢" label="/ km, tracked" />
             </AccentPanel>
           </BentoCard>
 
