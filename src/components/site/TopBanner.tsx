@@ -161,7 +161,7 @@ export function TopBanner() {
         {/* Product visual — beaver mascot */}
         <div className="w-full">
           <video
-            style={{ background: "transparent" }}
+            style={{ filter: "brightness(1.15) contrast(1.08)" }}
             className="mx-auto block w-full max-w-[1200px] object-contain mix-blend-multiply"
             autoPlay
             loop
