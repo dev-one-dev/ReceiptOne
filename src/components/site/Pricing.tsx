@@ -60,7 +60,6 @@ const CA_PLANS: Plan[] = [
       "Everything in Monthly",
       "Save 13%",
       "Best value for long-term tracking",
-      "Lock in today's price",
     ],
   },
 ];
