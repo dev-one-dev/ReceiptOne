@@ -58,10 +58,7 @@ const CA_PLANS: Plan[] = [
     badge: "Best Deal",
     features: [
       "Everything in Monthly",
-      "2 months free vs. monthly",
-      "Unlimited cloud storage",
-      "Multi-device sync",
-      "Priority support",
+      "Save 13%",
     ],
   },
 ];
