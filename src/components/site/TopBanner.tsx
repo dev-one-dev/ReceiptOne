@@ -16,6 +16,7 @@ const STATS = [
   { value: "150K+", label: "Kilometres tracked" },
   { value: "12K+", label: "Reports generated" },
   { value: "100K+", label: "Receipts scanned" },
+  { value: "$4.2M+", label: "Deductions tracked" },
 ];
 
 function scrollToPricing(e: React.MouseEvent) {
@@ -34,7 +35,7 @@ export function TopBanner() {
 
             {/* H1 */}
             <h1 className="font-display text-[clamp(2.4rem,6vw,4.5rem)] font-bold leading-[1.06] tracking-tight text-black">
-              Reports, automatically.
+              Turn receipts into CRA-ready reports — automatically.
             </h1>
 
             {/* Subheadline — both paragraphs same size and color */}
@@ -91,10 +92,10 @@ export function TopBanner() {
             </div>
 
             {/* Social proof */}
-            <div className="mt-7 flex flex-col items-center gap-2 lg:items-start">
-              <div className="flex items-center gap-1" aria-label="5 out of 5 stars">
+            <div className="mt-7 flex flex-col items-center gap-1.5 lg:items-start">
+              <div className="flex items-center gap-0.5" aria-label="5 out of 5 stars">
                 {Array.from({ length: 5 }).map((_, i) => (
-                  <StarIcon key={i} className="h-[14px] w-[14px] text-[#f97316]" />
+                  <StarIcon key={i} className="h-[13px] w-[13px] text-[#f97316]" />
                 ))}
               </div>
               <div className="flex items-center gap-2">
@@ -124,10 +125,10 @@ export function TopBanner() {
               className="pointer-events-none absolute bottom-[3%] left-1/2 h-10 w-4/5 -translate-x-1/2 rounded-full bg-black/[0.13] blur-3xl"
               aria-hidden
             />
-            {/* Mascot — scaled up to dominate right side */}
+            {/* Mascot — dominates right side */}
             <video
               style={{ filter: "brightness(1.15) contrast(1.08)" }}
-              className="relative w-[140%] max-w-none object-contain mix-blend-multiply"
+              className="relative w-[190%] max-w-none object-contain mix-blend-multiply"
               autoPlay
               loop
               muted
@@ -144,7 +145,7 @@ export function TopBanner() {
 
         {/* ── STATS BAR ── */}
         <div className="mt-12 border-t border-black/[0.08] pt-6 sm:mt-16 sm:pt-8">
-          <div className="grid grid-cols-2 gap-y-6 sm:grid-cols-3 lg:grid-cols-5">
+          <div className="grid grid-cols-2 gap-y-6 sm:grid-cols-3 lg:grid-cols-6">
             {STATS.map((stat, i) => (
               <div
                 key={stat.label}

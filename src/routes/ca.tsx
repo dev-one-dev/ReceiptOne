@@ -1,7 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Header } from "@/components/site/Header";
 import { TopBanner } from "@/components/site/TopBanner";
-import { Numbers } from "@/components/site/Numbers";
 import { HowItWorks } from "@/components/site/HowItWorks";
 import { InfoCards } from "@/components/site/InfoCards";
 import { NotAll } from "@/components/site/NotAll";
@@ -62,7 +61,6 @@ function CanadaPage() {
     >
       <Header />
       <TopBanner />
-      <Numbers />
       <HowItWorks region="ca" />
       <InfoCards />
       <NotAll />
