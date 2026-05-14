@@ -67,139 +67,160 @@ export function TopBanner() {
   }, []);
 
   return (
-    <section className="relative w-full px-4 pt-28 sm:px-6 sm:pt-36 lg:px-8 lg:pt-44">
-      <div className="relative mx-auto flex w-full max-w-[960px] flex-col items-center gap-8 text-center">
+    <section className="relative w-full px-4 pt-20 sm:px-6 sm:pt-24 lg:px-8 lg:pt-28">
+      <div className="mx-auto w-full max-w-[1200px]">
+        <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
 
-        {/* H1 */}
-        <h1 className="font-display text-[clamp(2.4rem,6vw,4.5rem)] font-bold leading-[1.06] tracking-tight text-black">
-          Turn receipts into{" "}
-          <mark className="rounded bg-[#fed7aa] px-0.5 text-inherit [background:none] [box-decoration-break:clone] [-webkit-box-decoration-break:clone] [background-color:#fed7aa]">
-            CRA-ready reports
-          </mark>
-          {" "}— automatically.
-        </h1>
+          {/* ── LEFT COLUMN ── */}
+          <div className="flex flex-col items-center text-center lg:items-start lg:text-left">
 
-        {/* Subheadline */}
-        <p className="max-w-[600px] font-sans text-lg leading-relaxed text-black/55 sm:text-xl">
-          Snap receipts, log mileage, organize expenses, and export
-          audit-ready reports. Built for Canadian freelancers, contractors,
-          and small businesses.
-        </p>
+            {/* H1 */}
+            <h1 className="font-display text-[clamp(2.4rem,6vw,4.5rem)] font-bold leading-[1.06] tracking-tight text-black">
+              Turn receipts into{" "}
+              <mark className="rounded bg-[#fed7aa] px-0.5 text-inherit [background:none] [box-decoration-break:clone] [-webkit-box-decoration-break:clone] [background-color:#fed7aa]">
+                CRA-ready reports
+              </mark>
+              {" "}— automatically.
+            </h1>
 
-        {/* Primary CTA */}
-        <div className="flex flex-col items-center gap-3">
-          <div
-            data-tb-ca-loop
-            className="relative inline-block"
-            style={topBannerCaVars}
-          >
-            <a
-              href="#apps"
-              onClick={scrollToApps}
-              className="inline-flex items-center justify-center rounded-full bg-black px-8 py-4 font-display text-base font-semibold text-white shadow-[0_8px_24px_rgba(0,0,0,0.18)] transition-all hover:scale-[1.02] hover:opacity-90"
-            >
-              Claim your free trial
-            </a>
-            <DashedLoop
-              className="pointer-events-none absolute left-0 top-0 hidden md:block"
-              style={{
-                width: "var(--tb-arrow-w)",
-                aspectRatio: `${LOOP_ASPECT}`,
-                transform: `translate(calc(-1 * var(--tb-anchor-x-ratio) * var(--tb-arrow-w) + var(--tb-arrow-dx)), calc(-1 * var(--tb-anchor-y-ratio) * var(--tb-arrow-w) / ${LOOP_ASPECT} + var(--tb-arrow-dy)))`,
-              }}
-            />
-            <p
-              className="pointer-events-none absolute left-0 top-0 hidden w-[var(--tb-trial-w)] text-right font-script text-[18px] leading-[1.15] tracking-[-0.02em] text-[#9192a1] md:block"
-              style={{
-                transform: `translate(calc(var(--tb-tip-dx-ratio) * var(--tb-arrow-w) - 100% + var(--tb-trial-dx)), calc(var(--tb-tip-dy-ratio) * var(--tb-arrow-w) - 50% + var(--tb-trial-dy)))`,
-              }}
-            >
-              7 days free trial available
+            {/* Subheadline */}
+            <p className="mt-6 max-w-[520px] font-sans text-lg leading-relaxed text-black/55 sm:text-xl">
+              Snap receipts, log mileage, organize expenses, and export
+              audit-ready reports. Built for Canadian freelancers, contractors,
+              and small businesses.
             </p>
-          </div>
 
-          {/* Mobile trial label */}
-          <p className="font-script text-[17px] text-[#9192a1] md:hidden">
-            7 days free trial available
-          </p>
+            {/* CTA group */}
+            <div className="mt-8 flex flex-col items-center gap-2 lg:items-start">
+              <div
+                data-tb-ca-loop
+                className="relative inline-block"
+                style={topBannerCaVars}
+              >
+                <a
+                  href="#pricing"
+                  onClick={scrollToApps}
+                  className="inline-flex items-center justify-center rounded-full bg-black px-10 py-5 font-display text-base font-semibold text-white shadow-[0_8px_24px_rgba(0,0,0,0.18)] transition-all hover:scale-[1.02] hover:opacity-90"
+                >
+                  Claim your free trial
+                </a>
+                {/* DashedLoop: only on md tablets where layout is still centred */}
+                <DashedLoop
+                  className="pointer-events-none absolute left-0 top-0 hidden md:block lg:hidden"
+                  style={{
+                    width: "var(--tb-arrow-w)",
+                    aspectRatio: `${LOOP_ASPECT}`,
+                    transform: `translate(calc(-1 * var(--tb-anchor-x-ratio) * var(--tb-arrow-w) + var(--tb-arrow-dx)), calc(-1 * var(--tb-anchor-y-ratio) * var(--tb-arrow-w) / ${LOOP_ASPECT} + var(--tb-arrow-dy)))`,
+                  }}
+                />
+                <p
+                  className="pointer-events-none absolute left-0 top-0 hidden w-[var(--tb-trial-w)] text-right font-script text-[18px] leading-[1.15] tracking-[-0.02em] text-[#9192a1] md:block lg:hidden"
+                  style={{
+                    transform: `translate(calc(var(--tb-tip-dx-ratio) * var(--tb-arrow-w) - 100% + var(--tb-trial-dx)), calc(var(--tb-tip-dy-ratio) * var(--tb-arrow-w) - 50% + var(--tb-trial-dy)))`,
+                  }}
+                >
+                  7 days free trial available
+                </p>
+              </div>
 
-          <p className="font-sans text-sm text-black/40">
-            Cancel anytime · Secure cloud backup
-          </p>
+              {/* Trial label: mobile + lg 2-col (DashedLoop hidden on both) */}
+              <p className="font-script text-[17px] text-[#9192a1] md:hidden lg:block">
+                7 days free trial available
+              </p>
 
-          {/* Store badges */}
-          <div className="flex items-center gap-2.5">
-            <a
-              href={APP_STORE_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Download ReceiptOne on the App Store"
-              className="inline-flex h-10 items-center gap-2 rounded-xl border border-black/12 bg-black px-3.5 font-display text-white transition-opacity hover:opacity-80"
-            >
-              <AppleGlyph className="h-[18px] w-[18px] shrink-0" />
-              <span className="flex flex-col items-start">
-                <span className="text-[8px] font-normal leading-none text-white/60">Download on the</span>
-                <span className="text-[12px] font-semibold leading-tight">App Store</span>
-              </span>
-            </a>
-            <a
-              href={GOOGLE_PLAY_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Get ReceiptOne on Google Play"
-              className="inline-flex h-10 items-center gap-2 rounded-xl border border-black/12 bg-white px-3.5 font-display text-black shadow-sm transition-opacity hover:opacity-80"
-            >
-              <GooglePlayMark className="h-[18px] w-[18px] shrink-0" />
-              <span className="flex flex-col items-start">
-                <span className="text-[8px] font-normal leading-none text-black/50">GET IT ON</span>
-                <span className="text-[12px] font-semibold leading-tight">Google Play</span>
-              </span>
-            </a>
-          </div>
-        </div>
+              <p className="font-sans text-sm text-black/40">
+                Cancel anytime · Secure cloud backup
+              </p>
+            </div>
 
-        {/* Product visual — beaver mascot */}
-        <div className="w-full">
-          <video
-            style={{ filter: "brightness(1.15) contrast(1.08)" }}
-            className="mx-auto block w-full max-w-[1200px] object-contain mix-blend-multiply"
-            autoPlay
-            loop
-            muted
-            playsInline
-            preload="metadata"
-            poster={beaverHeroPoster}
-            aria-label="Beaver mascot wearing a Canadian cap, reading a receipt"
-          >
-            <source src={beaverHeroVideo} type="video/mp4" />
-          </video>
-        </div>
-
-        {/* Social proof */}
-        <div className="group/users relative mx-auto flex w-fit cursor-pointer flex-col items-center justify-center gap-2 rounded-2xl px-3 py-2 transition-[background-color,box-shadow,transform] duration-[450ms] ease-[cubic-bezier(0.22,1,0.36,1)] hover:bg-black/[0.03] hover:shadow-[0_10px_30px_-14px_rgba(0,0,0,0.18)] sm:flex-row sm:items-center sm:gap-[14px]">
-          <div className="flex items-center justify-center">
-            <Avatar src={avatar1} alt="User 1" />
-            <Avatar src={avatar2} alt="User 2" offset />
-            <Avatar src={avatar3} alt="User 3" offset />
-            <Avatar src={avatar4} alt="User 4" offset />
-          </div>
-          <div className="flex flex-col items-center text-center sm:items-start sm:text-left">
-            <span className="font-display text-base font-semibold leading-5 text-black transition-transform duration-[450ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover/users:-translate-y-px">
-              Over{" "}
-              <span className="relative inline-block">
-                <span className="relative z-10 transition-colors duration-[450ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover/users:text-[#f97316]">
-                  3,000
+            {/* Store badges */}
+            <div className="mt-6 flex items-center gap-2.5">
+              <a
+                href={APP_STORE_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Download ReceiptOne on the App Store"
+                className="inline-flex h-10 items-center gap-2 rounded-xl border border-black/12 bg-black px-3.5 font-display text-white transition-opacity hover:opacity-80"
+              >
+                <AppleGlyph className="h-[18px] w-[18px] shrink-0" />
+                <span className="flex flex-col items-start">
+                  <span className="text-[8px] font-normal leading-none text-white/60">Download on the</span>
+                  <span className="text-[12px] font-semibold leading-tight">App Store</span>
                 </span>
-                <span className="absolute inset-x-0 bottom-0.5 h-1.5 origin-left scale-x-0 bg-[#fed7aa] transition-transform duration-[550ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover/users:scale-x-100" />
-              </span>{" "}
-              users
-            </span>
-            <span className="font-display text-base leading-6 text-[#9192a1] transition-colors duration-[450ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover/users:text-black">
-              keeping more of what they earn
-            </span>
-          </div>
-        </div>
+              </a>
+              <a
+                href={GOOGLE_PLAY_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Get ReceiptOne on Google Play"
+                className="inline-flex h-10 items-center gap-2 rounded-xl border border-black/12 bg-white px-3.5 font-display text-black shadow-sm transition-opacity hover:opacity-80"
+              >
+                <GooglePlayMark className="h-[18px] w-[18px] shrink-0" />
+                <span className="flex flex-col items-start">
+                  <span className="text-[8px] font-normal leading-none text-black/50">GET IT ON</span>
+                  <span className="text-[12px] font-semibold leading-tight">Google Play</span>
+                </span>
+              </a>
+            </div>
 
+            {/* Social proof */}
+            <div className="mt-6">
+              <div className="group/users relative flex w-fit cursor-pointer flex-col items-center justify-center gap-2 rounded-2xl bg-black/[0.03] px-4 py-3 transition-[background-color,box-shadow,transform] duration-[450ms] ease-[cubic-bezier(0.22,1,0.36,1)] hover:bg-black/[0.05] hover:shadow-[0_10px_30px_-14px_rgba(0,0,0,0.18)] sm:flex-row sm:items-center sm:gap-[14px]">
+                <div className="flex items-center justify-center">
+                  <Avatar src={avatar1} alt="User 1" />
+                  <Avatar src={avatar2} alt="User 2" offset />
+                  <Avatar src={avatar3} alt="User 3" offset />
+                  <Avatar src={avatar4} alt="User 4" offset />
+                </div>
+                <div className="flex flex-col items-center text-center sm:items-start sm:text-left">
+                  <span className="font-display text-base font-semibold leading-5 text-black transition-transform duration-[450ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover/users:-translate-y-px">
+                    Over{" "}
+                    <span className="relative inline-block">
+                      <span className="relative z-10 transition-colors duration-[450ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover/users:text-[#f97316]">
+                        3,000
+                      </span>
+                      <span className="absolute inset-x-0 bottom-0.5 h-1.5 origin-left scale-x-0 bg-[#fed7aa] transition-transform duration-[550ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover/users:scale-x-100" />
+                    </span>{" "}
+                    users
+                  </span>
+                  <span className="font-display text-base leading-6 text-[#9192a1] transition-colors duration-[450ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover/users:text-black">
+                    keeping more of what they earn
+                  </span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          {/* ── RIGHT COLUMN — Mascot ── */}
+          <div className="relative flex items-center justify-center">
+            {/* Radial glow */}
+            <div
+              className="pointer-events-none absolute inset-x-12 inset-y-8 rounded-full bg-[#f97316]/[0.07] blur-3xl"
+              aria-hidden
+            />
+            {/* Ground shadow */}
+            <div
+              className="pointer-events-none absolute bottom-[4%] left-1/2 h-6 w-3/5 -translate-x-1/2 rounded-full bg-black/[0.10] blur-2xl"
+              aria-hidden
+            />
+            {/* Mascot */}
+            <video
+              style={{ filter: "brightness(1.15) contrast(1.08)" }}
+              className="relative w-full object-contain mix-blend-multiply"
+              autoPlay
+              loop
+              muted
+              playsInline
+              preload="metadata"
+              poster={beaverHeroPoster}
+              aria-label="Beaver mascot wearing a Canadian cap, reading a receipt"
+            >
+              <source src={beaverHeroVideo} type="video/mp4" />
+            </video>
+          </div>
+
+        </div>
       </div>
     </section>
   );
