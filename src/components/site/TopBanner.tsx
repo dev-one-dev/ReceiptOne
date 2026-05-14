@@ -5,7 +5,7 @@ import avatar2 from "@/assets/figma/avatar-2.webp";
 import avatar3 from "@/assets/figma/avatar-3.webp";
 import avatar4 from "@/assets/figma/avatar-4.webp";
 import rightArrowSrc from "@/assets/figma/rightarrow.svg";
-import trialOfferSrc from "@/assets/figma/trial-offer.svg";
+import trialOfferSrc from "@/assets/figma/topbanner-trial-ca.svg";
 import { Avatar } from "@/components/site/TopBannerShared";
 import { ArrowRight } from "lucide-react";
 
