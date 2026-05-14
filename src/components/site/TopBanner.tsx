@@ -144,7 +144,7 @@ export function TopBanner() {
         </div>
 
         {/* ── STATS BAR ── */}
-        <div className="mt-6 border-t border-black/[0.08] pt-4 sm:mt-8 sm:pt-5">
+        <div className="mt-10 border-t border-black/[0.08] pt-5 pb-5 sm:mt-12 sm:pt-6 sm:pb-6">
           <div className="grid grid-cols-2 gap-y-6 sm:grid-cols-3 lg:grid-cols-5">
             {STATS.map((stat, i) => (
               <div
