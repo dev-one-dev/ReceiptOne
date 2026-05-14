@@ -41,8 +41,9 @@ const FEATURES = [
     desc: "Simplify your finances with ReceiptOne. It integrates with QuickBooks and Google Drive for easy syncing and reporting.",
     img: naBeaverThinking,
     alt: "Beaver thinking",
+    comingSoon: true,
   },
-];
+] as const;
 
 export function NotAll() {
   return (
@@ -63,8 +64,13 @@ export function NotAll() {
           {FEATURES.map((f) => (
             <div
               key={f.title}
-              className="group flex flex-col overflow-hidden rounded-2xl border border-black/[0.07] bg-white shadow-[0_2px_12px_rgba(0,0,0,0.06)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_40px_rgba(0,0,0,0.10)]"
+              className="group relative flex flex-col overflow-hidden rounded-2xl border border-black/[0.07] bg-white shadow-[0_2px_12px_rgba(0,0,0,0.06)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_40px_rgba(0,0,0,0.10)]"
             >
+              {"comingSoon" in f && f.comingSoon && (
+                <span className="absolute right-4 top-4 rounded-full bg-black/[0.06] px-2.5 py-1 font-sans text-[11px] font-medium tracking-wide text-black/40">
+                  Coming soon
+                </span>
+              )}
               <div className="p-6 sm:p-8">
                 <h3 className="font-display text-xl font-semibold leading-snug text-black sm:text-2xl">
                   {f.title}
