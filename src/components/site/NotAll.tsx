@@ -64,10 +64,10 @@ export function NotAll() {
           {FEATURES.map((f) => (
             <div
               key={f.title}
-              className={"comingSoon" in f && f.comingSoon ? "relative pt-4" : ""}
+              className={"comingSoon" in f && f.comingSoon ? "relative" : ""}
             >
               {"comingSoon" in f && f.comingSoon && (
-                <span className="absolute top-0 left-1/2 z-20 -translate-x-1/2 whitespace-nowrap rounded-full bg-[#f97316] px-4 py-1 font-sans text-xs font-semibold text-white shadow-[0_4px_12px_rgba(249,115,22,0.4)]">
+                <span className="absolute top-0 left-1/2 z-20 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap rounded-full bg-[#f97316] px-4 py-1 font-sans text-xs font-semibold text-white shadow-[0_4px_12px_rgba(249,115,22,0.4)]">
                   Coming soon
                 </span>
               )}
