@@ -4,6 +4,8 @@ import avatar1 from "@/assets/figma/avatar-1.webp";
 import avatar2 from "@/assets/figma/avatar-2.webp";
 import avatar3 from "@/assets/figma/avatar-3.webp";
 import avatar4 from "@/assets/figma/avatar-4.webp";
+import rightArrowSrc from "@/assets/figma/rightarrow.svg";
+import trialOfferSrc from "@/assets/figma/trial-offer.svg";
 import { Avatar } from "@/components/site/TopBannerShared";
 import { ArrowRight } from "lucide-react";
 
@@ -48,7 +50,7 @@ export function TopBanner() {
             </div>
 
             {/* CTA — black */}
-            <div className="mt-8">
+            <div className="relative mt-8 inline-block">
               <a
                 href="#pricing"
                 onClick={scrollToPricing}
@@ -57,6 +59,33 @@ export function TopBanner() {
                 Claim your free trial
                 <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-0.5" aria-hidden />
               </a>
+
+              {/* Dashed arrow curving right from button to trial-offer label — desktop only */}
+              <img
+                src={rightArrowSrc}
+                alt=""
+                aria-hidden
+                draggable={false}
+                className="pointer-events-none absolute hidden select-none lg:block"
+                style={{
+                  width: 130,
+                  left: "calc(100% + 6px)",
+                  top: "50%",
+                  transform: "translateY(-98%)",
+                }}
+              />
+              <img
+                src={trialOfferSrc}
+                alt="7-day free trial"
+                draggable={false}
+                className="pointer-events-none absolute hidden select-none lg:block"
+                style={{
+                  width: 104,
+                  left: "calc(100% + 138px)",
+                  top: "50%",
+                  transform: "translateY(-50%)",
+                }}
+              />
             </div>
 
             {/* Store badges — single horizontal line */}
