@@ -11,7 +11,6 @@ const APP_STORE_URL = "https://apps.apple.com/app/receiptone/id0000000000";
 const GOOGLE_PLAY_URL = "https://play.google.com/store/apps/details?id=com.receiptone.app";
 
 const STATS = [
-  { value: "12.2M+", label: "Interactions tracked" },
   { value: "4.8", label: "Average rating" },
   { value: "150K+", label: "Kilometres tracked" },
   { value: "12K+", label: "Reports generated" },
@@ -145,8 +144,8 @@ export function TopBanner() {
         </div>
 
         {/* ── STATS BAR ── */}
-        <div className="mt-12 border-t border-black/[0.08] pt-4 sm:mt-16 sm:pt-5">
-          <div className="grid grid-cols-2 gap-y-6 sm:grid-cols-3 lg:grid-cols-6">
+        <div className="mt-6 border-t border-black/[0.08] pt-4 sm:mt-8 sm:pt-5">
+          <div className="grid grid-cols-2 gap-y-6 sm:grid-cols-3 lg:grid-cols-5">
             {STATS.map((stat, i) => (
               <div
                 key={stat.label}
