@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Facebook, Linkedin, Twitter } from "lucide-react";
+import { Facebook, Linkedin } from "lucide-react";
 import logoMark from "@/assets/figma/logo-mark.svg";
 import logoWordmark from "@/assets/figma/logo-wordmark.svg";
 import { ROUTES } from "@/lib/routes";
@@ -30,10 +30,18 @@ const LEGAL_LINKS = [
 ];
 
 const SOCIAL = [
-  { Icon: Twitter, label: "Twitter", href: "https://twitter.com/receiptone" },
+  { Icon: XIcon, label: "X", href: "https://x.com/receiptone" },
   { Icon: Linkedin, label: "LinkedIn", href: "https://linkedin.com/company/receiptone" },
   { Icon: Facebook, label: "Facebook", href: "https://facebook.com/receiptone" },
 ];
+
+function XIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.911-5.622Zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+    </svg>
+  );
+}
 
 function scrollToTop() {
   window.scrollTo({ top: 0, behavior: "smooth" });
