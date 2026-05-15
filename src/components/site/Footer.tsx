@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Facebook, Instagram, Twitter } from "lucide-react";
+import { Facebook, Linkedin, Twitter } from "lucide-react";
 import logoMark from "@/assets/figma/logo-mark.svg";
 import logoWordmark from "@/assets/figma/logo-wordmark.svg";
 import { ROUTES } from "@/lib/routes";
@@ -31,7 +31,7 @@ const LEGAL_LINKS = [
 
 const SOCIAL = [
   { Icon: Twitter, label: "Twitter", href: "https://twitter.com/receiptone" },
-  { Icon: Instagram, label: "Instagram", href: "https://instagram.com/receiptone" },
+  { Icon: Linkedin, label: "LinkedIn", href: "https://linkedin.com/company/receiptone" },
   { Icon: Facebook, label: "Facebook", href: "https://facebook.com/receiptone" },
 ];
 
