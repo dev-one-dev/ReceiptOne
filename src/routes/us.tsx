@@ -60,7 +60,7 @@ function USAPage() {
       className="min-h-screen overflow-x-clip bg-[#f5f4f0] font-sans text-black antialiased"
     >
       <Header />
-      <TopBanner />
+      <TopBanner region="us" />
       <HowItWorks region="us" />
       <InfoCards region="us" />
       <NotAll region="us" />

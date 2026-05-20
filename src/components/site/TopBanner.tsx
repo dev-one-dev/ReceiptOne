@@ -1,5 +1,7 @@
 import beaverHeroVideo from "@/assets/figma/hero-beaver-hq.mp4";
 import beaverHeroPoster from "@/assets/figma/hero-beaver-poster.png";
+import eagleHeroVideo from "@/assets/figma/hero-eagle-hq.mp4";
+import eagleHeroPoster from "@/assets/figma/hero-eagle-poster.png";
 import avatar1 from "@/assets/figma/avatar-1.webp";
 import avatar2 from "@/assets/figma/avatar-2.webp";
 import avatar3 from "@/assets/figma/avatar-3.webp";
@@ -25,7 +27,9 @@ function scrollToPricing(e: React.MouseEvent) {
   document.getElementById("pricing")?.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
-export function TopBanner() {
+export function TopBanner({ region = "ca" }: { region?: "ca" | "us" }) {
+  const heroVideo = region === "us" ? eagleHeroVideo : beaverHeroVideo;
+  const heroPoster = region === "us" ? eagleHeroPoster : beaverHeroPoster;
   return (
     <section className="relative w-full overflow-visible px-4 pt-20 sm:px-6 sm:pt-24 lg:px-8 lg:pt-28">
       <div className="mx-auto w-full max-w-[1200px]">
@@ -163,10 +167,10 @@ export function TopBanner() {
               muted
               playsInline
               preload="metadata"
-              poster={beaverHeroPoster}
-              aria-label="Beaver mascot wearing a Canadian cap, reading a receipt"
+              poster={heroPoster}
+              aria-label={region === "us" ? "Eagle mascot wearing a USA cap, reading a receipt" : "Beaver mascot wearing a Canadian cap, reading a receipt"}
             >
-              <source src={beaverHeroVideo} type="video/mp4" />
+              <source src={heroVideo} type="video/mp4" />
             </video>
           </div>
 
