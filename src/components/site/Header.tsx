@@ -124,7 +124,7 @@ export function Header() {
               <button
                 type="button"
                 onClick={scrollTo("how-it-works")}
-                className="rounded-md px-0.5 py-1 transition-opacity hover:opacity-70"
+                className="rounded-md px-0.5 py-1 transition-opacity hover:opacity-70 whitespace-nowrap"
               >
                 How It Works
               </button>
