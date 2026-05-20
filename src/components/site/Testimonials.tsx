@@ -1,7 +1,9 @@
 import avatar1 from "@/assets/figma/avatar-1.webp";
 import avatar2 from "@/assets/figma/avatar-2.webp";
 import avatar3 from "@/assets/figma/avatar-3.webp";
+import avatar4 from "@/assets/figma/avatar-4.webp";
 import avatarDavid from "@/assets/figma/crypto.png";
+import avatarCryptopunk from "@/assets/figma/cryptopunk.png";
 
 const CA_TESTIMONIALS = [
   {
@@ -34,26 +36,26 @@ const US_TESTIMONIALS = [
   {
     quote:
       "ReceiptOne saved me hours every week. I used to spend Sunday evenings sorting receipts — now I just snap and forget. My accountant loves the export format.",
-    name: "Maria Chen",
+    name: "Ashley Morgan",
     role: "Freelance Graphic Designer",
     location: "Austin, TX",
-    avatar: avatar3,
+    avatar: avatar1,
   },
   {
     quote:
       "Tracking deductions used to eat up hours. Now everything's organized automatically before I even talk to my accountant. Pays for itself every month.",
-    name: "David Okonkwo",
-    role: "Independent IT Contractor",
+    name: "James Rivera",
+    role: "Independent IT Consultant",
     location: "Chicago, IL",
-    avatar: avatarDavid,
+    avatar: avatarCryptopunk,
   },
   {
     quote:
       "I run a small photography studio and ReceiptOne handles everything — vehicle expenses, equipment, client meals. Tax season is actually stress-free now.",
-    name: "Sophie Tremblay",
+    name: "Megan Torres",
     role: "Studio Owner",
     location: "Brooklyn, NY",
-    avatar: avatar2,
+    avatar: avatar4,
   },
 ] as const;
 
