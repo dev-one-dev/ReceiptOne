@@ -6,10 +6,7 @@ import avatar1 from "@/assets/figma/avatar-1.webp";
 import avatar2 from "@/assets/figma/avatar-2.webp";
 import avatar3 from "@/assets/figma/avatar-3.webp";
 import avatar4 from "@/assets/figma/avatar-4.webp";
-import rightArrowSrc from "@/assets/figma/rightarrow.svg";
-import trialOfferSrc from "@/assets/figma/topbanner-trial-ca.svg";
 import { Avatar } from "@/components/site/TopBannerShared";
-import { ArrowRight } from "lucide-react";
 
 const APP_STORE_URL = "https://apps.apple.com/app/receiptone/id0000000000";
 const GOOGLE_PLAY_URL = "https://play.google.com/store/apps/details?id=com.receiptone.app";
@@ -29,11 +26,6 @@ const US_STATS = [
   { value: "100K+", label: "Receipts scanned" },
   { value: "$4.2M+", label: "Deductions tracked" },
 ];
-
-function scrollToPricing(e: React.MouseEvent) {
-  e.preventDefault();
-  document.getElementById("pricing")?.scrollIntoView({ behavior: "smooth", block: "start" });
-}
 
 export function TopBanner({ region = "ca" }: { region?: "ca" | "us" }) {
   const heroVideo = region === "us" ? eagleHeroVideo : beaverHeroVideo;
@@ -64,45 +56,6 @@ export function TopBanner({ region = "ca" }: { region?: "ca" | "us" }) {
                   ? "Built for US freelancers, contractors, and small businesses."
                   : "Built for Canadian freelancers, contractors, and small businesses."}
               </p>
-            </div>
-
-            {/* CTA — black */}
-            <div className="relative mt-8 inline-block">
-              <a
-                href="#pricing"
-                onClick={scrollToPricing}
-                className="group inline-flex items-center justify-center gap-2 rounded-full bg-black px-8 py-4 font-display text-base font-semibold text-white shadow-[0_8px_28px_rgba(0,0,0,0.18)] transition-all hover:scale-[1.02] hover:opacity-90"
-              >
-                Claim your free trial
-                <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-0.5" aria-hidden />
-              </a>
-
-              {/* Dashed arrow curving right from button to trial-offer label — desktop only */}
-              <img
-                src={rightArrowSrc}
-                alt=""
-                aria-hidden
-                draggable={false}
-                className="pointer-events-none absolute hidden select-none lg:block"
-                style={{
-                  width: 260,
-                  left: "calc(100% + 6px)",
-                  top: "50%",
-                  transform: "translateY(-98%)",
-                }}
-              />
-              <img
-                src={trialOfferSrc}
-                alt="7-day free trial"
-                draggable={false}
-                className="pointer-events-none absolute hidden select-none lg:block"
-                style={{
-                  width: 130,
-                  left: "calc(100% + 264px)",
-                  top: "50%",
-                  transform: "translateY(-50%)",
-                }}
-              />
             </div>
 
             {/* Store badges — single horizontal line */}
