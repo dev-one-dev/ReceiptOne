@@ -78,6 +78,8 @@ export function Header() {
     if (el) {
       const top = el.getBoundingClientRect().top + window.scrollY - scrollOffset();
       window.scrollTo({ top, behavior: "smooth" });
+    } else {
+      navigate({ to: (isUS ? "/us" : "/ca") as any, hash: id });
     }
   };
 
