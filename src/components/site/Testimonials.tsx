@@ -1,11 +1,16 @@
-import avatar1 from "@/assets/figma/avatar-1.webp";
 import avatar2 from "@/assets/figma/avatar-2.webp";
 import avatar3 from "@/assets/figma/avatar-3.webp";
-import avatar4 from "@/assets/figma/avatar-4.webp";
 import avatarDavid from "@/assets/figma/crypto.png";
 import avatarCryptopunk from "@/assets/figma/cryptopunk.png";
 
-const CA_TESTIMONIALS = [
+type Testimonial = {
+  quote: string;
+  name: string;
+  role: string;
+  location: string;
+} & ({ avatar: string; initials?: never; avatarBg?: never } | { initials: string; avatarBg: string; avatar?: never });
+
+const CA_TESTIMONIALS: Testimonial[] = [
   {
     quote:
       "ReceiptOne saved me hours every week. I used to spend Sunday evenings sorting receipts — now I just snap and forget. My accountant loves the export format.",
@@ -30,16 +35,17 @@ const CA_TESTIMONIALS = [
     location: "Montréal, QC",
     avatar: avatar2,
   },
-] as const;
+];
 
-const US_TESTIMONIALS = [
+const US_TESTIMONIALS: Testimonial[] = [
   {
     quote:
       "ReceiptOne saved me hours every week. I used to spend Sunday evenings sorting receipts — now I just snap and forget. My accountant loves the export format.",
     name: "Ashley Morgan",
     role: "Freelance Graphic Designer",
     location: "Austin, TX",
-    avatar: avatar1,
+    initials: "AM",
+    avatarBg: "#7c3aed",
   },
   {
     quote:
@@ -55,9 +61,10 @@ const US_TESTIMONIALS = [
     name: "Megan Torres",
     role: "Studio Owner",
     location: "Brooklyn, NY",
-    avatar: avatar4,
+    initials: "MT",
+    avatarBg: "#0891b2",
   },
-] as const;
+];
 
 export function Testimonials({ region = "ca" }: { region?: "ca" | "us" }) {
   const testimonials = region === "us" ? US_TESTIMONIALS : CA_TESTIMONIALS;
@@ -93,15 +100,25 @@ export function Testimonials({ region = "ca" }: { region?: "ca" | "us" }) {
               </blockquote>
 
               <figcaption className="flex items-center gap-3">
-                <img
-                  src={t.avatar}
-                  alt={t.name}
-                  className="size-10 shrink-0 rounded-full object-cover"
-                  width={40}
-                  height={40}
-                  loading="lazy"
-                  decoding="async"
-                />
+                {t.initials ? (
+                  <div
+                    className="flex size-10 shrink-0 items-center justify-center rounded-full font-display text-xs font-bold text-white"
+                    style={{ backgroundColor: t.avatarBg }}
+                    aria-label={t.name}
+                  >
+                    {t.initials}
+                  </div>
+                ) : (
+                  <img
+                    src={t.avatar}
+                    alt={t.name}
+                    className="size-10 shrink-0 rounded-full object-cover"
+                    width={40}
+                    height={40}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                )}
                 <div>
                   <p className="font-display text-sm font-semibold text-black">{t.name}</p>
                   <p className="font-sans text-xs text-black/45">
