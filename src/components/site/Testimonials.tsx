@@ -3,7 +3,7 @@ import avatar2 from "@/assets/figma/avatar-2.webp";
 import avatar3 from "@/assets/figma/avatar-3.webp";
 import avatarDavid from "@/assets/figma/crypto.png";
 
-const TESTIMONIALS = [
+const CA_TESTIMONIALS = [
   {
     quote:
       "ReceiptOne saved me hours every week. I used to spend Sunday evenings sorting receipts — now I just snap and forget. My accountant loves the export format.",
@@ -30,7 +30,36 @@ const TESTIMONIALS = [
   },
 ] as const;
 
-export function Testimonials() {
+const US_TESTIMONIALS = [
+  {
+    quote:
+      "ReceiptOne saved me hours every week. I used to spend Sunday evenings sorting receipts — now I just snap and forget. My accountant loves the export format.",
+    name: "Maria Chen",
+    role: "Freelance Graphic Designer",
+    location: "Austin, TX",
+    avatar: avatar3,
+  },
+  {
+    quote:
+      "Tracking deductions used to eat up hours. Now everything's organized automatically before I even talk to my accountant. Pays for itself every month.",
+    name: "David Okonkwo",
+    role: "Independent IT Contractor",
+    location: "Chicago, IL",
+    avatar: avatarDavid,
+  },
+  {
+    quote:
+      "I run a small photography studio and ReceiptOne handles everything — vehicle expenses, equipment, client meals. Tax season is actually stress-free now.",
+    name: "Sophie Tremblay",
+    role: "Studio Owner",
+    location: "Brooklyn, NY",
+    avatar: avatar2,
+  },
+] as const;
+
+export function Testimonials({ region = "ca" }: { region?: "ca" | "us" }) {
+  const testimonials = region === "us" ? US_TESTIMONIALS : CA_TESTIMONIALS;
+  const heading = region === "us" ? "Trusted by US freelancers" : "Trusted by Canadian freelancers";
   return (
     <section className="w-full px-4 pt-4 pb-12 sm:px-6 sm:pt-6 sm:pb-16 lg:px-8">
       <div className="mx-auto w-full max-w-[1200px]">
@@ -40,12 +69,12 @@ export function Testimonials() {
             Testimonials
           </p>
           <h2 className="mt-2 font-display text-3xl font-semibold leading-tight tracking-tight text-black sm:text-4xl lg:text-[2.75rem]">
-            Trusted by Canadian freelancers
+            {heading}
           </h2>
         </div>
 
         <div className="grid gap-5 sm:grid-cols-3">
-          {TESTIMONIALS.map((t) => (
+          {testimonials.map((t) => (
             <figure
               key={t.name}
               className="flex flex-col gap-5 rounded-3xl border border-black/[0.07] bg-white p-6 shadow-[0_2px_12px_rgba(0,0,0,0.06)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_8px_32px_rgba(0,0,0,0.10)] sm:p-8"

@@ -48,6 +48,50 @@ export const faqItems: QA[] = [
   },
 ];
 
+/** US FAQ list — replaces CRA/GST/PST references with IRS/sales tax equivalents. */
+export const faqItemsUS: QA[] = [
+  {
+    q: "How does receipt scanning work?",
+    a: "Open the app, point your camera at any receipt, and tap. ReceiptOne reads the merchant name, date, total, and tax amounts automatically — no typing required. Paper receipts, email receipts, and PDF invoices all work.",
+  },
+  {
+    q: "Does ReceiptOne calculate my tax refund?",
+    a: "No — and we're upfront about that. ReceiptOne captures the sales tax on your receipts so you have accurate records for your IRS return. Your actual refund depends on your full tax situation, which your accountant or tax software calculates.",
+  },
+  {
+    q: 'What does "Estimated refundable taxes" mean?',
+    a: "It's a running reference total of deductible expenses tracked on your receipts — useful for self-employed filers and 1099 contractors. It's not a guaranteed refund amount.",
+  },
+  {
+    q: "How is sales tax handled?",
+    a: "ReceiptOne reads and records the sales tax on each receipt. For business expenses, that tax becomes part of your deductible cost — we track it separately so your records are clean and accurate when you file.",
+  },
+  {
+    q: "What if my receipt has no tax?",
+    a: "No problem. The receipt is still stored, dated, and categorized correctly. Tax fields simply show empty in your reports — which is accurate, since not every purchase is taxable.",
+  },
+  {
+    q: "Can I export my expense reports?",
+    a: "Yes. Export as PDF or CSV any time — formatted for your accountant, bookkeeper, or your own IRS filing. Your data, your format, no lock-in.",
+  },
+  {
+    q: 'What does "Reimbursable" mean?',
+    a: "Tag any expense as reimbursable when a client or employer should pay you back. Filter your reimbursables into a separate report and send it directly — no more digging through receipts at billing time.",
+  },
+  {
+    q: "What's included in the paid plan?",
+    a: "Everything: unlimited receipt scanning, automatic sales tax extraction, mileage tracking, bulk upload, multi-device sync, PDF & CSV exports, email receipt forwarding, and 10+ years of secure cloud storage.",
+  },
+  {
+    q: "Can I cancel anytime?",
+    a: "Yes — cancel in one tap from the app. No phone calls, no cancellation fees, no questions asked. Your data stays accessible until the end of your billing period.",
+  },
+  {
+    q: "Is ReceiptOne a tax filing service?",
+    a: "No. ReceiptOne organizes your receipts and expenses so that filing — whether you do it yourself or hand off to an accountant — is fast, accurate, and stress-free. We don't file taxes on your behalf.",
+  },
+];
+
 /** FAQ questions grouped by category — used on the /faq help-center page. */
 export const CATEGORIZED_FAQ: { category: string; items: QA[] }[] = [
   {

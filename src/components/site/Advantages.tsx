@@ -17,7 +17,9 @@ export function Advantages({ region = "ca" }: { region?: "ca" | "us" }) {
             Maximized deductions, zero effort
           </h2>
           <p className="mt-3 max-w-2xl text-base leading-relaxed text-black/55 sm:text-lg">
-            Stop leaving money on the table. ReceiptOne identifies every deductible cent and categorizes it according to CRA rules, so you claim the biggest refund possible.
+            {region === "us"
+              ? "Stop leaving money on the table. ReceiptOne finds every deductible expense and keeps your records IRS-ready — automatically."
+              : "Stop leaving money on the table. ReceiptOne identifies every deductible cent and categorizes it according to CRA rules, so you claim the biggest refund possible."}
           </p>
           <a
             href="#pricing"
@@ -35,7 +37,7 @@ export function Advantages({ region = "ca" }: { region?: "ca" | "us" }) {
           <BentoCard className="col-span-12 md:col-span-8">
             <CardLabel>Save time</CardLabel>
             <CardTitle>Save 10+ hours every month</CardTitle>
-            <CardDesc>Capture expenses in seconds, any time. ReceiptOne sorts every purchase, tracks GST/HST by province, and keeps your books current — without touching a spreadsheet.</CardDesc>
+            <CardDesc>{region === "us" ? "Capture expenses in seconds, any time. ReceiptOne sorts every purchase, tracks sales tax by state, and keeps your books current — without touching a spreadsheet." : "Capture expenses in seconds, any time. ReceiptOne sorts every purchase, tracks GST/HST by province, and keeps your books current — without touching a spreadsheet."}</CardDesc>
             <AccentPanel bg="bg-black" textColor="text-white">
               <Stat value="10h+" label="saved monthly" light />
             </AccentPanel>
@@ -44,7 +46,7 @@ export function Advantages({ region = "ca" }: { region?: "ca" | "us" }) {
           <BentoCard className="col-span-12 md:col-span-4">
             <CardLabel>Mileage</CardLabel>
             <CardTitle>Never miss a mileage deduction</CardTitle>
-            <CardDesc>Every trip logged and the CRA per-kilometre rate applied automatically.</CardDesc>
+            <CardDesc>{region === "us" ? "Every trip logged and the IRS per-mile rate applied automatically." : "Every trip logged and the CRA per-kilometre rate applied automatically."}</CardDesc>
             <AccentPanel bg="bg-[#fed7aa]" textColor="text-black">
               <Stat value={region === "us" ? "72.5¢" : "73¢"} label={region === "us" ? "/ mile, tracked" : "/ km, tracked"} />
             </AccentPanel>
@@ -61,9 +63,9 @@ export function Advantages({ region = "ca" }: { region?: "ca" | "us" }) {
           </BentoCard>
 
           <BentoCard className="col-span-12 md:col-span-8">
-            <CardLabel>CRA compliant</CardLabel>
-            <CardTitle>CRA-ready documentation, always</CardTitle>
-            <CardDesc>Every receipt timestamped and organized the moment you snap it. If the CRA ever asks, you're ready.</CardDesc>
+            <CardLabel>{region === "us" ? "IRS compliant" : "CRA compliant"}</CardLabel>
+            <CardTitle>{region === "us" ? "IRS-ready documentation, always" : "CRA-ready documentation, always"}</CardTitle>
+            <CardDesc>{region === "us" ? "Every receipt timestamped and organized the moment you snap it. If the IRS ever asks, you're ready." : "Every receipt timestamped and organized the moment you snap it. If the CRA ever asks, you're ready."}</CardDesc>
             <AccentPanel bg="bg-black" textColor="text-white">
               <Stat value="10yr" label="secure cloud storage" light />
             </AccentPanel>

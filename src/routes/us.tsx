@@ -8,7 +8,7 @@ import { Testimonials } from "@/components/site/Testimonials";
 import { Trust } from "@/components/site/Trust";
 import { Advantages } from "@/components/site/Advantages";
 import { Pricing } from "@/components/site/Pricing";
-import { Faq, faqItems } from "@/components/site/Faq";
+import { Faq, faqItemsUS } from "@/components/site/Faq";
 import { Footer } from "@/components/site/Footer";
 import { SuggestFeatureWidget } from "@/components/site/SuggestFeatureWidget";
 import {
@@ -46,7 +46,7 @@ export const Route = createFileRoute("/us")({
             ]),
           ),
         },
-        { type: "application/ld+json", children: JSON.stringify(faqJsonLd(faqItems)) },
+        { type: "application/ld+json", children: JSON.stringify(faqJsonLd(faqItemsUS)) },
       ],
     };
   },
@@ -64,11 +64,11 @@ function USAPage() {
       <HowItWorks region="us" />
       <InfoCards region="us" />
       <NotAll region="us" />
-      <Testimonials />
+      <Testimonials region="us" />
       <Trust region="us" />
       <Advantages region="us" />
       <Pricing region="us" />
-      <Faq />
+      <Faq items={faqItemsUS} />
       <Footer region="us" />
       <SuggestFeatureWidget region="us" />
     </main>

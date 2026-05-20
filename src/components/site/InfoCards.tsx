@@ -48,9 +48,10 @@ const CA_FEATURES = [
 ];
 
 const US_FEATURES = CA_FEATURES.map((f) => {
+  if (f.label === "Receipts") return { ...f, alt: "ReceiptOne app showing receipts list with USD amounts" };
   if (f.label === "Export") return { ...f, img: usExport, alt: "ReceiptOne app showing CSV export screen" };
-  if (f.label === "Mileage") return { ...f, img: usMileage, alt: "ReceiptOne app showing mileage map tracking" };
-  if (f.label === "Home office") return { ...f, img: usHomeOffice, alt: "ReceiptOne app showing home office deduction results" };
+  if (f.label === "Mileage") return { ...f, img: usMileage, alt: "ReceiptOne app showing mileage map tracking", desc: "Log every business trip and apply the IRS per-mile rate in one tap. Never lose a deduction because you forgot to note the odometer." };
+  if (f.label === "Home office") return { ...f, img: usHomeOffice, alt: "ReceiptOne app showing home office deduction results", desc: "Calculate your home office deduction in minutes. ReceiptOne tracks utilities, internet, and workspace costs, then applies the IRS deduction formula automatically." };
   return f;
 });
 
