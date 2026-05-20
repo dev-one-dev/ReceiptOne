@@ -44,6 +44,7 @@ const CA_PLANS: Plan[] = [
     originalPrice: "15.99",
     period: "/ month",
     currency: "CAD",
+    imageClassName: "pointer-events-none absolute bottom-0 -right-44 z-0 w-[34rem] select-none object-contain sm:-right-48 sm:w-[36rem]",
     popular: true,
     features: [
       "Everything in Weekly",
@@ -61,6 +62,7 @@ const CA_PLANS: Plan[] = [
     period: "/ year",
     currency: "CAD",
     badge: "Best Deal",
+    imageClassName: "pointer-events-none absolute bottom-0 -right-44 z-0 w-[34rem] select-none object-contain sm:-right-48 sm:w-[36rem]",
     featuresMaxW: "max-w-[55%]",
     features: [
       "Everything in Monthly",
@@ -93,6 +95,7 @@ const US_PLANS: Plan[] = [
     originalPrice: "9.99",
     period: "/ month",
     currency: "USD",
+    imageClassName: "pointer-events-none absolute bottom-0 -right-44 z-0 w-[34rem] select-none object-contain sm:-right-48 sm:w-[36rem]",
     popular: true,
     features: [
       "Everything in Weekly",
@@ -110,6 +113,7 @@ const US_PLANS: Plan[] = [
     period: "/ year",
     currency: "USD",
     badge: "Best Deal",
+    imageClassName: "pointer-events-none absolute bottom-0 -right-44 z-0 w-[34rem] select-none object-contain sm:-right-48 sm:w-[36rem]",
     featuresMaxW: "max-w-[55%]",
     features: [
       "Everything in Monthly",
