@@ -75,7 +75,7 @@ const US_PLANS: Plan[] = [
     price: "3.99",
     period: "/ week",
     currency: "USD",
-    imageClassName: "pointer-events-none absolute bottom-0 -right-28 z-0 w-[34rem] select-none object-contain sm:-right-32 sm:w-[36rem]",
+    imageClassName: "pointer-events-none absolute bottom-0 -right-28 z-0 w-[30rem] select-none object-contain sm:-right-32 sm:w-[32rem]",
     features: [
       "Unlimited receipt scanning",
       "Expense & mileage tracking",
