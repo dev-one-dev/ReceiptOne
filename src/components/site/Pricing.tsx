@@ -1,6 +1,9 @@
-import phoneReceiptsImg from "@/assets/figma/phone-receipts-3.webp";
-import beaverMonthImg from "@/assets/figma/pr-beaver-month.webp";
-import phoneReportsImg from "@/assets/figma/phone-reports.webp";
+import caWeeklyImg from "@/assets/figma/mileage-auto/Graphic-Small.png";
+import caMonthlyImg from "@/assets/figma/mileage-auto/Graphic-Small2.png";
+import caAnnualImg from "@/assets/figma/mileage-auto/Graphic-Small3.png";
+import usWeeklyImg from "@/assets/figma/mileage-auto/US/2.png";
+import usMonthlyImg from "@/assets/figma/mileage-auto/US/3-removebg-preview.png";
+import usAnnualImg from "@/assets/figma/mileage-auto/US/1.png";
 
 type Region = "ca" | "us";
 
@@ -12,6 +15,8 @@ interface Plan {
   period: string;
   currency: string;
   badge?: string;
+  imageClassName?: string;
+  featuresMaxW?: string;
   popular?: boolean;
   features: string[];
 }
@@ -39,6 +44,7 @@ const CA_PLANS: Plan[] = [
     originalPrice: "15.99",
     period: "/ month",
     currency: "CAD",
+    imageClassName: "pointer-events-none absolute bottom-0 -right-44 z-0 w-[34rem] select-none object-contain sm:-right-48 sm:w-[36rem]",
     popular: true,
     features: [
       "Everything in Weekly",
@@ -56,6 +62,8 @@ const CA_PLANS: Plan[] = [
     period: "/ year",
     currency: "CAD",
     badge: "Best Deal",
+    imageClassName: "pointer-events-none absolute bottom-0 -right-44 z-0 w-[34rem] select-none object-contain sm:-right-48 sm:w-[36rem]",
+    featuresMaxW: "max-w-[55%]",
     features: [
       "Everything in Monthly",
       "Save 13%",
@@ -69,6 +77,7 @@ const US_PLANS: Plan[] = [
     id: "week",
     name: "Weekly",
     price: "3.99",
+    originalPrice: "5.49",
     period: "/ week",
     currency: "USD",
     features: [
@@ -83,8 +92,10 @@ const US_PLANS: Plan[] = [
     id: "month",
     name: "Monthly",
     price: "7.99",
+    originalPrice: "9.99",
     period: "/ month",
     currency: "USD",
+    imageClassName: "pointer-events-none absolute bottom-0 -right-44 z-0 w-[34rem] select-none object-contain sm:-right-48 sm:w-[36rem]",
     popular: true,
     features: [
       "Everything in Weekly",
@@ -98,24 +109,30 @@ const US_PLANS: Plan[] = [
     id: "year",
     name: "Annual",
     price: "79.99",
+    originalPrice: "95.99",
     period: "/ year",
     currency: "USD",
-    badge: "Save 17%",
+    badge: "Best Deal",
+    imageClassName: "pointer-events-none absolute bottom-0 -right-44 z-0 w-[34rem] select-none object-contain sm:-right-48 sm:w-[36rem]",
+    featuresMaxW: "max-w-[55%]",
     features: [
       "Everything in Monthly",
-      "2 months free vs monthly",
-      "Unlimited cloud storage",
-      "Multi-device sync",
-      "Priority support",
+      "Save 17%",
+      "Best value for long-term tracking",
     ],
   },
 ];
 
-/** Asset mapped by plan id — used for every region. */
-const PLAN_IMAGES: Record<string, { src: string; alt: string }> = {
-  week: { src: phoneReceiptsImg, alt: "" },
-  month: { src: beaverMonthImg, alt: "" },
-  year: { src: phoneReportsImg, alt: "" },
+const CA_PLAN_IMAGES: Record<string, { src: string; alt: string }> = {
+  week: { src: caWeeklyImg, alt: "" },
+  month: { src: caMonthlyImg, alt: "" },
+  year: { src: caAnnualImg, alt: "" },
+};
+
+const US_PLAN_IMAGES: Record<string, { src: string; alt: string }> = {
+  week: { src: usWeeklyImg, alt: "" },
+  month: { src: usMonthlyImg, alt: "" },
+  year: { src: usAnnualImg, alt: "" },
 };
 
 function scrollToApps(e: React.MouseEvent) {
@@ -128,6 +145,7 @@ function scrollToApps(e: React.MouseEvent) {
 
 export function Pricing({ region = "ca" }: { region?: Region }) {
   const plans = region === "us" ? US_PLANS : CA_PLANS;
+  const planImages = region === "us" ? US_PLAN_IMAGES : CA_PLAN_IMAGES;
 
   return (
     <section
@@ -152,7 +170,7 @@ export function Pricing({ region = "ca" }: { region?: Region }) {
         {/* Cards */}
         <div className="grid gap-5 sm:grid-cols-3">
           {plans.map((plan) => (
-            <PlanCard key={plan.id} plan={plan} />
+            <PlanCard key={plan.id} plan={plan} images={planImages} />
           ))}
         </div>
 
@@ -164,10 +182,10 @@ export function Pricing({ region = "ca" }: { region?: Region }) {
   );
 }
 
-function PlanCard({ plan }: { plan: Plan }) {
+function PlanCard({ plan, images }: { plan: Plan; images: Record<string, { src: string; alt: string }> }) {
   const isPopular = plan.popular === true;
   const hasBadge = isPopular || !!plan.badge;
-  const image = PLAN_IMAGES[plan.id];
+  const image = images[plan.id];
 
   return (
     /*
@@ -214,7 +232,7 @@ function PlanCard({ plan }: { plan: Plan }) {
             aria-hidden
             loading="eager"
             decoding="async"
-            className="pointer-events-none absolute bottom-0 -right-36 z-0 w-[34rem] select-none object-contain sm:-right-40 sm:w-[36rem]"
+            className={plan.imageClassName ?? "pointer-events-none absolute bottom-0 -right-36 z-0 w-[34rem] select-none object-contain sm:-right-40 sm:w-[36rem]"}
           />
         )}
 
@@ -267,7 +285,7 @@ function PlanCard({ plan }: { plan: Plan }) {
           />
 
           {/* Features */}
-          <ul className="flex flex-1 flex-col gap-3">
+          <ul className={`flex flex-1 flex-col gap-3 ${plan.featuresMaxW ?? ""}`}>
             {plan.features.map((f) => (
               <li key={f} className="flex items-start gap-2.5">
                 <span

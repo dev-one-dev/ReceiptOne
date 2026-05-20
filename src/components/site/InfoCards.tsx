@@ -1,11 +1,15 @@
 import infocardsHeading from "@/assets/figma/infocards-heading.png";
+import infocardsHeadingUS from "@/assets/figma/mileage-auto/New-folder/US.png";
 import abScreenReceipts from "@/assets/figma/feat-receipts.png";
 import abScreenMileage from "@/assets/figma/feat-mileage.png";
 import icPhoneReports from "@/assets/figma/feat-reports.png";
 import icPhoneExport from "@/assets/figma/feat-export.png";
 import icPhoneHomeOffice from "@/assets/figma/feat-home-office.png";
+import usExport from "@/assets/figma/mileage-auto/US/Animation.png";
+import usMileage from "@/assets/figma/mileage-auto/US/Animation1.png";
+import usHomeOffice from "@/assets/figma/mileage-auto/US/Animation2.png";
 
-const FEATURES = [
+const CA_FEATURES = [
   {
     label: "Receipts",
     title: "All your receipts, captured and organized",
@@ -43,7 +47,17 @@ const FEATURES = [
   },
 ];
 
-export function InfoCards() {
+const US_FEATURES = CA_FEATURES.map((f) => {
+  if (f.label === "Receipts") return { ...f, alt: "ReceiptOne app showing receipts list with USD amounts" };
+  if (f.label === "Export") return { ...f, img: usExport, alt: "ReceiptOne app showing CSV export screen" };
+  if (f.label === "Mileage") return { ...f, img: usMileage, alt: "ReceiptOne app showing mileage map tracking", desc: "Log every business trip and apply the IRS per-mile rate in one tap. Never lose a deduction because you forgot to note the odometer." };
+  if (f.label === "Home office") return { ...f, img: usHomeOffice, alt: "ReceiptOne app showing home office deduction results", desc: "Calculate your home office deduction in minutes. ReceiptOne tracks utilities, internet, and workspace costs, then applies the IRS deduction formula automatically." };
+  return f;
+});
+
+export function InfoCards({ region = "ca" }: { region?: "ca" | "us" }) {
+  const FEATURES = region === "us" ? US_FEATURES : CA_FEATURES;
+  const heading = region === "us" ? infocardsHeadingUS : infocardsHeading;
   return (
     <section id="benefits" className="w-full px-4 pt-16 pb-4 sm:px-6 sm:pt-20 sm:pb-6 lg:px-8">
       <div className="mx-auto w-full max-w-[1200px]">
@@ -51,7 +65,7 @@ export function InfoCards() {
         {/* Header image — negative margins bleed past the content column */}
         <div className="-mx-4 mb-10 sm:-mx-6 sm:mb-14 lg:-mx-8">
           <img
-            src={infocardsHeading}
+            src={heading}
             alt="Turn Receipt Chaos Into Tax Gold — Stop losing money on missed deductions"
             className="w-full mix-blend-multiply"
             draggable={false}

@@ -1,13 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Header } from "@/components/site/Header";
-import { TopBannerUS } from "@/components/site/TopBannerUS";
-import { Numbers } from "@/components/site/Numbers";
-import infoCardsUsImg from "@/assets/figma/info-cards-us.webp";
-import { NotAllUS } from "@/components/site/NotAllUS";
+import { TopBanner } from "@/components/site/TopBanner";
+import { HowItWorks } from "@/components/site/HowItWorks";
+import { InfoCards } from "@/components/site/InfoCards";
+import { NotAll } from "@/components/site/NotAll";
+import { Testimonials } from "@/components/site/Testimonials";
+import { Trust } from "@/components/site/Trust";
 import { Advantages } from "@/components/site/Advantages";
-import { AppBanner } from "@/components/site/AppBanner";
 import { Pricing } from "@/components/site/Pricing";
-import { Faq, faqItems } from "@/components/site/Faq";
+import { Faq, faqItemsUS } from "@/components/site/Faq";
 import { Footer } from "@/components/site/Footer";
 import { SuggestFeatureWidget } from "@/components/site/SuggestFeatureWidget";
 import {
@@ -45,7 +46,7 @@ export const Route = createFileRoute("/us")({
             ]),
           ),
         },
-        { type: "application/ld+json", children: JSON.stringify(faqJsonLd(faqItems)) },
+        { type: "application/ld+json", children: JSON.stringify(faqJsonLd(faqItemsUS)) },
       ],
     };
   },
@@ -59,26 +60,15 @@ function USAPage() {
       className="min-h-screen overflow-x-clip bg-[#f5f4f0] font-sans text-black antialiased"
     >
       <Header />
-      <TopBannerUS />
-      <Numbers />
-      <section id="benefits" className="w-full">
-        <div className="mx-auto w-full max-w-[1440px]">
-          <img
-            src={infoCardsUsImg}
-            alt="Turn Receipt Chaos Into Tax Gold — benefits"
-            className="block h-auto w-full"
-            loading="lazy"
-            decoding="async"
-            width={1440}
-            height={2976}
-          />
-        </div>
-      </section>
-      <NotAllUS />
-      <Advantages />
-      <AppBanner region="us" />
+      <TopBanner region="us" />
+      <HowItWorks region="us" />
+      <InfoCards region="us" />
+      <NotAll region="us" />
+      <Testimonials region="us" />
+      <Trust region="us" />
+      <Advantages region="us" />
       <Pricing region="us" />
-      <Faq />
+      <Faq items={faqItemsUS} />
       <Footer region="us" />
       <SuggestFeatureWidget region="us" />
     </main>

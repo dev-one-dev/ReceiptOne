@@ -1,9 +1,16 @@
-import avatar1 from "@/assets/figma/avatar-1.webp";
 import avatar2 from "@/assets/figma/avatar-2.webp";
 import avatar3 from "@/assets/figma/avatar-3.webp";
 import avatarDavid from "@/assets/figma/crypto.png";
+import avatarCryptopunk from "@/assets/figma/cryptopunk.png";
 
-const TESTIMONIALS = [
+type Testimonial = {
+  quote: string;
+  name: string;
+  role: string;
+  location: string;
+} & ({ avatar: string; initials?: never; avatarBg?: never } | { initials: string; avatarBg: string; avatar?: never });
+
+const CA_TESTIMONIALS: Testimonial[] = [
   {
     quote:
       "ReceiptOne saved me hours every week. I used to spend Sunday evenings sorting receipts — now I just snap and forget. My accountant loves the export format.",
@@ -28,9 +35,40 @@ const TESTIMONIALS = [
     location: "Montréal, QC",
     avatar: avatar2,
   },
-] as const;
+];
 
-export function Testimonials() {
+const US_TESTIMONIALS: Testimonial[] = [
+  {
+    quote:
+      "ReceiptOne saved me hours every week. I used to spend Sunday evenings sorting receipts — now I just snap and forget. My accountant loves the export format.",
+    name: "Ashley Morgan",
+    role: "Freelance Graphic Designer",
+    location: "Austin, TX",
+    initials: "AM",
+    avatarBg: "#7c3aed",
+  },
+  {
+    quote:
+      "Tracking deductions used to eat up hours. Now everything's organized automatically before I even talk to my accountant. Pays for itself every month.",
+    name: "James Rivera",
+    role: "Independent IT Consultant",
+    location: "Chicago, IL",
+    avatar: avatarCryptopunk,
+  },
+  {
+    quote:
+      "I run a small photography studio and ReceiptOne handles everything — vehicle expenses, equipment, client meals. Tax season is actually stress-free now.",
+    name: "Megan Torres",
+    role: "Studio Owner",
+    location: "Brooklyn, NY",
+    initials: "MT",
+    avatarBg: "#0891b2",
+  },
+];
+
+export function Testimonials({ region = "ca" }: { region?: "ca" | "us" }) {
+  const testimonials = region === "us" ? US_TESTIMONIALS : CA_TESTIMONIALS;
+  const heading = region === "us" ? "Trusted by US freelancers" : "Trusted by Canadian freelancers";
   return (
     <section className="w-full px-4 pt-4 pb-12 sm:px-6 sm:pt-6 sm:pb-16 lg:px-8">
       <div className="mx-auto w-full max-w-[1200px]">
@@ -40,12 +78,12 @@ export function Testimonials() {
             Testimonials
           </p>
           <h2 className="mt-2 font-display text-3xl font-semibold leading-tight tracking-tight text-black sm:text-4xl lg:text-[2.75rem]">
-            Trusted by Canadian freelancers
+            {heading}
           </h2>
         </div>
 
         <div className="grid gap-5 sm:grid-cols-3">
-          {TESTIMONIALS.map((t) => (
+          {testimonials.map((t) => (
             <figure
               key={t.name}
               className="flex flex-col gap-5 rounded-3xl border border-black/[0.07] bg-white p-6 shadow-[0_2px_12px_rgba(0,0,0,0.06)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_8px_32px_rgba(0,0,0,0.10)] sm:p-8"
@@ -62,15 +100,25 @@ export function Testimonials() {
               </blockquote>
 
               <figcaption className="flex items-center gap-3">
-                <img
-                  src={t.avatar}
-                  alt={t.name}
-                  className="size-10 shrink-0 rounded-full object-cover"
-                  width={40}
-                  height={40}
-                  loading="lazy"
-                  decoding="async"
-                />
+                {t.initials ? (
+                  <div
+                    className="flex size-10 shrink-0 items-center justify-center rounded-full font-display text-xs font-bold text-white"
+                    style={{ backgroundColor: t.avatarBg }}
+                    aria-label={t.name}
+                  >
+                    {t.initials}
+                  </div>
+                ) : (
+                  <img
+                    src={t.avatar}
+                    alt={t.name}
+                    className="size-10 shrink-0 rounded-full object-cover"
+                    width={40}
+                    height={40}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                )}
                 <div>
                   <p className="font-display text-sm font-semibold text-black">{t.name}</p>
                   <p className="font-sans text-xs text-black/45">

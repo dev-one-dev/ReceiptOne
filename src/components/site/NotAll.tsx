@@ -4,8 +4,14 @@ import naBeaverLaptop from "@/assets/figma/na-beaver-laptop.webp";
 import naBeaverPhoneFolders from "@/assets/figma/na-beaver-phone-folders.webp";
 import naBeaverGlasses from "@/assets/figma/na-beaver-glasses.webp";
 import naBeaverThinking from "@/assets/figma/na-beaver-thinking.webp";
+import usGraphic1 from "@/assets/figma/mileage-auto/US/Graphic-Small1.png";
+import usGraphic2 from "@/assets/figma/mileage-auto/US/Graphic-Small2.png";
+import usGraphic from "@/assets/figma/mileage-auto/US/Graphic-Small.png";
+import usGraphic4 from "@/assets/figma/mileage-auto/US/Graphic-Small4.png";
+import usGraphic5 from "@/assets/figma/mileage-auto/US/Graphic-Small5.png";
+import usGraphic6 from "@/assets/figma/mileage-auto/US/Graphic-Small6.png";
 
-const FEATURES = [
+const CA_FEATURES = [
   {
     title: "Build Expense Reports That Make You Look Good",
     desc: "ReceiptOne turns messy receipts into neat reports, ready to export to PDF or Excel.",
@@ -45,7 +51,48 @@ const FEATURES = [
   },
 ] as const;
 
-export function NotAll() {
+const US_FEATURES = [
+  {
+    title: "Build Expense Reports That Make You Look Good",
+    desc: "ReceiptOne turns messy receipts into neat reports, ready to export to PDF or Excel.",
+    img: usGraphic1,
+    alt: "Eagle building expense reports",
+  },
+  {
+    title: "Earn More From Every Kilometer You Drive",
+    desc: "Quickly log trips and set custom mileage rates for accurate claims — no spreadsheets needed.",
+    img: usGraphic2,
+    alt: "Eagle tracking mileage",
+  },
+  {
+    title: "Turn Your Home Office Into Real Deductions",
+    desc: "ReceiptOne helps you quickly track and organize home office expenses for confident claims.",
+    img: usGraphic,
+    alt: "Eagle working from home office",
+  },
+  {
+    title: "Turn Organized Receipts into Audit-Ready Reports",
+    desc: "Export structured reports in PDF or Excel, complete with totals and receipt links for your accountant.",
+    img: usGraphic4,
+    alt: "Eagle with audit-ready reports",
+  },
+  {
+    title: "Invite Your Accountant for Max. Efficiency",
+    desc: "ReceiptOne organizes your receipts and gives your accountant free access to your archive, saving time.",
+    img: usGraphic5,
+    alt: "Eagle inviting accountant",
+  },
+  {
+    title: "Plug ReceiptOne Into Your Workflow",
+    desc: "Simplify your finances with ReceiptOne. It integrates with QuickBooks and Google Drive for easy syncing and reporting.",
+    img: usGraphic6,
+    alt: "Eagle plugging into workflow",
+    comingSoon: true,
+  },
+] as const;
+
+export function NotAll({ region = "ca" }: { region?: "ca" | "us" }) {
+  const FEATURES = region === "us" ? US_FEATURES : CA_FEATURES;
   return (
     <section className="w-full px-4 pt-4 pb-4 sm:px-6 sm:pt-6 sm:pb-6 lg:px-8">
       <div className="mx-auto w-full max-w-[1200px]">

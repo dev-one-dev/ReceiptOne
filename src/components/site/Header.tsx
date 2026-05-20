@@ -113,23 +113,13 @@ export function Header() {
               </button>
             </li>
             <li>
-              {isUS ? (
-                <button
-                  type="button"
-                  onClick={scrollTo("apps")}
-                  className="rounded-md px-0.5 py-1 transition-opacity hover:opacity-70"
-                >
-                  Apps
-                </button>
-              ) : (
-                <button
-                  type="button"
-                  onClick={scrollTo("pricing")}
-                  className="rounded-md px-0.5 py-1 transition-opacity hover:opacity-70"
-                >
-                  Download
-                </button>
-              )}
+              <button
+                type="button"
+                onClick={scrollTo("pricing")}
+                className="rounded-md px-0.5 py-1 transition-opacity hover:opacity-70"
+              >
+                Download
+              </button>
             </li>
             <li>
               <button
@@ -256,15 +246,9 @@ export function Header() {
               <button type="button" className={mobileNavBtnClass} onClick={scrollTo("benefits")}>
                 Benefits
               </button>
-              {isUS ? (
-                <button type="button" className={mobileNavBtnClass} onClick={scrollTo("apps")}>
-                  Apps
-                </button>
-              ) : (
-                <button type="button" className={mobileNavBtnClass} onClick={scrollTo("pricing")}>
-                  Download
-                </button>
-              )}
+              <button type="button" className={mobileNavBtnClass} onClick={scrollTo("pricing")}>
+                Download
+              </button>
               <button type="button" className={mobileNavBtnClass} onClick={scrollTo("pricing")}>
                 Pricing
               </button>

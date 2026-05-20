@@ -1,5 +1,7 @@
 import beaverHeroVideo from "@/assets/figma/hero-beaver-hq.mp4";
 import beaverHeroPoster from "@/assets/figma/hero-beaver-poster.png";
+import eagleHeroVideo from "@/assets/figma/hero-eagle-hq.mp4";
+import eagleHeroPoster from "@/assets/figma/hero-eagle-poster.png";
 import avatar1 from "@/assets/figma/avatar-1.webp";
 import avatar2 from "@/assets/figma/avatar-2.webp";
 import avatar3 from "@/assets/figma/avatar-3.webp";
@@ -12,9 +14,17 @@ import { ArrowRight } from "lucide-react";
 const APP_STORE_URL = "https://apps.apple.com/app/receiptone/id0000000000";
 const GOOGLE_PLAY_URL = "https://play.google.com/store/apps/details?id=com.receiptone.app";
 
-const STATS = [
+const CA_STATS = [
   { value: "4.8", label: "Average rating" },
   { value: "150K+", label: "Kilometres tracked" },
+  { value: "12K+", label: "Reports generated" },
+  { value: "100K+", label: "Receipts scanned" },
+  { value: "$4.2M+", label: "Deductions tracked" },
+];
+
+const US_STATS = [
+  { value: "4.8", label: "Average rating" },
+  { value: "150K+", label: "Miles tracked" },
   { value: "12K+", label: "Reports generated" },
   { value: "100K+", label: "Receipts scanned" },
   { value: "$4.2M+", label: "Deductions tracked" },
@@ -25,7 +35,10 @@ function scrollToPricing(e: React.MouseEvent) {
   document.getElementById("pricing")?.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
-export function TopBanner() {
+export function TopBanner({ region = "ca" }: { region?: "ca" | "us" }) {
+  const heroVideo = region === "us" ? eagleHeroVideo : beaverHeroVideo;
+  const heroPoster = region === "us" ? eagleHeroPoster : beaverHeroPoster;
+  const STATS = region === "us" ? US_STATS : CA_STATS;
   return (
     <section className="relative w-full overflow-visible px-4 pt-20 sm:px-6 sm:pt-24 lg:px-8 lg:pt-28">
       <div className="mx-auto w-full max-w-[1200px]">
@@ -36,7 +49,9 @@ export function TopBanner() {
 
             {/* H1 */}
             <h1 className="font-display text-[clamp(2.4rem,6vw,4.5rem)] font-bold leading-[1.06] tracking-tight text-black">
-              Turn receipts into CRA-ready reports — automatically<span className="text-[#f97316]">.</span>
+              {region === "us"
+                ? <>Turn receipts into IRS-ready reports — automatically<span className="text-[#f97316]">.</span></>
+                : <>Turn receipts into CRA-ready reports — automatically<span className="text-[#f97316]">.</span></>}
             </h1>
 
             {/* Subheadline — both paragraphs same size and color */}
@@ -45,7 +60,9 @@ export function TopBanner() {
                 Snap receipts &amp; mileage, organize expenses, and export audit-ready reports.
               </p>
               <p className="mt-2 text-lg leading-relaxed text-black/55 sm:text-xl">
-                Built for Canadian freelancers, contractors, and small businesses.
+                {region === "us"
+                  ? "Built for US freelancers, contractors, and small businesses."
+                  : "Built for Canadian freelancers, contractors, and small businesses."}
               </p>
             </div>
 
@@ -163,10 +180,10 @@ export function TopBanner() {
               muted
               playsInline
               preload="metadata"
-              poster={beaverHeroPoster}
-              aria-label="Beaver mascot wearing a Canadian cap, reading a receipt"
+              poster={heroPoster}
+              aria-label={region === "us" ? "Eagle mascot wearing a USA cap, reading a receipt" : "Beaver mascot wearing a Canadian cap, reading a receipt"}
             >
-              <source src={beaverHeroVideo} type="video/mp4" />
+              <source src={heroVideo} type="video/mp4" />
             </video>
           </div>
 
