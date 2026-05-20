@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Header } from "@/components/site/Header";
-import { TopBannerUS } from "@/components/site/TopBannerUS";
+import { TopBanner } from "@/components/site/TopBanner";
 import { HowItWorks } from "@/components/site/HowItWorks";
 import { InfoCards } from "@/components/site/InfoCards";
 import { NotAll } from "@/components/site/NotAll";
@@ -60,7 +60,7 @@ function USAPage() {
       className="min-h-screen overflow-x-clip bg-[#f5f4f0] font-sans text-black antialiased"
     >
       <Header />
-      <TopBannerUS />
+      <TopBanner />
       <HowItWorks region="us" />
       <InfoCards />
       <NotAll />
