@@ -15,6 +15,7 @@ interface Plan {
   period: string;
   currency: string;
   badge?: string;
+  imageClassName?: string;
   popular?: boolean;
   features: string[];
 }
@@ -74,6 +75,7 @@ const US_PLANS: Plan[] = [
     price: "3.99",
     period: "/ week",
     currency: "USD",
+    imageClassName: "pointer-events-none absolute bottom-0 -right-28 z-0 w-[34rem] select-none object-contain sm:-right-32 sm:w-[36rem]",
     features: [
       "Unlimited receipt scanning",
       "Expense & mileage tracking",
@@ -88,6 +90,7 @@ const US_PLANS: Plan[] = [
     price: "7.99",
     period: "/ month",
     currency: "USD",
+    imageClassName: "pointer-events-none absolute bottom-0 -right-28 z-0 w-[34rem] select-none object-contain sm:-right-32 sm:w-[36rem]",
     popular: true,
     features: [
       "Everything in Weekly",
@@ -223,7 +226,7 @@ function PlanCard({ plan, images }: { plan: Plan; images: Record<string, { src: 
             aria-hidden
             loading="eager"
             decoding="async"
-            className="pointer-events-none absolute bottom-0 -right-36 z-0 w-[34rem] select-none object-contain sm:-right-40 sm:w-[36rem]"
+            className={plan.imageClassName ?? "pointer-events-none absolute bottom-0 -right-36 z-0 w-[34rem] select-none object-contain sm:-right-40 sm:w-[36rem]"}
           />
         )}
 
