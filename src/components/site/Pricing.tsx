@@ -106,7 +106,7 @@ const US_PLANS: Plan[] = [
     price: "79.99",
     period: "/ year",
     currency: "USD",
-    badge: "Save 17%",
+    badge: "Best Deal",
     features: [
       "Everything in Monthly",
       "2 months free vs monthly",

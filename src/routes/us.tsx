@@ -66,7 +66,7 @@ function USAPage() {
       <NotAll region="us" />
       <Testimonials />
       <Trust region="us" />
-      <Advantages />
+      <Advantages region="us" />
       <Pricing region="us" />
       <Faq />
       <Footer region="us" />

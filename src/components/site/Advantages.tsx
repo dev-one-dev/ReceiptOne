@@ -3,7 +3,7 @@ function scrollToApps(e: React.MouseEvent) {
   document.getElementById("pricing")?.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
-export function Advantages() {
+export function Advantages({ region = "ca" }: { region?: "ca" | "us" }) {
   return (
     <section id="advantages" className="w-full scroll-mt-28 px-4 pt-4 pb-4 sm:px-6 sm:pt-6 sm:pb-6 lg:px-8">
       <div className="mx-auto w-full max-w-[1200px]">
@@ -46,7 +46,7 @@ export function Advantages() {
             <CardTitle>Never miss a mileage deduction</CardTitle>
             <CardDesc>Every trip logged and the CRA per-kilometre rate applied automatically.</CardDesc>
             <AccentPanel bg="bg-[#fed7aa]" textColor="text-black">
-              <Stat value="73¢" label="/ km, tracked" />
+              <Stat value={region === "us" ? "72.5¢" : "73¢"} label={region === "us" ? "/ mile, tracked" : "/ km, tracked"} />
             </AccentPanel>
           </BentoCard>
 

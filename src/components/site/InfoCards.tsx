@@ -1,4 +1,5 @@
 import infocardsHeading from "@/assets/figma/infocards-heading.png";
+import infocardsHeadingUS from "@/assets/figma/mileage-auto/New-folder/US.png";
 import abScreenReceipts from "@/assets/figma/feat-receipts.png";
 import abScreenMileage from "@/assets/figma/feat-mileage.png";
 import icPhoneReports from "@/assets/figma/feat-reports.png";
@@ -55,6 +56,7 @@ const US_FEATURES = CA_FEATURES.map((f) => {
 
 export function InfoCards({ region = "ca" }: { region?: "ca" | "us" }) {
   const FEATURES = region === "us" ? US_FEATURES : CA_FEATURES;
+  const heading = region === "us" ? infocardsHeadingUS : infocardsHeading;
   return (
     <section id="benefits" className="w-full px-4 pt-16 pb-4 sm:px-6 sm:pt-20 sm:pb-6 lg:px-8">
       <div className="mx-auto w-full max-w-[1200px]">
@@ -62,7 +64,7 @@ export function InfoCards({ region = "ca" }: { region?: "ca" | "us" }) {
         {/* Header image — negative margins bleed past the content column */}
         <div className="-mx-4 mb-10 sm:-mx-6 sm:mb-14 lg:-mx-8">
           <img
-            src={infocardsHeading}
+            src={heading}
             alt="Turn Receipt Chaos Into Tax Gold — Stop losing money on missed deductions"
             className="w-full mix-blend-multiply"
             draggable={false}
