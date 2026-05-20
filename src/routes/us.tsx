@@ -1,11 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Header } from "@/components/site/Header";
 import { TopBannerUS } from "@/components/site/TopBannerUS";
-import { Numbers } from "@/components/site/Numbers";
-import infoCardsUsImg from "@/assets/figma/info-cards-us.webp";
-import { NotAllUS } from "@/components/site/NotAllUS";
+import { HowItWorks } from "@/components/site/HowItWorks";
+import { InfoCards } from "@/components/site/InfoCards";
+import { NotAll } from "@/components/site/NotAll";
+import { Testimonials } from "@/components/site/Testimonials";
+import { Trust } from "@/components/site/Trust";
 import { Advantages } from "@/components/site/Advantages";
-import { AppBanner } from "@/components/site/AppBanner";
 import { Pricing } from "@/components/site/Pricing";
 import { Faq, faqItems } from "@/components/site/Faq";
 import { Footer } from "@/components/site/Footer";
@@ -60,23 +61,12 @@ function USAPage() {
     >
       <Header />
       <TopBannerUS />
-      <Numbers />
-      <section id="benefits" className="w-full">
-        <div className="mx-auto w-full max-w-[1440px]">
-          <img
-            src={infoCardsUsImg}
-            alt="Turn Receipt Chaos Into Tax Gold — benefits"
-            className="block h-auto w-full"
-            loading="lazy"
-            decoding="async"
-            width={1440}
-            height={2976}
-          />
-        </div>
-      </section>
-      <NotAllUS />
+      <HowItWorks region="us" />
+      <InfoCards />
+      <NotAll />
+      <Testimonials />
+      <Trust region="us" />
       <Advantages />
-      <AppBanner region="us" />
       <Pricing region="us" />
       <Faq />
       <Footer region="us" />
