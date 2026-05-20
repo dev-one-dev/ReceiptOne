@@ -2,9 +2,7 @@
  * US-specific knowledge base articles.
  * Imported by help-center.ts to populate US_HELP_CENTER.articles.
  */
-import { SITE_URL } from "@/lib/seo";
 import type { Article } from "@/lib/articles";
-import { getArticlesByRegion, ARTICLES } from "@/lib/articles";
 
 const JENNIFER = { name: "Jennifer Walsh", role: "CPA, Tax Advisor" };
 const MICHAEL = { name: "Michael Torres", role: "Tax Specialist" };
@@ -80,7 +78,7 @@ export const ARTICLES_US_ONLY: Article[] = [
       },
       {
         type: "callout",
-        text: "ReceiptOne stores your receipts for 10+ years and captures merchant name, date, amount, and sales tax automatically — everything you need for an IRS audit, organized without effort.",
+        text: "ReceiptOne stores receipts for 10+ years and automatically captures merchant name, date, amount, and sales tax — everything the IRS requires, ready when you need it.",
       },
       {
         type: "h2",
@@ -152,7 +150,7 @@ export const ARTICLES_US_ONLY: Article[] = [
       },
       {
         type: "callout",
-        text: "ReceiptOne captures receipts via camera, email forwarding, or PDF upload and stores them in the cloud for 10+ years — IRS-ready documentation that never fades or gets lost.",
+        text: "ReceiptOne captures receipts via camera, email forwarding, or PDF upload and keeps them in the cloud for 10+ years — your documentation is there when the IRS asks.",
       },
       {
         type: "h2",
@@ -237,7 +235,7 @@ export const ARTICLES_US_ONLY: Article[] = [
       },
       {
         type: "callout",
-        text: "The QBI deduction is one of the most valuable available to freelancers — but only if your income is properly documented. ReceiptOne keeps your expense records IRS-ready year-round so your accountant can maximize every deduction.",
+        text: "The QBI deduction is one of the most valuable available to freelancers — but it depends on clean income records. ReceiptOne keeps your expenses organized year-round so your accountant can make the most of every deduction.",
       },
       {
         type: "h2",
@@ -329,7 +327,7 @@ export const ARTICLES_US_ONLY: Article[] = [
       },
       {
         type: "callout",
-        text: "ReceiptOne automatically captures and categorizes every business expense throughout the year — so when tax time comes, your Schedule C deductions are already organized and IRS-ready.",
+        text: "ReceiptOne captures and categorizes every business expense throughout the year — so your Schedule C deductions are organized well before tax time.",
       },
     ],
   },
@@ -393,7 +391,7 @@ export const ARTICLES_US_ONLY: Article[] = [
       },
       {
         type: "callout",
-        text: "Tracking every business expense reduces your net profit — which reduces both income tax and self-employment tax. ReceiptOne captures deductions you'd otherwise miss, putting money back in your pocket.",
+        text: "Every tracked expense reduces your net profit — which lowers both income tax and self-employment tax. ReceiptOne captures deductions you'd otherwise miss.",
       },
       {
         type: "h2",
@@ -468,7 +466,7 @@ export const ARTICLES_US_ONLY: Article[] = [
       },
       {
         type: "callout",
-        text: "Accurate quarterly payments require accurate expense tracking. ReceiptOne keeps a running total of your deductions all year — so every quarterly estimate reflects your actual tax position, not a guess.",
+        text: "Accurate quarterly payments start with accurate expense tracking. ReceiptOne keeps a running total of your deductions all year — so each estimate reflects your real tax position.",
       },
       {
         type: "h2",
@@ -544,7 +542,7 @@ export const ARTICLES_US_ONLY: Article[] = [
       },
       {
         type: "callout",
-        text: "ReceiptOne's mileage tracker logs trips automatically and applies the current IRS rate — your mileage log is always up to date and IRS-ready without manual entry.",
+        text: "ReceiptOne's mileage tracker logs trips automatically and applies the current IRS rate — your log stays current without manual entry.",
       },
       {
         type: "h2",
@@ -617,7 +615,7 @@ export const ARTICLES_US_ONLY: Article[] = [
       },
       {
         type: "callout",
-        text: "Home office expenses require careful documentation. ReceiptOne captures utility bills, insurance statements, and repair receipts year-round — so your Form 8829 calculations are accurate and defensible.",
+        text: "Home office expenses require careful documentation. ReceiptOne captures utility bills, insurance statements, and repair receipts throughout the year — so your Form 8829 is accurate and audit-ready.",
       },
       {
         type: "h2",
@@ -651,7 +649,7 @@ export const ARTICLES_US_ONLY: Article[] = [
     body: [
       {
         type: "p",
-        text: "Unlike Canada's GST/HST — which self-employed workers can often recover as an input tax credit — US sales tax paid on business expenses is generally not separately refundable. Instead, the sales tax becomes part of the total cost of the purchase, and the entire amount (including tax) is deductible as a business expense.",
+        text: "US sales tax on business purchases isn't separately refundable — but it is deductible. The sales tax is treated as part of the total cost of the purchase, so the full amount (including tax) is a legitimate business expense on Schedule C.",
       },
       {
         type: "h2",
@@ -679,7 +677,7 @@ export const ARTICLES_US_ONLY: Article[] = [
       },
       {
         type: "callout",
-        text: "ReceiptOne records the sales tax amount on every receipt automatically — giving you clean records for your Schedule C deductions and a running total for state tax deduction purposes.",
+        text: "ReceiptOne records the sales tax on every receipt automatically — clean records for Schedule C and a running total for state tax deduction purposes.",
       },
       {
         type: "h2",
@@ -694,8 +692,4 @@ export const ARTICLES_US_ONLY: Article[] = [
 
 ];
 
-/** All articles visible on the US Help Center (US-only + universal CA articles). */
-export const US_ARTICLES: Article[] = [
-  ...ARTICLES_US_ONLY,
-  ...getArticlesByRegion(ARTICLES, "us"),
-];
+export const US_ARTICLES: Article[] = ARTICLES_US_ONLY;
