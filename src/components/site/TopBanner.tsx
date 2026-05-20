@@ -34,7 +34,7 @@ export function TopBanner({ region = "ca" }: { region?: "ca" | "us" }) {
   return (
     <section className="relative w-full overflow-visible px-4 pt-20 sm:px-6 sm:pt-24 lg:px-8 lg:pt-28">
       <div className="mx-auto w-full max-w-[1200px]">
-        <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-12">
+        <div className="grid items-start gap-10 lg:grid-cols-2 lg:gap-12">
 
           {/* ── LEFT COLUMN ── */}
           <div className="flex flex-col items-center text-center lg:items-start lg:text-left">
