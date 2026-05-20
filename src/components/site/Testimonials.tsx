@@ -40,7 +40,7 @@ const CA_TESTIMONIALS: Testimonial[] = [
 const US_TESTIMONIALS: Testimonial[] = [
   {
     quote:
-      "ReceiptOne saved me hours every week. I used to spend Sunday evenings sorting receipts — now I just snap and forget. My accountant loves the export format.",
+      "I used to scramble every April digging up receipts for my CPA. Now I snap them as they happen and she gets a clean export at tax time. 1099 season is no longer something I dread.",
     name: "Ashley Morgan",
     role: "Freelance Graphic Designer",
     location: "Austin, TX",
@@ -57,7 +57,7 @@ const US_TESTIMONIALS: Testimonial[] = [
   },
   {
     quote:
-      "I run a small photography studio and ReceiptOne handles everything — vehicle expenses, equipment, client meals. Tax season is actually stress-free now.",
+      "Running a studio means receipts for everything — gear, locations, client meals, mileage. ReceiptOne keeps it all sorted. Filing my Schedule C went from a full weekend to about an hour.",
     name: "Megan Torres",
     role: "Studio Owner",
     location: "Brooklyn, NY",
