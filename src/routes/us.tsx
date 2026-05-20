@@ -63,7 +63,7 @@ function USAPage() {
       <TopBanner />
       <HowItWorks region="us" />
       <InfoCards region="us" />
-      <NotAll />
+      <NotAll region="us" />
       <Testimonials />
       <Trust region="us" />
       <Advantages />
