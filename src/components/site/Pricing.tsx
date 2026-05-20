@@ -90,7 +90,7 @@ const US_PLANS: Plan[] = [
     price: "7.99",
     period: "/ month",
     currency: "USD",
-    imageClassName: "pointer-events-none absolute bottom-0 -right-28 z-0 w-[34rem] select-none object-contain sm:-right-32 sm:w-[36rem]",
+    imageClassName: "pointer-events-none absolute bottom-0 -right-32 z-0 w-[34rem] select-none object-contain sm:-right-36 sm:w-[36rem]",
     popular: true,
     features: [
       "Everything in Weekly",
