@@ -2,7 +2,7 @@ import phoneReceiptsImg from "@/assets/figma/phone-receipts-3.webp";
 import beaverMonthImg from "@/assets/figma/pr-beaver-month.webp";
 import phoneReportsImg from "@/assets/figma/phone-reports.webp";
 import usWeeklyImg from "@/assets/figma/mileage-auto/US/2.png";
-import usMonthlyImg from "@/assets/figma/mileage-auto/US/3.png";
+import usMonthlyImg from "@/assets/figma/mileage-auto/US/Graphic-Small.svg";
 import usAnnualImg from "@/assets/figma/mileage-auto/US/1.png";
 
 type Region = "ca" | "us";
