@@ -1,8 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://receipt-one.com/</loc><lastmod>2026-05-04</lastmod><changefreq>weekly</changefreq><priority>1.0</priority></url>
-  <url><loc>https://receipt-one.com/ca</loc><lastmod>2026-05-04</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://receipt-one.com/privacy</loc><lastmod>2026-05-04</lastmod><changefreq>monthly</changefreq><priority>0.3</priority></url>
-  <url><loc>https://receipt-one.com/terms</loc><lastmod>2026-05-04</lastmod><changefreq>monthly</changefreq><priority>0.3</priority></url>
-  <url><loc>https://receipt-one.com/us</loc><lastmod>2026-05-04</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <!-- Core pages -->
+  <url><loc>https://receipt-one.com/</loc><lastmod>2026-05-10</lastmod><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://receipt-one.com/ca</loc><lastmod>2026-05-10</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://receipt-one.com/us</loc><lastmod>2026-05-10</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://receipt-one.com/faq</loc><lastmod>2026-05-10</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://receipt-one.com/articles</loc><lastmod>2026-05-10</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://receipt-one.com/privacy</loc><lastmod>2026-05-10</lastmod><changefreq>monthly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://receipt-one.com/terms</loc><lastmod>2026-05-10</lastmod><changefreq>monthly</changefreq><priority>0.3</priority></url>
+
+  <!-- Cluster 1: CRA Receipt Rules -->
+  <url><loc>https://receipt-one.com/articles/cra-receipt-rules-canada</loc><lastmod>2025-01-06</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://receipt-one.com/articles/cra-receipt-rules-canadian-freelancer</loc><lastmod>2025-02-10</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://receipt-one.com/articles/what-receipts-do-i-need-for-taxes-canada</loc><lastmod>2025-05-05</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://receipt-one.com/articles/digital-receipts-canada-are-they-valid</loc><lastmod>2025-05-19</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://receipt-one.com/articles/cra-audit-proof-expenses</loc><lastmod>2025-05-12</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://receipt-one.com/articles/cra-acceptable-receipt-requirements</loc><lastmod>2025-05-26</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://receipt-one.com/articles/how-long-keep-receipts-canada</loc><lastmod>2025-04-07</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+
+  <!-- Cluster 2: Expense Tracking -->
+  <url><loc>https://receipt-one.com/articles/expense-tracking-canada-freelancers</loc><lastmod>2025-01-13</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://receipt-one.com/articles/business-expense-categories-canada</loc><lastmod>2025-06-02</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://receipt-one.com/articles/self-employed-expense-report-template-canada</loc><lastmod>2025-06-09</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://receipt-one.com/articles/receipt-organization-tips-canada</loc><lastmod>2025-06-16</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://receipt-one.com/articles/reimbursable-expenses-canada-freelancers</loc><lastmod>2025-06-23</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://receipt-one.com/articles/home-office-vs-coworking-expense-canada</loc><lastmod>2025-06-30</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+
+  <!-- Cluster 3: GST/HST Tracking -->
+  <url><loc>https://receipt-one.com/articles/gst-hst-expense-tracking-canada</loc><lastmod>2025-01-20</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://receipt-one.com/articles/track-gst-hst-business-expenses</loc><lastmod>2025-02-24</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://receipt-one.com/articles/input-tax-credits-canada-guide</loc><lastmod>2025-07-07</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://receipt-one.com/articles/gst-hst-registration-threshold-canada</loc><lastmod>2025-07-14</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://receipt-one.com/articles/pst-qst-freelancers-canada</loc><lastmod>2025-07-21</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+
+  <!-- Cluster 4: Mileage & Vehicle Deductions -->
+  <url><loc>https://receipt-one.com/articles/mileage-deduction-canada-freelancers</loc><lastmod>2025-01-27</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://receipt-one.com/articles/mileage-tracking-self-employed-2025-guide</loc><lastmod>2025-03-24</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://receipt-one.com/articles/cra-mileage-logbook-requirements</loc><lastmod>2025-07-28</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://receipt-one.com/articles/vehicle-expense-deductions-canada</loc><lastmod>2025-08-04</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://receipt-one.com/articles/mileage-tracking-apps-canada</loc><lastmod>2025-08-11</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+
+  <!-- Cluster 5: Freelancer Tax Fundamentals -->
+  <url><loc>https://receipt-one.com/articles/freelancer-taxes-canada-guide</loc><lastmod>2025-02-03</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://receipt-one.com/articles/top-tax-deductions-canadian-self-employed-2025</loc><lastmod>2025-03-10</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://receipt-one.com/articles/home-office-deduction-canadian-freelancers</loc><lastmod>2025-04-21</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://receipt-one.com/articles/t2125-form-guide-canada</loc><lastmod>2025-08-18</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://receipt-one.com/articles/tax-instalment-payments-canada-self-employed</loc><lastmod>2025-08-25</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+
+  <!-- Cluster 6: Comparisons -->
+  <url><loc>https://receipt-one.com/articles/receipt-scanner-apps-canada-comparison</loc><lastmod>2025-09-01</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://receipt-one.com/articles/quickbooks-vs-receiptone-canada</loc><lastmod>2025-09-08</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://receipt-one.com/articles/manual-vs-automated-expense-tracking-canada</loc><lastmod>2025-09-15</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://receipt-one.com/articles/excel-vs-expense-app-canada</loc><lastmod>2025-09-22</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+
+  <!-- Cluster 7: Tax Strategy -->
+  <url><loc>https://receipt-one.com/articles/tax-season-stress-freelancers-canada</loc><lastmod>2025-09-29</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://receipt-one.com/articles/year-round-tax-prep-canada</loc><lastmod>2025-10-06</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://receipt-one.com/articles/freelancer-tax-mistakes-canada</loc><lastmod>2025-10-13</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://receipt-one.com/articles/cra-audit-guide-self-employed-canada</loc><lastmod>2025-10-20</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
 </urlset>

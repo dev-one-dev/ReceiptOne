@@ -14,8 +14,11 @@ import { Route as TermsRouteImport } from './routes/terms'
 import { Route as SignupRouteImport } from './routes/signup'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as FaqRouteImport } from './routes/faq'
 import { Route as CaRouteImport } from './routes/ca'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ArticlesIndexRouteImport } from './routes/articles/index'
+import { Route as ArticlesSlugRouteImport } from './routes/articles/$slug'
 
 const UsRoute = UsRouteImport.update({
   id: '/us',
@@ -42,6 +45,11 @@ const LoginRoute = LoginRouteImport.update({
   path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
+const FaqRoute = FaqRouteImport.update({
+  id: '/faq',
+  path: '/faq',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CaRoute = CaRouteImport.update({
   id: '/ca',
   path: '/ca',
@@ -52,59 +60,104 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ArticlesIndexRoute = ArticlesIndexRouteImport.update({
+  id: '/articles/',
+  path: '/articles/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ArticlesSlugRoute = ArticlesSlugRouteImport.update({
+  id: '/articles/$slug',
+  path: '/articles/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/ca': typeof CaRoute
+  '/faq': typeof FaqRoute
   '/login': typeof LoginRoute
   '/privacy': typeof PrivacyRoute
   '/signup': typeof SignupRoute
   '/terms': typeof TermsRoute
   '/us': typeof UsRoute
+  '/articles/$slug': typeof ArticlesSlugRoute
+  '/articles/': typeof ArticlesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/ca': typeof CaRoute
+  '/faq': typeof FaqRoute
   '/login': typeof LoginRoute
   '/privacy': typeof PrivacyRoute
   '/signup': typeof SignupRoute
   '/terms': typeof TermsRoute
   '/us': typeof UsRoute
+  '/articles/$slug': typeof ArticlesSlugRoute
+  '/articles': typeof ArticlesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/ca': typeof CaRoute
+  '/faq': typeof FaqRoute
   '/login': typeof LoginRoute
   '/privacy': typeof PrivacyRoute
   '/signup': typeof SignupRoute
   '/terms': typeof TermsRoute
   '/us': typeof UsRoute
+  '/articles/$slug': typeof ArticlesSlugRoute
+  '/articles/': typeof ArticlesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/ca' | '/login' | '/privacy' | '/signup' | '/terms' | '/us'
-  fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/ca' | '/login' | '/privacy' | '/signup' | '/terms' | '/us'
-  id:
-    | '__root__'
+  fullPaths:
     | '/'
     | '/ca'
+    | '/faq'
     | '/login'
     | '/privacy'
     | '/signup'
     | '/terms'
     | '/us'
+    | '/articles/$slug'
+    | '/articles/'
+  fileRoutesByTo: FileRoutesByTo
+  to:
+    | '/'
+    | '/ca'
+    | '/faq'
+    | '/login'
+    | '/privacy'
+    | '/signup'
+    | '/terms'
+    | '/us'
+    | '/articles/$slug'
+    | '/articles'
+  id:
+    | '__root__'
+    | '/'
+    | '/ca'
+    | '/faq'
+    | '/login'
+    | '/privacy'
+    | '/signup'
+    | '/terms'
+    | '/us'
+    | '/articles/$slug'
+    | '/articles/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CaRoute: typeof CaRoute
+  FaqRoute: typeof FaqRoute
   LoginRoute: typeof LoginRoute
   PrivacyRoute: typeof PrivacyRoute
   SignupRoute: typeof SignupRoute
   TermsRoute: typeof TermsRoute
   UsRoute: typeof UsRoute
+  ArticlesSlugRoute: typeof ArticlesSlugRoute
+  ArticlesIndexRoute: typeof ArticlesIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -137,6 +190,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PrivacyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/faq': {
+      id: '/faq'
+      path: '/faq'
+      fullPath: '/faq'
+      preLoaderRoute: typeof FaqRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/login': {
       id: '/login'
       path: '/login'
@@ -158,17 +218,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/articles/': {
+      id: '/articles/'
+      path: '/articles'
+      fullPath: '/articles/'
+      preLoaderRoute: typeof ArticlesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/articles/$slug': {
+      id: '/articles/$slug'
+      path: '/articles/$slug'
+      fullPath: '/articles/$slug'
+      preLoaderRoute: typeof ArticlesSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CaRoute: CaRoute,
+  FaqRoute: FaqRoute,
   LoginRoute: LoginRoute,
   PrivacyRoute: PrivacyRoute,
   SignupRoute: SignupRoute,
   TermsRoute: TermsRoute,
   UsRoute: UsRoute,
+  ArticlesSlugRoute: ArticlesSlugRoute,
+  ArticlesIndexRoute: ArticlesIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -15,10 +15,12 @@ export const ROUTES = {
   home: "/",
   ca: "/ca",
   us: "/us",
+  faq: "/faq",
   login: "/login",
   signup: "/signup",
   terms: "/terms",
   privacy: "/privacy",
+  articles: "/articles",
 } as const satisfies Record<string, AppRoute>;
 
 export type RouteKey = keyof typeof ROUTES;

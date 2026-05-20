@@ -2,17 +2,17 @@ import { useState } from "react";
 
 const STATS = [
   { value: "4.8", label: "Average rating" },
-  { value: "150K+", label: "Miles tracked" },
+  { value: "150K+", label: "Kilometres tracked" },
   { value: "12K+", label: "Reports generated" },
   { value: "100K+", label: "Receipts scanned" },
-  { value: "10K+", label: "Active users" },
+  { value: "$4.2M+", label: "Deductions tracked" },
 ] as const;
 
 export function Numbers() {
   const [paused, setPaused] = useState(false);
 
   return (
-    <section className="w-full px-4 py-10 sm:px-6 md:px-8" aria-label="Key product statistics">
+    <section className="w-full px-4 py-6 sm:px-6 md:px-8" aria-label="Key product statistics">
       <div className="mx-auto w-full max-w-[760px]">
         <div
           className="relative overflow-hidden rounded-[32px] bg-card py-4 sm:rounded-[40px] sm:py-5"

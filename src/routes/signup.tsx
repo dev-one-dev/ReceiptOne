@@ -7,6 +7,7 @@ export const Route = createFileRoute("/signup")({
     meta: [
       { title: "ReceiptOne Sign Up" },
       { name: "description", content: "Create your ReceiptOne account." },
+      { name: "robots", content: "noindex" },
       { property: "og:title", content: "ReceiptOne Sign Up" },
       { property: "og:description", content: "Create your ReceiptOne account." },
     ],

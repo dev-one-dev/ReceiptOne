@@ -1,11 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Header } from "@/components/site/Header";
 import { TopBanner } from "@/components/site/TopBanner";
-import { Numbers } from "@/components/site/Numbers";
+import { HowItWorks } from "@/components/site/HowItWorks";
 import { InfoCards } from "@/components/site/InfoCards";
 import { NotAll } from "@/components/site/NotAll";
+import { Testimonials } from "@/components/site/Testimonials";
+import { Trust } from "@/components/site/Trust";
 import { Advantages } from "@/components/site/Advantages";
-import { AppBanner } from "@/components/site/AppBanner";
 import { Pricing } from "@/components/site/Pricing";
 import { Faq, faqItems } from "@/components/site/Faq";
 import { Footer } from "@/components/site/Footer";
@@ -23,12 +24,12 @@ export const Route = createFileRoute("/ca")({
     const seo = pageSEO({
       path: "/ca",
       title:
-        "ReceiptOne Canada | Receipt, Expense & Mileage Tracker for CRA Records",
+        "ReceiptOne Canada — CRA-Ready Receipt & Expense Tracker for Freelancers",
       description:
-        "Organize receipts, track expenses and mileage, and export tax-ready reports for Canadian freelancers, contractors, and small businesses.",
+        "Snap receipts, track mileage, and export CRA-ready expense reports. Built for Canadian freelancers, contractors, and small businesses. Start free for 7 days.",
       ogTitle: "ReceiptOne Canada | Receipt, Expense & Mileage Tracker",
       ogDescription:
-        "Organize receipts, mileage, expenses, and accountant-ready reports for Canadian freelancers and small businesses.",
+        "Turn receipts into CRA-ready expense reports automatically. Built for Canadian freelancers, contractors, and small businesses.",
       hreflang: HREFLANG_US_CA,
     });
     return {
@@ -60,12 +61,13 @@ function CanadaPage() {
     >
       <Header />
       <TopBanner />
-      <Numbers />
+      <HowItWorks region="ca" />
       <InfoCards />
       <NotAll />
+      <Testimonials />
+      <Trust region="ca" />
       <Advantages />
-      <AppBanner />
-      <Pricing />
+      <Pricing region="ca" />
       <Faq />
       <Footer />
       <SuggestFeatureWidget region="ca" />
