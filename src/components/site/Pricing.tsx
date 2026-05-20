@@ -1,6 +1,6 @@
-import phoneReceiptsImg from "@/assets/figma/phone-receipts-3.webp";
-import beaverMonthImg from "@/assets/figma/pr-beaver-month.webp";
-import phoneReportsImg from "@/assets/figma/phone-reports.webp";
+import caWeeklyImg from "@/assets/figma/mileage-auto/Graphic-Small.png";
+import caMonthlyImg from "@/assets/figma/mileage-auto/Graphic-Small2.png";
+import caAnnualImg from "@/assets/figma/mileage-auto/Graphic-Small3.png";
 import usWeeklyImg from "@/assets/figma/mileage-auto/US/2.png";
 import usMonthlyImg from "@/assets/figma/mileage-auto/US/3-removebg-preview.png";
 import usAnnualImg from "@/assets/figma/mileage-auto/US/1.png";
@@ -122,9 +122,9 @@ const US_PLANS: Plan[] = [
 ];
 
 const CA_PLAN_IMAGES: Record<string, { src: string; alt: string }> = {
-  week: { src: phoneReceiptsImg, alt: "" },
-  month: { src: beaverMonthImg, alt: "" },
-  year: { src: phoneReportsImg, alt: "" },
+  week: { src: caWeeklyImg, alt: "" },
+  month: { src: caMonthlyImg, alt: "" },
+  year: { src: caAnnualImg, alt: "" },
 };
 
 const US_PLAN_IMAGES: Record<string, { src: string; alt: string }> = {
