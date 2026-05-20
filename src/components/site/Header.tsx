@@ -123,10 +123,10 @@ export function Header() {
             <li>
               <button
                 type="button"
-                onClick={scrollTo("pricing")}
+                onClick={scrollTo("how-it-works")}
                 className="rounded-md px-0.5 py-1 transition-opacity hover:opacity-70"
               >
-                Download
+                How It Works
               </button>
             </li>
             <li>
@@ -254,8 +254,8 @@ export function Header() {
               <button type="button" className={mobileNavBtnClass} onClick={scrollTo("benefits")}>
                 Benefits
               </button>
-              <button type="button" className={mobileNavBtnClass} onClick={scrollTo("pricing")}>
-                Download
+              <button type="button" className={mobileNavBtnClass} onClick={scrollTo("how-it-works")}>
+                How It Works
               </button>
               <button type="button" className={mobileNavBtnClass} onClick={scrollTo("pricing")}>
                 Pricing
