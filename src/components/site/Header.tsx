@@ -114,19 +114,19 @@ export function Header() {
             <li>
               <button
                 type="button"
-                onClick={scrollTo("benefits")}
-                className="rounded-md px-0.5 py-1 transition-opacity hover:opacity-70"
+                onClick={scrollTo("how-it-works")}
+                className="rounded-md px-0.5 py-1 transition-opacity hover:opacity-70 whitespace-nowrap"
               >
-                Benefits
+                How It Works
               </button>
             </li>
             <li>
               <button
                 type="button"
-                onClick={scrollTo("how-it-works")}
-                className="rounded-md px-0.5 py-1 transition-opacity hover:opacity-70 whitespace-nowrap"
+                onClick={scrollTo("benefits")}
+                className="rounded-md px-0.5 py-1 transition-opacity hover:opacity-70"
               >
-                How It Works
+                Benefits
               </button>
             </li>
             <li>
@@ -251,11 +251,11 @@ export function Header() {
             className="absolute left-0 right-0 top-full z-40 mt-2 rounded-2xl border border-black/10 bg-white/95 p-3 shadow-[0_16px_48px_rgba(0,0,0,0.12)] backdrop-blur-xl lg:hidden"
           >
             <div className="flex flex-col gap-0.5 border-b border-black/5 pb-2">
-              <button type="button" className={mobileNavBtnClass} onClick={scrollTo("benefits")}>
-                Benefits
-              </button>
               <button type="button" className={mobileNavBtnClass} onClick={scrollTo("how-it-works")}>
                 How It Works
+              </button>
+              <button type="button" className={mobileNavBtnClass} onClick={scrollTo("benefits")}>
+                Benefits
               </button>
               <button type="button" className={mobileNavBtnClass} onClick={scrollTo("pricing")}>
                 Pricing
