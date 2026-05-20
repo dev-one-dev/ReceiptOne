@@ -16,6 +16,7 @@ interface Plan {
   currency: string;
   badge?: string;
   imageClassName?: string;
+  featuresMaxW?: string;
   popular?: boolean;
   features: string[];
 }
@@ -60,6 +61,7 @@ const CA_PLANS: Plan[] = [
     period: "/ year",
     currency: "CAD",
     badge: "Best Deal",
+    featuresMaxW: "max-w-[55%]",
     features: [
       "Everything in Monthly",
       "Save 13%",
@@ -110,6 +112,7 @@ const US_PLANS: Plan[] = [
     period: "/ year",
     currency: "USD",
     badge: "Best Deal",
+    featuresMaxW: "max-w-[55%]",
     features: [
       "Everything in Monthly",
       "Save 17%",
@@ -280,7 +283,7 @@ function PlanCard({ plan, images }: { plan: Plan; images: Record<string, { src: 
           />
 
           {/* Features */}
-          <ul className="flex flex-1 flex-col gap-3">
+          <ul className={`flex flex-1 flex-col gap-3 ${plan.featuresMaxW ?? ""}`}>
             {plan.features.map((f) => (
               <li key={f} className="flex items-start gap-2.5">
                 <span
