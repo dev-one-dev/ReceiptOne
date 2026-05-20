@@ -1,6 +1,9 @@
 import phoneReceiptsImg from "@/assets/figma/phone-receipts-3.webp";
 import beaverMonthImg from "@/assets/figma/pr-beaver-month.webp";
 import phoneReportsImg from "@/assets/figma/phone-reports.webp";
+import usWeeklyImg from "@/assets/figma/mileage-auto/US/2.png";
+import usMonthlyImg from "@/assets/figma/mileage-auto/US/3.png";
+import usAnnualImg from "@/assets/figma/mileage-auto/US/1.png";
 
 type Region = "ca" | "us";
 
@@ -111,11 +114,16 @@ const US_PLANS: Plan[] = [
   },
 ];
 
-/** Asset mapped by plan id — used for every region. */
-const PLAN_IMAGES: Record<string, { src: string; alt: string }> = {
+const CA_PLAN_IMAGES: Record<string, { src: string; alt: string }> = {
   week: { src: phoneReceiptsImg, alt: "" },
   month: { src: beaverMonthImg, alt: "" },
   year: { src: phoneReportsImg, alt: "" },
+};
+
+const US_PLAN_IMAGES: Record<string, { src: string; alt: string }> = {
+  week: { src: usWeeklyImg, alt: "" },
+  month: { src: usMonthlyImg, alt: "" },
+  year: { src: usAnnualImg, alt: "" },
 };
 
 function scrollToApps(e: React.MouseEvent) {
@@ -128,6 +136,7 @@ function scrollToApps(e: React.MouseEvent) {
 
 export function Pricing({ region = "ca" }: { region?: Region }) {
   const plans = region === "us" ? US_PLANS : CA_PLANS;
+  const planImages = region === "us" ? US_PLAN_IMAGES : CA_PLAN_IMAGES;
 
   return (
     <section
@@ -152,7 +161,7 @@ export function Pricing({ region = "ca" }: { region?: Region }) {
         {/* Cards */}
         <div className="grid gap-5 sm:grid-cols-3">
           {plans.map((plan) => (
-            <PlanCard key={plan.id} plan={plan} />
+            <PlanCard key={plan.id} plan={plan} images={planImages} />
           ))}
         </div>
 
@@ -164,10 +173,10 @@ export function Pricing({ region = "ca" }: { region?: Region }) {
   );
 }
 
-function PlanCard({ plan }: { plan: Plan }) {
+function PlanCard({ plan, images }: { plan: Plan; images: Record<string, { src: string; alt: string }> }) {
   const isPopular = plan.popular === true;
   const hasBadge = isPopular || !!plan.badge;
-  const image = PLAN_IMAGES[plan.id];
+  const image = images[plan.id];
 
   return (
     /*
