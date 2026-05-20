@@ -77,7 +77,7 @@ const US_PLANS: Plan[] = [
     id: "week",
     name: "Weekly",
     price: "3.99",
-    originalPrice: "5.49",
+    originalPrice: "5.19",
     period: "/ week",
     currency: "USD",
     features: [
@@ -91,8 +91,8 @@ const US_PLANS: Plan[] = [
   {
     id: "month",
     name: "Monthly",
-    price: "7.99",
-    originalPrice: "9.99",
+    price: "9.99",
+    originalPrice: "12.99",
     period: "/ month",
     currency: "USD",
     imageClassName: "pointer-events-none absolute bottom-0 -right-44 z-0 w-[34rem] select-none object-contain sm:-right-48 sm:w-[36rem]",
@@ -108,8 +108,8 @@ const US_PLANS: Plan[] = [
   {
     id: "year",
     name: "Annual",
-    price: "79.99",
-    originalPrice: "95.99",
+    price: "99.99",
+    originalPrice: "129.99",
     period: "/ year",
     currency: "USD",
     badge: "Best Deal",
