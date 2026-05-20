@@ -78,7 +78,6 @@ const US_PLANS: Plan[] = [
     originalPrice: "5.49",
     period: "/ week",
     currency: "USD",
-    imageClassName: "pointer-events-none absolute bottom-0 -right-[6.5rem] z-0 w-[26rem] select-none object-contain sm:-right-[7.5rem] sm:w-[28rem]",
     features: [
       "Unlimited receipt scanning",
       "Expense & mileage tracking",
@@ -94,7 +93,6 @@ const US_PLANS: Plan[] = [
     originalPrice: "9.99",
     period: "/ month",
     currency: "USD",
-    imageClassName: "pointer-events-none absolute bottom-0 -right-[8.5rem] z-0 w-[34rem] select-none object-contain sm:-right-[9.5rem] sm:w-[36rem]",
     popular: true,
     features: [
       "Everything in Weekly",
