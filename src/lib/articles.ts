@@ -10,8 +10,12 @@ export type ContentBlock =
   | { type: "ul"; items: string[] }
   | { type: "callout"; text: string };
 
+export type Region = "ca" | "us";
+
 export interface Article {
   slug: string;
+  /** Omitting this field defaults the article to CA-only. */
+  regions?: (Region | "all")[];
   title: string;
   excerpt: string;
   category: string;
@@ -748,6 +752,7 @@ export const ARTICLES: Article[] = [
 
   {
     slug: "reimbursable-expenses-canada-freelancers",
+    regions: ["all"],
     title: "Tracking Reimbursable Expenses as a Canadian Freelancer",
     excerpt:
       "When clients owe you money for out-of-pocket expenses, your tracking system determines how fast you get paid — and whether the amount is correct.",
@@ -796,6 +801,7 @@ export const ARTICLES: Article[] = [
 
   {
     slug: "home-office-vs-coworking-expense-canada",
+    regions: ["all"],
     title: "Home Office vs. Co-working Space: Which Expense Wins at Tax Time?",
     excerpt:
       "Comparing the real after-tax cost of a home office deduction versus a co-working membership for Canadian freelancers — the math might surprise you.",
@@ -1963,6 +1969,7 @@ export const ARTICLES: Article[] = [
 
   {
     slug: "manual-vs-automated-expense-tracking-canada",
+    regions: ["all"],
     title: "Manual vs. Automated Expense Tracking for Canadian Freelancers",
     excerpt:
       "Spreadsheets are free. Automated apps cost money. Here's when the manual approach is good enough — and when automation pays for itself.",
@@ -2018,6 +2025,7 @@ export const ARTICLES: Article[] = [
 
   {
     slug: "excel-vs-expense-app-canada",
+    regions: ["all"],
     title: "Excel vs. Expense Tracking App: Which Should Canadian Freelancers Use?",
     excerpt:
       "Excel is powerful and free. Expense apps are convenient and automated. For Canadian freelancers filing T2125, here's the honest comparison.",
@@ -2341,6 +2349,15 @@ export const ARTICLES: Article[] = [
 
 export function getArticle(slug: string): Article | undefined {
   return ARTICLES.find((a) => a.slug === slug);
+}
+
+export function articleBelongsToRegion(article: Article, region: Region): boolean {
+  const r = article.regions ?? ["ca"];
+  return r.includes(region) || r.includes("all");
+}
+
+export function getArticlesByRegion(articles: Article[], region: Region): Article[] {
+  return articles.filter((a) => articleBelongsToRegion(a, region));
 }
 
 export function getRelatedArticles(slug: string, count = 3): Article[] {

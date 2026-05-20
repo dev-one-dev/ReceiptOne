@@ -108,6 +108,22 @@ export const CATEGORIZED_FAQ: { category: string; items: QA[] }[] = [
   },
 ];
 
+/** US FAQ questions grouped by category — used on the /us/faq help-center page. */
+export const CATEGORIZED_FAQ_US: { category: string; items: QA[] }[] = [
+  {
+    category: "General",
+    items: [faqItemsUS[0], faqItemsUS[4], faqItemsUS[5], faqItemsUS[6]],
+  },
+  {
+    category: "Tax & IRS",
+    items: [faqItemsUS[1], faqItemsUS[2], faqItemsUS[3], faqItemsUS[9]],
+  },
+  {
+    category: "Pricing & Plans",
+    items: [faqItemsUS[7], faqItemsUS[8]],
+  },
+];
+
 /* ----------------------------- Accordion list ----------------------------- */
 
 /**
@@ -240,7 +256,15 @@ export function FaqAccordion({ items }: { items: QA[] }) {
  * Landing-page FAQ section. Shows `limit` items (default 3) with a link
  * to the full /faq help-center page.
  */
-export function Faq({ items = faqItems, limit = 3 }: { items?: QA[]; limit?: number } = {}) {
+export function Faq({
+  items = faqItems,
+  limit = 3,
+  helpCenterPath = "/faq",
+}: {
+  items?: QA[];
+  limit?: number;
+  helpCenterPath?: string;
+} = {}) {
   const displayed = items.slice(0, limit);
 
   return (
@@ -266,7 +290,7 @@ export function Faq({ items = faqItems, limit = 3 }: { items?: QA[]; limit?: num
       {/* Help center link */}
       <div className="mt-6 text-center">
         <Link
-          to={"/faq" as any}
+          to={helpCenterPath as any}
           className="inline-flex items-center gap-1.5 font-sans text-sm font-medium text-black/50 transition-colors duration-200 hover:text-black"
         >
           See all help articles in our Help Center

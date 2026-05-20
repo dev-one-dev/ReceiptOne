@@ -36,10 +36,10 @@ function CategoryPill({
 
 /* ----------------------------- Featured card ------------------------------ */
 
-function FeaturedCard({ article }: { article: Article }) {
+function FeaturedCard({ article, basePath }: { article: Article; basePath: string }) {
   return (
     <Link
-      to={"/articles/$slug" as any}
+      to={`${basePath}/$slug` as any}
       params={{ slug: article.slug } as any}
       className="group flex h-full flex-col overflow-hidden rounded-2xl border border-black/[0.07] bg-white shadow-[0_2px_12px_rgba(0,0,0,0.06)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_40px_rgba(0,0,0,0.10)]"
     >
@@ -91,10 +91,10 @@ function FeaturedCard({ article }: { article: Article }) {
 
 /* ----------------------------- Small card --------------------------------- */
 
-function SmallCard({ article }: { article: Article }) {
+function SmallCard({ article, basePath }: { article: Article; basePath: string }) {
   return (
     <Link
-      to={"/articles/$slug" as any}
+      to={`${basePath}/$slug` as any}
       params={{ slug: article.slug } as any}
       className="group flex h-full flex-col overflow-hidden rounded-2xl border border-black/[0.07] bg-white shadow-[0_2px_12px_rgba(0,0,0,0.06)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_40px_rgba(0,0,0,0.10)]"
     >
@@ -137,20 +137,20 @@ interface ArticlesSectionProps {
   articles?: Article[];
   showHeader?: boolean;
   limit?: number;
+  basePath?: string;
 }
 
 export function ArticlesSection({
   articles,
   showHeader = true,
   limit,
+  basePath = "/articles",
 }: ArticlesSectionProps) {
   const all = articles ?? ARTICLES;
   const items = limit ? all.slice(0, limit) : all;
 
   const [featured, ...rest] = items;
-  // row1: featured (2/3) + first two of rest (1/3 stacked)
   const row1Right = rest.slice(0, 2);
-  // row2: remaining cards
   const row2 = rest.slice(2);
 
   if (!featured) return null;
@@ -158,7 +158,6 @@ export function ArticlesSection({
   return (
     <section className="py-6 sm:py-8 lg:py-10">
       <div className="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
-        {/* Section header */}
         {showHeader && (
           <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
             <div>
@@ -171,7 +170,7 @@ export function ArticlesSection({
             </div>
 
             <Link
-              to={"/articles/" as any}
+              to={`${basePath}/` as any}
               className="inline-flex shrink-0 items-center gap-2 self-start rounded-full border border-black/15 px-5 py-2.5 font-sans text-sm font-semibold text-black transition-all duration-200 hover:border-black hover:bg-black hover:text-white sm:self-auto"
             >
               All articles
@@ -182,12 +181,12 @@ export function ArticlesSection({
 
         {/* Row 1: featured (2/3) + two stacked small cards (1/3) */}
         <div className="grid grid-cols-1 gap-3 lg:grid-cols-[2fr_1fr]">
-          <FeaturedCard article={featured} />
+          <FeaturedCard article={featured} basePath={basePath} />
 
           {row1Right.length > 0 && (
             <div className="grid grid-rows-2 gap-3">
               {row1Right.map((article) => (
-                <SmallCard key={article.slug} article={article} />
+                <SmallCard key={article.slug} article={article} basePath={basePath} />
               ))}
             </div>
           )}
@@ -197,7 +196,7 @@ export function ArticlesSection({
         {row2.length > 0 && (
           <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {row2.map((article) => (
-              <SmallCard key={article.slug} article={article} />
+              <SmallCard key={article.slug} article={article} basePath={basePath} />
             ))}
           </div>
         )}

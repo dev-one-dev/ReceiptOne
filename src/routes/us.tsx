@@ -68,7 +68,7 @@ function USAPage() {
       <Trust region="us" />
       <Advantages region="us" />
       <Pricing region="us" />
-      <Faq items={faqItemsUS} />
+      <Faq items={faqItemsUS} helpCenterPath="/us/faq" />
       <Footer region="us" />
       <SuggestFeatureWidget region="us" />
     </main>

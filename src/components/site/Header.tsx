@@ -54,8 +54,16 @@ export function Header() {
   const select = (region: "ca" | "us") => {
     setOpen(false);
     setMobileNavOpen(false);
-    if (region !== current) {
-      navigate({ to: region === "ca" ? "/ca" : "/us" });
+    if (region === current) return;
+    const path = location.pathname;
+    if (region === "us") {
+      if (path === "/faq") { navigate({ to: "/us/faq" as any }); return; }
+      if (path.startsWith("/articles")) { navigate({ to: "/us/articles/" as any }); return; }
+      navigate({ to: "/us" });
+    } else {
+      if (path === "/us/faq") { navigate({ to: "/faq" as any }); return; }
+      if (path.startsWith("/us/articles")) { navigate({ to: "/articles/" as any }); return; }
+      navigate({ to: "/ca" });
     }
   };
 
