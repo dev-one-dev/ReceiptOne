@@ -257,7 +257,7 @@ function PlanCard({ plan, images }: { plan: Plan; images: Record<string, { src: 
                 isPopular ? "text-white" : "text-black",
               ].join(" ")}
             >
-              ${plan.price}
+              {plan.currency === "CAD" ? `CAD ${plan.price}` : `$${plan.price}`}
             </span>
             <span
               className={[
@@ -265,14 +265,14 @@ function PlanCard({ plan, images }: { plan: Plan; images: Record<string, { src: 
                 isPopular ? "text-white/50" : "text-black/40",
               ].join(" ")}
             >
-              {plan.currency} {plan.period}
+              {plan.period}
             </span>
           </div>
 
           {/* Original price — strikethrough */}
           {plan.originalPrice && (
             <p className={["mt-1 font-sans text-sm line-through", isPopular ? "text-white/30" : "text-black/25"].join(" ")}>
-              ${plan.originalPrice} {plan.currency} {plan.period}
+              {plan.currency === "CAD" ? `CAD ${plan.originalPrice}` : `$${plan.originalPrice}`} {plan.period}
             </p>
           )}
 
