@@ -19,6 +19,10 @@ import { Route as CaRouteImport } from './routes/ca'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ArticlesIndexRouteImport } from './routes/articles/index'
 import { Route as ArticlesSlugRouteImport } from './routes/articles/$slug'
+import { Route as UsIndexRouteImport } from './routes/us/index'
+import { Route as UsFaqRouteImport } from './routes/us/faq'
+import { Route as UsArticlesIndexRouteImport } from './routes/us/articles/index'
+import { Route as UsArticlesSlugRouteImport } from './routes/us/articles/$slug'
 
 const UsRoute = UsRouteImport.update({
   id: '/us',
@@ -70,6 +74,26 @@ const ArticlesSlugRoute = ArticlesSlugRouteImport.update({
   path: '/articles/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const UsIndexRoute = UsIndexRouteImport.update({
+  id: '/us/',
+  path: '/',
+  getParentRoute: () => UsRoute,
+} as any)
+const UsFaqRoute = UsFaqRouteImport.update({
+  id: '/us/faq',
+  path: '/faq',
+  getParentRoute: () => UsRoute,
+} as any)
+const UsArticlesIndexRoute = UsArticlesIndexRouteImport.update({
+  id: '/us/articles/',
+  path: '/articles/',
+  getParentRoute: () => UsRoute,
+} as any)
+const UsArticlesSlugRoute = UsArticlesSlugRouteImport.update({
+  id: '/us/articles/$slug',
+  path: '/articles/$slug',
+  getParentRoute: () => UsRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -82,6 +106,10 @@ export interface FileRoutesByFullPath {
   '/us': typeof UsRoute
   '/articles/$slug': typeof ArticlesSlugRoute
   '/articles/': typeof ArticlesIndexRoute
+  '/us/': typeof UsIndexRoute
+  '/us/faq': typeof UsFaqRoute
+  '/us/articles/': typeof UsArticlesIndexRoute
+  '/us/articles/$slug': typeof UsArticlesSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -91,9 +119,12 @@ export interface FileRoutesByTo {
   '/privacy': typeof PrivacyRoute
   '/signup': typeof SignupRoute
   '/terms': typeof TermsRoute
-  '/us': typeof UsRoute
+  '/us': typeof UsIndexRoute
   '/articles/$slug': typeof ArticlesSlugRoute
   '/articles': typeof ArticlesIndexRoute
+  '/us/faq': typeof UsFaqRoute
+  '/us/articles/$slug': typeof UsArticlesSlugRoute
+  '/us/articles': typeof UsArticlesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -107,6 +138,10 @@ export interface FileRoutesById {
   '/us': typeof UsRoute
   '/articles/$slug': typeof ArticlesSlugRoute
   '/articles/': typeof ArticlesIndexRoute
+  '/us/': typeof UsIndexRoute
+  '/us/faq': typeof UsFaqRoute
+  '/us/articles/': typeof UsArticlesIndexRoute
+  '/us/articles/$slug': typeof UsArticlesSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -121,6 +156,10 @@ export interface FileRouteTypes {
     | '/us'
     | '/articles/$slug'
     | '/articles/'
+    | '/us/'
+    | '/us/faq'
+    | '/us/articles/'
+    | '/us/articles/$slug'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -133,6 +172,9 @@ export interface FileRouteTypes {
     | '/us'
     | '/articles/$slug'
     | '/articles'
+    | '/us/faq'
+    | '/us/articles/$slug'
+    | '/us/articles'
   id:
     | '__root__'
     | '/'
@@ -145,6 +187,10 @@ export interface FileRouteTypes {
     | '/us'
     | '/articles/$slug'
     | '/articles/'
+    | '/us/'
+    | '/us/faq'
+    | '/us/articles/'
+    | '/us/articles/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -158,6 +204,13 @@ export interface RootRouteChildren {
   UsRoute: typeof UsRoute
   ArticlesSlugRoute: typeof ArticlesSlugRoute
   ArticlesIndexRoute: typeof ArticlesIndexRoute
+}
+
+export interface UsRouteChildren {
+  UsIndexRoute: typeof UsIndexRoute
+  UsFaqRoute: typeof UsFaqRoute
+  UsArticlesIndexRoute: typeof UsArticlesIndexRoute
+  UsArticlesSlugRoute: typeof UsArticlesSlugRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -190,18 +243,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PrivacyRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/faq': {
-      id: '/faq'
-      path: '/faq'
-      fullPath: '/faq'
-      preLoaderRoute: typeof FaqRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/login': {
       id: '/login'
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/faq': {
+      id: '/faq'
+      path: '/faq'
+      fullPath: '/faq'
+      preLoaderRoute: typeof FaqRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/ca': {
@@ -232,7 +285,42 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ArticlesSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/us/': {
+      id: '/us/'
+      path: '/'
+      fullPath: '/us/'
+      preLoaderRoute: typeof UsIndexRouteImport
+      parentRoute: typeof UsRouteImport
+    }
+    '/us/faq': {
+      id: '/us/faq'
+      path: '/faq'
+      fullPath: '/us/faq'
+      preLoaderRoute: typeof UsFaqRouteImport
+      parentRoute: typeof UsRouteImport
+    }
+    '/us/articles/': {
+      id: '/us/articles/'
+      path: '/articles'
+      fullPath: '/us/articles/'
+      preLoaderRoute: typeof UsArticlesIndexRouteImport
+      parentRoute: typeof UsRouteImport
+    }
+    '/us/articles/$slug': {
+      id: '/us/articles/$slug'
+      path: '/articles/$slug'
+      fullPath: '/us/articles/$slug'
+      preLoaderRoute: typeof UsArticlesSlugRouteImport
+      parentRoute: typeof UsRouteImport
+    }
   }
+}
+
+const usRouteChildren: UsRouteChildren = {
+  UsIndexRoute: UsIndexRoute,
+  UsFaqRoute: UsFaqRoute,
+  UsArticlesIndexRoute: UsArticlesIndexRoute,
+  UsArticlesSlugRoute: UsArticlesSlugRoute,
 }
 
 const rootRouteChildren: RootRouteChildren = {
@@ -243,7 +331,7 @@ const rootRouteChildren: RootRouteChildren = {
   PrivacyRoute: PrivacyRoute,
   SignupRoute: SignupRoute,
   TermsRoute: TermsRoute,
-  UsRoute: UsRoute,
+  UsRoute: UsRoute._addFileChildren(usRouteChildren),
   ArticlesSlugRoute: ArticlesSlugRoute,
   ArticlesIndexRoute: ArticlesIndexRoute,
 }

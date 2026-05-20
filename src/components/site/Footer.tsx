@@ -11,13 +11,16 @@ type FooterProps = {
   region?: "ca" | "us";
 };
 
-const PRODUCT_LINKS = [
-  { label: "How It Works", href: "#how-it-works" },
-  { label: "Benefits", href: "#benefits" },
-  { label: "Pricing", href: "#pricing" },
-  { label: "Articles", href: "/articles" },
-  { label: "Help Center", href: "/faq" },
-];
+function productLinks(region: "ca" | "us") {
+  const prefix = region === "us" ? "/us" : "";
+  return [
+    { label: "How It Works", href: "#how-it-works" },
+    { label: "Benefits", href: "#benefits" },
+    { label: "Pricing", href: "#pricing" },
+    { label: "Articles", href: `${prefix}/articles` },
+    { label: "Help Center", href: `${prefix}/faq` },
+  ];
+}
 
 const COMPANY_LINKS_CA = [
   { label: "Log in", href: ROUTES.login, internal: true },
@@ -151,7 +154,7 @@ export function Footer({ region = "ca" }: FooterProps) {
                 Product
               </p>
               <ul className="mt-2 space-y-1.5">
-                {PRODUCT_LINKS.map(({ label, href }) => (
+                {productLinks(region).map(({ label, href }) => (
                   <li key={label}>
                     <a
                       href={href}
