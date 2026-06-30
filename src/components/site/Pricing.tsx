@@ -71,7 +71,7 @@ const CA_PLANS: Plan[] = [
   },
   {
     id: "year",
-    name: "Annual",
+    name: "Yearly",
     price: "129.99",
     originalPrice: "149.99",
     period: "/ year",
@@ -122,7 +122,7 @@ const US_PLANS: Plan[] = [
   },
   {
     id: "year",
-    name: "Annual",
+    name: "Yearly",
     price: "99.99",
     originalPrice: "129.99",
     period: "/ year",
@@ -154,7 +154,7 @@ function StoreCTA({ isPopular }: { isPopular: boolean }) {
   const platform = usePlatform();
 
   const singleBtn = [
-    "mt-8 inline-flex w-full items-center justify-center rounded-full px-6 py-3.5 font-display text-sm font-semibold transition-all hover:scale-[1.02]",
+    "inline-flex items-center justify-center rounded-full px-8 py-3.5 font-display text-sm font-semibold transition-all hover:scale-[1.02]",
     isPopular ? "bg-white text-black hover:opacity-90" : "bg-black text-white hover:opacity-90",
   ].join(" ");
 
@@ -175,12 +175,12 @@ function StoreCTA({ isPopular }: { isPopular: boolean }) {
   }
 
   const badgeBtn = [
-    "flex flex-1 items-center justify-center gap-1.5 rounded-full px-3 py-3 font-sans text-xs font-semibold transition-all hover:scale-[1.02]",
+    "flex items-center justify-center gap-2 rounded-full px-6 py-3 font-sans text-sm font-semibold transition-all hover:scale-[1.02]",
     isPopular ? "bg-white text-black hover:opacity-90" : "bg-black text-white hover:opacity-90",
   ].join(" ");
 
   return (
-    <div className="mt-8 flex gap-2">
+    <div className="flex gap-3">
       <a href={APP_STORE_URL} target="_blank" rel="noopener noreferrer" className={badgeBtn} aria-label="Download on the App Store">
         <AppleIcon isPopular={isPopular} />
         <span>App Store</span>
@@ -224,7 +224,12 @@ export function Pricing({ region = "ca" }: { region?: Region }) {
           ))}
         </div>
 
-        <p className="mt-8 text-center font-sans text-sm text-black/35">
+        {/* Shared store CTA */}
+        <div className="mt-8 flex justify-center">
+          <StoreCTA isPopular={false} />
+        </div>
+
+        <p className="mt-4 text-center font-sans text-sm text-black/35">
           All plans include a 7-day free trial · Cancel anytime · Prices in {plans[0].currency}
         </p>
       </div>
@@ -359,8 +364,6 @@ function PlanCard({ plan, images }: { plan: Plan; images: Record<string, { src: 
             ))}
           </ul>
 
-          {/* CTA */}
-          <StoreCTA isPopular={isPopular} />
         </div>
       </div>
     </div>
