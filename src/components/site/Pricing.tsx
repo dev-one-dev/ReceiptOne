@@ -359,10 +359,10 @@ function PlanCard({ plan, images }: { plan: Plan; images: Record<string, { src: 
             </p>
           )}
 
-          {/* Divider */}
+          {/* Divider — max-w-[60%] keeps it in the text column, away from the peeking animal image */}
           <div
             className={[
-              "my-6 h-px",
+              "my-6 h-px max-w-[60%]",
               isPopular ? "bg-white/10" : "bg-black/[0.07]",
             ].join(" ")}
           />
