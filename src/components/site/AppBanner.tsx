@@ -3,9 +3,9 @@ import { QRCodeSVG } from "qrcode.react";
 import appBannerCaArt from "@/assets/figma/app-banner-ca.webp";
 import appBannerUsArt from "@/assets/figma/app-banner-us.webp";
 
-const APP_STORE_URL = "https://apps.apple.com/app/receiptone/id0000000000";
+const APP_STORE_URL = "https://apps.apple.com/us/app/receiptone-expense-tracker/id6755740822";
 const GOOGLE_PLAY_URL =
-  "https://play.google.com/store/apps/details?id=com.receiptone.app";
+  "https://play.google.com/store/apps/details?id=com.appfyl.checkapp&pli=1";
 
 /** Full Figma artboard 1440×560; card is 960×400 at x=240 y=80 */
 const ART_W = 1440;

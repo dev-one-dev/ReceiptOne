@@ -4,8 +4,8 @@ import logoMark from "@/assets/figma/logo-mark.svg";
 import logoWordmark from "@/assets/figma/logo-wordmark.svg";
 import { ROUTES } from "@/lib/routes";
 
-const APP_STORE_URL = "https://apps.apple.com/app/receiptone/id0000000000";
-const GOOGLE_PLAY_URL = "https://play.google.com/store/apps/details?id=com.receiptone.app";
+const APP_STORE_URL = "https://apps.apple.com/us/app/receiptone-expense-tracker/id6755740822";
+const GOOGLE_PLAY_URL = "https://play.google.com/store/apps/details?id=com.appfyl.checkapp&pli=1";
 
 type FooterProps = {
   region?: "ca" | "us";

@@ -138,8 +138,8 @@ const US_PLAN_IMAGES: Record<string, { src: string; alt: string }> = {
 function scrollToApps(e: React.MouseEvent) {
   e.preventDefault();
   const url = /iPhone|iPad|iPod/i.test(navigator.userAgent)
-    ? "https://apps.apple.com/app/receiptone/id0000000000"
-    : "https://play.google.com/store/apps/details?id=com.receiptone.app";
+    ? "https://apps.apple.com/us/app/receiptone-expense-tracker/id6755740822"
+    : "https://play.google.com/store/apps/details?id=com.appfyl.checkapp&pli=1";
   window.open(url, "_blank", "noopener,noreferrer");
 }
 

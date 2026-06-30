@@ -8,8 +8,8 @@ import avatar3 from "@/assets/figma/avatar-3.webp";
 import avatar4 from "@/assets/figma/avatar-4.webp";
 import { Avatar } from "@/components/site/TopBannerShared";
 
-const APP_STORE_URL = "https://apps.apple.com/app/receiptone/id0000000000";
-const GOOGLE_PLAY_URL = "https://play.google.com/store/apps/details?id=com.receiptone.app";
+const APP_STORE_URL = "https://apps.apple.com/us/app/receiptone-expense-tracker/id6755740822";
+const GOOGLE_PLAY_URL = "https://play.google.com/store/apps/details?id=com.appfyl.checkapp&pli=1";
 
 const CA_STATS = [
   { value: "4.8", label: "Average rating" },
