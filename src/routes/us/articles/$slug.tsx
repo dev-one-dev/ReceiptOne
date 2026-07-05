@@ -53,7 +53,7 @@ function ArticleNotFound() {
     <main className="min-h-screen overflow-x-clip bg-[#f5f4f0] font-sans text-black antialiased">
       <Header />
       <div className="mx-auto flex min-h-[60vh] max-w-[760px] flex-col items-center justify-center px-4 py-24 text-center sm:px-6">
-        <p className="font-sans text-xs font-semibold uppercase tracking-widest text-black/35">404</p>
+        <p className="font-sans text-xs font-semibold uppercase tracking-widest text-black/55">404</p>
         <h1 className="mt-3 font-display text-3xl font-semibold text-black">Article not found</h1>
         <p className="mt-4 font-sans text-base text-black/55">
           The article you're looking for doesn't exist or may have been moved.
@@ -141,7 +141,7 @@ function RelatedCard({ article }: { article: Article }) {
         <h3 className="mt-3 font-display text-base font-semibold leading-snug tracking-tight text-black lg:text-lg">
           {article.title}
         </h3>
-        <div className="mt-auto flex items-center gap-3 pt-4 text-xs text-black/40">
+        <div className="mt-auto flex items-center gap-3 pt-4 text-xs text-black/55">
           <span className="flex items-center gap-1">
             <Clock className="size-3" aria-hidden />
             {article.readTime} min
@@ -158,7 +158,7 @@ function CtaBanner() {
   return (
     <section className="bg-[#0d0d14] py-16 sm:py-20">
       <div className="mx-auto max-w-[1200px] px-4 text-center sm:px-6 lg:px-8">
-        <p className="font-sans text-xs font-semibold uppercase tracking-widest text-white/30">
+        <p className="font-sans text-xs font-semibold uppercase tracking-widest text-white/50">
           Get Started
         </p>
         <h2 className="mt-3 font-display text-3xl font-semibold leading-tight tracking-tight text-white sm:text-4xl">
@@ -202,7 +202,7 @@ function USArticleDetailPage() {
 
       {/* Back link + breadcrumb */}
       <div className="mx-auto max-w-[1200px] px-4 pt-28 pb-6 sm:px-6 lg:px-8">
-        <nav aria-label="breadcrumb" className="flex items-center gap-2 font-sans text-sm text-black/40">
+        <nav aria-label="breadcrumb" className="flex items-center gap-2 font-sans text-sm text-black/55">
           <Link
             to={"/us/articles/" as any}
             className="inline-flex items-center gap-1.5 transition-colors duration-150 hover:text-black"
@@ -215,7 +215,7 @@ function USArticleDetailPage() {
         </nav>
 
         {article.clusterPillar && article.clusterName && (
-          <p className="mt-3 font-sans text-sm text-black/45">
+          <p className="mt-3 font-sans text-sm text-black/55">
             Part of the{" "}
             <Link
               to={"/us/articles/$slug" as any}
@@ -258,9 +258,9 @@ function USArticleDetailPage() {
             </div>
             <div className="min-w-0">
               <p className="font-sans text-sm font-semibold text-black">{article.author.name}</p>
-              <p className="font-sans text-xs text-black/45">{article.author.role}</p>
+              <p className="font-sans text-xs text-black/55">{article.author.role}</p>
             </div>
-            <div className="ml-auto flex items-center gap-4 font-sans text-sm text-black/40">
+            <div className="ml-auto flex items-center gap-4 font-sans text-sm text-black/55">
               <span className="flex items-center gap-1.5">
                 <Clock className="size-4" aria-hidden />
                 {article.readTime} min read
@@ -282,7 +282,7 @@ function USArticleDetailPage() {
             {article.tags.map((tag) => (
               <span
                 key={tag}
-                className="rounded-full bg-black/[0.05] px-3 py-1 font-sans text-xs font-medium text-black/50"
+                className="rounded-full bg-black/[0.05] px-3 py-1 font-sans text-xs font-medium text-black/60"
               >
                 {tag}
               </span>

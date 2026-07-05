@@ -67,7 +67,7 @@ function FeaturedCard({ article, basePath }: { article: Article; basePath: strin
         </p>
 
         {/* Meta row */}
-        <div className="mt-3 flex items-center gap-4 text-sm text-black/40">
+        <div className="mt-3 flex items-center gap-4 text-sm text-black/55">
           <span className="flex items-center gap-1.5">
             <Clock className="size-3.5" aria-hidden />
             {article.readTime} min read
@@ -118,7 +118,7 @@ function SmallCard({ article, basePath }: { article: Article; basePath: string }
         </h3>
 
         {/* Meta row */}
-        <div className="mt-auto pt-2 flex items-center gap-3 text-xs text-black/40">
+        <div className="mt-auto pt-2 flex items-center gap-3 text-xs text-black/55">
           <span className="flex items-center gap-1">
             <Clock className="size-3" aria-hidden />
             {article.readTime} min
@@ -161,7 +161,7 @@ export function ArticlesSection({
         {showHeader && (
           <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <p className="font-sans text-xs font-semibold uppercase tracking-widest text-black/35">
+              <p className="font-sans text-xs font-semibold uppercase tracking-widest text-black/55">
                 Knowledge Base
               </p>
               <h2 className="mt-1 font-display text-3xl font-semibold leading-tight tracking-tight text-black sm:text-4xl lg:text-[2.75rem]">
