@@ -39,7 +39,7 @@ function FaqPage() {
       {/* Hero */}
       <section className="pt-24 pb-4 text-center">
         <div className="mx-auto max-w-[760px] px-4 sm:px-6 lg:px-0">
-          <p className="font-sans text-xs font-semibold uppercase tracking-widest text-black/35">
+          <p className="font-sans text-xs font-semibold uppercase tracking-widest text-black/55">
             Help Center
           </p>
           <h1 className="mt-3 font-display text-3xl font-semibold leading-tight tracking-tight text-black sm:text-4xl lg:text-[2.75rem]">
@@ -75,7 +75,7 @@ function FaqPage() {
       {/* CTA strip */}
       <section className="bg-[#0d0d14] py-6 sm:py-8">
         <div className="mx-auto max-w-[1200px] px-4 text-center sm:px-6 lg:px-8">
-          <p className="font-sans text-xs font-semibold uppercase tracking-widest text-white/30">
+          <p className="font-sans text-xs font-semibold uppercase tracking-widest text-white/50">
             Get Started
           </p>
           <h2 className="mt-2 font-display text-3xl font-semibold leading-tight tracking-tight text-white sm:text-4xl">

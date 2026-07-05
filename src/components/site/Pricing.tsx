@@ -282,7 +282,7 @@ function PlanCard({ plan, images }: { plan: Plan; images: Record<string, { src: 
 
       {/* Most Popular badge */}
       {isPopular && (
-        <span className="absolute top-0 left-1/2 z-20 -translate-x-1/2 rounded-full bg-[#f97316] px-4 py-1 font-sans text-xs font-semibold text-black shadow-[0_4px_12px_rgba(249,115,22,0.4)]">
+        <span className="absolute top-0 left-1/2 z-20 -translate-x-1/2 rounded-full bg-[#f97316] px-4 py-1 font-sans text-xs font-semibold text-white shadow-[0_4px_12px_rgba(249,115,22,0.4)]">
           Most Popular
         </span>
       )}
