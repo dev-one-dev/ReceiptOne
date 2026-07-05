@@ -159,7 +159,7 @@ Buttons, cards, and inputs are precise and understated: pill shapes, thin border
 - **Shape:** full pill (`rounded-full`) for primary/outline CTAs (Log in, Join now, store badges' outer chrome uses `rounded-xl`/12px instead — see Store CTA below).
 - **Primary:** `bg-black text-white`, `px-3 py-2`, `font-display font-semibold`; hover fades to `opacity-90`. On dark sections this doesn't invert — primary CTAs stay black-on-white via the surrounding white card, not white-on-void.
 - **Outline/Secondary:** `border border-black`, transparent fill, black text; hover `bg-black/5`.
-- **Store badges (Apple/Google Play):** `rounded-xl` (12px, not full-pill), `border-black/12`, `h-10`, two-line label (small caps micro-copy over a bold platform name); Apple variant is black-fill/white-text, Google Play is white-fill/black-text with `shadow-sm`.
+- **Store badges (Apple/Google Play):** shared `StoreBadge` component (`src/components/site/StoreBadge.tsx`), used by the hero, Pricing, and Footer instead of hand-duplicated markup. `rounded-xl` (12px, not full-pill), `border-black/12`, `h-11` (44px — meets the touch-target recommendation), two-line label (`9px` micro-copy over a `12px` bold platform name). Two variants: `light` (Apple = black-fill/white-text, Google = white-fill/black-text with `shadow-sm`) for the hero/Pricing, and `dark` (both platforms `border-white/15 bg-white/[0.07] text-white`) for the Footer.
 
 ### Cards
 - **Corner Style:** `rounded-3xl` (24px) for pricing cards, `rounded-2xl` (16px) for feature/trust cards.
