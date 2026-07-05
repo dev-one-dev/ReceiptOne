@@ -61,8 +61,7 @@ Suggested command: `/impeccable layout`
 
 **[P2] FAQ section header breaks the page's own established section-header convention**
 Why it matters: Every other section uses eyebrow + `text-3xl sm:text-4xl lg:text-[2.75rem]` headline. `Faq.tsx:271-283` instead uses a black pill badge and a bespoke `text-[28px]→text-[56px]` heading exceeding `DESIGN.md`'s documented 44px Headline ceiling — reads as designed in a separate pass.
-Fix: Replace with the standard eyebrow + headline pattern used everywhere else on the page.
-Suggested command: `/impeccable typeset`
+**Status: RESOLVED (2026-07-06).** Replaced with the standard eyebrow + headline pattern ("FAQ" eyebrow + `text-3xl sm:text-4xl lg:text-[2.75rem]` h2), matching every other section. `Faq.tsx`'s `Faq()` export is shared by both `/ca` (`ca.tsx`) and `/us` (`us/index.tsx`), so this fix applies to both regions from one edit.
 
 **[P3] Illegible store-badge microcopy and sub-44px touch targets**
 Why it matters: `text-[7-9px]` sub-labels on App Store/Google Play badges (TopBanner, Pricing, Footer) sit below common legibility thresholds; mobile hamburger (`Header.tsx:234`, 40px), region-switcher trigger (~32-36px), social icons (36px), and the widget's close button (~24px) all fall under the 44px recommended touch target (though all clear WCAG 2.2's 24px minimum).
