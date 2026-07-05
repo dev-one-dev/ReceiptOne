@@ -239,7 +239,7 @@ export function FaqAccordion({ items }: { items: QA[] }) {
                * -translate-y-1 entrance effect was removed because it caused a
                * vertical micro-bounce during the expand animation.
                */}
-              <p className="overflow-hidden font-display text-[14px] leading-[1.55] text-[#7e8890] md:text-[15px]">
+              <p className="overflow-hidden font-display text-[14px] leading-[1.55] text-black/60 md:text-[15px]">
                 {it.a}
               </p>
             </div>
@@ -291,7 +291,7 @@ export function Faq({
       <div className="mt-6 text-center">
         <Link
           to={helpCenterPath as any}
-          className="inline-flex items-center gap-1.5 font-sans text-sm font-medium text-black/50 transition-colors duration-200 hover:text-black"
+          className="inline-flex items-center gap-1.5 font-sans text-sm font-medium text-black/60 transition-colors duration-200 hover:text-black"
         >
           See all help articles in our Help Center
           <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden>

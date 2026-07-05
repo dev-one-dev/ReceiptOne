@@ -73,12 +73,10 @@ figma-craft-39/
 │   ├── components/
 │   │   ├── site/                   # Page section components
 │   │   │   ├── Header.tsx          # Fixed nav with region switcher
-│   │   │   ├── TopBanner.tsx       # CA hero section (beaver, video)
-│   │   │   ├── TopBannerUS.tsx     # US hero section (eagle, video)
+│   │   │   ├── TopBanner.tsx       # Hero section, region-aware (beaver/eagle, video)
 │   │   │   ├── Numbers.tsx         # Animated stats marquee
-│   │   │   ├── InfoCards.tsx       # Benefits section (CA)
-│   │   │   ├── NotAll.tsx          # Feature grid (CA)
-│   │   │   ├── NotAllUS.tsx        # Testimonial tiles (US, interactive)
+│   │   │   ├── InfoCards.tsx       # Benefits section (region-aware)
+│   │   │   ├── NotAll.tsx          # Feature grid (region-aware)
 │   │   │   ├── Advantages.tsx      # Feature comparison (shared)
 │   │   │   ├── AppBanner.tsx       # App download CTA + QR code
 │   │   │   ├── Pricing.tsx         # Pricing table
@@ -133,10 +131,10 @@ figma-craft-39/
 Each page composes full-page sections:
 
 1. **Header** — Fixed pill nav with smooth-scroll anchors (Benefits, Apps, Pricing, FAQ), region switcher (CA ↔ US), mobile drawer, ARIA-accessible
-2. **Hero** (`TopBanner` / `TopBannerUS`) — Animated transparent WebM video with MP4 fallback, social proof avatars, dashed-loop SVG animation
+2. **Hero** (`TopBanner`) — Animated transparent WebM video with MP4 fallback, social proof avatars, dashed-loop SVG animation
 3. **Numbers** — Auto-scrolling marquee of key stats (4.8★ rating, 100K+ receipts, etc.)
 4. **Benefits** (`InfoCards` / inline on US) — Feature highlights
-5. **Feature Grid** (`NotAll` / `NotAllUS`) — Interactive cards with 3D tilt, spotlight glow, and gradient border effects on pointer move
+5. **Feature Grid** (`NotAll`) — Interactive cards with 3D tilt, spotlight glow, and gradient border effects on pointer move
 6. **Advantages** — Feature comparison with interactive hotspots overlaid on Figma artwork
 7. **App Download** (`AppBanner`) — Platform-detected QR code (App Store / Google Play) + download CTAs
 8. **Pricing** — Plan comparison with interactive hover effects; clicking a plan scrolls to download
@@ -164,11 +162,7 @@ Custom `useRevealOnScroll` hook applies staggered entrance animations to page se
 
 ### Interactive Micro-Interactions
 
-- **Magnetic 3D tilt** — pointer-follow tilt via CSS `--rx`/`--ry` variables (NotAllUS, Advantages)
-- **Spotlight glow** — radial gradient follows cursor within each card
-- **Gradient border** — animated border using `mask-composite`
-- **Click ripple** — pulse animation on card tap
-- **Aurora footer** — cursor-following glow across the footer
+> This section is stale — a codebase check found none of the effects below (`--rx`/`--ry` tilt, spotlight glow, `mask-composite` gradient border, click ripple, cursor-following aurora) actually implemented in the current `NotAll.tsx`, `Advantages.tsx`, or `Footer.tsx`. Left here as a flag for a future documentation pass rather than silently rewritten; see `DESIGN.md` for what's actually shipping today (soft ambient shadows, hover-lift, hover-scale/rotate on bento cards).
 
 ---
 

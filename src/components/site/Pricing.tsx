@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
-import caWeeklyImg from "@/assets/figma/mileage-auto/Graphic-Small.png";
-import caMonthlyImg from "@/assets/figma/mileage-auto/Graphic-Small2.png";
-import caAnnualImg from "@/assets/figma/mileage-auto/Graphic-Small3.png";
-import usWeeklyImg from "@/assets/figma/mileage-auto/US/2.png";
-import usMonthlyImg from "@/assets/figma/mileage-auto/US/3-removebg-preview.png";
-import usAnnualImg from "@/assets/figma/mileage-auto/US/1.png";
+import { useLayoutEffect, useState } from "react";
+import caWeeklyImg from "@/assets/figma/mileage-auto/Graphic-Small.webp";
+import caMonthlyImg from "@/assets/figma/mileage-auto/Graphic-Small2.webp";
+import caAnnualImg from "@/assets/figma/mileage-auto/Graphic-Small3.webp";
+import usWeeklyImg from "@/assets/figma/mileage-auto/US/2.webp";
+import usMonthlyImg from "@/assets/figma/mileage-auto/US/3-removebg-preview.webp";
+import usAnnualImg from "@/assets/figma/mileage-auto/US/1.webp";
 
 const APP_STORE_URL = "https://apps.apple.com/us/app/receiptone-expense-tracker/id6755740822";
 const GOOGLE_PLAY_URL = "https://play.google.com/store/apps/details?id=com.appfyl.checkapp&pli=1";
@@ -14,7 +14,10 @@ type Region = "ca" | "us";
 
 function usePlatform(): Platform {
   const [platform, setPlatform] = useState<Platform>("desktop");
-  useEffect(() => {
+  // useLayoutEffect (not useEffect) so the platform-specific badge commits
+  // before the browser paints the hydrated frame, avoiding a visible
+  // both-badges-then-one flash on mobile.
+  useLayoutEffect(() => {
     const ua = navigator.userAgent;
     if (/iPhone|iPad|iPod/i.test(ua)) setPlatform("ios");
     else if (/Android/i.test(ua)) setPlatform("android");
@@ -160,11 +163,11 @@ function StoreCTA({ isPopular: _isPopular }: { isPopular: boolean }) {
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Download ReceiptOne on the App Store"
-        className="inline-flex h-10 items-center gap-2 rounded-xl border border-black/12 bg-black px-3.5 font-display text-white transition-opacity hover:opacity-80"
+        className="inline-flex h-11 items-center gap-2 rounded-xl border border-black/12 bg-black px-3.5 font-display text-white transition-opacity hover:opacity-80"
       >
         <AppleGlyph className="h-[18px] w-[18px] shrink-0" />
         <span className="flex flex-col items-start">
-          <span className="text-[8px] font-normal leading-none text-white/60">Download on the</span>
+          <span className="text-[9px] font-normal leading-none text-white/60">Download on the</span>
           <span className="text-[12px] font-semibold leading-tight">App Store</span>
         </span>
       </a>
@@ -178,11 +181,11 @@ function StoreCTA({ isPopular: _isPopular }: { isPopular: boolean }) {
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Get ReceiptOne on Google Play"
-        className="inline-flex h-10 items-center gap-2 rounded-xl border border-black/12 bg-white px-3.5 font-display text-black shadow-sm transition-opacity hover:opacity-80"
+        className="inline-flex h-11 items-center gap-2 rounded-xl border border-black/12 bg-white px-3.5 font-display text-black shadow-sm transition-opacity hover:opacity-80"
       >
         <GooglePlayMark className="h-[18px] w-[18px] shrink-0" />
         <span className="flex flex-col items-start">
-          <span className="text-[8px] font-normal leading-none text-black/50">GET IT ON</span>
+          <span className="text-[9px] font-normal leading-none text-black/60">GET IT ON</span>
           <span className="text-[12px] font-semibold leading-tight">Google Play</span>
         </span>
       </a>
@@ -196,11 +199,11 @@ function StoreCTA({ isPopular: _isPopular }: { isPopular: boolean }) {
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Download ReceiptOne on the App Store"
-        className="inline-flex h-10 items-center gap-2 rounded-xl border border-black/12 bg-black px-3.5 font-display text-white transition-opacity hover:opacity-80"
+        className="inline-flex h-11 items-center gap-2 rounded-xl border border-black/12 bg-black px-3.5 font-display text-white transition-opacity hover:opacity-80"
       >
         <AppleGlyph className="h-[18px] w-[18px] shrink-0" />
         <span className="flex flex-col items-start">
-          <span className="text-[8px] font-normal leading-none text-white/60">Download on the</span>
+          <span className="text-[9px] font-normal leading-none text-white/60">Download on the</span>
           <span className="text-[12px] font-semibold leading-tight">App Store</span>
         </span>
       </a>
@@ -209,11 +212,11 @@ function StoreCTA({ isPopular: _isPopular }: { isPopular: boolean }) {
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Get ReceiptOne on Google Play"
-        className="inline-flex h-10 items-center gap-2 rounded-xl border border-black/12 bg-white px-3.5 font-display text-black shadow-sm transition-opacity hover:opacity-80"
+        className="inline-flex h-11 items-center gap-2 rounded-xl border border-black/12 bg-white px-3.5 font-display text-black shadow-sm transition-opacity hover:opacity-80"
       >
         <GooglePlayMark className="h-[18px] w-[18px] shrink-0" />
         <span className="flex flex-col items-start">
-          <span className="text-[8px] font-normal leading-none text-black/50">GET IT ON</span>
+          <span className="text-[9px] font-normal leading-none text-black/60">GET IT ON</span>
           <span className="text-[12px] font-semibold leading-tight">Google Play</span>
         </span>
       </a>
@@ -234,7 +237,7 @@ export function Pricing({ region = "ca" }: { region?: Region }) {
 
         {/* Header */}
         <div className="mx-auto mb-14 max-w-2xl text-center">
-          <p className="font-sans text-xs font-semibold uppercase tracking-widest text-black/35">
+          <p className="font-sans text-xs font-semibold uppercase tracking-widest text-black/55">
             Pricing
           </p>
           <h2 className="mt-3 font-display text-3xl font-semibold leading-tight tracking-tight text-black sm:text-4xl lg:text-[2.75rem]">
@@ -257,7 +260,7 @@ export function Pricing({ region = "ca" }: { region?: Region }) {
           <StoreCTA isPopular={false} />
         </div>
 
-        <p className="mt-4 text-center font-sans text-sm text-black/35">
+        <p className="mt-4 text-center font-sans text-sm text-black/55">
           All plans include a 7-day free trial · Cancel anytime · Prices in {plans[0].currency}
         </p>
       </div>
@@ -279,7 +282,7 @@ function PlanCard({ plan, images }: { plan: Plan; images: Record<string, { src: 
 
       {/* Most Popular badge */}
       {isPopular && (
-        <span className="absolute top-0 left-1/2 z-20 -translate-x-1/2 rounded-full bg-[#f97316] px-4 py-1 font-sans text-xs font-semibold text-white shadow-[0_4px_12px_rgba(249,115,22,0.4)]">
+        <span className="absolute top-0 left-1/2 z-20 -translate-x-1/2 rounded-full bg-[#c2410c] px-4 py-1 font-sans text-xs font-semibold text-white shadow-[0_4px_12px_rgba(249,115,22,0.4)]">
           Most Popular
         </span>
       )}
@@ -313,7 +316,7 @@ function PlanCard({ plan, images }: { plan: Plan; images: Record<string, { src: 
             src={image.src}
             alt={image.alt}
             aria-hidden
-            loading="eager"
+            loading="lazy"
             decoding="async"
             className={plan.imageClassName ?? "pointer-events-none absolute bottom-0 -right-36 z-0 w-[34rem] select-none object-contain sm:-right-40 sm:w-[36rem]"}
           />
@@ -323,14 +326,14 @@ function PlanCard({ plan, images }: { plan: Plan; images: Record<string, { src: 
         <div className="relative z-10 flex flex-1 flex-col">
 
           {/* Plan name */}
-          <p
+          <h3
             className={[
               "font-sans text-sm font-semibold uppercase tracking-widest",
-              isPopular ? "text-white/50" : "text-black/40",
+              isPopular ? "text-white/50" : "text-black/55",
             ].join(" ")}
           >
             {plan.name}
-          </p>
+          </h3>
 
           {/* Current price */}
           <div className="mt-3 flex items-baseline gap-1.5">
@@ -345,7 +348,7 @@ function PlanCard({ plan, images }: { plan: Plan; images: Record<string, { src: 
             <span
               className={[
                 "font-sans text-sm",
-                isPopular ? "text-white/50" : "text-black/40",
+                isPopular ? "text-white/50" : "text-black/55",
               ].join(" ")}
             >
               {plan.period}
@@ -354,7 +357,7 @@ function PlanCard({ plan, images }: { plan: Plan; images: Record<string, { src: 
 
           {/* Original price — strikethrough */}
           {plan.originalPrice && (
-            <p className={["mt-1 font-sans text-sm line-through", isPopular ? "text-white/30" : "text-black/25"].join(" ")}>
+            <p className={["mt-1 font-sans text-sm line-through", isPopular ? "text-white/50" : "text-black/55"].join(" ")}>
               {plan.currency === "CAD" ? `CAD ${plan.originalPrice}` : `$${plan.originalPrice}`} {plan.period}
             </p>
           )}

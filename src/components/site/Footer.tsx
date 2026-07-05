@@ -150,7 +150,7 @@ export function Footer({ region = "ca" }: FooterProps) {
 
             {/* Product */}
             <div>
-              <p className="font-display text-sm font-semibold uppercase tracking-widest text-white/30">
+              <p className="font-display text-sm font-semibold uppercase tracking-widest text-white/50">
                 Product
               </p>
               <ul className="mt-2 space-y-1.5">
@@ -169,7 +169,7 @@ export function Footer({ region = "ca" }: FooterProps) {
 
             {/* Company */}
             <div>
-              <p className="font-display text-sm font-semibold uppercase tracking-widest text-white/30">
+              <p className="font-display text-sm font-semibold uppercase tracking-widest text-white/50">
                 Account
               </p>
               <ul className="mt-2 space-y-1.5">
@@ -188,7 +188,7 @@ export function Footer({ region = "ca" }: FooterProps) {
 
             {/* Legal */}
             <div>
-              <p className="font-display text-sm font-semibold uppercase tracking-widest text-white/30">
+              <p className="font-display text-sm font-semibold uppercase tracking-widest text-white/50">
                 Legal
               </p>
               <ul className="mt-2 space-y-1.5">
@@ -210,7 +210,7 @@ export function Footer({ region = "ca" }: FooterProps) {
 
         {/* Bottom bar */}
         <div className="mt-6 flex flex-col items-center justify-between gap-2 border-t border-white/[0.07] pt-4 sm:flex-row">
-          <p className="font-sans text-sm text-white/30">
+          <p className="font-sans text-sm text-white/50">
             &copy; {new Date().getFullYear()} ReceiptOne. All rights reserved.
           </p>
           <div className="flex items-center gap-4">
@@ -218,7 +218,7 @@ export function Footer({ region = "ca" }: FooterProps) {
               <Link
                 key={label}
                 to={href as typeof ROUTES[keyof typeof ROUTES]}
-                className="font-sans text-sm text-white/30 transition-colors hover:text-white/60"
+                className="font-sans text-sm text-white/50 transition-colors hover:text-white/80"
               >
                 {label}
               </Link>

@@ -67,6 +67,7 @@ export function SuggestFeatureWidget({ region }: { region: Region }) {
   const [loading, setLoading] = useState(false);
   const [preview, setPreview] = useState<AiPreview | null>(null);
   const [successMsg, setSuccessMsg] = useState("");
+  const [nearFooter, setNearFooter] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
   const deviceId = useMemo(getDeviceId, []);
 
@@ -79,6 +80,19 @@ export function SuggestFeatureWidget({ region }: { region: Region }) {
     document.addEventListener("mousedown", onClick);
     return () => document.removeEventListener("mousedown", onClick);
   }, [open]);
+
+  // Hide the floating trigger once the footer (with its own store-badge CTAs)
+  // scrolls into view, so this widget never competes with the actual install CTA.
+  useEffect(() => {
+    const footer = document.querySelector("footer");
+    if (!footer) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setNearFooter(entry.isIntersecting),
+      { rootMargin: "0px 0px -10% 0px" },
+    );
+    observer.observe(footer);
+    return () => observer.disconnect();
+  }, []);
 
   const reset = () => {
     setStep("input");
@@ -178,8 +192,8 @@ export function SuggestFeatureWidget({ region }: { region: Region }) {
 
   return (
     <>
-      {/* Floating button */}
-      {!open && (
+      {/* Floating button — hidden once the footer's own install CTAs are in view */}
+      {!open && !nearFooter && (
         <button
           type="button"
           onClick={() => setOpen(true)}
@@ -231,10 +245,10 @@ export function SuggestFeatureWidget({ region }: { region: Region }) {
                   onChange={(e) => setInput(e.target.value.slice(0, 500))}
                   placeholder="Describe your idea…"
                   rows={3}
-                  className="block w-full resize-none rounded-2xl border border-black/10 bg-[#faf9f6] px-4 py-3 text-sm leading-5 text-black outline-none transition-colors placeholder:text-black/40 focus:border-black/40"
+                  className="block w-full resize-none rounded-2xl border border-black/10 bg-[#faf9f6] px-4 py-3 text-sm leading-5 text-black outline-none transition-colors placeholder:text-black/55 focus:border-black/40"
                 />
                 <div>
-                  <p className="mb-2 font-sans text-xs uppercase tracking-wide text-black/50">
+                  <p className="mb-2 font-sans text-xs uppercase tracking-wide text-black/60">
                     Quick picks
                   </p>
                   <div className="flex flex-wrap gap-2">
@@ -268,7 +282,7 @@ export function SuggestFeatureWidget({ region }: { region: Region }) {
             {step === "preview" && preview && (
               <div className="space-y-4">
                 <div className="rounded-2xl border border-black/10 bg-[#faf9f6] p-4">
-                  <p className="mb-1 font-sans text-[11px] uppercase tracking-wide text-black/50">
+                  <p className="mb-1 font-sans text-[11px] uppercase tracking-wide text-black/60">
                     AI preview
                   </p>
                   <p className="font-display text-base font-semibold leading-snug text-black">
@@ -281,7 +295,7 @@ export function SuggestFeatureWidget({ region }: { region: Region }) {
 
                 {preview.similar.length > 0 && (
                   <div>
-                    <p className="mb-2 font-sans text-[11px] uppercase tracking-wide text-black/50">
+                    <p className="mb-2 font-sans text-[11px] uppercase tracking-wide text-black/60">
                       Existing similar ideas
                     </p>
                     <ul className="space-y-2">
@@ -298,7 +312,7 @@ export function SuggestFeatureWidget({ region }: { region: Region }) {
                               <p className="mt-0.5 line-clamp-2 font-sans text-xs leading-4 text-black/60">
                                 {s.description}
                               </p>
-                              <p className="mt-1 font-sans text-[10px] uppercase tracking-wide text-black/40">
+                              <p className="mt-1 font-sans text-[10px] uppercase tracking-wide text-black/60">
                                 {STATUS_LABEL[s.status]} · {s.votes_count} votes
                               </p>
                             </div>
