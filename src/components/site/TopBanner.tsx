@@ -83,7 +83,7 @@ export function TopBanner({ region = "ca" }: { region?: "ca" | "us" }) {
               >
                 <GooglePlayMark className="h-[18px] w-[18px] shrink-0" />
                 <span className="flex flex-col items-start">
-                  <span className="text-[8px] font-normal leading-none text-black/50">GET IT ON</span>
+                  <span className="text-[8px] font-normal leading-none text-black/60">GET IT ON</span>
                   <span className="text-[12px] font-semibold leading-tight">Google Play</span>
                 </span>
               </a>

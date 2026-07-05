@@ -1,4 +1,4 @@
-/** Shared Avatar sub-component used by TopBanner (CA) and TopBannerUS (US). */
+/** Shared Avatar sub-component used by TopBanner (region-aware, both CA and US). */
 
 export function Avatar({
   src,

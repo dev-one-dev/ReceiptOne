@@ -10,7 +10,7 @@ export function Advantages({ region = "ca" }: { region?: "ca" | "us" }) {
 
         {/* Header */}
         <div className="mb-10 flex flex-col items-center text-center">
-          <p className="font-sans text-xs font-semibold uppercase tracking-widest text-black/35">
+          <p className="font-sans text-xs font-semibold uppercase tracking-widest text-black/55">
             Benefits
           </p>
           <h2 className="mt-2 font-display text-3xl font-semibold leading-tight tracking-tight text-black sm:text-4xl lg:text-[2.75rem]">
@@ -57,8 +57,8 @@ export function Advantages({ region = "ca" }: { region?: "ca" | "us" }) {
             <CardLabel>Export</CardLabel>
             <CardTitle>Accountant-ready from day one</CardTitle>
             <CardDesc>PDF and CSV reports formatted exactly how accountants want them. No back-and-forth.</CardDesc>
-            <AccentPanel bg="bg-[#f97316]" textColor="text-white">
-              <Stat value="1-tap" label="export" light />
+            <AccentPanel bg="bg-[#c2410c]" textColor="text-white">
+              <Stat value="1-tap" label="export" light strongLabel />
             </AccentPanel>
           </BentoCard>
 
@@ -95,13 +95,27 @@ function AccentPanel({ bg, textColor, children }: { bg: string; textColor: strin
   );
 }
 
-function Stat({ value, label, light }: { value: string; label: string; light?: boolean }) {
+function Stat({
+  value,
+  label,
+  light,
+  strongLabel,
+}: {
+  value: string;
+  label: string;
+  light?: boolean;
+  strongLabel?: boolean;
+}) {
   return (
     <div className="flex flex-col">
       <span className={`font-display text-4xl font-bold leading-none tracking-tight sm:text-5xl ${light ? "text-white" : "text-black"}`}>
         {value}
       </span>
-      <span className={`mt-1 font-sans text-sm ${light ? "text-white/60" : "text-black/55"}`}>
+      <span
+        className={`mt-1 font-sans text-sm ${
+          light ? (strongLabel ? "text-white" : "text-white/60") : "text-black/65"
+        }`}
+      >
         {label}
       </span>
     </div>
@@ -110,7 +124,7 @@ function Stat({ value, label, light }: { value: string; label: string; light?: b
 
 function CardLabel({ children }: { children: React.ReactNode }) {
   return (
-    <p className="font-sans text-xs font-semibold uppercase tracking-widest text-black/35">
+    <p className="font-sans text-xs font-semibold uppercase tracking-widest text-black/55">
       {children}
     </p>
   );

@@ -68,6 +68,7 @@ export function InfoCards({ region = "ca" }: { region?: "ca" | "us" }) {
             src={heading}
             alt="Turn Receipt Chaos Into Tax Gold — Stop losing money on missed deductions"
             className="w-full mix-blend-multiply"
+            loading="lazy"
             draggable={false}
           />
         </div>
@@ -82,13 +83,13 @@ export function InfoCards({ region = "ca" }: { region?: "ca" | "us" }) {
 
                   {/* Text */}
                   <div className="text-center lg:text-left">
-                    <p className="font-sans text-xs font-semibold uppercase tracking-widest text-[#f97316]">
+                    <p className="font-sans text-xs font-semibold uppercase tracking-widest text-[#c2410c]">
                       {f.label}
                     </p>
                     <h3 className="mt-3 font-display text-3xl font-semibold tracking-tight text-black sm:text-4xl">
                       {f.title}
                     </h3>
-                    <p className="mt-4 text-base leading-relaxed text-neutral-700">
+                    <p className="mt-4 text-base leading-relaxed text-black/70">
                       {f.desc}
                     </p>
                   </div>

@@ -87,7 +87,7 @@ export function Trust({ region = "ca" }: { region?: Region }) {
 
         {/* Header */}
         <div className="mx-auto mb-14 max-w-2xl text-center">
-          <p className="font-sans text-xs font-semibold uppercase tracking-widest text-white/30">
+          <p className="font-sans text-xs font-semibold uppercase tracking-widest text-white/50">
             Security &amp; compliance
           </p>
           <h2 className="mt-3 font-display text-3xl font-semibold leading-tight tracking-tight text-white sm:text-4xl lg:text-[2.75rem]">

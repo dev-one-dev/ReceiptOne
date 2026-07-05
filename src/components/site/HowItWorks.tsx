@@ -62,7 +62,7 @@ export function HowItWorks({ region = "ca" }: { region?: Region }) {
     >
       <div className="mx-auto w-full max-w-[1200px]">
         <div className="mx-auto max-w-2xl text-center">
-          <p className="font-sans text-xs font-semibold uppercase tracking-widest text-black/35">
+          <p className="font-sans text-xs font-semibold uppercase tracking-widest text-black/55">
             How it works
           </p>
           <h2 className="mt-2 font-display text-3xl font-semibold leading-tight tracking-tight text-black sm:text-4xl lg:text-[2.75rem]">

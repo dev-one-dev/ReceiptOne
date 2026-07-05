@@ -74,7 +74,7 @@ export function Testimonials({ region = "ca" }: { region?: "ca" | "us" }) {
       <div className="mx-auto w-full max-w-[1200px]">
 
         <div className="mb-12 text-center">
-          <p className="font-sans text-xs font-semibold uppercase tracking-widest text-black/35">
+          <p className="font-sans text-xs font-semibold uppercase tracking-widest text-black/55">
             Testimonials
           </p>
           <h2 className="mt-2 font-display text-3xl font-semibold leading-tight tracking-tight text-black sm:text-4xl lg:text-[2.75rem]">
@@ -121,7 +121,7 @@ export function Testimonials({ region = "ca" }: { region?: "ca" | "us" }) {
                 )}
                 <div>
                   <p className="font-display text-sm font-semibold text-black">{t.name}</p>
-                  <p className="font-sans text-xs text-black/45">
+                  <p className="font-sans text-xs text-black/55">
                     {t.role} · {t.location}
                   </p>
                 </div>
