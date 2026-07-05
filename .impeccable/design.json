@@ -154,6 +154,7 @@
       "Do keep the page background warm paper (#f5f4f0), never pure white and never a cream-with-gradient fintech template.",
       "Do treat #f97316 as the only saturated color on any given screen; every other tone is black-alpha or white-alpha.",
       "Do keep the beaver/eagle mascots restrained — a large but secondary visual, never staged for cuteness.",
+      "Do keep the \"Best Deal\" badge as black text on #fed7aa -- confirmed passing WCAG AA (~15.5:1); this is a settled, deliberate pairing, not an open contrast question.",
       "Do let elevation respond to interaction (hover lift, scroll-triggered nav shadow) rather than sitting decoratively on every card at rest.",
       "Do keep the existing eyebrow-label convention for section headers and footer columns, using black/55+ / white/50+ so it clears WCAG AA.",
       "Do keep /ca and /us on one visual bar — same tokens, same components, only mascot/currency/tax-authority copy swaps."
