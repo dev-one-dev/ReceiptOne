@@ -121,7 +121,7 @@ The palette is almost monochrome by design: paper, ink, void, and one ember acce
 
 Both directions fail WCAG AA. That's known and accepted — brand color consistency wins over contrast here. Don't darken the fill (e.g. to a `c2410c` step), don't switch the text color, and don't flag this pairing again in a future audit or critique pass.
 
-**Not covered by this exception**: `articles/$slug.tsx:309`, the author-initials avatar badge (`text-[#f97316]` on `bg-[#fed7aa]`, ~2.07:1). Genuinely readable text on a worse, different background — a real open issue, not a brand-consistency choice.
+**Not covered by this exception**: the author-initials avatar badge (`articles/$slug.tsx:309`, `us/articles/$slug.tsx:256`) — this one was genuinely readable text on a worse, different background, so it was fixed rather than accepted. `text-[#f97316]` (~2.07:1) was darkened to `text-[#9a3412]` (~5.40:1), a step from the same ember tonal ramp, keeping the background at `#fed7aa`.
 
 **The Alpha Neutral Rule.** There is no gray token scale. Every intermediate tone is `black/{opacity}` on light surfaces or `white/{opacity}` on dark surfaces. Text-carrying alpha values must clear WCAG AA (4.5:1 for normal text, 3:1 for large text) against their actual background — `black/55`+ and `white/50`+ are the verified-passing floor for body copy and eyebrow/label text; `black/35`/`white/30` were the site's original label convention but measured under 2.7:1 and were corrected sitewide. This keeps every section — light or dark — tonally consistent with its own background instead of drifting toward a generic gray, without sacrificing legibility.
 
