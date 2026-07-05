@@ -306,7 +306,7 @@ function ArticleDetailPage() {
           {/* Author + meta */}
           <div className="mt-6 flex flex-wrap items-center gap-4 border-t border-black/[0.07] pt-6">
             {/* Author initials avatar */}
-            <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-[#fed7aa] font-display text-sm font-semibold text-[#f97316]">
+            <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-[#fed7aa] font-display text-sm font-semibold text-[#9a3412]">
               {article.author.name
                 .split(" ")
                 .map((n) => n[0])
