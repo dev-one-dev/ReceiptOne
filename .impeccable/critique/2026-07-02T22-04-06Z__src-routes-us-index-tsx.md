@@ -67,9 +67,8 @@ Fix: Same as CA.
 Suggested command: `/impeccable layout`
 
 **[P2] Hero mascot video has no responsive override — verify on a real mobile device**
-Why it matters: `TopBanner.tsx:130`'s `w-[190%] max-w-none` is unscoped by breakpoint. Intentional on desktop (half-column bleed); on mobile the same column is nearly full viewport width, so the same ratio likely over-crops the mascot with no visible signal (silently clipped by `overflow-x-clip`).
-Fix: Scope the oversize treatment to `lg:` and use a smaller mobile-appropriate width.
-Suggested command: `/impeccable adapt`
+Why it matters: `TopBanner.tsx:130`'s `w-[190%] max-w-none` is unscoped by breakpoint. Intentional on desktop (half-column bleed); on mobile the same column is nearly full viewport width, so the same ratio was suspected to over-crop the mascot with no visible signal (silently clipped by `overflow-x-clip`).
+**Status: RESOLVED — verified manually on a real mobile device (2026-07-06). Nothing crops; the composition holds at the mobile width. No code change needed.** This was a code-reading risk assessment, not a confirmed defect, and manual QA overrides it.
 
 ## Persona Red Flags
 

@@ -106,7 +106,7 @@ The palette is almost monochrome by design: paper, ink, void, and one ember acce
 - **Ember** (`#f97316`): the single accent. Used for the trailing punctuation mark in hero headlines, star ratings, the "Most Popular" pricing badge, and radial glow behind the hero mascot. Never used for body text or large fills.
 
 ### Secondary
-- **Ember Light** (`#fed7aa`): the "Best Deal" badge background, paired with black text. A quieter second-tier use of the accent hue — reserved for badges, not CTAs.
+- **Ember Light** (`#fed7aa`): the "Best Deal" badge background, paired with black text — confirmed passing (~15.5:1), unlike the deliberate white-on-`#f97316` tradeoff elsewhere. A quieter second-tier use of the accent hue — reserved for badges, not CTAs.
 
 ### Neutral
 - **Ink** (`#000000`): primary text color and the fill for high-contrast surfaces (popular pricing card, primary buttons, "Join now" CTA). Applied at full opacity for text, then diluted via alpha for everything else — `text-black/55`+ for body copy and eyebrow labels, `text-black/[0.07]` for hairline borders.
@@ -179,7 +179,7 @@ Buttons, cards, and inputs are precise and understated: pill shapes, thin border
 
 ### Badges
 - **Accent badge** ("Most Popular", "Coming soon"): `bg-[#f97316] text-white`, full pill, paired with Badge glow shadow — the single place the accent carries elevation. Contrast here is intentionally below WCAG AA; see the One Accent Rule.
-- **Secondary badge** ("Best Deal"): `bg-[#fed7aa] text-black`, full pill, standard soft shadow (not the accent glow) — a deliberate step down from the primary badge.
+- **Secondary badge** ("Best Deal"): `bg-[#fed7aa] text-black`, full pill, standard soft shadow (not the accent glow) — a deliberate step down from the primary badge. Confirmed and settled: black text here passes WCAG AA comfortably (~15.5:1); this is not paired with the white-on-`#f97316` exception and should stay black text.
 
 ## 6. Do's and Don'ts
 
