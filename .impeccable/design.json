@@ -1,0 +1,171 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-07-04T00:00:00.000Z",
+  "title": "Design System: ReceiptOne",
+  "extensions": {
+    "colorMeta": {
+      "ink": {
+        "role": "neutral",
+        "displayName": "Ink",
+        "canonical": "oklch(0 0 0)",
+        "tonalRamp": ["#000000", "#171717", "#262626", "#404040", "#595959", "#737373", "#a3a3a3", "#d4d4d4"]
+      },
+      "paper": {
+        "role": "neutral",
+        "displayName": "Paper",
+        "canonical": "oklch(0.965 0.003 90)",
+        "tonalRamp": ["#3d3b35", "#5c5952", "#8a867d", "#b6b2a8", "#d6d2c7", "#e8e5dd", "#f5f4f0", "#faf9f7"]
+      },
+      "void": {
+        "role": "neutral",
+        "displayName": "Void",
+        "canonical": "oklch(0.15 0.02 275)",
+        "tonalRamp": ["#0d0d14", "#17171f", "#24242f", "#34343f", "#4a4a56", "#6b6b76", "#96969e", "#c7c7cc"]
+      },
+      "ember": {
+        "role": "primary",
+        "displayName": "Ember",
+        "canonical": "oklch(0.71 0.17 42)",
+        "tonalRamp": ["#7c2d12", "#9a3412", "#c2410c", "#ea580c", "#f97316", "#fb923c", "#fdba74", "#fed7aa"]
+      },
+      "ember-light": {
+        "role": "secondary",
+        "displayName": "Ember Light",
+        "canonical": "oklch(0.88 0.07 60)",
+        "tonalRamp": ["#9a3412", "#c2410c", "#ea580c", "#f97316", "#fdba74", "#fed7aa", "#ffedd5", "#fff7ed"]
+      },
+      "surface": {
+        "role": "neutral",
+        "displayName": "Surface",
+        "canonical": "oklch(1 0 0)",
+        "tonalRamp": ["#e5e5e5", "#ececec", "#f2f2f2", "#f7f7f7", "#fafafa", "#fcfcfc", "#fefefe", "#ffffff"]
+      }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Hero H1 only, one per page." },
+      "headline": { "displayName": "Headline", "purpose": "Section H2s (Pricing, Trust, Faq, etc.)." },
+      "title": { "displayName": "Title", "purpose": "Card titles, trust-item headings, stat values." },
+      "body": { "displayName": "Body", "purpose": "All reading copy, capped ~65-75ch." },
+      "label": { "displayName": "Label", "purpose": "Eyebrow copy, footer column headings, nav region text." }
+    },
+    "shadows": [
+      { "name": "card-ambient", "value": "0 2px 12px rgba(0,0,0,0.06)", "purpose": "Default resting shadow on light cards." },
+      { "name": "card-hover", "value": "0 12px 40px rgba(0,0,0,0.10)", "purpose": "Hover lift response, paired with -translate-y-0.5." },
+      { "name": "nav-pill-scrolled", "value": "0 8px 32px rgba(0,0,0,0.08)", "purpose": "Header pill once page scrolls past 8px." },
+      { "name": "badge-glow", "value": "0 4px 12px rgba(249,115,22,0.4)", "purpose": "Most Popular badge only; the one shadow carrying the accent color." },
+      { "name": "mobile-drawer", "value": "0 16px 48px rgba(0,0,0,0.12)", "purpose": "Elevated overlays: mobile nav, region dropdown." }
+    ],
+    "motion": [
+      { "name": "ease-standard", "value": "ease", "purpose": "Default color/opacity transitions on buttons and links (0.3s)." },
+      { "name": "ease-underline", "value": "cubic-bezier(0.22, 1, 0.36, 1)", "purpose": "Animated underline reveal on inline text links." },
+      { "name": "duration-standard", "value": "300ms", "purpose": "Default transition duration for interactive color/opacity changes." }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "640px" },
+      { "name": "md", "value": "768px" },
+      { "name": "lg", "value": "1024px" },
+      { "name": "xl", "value": "1280px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Black pill CTA, e.g. \"Join now\".",
+      "html": "<button class=\"ds-btn-primary\">Join now</button>",
+      "css": ".ds-btn-primary { background: #000000; color: #ffffff; padding: 8px 12px; border-radius: 9999px; font-family: 'Inter Tight', Inter, sans-serif; font-size: 15px; font-weight: 600; line-height: 1.5; border: none; transition: opacity 0.3s ease; } .ds-btn-primary:hover { opacity: 0.9; } .ds-btn-primary:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(0,0,0,0.12); }"
+    },
+    {
+      "name": "Outline Button",
+      "kind": "button",
+      "refersTo": "button-outline",
+      "description": "Black-border pill CTA, e.g. \"Log in\".",
+      "html": "<button class=\"ds-btn-outline\">Log in</button>",
+      "css": ".ds-btn-outline { background: transparent; color: #000000; padding: 8px 12px; border-radius: 9999px; border: 1px solid #000000; font-family: 'Inter Tight', Inter, sans-serif; font-size: 15px; font-weight: 600; transition: background-color 0.3s ease; } .ds-btn-outline:hover { background: rgba(0,0,0,0.05); }"
+    },
+    {
+      "name": "Store Badge",
+      "kind": "button",
+      "refersTo": "badge-store-apple",
+      "description": "App Store download pill with two-line label, used in hero, pricing, and footer.",
+      "html": "<a class=\"ds-store-badge\" href=\"#\" aria-label=\"Download on the App Store\"><svg class=\"ds-store-badge-icon\" viewBox=\"0 0 24 24\" fill=\"currentColor\" aria-hidden=\"true\"><path d=\"M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z\"/></svg><span class=\"ds-store-badge-text\"><span class=\"ds-store-badge-small\">Download on the</span><span class=\"ds-store-badge-big\">App Store</span></span></a>",
+      "css": ".ds-store-badge { display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 14px; border-radius: 12px; border: 1px solid rgba(0,0,0,0.12); background: #000000; color: #ffffff; font-family: 'Inter Tight', Inter, sans-serif; text-decoration: none; transition: opacity 0.3s ease; } .ds-store-badge:hover { opacity: 0.8; } .ds-store-badge-icon { width: 18px; height: 18px; flex-shrink: 0; } .ds-store-badge-text { display: flex; flex-direction: column; align-items: flex-start; } .ds-store-badge-small { font-size: 8px; line-height: 1; color: rgba(255,255,255,0.6); } .ds-store-badge-big { font-size: 12px; font-weight: 600; line-height: 1.2; }"
+    },
+    {
+      "name": "Popular Pricing Card",
+      "kind": "card",
+      "refersTo": "card-popular",
+      "description": "Inverted (black-fill) pricing card, the highlighted plan in a 3-card grid.",
+      "html": "<div class=\"ds-card-popular\"><span class=\"ds-card-popular-badge\">Most Popular</span><p class=\"ds-card-popular-eyebrow\">Monthly</p><div class=\"ds-card-popular-price\">$9.99<span class=\"ds-card-popular-period\">/ month</span></div><ul class=\"ds-card-popular-list\"><li>Everything in Weekly</li><li>Unlimited cloud storage</li></ul></div>",
+      "css": ".ds-card-popular { position: relative; background: #000000; color: #ffffff; border-radius: 24px; padding: 40px 28px 28px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); } .ds-card-popular-badge { position: absolute; top: -14px; left: 50%; transform: translateX(-50%); background: #c2410c; color: #ffffff; font-size: 12px; font-weight: 600; padding: 4px 16px; border-radius: 9999px; box-shadow: 0 4px 12px rgba(249,115,22,0.4); } .ds-card-popular-eyebrow { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.5); } .ds-card-popular-price { margin-top: 12px; font-family: 'Inter Tight', Inter, sans-serif; font-size: 36px; font-weight: 700; letter-spacing: -0.02em; } .ds-card-popular-period { font-size: 14px; font-weight: 400; color: rgba(255,255,255,0.5); } .ds-card-popular-list { margin-top: 24px; display: flex; flex-direction: column; gap: 12px; font-size: 14px; color: rgba(255,255,255,0.8); list-style: none; padding: 0; }"
+    },
+    {
+      "name": "Default Pricing Card",
+      "kind": "card",
+      "refersTo": "card-default",
+      "description": "Light pricing/feature card with hairline border and soft ambient shadow.",
+      "html": "<div class=\"ds-card-default\"><p class=\"ds-card-default-eyebrow\">Weekly</p><div class=\"ds-card-default-price\">$3.99<span class=\"ds-card-default-period\">/ week</span></div><ul class=\"ds-card-default-list\"><li>Unlimited receipt scanning</li><li>Expense &amp; mileage tracking</li></ul></div>",
+      "css": ".ds-card-default { background: #ffffff; color: #000000; border: 1px solid rgba(0,0,0,0.07); border-radius: 24px; padding: 28px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); transition: transform 0.3s ease, box-shadow 0.3s ease; } .ds-card-default:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(0,0,0,0.10); } .ds-card-default-eyebrow { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(0,0,0,0.55); } .ds-card-default-price { margin-top: 12px; font-family: 'Inter Tight', Inter, sans-serif; font-size: 36px; font-weight: 700; letter-spacing: -0.02em; } .ds-card-default-period { font-size: 14px; font-weight: 400; color: rgba(0,0,0,0.55); } .ds-card-default-list { margin-top: 24px; display: flex; flex-direction: column; gap: 12px; font-size: 14px; color: rgba(0,0,0,0.65); list-style: none; padding: 0; }"
+    },
+    {
+      "name": "Trust Card",
+      "kind": "card",
+      "refersTo": "card-trust",
+      "description": "Dark-surface card used in the Trust/Security section, icon + title + description.",
+      "html": "<div class=\"ds-card-trust\"><div class=\"ds-card-trust-icon\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><rect x=\"3\" y=\"11\" width=\"18\" height=\"11\" rx=\"2\"/><path d=\"M7 11V7a5 5 0 0 1 10 0v4\"/></svg></div><h3 class=\"ds-card-trust-title\">Bank-grade encryption</h3><p class=\"ds-card-trust-desc\">All receipts and financial data encrypted at rest and in transit with AES-256.</p></div>",
+      "css": ".ds-card-trust { display: flex; flex-direction: column; gap: 16px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07); border-radius: 16px; padding: 24px; transition: background-color 0.3s ease; } .ds-card-trust:hover { background: rgba(255,255,255,0.07); } .ds-card-trust-icon { display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 12px; background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.7); } .ds-card-trust-icon svg { width: 20px; height: 20px; } .ds-card-trust-title { font-family: 'Inter Tight', Inter, sans-serif; font-size: 16px; font-weight: 600; color: #ffffff; } .ds-card-trust-desc { margin-top: 6px; font-size: 14px; line-height: 1.6; color: rgba(255,255,255,0.5); }"
+    },
+    {
+      "name": "Text Input",
+      "kind": "input",
+      "refersTo": "input-field",
+      "description": "Login/signup form field — quiet border-only focus treatment.",
+      "html": "<div class=\"ds-field\"><label class=\"ds-field-label\" for=\"ds-email\">Email</label><input class=\"ds-field-input\" id=\"ds-email\" type=\"email\" placeholder=\"you@example.com\" /></div>",
+      "css": ".ds-field { display: flex; flex-direction: column; gap: 8px; } .ds-field-label { font-size: 14px; font-weight: 500; color: #000000; } .ds-field-input { height: 44px; width: 100%; border-radius: 12px; border: 1px solid rgba(0,0,0,0.12); background: #ffffff; padding: 0 16px; font-size: 14px; outline: none; transition: border-color 0.3s ease; } .ds-field-input::placeholder { color: rgba(0,0,0,0.45); } .ds-field-input:focus { border-color: #f97316; }"
+    },
+    {
+      "name": "Nav Pill",
+      "kind": "nav",
+      "refersTo": "nav-pill",
+      "description": "Fixed floating pill navigation, blurred glass at rest, solid on scroll.",
+      "html": "<nav class=\"ds-nav\"><span class=\"ds-nav-logo\">ReceiptOne</span><ul class=\"ds-nav-links\"><li><a href=\"#\">How It Works</a></li><li><a href=\"#\">Benefits</a></li><li><a href=\"#\">Pricing</a></li><li><a href=\"#\">FAQ</a></li></ul><button class=\"ds-btn-primary\">Join now</button></nav>",
+      "css": ".ds-nav { display: flex; align-items: center; justify-content: space-between; gap: 12px; max-width: 760px; margin: 0 auto; padding: 14px 16px; border-radius: 20px; border: 1px solid rgba(0,0,0,0.08); background: rgba(255,255,255,0.7); backdrop-filter: blur(24px) saturate(1.5); box-shadow: 0 8px 32px rgba(0,0,0,0.08); } .ds-nav-logo { font-family: 'Inter Tight', Inter, sans-serif; font-weight: 700; font-size: 15px; } .ds-nav-links { display: flex; gap: 12px; list-style: none; margin: 0; padding: 0; font-size: 15px; font-weight: 500; } .ds-nav-links a { color: #000000; text-decoration: none; opacity: 1; transition: opacity 0.3s ease; } .ds-nav-links a:hover { opacity: 0.7; } .ds-btn-primary { background: #000000; color: #ffffff; padding: 8px 12px; border-radius: 9999px; font-family: 'Inter Tight', Inter, sans-serif; font-size: 15px; font-weight: 600; border: none; transition: opacity 0.3s ease; } .ds-btn-primary:hover { opacity: 0.9; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Well-Kept Ledger",
+    "overview": "ReceiptOne's site reads like a well-kept paper ledger, not a fintech dashboard: a warm off-white page (#f5f4f0), precise near-black ink for every word that matters, and exactly one accent — a single warm orange — reserved for the moments that deserve a highlighter mark. This is a brand register site (marketing, not app UI), built for freelancers deciding in minutes whether to trust a tool with their tax records, so credibility is load-bearing: nothing on the page should look decorative for its own sake. The regional beaver (/ca) and eagle (/us) mascots are a stamp in the margin of the ledger, not the ledger itself — a light territorial marker rendered large in the hero but never played for cuteness. They wear a cap, hold a receipt, and get out of the way. The system explicitly rejects three things: the generic cream-and-navy fintech template (gradient badges, stock hero illustration), cluttered QuickBooks-era accounting-software density, and an overly playful, mascot-led brand voice that would undercut the seriousness of handling someone's tax documents. Two token layers coexist in the codebase and should not be confused. The marketing layer (/ca, /us, /faq, /articles) hardcodes literal hex/black-alpha values directly in JSX. The shadcn utility layer (/login, /signup, legal pages, and every primitive in components/ui/) runs on a separate OKLCH grayscale token system defined in styles.css. Both are real and both ship today; this document describes the marketing layer, which is what carries the brand.",
+    "keyCharacteristics": [
+      "Warm paper background, never bright white, never cream-with-a-gradient",
+      "Near-black ink for text; color is reserved for the one accent, not spread across the palette",
+      "Neutral scale is black/white alpha, not named grays",
+      "Exactly one accent color (#f97316) carrying ratings, the Most Popular badge, and hero punctuation",
+      "Soft, ambient elevation — glow reserved for the hero mascot and footer cursor-follow",
+      "Two regions (CA/US), one visual bar"
+    ],
+    "rules": [
+      { "name": "The One Accent Rule", "body": "Ember (#f97316, or its darker #c2410c step where text sits directly on the accent color) is the only saturated color in the system. If a second saturated hue is tempting, the answer is alpha-black or alpha-white instead, not a new color.", "section": "colors" },
+      { "name": "The Alpha Neutral Rule", "body": "There is no gray token scale. Every intermediate tone is black/{opacity} on light surfaces or white/{opacity} on dark surfaces. Text-carrying alpha values must clear WCAG AA (4.5:1 normal, 3:1 large text); black/55+ and white/50+ are the verified-passing floor. The original black/35 / white/30 label convention measured under 2.7:1 and was corrected sitewide.", "section": "colors" },
+      { "name": "The Two-Font Ceiling Rule", "body": "Only two working fonts: Inter Tight for display/headline/label, Inter for body. A third systemwide font would break the restraint the brand personality calls for.", "section": "typography" },
+      { "name": "The Response-Not-Rest Rule", "body": "Elevation increases as a response to interaction (hover, scroll, open state), not as a static decoration. Cards and the nav pill are closer to flat at rest and lift only when touched.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do keep the page background warm paper (#f5f4f0), never pure white and never a cream-with-gradient fintech template.",
+      "Do treat #f97316 as the only saturated color on any given screen; every other tone is black-alpha or white-alpha.",
+      "Do keep the beaver/eagle mascots restrained — a large but secondary visual, never staged for cuteness.",
+      "Do let elevation respond to interaction (hover lift, scroll-triggered nav shadow) rather than sitting decoratively on every card at rest.",
+      "Do keep the existing eyebrow-label convention for section headers and footer columns, using black/55+ / white/50+ so it clears WCAG AA.",
+      "Do keep /ca and /us on one visual bar — same tokens, same components, only mascot/currency/tax-authority copy swaps."
+    ],
+    "donts": [
+      "Don't introduce a generic fintech look — cream background, navy text, gradient badges, stock hero illustrations.",
+      "Don't let the page read like dated, dense accounting software (QuickBooks-era clutter).",
+      "Don't push the mascots toward an overly playful or cartoonish treatment.",
+      "Don't add a second saturated accent color.",
+      "Don't invent a named gray scale — the neutral system is black/white alpha, keyed to whichever background it sits on.",
+      "Don't use border-left/border-right colored stripes, gradient text, or glassmorphism-as-decoration.",
+      "Don't ship muted/label text under black/55 or white/50 — anything lighter measured under WCAG AA's 4.5:1 in a full sitewide sweep."
+    ]
+  }
+}
