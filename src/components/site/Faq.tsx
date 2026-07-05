@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { MessageCircle, Plus } from "lucide-react";
+import { Plus } from "lucide-react";
 import { useState } from "react";
 
 export type QA = { q: string; a: string };
@@ -269,23 +269,18 @@ export function Faq({
 
   return (
     <section id="faq" className="mx-auto w-full max-w-[760px] scroll-mt-28 px-4 pt-4 pb-10 sm:px-6 md:pt-6 md:pb-14">
-      {/* Pill */}
-      <div className="flex justify-center">
-        <span className="inline-flex items-center gap-1.5 rounded-full bg-black px-4 py-2 font-display text-[12px] font-semibold text-white">
-          <MessageCircle className="h-3.5 w-3.5" strokeWidth={2.5} />
+      {/* Header */}
+      <div className="mx-auto mb-10 max-w-2xl text-center">
+        <p className="font-sans text-xs font-semibold uppercase tracking-widest text-black/55">
           FAQ
-        </span>
+        </p>
+        <h2 className="mt-2 font-display text-3xl font-semibold leading-tight tracking-tight text-black sm:text-4xl lg:text-[2.75rem]">
+          Everything you need to know
+        </h2>
       </div>
-
-      {/* Title */}
-      <h2 className="mt-5 px-1 text-center font-display text-[28px] font-bold leading-[1.08] tracking-[-0.02em] text-black sm:text-[40px] md:text-[56px]">
-        Everything you need to know
-      </h2>
 
       {/* Accordion */}
-      <div className="mt-10">
-        <FaqAccordion items={displayed} />
-      </div>
+      <FaqAccordion items={displayed} />
 
       {/* Help center link */}
       <div className="mt-6 text-center">
