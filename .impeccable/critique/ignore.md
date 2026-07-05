@@ -7,3 +7,9 @@ critique runs instead of re-flagging them.
 ## /us landing page (`src-routes-us-index-tsx`)
 
 - **Hero mascot video responsive override** (`TopBanner.tsx:130`, `w-[190%] max-w-none`). Originally flagged as a P2 in the 2026-07-02 critique as a code-reading risk ("may over-crop on mobile since the sizing is unscoped by breakpoint"). Verified manually on a real mobile device on 2026-07-06 — nothing crops, the composition holds at mobile width. No code change needed or wanted. Applies to `/ca` as well (same shared `TopBanner.tsx`).
+
+## Sitewide (all pages)
+
+- **Ember (`#f97316`) text/icons directly on white/near-white backgrounds, ~2.8:1.** Confirmed intentional brand-consistency decision (2026-07-06) — same category as the white-text-on-`#f97316` badge exception already documented in `DESIGN.md`'s One Accent Rule. Do not re-flag as a P1/P2 in future critique or audit passes. Known locations: `InfoCards.tsx:86` (feature label), `ArticlesSection.tsx:28` (`CategoryPill` featured variant) and `:80` ("Read article" CTA text), `articles/$slug.tsx:292` (category pill), `:266` (hover-only link color), and `:116` (a `size-5` decorative icon — iconographic, not subject to text-contrast rules in the first place, but same color choice). The hero H1's orange-period accent (`TopBanner.tsx:43-44`) is the same color choice at display size and is covered by this exception too.
+
+  **Explicitly NOT covered by this exception** — still an open finding, worth a real fix: `articles/$slug.tsx:309`, the author-initials avatar badge (`text-[#f97316]` on `bg-[#fed7aa]`, ~2.07:1). This is genuinely readable text (initials) on a worse and different background than the near-white cases above — don't fold it into this exception or silently drop it from future audits.
