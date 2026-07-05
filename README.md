@@ -162,7 +162,13 @@ Custom `useRevealOnScroll` hook applies staggered entrance animations to page se
 
 ### Interactive Micro-Interactions
 
-> This section is stale — a codebase check found none of the effects below (`--rx`/`--ry` tilt, spotlight glow, `mask-composite` gradient border, click ripple, cursor-following aurora) actually implemented in the current `NotAll.tsx`, `Advantages.tsx`, or `Footer.tsx`. Left here as a flag for a future documentation pass rather than silently rewritten; see `DESIGN.md` for what's actually shipping today (soft ambient shadows, hover-lift, hover-scale/rotate on bento cards).
+- **Card hover-lift** — feature/testimonial/step cards lift slightly (`-translate-y-0.5`) with a softer, larger shadow on hover
+- **Bento card hover** — `Advantages.tsx`'s cards scale down and tilt a fraction of a degree (`hover:scale-[0.98] hover:-rotate-[0.5deg]`) with the accent panel rising and rotating independently underneath
+- **Animated underline** — inline text links reveal an underline via a growing `background-size`, not `text-decoration`
+- **FAQ accordion** — height/opacity transition scoped to `grid-template-rows` for a jitter-free expand/collapse
+- **Nav pill** — blurs and tightens its background/shadow once the page scrolls past 8px
+
+See `DESIGN.md`'s Elevation section for the full shadow/motion vocabulary.
 
 ---
 
