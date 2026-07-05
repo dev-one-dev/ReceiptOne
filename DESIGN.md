@@ -103,7 +103,7 @@ Two token layers coexist in the codebase and should not be confused. The **marke
 The palette is almost monochrome by design: paper, ink, void, and one ember accent. Depth and hierarchy come from opacity on black or white, not from additional hues.
 
 ### Primary
-- **Ember** (`#f97316`): the single accent. Used for the trailing punctuation mark in hero headlines, star ratings, the "Most Popular" pricing badge, and radial glow behind the hero mascot. Never used for body text or large fills.
+- **Ember** (`#f97316`): the single accent. Used for the trailing punctuation mark in hero headlines, star ratings, the "Most Popular" pricing badge, radial glow behind the hero mascot, and small uppercase labels/CTA text (InfoCards feature labels, article category pills, "Read article" links). Never used for full body copy or large fills.
 
 ### Secondary
 - **Ember Light** (`#fed7aa`): the "Best Deal" badge background, paired with black text — confirmed passing (~15.5:1), unlike the deliberate white-on-`#f97316` tradeoff elsewhere. A quieter second-tier use of the accent hue — reserved for badges, not CTAs.
@@ -115,7 +115,13 @@ The palette is almost monochrome by design: paper, ink, void, and one ember acce
 - **Surface** (`#ffffff`): card and control backgrounds on light sections; also the ink color on dark sections, diluted the same way (`text-white/50`, `border-white/[0.07]`, `bg-white/[0.04]`).
 
 ### Named Rules
-**The One Accent Rule.** Ember (`#f97316`) is the only saturated color in the system, used exactly as-is everywhere — no darker or lighter substitutes. If a second saturated hue is tempting, the answer is alpha-black or alpha-white instead, not a new color. White text sits directly on `#f97316` in a few places (badges, the Advantages "Export" panel); this is a deliberate brand-consistency choice made with the contrast tradeoff known — it measures under WCAG AA (~2.8:1) and is not meant to be "fixed" by darkening the fill or switching the text to black.
+**The One Accent Rule.** Ember (`#f97316`) is the only saturated color in the system, used exactly as-is everywhere — no darker or lighter substitutes. If a second saturated hue is tempting, the answer is alpha-black or alpha-white instead, not a new color. Two confirmed, deliberate contrast tradeoffs, both accepted knowingly and neither meant to be "fixed" in a future pass:
+1. **White text on `#f97316`** — badges ("Most Popular", "Coming soon"), the Advantages "Export" panel. Measures ~2.8:1.
+2. **`#f97316` text/icons on white/near-white** — `InfoCards.tsx`'s feature labels, `ArticlesSection.tsx`'s `CategoryPill` (featured variant) and "Read article" CTA, the article-detail category pill, a decorative icon at `articles/$slug.tsx:116`, and the hero H1's orange-period accent. Also ~2.8:1 (the icon isn't subject to text-contrast rules at all, but shares the color choice).
+
+Both directions fail WCAG AA. That's known and accepted — brand color consistency wins over contrast here. Don't darken the fill (e.g. to a `c2410c` step), don't switch the text color, and don't flag this pairing again in a future audit or critique pass.
+
+**Not covered by this exception**: `articles/$slug.tsx:309`, the author-initials avatar badge (`text-[#f97316]` on `bg-[#fed7aa]`, ~2.07:1). Genuinely readable text on a worse, different background — a real open issue, not a brand-consistency choice.
 
 **The Alpha Neutral Rule.** There is no gray token scale. Every intermediate tone is `black/{opacity}` on light surfaces or `white/{opacity}` on dark surfaces. Text-carrying alpha values must clear WCAG AA (4.5:1 for normal text, 3:1 for large text) against their actual background — `black/55`+ and `white/50`+ are the verified-passing floor for body copy and eyebrow/label text; `black/35`/`white/30` were the site's original label convention but measured under 2.7:1 and were corrected sitewide. This keeps every section — light or dark — tonally consistent with its own background instead of drifting toward a generic gray, without sacrificing legibility.
 
