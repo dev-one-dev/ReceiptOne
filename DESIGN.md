@@ -115,7 +115,7 @@ The palette is almost monochrome by design: paper, ink, void, and one ember acce
 - **Surface** (`#ffffff`): card and control backgrounds on light sections; also the ink color on dark sections, diluted the same way (`text-white/50`, `border-white/[0.07]`, `bg-white/[0.04]`).
 
 ### Named Rules
-**The One Accent Rule.** Ember (`#f97316`, or its darker `#c2410c` step where text needs to sit directly on the accent color) is the only saturated color in the system. If a second saturated hue is tempting, the answer is alpha-black or alpha-white instead, not a new color.
+**The One Accent Rule.** Ember (`#f97316`) is the only saturated color in the system. Where text sits directly on it, use black (not white) text — white on `#f97316` fails WCAG AA even at full opacity. If a second saturated hue is tempting, the answer is alpha-black or alpha-white instead, not a new color.
 
 **The Alpha Neutral Rule.** There is no gray token scale. Every intermediate tone is `black/{opacity}` on light surfaces or `white/{opacity}` on dark surfaces. Text-carrying alpha values must clear WCAG AA (4.5:1 for normal text, 3:1 for large text) against their actual background — `black/55`+ and `white/50`+ are the verified-passing floor for body copy and eyebrow/label text; `black/35`/`white/30` were the site's original label convention but measured under 2.7:1 and were corrected sitewide. This keeps every section — light or dark — tonally consistent with its own background instead of drifting toward a generic gray, without sacrificing legibility.
 
@@ -178,7 +178,7 @@ Buttons, cards, and inputs are precise and understated: pill shapes, thin border
 - Fixed pill nav (`rounded-[20px]`, `max-w-[760px]`), `backdrop-blur-xl` with `bg-white/40` at rest, tightening to `bg-white/70` + border + shadow once scrolled past 8px. Nav links use `hover:opacity-70` rather than a color or underline change. Mobile collapses into a `rounded-2xl` dropdown drawer beneath the pill, not a full-screen takeover.
 
 ### Badges
-- **Accent badge** ("Most Popular"): `bg-[#c2410c] text-white` (the darker ember step — white text on the lighter `#f97316` fails contrast), full pill, paired with Badge glow shadow — the single place the accent carries elevation.
+- **Accent badge** ("Most Popular"): `bg-[#f97316] text-black` (black text, not white — white fails contrast on this fill), full pill, paired with Badge glow shadow — the single place the accent carries elevation.
 - **Secondary badge** ("Best Deal"): `bg-[#fed7aa] text-black`, full pill, standard soft shadow (not the accent glow) — a deliberate step down from the primary badge.
 
 ## 6. Do's and Don'ts
