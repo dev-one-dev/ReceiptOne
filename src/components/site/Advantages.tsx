@@ -57,8 +57,8 @@ export function Advantages({ region = "ca" }: { region?: "ca" | "us" }) {
             <CardLabel>Export</CardLabel>
             <CardTitle>Accountant-ready from day one</CardTitle>
             <CardDesc>PDF and CSV reports formatted exactly how accountants want them. No back-and-forth.</CardDesc>
-            <AccentPanel bg="bg-[#f97316]" textColor="text-black">
-              <Stat value="1-tap" label="export" strongLabel />
+            <AccentPanel bg="bg-[#f97316]" textColor="text-white">
+              <Stat value="1-tap" label="export" light strongLabel />
             </AccentPanel>
           </BentoCard>
 
