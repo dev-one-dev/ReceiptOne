@@ -57,8 +57,8 @@ export function Advantages({ region = "ca" }: { region?: "ca" | "us" }) {
             <CardLabel>Export</CardLabel>
             <CardTitle>Accountant-ready from day one</CardTitle>
             <CardDesc>PDF and CSV reports formatted exactly how accountants want them. No back-and-forth.</CardDesc>
-            <AccentPanel bg="bg-[#c2410c]" textColor="text-white">
-              <Stat value="1-tap" label="export" light strongLabel />
+            <AccentPanel bg="bg-[#f97316]" textColor="text-black">
+              <Stat value="1-tap" label="export" strongLabel />
             </AccentPanel>
           </BentoCard>
 
@@ -113,7 +113,13 @@ function Stat({
       </span>
       <span
         className={`mt-1 font-sans text-sm ${
-          light ? (strongLabel ? "text-white" : "text-white/60") : "text-black/65"
+          light
+            ? strongLabel
+              ? "text-white"
+              : "text-white/60"
+            : strongLabel
+              ? "text-black"
+              : "text-black/65"
         }`}
       >
         {label}
