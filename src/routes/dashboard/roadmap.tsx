@@ -1,52 +1,99 @@
+import { useEffect, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { GitCommitHorizontal, Milestone, Rocket } from "lucide-react";
+import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
+import { errorMessage } from "@/lib/utils";
 
 export const Route = createFileRoute("/dashboard/roadmap")({
   component: RoadmapPage,
 });
 
-type RoadmapStatus = "Under review" | "Planned" | "In progress" | "Shipped";
+type FeatureIdeaStatus = "under_review" | "planned" | "coming_soon" | "published";
 
-type RoadmapItem = {
+type FeatureIdea = {
+  id: string;
   title: string;
   description: string;
-  status: RoadmapStatus;
+  status: FeatureIdeaStatus;
+  votes_count: number;
+  updated_at: string;
 };
 
-const ROADMAP: RoadmapItem[] = [
-  { title: "QuickBooks sync", description: "Two-way sync with QuickBooks Online.", status: "Planned" },
-  { title: "Bulk receipt categorization", description: "Select multiple receipts and recategorize at once.", status: "In progress" },
-  { title: "Accountant dashboard", description: "A shared view your accountant can access directly.", status: "Under review" },
-  { title: "Mileage auto-tracking", description: "Background GPS tracking for automatic trip logging.", status: "Shipped" },
-];
-
-const STATUS_STYLE: Record<RoadmapStatus, string> = {
-  "Under review": "bg-black/[0.05] text-black/60",
-  Planned: "bg-[#f97316]/10 text-[#c2410c]",
-  "In progress": "bg-[#f97316]/15 text-[#c2410c]",
-  Shipped: "bg-black text-white",
+const STATUS_LABEL: Record<FeatureIdeaStatus, string> = {
+  under_review: "Under review",
+  planned: "Planned",
+  coming_soon: "Coming soon",
+  published: "Published",
 };
 
-type ChangelogEntry = {
-  date: string;
-  title: string;
-  description: string;
+const STATUS_STYLE: Record<FeatureIdeaStatus, string> = {
+  under_review: "bg-black/[0.05] text-black/60",
+  planned: "bg-[#f97316]/10 text-[#c2410c]",
+  coming_soon: "bg-[#f97316]/15 text-[#c2410c]",
+  published: "bg-black text-white",
 };
 
-const CHANGELOG: ChangelogEntry[] = [
-  { date: "Jul 2026", title: "Mileage auto-tracking", description: "Trips are now logged automatically in the background." },
-  { date: "Jun 2026", title: "Faster receipt scanning", description: "Receipt OCR now processes in under 2 seconds on average." },
-  { date: "May 2026", title: "New expense categories", description: "Added Software, Meals, and Office Rent as default categories." },
-  { date: "Apr 2026", title: "CSV export", description: "Reports can now be exported as CSV in addition to PDF." },
-  { date: "Mar 2026", title: "Bulk delete", description: "Select multiple receipts to delete them in one action." },
-];
+/** Same read this dashboard's own feature-suggestion widget uses --
+ * feature_ideas' SELECT policy is public (USING (true)), so this works
+ * with the anon/publishable client, no service-role access needed. */
+async function fetchIdeas(): Promise<FeatureIdea[]> {
+  const { data, error } = await supabase
+    .from("feature_ideas")
+    .select("id, title, description, status, votes_count, updated_at")
+    .order("votes_count", { ascending: false });
+  if (error) throw error;
+  return data ?? [];
+}
+
+function formatDate(iso: string) {
+  return new Date(iso).toLocaleDateString("en-US", { month: "short", year: "numeric" });
+}
+
+function CardSkeleton() {
+  return (
+    <div className="animate-pulse rounded-2xl border border-black/[0.07] bg-white p-5">
+      <div className="h-4 w-2/3 rounded bg-black/[0.06]" />
+      <div className="mt-3 h-3 w-full rounded bg-black/[0.05]" />
+      <div className="mt-1.5 h-3 w-4/5 rounded bg-black/[0.05]" />
+    </div>
+  );
+}
 
 function RoadmapPage() {
+  const [ideas, setIdeas] = useState<FeatureIdea[] | null>(null);
+  const [loadError, setLoadError] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const data = await fetchIdeas();
+        if (!cancelled) setIdeas(data);
+      } catch (e) {
+        if (!cancelled) {
+          setLoadError(true);
+          toast.error(errorMessage(e, "Failed to load roadmap"));
+        }
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const roadmap = (ideas ?? []).filter((i) => i.status !== "published");
+  const changelog = (ideas ?? [])
+    .filter((i) => i.status === "published")
+    .sort((a, b) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime());
+
   return (
     <div className="mx-auto w-full max-w-[1200px] flex-1 px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
       <div>
         <h1 className="text-2xl font-semibold tracking-tight text-black">Roadmap & Changelog</h1>
-        <p className="mt-1 text-sm text-black/55">See what's planned next and what's already shipped.</p>
+        <p className="mt-1 text-sm text-black/55">
+          What's planned next and what's already shipped — pulled from the community feature board.
+        </p>
       </div>
 
       {/* Roadmap */}
@@ -55,22 +102,39 @@ function RoadmapPage() {
           <Milestone className="size-4 text-black/40" aria-hidden />
           <h2 className="text-sm font-semibold text-black">Roadmap</h2>
         </div>
-        <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
-          {ROADMAP.map((item) => (
-            <div
-              key={item.title}
-              className="rounded-2xl border border-black/[0.07] bg-white p-5 shadow-[0_2px_12px_rgba(0,0,0,0.06)]"
-            >
-              <div className="flex items-start justify-between gap-3">
-                <h3 className="text-sm font-semibold text-black">{item.title}</h3>
-                <span className={["shrink-0 rounded-full px-2.5 py-1 text-xs font-medium", STATUS_STYLE[item.status]].join(" ")}>
-                  {item.status}
-                </span>
+
+        {ideas === null ? (
+          <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
+            <CardSkeleton />
+            <CardSkeleton />
+          </div>
+        ) : loadError ? (
+          <div className="mt-3 rounded-2xl border border-black/[0.07] bg-white p-6 text-center text-sm text-black/45">
+            Couldn't load the roadmap right now.
+          </div>
+        ) : roadmap.length === 0 ? (
+          <div className="mt-3 rounded-2xl border border-dashed border-black/15 bg-white p-6 text-center text-sm text-black/45">
+            Nothing in review or planned right now.
+          </div>
+        ) : (
+          <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
+            {roadmap.map((item) => (
+              <div
+                key={item.id}
+                className="rounded-2xl border border-black/[0.07] bg-white p-5 shadow-[0_2px_12px_rgba(0,0,0,0.06)]"
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <h3 className="text-sm font-semibold text-black">{item.title}</h3>
+                  <span className={["shrink-0 rounded-full px-2.5 py-1 text-xs font-medium", STATUS_STYLE[item.status]].join(" ")}>
+                    {STATUS_LABEL[item.status]}
+                  </span>
+                </div>
+                <p className="mt-1.5 text-sm leading-relaxed text-black/55">{item.description}</p>
+                <p className="mt-2 text-xs text-black/40">{item.votes_count} vote{item.votes_count === 1 ? "" : "s"}</p>
               </div>
-              <p className="mt-1.5 text-sm leading-relaxed text-black/55">{item.description}</p>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Changelog */}
@@ -79,27 +143,38 @@ function RoadmapPage() {
           <Rocket className="size-4 text-black/40" aria-hidden />
           <h2 className="text-sm font-semibold text-black">Changelog</h2>
         </div>
-        <div className="mt-3 rounded-2xl border border-black/[0.07] bg-white shadow-[0_2px_12px_rgba(0,0,0,0.06)]">
-          <ul>
-            {CHANGELOG.map((entry, i) => (
-              <li
-                key={entry.date + entry.title}
-                className={["flex gap-4 px-5 py-4", i !== 0 ? "border-t border-black/[0.05]" : ""].join(" ")}
-              >
-                <span className="mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-full bg-black/[0.05] text-black/40">
-                  <GitCommitHorizontal className="size-3.5" aria-hidden />
-                </span>
-                <div>
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm font-semibold text-black">{entry.title}</span>
-                    <span className="text-xs text-black/40">{entry.date}</span>
+
+        {ideas === null ? (
+          <div className="mt-3 space-y-3">
+            <CardSkeleton />
+          </div>
+        ) : loadError ? null : changelog.length === 0 ? (
+          <div className="mt-3 rounded-2xl border border-dashed border-black/15 bg-white p-6 text-center text-sm text-black/45">
+            Nothing shipped yet.
+          </div>
+        ) : (
+          <div className="mt-3 rounded-2xl border border-black/[0.07] bg-white shadow-[0_2px_12px_rgba(0,0,0,0.06)]">
+            <ul>
+              {changelog.map((item, i) => (
+                <li
+                  key={item.id}
+                  className={["flex gap-4 px-5 py-4", i !== 0 ? "border-t border-black/[0.05]" : ""].join(" ")}
+                >
+                  <span className="mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-full bg-black/[0.05] text-black/40">
+                    <GitCommitHorizontal className="size-3.5" aria-hidden />
+                  </span>
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm font-semibold text-black">{item.title}</span>
+                      <span className="text-xs text-black/40">{formatDate(item.updated_at)}</span>
+                    </div>
+                    <p className="mt-0.5 text-sm leading-relaxed text-black/55">{item.description}</p>
                   </div>
-                  <p className="mt-0.5 text-sm leading-relaxed text-black/55">{entry.description}</p>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
       </div>
     </div>
   );
