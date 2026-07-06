@@ -2,6 +2,7 @@ import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { errorMessage } from "@/lib/utils";
 import { toast } from "sonner";
+import caBeaverPeekImg from "@/assets/figma/mileage-auto/Graphic-Small2.webp";
 
 type Region = "ca" | "us";
 
@@ -74,72 +75,91 @@ export function ContactForm({ region }: { region: Region }) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="space-y-4 rounded-2xl border border-black/[0.07] bg-white p-6 shadow-[0_2px_12px_rgba(0,0,0,0.06)] sm:p-8"
+      className="relative overflow-hidden rounded-2xl border border-black/[0.07] bg-white p-6 shadow-[0_2px_12px_rgba(0,0,0,0.06)] sm:p-8"
     >
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+      {/*
+       * Regional mascot, peeking in from the left edge — restrained per
+       * DESIGN.md's mascot principle: a large but secondary visual, cropped
+       * by the card's own edge, sitting behind (z-0) the actual form fields.
+       * CA-specific; /us/contact gets its own regional treatment separately.
+       */}
+      {region === "ca" && (
+        <img
+          src={caBeaverPeekImg}
+          alt=""
+          aria-hidden
+          loading="lazy"
+          decoding="async"
+          className="pointer-events-none absolute -left-9 top-1/2 z-0 w-28 -translate-y-1/2 rotate-[14deg] select-none object-contain sm:-left-11 sm:w-36"
+        />
+      )}
+
+      <div className="relative z-10 space-y-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <div className="space-y-1.5">
+            <label htmlFor="contact-name" className="block font-sans text-xs font-medium text-black/70">
+              Name
+            </label>
+            <input
+              id="contact-name"
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value.slice(0, 120))}
+              placeholder="Jane Doe"
+              className="block w-full rounded-xl border border-black/10 bg-[#faf9f6] px-4 py-3 text-sm leading-5 text-black outline-none transition-colors placeholder:text-black/55 focus:border-black/40"
+            />
+          </div>
+          <div className="space-y-1.5">
+            <label htmlFor="contact-email" className="block font-sans text-xs font-medium text-black/70">
+              Email
+            </label>
+            <input
+              id="contact-email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value.slice(0, 254))}
+              placeholder="you@example.com"
+              className="block w-full rounded-xl border border-black/10 bg-[#faf9f6] px-4 py-3 text-sm leading-5 text-black outline-none transition-colors placeholder:text-black/55 focus:border-black/40"
+            />
+          </div>
+        </div>
+
         <div className="space-y-1.5">
-          <label htmlFor="contact-name" className="block font-sans text-xs font-medium text-black/70">
-            Name
+          <label htmlFor="contact-subject" className="block font-sans text-xs font-medium text-black/70">
+            Subject
           </label>
           <input
-            id="contact-name"
+            id="contact-subject"
             type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value.slice(0, 120))}
-            placeholder="Jane Doe"
+            value={subject}
+            onChange={(e) => setSubject(e.target.value.slice(0, 200))}
+            placeholder="What's this about?"
             className="block w-full rounded-xl border border-black/10 bg-[#faf9f6] px-4 py-3 text-sm leading-5 text-black outline-none transition-colors placeholder:text-black/55 focus:border-black/40"
           />
         </div>
+
         <div className="space-y-1.5">
-          <label htmlFor="contact-email" className="block font-sans text-xs font-medium text-black/70">
-            Email
+          <label htmlFor="contact-message" className="block font-sans text-xs font-medium text-black/70">
+            Message
           </label>
-          <input
-            id="contact-email"
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value.slice(0, 254))}
-            placeholder="you@example.com"
-            className="block w-full rounded-xl border border-black/10 bg-[#faf9f6] px-4 py-3 text-sm leading-5 text-black outline-none transition-colors placeholder:text-black/55 focus:border-black/40"
+          <textarea
+            id="contact-message"
+            value={message}
+            onChange={(e) => setMessage(e.target.value.slice(0, 2000))}
+            placeholder="How can we help?"
+            rows={5}
+            className="block w-full resize-none rounded-xl border border-black/10 bg-[#faf9f6] px-4 py-3 text-sm leading-5 text-black outline-none transition-colors placeholder:text-black/55 focus:border-black/40"
           />
         </div>
-      </div>
 
-      <div className="space-y-1.5">
-        <label htmlFor="contact-subject" className="block font-sans text-xs font-medium text-black/70">
-          Subject
-        </label>
-        <input
-          id="contact-subject"
-          type="text"
-          value={subject}
-          onChange={(e) => setSubject(e.target.value.slice(0, 200))}
-          placeholder="What's this about?"
-          className="block w-full rounded-xl border border-black/10 bg-[#faf9f6] px-4 py-3 text-sm leading-5 text-black outline-none transition-colors placeholder:text-black/55 focus:border-black/40"
-        />
+        <button
+          type="submit"
+          disabled={loading}
+          className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-black px-5 py-3 font-display text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40"
+        >
+          {loading ? "Sending…" : "Send message"}
+        </button>
       </div>
-
-      <div className="space-y-1.5">
-        <label htmlFor="contact-message" className="block font-sans text-xs font-medium text-black/70">
-          Message
-        </label>
-        <textarea
-          id="contact-message"
-          value={message}
-          onChange={(e) => setMessage(e.target.value.slice(0, 2000))}
-          placeholder="How can we help?"
-          rows={5}
-          className="block w-full resize-none rounded-xl border border-black/10 bg-[#faf9f6] px-4 py-3 text-sm leading-5 text-black outline-none transition-colors placeholder:text-black/55 focus:border-black/40"
-        />
-      </div>
-
-      <button
-        type="submit"
-        disabled={loading}
-        className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-black px-5 py-3 font-display text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40"
-      >
-        {loading ? "Sending…" : "Send message"}
-      </button>
     </form>
   );
 }
