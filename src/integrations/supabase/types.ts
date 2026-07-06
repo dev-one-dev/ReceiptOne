@@ -153,6 +153,7 @@ export type Database = {
         | "planned"
         | "coming_soon"
         | "published"
+        | "pending_review"
       support_request_status: "new" | "in_progress" | "resolved"
     }
     CompositeTypes: {
@@ -289,6 +290,7 @@ export const Constants = {
         "planned",
         "coming_soon",
         "published",
+        "pending_review",
       ],
       support_request_status: ["new", "in_progress", "resolved"],
     },

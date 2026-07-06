@@ -4,7 +4,10 @@ import { errorMessage } from "@/lib/utils";
 import { toast } from "sonner";
 
 type Region = "ca" | "us";
-type Status = "under_review" | "planned" | "coming_soon" | "published";
+// Matches the full DB enum, including pending_review -- RLS filters rows,
+// not the column's type, so Postgrest's return type genuinely includes it
+// even though a pending_review row should never actually reach this query.
+type Status = "pending_review" | "under_review" | "planned" | "coming_soon" | "published";
 
 interface Idea {
   id: string;
@@ -22,6 +25,7 @@ const QUICK_OPTIONS = [
 ];
 
 const STATUS_LABEL: Record<Status, string> = {
+  pending_review: "Pending review",
   under_review: "Under review",
   planned: "Planned",
   coming_soon: "Coming soon",
@@ -53,7 +57,10 @@ function persistVotedSet(set: Set<string>) {
   localStorage.setItem("ro_voted_ideas", JSON.stringify(Array.from(set)));
 }
 
-/** Top 20 ideas by vote count, every status -- the widget's default view. */
+/** Top 20 ideas by vote count, every publicly-visible status -- the
+ * widget's default view. RLS already excludes pending_review from this
+ * query entirely; the filter below is a belt-and-suspenders backstop,
+ * not the real enforcement. */
 async function fetchIdeas(): Promise<Idea[]> {
   const { data, error } = await supabase
     .from("feature_ideas")
@@ -61,7 +68,7 @@ async function fetchIdeas(): Promise<Idea[]> {
     .order("votes_count", { ascending: false })
     .limit(20);
   if (error) throw error;
-  return (data as Idea[]) ?? [];
+  return (data ?? []).filter((idea) => idea.status !== "pending_review");
 }
 
 type Step = "list" | "input" | "success";

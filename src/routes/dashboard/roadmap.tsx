@@ -9,7 +9,10 @@ export const Route = createFileRoute("/dashboard/roadmap")({
   component: RoadmapPage,
 });
 
-type FeatureIdeaStatus = "under_review" | "planned" | "coming_soon" | "published";
+// Matches the full DB enum, including pending_review -- RLS filters rows,
+// not the column's type, so Postgrest's return type genuinely includes it
+// even though a pending_review row should never actually reach this query.
+type FeatureIdeaStatus = "pending_review" | "under_review" | "planned" | "coming_soon" | "published";
 
 type FeatureIdea = {
   id: string;
@@ -21,6 +24,7 @@ type FeatureIdea = {
 };
 
 const STATUS_LABEL: Record<FeatureIdeaStatus, string> = {
+  pending_review: "Pending review",
   under_review: "Under review",
   planned: "Planned",
   coming_soon: "Coming soon",
@@ -28,6 +32,7 @@ const STATUS_LABEL: Record<FeatureIdeaStatus, string> = {
 };
 
 const STATUS_STYLE: Record<FeatureIdeaStatus, string> = {
+  pending_review: "bg-black/[0.05] text-black/40",
   under_review: "bg-black/[0.05] text-black/60",
   planned: "bg-[#f97316]/10 text-[#c2410c]",
   coming_soon: "bg-[#f97316]/15 text-[#c2410c]",
@@ -35,7 +40,7 @@ const STATUS_STYLE: Record<FeatureIdeaStatus, string> = {
 };
 
 /** Same read this dashboard's own feature-suggestion widget uses --
- * feature_ideas' SELECT policy is public (USING (true)), so this works
+ * feature_ideas' SELECT policy now excludes pending_review, so this works
  * with the anon/publishable client, no service-role access needed. */
 async function fetchIdeas(): Promise<FeatureIdea[]> {
   const { data, error } = await supabase
@@ -82,7 +87,9 @@ function RoadmapPage() {
     };
   }, []);
 
-  const roadmap = (ideas ?? []).filter((i) => i.status !== "published");
+  // RLS already excludes pending_review from this query entirely; this
+  // filter is a belt-and-suspenders backstop, not the real enforcement.
+  const roadmap = (ideas ?? []).filter((i) => i.status !== "published" && i.status !== "pending_review");
   const changelog = (ideas ?? [])
     .filter((i) => i.status === "published")
     .sort((a, b) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime());
