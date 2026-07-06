@@ -15,12 +15,14 @@ import { Route as SignupRouteImport } from './routes/signup'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as FaqRouteImport } from './routes/faq'
+import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CaRouteImport } from './routes/ca'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as ArticlesIndexRouteImport } from './routes/articles/index'
-import { Route as ArticlesSlugRouteImport } from './routes/articles/$slug'
 import { Route as UsIndexRouteImport } from './routes/us/index'
+import { Route as ArticlesIndexRouteImport } from './routes/articles/index'
 import { Route as UsFaqRouteImport } from './routes/us/faq'
+import { Route as UsContactRouteImport } from './routes/us/contact'
+import { Route as ArticlesSlugRouteImport } from './routes/articles/$slug'
 import { Route as UsArticlesIndexRouteImport } from './routes/us/articles/index'
 import { Route as UsArticlesSlugRouteImport } from './routes/us/articles/$slug'
 
@@ -54,6 +56,11 @@ const FaqRoute = FaqRouteImport.update({
   path: '/faq',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CaRoute = CaRouteImport.update({
   id: '/ca',
   path: '/ca',
@@ -64,33 +71,38 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const UsIndexRoute = UsIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => UsRoute,
+} as any)
 const ArticlesIndexRoute = ArticlesIndexRouteImport.update({
   id: '/articles/',
   path: '/articles/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const UsFaqRoute = UsFaqRouteImport.update({
+  id: '/faq',
+  path: '/faq',
+  getParentRoute: () => UsRoute,
+} as any)
+const UsContactRoute = UsContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => UsRoute,
 } as any)
 const ArticlesSlugRoute = ArticlesSlugRouteImport.update({
   id: '/articles/$slug',
   path: '/articles/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
-const UsIndexRoute = UsIndexRouteImport.update({
-  id: '/us/',
-  path: '/',
-  getParentRoute: () => UsRoute,
-} as any)
-const UsFaqRoute = UsFaqRouteImport.update({
-  id: '/us/faq',
-  path: '/faq',
-  getParentRoute: () => UsRoute,
-} as any)
 const UsArticlesIndexRoute = UsArticlesIndexRouteImport.update({
-  id: '/us/articles/',
+  id: '/articles/',
   path: '/articles/',
   getParentRoute: () => UsRoute,
 } as any)
 const UsArticlesSlugRoute = UsArticlesSlugRouteImport.update({
-  id: '/us/articles/$slug',
+  id: '/articles/$slug',
   path: '/articles/$slug',
   getParentRoute: () => UsRoute,
 } as any)
@@ -98,31 +110,35 @@ const UsArticlesSlugRoute = UsArticlesSlugRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/ca': typeof CaRoute
+  '/contact': typeof ContactRoute
   '/faq': typeof FaqRoute
   '/login': typeof LoginRoute
   '/privacy': typeof PrivacyRoute
   '/signup': typeof SignupRoute
   '/terms': typeof TermsRoute
-  '/us': typeof UsRoute
+  '/us': typeof UsRouteWithChildren
   '/articles/$slug': typeof ArticlesSlugRoute
+  '/us/contact': typeof UsContactRoute
+  '/us/faq': typeof UsFaqRoute
   '/articles/': typeof ArticlesIndexRoute
   '/us/': typeof UsIndexRoute
-  '/us/faq': typeof UsFaqRoute
-  '/us/articles/': typeof UsArticlesIndexRoute
   '/us/articles/$slug': typeof UsArticlesSlugRoute
+  '/us/articles/': typeof UsArticlesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/ca': typeof CaRoute
+  '/contact': typeof ContactRoute
   '/faq': typeof FaqRoute
   '/login': typeof LoginRoute
   '/privacy': typeof PrivacyRoute
   '/signup': typeof SignupRoute
   '/terms': typeof TermsRoute
-  '/us': typeof UsIndexRoute
   '/articles/$slug': typeof ArticlesSlugRoute
-  '/articles': typeof ArticlesIndexRoute
+  '/us/contact': typeof UsContactRoute
   '/us/faq': typeof UsFaqRoute
+  '/articles': typeof ArticlesIndexRoute
+  '/us': typeof UsIndexRoute
   '/us/articles/$slug': typeof UsArticlesSlugRoute
   '/us/articles': typeof UsArticlesIndexRoute
 }
@@ -130,24 +146,27 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/ca': typeof CaRoute
+  '/contact': typeof ContactRoute
   '/faq': typeof FaqRoute
   '/login': typeof LoginRoute
   '/privacy': typeof PrivacyRoute
   '/signup': typeof SignupRoute
   '/terms': typeof TermsRoute
-  '/us': typeof UsRoute
+  '/us': typeof UsRouteWithChildren
   '/articles/$slug': typeof ArticlesSlugRoute
+  '/us/contact': typeof UsContactRoute
+  '/us/faq': typeof UsFaqRoute
   '/articles/': typeof ArticlesIndexRoute
   '/us/': typeof UsIndexRoute
-  '/us/faq': typeof UsFaqRoute
-  '/us/articles/': typeof UsArticlesIndexRoute
   '/us/articles/$slug': typeof UsArticlesSlugRoute
+  '/us/articles/': typeof UsArticlesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/ca'
+    | '/contact'
     | '/faq'
     | '/login'
     | '/privacy'
@@ -155,30 +174,34 @@ export interface FileRouteTypes {
     | '/terms'
     | '/us'
     | '/articles/$slug'
+    | '/us/contact'
+    | '/us/faq'
     | '/articles/'
     | '/us/'
-    | '/us/faq'
-    | '/us/articles/'
     | '/us/articles/$slug'
+    | '/us/articles/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/ca'
+    | '/contact'
     | '/faq'
     | '/login'
     | '/privacy'
     | '/signup'
     | '/terms'
-    | '/us'
     | '/articles/$slug'
-    | '/articles'
+    | '/us/contact'
     | '/us/faq'
+    | '/articles'
+    | '/us'
     | '/us/articles/$slug'
     | '/us/articles'
   id:
     | '__root__'
     | '/'
     | '/ca'
+    | '/contact'
     | '/faq'
     | '/login'
     | '/privacy'
@@ -186,31 +209,26 @@ export interface FileRouteTypes {
     | '/terms'
     | '/us'
     | '/articles/$slug'
+    | '/us/contact'
+    | '/us/faq'
     | '/articles/'
     | '/us/'
-    | '/us/faq'
-    | '/us/articles/'
     | '/us/articles/$slug'
+    | '/us/articles/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CaRoute: typeof CaRoute
+  ContactRoute: typeof ContactRoute
   FaqRoute: typeof FaqRoute
   LoginRoute: typeof LoginRoute
   PrivacyRoute: typeof PrivacyRoute
   SignupRoute: typeof SignupRoute
   TermsRoute: typeof TermsRoute
-  UsRoute: typeof UsRoute
+  UsRoute: typeof UsRouteWithChildren
   ArticlesSlugRoute: typeof ArticlesSlugRoute
   ArticlesIndexRoute: typeof ArticlesIndexRoute
-}
-
-export interface UsRouteChildren {
-  UsIndexRoute: typeof UsIndexRoute
-  UsFaqRoute: typeof UsFaqRoute
-  UsArticlesIndexRoute: typeof UsArticlesIndexRoute
-  UsArticlesSlugRoute: typeof UsArticlesSlugRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -257,6 +275,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FaqRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/ca': {
       id: '/ca'
       path: '/ca'
@@ -271,12 +296,33 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/us/': {
+      id: '/us/'
+      path: '/'
+      fullPath: '/us/'
+      preLoaderRoute: typeof UsIndexRouteImport
+      parentRoute: typeof UsRoute
+    }
     '/articles/': {
       id: '/articles/'
       path: '/articles'
       fullPath: '/articles/'
       preLoaderRoute: typeof ArticlesIndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/us/faq': {
+      id: '/us/faq'
+      path: '/faq'
+      fullPath: '/us/faq'
+      preLoaderRoute: typeof UsFaqRouteImport
+      parentRoute: typeof UsRoute
+    }
+    '/us/contact': {
+      id: '/us/contact'
+      path: '/contact'
+      fullPath: '/us/contact'
+      preLoaderRoute: typeof UsContactRouteImport
+      parentRoute: typeof UsRoute
     }
     '/articles/$slug': {
       id: '/articles/$slug'
@@ -285,53 +331,51 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ArticlesSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/us/': {
-      id: '/us/'
-      path: '/'
-      fullPath: '/us/'
-      preLoaderRoute: typeof UsIndexRouteImport
-      parentRoute: typeof UsRouteImport
-    }
-    '/us/faq': {
-      id: '/us/faq'
-      path: '/faq'
-      fullPath: '/us/faq'
-      preLoaderRoute: typeof UsFaqRouteImport
-      parentRoute: typeof UsRouteImport
-    }
     '/us/articles/': {
       id: '/us/articles/'
       path: '/articles'
       fullPath: '/us/articles/'
       preLoaderRoute: typeof UsArticlesIndexRouteImport
-      parentRoute: typeof UsRouteImport
+      parentRoute: typeof UsRoute
     }
     '/us/articles/$slug': {
       id: '/us/articles/$slug'
       path: '/articles/$slug'
       fullPath: '/us/articles/$slug'
       preLoaderRoute: typeof UsArticlesSlugRouteImport
-      parentRoute: typeof UsRouteImport
+      parentRoute: typeof UsRoute
     }
   }
 }
 
-const usRouteChildren: UsRouteChildren = {
-  UsIndexRoute: UsIndexRoute,
-  UsFaqRoute: UsFaqRoute,
-  UsArticlesIndexRoute: UsArticlesIndexRoute,
-  UsArticlesSlugRoute: UsArticlesSlugRoute,
+interface UsRouteChildren {
+  UsContactRoute: typeof UsContactRoute
+  UsFaqRoute: typeof UsFaqRoute
+  UsIndexRoute: typeof UsIndexRoute
+  UsArticlesSlugRoute: typeof UsArticlesSlugRoute
+  UsArticlesIndexRoute: typeof UsArticlesIndexRoute
 }
+
+const UsRouteChildren: UsRouteChildren = {
+  UsContactRoute: UsContactRoute,
+  UsFaqRoute: UsFaqRoute,
+  UsIndexRoute: UsIndexRoute,
+  UsArticlesSlugRoute: UsArticlesSlugRoute,
+  UsArticlesIndexRoute: UsArticlesIndexRoute,
+}
+
+const UsRouteWithChildren = UsRoute._addFileChildren(UsRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CaRoute: CaRoute,
+  ContactRoute: ContactRoute,
   FaqRoute: FaqRoute,
   LoginRoute: LoginRoute,
   PrivacyRoute: PrivacyRoute,
   SignupRoute: SignupRoute,
   TermsRoute: TermsRoute,
-  UsRoute: UsRoute._addFileChildren(usRouteChildren),
+  UsRoute: UsRouteWithChildren,
   ArticlesSlugRoute: ArticlesSlugRoute,
   ArticlesIndexRoute: ArticlesIndexRoute,
 }

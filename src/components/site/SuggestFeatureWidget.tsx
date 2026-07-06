@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { errorMessage } from "@/lib/utils";
 import { toast } from "sonner";
 
 type Region = "ca" | "us";
@@ -50,21 +51,6 @@ function getVotedSet(): Set<string> {
 
 function persistVotedSet(set: Set<string>) {
   localStorage.setItem("ro_voted_ideas", JSON.stringify(Array.from(set)));
-}
-
-/**
- * Supabase/Postgrest errors are plain objects with a `.message` string, not
- * `Error` instances -- `e instanceof Error` misses them entirely and falls
- * through to a generic fallback, hiding the actual database error (e.g. a
- * CHECK constraint violation) from the user and from debugging.
- */
-function errorMessage(e: unknown, fallback: string): string {
-  if (e instanceof Error) return e.message;
-  if (typeof e === "object" && e !== null && "message" in e) {
-    const m = (e as { message: unknown }).message;
-    if (typeof m === "string" && m.length > 0) return m;
-  }
-  return fallback;
 }
 
 /** Top 20 ideas by vote count, every status -- the widget's default view. */

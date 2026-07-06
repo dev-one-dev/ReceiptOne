@@ -47,7 +47,14 @@ function USFaqPage() {
             Frequently asked questions
           </h1>
           <p className="mx-auto mt-3 max-w-lg font-sans text-base leading-relaxed text-black/55">
-            Can't find what you're looking for? Reach out to our team — we reply within one business day.
+            Can't find what you're looking for?{" "}
+            <Link
+              to={"/us/contact" as any}
+              className="font-medium text-black underline underline-offset-2 transition-colors duration-150 hover:text-[#f97316]"
+            >
+              Reach out to our team
+            </Link>{" "}
+            — we reply within one business day.
           </p>
         </div>
       </section>
