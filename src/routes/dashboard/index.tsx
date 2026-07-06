@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   AlertCircle,
@@ -8,6 +9,7 @@ import {
   Wallet,
   type LucideIcon,
 } from "lucide-react";
+import { ReviewReceiptDialog, type ReceiptRow } from "@/components/dashboard/ReviewReceiptDialog";
 
 export const Route = createFileRoute("/dashboard/")({
   component: DashboardPage,
@@ -27,15 +29,7 @@ const STATS: Stat[] = [
   { label: "Pending reports", value: "2", note: "awaiting export", icon: Clock },
 ];
 
-type ReceiptRow = {
-  merchant: string;
-  category: string;
-  date: string;
-  amount: string;
-  status: "Categorized" | "Needs review";
-};
-
-const RECENT_RECEIPTS: ReceiptRow[] = [
+const INITIAL_RECEIPTS: ReceiptRow[] = [
   { merchant: "Staples", category: "Office Supplies", date: "Jul 2", amount: "$84.20", status: "Categorized" },
   { merchant: "Uber", category: "Travel", date: "Jun 29", amount: "$23.50", status: "Categorized" },
   { merchant: "Shell", category: "Fuel", date: "Jun 27", amount: "$61.10", status: "Needs review" },
@@ -45,6 +39,9 @@ const RECENT_RECEIPTS: ReceiptRow[] = [
 ];
 
 function DashboardPage() {
+  const [receipts, setReceipts] = useState<ReceiptRow[]>(INITIAL_RECEIPTS);
+  const [selected, setSelected] = useState<ReceiptRow | null>(null);
+
   return (
     <div className="mx-auto w-full max-w-[1200px] flex-1 px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
       <div>
@@ -97,16 +94,18 @@ function DashboardPage() {
               </tr>
             </thead>
             <tbody>
-              {RECENT_RECEIPTS.map((row) => (
+              {receipts.map((row) => (
                 <tr key={row.merchant + row.date} className="border-t border-black/[0.05]">
                   <td className="px-5 py-3 font-medium text-black">{row.merchant}</td>
                   <td className="px-5 py-3 text-black/60">{row.category}</td>
                   <td className="px-5 py-3 text-black/60">{row.date}</td>
                   <td className="px-5 py-3 text-right tabular-nums text-black">{row.amount}</td>
                   <td className="px-5 py-3 text-right">
-                    <span
+                    <button
+                      type="button"
+                      onClick={() => setSelected(row)}
                       className={[
-                        "inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-medium",
+                        "inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-medium transition-opacity hover:opacity-70 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#f97316]/40",
                         row.status === "Categorized"
                           ? "bg-black/[0.05] text-black/60"
                           : "bg-[#f97316]/10 text-[#c2410c]",
@@ -118,7 +117,7 @@ function DashboardPage() {
                         <AlertCircle className="size-3" aria-hidden />
                       )}
                       {row.status}
-                    </span>
+                    </button>
                   </td>
                 </tr>
               ))}
@@ -126,6 +125,17 @@ function DashboardPage() {
           </table>
         </div>
       </div>
+
+      <ReviewReceiptDialog
+        receipt={selected}
+        onOpenChange={(open) => !open && setSelected(null)}
+        onSave={({ category, status }) => {
+          setReceipts((prev) =>
+            prev.map((r) => (r === selected ? { ...r, category, status } : r)),
+          );
+          setSelected(null);
+        }}
+      />
     </div>
   );
 }

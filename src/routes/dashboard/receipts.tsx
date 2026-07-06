@@ -4,23 +4,16 @@ import { AlertCircle, CheckCircle2, Search, UploadCloud, X } from "lucide-react"
 import { toast } from "sonner";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { ReviewReceiptDialog, type ReceiptRow } from "@/components/dashboard/ReviewReceiptDialog";
 
 export const Route = createFileRoute("/dashboard/receipts")({
   component: ReceiptsPage,
 });
 
-type ReceiptRow = {
-  merchant: string;
-  category: string;
-  date: string;
-  amount: string;
-  status: "Categorized" | "Needs review";
-};
-
 const CATEGORIES = ["All categories", "Office Supplies", "Travel", "Fuel", "Software", "Office Rent", "Meals"];
 const STATUSES = ["All statuses", "Categorized", "Needs review"];
 
-const RECEIPTS: ReceiptRow[] = [
+const INITIAL_RECEIPTS: ReceiptRow[] = [
   { merchant: "Staples", category: "Office Supplies", date: "Jul 2", amount: "$84.20", status: "Categorized" },
   { merchant: "Uber", category: "Travel", date: "Jun 29", amount: "$23.50", status: "Categorized" },
   { merchant: "Shell", category: "Fuel", date: "Jun 27", amount: "$61.10", status: "Needs review" },
@@ -33,26 +26,30 @@ const RECEIPTS: ReceiptRow[] = [
   { merchant: "Notion", category: "Software", date: "Jun 5", amount: "$16.00", status: "Categorized" },
 ];
 
-function StatusBadge({ status }: { status: ReceiptRow["status"] }) {
+function StatusBadge({ status, onClick }: { status: ReceiptRow["status"]; onClick: () => void }) {
   return (
-    <span
+    <button
+      type="button"
+      onClick={onClick}
       className={[
-        "inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-medium",
+        "inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-medium transition-opacity hover:opacity-70 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#f97316]/40",
         status === "Categorized" ? "bg-black/[0.05] text-black/60" : "bg-[#f97316]/10 text-[#c2410c]",
       ].join(" ")}
     >
       {status === "Categorized" ? <CheckCircle2 className="size-3" aria-hidden /> : <AlertCircle className="size-3" aria-hidden />}
       {status}
-    </span>
+    </button>
   );
 }
 
 function AllReceiptsTab() {
+  const [receipts, setReceipts] = useState<ReceiptRow[]>(INITIAL_RECEIPTS);
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState(CATEGORIES[0]);
   const [status, setStatus] = useState(STATUSES[0]);
+  const [selected, setSelected] = useState<ReceiptRow | null>(null);
 
-  const rows = RECEIPTS.filter((r) => {
+  const rows = receipts.filter((r) => {
     if (category !== "All categories" && r.category !== category) return false;
     if (status !== "All statuses" && r.status !== status) return false;
     if (search.trim() && !r.merchant.toLowerCase().includes(search.trim().toLowerCase())) return false;
@@ -116,7 +113,7 @@ function AllReceiptsTab() {
                   <td className="px-5 py-3 text-black/60">{row.date}</td>
                   <td className="px-5 py-3 text-right tabular-nums text-black">{row.amount}</td>
                   <td className="px-5 py-3 text-right">
-                    <StatusBadge status={row.status} />
+                    <StatusBadge status={row.status} onClick={() => setSelected(row)} />
                   </td>
                 </tr>
               ))}
@@ -131,6 +128,19 @@ function AllReceiptsTab() {
           </table>
         </div>
       </div>
+
+      <ReviewReceiptDialog
+        receipt={selected}
+        onOpenChange={(open) => !open && setSelected(null)}
+        onSave={({ category: newCategory, status: newStatus }) => {
+          setReceipts((prev) =>
+            prev.map((r) =>
+              r === selected ? { ...r, category: newCategory, status: newStatus } : r,
+            ),
+          );
+          setSelected(null);
+        }}
+      />
     </div>
   );
 }
