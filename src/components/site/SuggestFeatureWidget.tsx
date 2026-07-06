@@ -13,7 +13,7 @@ interface SimilarIdea {
   status: Status;
 }
 
-interface AiPreview {
+interface IdeaPreview {
   title: string;
   description: string;
   similar: SimilarIdea[];
@@ -58,14 +58,43 @@ function persistVotedSet(set: Set<string>) {
   localStorage.setItem("ro_voted_ideas", JSON.stringify(Array.from(set)));
 }
 
+/**
+ * Plain keyword search against feature_ideas, run client-side against the
+ * public "Anyone can view ideas" RLS policy. Same token-extraction and
+ * ILIKE-OR logic the old preview-feature-idea edge function used server-side
+ * -- moving it here drops a whole deployment (no edge function, no AI
+ * gateway dependency) with no change in privilege, since both paths only
+ * ever used the anon key.
+ */
+async function findSimilarIdeas(title: string): Promise<SimilarIdea[]> {
+  const tokens = title
+    .toLowerCase()
+    .replace(/[^a-z0-9 ]/g, " ")
+    .split(/\s+/)
+    .filter((w) => w.length > 3)
+    .slice(0, 5);
+  if (tokens.length === 0) return [];
+
+  const orFilter = tokens.map((t) => `title.ilike.%${t}%,description.ilike.%${t}%`).join(",");
+  const { data, error } = await supabase
+    .from("feature_ideas")
+    .select("id, title, description, votes_count, status")
+    .or(orFilter)
+    .order("votes_count", { ascending: false })
+    .limit(3);
+  if (error) throw error;
+  return (data as SimilarIdea[]) ?? [];
+}
+
 type Step = "input" | "preview" | "success";
 
 export function SuggestFeatureWidget({ region }: { region: Region }) {
   const [open, setOpen] = useState(false);
   const [step, setStep] = useState<Step>("input");
-  const [input, setInput] = useState("");
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
   const [loading, setLoading] = useState(false);
-  const [preview, setPreview] = useState<AiPreview | null>(null);
+  const [preview, setPreview] = useState<IdeaPreview | null>(null);
   const [successMsg, setSuccessMsg] = useState("");
   const [nearFooter, setNearFooter] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
@@ -96,7 +125,8 @@ export function SuggestFeatureWidget({ region }: { region: Region }) {
 
   const reset = () => {
     setStep("input");
-    setInput("");
+    setTitle("");
+    setDescription("");
     setPreview(null);
     setSuccessMsg("");
   };
@@ -106,23 +136,24 @@ export function SuggestFeatureWidget({ region }: { region: Region }) {
     setTimeout(reset, 250);
   };
 
-  const generatePreview = async (raw: string) => {
-    const text = raw.trim();
-    if (text.length < 3) {
-      toast.error("Please describe your idea (at least 3 characters).");
+  const proceedToPreview = async () => {
+    const t = title.trim();
+    const d = description.trim();
+    if (t.length < 3) {
+      toast.error("Give your idea a short title (at least 3 characters).");
+      return;
+    }
+    if (d.length < 3) {
+      toast.error("Add a bit more detail in the description (at least 3 characters).");
       return;
     }
     setLoading(true);
     try {
-      const { data, error } = await supabase.functions.invoke("preview-feature-idea", {
-        body: { input: text },
-      });
-      if (error) throw error;
-      if ((data as { error?: string })?.error) throw new Error((data as { error: string }).error);
-      setPreview(data as AiPreview);
+      const similar = await findSimilarIdeas(t);
+      setPreview({ title: t, description: d, similar });
       setStep("preview");
     } catch (e) {
-      const msg = e instanceof Error ? e.message : "Failed to analyze idea";
+      const msg = e instanceof Error ? e.message : "Failed to search for similar ideas";
       toast.error(msg);
     } finally {
       setLoading(false);
@@ -136,8 +167,8 @@ export function SuggestFeatureWidget({ region }: { region: Region }) {
       const { data: idea, error } = await supabase
         .from("feature_ideas")
         .insert({
-          title: preview.title.slice(0, 80),
-          description: preview.description.slice(0, 220),
+          title: preview.title.slice(0, 120),
+          description: preview.description.slice(0, 500),
           device_id: deviceId,
           region,
         })
@@ -240,13 +271,35 @@ export function SuggestFeatureWidget({ region }: { region: Region }) {
                 <p className="font-display text-base font-semibold text-black">
                   What feature do you want most?
                 </p>
-                <textarea
-                  value={input}
-                  onChange={(e) => setInput(e.target.value.slice(0, 500))}
-                  placeholder="Describe your idea…"
-                  rows={3}
-                  className="block w-full resize-none rounded-2xl border border-black/10 bg-[#faf9f6] px-4 py-3 text-sm leading-5 text-black outline-none transition-colors placeholder:text-black/55 focus:border-black/40"
-                />
+
+                <div className="space-y-1.5">
+                  <label htmlFor="feature-title" className="block font-sans text-xs font-medium text-black/70">
+                    Title
+                  </label>
+                  <input
+                    id="feature-title"
+                    type="text"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value.slice(0, 120))}
+                    placeholder="e.g. QuickBooks sync"
+                    className="block w-full rounded-2xl border border-black/10 bg-[#faf9f6] px-4 py-3 text-sm leading-5 text-black outline-none transition-colors placeholder:text-black/55 focus:border-black/40"
+                  />
+                </div>
+
+                <div className="space-y-1.5">
+                  <label htmlFor="feature-description" className="block font-sans text-xs font-medium text-black/70">
+                    Description
+                  </label>
+                  <textarea
+                    id="feature-description"
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value.slice(0, 500))}
+                    placeholder="What would this feature do, and why do you need it?"
+                    rows={3}
+                    className="block w-full resize-none rounded-2xl border border-black/10 bg-[#faf9f6] px-4 py-3 text-sm leading-5 text-black outline-none transition-colors placeholder:text-black/55 focus:border-black/40"
+                  />
+                </div>
+
                 <div>
                   <p className="mb-2 font-sans text-xs uppercase tracking-wide text-black/60">
                     Quick picks
@@ -256,10 +309,7 @@ export function SuggestFeatureWidget({ region }: { region: Region }) {
                       <button
                         key={q}
                         type="button"
-                        onClick={() => {
-                          setInput(q);
-                          generatePreview(q);
-                        }}
+                        onClick={() => setTitle(q)}
                         className="rounded-full border border-black/15 bg-white px-3 py-1.5 font-sans text-xs text-black transition-colors hover:bg-black hover:text-white"
                       >
                         {q}
@@ -267,14 +317,15 @@ export function SuggestFeatureWidget({ region }: { region: Region }) {
                     ))}
                   </div>
                 </div>
+
                 <button
                   type="button"
-                  disabled={loading || input.trim().length < 3}
-                  onClick={() => generatePreview(input)}
+                  disabled={loading || title.trim().length < 3 || description.trim().length < 3}
+                  onClick={proceedToPreview}
                   className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-black px-5 py-3 font-display text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40"
                 >
                   {loading ? <Spinner /> : <SparkIcon className="size-3.5" />}
-                  {loading ? "Analyzing…" : "Preview with AI"}
+                  {loading ? "Searching…" : "Continue"}
                 </button>
               </div>
             )}
@@ -283,7 +334,7 @@ export function SuggestFeatureWidget({ region }: { region: Region }) {
               <div className="space-y-4">
                 <div className="rounded-2xl border border-black/10 bg-[#faf9f6] p-4">
                   <p className="mb-1 font-sans text-[11px] uppercase tracking-wide text-black/60">
-                    AI preview
+                    Your idea
                   </p>
                   <p className="font-display text-base font-semibold leading-snug text-black">
                     {preview.title}
