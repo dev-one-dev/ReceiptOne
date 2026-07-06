@@ -15,13 +15,22 @@ import { Route as SignupRouteImport } from './routes/signup'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as FaqRouteImport } from './routes/faq'
+import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CaRouteImport } from './routes/ca'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as UsIndexRouteImport } from './routes/us/index'
+import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
 import { Route as ArticlesIndexRouteImport } from './routes/articles/index'
 import { Route as UsFaqRouteImport } from './routes/us/faq'
 import { Route as UsContactRouteImport } from './routes/us/contact'
+import { Route as DashboardSettingsRouteImport } from './routes/dashboard/settings'
+import { Route as DashboardRoadmapRouteImport } from './routes/dashboard/roadmap'
+import { Route as DashboardReportsRouteImport } from './routes/dashboard/reports'
+import { Route as DashboardReceiptsRouteImport } from './routes/dashboard/receipts'
+import { Route as DashboardMileageRouteImport } from './routes/dashboard/mileage'
+import { Route as DashboardFileManagerRouteImport } from './routes/dashboard/file-manager'
+import { Route as DashboardBillingRouteImport } from './routes/dashboard/billing'
 import { Route as ArticlesSlugRouteImport } from './routes/articles/$slug'
 import { Route as UsArticlesIndexRouteImport } from './routes/us/articles/index'
 import { Route as UsArticlesSlugRouteImport } from './routes/us/articles/$slug'
@@ -56,6 +65,11 @@ const FaqRoute = FaqRouteImport.update({
   path: '/faq',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DashboardRoute = DashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
@@ -76,6 +90,11 @@ const UsIndexRoute = UsIndexRouteImport.update({
   path: '/',
   getParentRoute: () => UsRoute,
 } as any)
+const DashboardIndexRoute = DashboardIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => DashboardRoute,
+} as any)
 const ArticlesIndexRoute = ArticlesIndexRouteImport.update({
   id: '/articles/',
   path: '/articles/',
@@ -90,6 +109,41 @@ const UsContactRoute = UsContactRouteImport.update({
   id: '/contact',
   path: '/contact',
   getParentRoute: () => UsRoute,
+} as any)
+const DashboardSettingsRoute = DashboardSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardRoadmapRoute = DashboardRoadmapRouteImport.update({
+  id: '/roadmap',
+  path: '/roadmap',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardReportsRoute = DashboardReportsRouteImport.update({
+  id: '/reports',
+  path: '/reports',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardReceiptsRoute = DashboardReceiptsRouteImport.update({
+  id: '/receipts',
+  path: '/receipts',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardMileageRoute = DashboardMileageRouteImport.update({
+  id: '/mileage',
+  path: '/mileage',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardFileManagerRoute = DashboardFileManagerRouteImport.update({
+  id: '/file-manager',
+  path: '/file-manager',
+  getParentRoute: () => DashboardRoute,
+} as any)
+const DashboardBillingRoute = DashboardBillingRouteImport.update({
+  id: '/billing',
+  path: '/billing',
+  getParentRoute: () => DashboardRoute,
 } as any)
 const ArticlesSlugRoute = ArticlesSlugRouteImport.update({
   id: '/articles/$slug',
@@ -111,6 +165,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/ca': typeof CaRoute
   '/contact': typeof ContactRoute
+  '/dashboard': typeof DashboardRouteWithChildren
   '/faq': typeof FaqRoute
   '/login': typeof LoginRoute
   '/privacy': typeof PrivacyRoute
@@ -118,9 +173,17 @@ export interface FileRoutesByFullPath {
   '/terms': typeof TermsRoute
   '/us': typeof UsRouteWithChildren
   '/articles/$slug': typeof ArticlesSlugRoute
+  '/dashboard/billing': typeof DashboardBillingRoute
+  '/dashboard/file-manager': typeof DashboardFileManagerRoute
+  '/dashboard/mileage': typeof DashboardMileageRoute
+  '/dashboard/receipts': typeof DashboardReceiptsRoute
+  '/dashboard/reports': typeof DashboardReportsRoute
+  '/dashboard/roadmap': typeof DashboardRoadmapRoute
+  '/dashboard/settings': typeof DashboardSettingsRoute
   '/us/contact': typeof UsContactRoute
   '/us/faq': typeof UsFaqRoute
   '/articles/': typeof ArticlesIndexRoute
+  '/dashboard/': typeof DashboardIndexRoute
   '/us/': typeof UsIndexRoute
   '/us/articles/$slug': typeof UsArticlesSlugRoute
   '/us/articles/': typeof UsArticlesIndexRoute
@@ -135,9 +198,17 @@ export interface FileRoutesByTo {
   '/signup': typeof SignupRoute
   '/terms': typeof TermsRoute
   '/articles/$slug': typeof ArticlesSlugRoute
+  '/dashboard/billing': typeof DashboardBillingRoute
+  '/dashboard/file-manager': typeof DashboardFileManagerRoute
+  '/dashboard/mileage': typeof DashboardMileageRoute
+  '/dashboard/receipts': typeof DashboardReceiptsRoute
+  '/dashboard/reports': typeof DashboardReportsRoute
+  '/dashboard/roadmap': typeof DashboardRoadmapRoute
+  '/dashboard/settings': typeof DashboardSettingsRoute
   '/us/contact': typeof UsContactRoute
   '/us/faq': typeof UsFaqRoute
   '/articles': typeof ArticlesIndexRoute
+  '/dashboard': typeof DashboardIndexRoute
   '/us': typeof UsIndexRoute
   '/us/articles/$slug': typeof UsArticlesSlugRoute
   '/us/articles': typeof UsArticlesIndexRoute
@@ -147,6 +218,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/ca': typeof CaRoute
   '/contact': typeof ContactRoute
+  '/dashboard': typeof DashboardRouteWithChildren
   '/faq': typeof FaqRoute
   '/login': typeof LoginRoute
   '/privacy': typeof PrivacyRoute
@@ -154,9 +226,17 @@ export interface FileRoutesById {
   '/terms': typeof TermsRoute
   '/us': typeof UsRouteWithChildren
   '/articles/$slug': typeof ArticlesSlugRoute
+  '/dashboard/billing': typeof DashboardBillingRoute
+  '/dashboard/file-manager': typeof DashboardFileManagerRoute
+  '/dashboard/mileage': typeof DashboardMileageRoute
+  '/dashboard/receipts': typeof DashboardReceiptsRoute
+  '/dashboard/reports': typeof DashboardReportsRoute
+  '/dashboard/roadmap': typeof DashboardRoadmapRoute
+  '/dashboard/settings': typeof DashboardSettingsRoute
   '/us/contact': typeof UsContactRoute
   '/us/faq': typeof UsFaqRoute
   '/articles/': typeof ArticlesIndexRoute
+  '/dashboard/': typeof DashboardIndexRoute
   '/us/': typeof UsIndexRoute
   '/us/articles/$slug': typeof UsArticlesSlugRoute
   '/us/articles/': typeof UsArticlesIndexRoute
@@ -167,6 +247,7 @@ export interface FileRouteTypes {
     | '/'
     | '/ca'
     | '/contact'
+    | '/dashboard'
     | '/faq'
     | '/login'
     | '/privacy'
@@ -174,9 +255,17 @@ export interface FileRouteTypes {
     | '/terms'
     | '/us'
     | '/articles/$slug'
+    | '/dashboard/billing'
+    | '/dashboard/file-manager'
+    | '/dashboard/mileage'
+    | '/dashboard/receipts'
+    | '/dashboard/reports'
+    | '/dashboard/roadmap'
+    | '/dashboard/settings'
     | '/us/contact'
     | '/us/faq'
     | '/articles/'
+    | '/dashboard/'
     | '/us/'
     | '/us/articles/$slug'
     | '/us/articles/'
@@ -191,9 +280,17 @@ export interface FileRouteTypes {
     | '/signup'
     | '/terms'
     | '/articles/$slug'
+    | '/dashboard/billing'
+    | '/dashboard/file-manager'
+    | '/dashboard/mileage'
+    | '/dashboard/receipts'
+    | '/dashboard/reports'
+    | '/dashboard/roadmap'
+    | '/dashboard/settings'
     | '/us/contact'
     | '/us/faq'
     | '/articles'
+    | '/dashboard'
     | '/us'
     | '/us/articles/$slug'
     | '/us/articles'
@@ -202,6 +299,7 @@ export interface FileRouteTypes {
     | '/'
     | '/ca'
     | '/contact'
+    | '/dashboard'
     | '/faq'
     | '/login'
     | '/privacy'
@@ -209,9 +307,17 @@ export interface FileRouteTypes {
     | '/terms'
     | '/us'
     | '/articles/$slug'
+    | '/dashboard/billing'
+    | '/dashboard/file-manager'
+    | '/dashboard/mileage'
+    | '/dashboard/receipts'
+    | '/dashboard/reports'
+    | '/dashboard/roadmap'
+    | '/dashboard/settings'
     | '/us/contact'
     | '/us/faq'
     | '/articles/'
+    | '/dashboard/'
     | '/us/'
     | '/us/articles/$slug'
     | '/us/articles/'
@@ -221,6 +327,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CaRoute: typeof CaRoute
   ContactRoute: typeof ContactRoute
+  DashboardRoute: typeof DashboardRouteWithChildren
   FaqRoute: typeof FaqRoute
   LoginRoute: typeof LoginRoute
   PrivacyRoute: typeof PrivacyRoute
@@ -275,6 +382,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FaqRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/dashboard': {
+      id: '/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/contact': {
       id: '/contact'
       path: '/contact'
@@ -303,6 +417,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UsIndexRouteImport
       parentRoute: typeof UsRoute
     }
+    '/dashboard/': {
+      id: '/dashboard/'
+      path: '/'
+      fullPath: '/dashboard/'
+      preLoaderRoute: typeof DashboardIndexRouteImport
+      parentRoute: typeof DashboardRoute
+    }
     '/articles/': {
       id: '/articles/'
       path: '/articles'
@@ -323,6 +444,55 @@ declare module '@tanstack/react-router' {
       fullPath: '/us/contact'
       preLoaderRoute: typeof UsContactRouteImport
       parentRoute: typeof UsRoute
+    }
+    '/dashboard/settings': {
+      id: '/dashboard/settings'
+      path: '/settings'
+      fullPath: '/dashboard/settings'
+      preLoaderRoute: typeof DashboardSettingsRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/roadmap': {
+      id: '/dashboard/roadmap'
+      path: '/roadmap'
+      fullPath: '/dashboard/roadmap'
+      preLoaderRoute: typeof DashboardRoadmapRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/reports': {
+      id: '/dashboard/reports'
+      path: '/reports'
+      fullPath: '/dashboard/reports'
+      preLoaderRoute: typeof DashboardReportsRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/receipts': {
+      id: '/dashboard/receipts'
+      path: '/receipts'
+      fullPath: '/dashboard/receipts'
+      preLoaderRoute: typeof DashboardReceiptsRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/mileage': {
+      id: '/dashboard/mileage'
+      path: '/mileage'
+      fullPath: '/dashboard/mileage'
+      preLoaderRoute: typeof DashboardMileageRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/file-manager': {
+      id: '/dashboard/file-manager'
+      path: '/file-manager'
+      fullPath: '/dashboard/file-manager'
+      preLoaderRoute: typeof DashboardFileManagerRouteImport
+      parentRoute: typeof DashboardRoute
+    }
+    '/dashboard/billing': {
+      id: '/dashboard/billing'
+      path: '/billing'
+      fullPath: '/dashboard/billing'
+      preLoaderRoute: typeof DashboardBillingRouteImport
+      parentRoute: typeof DashboardRoute
     }
     '/articles/$slug': {
       id: '/articles/$slug'
@@ -348,6 +518,32 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface DashboardRouteChildren {
+  DashboardBillingRoute: typeof DashboardBillingRoute
+  DashboardFileManagerRoute: typeof DashboardFileManagerRoute
+  DashboardMileageRoute: typeof DashboardMileageRoute
+  DashboardReceiptsRoute: typeof DashboardReceiptsRoute
+  DashboardReportsRoute: typeof DashboardReportsRoute
+  DashboardRoadmapRoute: typeof DashboardRoadmapRoute
+  DashboardSettingsRoute: typeof DashboardSettingsRoute
+  DashboardIndexRoute: typeof DashboardIndexRoute
+}
+
+const DashboardRouteChildren: DashboardRouteChildren = {
+  DashboardBillingRoute: DashboardBillingRoute,
+  DashboardFileManagerRoute: DashboardFileManagerRoute,
+  DashboardMileageRoute: DashboardMileageRoute,
+  DashboardReceiptsRoute: DashboardReceiptsRoute,
+  DashboardReportsRoute: DashboardReportsRoute,
+  DashboardRoadmapRoute: DashboardRoadmapRoute,
+  DashboardSettingsRoute: DashboardSettingsRoute,
+  DashboardIndexRoute: DashboardIndexRoute,
+}
+
+const DashboardRouteWithChildren = DashboardRoute._addFileChildren(
+  DashboardRouteChildren,
+)
+
 interface UsRouteChildren {
   UsContactRoute: typeof UsContactRoute
   UsFaqRoute: typeof UsFaqRoute
@@ -370,6 +566,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CaRoute: CaRoute,
   ContactRoute: ContactRoute,
+  DashboardRoute: DashboardRouteWithChildren,
   FaqRoute: FaqRoute,
   LoginRoute: LoginRoute,
   PrivacyRoute: PrivacyRoute,
