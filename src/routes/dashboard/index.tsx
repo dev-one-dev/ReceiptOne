@@ -47,9 +47,9 @@ const TAX_CONTENT: Record<DashboardRegion, RegionTaxContent> = {
     heroNote: "GST/HST reclaim plus estimated tax savings from home office and mileage",
     stats: [
       { label: "Total expenses scanned", value: "24", note: "$1,842.50 tracked this year", icon: Receipt },
-      { label: "GST/HST reclaim", value: "$215.40", note: "Input tax credit — already your refund amount", icon: Landmark },
+      { label: "GST/HST reclaim", value: "$215.40", note: "Refunded directly, not an estimate", icon: Landmark },
       { label: "Home office reclaim", value: "$480.00", note: "≈ $134 estimated tax saving", icon: Home },
-      { label: "Tracked mileage to reclaim", value: "342 km", note: "≈ $73 estimated tax saving", icon: Car },
+      { label: "Mileage Logged", value: "342 km", note: "≈ $73 estimated tax saving", icon: Car },
     ],
   },
   us: {
@@ -60,7 +60,7 @@ const TAX_CONTENT: Record<DashboardRegion, RegionTaxContent> = {
       { label: "Total expenses scanned", value: "24", note: "$1,842.50 tracked this year", icon: Receipt },
       { label: "Sales tax tracked", value: "$118.20", note: "Included in your deductible totals", icon: Landmark },
       { label: "Home office deduction", value: "$480.00", note: "≈ $115 estimated tax saving", icon: Home },
-      { label: "Tracked mileage deduction", value: "342 mi", note: "≈ $55 estimated tax saving", icon: Car },
+      { label: "Mileage Logged", value: "342 mi", note: "≈ $55 estimated tax saving", icon: Car },
     ],
   },
 };
@@ -89,17 +89,16 @@ function DashboardPage() {
         </p>
       </div>
 
-      {/* Hero — the one dark/ember moment on this page, mirroring the
-          marketing site's own "one dramatic dark moment" convention
-          rather than a generic gradient-accented metric card. */}
-      <div className="mt-6 rounded-2xl bg-[#0d0d14] p-6 sm:p-7">
-        <p className="text-xs font-medium uppercase tracking-wide text-white/50">
+      {/* Hero — same light card style as the stat cards below, not a
+          standalone dark block. */}
+      <div className="mt-6 rounded-2xl border border-black/[0.07] bg-white p-6 shadow-[0_2px_12px_rgba(0,0,0,0.06)] sm:p-7">
+        <p className="text-xs font-medium uppercase tracking-wide text-black/55">
           {content.heroLabel} for {year}
         </p>
         <p className="mt-2 text-4xl font-semibold tracking-tight text-[#f97316] sm:text-5xl">
           {content.heroTotal}
         </p>
-        <p className="mt-2 text-sm text-white/45">{content.heroNote}</p>
+        <p className="mt-2 text-sm text-black/45">{content.heroNote}</p>
       </div>
 
       {/* Stat cards */}
