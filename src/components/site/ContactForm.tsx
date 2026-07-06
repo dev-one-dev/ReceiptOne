@@ -90,7 +90,7 @@ export function ContactForm({ region }: { region: Region }) {
           aria-hidden
           loading="lazy"
           decoding="async"
-          className="pointer-events-none absolute -left-9 top-1/2 z-0 w-28 -translate-y-1/2 rotate-[14deg] select-none object-contain sm:-left-11 sm:w-36"
+          className="pointer-events-none absolute -top-12 -left-10 z-0 w-28 rotate-[14deg] select-none object-contain sm:-top-14 sm:-left-12 sm:w-36"
         />
       )}
 
