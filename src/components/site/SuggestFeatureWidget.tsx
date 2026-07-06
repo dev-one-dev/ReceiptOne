@@ -52,6 +52,21 @@ function persistVotedSet(set: Set<string>) {
   localStorage.setItem("ro_voted_ideas", JSON.stringify(Array.from(set)));
 }
 
+/**
+ * Supabase/Postgrest errors are plain objects with a `.message` string, not
+ * `Error` instances -- `e instanceof Error` misses them entirely and falls
+ * through to a generic fallback, hiding the actual database error (e.g. a
+ * CHECK constraint violation) from the user and from debugging.
+ */
+function errorMessage(e: unknown, fallback: string): string {
+  if (e instanceof Error) return e.message;
+  if (typeof e === "object" && e !== null && "message" in e) {
+    const m = (e as { message: unknown }).message;
+    if (typeof m === "string" && m.length > 0) return m;
+  }
+  return fallback;
+}
+
 /** Top 20 ideas by vote count, every status -- the widget's default view. */
 async function fetchIdeas(): Promise<Idea[]> {
   const { data, error } = await supabase
@@ -109,7 +124,7 @@ export function SuggestFeatureWidget({ region }: { region: Region }) {
       const data = await fetchIdeas();
       setIdeas(data);
     } catch (e) {
-      const msg = e instanceof Error ? e.message : "Failed to load ideas";
+      const msg = errorMessage(e, "Failed to load ideas");
       toast.error(msg);
     } finally {
       setIdeasLoading(false);
@@ -158,7 +173,7 @@ export function SuggestFeatureWidget({ region }: { region: Region }) {
       );
       toast.success("Vote added");
     } catch (e) {
-      const msg = e instanceof Error ? e.message : "Failed to vote";
+      const msg = errorMessage(e, "Failed to vote");
       toast.error(msg);
     } finally {
       setVotingId(null);
@@ -204,7 +219,7 @@ export function SuggestFeatureWidget({ region }: { region: Region }) {
       setSuccessMsg("Your idea was submitted");
       setStep("success");
     } catch (e) {
-      const msg = e instanceof Error ? e.message : "Failed to submit";
+      const msg = errorMessage(e, "Failed to submit");
       toast.error(msg);
     } finally {
       setLoading(false);
