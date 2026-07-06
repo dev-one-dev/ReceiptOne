@@ -11,6 +11,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { RouteMap } from "@/components/dashboard/RouteMap";
 
 export const Route = createFileRoute("/dashboard/mileage")({
   component: MileagePage,
@@ -139,8 +140,39 @@ function LogTripDialog({ onAdd }: { onAdd: (trip: Trip) => void }) {
   );
 }
 
+function RouteMapDialog({ trip, onOpenChange }: { trip: Trip | null; onOpenChange: (open: boolean) => void }) {
+  return (
+    <Dialog open={trip !== null} onOpenChange={onOpenChange}>
+      <DialogContent className="sm:max-w-lg">
+        <DialogHeader>
+          <DialogTitle>Trip route</DialogTitle>
+          <DialogDescription>
+            {trip ? `${trip.purpose} — ${trip.date}` : ""}
+          </DialogDescription>
+        </DialogHeader>
+        {trip && (
+          <>
+            <RouteMap origin={trip.from} destination={trip.to} />
+            <div className="flex items-center justify-between rounded-xl bg-black/[0.03] px-4 py-3 text-sm">
+              <span className="inline-flex items-center gap-1.5 text-black/60">
+                <MapPin className="size-3.5 text-black/35" aria-hidden />
+                {trip.from} → {trip.to}
+              </span>
+              <span className="tabular-nums font-medium text-black">{trip.distance} · {trip.amount}</span>
+            </div>
+            <p className="text-xs text-black/40">
+              Preview only — this will show your actual route once trips sync from the ReceiptOne mobile app.
+            </p>
+          </>
+        )}
+      </DialogContent>
+    </Dialog>
+  );
+}
+
 function MileagePage() {
   const [trips, setTrips] = useState<Trip[]>(INITIAL_TRIPS);
+  const [selectedTrip, setSelectedTrip] = useState<Trip | null>(null);
 
   const totalMiles = trips.reduce((sum, t) => sum + parseFloat(t.distance), 0);
   const totalAmount = trips.reduce((sum, t) => sum + parseFloat(t.amount.replace("$", "")), 0);
@@ -211,10 +243,14 @@ function MileagePage() {
                   <td className="px-5 py-3 text-black/60">{t.date}</td>
                   <td className="px-5 py-3 font-medium text-black">{t.purpose}</td>
                   <td className="px-5 py-3 text-black/60">
-                    <span className="inline-flex items-center gap-1">
+                    <button
+                      type="button"
+                      onClick={() => setSelectedTrip(t)}
+                      className="inline-flex items-center gap-1 rounded-md text-black/60 underline-offset-2 transition-colors hover:text-[#f97316] hover:underline focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#f97316]/40"
+                    >
                       <MapPin className="size-3.5 text-black/35" aria-hidden />
                       {t.from} → {t.to}
-                    </span>
+                    </button>
                   </td>
                   <td className="px-5 py-3 text-right tabular-nums text-black">{t.distance}</td>
                   <td className="px-5 py-3 text-right tabular-nums text-black">{t.amount}</td>
@@ -224,6 +260,8 @@ function MileagePage() {
           </table>
         </div>
       </div>
+
+      <RouteMapDialog trip={selectedTrip} onOpenChange={(open) => !open && setSelectedTrip(null)} />
     </div>
   );
 }
