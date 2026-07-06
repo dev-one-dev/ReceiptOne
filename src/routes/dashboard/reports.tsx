@@ -3,6 +3,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Download, FileSpreadsheet, FileText } from "lucide-react";
 import { toast } from "sonner";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { ReportPreviewDialog } from "@/components/dashboard/ReportPreviewDialog";
 
 export const Route = createFileRoute("/dashboard/reports")({
   component: ReportsPage,
@@ -30,6 +31,7 @@ function ReportsPage() {
   const [type, setType] = useState(REPORT_TYPES[0]);
   const [range, setRange] = useState(DATE_RANGES[0]);
   const [format, setFormat] = useState(FORMATS[0]);
+  const [previewOpen, setPreviewOpen] = useState(false);
 
   return (
     <div className="mx-auto w-full max-w-[1200px] flex-1 px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
@@ -84,12 +86,20 @@ function ReportsPage() {
         </div>
         <button
           type="button"
-          onClick={() => toast.info("Report generation isn't wired up yet — this is a static mockup.")}
+          onClick={() => setPreviewOpen(true)}
           className="mt-4 inline-flex items-center justify-center gap-2 rounded-full bg-black px-5 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90"
         >
           Generate report
         </button>
       </div>
+
+      <ReportPreviewDialog
+        open={previewOpen}
+        onOpenChange={setPreviewOpen}
+        type={type}
+        range={range}
+        format={format}
+      />
 
       {/* History */}
       <div className="mt-6 rounded-2xl border border-black/[0.07] bg-white shadow-[0_2px_12px_rgba(0,0,0,0.06)]">
