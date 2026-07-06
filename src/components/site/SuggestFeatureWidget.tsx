@@ -186,28 +186,30 @@ export function SuggestFeatureWidget({ region }: { region: Region }) {
     }
     setLoading(true);
     try {
-      const { data: idea, error } = await supabase
-        .from("feature_ideas")
-        .insert({
-          title: t.slice(0, 120),
-          description: d.slice(0, 500),
-          device_id: deviceId,
-          region,
-        })
-        .select("id")
-        .single();
+      // Generated client-side and inserted explicitly rather than read back
+      // via .select().single(): new rows land as pending_review, which the
+      // SELECT policy now hides from anon/public -- Postgres requires a
+      // RETURNING row to also pass the table's SELECT policy, so asking for
+      // the row back here would fail RLS even though the INSERT itself is
+      // allowed. Knowing the id up front avoids ever needing to read it back.
+      const newIdeaId = crypto.randomUUID();
+      const { error } = await supabase.from("feature_ideas").insert({
+        id: newIdeaId,
+        title: t.slice(0, 120),
+        description: d.slice(0, 500),
+        device_id: deviceId,
+        region,
+      });
       if (error) throw error;
       // Auto-vote is best-effort — a failure must not mask the successful idea creation
-      if (idea?.id) {
-        const { error: voteError } = await supabase
-          .from("feature_votes")
-          .insert({ idea_id: idea.id, device_id: deviceId });
-        if (!voteError) {
-          const voted = getVotedSet();
-          voted.add(idea.id);
-          persistVotedSet(voted);
-          setVotedIds(voted);
-        }
+      const { error: voteError } = await supabase
+        .from("feature_votes")
+        .insert({ idea_id: newIdeaId, device_id: deviceId });
+      if (!voteError) {
+        const voted = getVotedSet();
+        voted.add(newIdeaId);
+        persistVotedSet(voted);
+        setVotedIds(voted);
       }
       setSuccessMsg("Your idea was submitted");
       setStep("success");
