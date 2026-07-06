@@ -47,7 +47,7 @@ const TAX_CONTENT: Record<DashboardRegion, RegionTaxContent> = {
     heroNote: "GST/HST reclaim plus estimated tax savings from home office and mileage",
     stats: [
       { label: "Total expenses scanned", value: "24", note: "$1,842.50 tracked this year", icon: Receipt },
-      { label: "GST/HST reclaim", value: "$215.40", note: "Refunded directly, not an estimate", icon: Landmark },
+      { label: "GST/HST reclaim", value: "$215.40", note: "This is your exact refund amount", icon: Landmark },
       { label: "Home office reclaim", value: "$480.00", note: "≈ $134 estimated tax saving", icon: Home },
       { label: "Mileage Logged", value: "342 km", note: "≈ $73 estimated tax saving", icon: Car },
     ],
