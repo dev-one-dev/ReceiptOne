@@ -12,6 +12,31 @@ export type Database = {
   __InternalSupabase: {
     PostgrestVersion: "14.5"
   }
+  graphql_public: {
+    Tables: {
+      [_ in never]: never
+    }
+    Views: {
+      [_ in never]: never
+    }
+    Functions: {
+      graphql: {
+        Args: {
+          extensions?: Json
+          operationName?: string
+          query?: string
+          variables?: Json
+        }
+        Returns: Json
+      }
+    }
+    Enums: {
+      [_ in never]: never
+    }
+    CompositeTypes: {
+      [_ in never]: never
+    }
+  }
   public: {
     Tables: {
       feature_ideas: {
@@ -79,6 +104,42 @@ export type Database = {
           },
         ]
       }
+      support_requests: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          message: string
+          name: string
+          region: string | null
+          status: Database["public"]["Enums"]["support_request_status"]
+          subject: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          message: string
+          name: string
+          region?: string | null
+          status?: Database["public"]["Enums"]["support_request_status"]
+          subject: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          message?: string
+          name?: string
+          region?: string | null
+          status?: Database["public"]["Enums"]["support_request_status"]
+          subject?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -92,6 +153,7 @@ export type Database = {
         | "planned"
         | "coming_soon"
         | "published"
+      support_request_status: "new" | "in_progress" | "resolved"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -217,6 +279,9 @@ export type CompositeTypes<
     : never
 
 export const Constants = {
+  graphql_public: {
+    Enums: {},
+  },
   public: {
     Enums: {
       feature_idea_status: [
@@ -225,6 +290,7 @@ export const Constants = {
         "coming_soon",
         "published",
       ],
+      support_request_status: ["new", "in_progress", "resolved"],
     },
   },
 } as const

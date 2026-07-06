@@ -17,6 +17,7 @@ function productLinks(region: "ca" | "us") {
     { label: "Pricing", href: "#pricing" },
     { label: "Articles", href: `${prefix}/articles` },
     { label: "Help Center", href: `${prefix}/faq` },
+    { label: "Contact", href: `${prefix}/contact` },
   ];
 }
 
