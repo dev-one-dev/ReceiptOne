@@ -1,0 +1,24 @@
+-- Grant base table-level privileges to anon/authenticated on feature_ideas
+-- and feature_votes.
+--
+-- Neither original migration ever ran an explicit GRANT. On the original
+-- project these tables likely inherited anon/authenticated privileges from
+-- Supabase's dashboard-driven project bootstrap (which sets up default
+-- privileges for tables created via the dashboard's SQL editor). Tables
+-- created purely via `supabase db push` from the CLI don't reliably
+-- inherit that same default-privilege grant on a fresh project -- RLS
+-- policies control row-level access, but Postgres still requires a
+-- separate table-level GRANT before a role can attempt the operation at
+-- all. Without this, anon/authenticated requests fail with a permission
+-- error regardless of how permissive the RLS policies are.
+--
+-- feature_ideas needs UPDATE (not just SELECT/INSERT) because
+-- recompute_idea_votes() and update_updated_at_column() are both
+-- SECURITY INVOKER (the default) -- when anon inserts a row into
+-- feature_votes, the AFTER INSERT trigger's `UPDATE feature_ideas SET
+-- votes_count = ...` executes as the calling role (anon), not as a
+-- privileged owner. feature_votes only needs SELECT/INSERT: the DELETE
+-- policy was intentionally removed in the prior migration and DELETE
+-- grants should not be reintroduced here.
+GRANT SELECT, INSERT, UPDATE ON public.feature_ideas TO anon, authenticated;
+GRANT SELECT, INSERT ON public.feature_votes TO anon, authenticated;
