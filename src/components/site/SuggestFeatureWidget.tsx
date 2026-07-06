@@ -5,18 +5,12 @@ import { toast } from "sonner";
 type Region = "ca" | "us";
 type Status = "under_review" | "planned" | "coming_soon" | "published";
 
-interface SimilarIdea {
+interface Idea {
   id: string;
   title: string;
   description: string;
   votes_count: number;
   status: Status;
-}
-
-interface IdeaPreview {
-  title: string;
-  description: string;
-  similar: SimilarIdea[];
 }
 
 const QUICK_OPTIONS = [
@@ -58,45 +52,31 @@ function persistVotedSet(set: Set<string>) {
   localStorage.setItem("ro_voted_ideas", JSON.stringify(Array.from(set)));
 }
 
-/**
- * Plain keyword search against feature_ideas, run client-side against the
- * public "Anyone can view ideas" RLS policy. Same token-extraction and
- * ILIKE-OR logic the old preview-feature-idea edge function used server-side
- * -- moving it here drops a whole deployment (no edge function, no AI
- * gateway dependency) with no change in privilege, since both paths only
- * ever used the anon key.
- */
-async function findSimilarIdeas(title: string): Promise<SimilarIdea[]> {
-  const tokens = title
-    .toLowerCase()
-    .replace(/[^a-z0-9 ]/g, " ")
-    .split(/\s+/)
-    .filter((w) => w.length > 3)
-    .slice(0, 5);
-  if (tokens.length === 0) return [];
-
-  const orFilter = tokens.map((t) => `title.ilike.%${t}%,description.ilike.%${t}%`).join(",");
+/** Top 20 ideas by vote count, every status -- the widget's default view. */
+async function fetchIdeas(): Promise<Idea[]> {
   const { data, error } = await supabase
     .from("feature_ideas")
     .select("id, title, description, votes_count, status")
-    .or(orFilter)
     .order("votes_count", { ascending: false })
-    .limit(3);
+    .limit(20);
   if (error) throw error;
-  return (data as SimilarIdea[]) ?? [];
+  return (data as Idea[]) ?? [];
 }
 
-type Step = "input" | "preview" | "success";
+type Step = "list" | "input" | "success";
 
 export function SuggestFeatureWidget({ region }: { region: Region }) {
   const [open, setOpen] = useState(false);
-  const [step, setStep] = useState<Step>("input");
+  const [step, setStep] = useState<Step>("list");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [loading, setLoading] = useState(false);
-  const [preview, setPreview] = useState<IdeaPreview | null>(null);
   const [successMsg, setSuccessMsg] = useState("");
   const [nearFooter, setNearFooter] = useState(false);
+  const [ideas, setIdeas] = useState<Idea[]>([]);
+  const [ideasLoading, setIdeasLoading] = useState(false);
+  const [votingId, setVotingId] = useState<string | null>(null);
+  const [votedIds, setVotedIds] = useState<Set<string>>(() => getVotedSet());
   const panelRef = useRef<HTMLDivElement>(null);
   const deviceId = useMemo(getDeviceId, []);
 
@@ -123,11 +103,29 @@ export function SuggestFeatureWidget({ region }: { region: Region }) {
     return () => observer.disconnect();
   }, []);
 
+  const loadIdeas = async () => {
+    setIdeasLoading(true);
+    try {
+      const data = await fetchIdeas();
+      setIdeas(data);
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : "Failed to load ideas";
+      toast.error(msg);
+    } finally {
+      setIdeasLoading(false);
+    }
+  };
+
+  // Load (and refresh) the list every time the panel opens.
+  useEffect(() => {
+    if (open) loadIdeas();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open]);
+
   const reset = () => {
-    setStep("input");
+    setStep("list");
     setTitle("");
     setDescription("");
-    setPreview(null);
     setSuccessMsg("");
   };
 
@@ -136,7 +134,38 @@ export function SuggestFeatureWidget({ region }: { region: Region }) {
     setTimeout(reset, 250);
   };
 
-  const proceedToPreview = async () => {
+  const backToList = () => {
+    setStep("list");
+    loadIdeas();
+  };
+
+  const voteOnIdea = async (ideaId: string) => {
+    if (votedIds.has(ideaId)) return;
+    setVotingId(ideaId);
+    try {
+      const { error } = await supabase
+        .from("feature_votes")
+        .insert({ idea_id: ideaId, device_id: deviceId });
+      if (error && !`${error.message}`.toLowerCase().includes("duplicate")) throw error;
+      const next = new Set(votedIds);
+      next.add(ideaId);
+      setVotedIds(next);
+      persistVotedSet(next);
+      setIdeas((prev) =>
+        prev.map((idea) =>
+          idea.id === ideaId ? { ...idea, votes_count: idea.votes_count + 1 } : idea,
+        ),
+      );
+      toast.success("Vote added");
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : "Failed to vote";
+      toast.error(msg);
+    } finally {
+      setVotingId(null);
+    }
+  };
+
+  const submitNew = async () => {
     const t = title.trim();
     const d = description.trim();
     if (t.length < 3) {
@@ -149,26 +178,11 @@ export function SuggestFeatureWidget({ region }: { region: Region }) {
     }
     setLoading(true);
     try {
-      const similar = await findSimilarIdeas(t);
-      setPreview({ title: t, description: d, similar });
-      setStep("preview");
-    } catch (e) {
-      const msg = e instanceof Error ? e.message : "Failed to search for similar ideas";
-      toast.error(msg);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const submitNew = async () => {
-    if (!preview) return;
-    setLoading(true);
-    try {
       const { data: idea, error } = await supabase
         .from("feature_ideas")
         .insert({
-          title: preview.title.slice(0, 120),
-          description: preview.description.slice(0, 500),
+          title: t.slice(0, 120),
+          description: d.slice(0, 500),
           device_id: deviceId,
           region,
         })
@@ -184,37 +198,13 @@ export function SuggestFeatureWidget({ region }: { region: Region }) {
           const voted = getVotedSet();
           voted.add(idea.id);
           persistVotedSet(voted);
+          setVotedIds(voted);
         }
       }
       setSuccessMsg("Your idea was submitted");
       setStep("success");
     } catch (e) {
       const msg = e instanceof Error ? e.message : "Failed to submit";
-      toast.error(msg);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const voteExisting = async (ideaId: string) => {
-    const voted = getVotedSet();
-    if (voted.has(ideaId)) {
-      setSuccessMsg("You already voted for this idea");
-      setStep("success");
-      return;
-    }
-    setLoading(true);
-    try {
-      const { error } = await supabase
-        .from("feature_votes")
-        .insert({ idea_id: ideaId, device_id: deviceId });
-      if (error && !`${error.message}`.toLowerCase().includes("duplicate")) throw error;
-      voted.add(ideaId);
-      persistVotedSet(voted);
-      setSuccessMsg("Your vote was added");
-      setStep("success");
-    } catch (e) {
-      const msg = e instanceof Error ? e.message : "Failed to vote";
       toast.error(msg);
     } finally {
       setLoading(false);
@@ -247,11 +237,21 @@ export function SuggestFeatureWidget({ region }: { region: Region }) {
           {/* Header */}
           <div className="flex items-center justify-between border-b border-black/5 bg-white px-5 py-4">
             <div className="flex items-center gap-2">
+              {step === "input" && (
+                <button
+                  type="button"
+                  onClick={backToList}
+                  aria-label="Back to ideas"
+                  className="rounded-full p-1 text-black/60 transition-colors hover:bg-black/5 hover:text-black"
+                >
+                  <ArrowLeftIcon />
+                </button>
+              )}
               <span className="flex size-7 items-center justify-center rounded-full bg-black text-white">
                 <SparkIcon className="size-3.5" />
               </span>
               <span className="font-display text-sm font-semibold text-black">
-                {step === "success" ? "Thanks!" : "Suggest a feature"}
+                {step === "success" ? "Thanks!" : step === "input" ? "Suggest a feature" : "Feature ideas"}
               </span>
             </div>
             <button
@@ -266,6 +266,71 @@ export function SuggestFeatureWidget({ region }: { region: Region }) {
 
           {/* Body */}
           <div className="max-h-[70vh] overflow-y-auto p-5">
+            {step === "list" && (
+              <div className="space-y-4">
+                <button
+                  type="button"
+                  onClick={() => setStep("input")}
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-black px-5 py-3 font-display text-sm font-semibold text-white transition-opacity hover:opacity-90"
+                >
+                  <SparkIcon className="size-3.5" />
+                  Suggest new idea
+                </button>
+
+                {ideasLoading && (
+                  <div className="flex justify-center py-8">
+                    <Spinner className="size-6 text-black/30" />
+                  </div>
+                )}
+
+                {!ideasLoading && ideas.length === 0 && (
+                  <p className="py-8 text-center font-sans text-sm text-black/60">
+                    No ideas yet — be the first to suggest one.
+                  </p>
+                )}
+
+                {!ideasLoading && ideas.length > 0 && (
+                  <ul className="space-y-2">
+                    {ideas.map((idea) => {
+                      const voted = votedIds.has(idea.id);
+                      return (
+                        <li
+                          key={idea.id}
+                          className="rounded-2xl border border-black/10 bg-white p-3"
+                        >
+                          <div className="flex items-start justify-between gap-3">
+                            <div className="min-w-0 flex-1">
+                              <p className="truncate font-display text-sm font-semibold text-black">
+                                {idea.title}
+                              </p>
+                              <p className="mt-0.5 line-clamp-2 font-sans text-xs leading-4 text-black/60">
+                                {idea.description}
+                              </p>
+                              <p className="mt-1 font-sans text-[10px] uppercase tracking-wide text-black/60">
+                                {STATUS_LABEL[idea.status]} · {idea.votes_count} votes
+                              </p>
+                            </div>
+                            <button
+                              type="button"
+                              onClick={() => voteOnIdea(idea.id)}
+                              disabled={voted || votingId === idea.id}
+                              className={`shrink-0 rounded-full border px-3 py-1.5 font-display text-xs font-semibold transition-colors disabled:cursor-not-allowed ${
+                                voted
+                                  ? "border-black/15 bg-black/[0.04] text-black/50"
+                                  : "border-black bg-white text-black hover:bg-black hover:text-white disabled:opacity-40"
+                              }`}
+                            >
+                              {voted ? "✓ Voted" : "▲ Vote"}
+                            </button>
+                          </div>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                )}
+              </div>
+            )}
+
             {step === "input" && (
               <div className="space-y-4">
                 <p className="font-display text-base font-semibold text-black">
@@ -321,85 +386,12 @@ export function SuggestFeatureWidget({ region }: { region: Region }) {
                 <button
                   type="button"
                   disabled={loading || title.trim().length < 3 || description.trim().length < 3}
-                  onClick={proceedToPreview}
+                  onClick={submitNew}
                   className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-black px-5 py-3 font-display text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40"
                 >
                   {loading ? <Spinner /> : <SparkIcon className="size-3.5" />}
-                  {loading ? "Searching…" : "Continue"}
+                  {loading ? "Submitting…" : "Submit"}
                 </button>
-              </div>
-            )}
-
-            {step === "preview" && preview && (
-              <div className="space-y-4">
-                <div className="rounded-2xl border border-black/10 bg-[#faf9f6] p-4">
-                  <p className="mb-1 font-sans text-[11px] uppercase tracking-wide text-black/60">
-                    Your idea
-                  </p>
-                  <p className="font-display text-base font-semibold leading-snug text-black">
-                    {preview.title}
-                  </p>
-                  <p className="mt-1 font-sans text-sm leading-5 text-black/70">
-                    {preview.description}
-                  </p>
-                </div>
-
-                {preview.similar.length > 0 && (
-                  <div>
-                    <p className="mb-2 font-sans text-[11px] uppercase tracking-wide text-black/60">
-                      Existing similar ideas
-                    </p>
-                    <ul className="space-y-2">
-                      {preview.similar.map((s) => (
-                        <li
-                          key={s.id}
-                          className="rounded-2xl border border-black/10 bg-white p-3"
-                        >
-                          <div className="flex items-start justify-between gap-3">
-                            <div className="min-w-0 flex-1">
-                              <p className="truncate font-display text-sm font-semibold text-black">
-                                {s.title}
-                              </p>
-                              <p className="mt-0.5 line-clamp-2 font-sans text-xs leading-4 text-black/60">
-                                {s.description}
-                              </p>
-                              <p className="mt-1 font-sans text-[10px] uppercase tracking-wide text-black/60">
-                                {STATUS_LABEL[s.status]} · {s.votes_count} votes
-                              </p>
-                            </div>
-                            <button
-                              type="button"
-                              onClick={() => voteExisting(s.id)}
-                              disabled={loading}
-                              className="shrink-0 rounded-full border border-black bg-white px-3 py-1.5 font-display text-xs font-semibold text-black transition-colors hover:bg-black hover:text-white disabled:opacity-40"
-                            >
-                              ▲ Vote
-                            </button>
-                          </div>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-
-                <div className="flex flex-col gap-2 sm:flex-row">
-                  <button
-                    type="button"
-                    onClick={() => setStep("input")}
-                    disabled={loading}
-                    className="flex-1 rounded-full border border-black/20 bg-white px-4 py-2.5 font-display text-sm font-semibold text-black transition-colors hover:bg-black/5"
-                  >
-                    Back
-                  </button>
-                  <button
-                    type="button"
-                    onClick={submitNew}
-                    disabled={loading}
-                    className="flex-[2] rounded-full bg-black px-4 py-2.5 font-display text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-40"
-                  >
-                    {loading ? "Submitting…" : "Submit as new"}
-                  </button>
-                </div>
               </div>
             )}
 
@@ -418,17 +410,17 @@ export function SuggestFeatureWidget({ region }: { region: Region }) {
                 <div className="flex flex-col gap-2 sm:flex-row">
                   <button
                     type="button"
-                    onClick={reset}
+                    onClick={backToList}
                     className="flex-1 rounded-full border border-black/20 bg-white px-4 py-2.5 font-display text-sm font-semibold text-black transition-colors hover:bg-black/5"
                   >
-                    Suggest another
+                    Back to ideas
                   </button>
                   <button
                     type="button"
                     onClick={closeAll}
                     className="flex-1 rounded-full bg-black px-4 py-2.5 font-display text-sm font-semibold text-white transition-opacity hover:opacity-90"
                   >
-                    Done
+                    Close
                   </button>
                 </div>
               </div>
@@ -458,6 +450,14 @@ function SparkIcon({ className = "size-4" }: { className?: string }) {
   );
 }
 
+function ArrowLeftIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+      <path d="M19 12H5M12 19l-7-7 7-7" />
+    </svg>
+  );
+}
+
 function CloseIcon() {
   return (
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
@@ -474,9 +474,9 @@ function CheckIcon() {
   );
 }
 
-function Spinner() {
+function Spinner({ className = "size-4" }: { className?: string }) {
   return (
-    <svg className="size-4 animate-spin" viewBox="0 0 24 24" fill="none" aria-hidden>
+    <svg className={`${className} animate-spin`} viewBox="0 0 24 24" fill="none" aria-hidden>
       <circle cx="12" cy="12" r="10" stroke="currentColor" strokeOpacity="0.25" strokeWidth="3" />
       <path d="M22 12a10 10 0 0 0-10-10" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
     </svg>

@@ -141,13 +141,13 @@ Each page composes full-page sections:
 
 ### Feature Suggestion Widget
 
-A floating action button (bottom-right, `/ca` and `/us` only) that powers community feature voting. Runs entirely against Supabase directly — no third-party AI service or edge function involved.
+A floating action button (bottom-right, `/ca` and `/us` only) that opens directly to a browsable, votable list of existing feature ideas — "Suggest new idea" is a secondary action inside the panel. Runs entirely against Supabase directly — no third-party AI service or edge function involved.
 
 **Flow:**
-1. User enters a title (min 3 characters) and description (min 3 characters)
-2. Widget runs a plain keyword search against `feature_ideas` (client-side, same `ilike` logic a server-side lookup would use) and shows up to 3 similar existing ideas with vote counts
-3. User can vote on a similar idea OR submit their own idea as-is
-4. All votes are anonymous (device ID stored in `localStorage`, enforced unique in DB)
+1. Opening the widget loads the top 20 ideas by vote count (all statuses) from `feature_ideas`
+2. Vote on any idea inline, no navigation away from the list (one vote per device, enforced by a DB unique constraint and mirrored in `localStorage`)
+3. "Suggest new idea" switches to a Title + Description form; submitting inserts directly (no AI normalization, no duplicate-check step — the browsable list already covers that) and auto-votes the new idea
+4. All votes are anonymous (device ID stored in `localStorage`)
 
 **No account required.** Voting is rate-limited per device by a `UNIQUE (idea_id, device_id)` DB constraint.
 
