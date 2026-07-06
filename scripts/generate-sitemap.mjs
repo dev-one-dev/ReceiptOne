@@ -21,6 +21,13 @@ const PRIORITY = {
 /** Routes excluded from sitemap (noindex or non-public). */
 const EXCLUDE = new Set(["/login", "/signup"]);
 
+/** Prefix-excluded routes -- authenticated app surfaces, never public/indexed. */
+const EXCLUDE_PREFIXES = ["/dashboard"];
+
+function isExcluded(path) {
+  return EXCLUDE.has(path) || EXCLUDE_PREFIXES.some((p) => path === p || path.startsWith(`${p}/`));
+}
+
 function fileToRoutePath(name) {
   const base = name.replace(/\.(t|j)sx?$/, "");
   if (base === "index") return "/";
@@ -46,10 +53,10 @@ function collect(dir, prefix = "") {
   return out;
 }
 
-const routes = collect(ROUTES_DIR);
+const routes = [...new Set(collect(ROUTES_DIR))];
 const lastmod = new Date().toISOString().split("T")[0];
 const urls = routes
-  .filter((p) => !EXCLUDE.has(p))
+  .filter((p) => !isExcluded(p))
   .sort()
   .map((path) => {
     const meta = PRIORITY[path] ?? { p: "0.6", c: "monthly" };
