@@ -95,7 +95,7 @@ function DashboardPage() {
         <p className="text-xs font-medium uppercase tracking-wide text-black/55">
           {content.heroLabel} for {year}
         </p>
-        <p className="mt-2 text-4xl font-semibold tracking-tight text-[#f97316] sm:text-5xl">
+        <p className="mt-2 text-4xl font-semibold tracking-tight text-emerald-600 sm:text-5xl">
           {content.heroTotal}
         </p>
         <p className="mt-2 text-sm text-black/45">{content.heroNote}</p>
