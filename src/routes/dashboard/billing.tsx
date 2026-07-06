@@ -18,26 +18,29 @@ const INVOICES: Invoice[] = [
   { date: "Apr 1, 2026", amount: "$19.00", status: "Paid" },
 ];
 
-// Mock -- reflects whichever store a real user actually subscribed
-// through, once real data exists. Billing lives entirely in the mobile
-// app's store (App Store / Google Play IAP), never on the web, so this
-// determines which store's real management page to link to.
-const SUBSCRIPTION_PLATFORM: "ios" | "android" = "ios";
-
-const STORE_INFO = {
-  ios: {
+// No real auth/account data yet, so there's no way to know which store a
+// user actually subscribed through -- and unlike an install CTA, guessing
+// from the current browser/device would be actively wrong here (someone
+// could've subscribed on their phone and be viewing this dashboard on a
+// laptop). Same judgment call Pricing.tsx's usePlatform() already makes
+// for install badges: when the real answer is ambiguous, show both,
+// equal weight, rather than default to one. Once real account data
+// exists, this should show only the one store the user actually
+// subscribed through -- a recorded fact, not a device guess.
+const STORES = [
+  {
     name: "App Store",
     // Apple's standard, app-agnostic subscription management page --
     // subscriptions are managed per Apple ID, not via an app-specific URL.
     manageUrl: "https://apps.apple.com/account/subscriptions",
   },
-  android: {
+  {
     name: "Google Play",
     // Real, confirmed package name from StoreBadge.tsx -- Google Play
     // does support deep-linking to a specific app's subscription.
     manageUrl: "https://play.google.com/store/account/subscriptions?package=com.appfyl.checkapp",
   },
-} as const;
+] as const;
 
 function notWiredUp() {
   toast.info("This isn't wired up yet — static mockup only.");
@@ -109,18 +112,23 @@ function BillingPage() {
             <p className="text-lg font-semibold text-black">$19<span className="text-xs font-normal text-black/45">/mo</span></p>
           </div>
           <p className="mt-4 text-sm text-black/55">
-            Managed through the {STORE_INFO[SUBSCRIPTION_PLATFORM].name} — billing, plan changes, and
-            cancellation all happen there, not on the web.
+            Managed through the mobile app's store — billing, plan changes, and cancellation all
+            happen there, not on the web. Pick whichever store you originally subscribed through.
           </p>
-          <a
-            href={STORE_INFO[SUBSCRIPTION_PLATFORM].manageUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-full bg-black px-4 py-2.5 text-xs font-semibold text-white transition-opacity hover:opacity-90"
-          >
-            Manage on {STORE_INFO[SUBSCRIPTION_PLATFORM].name}
-            <ExternalLink className="size-3.5" aria-hidden />
-          </a>
+          <div className="mt-4 flex flex-col gap-2 sm:flex-row">
+            {STORES.map((store) => (
+              <a
+                key={store.name}
+                href={store.manageUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex flex-1 items-center justify-center gap-2 rounded-full border border-black/10 px-4 py-2.5 text-xs font-semibold text-black transition-colors hover:bg-black/5"
+              >
+                Manage on {store.name}
+                <ExternalLink className="size-3.5" aria-hidden />
+              </a>
+            ))}
+          </div>
         </div>
       </div>
 
