@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   AlertCircle,
@@ -10,11 +10,15 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { ReviewReceiptDialog, type ReceiptRow } from "@/components/dashboard/ReviewReceiptDialog";
+import { HomeOfficeDetailDialog } from "@/components/dashboard/HomeOfficeDetailDialog";
 import {
   useDashboardContext,
   type DashboardRegion,
   type TaxListEntry,
 } from "@/components/dashboard/DashboardContext";
+import { useAuth } from "@/integrations/firebase/auth-context";
+import { auth } from "@/integrations/firebase/client";
+import { fetchHomeOffice, type HomeOffice } from "@/integrations/firebase/home-office";
 import {
   distanceInUnit,
   formatDate,
@@ -33,6 +37,7 @@ type TaxStat = {
   value: string;
   note: string;
   icon: LucideIcon;
+  onClick?: () => void;
 };
 
 type RegionTaxContent = {
@@ -148,6 +153,8 @@ function buildTaxContent(
   taxList: TaxListEntry[],
   mileageRate: number,
   distanceUnit: "km" | "mi",
+  homeOffice: HomeOffice | null,
+  onOpenHomeOffice: () => void,
 ): RegionTaxContent {
   const mock = REGION_MOCK[region];
   const taxPercentTotal = taxList.reduce((sum, t) => sum + t.taxPercent, 0);
@@ -156,10 +163,24 @@ function buildTaxContent(
   const distanceValue = distanceInUnit(mock.mileageKm, distanceUnit);
   const mileageSaving = distanceValue * mileageRate;
 
+  // homeOffice is Canada-specific real data (T777 is a CRA form; a US
+  // account would use a different IRS form/calc this schema doesn't
+  // model), so it only ever applies on the "ca" branch below. Falls back
+  // to the existing mock figure when there's no real record for the
+  // selected year, keeping the hero/stats section visually consistent
+  // rather than showing an empty-looking card.
+  const homeOfficeReclaim =
+    region === "ca" && homeOffice ? homeOffice.totalEmploymentExpenses : mock.homeOfficeSaving;
+  const homeOfficeNote =
+    region === "ca" && homeOffice
+      ? `${money(homeOffice.totalEmploymentHomeExpenses)} home + ${money(homeOffice.totalEmploymentWorkspaceExpenses)} workspace`
+      : `≈ ${moneyWhole(mock.homeOfficeSaving)} estimated tax saving`;
+  const homeOfficeOnClick = region === "ca" && homeOffice ? onOpenHomeOffice : undefined;
+
   if (region === "ca") {
     return {
       heroLabel: "Estimated refundable taxes",
-      heroTotal: moneyWhole(taxReclaim + mock.homeOfficeSaving + mileageSaving),
+      heroTotal: moneyWhole(taxReclaim + homeOfficeReclaim + mileageSaving),
       heroNote: `${label} reclaim plus estimated tax savings from home office and mileage`,
       stats: [
         {
@@ -176,9 +197,10 @@ function buildTaxContent(
         },
         {
           label: "Home office reclaim",
-          value: money(mock.homeOfficeAmount),
-          note: `≈ ${moneyWhole(mock.homeOfficeSaving)} estimated tax saving`,
+          value: money(homeOfficeReclaim),
+          note: homeOfficeNote,
           icon: Home,
+          onClick: homeOfficeOnClick,
         },
         {
           label: "Mileage Logged",
@@ -225,7 +247,33 @@ function buildTaxContent(
 
 function DashboardPage() {
   const { year, region, taxList, mileageRate, distanceUnit, dateFormat } = useDashboardContext();
-  const content = buildTaxContent(region, taxList, mileageRate, distanceUnit);
+  const { user } = useAuth();
+  const uid = user?.uid ?? auth.currentUser?.uid ?? null;
+
+  const [homeOffice, setHomeOffice] = useState<HomeOffice | null>(null);
+  const [homeOfficeDialogOpen, setHomeOfficeDialogOpen] = useState(false);
+
+  useEffect(() => {
+    if (!uid || region !== "ca") {
+      setHomeOffice(null);
+      return;
+    }
+    let cancelled = false;
+    fetchHomeOffice(uid, year)
+      .then((record) => {
+        if (!cancelled) setHomeOffice(record);
+      })
+      .catch(() => {
+        if (!cancelled) setHomeOffice(null);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [uid, year, region]);
+
+  const content = buildTaxContent(region, taxList, mileageRate, distanceUnit, homeOffice, () =>
+    setHomeOfficeDialogOpen(true),
+  );
   const [receipts, setReceipts] = useState<ReceiptRow[]>(INITIAL_RECEIPTS);
   const [selected, setSelected] = useState<ReceiptRow | null>(null);
 
@@ -252,10 +300,25 @@ function DashboardPage() {
 
       {/* Stat cards */}
       <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        {content.stats.map(({ label, value, note, icon: Icon }) => (
+        {content.stats.map(({ label, value, note, icon: Icon, onClick }) => (
           <div
             key={label}
-            className="rounded-2xl border border-black/[0.07] bg-white p-5 shadow-[0_2px_12px_rgba(0,0,0,0.06)]"
+            onClick={onClick}
+            role={onClick ? "button" : undefined}
+            tabIndex={onClick ? 0 : undefined}
+            onKeyDown={
+              onClick
+                ? (e) => {
+                    if (e.key === "Enter" || e.key === " ") onClick();
+                  }
+                : undefined
+            }
+            className={[
+              "rounded-2xl border border-black/[0.07] bg-white p-5 shadow-[0_2px_12px_rgba(0,0,0,0.06)]",
+              onClick
+                ? "cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-[0_12px_40px_rgba(0,0,0,0.10)] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#f97316]/40"
+                : "",
+            ].join(" ")}
           >
             <div className="flex items-center justify-between">
               <span className="text-xs font-medium text-black/55">{label}</span>
@@ -335,6 +398,12 @@ function DashboardPage() {
           setReceipts((prev) => prev.map((r) => (r === selected ? { ...r, category, status } : r)));
           setSelected(null);
         }}
+      />
+
+      <HomeOfficeDetailDialog
+        homeOffice={homeOfficeDialogOpen ? homeOffice : null}
+        dateFormat={dateFormat}
+        onOpenChange={(open) => setHomeOfficeDialogOpen(open)}
       />
     </div>
   );
