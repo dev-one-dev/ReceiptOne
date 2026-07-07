@@ -90,5 +90,11 @@ export async function fetchReports(uid: string): Promise<Report[]> {
     orderBy("created_at", "desc"),
   );
   const snapshot = await getDocs(q);
+  // TEMPORARY DEBUG -- remove once the country_code/pdfURL bug is diagnosed.
+  // Logs the raw, unmapped document data so we can see exactly what
+  // fields/values actually exist, rather than guessing.
+  snapshot.docs.forEach((doc) => {
+    console.log("[reports debug]", doc.id, doc.data());
+  });
   return snapshot.docs.map((doc) => toReport(doc.id, doc.data()));
 }
