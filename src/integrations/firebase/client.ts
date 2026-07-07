@@ -1,6 +1,6 @@
-import { getApps, initializeApp, type FirebaseApp, type FirebaseOptions } from 'firebase/app';
-import { getAuth, type Auth } from 'firebase/auth';
-import { getFirestore, type Firestore } from 'firebase/firestore';
+import { getApps, initializeApp, type FirebaseApp, type FirebaseOptions } from "firebase/app";
+import { getAuth, type Auth } from "firebase/auth";
+import { getFirestore, type Firestore } from "firebase/firestore";
 
 // Adds a Web client to the existing "check-app" Firebase project used by
 // the mobile apps -- this must never touch the Android/iOS app configs,
@@ -10,17 +10,22 @@ function getFirebaseConfig(): FirebaseOptions {
   // Use import.meta.env for client-side (Vite build-time replacement)
   // Fall back to process.env for SSR (server-side rendering)
   const apiKey = import.meta.env.VITE_FIREBASE_API_KEY || process.env.VITE_FIREBASE_API_KEY;
-  const authDomain = import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || process.env.VITE_FIREBASE_AUTH_DOMAIN;
-  const projectId = import.meta.env.VITE_FIREBASE_PROJECT_ID || process.env.VITE_FIREBASE_PROJECT_ID;
-  const storageBucket = import.meta.env.VITE_FIREBASE_STORAGE_BUCKET || process.env.VITE_FIREBASE_STORAGE_BUCKET;
+  const authDomain =
+    import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || process.env.VITE_FIREBASE_AUTH_DOMAIN;
+  const projectId =
+    import.meta.env.VITE_FIREBASE_PROJECT_ID || process.env.VITE_FIREBASE_PROJECT_ID;
+  const storageBucket =
+    import.meta.env.VITE_FIREBASE_STORAGE_BUCKET || process.env.VITE_FIREBASE_STORAGE_BUCKET;
   const messagingSenderId =
-    import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || process.env.VITE_FIREBASE_MESSAGING_SENDER_ID;
+    import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID ||
+    process.env.VITE_FIREBASE_MESSAGING_SENDER_ID;
   const appId = import.meta.env.VITE_FIREBASE_APP_ID || process.env.VITE_FIREBASE_APP_ID;
-  const measurementId = import.meta.env.VITE_FIREBASE_MEASUREMENT_ID || process.env.VITE_FIREBASE_MEASUREMENT_ID;
+  const measurementId =
+    import.meta.env.VITE_FIREBASE_MEASUREMENT_ID || process.env.VITE_FIREBASE_MEASUREMENT_ID;
 
   if (!apiKey || !authDomain || !projectId || !storageBucket || !messagingSenderId || !appId) {
     throw new Error(
-      'Missing Firebase environment variables. Ensure VITE_FIREBASE_* variables are set in your .env file.'
+      "Missing Firebase environment variables. Ensure VITE_FIREBASE_* variables are set in your .env file.",
     );
   }
 

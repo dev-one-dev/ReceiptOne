@@ -1,9 +1,16 @@
-import { useState } from "react";
-import { createFileRoute, Outlet } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
+import { createFileRoute, Outlet, useNavigate } from "@tanstack/react-router";
+import { useAuth } from "@/integrations/firebase/auth-context";
 import { AppSidebar } from "@/components/dashboard/AppSidebar";
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { Separator } from "@/components/ui/separator";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import {
   DashboardProvider,
   type DashboardRegion,
@@ -30,12 +37,29 @@ const ACCOUNT_REGION: { flag: string; label: string; region: DashboardRegion } =
 const TAX_YEARS = ["2026", "2025", "2024"];
 
 function DashboardLayout() {
+  const { user, loading } = useAuth();
+  const navigate = useNavigate();
+
   const [year, setYear] = useState(TAX_YEARS[0]);
   const [language, setLanguage] = useState<Language>("en");
   const [distanceUnit, setDistanceUnit] = useState<DistanceUnit>("km");
   const [taxRate, setTaxRate] = useState<TaxRateSetting>({ name: "GST", percent: 5 });
   const [mileageRate, setMileageRate] = useState(0.73);
   const [dateFormat, setDateFormat] = useState<DateFormat>("MM/DD/YYYY");
+
+  useEffect(() => {
+    if (!loading && !user) {
+      navigate({ to: "/login" });
+    }
+  }, [loading, user, navigate]);
+
+  if (loading || !user) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-[#f5f4f0]">
+        <p className="text-sm text-black/50">Loading…</p>
+      </div>
+    );
+  }
 
   return (
     <SidebarProvider>
