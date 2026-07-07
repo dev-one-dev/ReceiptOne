@@ -313,12 +313,13 @@ The following issues are tracked and open for contribution:
 
 ## Known Limitations
 
-The dashboard's Firestore integration (Stage 4) is deliberately **read-only** for now — it queries the real `receipts` and `routes` collections (scoped to the signed-in user, matching the security rules) but never creates, updates, or deletes anything. The following still need real write access in a future pass:
+The dashboard's Firestore integration (Stage 4) is deliberately **read-only** for now — it queries the real `receipts`, `routes`, and `reports` collections (scoped to the signed-in user, matching the security rules) but never creates, updates, or deletes anything. The following still need real write access in a future pass:
 
 | Feature | Status | File(s) |
 |---|---|---|
 | Receipts page | View-only — no edit/delete of real receipts | `src/routes/dashboard/receipts.tsx` |
 | Mileage's "Log trip" dialog | Demo only — collects input, shows a toast, never persists; likely needs to match the mobile app's GPS-tracking flow | `src/routes/dashboard/mileage.tsx` |
 | Bulk Upload tab (Receipts) | Visual only — no real upload/OCR pipeline behind it | `src/routes/dashboard/receipts.tsx` |
+| Reports "Generate a report" flow | Config + preview stays a mock — generating a *new* report needs whatever backend actually builds the PDF (a Cloud Function?), which hasn't been investigated. Past real reports (with real, already-generated PDFs) are live data, downloadable directly | `src/routes/dashboard/reports.tsx` |
 
 Each is marked with a `TODO(write-access)` comment at its source for grep-ability.
