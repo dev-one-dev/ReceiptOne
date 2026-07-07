@@ -11,7 +11,11 @@ import {
 import { useAuth } from "@/integrations/firebase/auth-context";
 import { auth } from "@/integrations/firebase/client";
 import { fetchHomeOffice, type HomeOffice } from "@/integrations/firebase/home-office";
-import { fetchReceipts, type Receipt as ReceiptRecord } from "@/integrations/firebase/receipts";
+import {
+  fetchReceipts,
+  type Receipt as ReceiptRecord,
+  type TaxListEntry as ReceiptTaxEntry,
+} from "@/integrations/firebase/receipts";
 import {
   distanceInUnit,
   formatCurrency,
@@ -42,16 +46,15 @@ type RegionTaxContent = {
 };
 
 /**
- * Mock underlying figures the reclaim/mileage math is built from -- these
- * stand in for figures not wired to real data yet (US home office has no
- * real schema; mileage/tax subtotals still need real per-region source
- * data), but the tax rate and mileage rate applied to them come straight
- * from Settings, so the displayed totals are genuinely reactive, not
- * hardcoded strings. Total expenses scanned is real now (see
- * `expensesStat` in buildTaxContent), not part of this mock anymore.
+ * Mock underlying figures for what's not wired to real data yet (US home
+ * office has no real schema; mileage distance still needs a real
+ * per-region source), but the mileage rate applied comes straight from
+ * Settings, so the displayed total is genuinely reactive, not a
+ * hardcoded string. Total expenses scanned and the GST/HST reclaim are
+ * both real now (see `expensesStat` and `sumRefundableTax` in
+ * buildTaxContent), no longer part of this mock.
  */
 type RegionMock = {
-  taxEligibleSubtotal: number;
   homeOfficeAmount: number;
   homeOfficeSaving: number;
   mileageKm: number;
@@ -59,13 +62,11 @@ type RegionMock = {
 
 const REGION_MOCK: Record<DashboardRegion, RegionMock> = {
   ca: {
-    taxEligibleSubtotal: 4308,
     homeOfficeAmount: 480,
     homeOfficeSaving: 134,
     mileageKm: 342,
   },
   us: {
-    taxEligibleSubtotal: 2364,
     homeOfficeAmount: 480,
     homeOfficeSaving: 115,
     mileageKm: 342,
@@ -94,6 +95,31 @@ function taxLabel(taxList: TaxListEntry[]): string {
   );
 }
 
+/**
+ * The real GST/HST reclaim total: sums tax_lists[].tax across every one
+ * of the user's receipts (not just the ones shown in the Recent
+ * receipts table), counting only entries where isRefundable is true AND
+ * the tax name matches one of the user's configured Settings tax names.
+ * A receipt with both GST 5% and PST 7% recorded only contributes its
+ * GST portion, even though both live in the same taxLists array --
+ * never a subtotal x rate estimate.
+ */
+function sumRefundableTax(receipts: ReceiptRecord[], taxList: TaxListEntry[]): number {
+  const configuredNames = new Set(
+    taxList.map((t) => t.taxName.trim().toLowerCase()).filter(Boolean),
+  );
+  if (configuredNames.size === 0) return 0;
+  return receipts.reduce((sum, receipt) => {
+    const receiptTax = receipt.taxLists.reduce((s: number, entry: ReceiptTaxEntry) => {
+      if (entry.isRefundable && configuredNames.has(entry.taxName.trim().toLowerCase())) {
+        return s + entry.tax;
+      }
+      return s;
+    }, 0);
+    return sum + receiptTax;
+  }, 0);
+}
+
 function buildTaxContent(
   region: DashboardRegion,
   taxList: TaxListEntry[],
@@ -106,8 +132,7 @@ function buildTaxContent(
   receiptsLoading: boolean,
 ): RegionTaxContent {
   const mock = REGION_MOCK[region];
-  const taxPercentTotal = taxList.reduce((sum, t) => sum + t.taxPercent, 0);
-  const taxReclaim = mock.taxEligibleSubtotal * (taxPercentTotal / 100);
+  const taxReclaim = sumRefundableTax(receipts, taxList);
   const label = taxLabel(taxList);
   const distanceValue = distanceInUnit(mock.mileageKm, distanceUnit);
   const mileageSaving = distanceValue * mileageRate;
@@ -157,8 +182,8 @@ function buildTaxContent(
         expensesStat,
         {
           label: `${label} reclaim`,
-          value: money(taxReclaim),
-          note: "This is your exact refund amount",
+          value: receiptsLoading ? "…" : money(taxReclaim),
+          note: receiptsLoading ? "Loading…" : "Sum of refundable tax recorded on your receipts",
           icon: Landmark,
         },
         {
@@ -186,8 +211,8 @@ function buildTaxContent(
       expensesStat,
       {
         label: "Sales tax tracked",
-        value: money(taxReclaim),
-        note: "Included in your deductible totals",
+        value: receiptsLoading ? "…" : money(taxReclaim),
+        note: receiptsLoading ? "Loading…" : "Included in your deductible totals",
         icon: Landmark,
       },
       {
