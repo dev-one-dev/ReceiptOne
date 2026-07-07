@@ -236,8 +236,8 @@ function SettingsPage() {
           {taxList.length > 0 && (
             <div className="mt-4 space-y-3">
               {taxList.map((entry, i) => (
-                <div key={i} className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                  <div className="space-y-1.5">
+                <div key={i} className="flex flex-wrap gap-3">
+                  <div className="w-40 space-y-1.5">
                     <label className="block text-xs font-medium text-black/55">
                       Tax name{taxList.length > 1 ? ` ${i + 1}` : ""}
                     </label>
@@ -248,7 +248,7 @@ function SettingsPage() {
                       className="h-9 w-full appearance-none rounded-xl border border-black/10 bg-white px-3 py-2 text-sm outline-none focus:border-black/25"
                     />
                   </div>
-                  <div className="space-y-1.5">
+                  <div className="w-20 space-y-1.5">
                     <label className="block text-xs font-medium text-black/55">Rate (%)</label>
                     <input
                       value={String(entry.taxPercent)}
@@ -266,17 +266,19 @@ function SettingsPage() {
             </div>
           )}
 
-          <div className="mt-4 space-y-1.5 border-t border-black/[0.05] pt-4">
-            <label className="block text-xs font-medium text-black/55">
-              Mileage rate ($/{distanceUnit})
-            </label>
-            <input
-              value={mileageRateInput}
-              onChange={(e) => handleMileageRateChange(e.target.value)}
-              inputMode="decimal"
-              placeholder="0.73"
-              className="h-9 w-full max-w-xs appearance-none rounded-xl border border-black/10 bg-white px-3 py-2 text-sm outline-none focus:border-black/25"
-            />
+          <div className="mt-4 border-t border-black/[0.05] pt-4">
+            <div className="w-40 space-y-1.5">
+              <label className="block text-xs font-medium text-black/55">
+                Mileage rate ($/{distanceUnit})
+              </label>
+              <input
+                value={mileageRateInput}
+                onChange={(e) => handleMileageRateChange(e.target.value)}
+                inputMode="decimal"
+                placeholder="0.73"
+                className="h-9 w-full appearance-none rounded-xl border border-black/10 bg-white px-3 py-2 text-sm outline-none focus:border-black/25"
+              />
+            </div>
           </div>
         </div>
       </div>
