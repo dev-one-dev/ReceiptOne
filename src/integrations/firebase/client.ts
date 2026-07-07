@@ -1,6 +1,6 @@
-import { getApps, initializeApp, type FirebaseApp, type FirebaseOptions } from "firebase/app";
-import { getAuth, type Auth } from "firebase/auth";
-import { getFirestore, type Firestore } from "firebase/firestore";
+import { getApps, initializeApp, type FirebaseOptions } from "firebase/app";
+import { getAuth } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
 
 // Adds a Web client to the existing "check-app" Firebase project used by
 // the mobile apps -- this must never touch the Android/iOS app configs,
@@ -32,41 +32,18 @@ function getFirebaseConfig(): FirebaseOptions {
   return { apiKey, authDomain, projectId, storageBucket, messagingSenderId, appId, measurementId };
 }
 
-function createFirebaseApp(): FirebaseApp {
-  // Reuse the existing app instance if one was already initialized
-  // (e.g. by HMR) instead of calling initializeApp twice.
-  const existing = getApps();
-  return existing.length > 0 ? existing[0] : initializeApp(getFirebaseConfig());
-}
-
-let _app: FirebaseApp | undefined;
-let _auth: Auth | undefined;
-let _db: Firestore | undefined;
-
-function app(): FirebaseApp {
-  if (!_app) _app = createFirebaseApp();
-  return _app;
-}
-
-// Import like: import { firebaseApp } from "@/integrations/firebase/client";
-export const firebaseApp = new Proxy({} as FirebaseApp, {
-  get(_, prop, receiver) {
-    return Reflect.get(app(), prop, receiver);
-  },
-});
-
-// Import like: import { auth } from "@/integrations/firebase/client";
-export const auth = new Proxy({} as Auth, {
-  get(_, prop, receiver) {
-    if (!_auth) _auth = getAuth(app());
-    return Reflect.get(_auth, prop, receiver);
-  },
-});
-
-// Import like: import { db } from "@/integrations/firebase/client";
-export const db = new Proxy({} as Firestore, {
-  get(_, prop, receiver) {
-    if (!_db) _db = getFirestore(app());
-    return Reflect.get(_db, prop, receiver);
-  },
-});
+// Reuse the existing app instance if one was already initialized (e.g. by
+// HMR) instead of calling initializeApp twice. getAuth/getFirestore are
+// cheap, synchronous, and safe to call eagerly even during SSR -- they
+// don't touch window/IndexedDB until actually used, so there's no need to
+// defer construction behind a lazy wrapper.
+//
+// Deliberately NOT wrapped in a Proxy: a get-only Proxy over a throwaway
+// target object forwards reads correctly, but any internal Firebase code
+// that calls a method through it binds `this` to the Proxy, and writes
+// like `this.someField = ...` silently land on the unintercepted dummy
+// target instead of the real instance -- this caused auth-state listener
+// bookkeeping to desync after the first sign-in in a tab.
+export const firebaseApp = getApps().length > 0 ? getApps()[0] : initializeApp(getFirebaseConfig());
+export const auth = getAuth(firebaseApp);
+export const db = getFirestore(firebaseApp);
