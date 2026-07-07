@@ -14,8 +14,8 @@ import { ReceiptDetailDialog } from "@/components/dashboard/ReceiptDetailDialog"
 import { useDashboardContext } from "@/components/dashboard/DashboardContext";
 import { useAuth } from "@/integrations/firebase/auth-context";
 import { auth } from "@/integrations/firebase/client";
-import { fetchReceipts, formatCurrency, type Receipt } from "@/integrations/firebase/receipts";
-import { formatDate } from "@/lib/dashboard-format";
+import { fetchReceipts, type Receipt } from "@/integrations/firebase/receipts";
+import { formatCurrency, formatDate } from "@/lib/dashboard-format";
 import { errorMessage } from "@/lib/utils";
 
 export const Route = createFileRoute("/dashboard/receipts")({

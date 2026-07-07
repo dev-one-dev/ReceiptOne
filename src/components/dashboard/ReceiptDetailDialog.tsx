@@ -7,8 +7,8 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import type { DateFormat } from "@/components/dashboard/DashboardContext";
-import { formatCurrency, type Receipt } from "@/integrations/firebase/receipts";
-import { formatDate } from "@/lib/dashboard-format";
+import type { Receipt } from "@/integrations/firebase/receipts";
+import { formatCurrency, formatDate } from "@/lib/dashboard-format";
 
 /**
  * Read-only -- Stage 4 wires real Firestore receipts for display only, no

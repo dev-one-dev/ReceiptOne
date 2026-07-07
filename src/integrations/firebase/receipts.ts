@@ -87,14 +87,3 @@ export async function fetchReceipts(uid: string): Promise<Receipt[]> {
   const snapshot = await getDocs(q);
   return snapshot.docs.map((doc) => toReceipt(doc.id, doc.data()));
 }
-
-export function formatCurrency(amount: number, currency: string): string {
-  try {
-    return new Intl.NumberFormat(undefined, {
-      style: "currency",
-      currency: currency || "USD",
-    }).format(amount);
-  } catch {
-    return `$${amount.toFixed(2)}`;
-  }
-}
