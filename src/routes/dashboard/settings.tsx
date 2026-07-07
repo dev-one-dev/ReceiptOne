@@ -245,7 +245,7 @@ function SettingsPage() {
                       value={entry.taxName}
                       onChange={(e) => updateTaxEntry(i, { taxName: e.target.value })}
                       placeholder="GST"
-                      className="h-9 w-full rounded-xl border border-black/10 bg-white px-3 text-sm outline-none focus:border-black/25"
+                      className="h-9 w-full appearance-none rounded-xl border border-black/10 bg-white px-3 py-2 text-sm outline-none focus:border-black/25"
                     />
                   </div>
                   <div className="space-y-1.5">
@@ -258,7 +258,7 @@ function SettingsPage() {
                       }}
                       inputMode="decimal"
                       placeholder="5"
-                      className="h-9 w-full rounded-xl border border-black/10 bg-white px-3 text-sm outline-none focus:border-black/25"
+                      className="h-9 w-full appearance-none rounded-xl border border-black/10 bg-white px-3 py-2 text-sm outline-none focus:border-black/25"
                     />
                   </div>
                 </div>
@@ -275,7 +275,7 @@ function SettingsPage() {
               onChange={(e) => handleMileageRateChange(e.target.value)}
               inputMode="decimal"
               placeholder="0.73"
-              className="h-9 w-full max-w-xs rounded-xl border border-black/10 bg-white px-3 text-sm outline-none focus:border-black/25"
+              className="h-9 w-full max-w-xs appearance-none rounded-xl border border-black/10 bg-white px-3 py-2 text-sm outline-none focus:border-black/25"
             />
           </div>
         </div>
