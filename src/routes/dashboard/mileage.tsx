@@ -24,12 +24,13 @@ export const Route = createFileRoute("/dashboard/mileage")({
 });
 
 /**
- * Purely a UI demo -- doesn't write to Firestore, and its output is
- * intentionally never merged into the real fetched trips list/stats
- * (that would silently inflate a real user's mileage totals with a trip
- * that was never actually saved). Real trip creation would need write
- * access and likely matches the mobile app's GPS-tracking flow -- out of
- * scope for this read-only pass.
+ * TODO(write-access): purely a UI demo -- doesn't write to Firestore, and
+ * its output is intentionally never merged into the real fetched trips
+ * list/stats (that would silently inflate a real user's mileage totals
+ * with a trip that was never actually saved). Real trip creation would
+ * need write access and likely matches the mobile app's GPS-tracking
+ * flow -- out of scope for this read-only pass. See README's
+ * "Known Limitations" section.
  */
 function LogTripDialog({
   distanceUnit,

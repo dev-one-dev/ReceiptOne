@@ -308,3 +308,17 @@ The following issues are tracked and open for contribution:
 | [#18](https://github.com/dev-one-dev/figma-craft-39/issues/18) | Double scrollbar on `/ca` and `/us` | Medium |
 
 **Fixed since this table was written**: `#5` (`Toaster` never mounted) — resolved 2026-07-06, mounted globally in `__root.tsx`. `#9` (App Store URL placeholder) also looks resolved from the current code (real URLs are in place) but hasn't been independently verified against the linked issue.
+
+---
+
+## Known Limitations
+
+The dashboard's Firestore integration (Stage 4) is deliberately **read-only** for now — it queries the real `receipts` and `routes` collections (scoped to the signed-in user, matching the security rules) but never creates, updates, or deletes anything. The following still need real write access in a future pass:
+
+| Feature | Status | File(s) |
+|---|---|---|
+| Receipts page | View-only — no edit/delete of real receipts | `src/routes/dashboard/receipts.tsx` |
+| Mileage's "Log trip" dialog | Demo only — collects input, shows a toast, never persists; likely needs to match the mobile app's GPS-tracking flow | `src/routes/dashboard/mileage.tsx` |
+| Bulk Upload tab (Receipts) | Visual only — no real upload/OCR pipeline behind it | `src/routes/dashboard/receipts.tsx` |
+
+Each is marked with a `TODO(write-access)` comment at its source for grep-ability.

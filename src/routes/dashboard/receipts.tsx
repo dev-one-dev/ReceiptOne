@@ -24,6 +24,9 @@ export const Route = createFileRoute("/dashboard/receipts")({
 
 const ALL_CATEGORIES = "All categories";
 
+// TODO(write-access): view-only for now -- no create/edit/delete against
+// the real `receipts` collection yet. Revisit once Stage 4's read-only
+// scope is done; see README's "Known Limitations" section.
 function AllReceiptsTab() {
   const { dateFormat } = useDashboardContext();
   const { user } = useAuth();
@@ -178,6 +181,9 @@ function AllReceiptsTab() {
   );
 }
 
+// TODO(write-access): visual only -- no real upload/OCR pipeline behind
+// this yet. Revisit once Stage 4's read-only scope is done; see README's
+// "Known Limitations" section.
 function BulkUploadTab() {
   const [dragging, setDragging] = useState(false);
   const [pending, setPending] = useState<string[]>([]);
