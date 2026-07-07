@@ -35,8 +35,8 @@ type NavItem = { label: string; href: string; icon: LucideIcon };
 const MAIN_NAV: NavItem[] = [
   { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
   { label: "Receipts", href: "/dashboard/receipts", icon: Receipt },
-  { label: "Reports", href: "/dashboard/reports", icon: FileBarChart2 },
   { label: "Mileage", href: "/dashboard/mileage", icon: Car },
+  { label: "Reports", href: "/dashboard/reports", icon: FileBarChart2 },
   { label: "File Manager", href: "/dashboard/file-manager", icon: FolderOpen },
   { label: "Roadmap & Changelog", href: "/dashboard/roadmap", icon: Milestone },
 ];
