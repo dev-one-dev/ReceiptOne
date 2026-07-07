@@ -1,15 +1,7 @@
 import { useEffect, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import {
-  AlertCircle,
-  Car,
-  CheckCircle2,
-  Home,
-  Landmark,
-  Receipt,
-  type LucideIcon,
-} from "lucide-react";
-import { ReviewReceiptDialog, type ReceiptRow } from "@/components/dashboard/ReviewReceiptDialog";
+import { Car, Home, Landmark, Receipt, type LucideIcon } from "lucide-react";
+import { ReceiptDetailDialog } from "@/components/dashboard/ReceiptDetailDialog";
 import { HomeOfficeDetailDialog } from "@/components/dashboard/HomeOfficeDetailDialog";
 import {
   useDashboardContext,
@@ -19,14 +11,16 @@ import {
 import { useAuth } from "@/integrations/firebase/auth-context";
 import { auth } from "@/integrations/firebase/client";
 import { fetchHomeOffice, type HomeOffice } from "@/integrations/firebase/home-office";
+import { fetchReceipts, type Receipt as ReceiptRecord } from "@/integrations/firebase/receipts";
 import {
   distanceInUnit,
+  formatCurrency,
   formatDate,
   formatDistance,
-  mkDate,
   money,
   moneyWhole,
 } from "@/lib/dashboard-format";
+import { errorMessage } from "@/lib/utils";
 
 export const Route = createFileRoute("/dashboard/")({
   component: DashboardPage,
@@ -49,13 +43,14 @@ type RegionTaxContent = {
 
 /**
  * Mock underlying figures the reclaim/mileage math is built from -- these
- * stand in for the user's real scanned expenses, but the tax rate and
- * mileage rate applied to them come straight from Settings, so the
- * displayed totals are genuinely reactive, not hardcoded strings.
+ * stand in for figures not wired to real data yet (US home office has no
+ * real schema; mileage/tax subtotals still need real per-region source
+ * data), but the tax rate and mileage rate applied to them come straight
+ * from Settings, so the displayed totals are genuinely reactive, not
+ * hardcoded strings. Total expenses scanned is real now (see
+ * `expensesStat` in buildTaxContent), not part of this mock anymore.
  */
 type RegionMock = {
-  expensesCount: number;
-  expensesAmount: number;
   taxEligibleSubtotal: number;
   homeOfficeAmount: number;
   homeOfficeSaving: number;
@@ -64,67 +59,18 @@ type RegionMock = {
 
 const REGION_MOCK: Record<DashboardRegion, RegionMock> = {
   ca: {
-    expensesCount: 24,
-    expensesAmount: 1842.5,
     taxEligibleSubtotal: 4308,
     homeOfficeAmount: 480,
     homeOfficeSaving: 134,
     mileageKm: 342,
   },
   us: {
-    expensesCount: 24,
-    expensesAmount: 1842.5,
     taxEligibleSubtotal: 2364,
     homeOfficeAmount: 480,
     homeOfficeSaving: 115,
     mileageKm: 342,
   },
 };
-
-const INITIAL_RECEIPTS: ReceiptRow[] = [
-  {
-    merchant: "Staples",
-    category: "Office Supplies",
-    date: mkDate(2026, 7, 2),
-    amount: "$84.20",
-    status: "Categorized",
-  },
-  {
-    merchant: "Uber",
-    category: "Travel",
-    date: mkDate(2026, 6, 29),
-    amount: "$23.50",
-    status: "Categorized",
-  },
-  {
-    merchant: "Shell",
-    category: "Fuel",
-    date: mkDate(2026, 6, 27),
-    amount: "$61.10",
-    status: "Needs review",
-  },
-  {
-    merchant: "Adobe",
-    category: "Software",
-    date: mkDate(2026, 6, 24),
-    amount: "$54.99",
-    status: "Categorized",
-  },
-  {
-    merchant: "WeWork",
-    category: "Office Rent",
-    date: mkDate(2026, 6, 20),
-    amount: "$320.00",
-    status: "Categorized",
-  },
-  {
-    merchant: "Home Depot",
-    category: "Supplies",
-    date: mkDate(2026, 6, 18),
-    amount: "$142.75",
-    status: "Needs review",
-  },
-];
 
 /**
  * CA and US deliberately aren't a find-and-replace of each other: Canadian
@@ -156,6 +102,8 @@ function buildTaxContent(
   homeOffice: HomeOffice | null,
   homeOfficeLoading: boolean,
   onOpenHomeOffice: () => void,
+  receipts: ReceiptRecord[],
+  receiptsLoading: boolean,
 ): RegionTaxContent {
   const mock = REGION_MOCK[region];
   const taxPercentTotal = taxList.reduce((sum, t) => sum + t.taxPercent, 0);
@@ -163,6 +111,23 @@ function buildTaxContent(
   const label = taxLabel(taxList);
   const distanceValue = distanceInUnit(mock.mileageKm, distanceUnit);
   const mileageSaving = distanceValue * mileageRate;
+
+  // Receipts apply the same way to both regions (unlike homeOffice, which
+  // is a CRA-specific form) -- real count/sum for both branches, no mock
+  // fallback, same "loading vs. real (even $0) vs. none" honesty as the
+  // rest of this stage.
+  const receiptsTotal = receipts.reduce((sum, r) => sum + r.price, 0);
+  const receiptsCurrency = receipts[0]?.currency ?? "CAD";
+  const expensesStat: TaxStat = {
+    label: "Total expenses scanned",
+    value: receiptsLoading ? "…" : String(receipts.length),
+    note: receiptsLoading
+      ? "Loading…"
+      : receipts.length > 0
+        ? `${formatCurrency(receiptsTotal, receiptsCurrency)} tracked this year`
+        : "No receipts scanned yet",
+    icon: Receipt,
+  };
 
   // homeOffice is Canada-specific real data (T777 is a CRA form; a US
   // account would use a different IRS form/calc this schema doesn't
@@ -189,12 +154,7 @@ function buildTaxContent(
       heroTotal: moneyWhole(taxReclaim + homeOfficeReclaim + mileageSaving),
       heroNote: `${label} reclaim plus estimated tax savings from home office and mileage`,
       stats: [
-        {
-          label: "Total expenses scanned",
-          value: String(mock.expensesCount),
-          note: `${money(mock.expensesAmount)} tracked this year`,
-          icon: Receipt,
-        },
+        expensesStat,
         {
           label: `${label} reclaim`,
           value: money(taxReclaim),
@@ -223,12 +183,7 @@ function buildTaxContent(
     heroTotal: moneyWhole(mock.homeOfficeSaving + mileageSaving),
     heroNote: "Estimated tax savings from home office and mileage deductions",
     stats: [
-      {
-        label: "Total expenses scanned",
-        value: String(mock.expensesCount),
-        note: `${money(mock.expensesAmount)} tracked this year`,
-        icon: Receipt,
-      },
+      expensesStat,
       {
         label: "Sales tax tracked",
         value: money(taxReclaim),
@@ -283,6 +238,31 @@ function DashboardPage() {
     };
   }, [uid, year, region]);
 
+  const [receipts, setReceipts] = useState<ReceiptRecord[]>([]);
+  const [receiptsLoading, setReceiptsLoading] = useState(true);
+  const [receiptsError, setReceiptsError] = useState<string | null>(null);
+  const [selected, setSelected] = useState<ReceiptRecord | null>(null);
+
+  useEffect(() => {
+    if (!uid) return;
+    let cancelled = false;
+    setReceiptsLoading(true);
+    setReceiptsError(null);
+    fetchReceipts(uid)
+      .then((data) => {
+        if (!cancelled) setReceipts(data);
+      })
+      .catch((e) => {
+        if (!cancelled) setReceiptsError(errorMessage(e, "Couldn't load receipts."));
+      })
+      .finally(() => {
+        if (!cancelled) setReceiptsLoading(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [uid]);
+
   const content = buildTaxContent(
     region,
     taxList,
@@ -291,9 +271,10 @@ function DashboardPage() {
     homeOffice,
     homeOfficeLoading,
     () => setHomeOfficeDialogOpen(true),
+    receipts,
+    receiptsLoading,
   );
-  const [receipts, setReceipts] = useState<ReceiptRow[]>(INITIAL_RECEIPTS);
-  const [selected, setSelected] = useState<ReceiptRow | null>(null);
+  const recentReceipts = receipts.slice(0, 6);
 
   return (
     <div className="mx-auto w-full max-w-[1200px] flex-1 px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
@@ -370,52 +351,66 @@ function DashboardPage() {
                 <th className="px-5 py-2 font-medium">Category</th>
                 <th className="px-5 py-2 font-medium">Date</th>
                 <th className="px-5 py-2 text-right font-medium">Amount</th>
-                <th className="px-5 py-2 text-right font-medium">Status</th>
+                <th className="px-5 py-2 text-right font-medium">Tax deduction</th>
               </tr>
             </thead>
             <tbody>
-              {receipts.map((row) => (
-                <tr
-                  key={row.merchant + row.date.toISOString()}
-                  className="border-t border-black/[0.05]"
-                >
-                  <td className="px-5 py-3 font-medium text-black">{row.merchant}</td>
-                  <td className="px-5 py-3 text-black/60">{row.category}</td>
-                  <td className="px-5 py-3 text-black/60">{formatDate(row.date, dateFormat)}</td>
-                  <td className="px-5 py-3 text-right tabular-nums text-black">{row.amount}</td>
-                  <td className="px-5 py-3 text-right">
-                    <button
-                      type="button"
-                      onClick={() => setSelected(row)}
-                      className={[
-                        "inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-medium transition-opacity hover:opacity-70 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#f97316]/40",
-                        row.status === "Categorized"
-                          ? "bg-black/[0.05] text-black/60"
-                          : "bg-[#f97316]/10 text-[#c2410c]",
-                      ].join(" ")}
-                    >
-                      {row.status === "Categorized" ? (
-                        <CheckCircle2 className="size-3" aria-hidden />
-                      ) : (
-                        <AlertCircle className="size-3" aria-hidden />
-                      )}
-                      {row.status}
-                    </button>
+              {receiptsLoading && (
+                <tr>
+                  <td colSpan={5} className="px-5 py-10 text-center text-sm text-black/45">
+                    Loading receipts…
                   </td>
                 </tr>
-              ))}
+              )}
+              {!receiptsLoading && receiptsError && (
+                <tr>
+                  <td colSpan={5} className="px-5 py-10 text-center text-sm text-red-600">
+                    {receiptsError}
+                  </td>
+                </tr>
+              )}
+              {!receiptsLoading &&
+                !receiptsError &&
+                recentReceipts.map((row) => (
+                  <tr
+                    key={row.id}
+                    onClick={() => setSelected(row)}
+                    className="cursor-pointer border-t border-black/[0.05] transition-colors hover:bg-black/[0.02]"
+                  >
+                    <td className="px-5 py-3 font-medium text-black">{row.companyName || "—"}</td>
+                    <td className="px-5 py-3 text-black/60">{row.companyCategory || "—"}</td>
+                    <td className="px-5 py-3 text-black/60">{formatDate(row.date, dateFormat)}</td>
+                    <td className="px-5 py-3 text-right tabular-nums text-black">
+                      {formatCurrency(row.price, row.currency)}
+                    </td>
+                    <td className="px-5 py-3 text-right">
+                      {row.typeOfTaxDeduction ? (
+                        <span className="inline-flex items-center rounded-full bg-black/[0.05] px-2.5 py-1 text-xs font-medium text-black/60">
+                          {row.typeOfTaxDeduction}
+                        </span>
+                      ) : (
+                        <span className="text-black/30">—</span>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              {!receiptsLoading && !receiptsError && recentReceipts.length === 0 && (
+                <tr>
+                  <td colSpan={5} className="px-5 py-10 text-center text-sm text-black/45">
+                    No receipts yet — receipts scanned from the ReceiptOne mobile app will show up
+                    here.
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>
       </div>
 
-      <ReviewReceiptDialog
+      <ReceiptDetailDialog
         receipt={selected}
+        dateFormat={dateFormat}
         onOpenChange={(open) => !open && setSelected(null)}
-        onSave={({ category, status }) => {
-          setReceipts((prev) => prev.map((r) => (r === selected ? { ...r, category, status } : r)));
-          setSelected(null);
-        }}
       />
 
       <HomeOfficeDetailDialog

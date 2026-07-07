@@ -233,52 +233,65 @@ function SettingsPage() {
             Applies instantly to the tax reclaim and mileage figures on Dashboard and Mileage.
           </p>
 
-          {taxList.length > 0 && (
-            <div className="mt-4 space-y-3">
-              {taxList.map((entry, i) => (
-                <div key={i} className="flex flex-wrap gap-3">
+          <div className="mt-4 space-y-3">
+            {taxList.map((entry, i) => (
+              <div key={i} className="flex flex-wrap gap-3">
+                <div className="w-40 space-y-1.5">
+                  <label className="block text-xs font-medium text-black/55">
+                    Tax name{taxList.length > 1 ? ` ${i + 1}` : ""}
+                  </label>
+                  <input
+                    value={entry.taxName}
+                    onChange={(e) => updateTaxEntry(i, { taxName: e.target.value })}
+                    placeholder="GST"
+                    className="h-9 w-full appearance-none rounded-xl border border-black/10 bg-white px-3 py-2 text-sm outline-none focus:border-black/25"
+                  />
+                </div>
+                <div className="w-20 space-y-1.5">
+                  <label className="block text-xs font-medium text-black/55">Rate (%)</label>
+                  <input
+                    value={String(entry.taxPercent)}
+                    onChange={(e) => {
+                      const parsed = parseFloat(e.target.value);
+                      updateTaxEntry(i, { taxPercent: Number.isNaN(parsed) ? 0 : parsed });
+                    }}
+                    inputMode="decimal"
+                    placeholder="5"
+                    className="h-9 w-full appearance-none rounded-xl border border-black/10 bg-white px-3 py-2 text-sm outline-none focus:border-black/25"
+                  />
+                </div>
+                {i === taxList.length - 1 && (
                   <div className="w-40 space-y-1.5">
                     <label className="block text-xs font-medium text-black/55">
-                      Tax name{taxList.length > 1 ? ` ${i + 1}` : ""}
+                      Mileage rate ($/{distanceUnit})
                     </label>
                     <input
-                      value={entry.taxName}
-                      onChange={(e) => updateTaxEntry(i, { taxName: e.target.value })}
-                      placeholder="GST"
-                      className="h-9 w-full appearance-none rounded-xl border border-black/10 bg-white px-3 py-2 text-sm outline-none focus:border-black/25"
-                    />
-                  </div>
-                  <div className="w-20 space-y-1.5">
-                    <label className="block text-xs font-medium text-black/55">Rate (%)</label>
-                    <input
-                      value={String(entry.taxPercent)}
-                      onChange={(e) => {
-                        const parsed = parseFloat(e.target.value);
-                        updateTaxEntry(i, { taxPercent: Number.isNaN(parsed) ? 0 : parsed });
-                      }}
+                      value={mileageRateInput}
+                      onChange={(e) => handleMileageRateChange(e.target.value)}
                       inputMode="decimal"
-                      placeholder="5"
+                      placeholder="0.73"
                       className="h-9 w-full appearance-none rounded-xl border border-black/10 bg-white px-3 py-2 text-sm outline-none focus:border-black/25"
                     />
                   </div>
+                )}
+              </div>
+            ))}
+            {taxList.length === 0 && (
+              <div className="flex flex-wrap gap-3">
+                <div className="w-40 space-y-1.5">
+                  <label className="block text-xs font-medium text-black/55">
+                    Mileage rate ($/{distanceUnit})
+                  </label>
+                  <input
+                    value={mileageRateInput}
+                    onChange={(e) => handleMileageRateChange(e.target.value)}
+                    inputMode="decimal"
+                    placeholder="0.73"
+                    className="h-9 w-full appearance-none rounded-xl border border-black/10 bg-white px-3 py-2 text-sm outline-none focus:border-black/25"
+                  />
                 </div>
-              ))}
-            </div>
-          )}
-
-          <div className="mt-4 border-t border-black/[0.05] pt-4">
-            <div className="w-40 space-y-1.5">
-              <label className="block text-xs font-medium text-black/55">
-                Mileage rate ($/{distanceUnit})
-              </label>
-              <input
-                value={mileageRateInput}
-                onChange={(e) => handleMileageRateChange(e.target.value)}
-                inputMode="decimal"
-                placeholder="0.73"
-                className="h-9 w-full appearance-none rounded-xl border border-black/10 bg-white px-3 py-2 text-sm outline-none focus:border-black/25"
-              />
-            </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
