@@ -154,6 +154,7 @@ function buildTaxContent(
   mileageRate: number,
   distanceUnit: "km" | "mi",
   homeOffice: HomeOffice | null,
+  homeOfficeLoading: boolean,
   onOpenHomeOffice: () => void,
 ): RegionTaxContent {
   const mock = REGION_MOCK[region];
@@ -165,17 +166,22 @@ function buildTaxContent(
 
   // homeOffice is Canada-specific real data (T777 is a CRA form; a US
   // account would use a different IRS form/calc this schema doesn't
-  // model), so it only ever applies on the "ca" branch below. Falls back
-  // to the existing mock figure when there's no real record for the
-  // selected year, keeping the hero/stats section visually consistent
-  // rather than showing an empty-looking card.
-  const homeOfficeReclaim =
-    region === "ca" && homeOffice ? homeOffice.totalEmploymentExpenses : mock.homeOfficeSaving;
-  const homeOfficeNote =
-    region === "ca" && homeOffice
+  // model), so it only ever applies on the "ca" branch below. Three
+  // distinct states, none of which fall back to the old mock figure:
+  // still loading (brief, avoids a flash of "no record" before the
+  // fetch resolves), a real record (shown even if its total is
+  // genuinely $0 -- a fetched record is never treated as "no data"
+  // just because its value happens to be zero), or genuinely no record
+  // for the selected year (a clear, actionable empty state instead of
+  // a fake number).
+  const homeOfficeReclaim = homeOffice?.totalEmploymentExpenses ?? 0;
+  const homeOfficeValue = homeOfficeLoading ? "…" : homeOffice ? money(homeOfficeReclaim) : "—";
+  const homeOfficeNote = homeOfficeLoading
+    ? "Loading…"
+    : homeOffice
       ? `${money(homeOffice.totalEmploymentHomeExpenses)} home + ${money(homeOffice.totalEmploymentWorkspaceExpenses)} workspace`
-      : `≈ ${moneyWhole(mock.homeOfficeSaving)} estimated tax saving`;
-  const homeOfficeOnClick = region === "ca" && homeOffice ? onOpenHomeOffice : undefined;
+      : "No home office expenses recorded yet — add this in the mobile app";
+  const homeOfficeOnClick = homeOffice ? onOpenHomeOffice : undefined;
 
   if (region === "ca") {
     return {
@@ -197,7 +203,7 @@ function buildTaxContent(
         },
         {
           label: "Home office reclaim",
-          value: money(homeOfficeReclaim),
+          value: homeOfficeValue,
           note: homeOfficeNote,
           icon: Home,
           onClick: homeOfficeOnClick,
@@ -251,28 +257,40 @@ function DashboardPage() {
   const uid = user?.uid ?? auth.currentUser?.uid ?? null;
 
   const [homeOffice, setHomeOffice] = useState<HomeOffice | null>(null);
+  const [homeOfficeLoading, setHomeOfficeLoading] = useState(true);
   const [homeOfficeDialogOpen, setHomeOfficeDialogOpen] = useState(false);
 
   useEffect(() => {
     if (!uid || region !== "ca") {
       setHomeOffice(null);
+      setHomeOfficeLoading(false);
       return;
     }
     let cancelled = false;
+    setHomeOfficeLoading(true);
     fetchHomeOffice(uid, year)
       .then((record) => {
         if (!cancelled) setHomeOffice(record);
       })
       .catch(() => {
         if (!cancelled) setHomeOffice(null);
+      })
+      .finally(() => {
+        if (!cancelled) setHomeOfficeLoading(false);
       });
     return () => {
       cancelled = true;
     };
   }, [uid, year, region]);
 
-  const content = buildTaxContent(region, taxList, mileageRate, distanceUnit, homeOffice, () =>
-    setHomeOfficeDialogOpen(true),
+  const content = buildTaxContent(
+    region,
+    taxList,
+    mileageRate,
+    distanceUnit,
+    homeOffice,
+    homeOfficeLoading,
+    () => setHomeOfficeDialogOpen(true),
   );
   const [receipts, setReceipts] = useState<ReceiptRow[]>(INITIAL_RECEIPTS);
   const [selected, setSelected] = useState<ReceiptRow | null>(null);

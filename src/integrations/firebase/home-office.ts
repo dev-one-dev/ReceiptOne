@@ -92,21 +92,23 @@ function toHomeOffice(id: string, data: Record<string, unknown>): HomeOffice {
 
 /**
  * Fetches the signed-in user's home office record for a given tax year.
- * Pure equality filters only (created_by, for_year) -- deliberately no
- * orderBy, since there's normally exactly one record per year and adding
- * a sort would need a composite index for what should be a single-doc
- * case. If duplicates ever exist, the most recently created one wins,
- * sorted client-side.
+ * Filters by created_by server-side only, then matches for_year
+ * client-side with a lenient String() coercion -- deliberately NOT a
+ * server-side `where("for_year", "==", year)`, since Firestore equality
+ * is type-strict and a record where for_year was ever written as a
+ * number (2026) instead of a string ("2026") would silently never match
+ * a string-typed query, making a real record look like "none exists"
+ * rather than surfacing a type mismatch. A user has at most a handful of
+ * these records (one per tax year), so fetching all of them and matching
+ * client-side is cheap and removes that whole failure mode.
  */
 export async function fetchHomeOffice(uid: string, year: string): Promise<HomeOffice | null> {
-  const q = query(
-    collection(db, "homeOffice"),
-    where("created_by", "==", uid),
-    where("for_year", "==", year),
-  );
+  const q = query(collection(db, "homeOffice"), where("created_by", "==", uid));
   const snapshot = await getDocs(q);
-  if (snapshot.empty) return null;
-  const records = snapshot.docs.map((doc) => toHomeOffice(doc.id, doc.data()));
+  const records = snapshot.docs
+    .map((doc) => toHomeOffice(doc.id, doc.data()))
+    .filter((record) => String(record.forYear) === String(year));
+  if (records.length === 0) return null;
   records.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
   return records[0];
 }
