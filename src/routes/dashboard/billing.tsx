@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { Download, ExternalLink, Mail, Pencil, User } from "lucide-react";
+import { Download, ExternalLink, Gift, Mail, Pencil, User, Users } from "lucide-react";
 import { toast } from "sonner";
 import { getInitials, useAuth } from "@/integrations/firebase/auth-context";
 import { auth } from "@/integrations/firebase/client";
+import { fetchReferralCount } from "@/integrations/firebase/referrals";
 import { fetchUserProfile } from "@/integrations/firebase/user-profile";
 
 export const Route = createFileRoute("/dashboard/billing")({
@@ -81,15 +82,21 @@ function BillingPage() {
 
   const [jurisdiction, setJurisdiction] = useState<Jurisdiction | null>(null);
   const [trialStatus, setTrialStatus] = useState<string | null>(null);
+  const [referralCode, setReferralCode] = useState("");
+  const [referralCount, setReferralCount] = useState<number | null>(null);
 
   useEffect(() => {
     if (!uid) return;
     let cancelled = false;
-    fetchUserProfile(uid)
-      .then((profile) => {
-        if (cancelled || !profile) return;
-        setJurisdiction(formatJurisdiction(profile.countryCode, profile.stateState));
-        setTrialStatus(formatTrialStatus(profile.trialExpDate));
+    Promise.all([fetchUserProfile(uid), fetchReferralCount(uid)])
+      .then(([profile, count]) => {
+        if (cancelled) return;
+        if (profile) {
+          setJurisdiction(formatJurisdiction(profile.countryCode, profile.stateState));
+          setTrialStatus(formatTrialStatus(profile.trialExpDate));
+          setReferralCode(profile.promo);
+        }
+        setReferralCount(count);
       })
       .catch(() => {
         // Leave the fields blank if this fails -- Profile still renders
@@ -156,6 +163,20 @@ function BillingPage() {
                   "—"
                 )}
               </dd>
+            </div>
+            <div className="flex items-center justify-between text-sm">
+              <dt className="flex items-center gap-2 text-black/55">
+                <Gift className="size-3.5" aria-hidden />
+                Your referral code
+              </dt>
+              <dd className="font-medium text-black">{referralCode || "—"}</dd>
+            </div>
+            <div className="flex items-center justify-between text-sm">
+              <dt className="flex items-center gap-2 text-black/55">
+                <Users className="size-3.5" aria-hidden />
+                Friends referred
+              </dt>
+              <dd className="font-medium text-black">{referralCount ?? "—"}</dd>
             </div>
           </dl>
         </div>
