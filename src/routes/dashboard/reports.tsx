@@ -48,7 +48,10 @@ function ReportsPage() {
   const { user } = useAuth();
   const uid = user?.uid ?? auth.currentUser?.uid ?? null;
 
-  const [type, setType] = useState(REPORT_TYPES[0]);
+  // Defaults to "Tax Summary" since the real backend-generated PDF is a
+  // full CRA T2125 tax form -- the report type that matters most for
+  // filing, not a plain expense list.
+  const [type, setType] = useState("Tax Summary");
   const [range, setRange] = useState(DATE_RANGES[0]);
   const [format, setFormat] = useState(FORMATS[0]);
   const [previewOpen, setPreviewOpen] = useState(false);
