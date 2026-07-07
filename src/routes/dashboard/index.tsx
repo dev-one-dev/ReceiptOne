@@ -16,8 +16,8 @@ import {
   type Receipt as ReceiptRecord,
   type TaxListEntry as ReceiptTaxEntry,
 } from "@/integrations/firebase/receipts";
+import { fetchTrips, tripDistance, type Trip } from "@/integrations/firebase/trips";
 import {
-  distanceInUnit,
   formatCurrency,
   formatDate,
   formatDistance,
@@ -46,30 +46,26 @@ type RegionTaxContent = {
 };
 
 /**
- * Mock underlying figures for what's not wired to real data yet (US home
- * office has no real schema; mileage distance still needs a real
- * per-region source), but the mileage rate applied comes straight from
- * Settings, so the displayed total is genuinely reactive, not a
- * hardcoded string. Total expenses scanned and the GST/HST reclaim are
- * both real now (see `expensesStat` and `sumRefundableTax` in
- * buildTaxContent), no longer part of this mock.
+ * Mock figures for the one thing still not wired to real data: the US
+ * home office deduction, since that schema has no real US equivalent
+ * (T777 is Canada-specific) -- dormant in practice, since ACCOUNT_REGION
+ * is hardcoded to "ca". Total expenses scanned, the GST/HST reclaim, and
+ * Mileage Logged are all real now (see `expensesStat`, `sumRefundableTax`,
+ * and `mileageStat` in buildTaxContent), no longer part of this mock.
  */
 type RegionMock = {
   homeOfficeAmount: number;
   homeOfficeSaving: number;
-  mileageKm: number;
 };
 
 const REGION_MOCK: Record<DashboardRegion, RegionMock> = {
   ca: {
     homeOfficeAmount: 480,
     homeOfficeSaving: 134,
-    mileageKm: 342,
   },
   us: {
     homeOfficeAmount: 480,
     homeOfficeSaving: 115,
-    mileageKm: 342,
   },
 };
 
@@ -123,19 +119,36 @@ function sumRefundableTax(receipts: ReceiptRecord[], taxList: TaxListEntry[]): n
 function buildTaxContent(
   region: DashboardRegion,
   taxList: TaxListEntry[],
-  mileageRate: number,
   distanceUnit: "km" | "mi",
   homeOffice: HomeOffice | null,
   homeOfficeLoading: boolean,
   onOpenHomeOffice: () => void,
   receipts: ReceiptRecord[],
   receiptsLoading: boolean,
+  trips: Trip[],
+  tripsLoading: boolean,
 ): RegionTaxContent {
   const mock = REGION_MOCK[region];
   const taxReclaim = sumRefundableTax(receipts, taxList);
   const label = taxLabel(taxList);
-  const distanceValue = distanceInUnit(mock.mileageKm, distanceUnit);
-  const mileageSaving = distanceValue * mileageRate;
+
+  // Real per-trip data, same source and per-trip rate logic as the
+  // Mileage page (tripDistance + totalPrice) -- not a recomputation
+  // from Settings' current mileage rate, since each trip already
+  // carries its own recorded rate from when it was logged.
+  const mileageDistance = trips.reduce((sum, t) => sum + tripDistance(t, distanceUnit), 0);
+  const mileageTotal = trips.reduce((sum, t) => sum + t.totalPrice, 0);
+  const mileageCurrency = trips[0]?.currency ?? "CAD";
+  const mileageStat: TaxStat = {
+    label: "Mileage Logged",
+    value: tripsLoading ? "…" : formatDistance(mileageDistance, distanceUnit),
+    note: tripsLoading
+      ? "Loading…"
+      : trips.length > 0
+        ? `${formatCurrency(mileageTotal, mileageCurrency)} deductible from your logged trips`
+        : "No trips logged yet",
+    icon: Car,
+  };
 
   // Receipts apply the same way to both regions (unlike homeOffice, which
   // is a CRA-specific form) -- real count/sum for both branches, no mock
@@ -176,7 +189,7 @@ function buildTaxContent(
   if (region === "ca") {
     return {
       heroLabel: "Estimated refundable taxes",
-      heroTotal: moneyWhole(taxReclaim + homeOfficeReclaim + mileageSaving),
+      heroTotal: moneyWhole(taxReclaim + homeOfficeReclaim + mileageTotal),
       heroNote: `${label} reclaim plus estimated tax savings from home office and mileage`,
       stats: [
         expensesStat,
@@ -193,19 +206,14 @@ function buildTaxContent(
           icon: Home,
           onClick: homeOfficeOnClick,
         },
-        {
-          label: "Mileage Logged",
-          value: formatDistance(distanceValue, distanceUnit),
-          note: `≈ ${moneyWhole(mileageSaving)} estimated tax saving`,
-          icon: Car,
-        },
+        mileageStat,
       ],
     };
   }
 
   return {
     heroLabel: "Estimated tax savings",
-    heroTotal: moneyWhole(mock.homeOfficeSaving + mileageSaving),
+    heroTotal: moneyWhole(mock.homeOfficeSaving + mileageTotal),
     heroNote: "Estimated tax savings from home office and mileage deductions",
     stats: [
       expensesStat,
@@ -221,18 +229,13 @@ function buildTaxContent(
         note: `≈ ${money(mock.homeOfficeSaving)} estimated tax saving`,
         icon: Home,
       },
-      {
-        label: "Mileage Logged",
-        value: formatDistance(distanceValue, distanceUnit),
-        note: `≈ ${money(mileageSaving)} estimated tax saving`,
-        icon: Car,
-      },
+      mileageStat,
     ],
   };
 }
 
 function DashboardPage() {
-  const { year, region, taxList, mileageRate, distanceUnit, dateFormat } = useDashboardContext();
+  const { year, region, taxList, distanceUnit, dateFormat } = useDashboardContext();
   const { user } = useAuth();
   const uid = user?.uid ?? auth.currentUser?.uid ?? null;
 
@@ -288,16 +291,39 @@ function DashboardPage() {
     };
   }, [uid]);
 
+  const [trips, setTrips] = useState<Trip[]>([]);
+  const [tripsLoading, setTripsLoading] = useState(true);
+
+  useEffect(() => {
+    if (!uid) return;
+    let cancelled = false;
+    setTripsLoading(true);
+    fetchTrips(uid)
+      .then((data) => {
+        if (!cancelled) setTrips(data);
+      })
+      .catch(() => {
+        if (!cancelled) setTrips([]);
+      })
+      .finally(() => {
+        if (!cancelled) setTripsLoading(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [uid]);
+
   const content = buildTaxContent(
     region,
     taxList,
-    mileageRate,
     distanceUnit,
     homeOffice,
     homeOfficeLoading,
     () => setHomeOfficeDialogOpen(true),
     receipts,
     receiptsLoading,
+    trips,
+    tripsLoading,
   );
   const recentReceipts = receipts.slice(0, 6);
 
