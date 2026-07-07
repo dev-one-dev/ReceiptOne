@@ -111,10 +111,11 @@ function CtaBanner() {
         </p>
         <div className="mt-4 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
           <Link
-            to={"/signup" as any}
+            to={"/us" as any}
+            hash="pricing"
             className="inline-flex items-center gap-2 rounded-full bg-[#f97316] px-6 py-3 font-sans text-sm font-semibold text-white transition-all duration-200 hover:bg-[#ea6c0a] hover:shadow-[0_8px_24px_rgba(249,115,22,0.35)]"
           >
-            Try free for 7 days
+            See pricing
             <ArrowRight className="size-4" aria-hidden />
           </Link>
           <Link
