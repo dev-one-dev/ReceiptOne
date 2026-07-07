@@ -23,6 +23,12 @@ export function getAuthErrorMessage(error: unknown): string {
         return "Too many attempts. Please wait a moment and try again.";
       case "auth/network-request-failed":
         return "Network error — check your connection and try again.";
+      case "auth/unauthorized-domain":
+        return "This domain isn't authorized for sign-in yet. Contact support.";
+      case "auth/popup-blocked":
+        return "Your browser blocked the sign-in popup. Please allow popups and try again.";
+      case "auth/operation-not-allowed":
+        return "This sign-in method isn't enabled yet. Contact support.";
       default:
         return "Something went wrong. Please try again.";
     }
