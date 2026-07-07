@@ -5,9 +5,11 @@ export type Language = "en" | "fr";
 export type DistanceUnit = "km" | "mi";
 export type DateFormat = "MM/DD/YYYY" | "DD/MM/YYYY" | "YYYY-MM-DD";
 
-export type TaxRateSetting = {
-  name: string;
-  percent: number;
+/** A single tax (e.g. GST or PST) -- real users can have more than one active at once (e.g. GST + PST in BC), so this is a list, not a single rate. */
+export type TaxListEntry = {
+  taxName: string;
+  taxPercent: number;
+  isRefundable: boolean;
 };
 
 export type DashboardContextValue = {
@@ -17,8 +19,8 @@ export type DashboardContextValue = {
   setLanguage: (language: Language) => void;
   distanceUnit: DistanceUnit;
   setDistanceUnit: (unit: DistanceUnit) => void;
-  taxRate: TaxRateSetting;
-  setTaxRate: (taxRate: TaxRateSetting) => void;
+  taxList: TaxListEntry[];
+  setTaxList: (taxList: TaxListEntry[]) => void;
   mileageRate: number;
   setMileageRate: (rate: number) => void;
   dateFormat: DateFormat;

@@ -1,9 +1,15 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { ShieldAlert } from "lucide-react";
 import { toast } from "sonner";
 import { Switch } from "@/components/ui/switch";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import {
   Dialog,
   DialogContent,
@@ -18,6 +24,7 @@ import {
   type DateFormat,
   type DistanceUnit,
   type Language,
+  type TaxListEntry,
 } from "@/components/dashboard/DashboardContext";
 
 export const Route = createFileRoute("/dashboard/settings")({
@@ -47,11 +54,20 @@ function ToggleRow({
         <p className="text-sm font-medium text-black">{label}</p>
         <p className="text-xs text-black/50">{description}</p>
       </div>
-      <Switch checked={checked} onCheckedChange={onCheckedChange} className="data-[state=checked]:bg-[#f97316]" />
+      <Switch
+        checked={checked}
+        onCheckedChange={onCheckedChange}
+        className="data-[state=checked]:bg-[#f97316]"
+      />
     </div>
   );
 }
 
+// TODO(write-access): language/distance unit/tax list/mileage rate are
+// now seeded from the real users/{uid} profile (see dashboard.tsx), but
+// editing them here is still local-only -- nothing persists back to
+// Firestore yet. date_format_type is intentionally not wired at all
+// (its enum mapping isn't confirmed). See README's "Known Limitations".
 function SettingsPage() {
   const [emailNotifs, setEmailNotifs] = useState(true);
   const [weeklySummary, setWeeklySummary] = useState(true);
@@ -64,23 +80,29 @@ function SettingsPage() {
     setLanguage,
     distanceUnit,
     setDistanceUnit,
-    taxRate,
-    setTaxRate,
+    taxList,
+    setTaxList,
     mileageRate,
     setMileageRate,
     dateFormat,
     setDateFormat,
   } = useDashboardContext();
 
-  const [taxPercentInput, setTaxPercentInput] = useState(String(taxRate.percent));
   const [mileageRateInput, setMileageRateInput] = useState(String(mileageRate));
 
-  const handleTaxPercentChange = (raw: string) => {
-    setTaxPercentInput(raw);
-    const parsed = parseFloat(raw);
-    if (!Number.isNaN(parsed) && parsed >= 0) {
-      setTaxRate({ ...taxRate, percent: parsed });
+  // mileageRate can change out from under this input when the real
+  // profile finishes loading (dashboard.tsx) -- only resync the buffer
+  // when it doesn't already match, so an in-progress keystroke (e.g. a
+  // trailing ".") isn't clobbered on every valid edit.
+  useEffect(() => {
+    if (parseFloat(mileageRateInput) !== mileageRate) {
+      setMileageRateInput(String(mileageRate));
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mileageRate]);
+
+  const updateTaxEntry = (index: number, patch: Partial<TaxListEntry>) => {
+    setTaxList(taxList.map((t, i) => (i === index ? { ...t, ...patch } : t)));
   };
 
   const handleMileageRateChange = (raw: string) => {
@@ -104,7 +126,9 @@ function SettingsPage() {
     <div className="mx-auto w-full max-w-[1200px] flex-1 px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
       <div>
         <h1 className="text-2xl font-semibold tracking-tight text-black">Settings</h1>
-        <p className="mt-1 text-sm text-black/55">Notification preferences and general account settings.</p>
+        <p className="mt-1 text-sm text-black/55">
+          Notification preferences and general account settings.
+        </p>
       </div>
 
       <div className="mt-5 grid grid-cols-1 gap-4 lg:grid-cols-2">
@@ -185,7 +209,9 @@ function SettingsPage() {
               </SelectTrigger>
               <SelectContent>
                 {DATE_FORMATS.map((f) => (
-                  <SelectItem key={f.value} value={f.value}>{f.label}</SelectItem>
+                  <SelectItem key={f.value} value={f.value}>
+                    {f.label}
+                  </SelectItem>
                 ))}
               </SelectContent>
             </Select>
@@ -204,40 +230,53 @@ function SettingsPage() {
         <div className="rounded-2xl border border-black/[0.07] bg-white p-5 shadow-[0_2px_12px_rgba(0,0,0,0.06)] lg:col-span-2">
           <h2 className="text-sm font-semibold text-black">Tax &amp; mileage</h2>
           <p className="mt-1 text-xs text-black/50">
-            Applies instantly to the GST/HST reclaim and mileage figures on Dashboard and Mileage.
+            Applies instantly to the tax reclaim and mileage figures on Dashboard and Mileage.
           </p>
-          <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-3">
-            <div className="space-y-1.5">
-              <label className="block text-xs font-medium text-black/55">Tax name</label>
-              <input
-                value={taxRate.name}
-                onChange={(e) => setTaxRate({ ...taxRate, name: e.target.value })}
-                placeholder="GST"
-                className="h-9 w-full rounded-xl border border-black/10 bg-white px-3 text-sm outline-none focus:border-black/25"
-              />
+
+          {taxList.length > 0 && (
+            <div className="mt-4 space-y-3">
+              {taxList.map((entry, i) => (
+                <div key={i} className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                  <div className="space-y-1.5">
+                    <label className="block text-xs font-medium text-black/55">
+                      Tax name{taxList.length > 1 ? ` ${i + 1}` : ""}
+                    </label>
+                    <input
+                      value={entry.taxName}
+                      onChange={(e) => updateTaxEntry(i, { taxName: e.target.value })}
+                      placeholder="GST"
+                      className="h-9 w-full rounded-xl border border-black/10 bg-white px-3 text-sm outline-none focus:border-black/25"
+                    />
+                  </div>
+                  <div className="space-y-1.5">
+                    <label className="block text-xs font-medium text-black/55">Rate (%)</label>
+                    <input
+                      value={String(entry.taxPercent)}
+                      onChange={(e) => {
+                        const parsed = parseFloat(e.target.value);
+                        updateTaxEntry(i, { taxPercent: Number.isNaN(parsed) ? 0 : parsed });
+                      }}
+                      inputMode="decimal"
+                      placeholder="5"
+                      className="h-9 w-full rounded-xl border border-black/10 bg-white px-3 text-sm outline-none focus:border-black/25"
+                    />
+                  </div>
+                </div>
+              ))}
             </div>
-            <div className="space-y-1.5">
-              <label className="block text-xs font-medium text-black/55">Tax rate (%)</label>
-              <input
-                value={taxPercentInput}
-                onChange={(e) => handleTaxPercentChange(e.target.value)}
-                inputMode="decimal"
-                placeholder="5"
-                className="h-9 w-full rounded-xl border border-black/10 bg-white px-3 text-sm outline-none focus:border-black/25"
-              />
-            </div>
-            <div className="space-y-1.5">
-              <label className="block text-xs font-medium text-black/55">
-                Mileage rate ($/{distanceUnit})
-              </label>
-              <input
-                value={mileageRateInput}
-                onChange={(e) => handleMileageRateChange(e.target.value)}
-                inputMode="decimal"
-                placeholder="0.73"
-                className="h-9 w-full rounded-xl border border-black/10 bg-white px-3 text-sm outline-none focus:border-black/25"
-              />
-            </div>
+          )}
+
+          <div className="mt-4 space-y-1.5 border-t border-black/[0.05] pt-4">
+            <label className="block text-xs font-medium text-black/55">
+              Mileage rate ($/{distanceUnit})
+            </label>
+            <input
+              value={mileageRateInput}
+              onChange={(e) => handleMileageRateChange(e.target.value)}
+              inputMode="decimal"
+              placeholder="0.73"
+              className="h-9 w-full max-w-xs rounded-xl border border-black/10 bg-white px-3 text-sm outline-none focus:border-black/25"
+            />
           </div>
         </div>
       </div>
@@ -264,7 +303,8 @@ function SettingsPage() {
             <DialogHeader>
               <DialogTitle>Delete your account?</DialogTitle>
               <DialogDescription>
-                This will permanently delete your account and every receipt, report, and mileage record. This cannot be undone.
+                This will permanently delete your account and every receipt, report, and mileage
+                record. This cannot be undone.
               </DialogDescription>
             </DialogHeader>
             <DialogFooter className="gap-2 sm:gap-0">

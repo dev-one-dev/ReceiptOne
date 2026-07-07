@@ -1,7 +1,10 @@
+import { useEffect, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { Download, ExternalLink, Mail, Pencil, User } from "lucide-react";
 import { toast } from "sonner";
 import { getInitials, useAuth } from "@/integrations/firebase/auth-context";
+import { auth } from "@/integrations/firebase/client";
+import { fetchUserProfile } from "@/integrations/firebase/user-profile";
 
 export const Route = createFileRoute("/dashboard/billing")({
   component: BillingPage,
@@ -47,10 +50,55 @@ function notWiredUp() {
   toast.info("This isn't wired up yet — static mockup only.");
 }
 
+const COUNTRY_NAMES: Record<string, { flag: string; name: string }> = {
+  ca: { flag: "🇨🇦", name: "Canada" },
+  us: { flag: "🇺🇸", name: "United States" },
+};
+
+type Jurisdiction = { flag: string; text: string };
+
+function formatJurisdiction(countryCode: string, state: string): Jurisdiction | null {
+  const country = COUNTRY_NAMES[countryCode];
+  if (!country) return null;
+  return { flag: country.flag, text: state ? `${country.name} — ${state}` : country.name };
+}
+
+/** null if there's no trial date to show; otherwise a short status string, handling both "still in trial" and "already ended" since a real account's trial_exp_date can be in the past. */
+function formatTrialStatus(trialExpDate: Date | null): string | null {
+  if (!trialExpDate || trialExpDate.getTime() === 0) return null;
+  const msPerDay = 24 * 60 * 60 * 1000;
+  const daysLeft = Math.ceil((trialExpDate.getTime() - Date.now()) / msPerDay);
+  if (daysLeft > 0) return `Trial ends in ${daysLeft} day${daysLeft === 1 ? "" : "s"}`;
+  if (daysLeft === 0) return "Trial ends today";
+  return "Trial ended";
+}
+
 function BillingPage() {
   const { user } = useAuth();
   const displayName = user?.displayName || "Account";
   const email = user?.email || "";
+  const uid = user?.uid ?? auth.currentUser?.uid ?? null;
+
+  const [jurisdiction, setJurisdiction] = useState<Jurisdiction | null>(null);
+  const [trialStatus, setTrialStatus] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!uid) return;
+    let cancelled = false;
+    fetchUserProfile(uid)
+      .then((profile) => {
+        if (cancelled || !profile) return;
+        setJurisdiction(formatJurisdiction(profile.countryCode, profile.stateState));
+        setTrialStatus(formatTrialStatus(profile.trialExpDate));
+      })
+      .catch(() => {
+        // Leave the fields blank if this fails -- Profile still renders
+        // fine with just the Auth-derived name/email.
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [uid]);
 
   return (
     <div className="mx-auto w-full max-w-[1200px] flex-1 px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
@@ -100,7 +148,13 @@ function BillingPage() {
             <div className="flex items-center justify-between text-sm">
               <dt className="text-black/55">Tax jurisdiction</dt>
               <dd className="inline-flex items-center gap-1.5 font-medium text-black">
-                <span aria-hidden>🇨🇦</span> Canada
+                {jurisdiction ? (
+                  <>
+                    <span aria-hidden>{jurisdiction.flag}</span> {jurisdiction.text}
+                  </>
+                ) : (
+                  "—"
+                )}
               </dd>
             </div>
           </dl>
@@ -108,13 +162,22 @@ function BillingPage() {
 
         {/* Subscription */}
         <div className="rounded-2xl border border-black/[0.07] bg-white p-5 shadow-[0_2px_12px_rgba(0,0,0,0.06)]">
-          <h2 className="text-sm font-semibold text-black">Subscription</h2>
+          <div className="flex items-center justify-between">
+            <h2 className="text-sm font-semibold text-black">Subscription</h2>
+            {trialStatus && (
+              <span className="rounded-full bg-[#f97316]/10 px-2.5 py-1 text-xs font-medium text-[#c2410c]">
+                {trialStatus}
+              </span>
+            )}
+          </div>
           <div className="mt-4 flex items-center justify-between rounded-xl bg-black/[0.03] px-4 py-3">
             <div>
               <p className="text-sm font-semibold text-black">Pro — Monthly</p>
               <p className="text-xs text-black/50">Renews Aug 1, 2026</p>
             </div>
-            <p className="text-lg font-semibold text-black">$19<span className="text-xs font-normal text-black/45">/mo</span></p>
+            <p className="text-lg font-semibold text-black">
+              $19<span className="text-xs font-normal text-black/45">/mo</span>
+            </p>
           </div>
           <p className="mt-4 text-sm text-black/55">
             Managed through the mobile app's store — billing, plan changes, and cancellation all
@@ -158,7 +221,9 @@ function BillingPage() {
                   <td className="px-5 py-3 text-black/60">{inv.date}</td>
                   <td className="px-5 py-3 tabular-nums text-black">{inv.amount}</td>
                   <td className="px-5 py-3">
-                    <span className="rounded-full bg-black/[0.05] px-2.5 py-1 text-xs font-medium text-black/60">{inv.status}</span>
+                    <span className="rounded-full bg-black/[0.05] px-2.5 py-1 text-xs font-medium text-black/60">
+                      {inv.status}
+                    </span>
                   </td>
                   <td className="px-5 py-3 text-right">
                     <button

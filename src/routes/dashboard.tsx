@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { createFileRoute, Outlet, useNavigate } from "@tanstack/react-router";
 import { useAuth } from "@/integrations/firebase/auth-context";
 import { auth } from "@/integrations/firebase/client";
+import { fetchUserProfile } from "@/integrations/firebase/user-profile";
 import { AppSidebar } from "@/components/dashboard/AppSidebar";
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { Separator } from "@/components/ui/separator";
@@ -18,7 +19,7 @@ import {
   type DateFormat,
   type DistanceUnit,
   type Language,
-  type TaxRateSetting,
+  type TaxListEntry,
 } from "@/components/dashboard/DashboardContext";
 
 export const Route = createFileRoute("/dashboard")({
@@ -48,11 +49,14 @@ function DashboardLayout() {
   // currentUser directly closes that gap instead of trusting context
   // alone to be caught up by the time we render.
   const isSignedIn = Boolean(user) || Boolean(auth.currentUser);
+  const uid = user?.uid ?? auth.currentUser?.uid ?? null;
 
   const [year, setYear] = useState(TAX_YEARS[0]);
   const [language, setLanguage] = useState<Language>("en");
   const [distanceUnit, setDistanceUnit] = useState<DistanceUnit>("km");
-  const [taxRate, setTaxRate] = useState<TaxRateSetting>({ name: "GST", percent: 5 });
+  const [taxList, setTaxList] = useState<TaxListEntry[]>([
+    { taxName: "GST", taxPercent: 5, isRefundable: true },
+  ]);
   const [mileageRate, setMileageRate] = useState(0.73);
   const [dateFormat, setDateFormat] = useState<DateFormat>("MM/DD/YYYY");
 
@@ -61,6 +65,34 @@ function DashboardLayout() {
       navigate({ to: "/login" });
     }
   }, [loading, isSignedIn, navigate]);
+
+  // Loads the real users/{uid} profile once to seed Settings/Dashboard
+  // state with actual values instead of hardcoded defaults. Still purely
+  // local state after this -- no write path exists anywhere, so editing
+  // Settings never persists back to Firestore (same read-only pattern as
+  // Receipts/Mileage/Reports). Falls back to keeping the defaults above
+  // if the profile doc doesn't exist or the fetch fails.
+  useEffect(() => {
+    if (!uid) return;
+    let cancelled = false;
+    fetchUserProfile(uid)
+      .then((profile) => {
+        if (cancelled || !profile) return;
+        setLanguage(profile.language === "fr" ? "fr" : "en");
+        setDistanceUnit(profile.distanceUnit);
+        if (profile.taxList.length > 0) setTaxList(profile.taxList);
+        if (profile.distanceRate > 0) setMileageRate(profile.distanceRate);
+        // profile.dateFormatType intentionally not used yet -- its enum
+        // mapping isn't confirmed, see UserProfile's own doc comment.
+      })
+      .catch(() => {
+        // Keep the defaults above if this fails; it's a display seed, not
+        // a hard requirement to render the dashboard shell.
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [uid]);
 
   if (loading || !isSignedIn) {
     return (
@@ -116,8 +148,8 @@ function DashboardLayout() {
               setLanguage,
               distanceUnit,
               setDistanceUnit,
-              taxRate,
-              setTaxRate,
+              taxList,
+              setTaxList,
               mileageRate,
               setMileageRate,
               dateFormat,

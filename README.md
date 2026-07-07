@@ -313,7 +313,7 @@ The following issues are tracked and open for contribution:
 
 ## Known Limitations
 
-The dashboard's Firestore integration (Stage 4) is deliberately **read-only** for now — it queries the real `receipts`, `routes`, and `reports` collections (scoped to the signed-in user, matching the security rules) but never creates, updates, or deletes anything. The following still need real write access in a future pass:
+The dashboard's Firestore integration (Stage 4) is deliberately **read-only** for now — it queries the real `receipts`, `routes`, `reports`, and `users` collections (scoped to the signed-in user, matching the security rules) but never creates, updates, or deletes anything. The following still need real write access in a future pass:
 
 | Feature | Status | File(s) |
 |---|---|---|
@@ -321,5 +321,10 @@ The dashboard's Firestore integration (Stage 4) is deliberately **read-only** fo
 | Mileage's "Log trip" dialog | Demo only — collects input, shows a toast, never persists; likely needs to match the mobile app's GPS-tracking flow | `src/routes/dashboard/mileage.tsx` |
 | Bulk Upload tab (Receipts) | Visual only — no real upload/OCR pipeline behind it | `src/routes/dashboard/receipts.tsx` |
 | Reports "Generate a report" flow | Config + preview stays a mock — generating a *new* report needs whatever backend actually builds the PDF (a Cloud Function?), which hasn't been investigated. Past real reports (with real, already-generated PDFs) are live data, downloadable directly | `src/routes/dashboard/reports.tsx` |
+| Settings (language, distance unit, tax list, mileage rate) | Seeded from the real `users/{uid}` profile on load, but editing is still local-only — no write path exists yet | `src/routes/dashboard/settings.tsx` |
 
 Each is marked with a `TODO(write-access)` comment at its source for grep-ability.
+
+**Open questions on the `users` collection** (see `src/integrations/firebase/user-profile.ts`):
+- `date_format_type` is a numeric enum with no confirmed mapping (no docs/pattern found for what each integer means) — left unwired rather than guessed. Needs confirming with the mobile team before Settings' Date Format can reflect the real value.
+- `fetchUserProfile` assumes the document ID *is* the uid (the standard `users/{uid}` pattern). Untested against an account where that assumption might not hold — if profile data doesn't load for some account, this is the first thing to check.

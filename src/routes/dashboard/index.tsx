@@ -10,8 +10,19 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { ReviewReceiptDialog, type ReceiptRow } from "@/components/dashboard/ReviewReceiptDialog";
-import { useDashboardContext, type DashboardRegion } from "@/components/dashboard/DashboardContext";
-import { distanceInUnit, formatDate, formatDistance, mkDate, money, moneyWhole } from "@/lib/dashboard-format";
+import {
+  useDashboardContext,
+  type DashboardRegion,
+  type TaxListEntry,
+} from "@/components/dashboard/DashboardContext";
+import {
+  distanceInUnit,
+  formatDate,
+  formatDistance,
+  mkDate,
+  money,
+  moneyWhole,
+} from "@/lib/dashboard-format";
 
 export const Route = createFileRoute("/dashboard/")({
   component: DashboardPage,
@@ -47,17 +58,67 @@ type RegionMock = {
 };
 
 const REGION_MOCK: Record<DashboardRegion, RegionMock> = {
-  ca: { expensesCount: 24, expensesAmount: 1842.5, taxEligibleSubtotal: 4308, homeOfficeAmount: 480, homeOfficeSaving: 134, mileageKm: 342 },
-  us: { expensesCount: 24, expensesAmount: 1842.5, taxEligibleSubtotal: 2364, homeOfficeAmount: 480, homeOfficeSaving: 115, mileageKm: 342 },
+  ca: {
+    expensesCount: 24,
+    expensesAmount: 1842.5,
+    taxEligibleSubtotal: 4308,
+    homeOfficeAmount: 480,
+    homeOfficeSaving: 134,
+    mileageKm: 342,
+  },
+  us: {
+    expensesCount: 24,
+    expensesAmount: 1842.5,
+    taxEligibleSubtotal: 2364,
+    homeOfficeAmount: 480,
+    homeOfficeSaving: 115,
+    mileageKm: 342,
+  },
 };
 
 const INITIAL_RECEIPTS: ReceiptRow[] = [
-  { merchant: "Staples", category: "Office Supplies", date: mkDate(2026, 7, 2), amount: "$84.20", status: "Categorized" },
-  { merchant: "Uber", category: "Travel", date: mkDate(2026, 6, 29), amount: "$23.50", status: "Categorized" },
-  { merchant: "Shell", category: "Fuel", date: mkDate(2026, 6, 27), amount: "$61.10", status: "Needs review" },
-  { merchant: "Adobe", category: "Software", date: mkDate(2026, 6, 24), amount: "$54.99", status: "Categorized" },
-  { merchant: "WeWork", category: "Office Rent", date: mkDate(2026, 6, 20), amount: "$320.00", status: "Categorized" },
-  { merchant: "Home Depot", category: "Supplies", date: mkDate(2026, 6, 18), amount: "$142.75", status: "Needs review" },
+  {
+    merchant: "Staples",
+    category: "Office Supplies",
+    date: mkDate(2026, 7, 2),
+    amount: "$84.20",
+    status: "Categorized",
+  },
+  {
+    merchant: "Uber",
+    category: "Travel",
+    date: mkDate(2026, 6, 29),
+    amount: "$23.50",
+    status: "Categorized",
+  },
+  {
+    merchant: "Shell",
+    category: "Fuel",
+    date: mkDate(2026, 6, 27),
+    amount: "$61.10",
+    status: "Needs review",
+  },
+  {
+    merchant: "Adobe",
+    category: "Software",
+    date: mkDate(2026, 6, 24),
+    amount: "$54.99",
+    status: "Categorized",
+  },
+  {
+    merchant: "WeWork",
+    category: "Office Rent",
+    date: mkDate(2026, 6, 20),
+    amount: "$320.00",
+    status: "Categorized",
+  },
+  {
+    merchant: "Home Depot",
+    category: "Supplies",
+    date: mkDate(2026, 6, 18),
+    amount: "$142.75",
+    status: "Needs review",
+  },
 ];
 
 /**
@@ -70,14 +131,28 @@ const INITIAL_RECEIPTS: ReceiptRow[] = [
  * "estimated tax savings" rather than "refundable taxes," since nothing
  * is actually refunded the way a GST/HST credit is.
  */
+/** Real accounts can have more than one active tax (e.g. GST + PST in BC) -- sums them for the reclaim total and picks a label that reads naturally for either one tax or several. */
+function taxLabel(taxList: TaxListEntry[]): string {
+  if (taxList.length === 0) return "Sales tax";
+  if (taxList.length === 1) return taxList[0].taxName || "Sales tax";
+  return (
+    taxList
+      .map((t) => t.taxName)
+      .filter(Boolean)
+      .join(" + ") || "Sales tax"
+  );
+}
+
 function buildTaxContent(
   region: DashboardRegion,
-  taxRate: { name: string; percent: number },
+  taxList: TaxListEntry[],
   mileageRate: number,
   distanceUnit: "km" | "mi",
 ): RegionTaxContent {
   const mock = REGION_MOCK[region];
-  const taxReclaim = mock.taxEligibleSubtotal * (taxRate.percent / 100);
+  const taxPercentTotal = taxList.reduce((sum, t) => sum + t.taxPercent, 0);
+  const taxReclaim = mock.taxEligibleSubtotal * (taxPercentTotal / 100);
+  const label = taxLabel(taxList);
   const distanceValue = distanceInUnit(mock.mileageKm, distanceUnit);
   const mileageSaving = distanceValue * mileageRate;
 
@@ -85,12 +160,32 @@ function buildTaxContent(
     return {
       heroLabel: "Estimated refundable taxes",
       heroTotal: moneyWhole(taxReclaim + mock.homeOfficeSaving + mileageSaving),
-      heroNote: `${taxRate.name} reclaim plus estimated tax savings from home office and mileage`,
+      heroNote: `${label} reclaim plus estimated tax savings from home office and mileage`,
       stats: [
-        { label: "Total expenses scanned", value: String(mock.expensesCount), note: `${money(mock.expensesAmount)} tracked this year`, icon: Receipt },
-        { label: `${taxRate.name} reclaim`, value: money(taxReclaim), note: "This is your exact refund amount", icon: Landmark },
-        { label: "Home office reclaim", value: money(mock.homeOfficeAmount), note: `≈ ${moneyWhole(mock.homeOfficeSaving)} estimated tax saving`, icon: Home },
-        { label: "Mileage Logged", value: formatDistance(distanceValue, distanceUnit), note: `≈ ${moneyWhole(mileageSaving)} estimated tax saving`, icon: Car },
+        {
+          label: "Total expenses scanned",
+          value: String(mock.expensesCount),
+          note: `${money(mock.expensesAmount)} tracked this year`,
+          icon: Receipt,
+        },
+        {
+          label: `${label} reclaim`,
+          value: money(taxReclaim),
+          note: "This is your exact refund amount",
+          icon: Landmark,
+        },
+        {
+          label: "Home office reclaim",
+          value: money(mock.homeOfficeAmount),
+          note: `≈ ${moneyWhole(mock.homeOfficeSaving)} estimated tax saving`,
+          icon: Home,
+        },
+        {
+          label: "Mileage Logged",
+          value: formatDistance(distanceValue, distanceUnit),
+          note: `≈ ${moneyWhole(mileageSaving)} estimated tax saving`,
+          icon: Car,
+        },
       ],
     };
   }
@@ -100,17 +195,37 @@ function buildTaxContent(
     heroTotal: moneyWhole(mock.homeOfficeSaving + mileageSaving),
     heroNote: "Estimated tax savings from home office and mileage deductions",
     stats: [
-      { label: "Total expenses scanned", value: String(mock.expensesCount), note: `${money(mock.expensesAmount)} tracked this year`, icon: Receipt },
-      { label: "Sales tax tracked", value: money(taxReclaim), note: "Included in your deductible totals", icon: Landmark },
-      { label: "Home office deduction", value: money(mock.homeOfficeAmount), note: `≈ ${money(mock.homeOfficeSaving)} estimated tax saving`, icon: Home },
-      { label: "Mileage Logged", value: formatDistance(distanceValue, distanceUnit), note: `≈ ${money(mileageSaving)} estimated tax saving`, icon: Car },
+      {
+        label: "Total expenses scanned",
+        value: String(mock.expensesCount),
+        note: `${money(mock.expensesAmount)} tracked this year`,
+        icon: Receipt,
+      },
+      {
+        label: "Sales tax tracked",
+        value: money(taxReclaim),
+        note: "Included in your deductible totals",
+        icon: Landmark,
+      },
+      {
+        label: "Home office deduction",
+        value: money(mock.homeOfficeAmount),
+        note: `≈ ${money(mock.homeOfficeSaving)} estimated tax saving`,
+        icon: Home,
+      },
+      {
+        label: "Mileage Logged",
+        value: formatDistance(distanceValue, distanceUnit),
+        note: `≈ ${money(mileageSaving)} estimated tax saving`,
+        icon: Car,
+      },
     ],
   };
 }
 
 function DashboardPage() {
-  const { year, region, taxRate, mileageRate, distanceUnit, dateFormat } = useDashboardContext();
-  const content = buildTaxContent(region, taxRate, mileageRate, distanceUnit);
+  const { year, region, taxList, mileageRate, distanceUnit, dateFormat } = useDashboardContext();
+  const content = buildTaxContent(region, taxList, mileageRate, distanceUnit);
   const [receipts, setReceipts] = useState<ReceiptRow[]>(INITIAL_RECEIPTS);
   const [selected, setSelected] = useState<ReceiptRow | null>(null);
 
@@ -179,7 +294,10 @@ function DashboardPage() {
             </thead>
             <tbody>
               {receipts.map((row) => (
-                <tr key={row.merchant + row.date.toISOString()} className="border-t border-black/[0.05]">
+                <tr
+                  key={row.merchant + row.date.toISOString()}
+                  className="border-t border-black/[0.05]"
+                >
                   <td className="px-5 py-3 font-medium text-black">{row.merchant}</td>
                   <td className="px-5 py-3 text-black/60">{row.category}</td>
                   <td className="px-5 py-3 text-black/60">{formatDate(row.date, dateFormat)}</td>
@@ -214,9 +332,7 @@ function DashboardPage() {
         receipt={selected}
         onOpenChange={(open) => !open && setSelected(null)}
         onSave={({ category, status }) => {
-          setReceipts((prev) =>
-            prev.map((r) => (r === selected ? { ...r, category, status } : r)),
-          );
+          setReceipts((prev) => prev.map((r) => (r === selected ? { ...r, category, status } : r)));
           setSelected(null);
         }}
       />
