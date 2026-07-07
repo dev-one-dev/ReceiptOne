@@ -13,10 +13,22 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+  useDashboardContext,
+  type DateFormat,
+  type DistanceUnit,
+  type Language,
+} from "@/components/dashboard/DashboardContext";
 
 export const Route = createFileRoute("/dashboard/settings")({
   component: SettingsPage,
 });
+
+const DATE_FORMATS: { value: DateFormat; label: string }[] = [
+  { value: "MM/DD/YYYY", label: "MM/DD/YYYY" },
+  { value: "DD/MM/YYYY", label: "DD/MM/YYYY" },
+  { value: "YYYY-MM-DD", label: "YYYY-MM-DD" },
+];
 
 function ToggleRow({
   label,
@@ -46,6 +58,38 @@ function SettingsPage() {
   const [receiptReminders, setReceiptReminders] = useState(false);
   const [currency, setCurrency] = useState("CAD");
   const [deleteOpen, setDeleteOpen] = useState(false);
+
+  const {
+    language,
+    setLanguage,
+    distanceUnit,
+    setDistanceUnit,
+    taxRate,
+    setTaxRate,
+    mileageRate,
+    setMileageRate,
+    dateFormat,
+    setDateFormat,
+  } = useDashboardContext();
+
+  const [taxPercentInput, setTaxPercentInput] = useState(String(taxRate.percent));
+  const [mileageRateInput, setMileageRateInput] = useState(String(mileageRate));
+
+  const handleTaxPercentChange = (raw: string) => {
+    setTaxPercentInput(raw);
+    const parsed = parseFloat(raw);
+    if (!Number.isNaN(parsed) && parsed >= 0) {
+      setTaxRate({ ...taxRate, percent: parsed });
+    }
+  };
+
+  const handleMileageRateChange = (raw: string) => {
+    setMileageRateInput(raw);
+    const parsed = parseFloat(raw);
+    if (!Number.isNaN(parsed) && parsed >= 0) {
+      setMileageRate(parsed);
+    }
+  };
 
   const handleSave = () => {
     toast.success("Settings saved (demo only — not persisted).");
@@ -105,6 +149,48 @@ function SettingsPage() {
             </Select>
           </div>
 
+          <div className="mt-3 space-y-1.5">
+            <label className="block text-xs font-medium text-black/55">Language</label>
+            <Select value={language} onValueChange={(v) => setLanguage(v as Language)}>
+              <SelectTrigger className="h-9 w-full rounded-xl border-black/10 bg-white text-sm shadow-none">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="en">English</SelectItem>
+                <SelectItem value="fr" disabled>
+                  French <span className="text-black/40">— Coming soon</span>
+                </SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="mt-3 space-y-1.5">
+            <label className="block text-xs font-medium text-black/55">Distance unit</label>
+            <Select value={distanceUnit} onValueChange={(v) => setDistanceUnit(v as DistanceUnit)}>
+              <SelectTrigger className="h-9 w-full rounded-xl border-black/10 bg-white text-sm shadow-none">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="km">Kilometres (km)</SelectItem>
+                <SelectItem value="mi">Miles (mi)</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="mt-3 space-y-1.5">
+            <label className="block text-xs font-medium text-black/55">Date format</label>
+            <Select value={dateFormat} onValueChange={(v) => setDateFormat(v as DateFormat)}>
+              <SelectTrigger className="h-9 w-full rounded-xl border-black/10 bg-white text-sm shadow-none">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {DATE_FORMATS.map((f) => (
+                  <SelectItem key={f.value} value={f.value}>{f.label}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
           <button
             type="button"
             onClick={handleSave}
@@ -112,6 +198,47 @@ function SettingsPage() {
           >
             Save changes
           </button>
+        </div>
+
+        {/* Tax & Mileage */}
+        <div className="rounded-2xl border border-black/[0.07] bg-white p-5 shadow-[0_2px_12px_rgba(0,0,0,0.06)] lg:col-span-2">
+          <h2 className="text-sm font-semibold text-black">Tax &amp; mileage</h2>
+          <p className="mt-1 text-xs text-black/50">
+            Applies instantly to the GST/HST reclaim and mileage figures on Dashboard and Mileage.
+          </p>
+          <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-3">
+            <div className="space-y-1.5">
+              <label className="block text-xs font-medium text-black/55">Tax name</label>
+              <input
+                value={taxRate.name}
+                onChange={(e) => setTaxRate({ ...taxRate, name: e.target.value })}
+                placeholder="GST"
+                className="h-9 w-full rounded-xl border border-black/10 bg-white px-3 text-sm outline-none focus:border-black/25"
+              />
+            </div>
+            <div className="space-y-1.5">
+              <label className="block text-xs font-medium text-black/55">Tax rate (%)</label>
+              <input
+                value={taxPercentInput}
+                onChange={(e) => handleTaxPercentChange(e.target.value)}
+                inputMode="decimal"
+                placeholder="5"
+                className="h-9 w-full rounded-xl border border-black/10 bg-white px-3 text-sm outline-none focus:border-black/25"
+              />
+            </div>
+            <div className="space-y-1.5">
+              <label className="block text-xs font-medium text-black/55">
+                Mileage rate ($/{distanceUnit})
+              </label>
+              <input
+                value={mileageRateInput}
+                onChange={(e) => handleMileageRateChange(e.target.value)}
+                inputMode="decimal"
+                placeholder="0.73"
+                className="h-9 w-full rounded-xl border border-black/10 bg-white px-3 text-sm outline-none focus:border-black/25"
+              />
+            </div>
+          </div>
         </div>
       </div>
 

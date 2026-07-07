@@ -9,13 +9,15 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useDashboardContext } from "@/components/dashboard/DashboardContext";
+import { formatDate } from "@/lib/dashboard-format";
 
 export type ReceiptStatus = "Categorized" | "Needs review";
 
 export type ReceiptRow = {
   merchant: string;
   category: string;
-  date: string;
+  date: Date;
   amount: string;
   status: ReceiptStatus;
 };
@@ -32,6 +34,7 @@ function ReviewForm({
   const [category, setCategory] = useState(
     RECEIPT_CATEGORIES.includes(receipt.category) ? receipt.category : RECEIPT_CATEGORIES[0],
   );
+  const { dateFormat } = useDashboardContext();
 
   return (
     <>
@@ -40,7 +43,7 @@ function ReviewForm({
           <span className="text-sm font-semibold text-black">{receipt.merchant}</span>
           <span className="tabular-nums text-sm font-medium text-black">{receipt.amount}</span>
         </div>
-        <p className="mt-0.5 text-xs text-black/50">{receipt.date}</p>
+        <p className="mt-0.5 text-xs text-black/50">{formatDate(receipt.date, dateFormat)}</p>
       </div>
 
       <div className="mt-4 space-y-1.5">
@@ -93,7 +96,7 @@ export function ReviewReceiptDialog({
         </DialogHeader>
         {receipt && (
           <ReviewForm
-            key={receipt.merchant + receipt.date}
+            key={receipt.merchant + receipt.date.toISOString()}
             receipt={receipt}
             onSave={(category) => {
               onSave({ category, status: "Categorized" });

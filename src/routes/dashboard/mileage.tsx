@@ -12,31 +12,47 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { RouteMap } from "@/components/dashboard/RouteMap";
+import { useDashboardContext, type DateFormat, type DistanceUnit } from "@/components/dashboard/DashboardContext";
+import { distanceInUnit, formatDate, formatDistance, miToKm, mkDate, money } from "@/lib/dashboard-format";
 
 export const Route = createFileRoute("/dashboard/mileage")({
   component: MileagePage,
 });
 
+// Distance is stored canonically in km; display converts to the unit
+// selected in Settings so switching units re-renders every trip and total.
 type Trip = {
-  date: string;
+  date: Date;
   purpose: string;
   from: string;
   to: string;
-  distance: string;
-  amount: string;
+  distanceKm: number;
 };
 
+type TripDisplay = Trip & { distanceValue: number; amount: number };
+
 const INITIAL_TRIPS: Trip[] = [
-  { date: "Jul 2", purpose: "Client meeting", from: "Home office", to: "Downtown office", distance: "18 mi", amount: "$11.34" },
-  { date: "Jun 28", purpose: "Supply run", from: "Home office", to: "Staples", distance: "9 mi", amount: "$5.67" },
-  { date: "Jun 24", purpose: "Client meeting", from: "Home office", to: "Client site", distance: "32 mi", amount: "$20.16" },
-  { date: "Jun 20", purpose: "Bank deposit", from: "Home office", to: "Bank branch", distance: "6 mi", amount: "$3.78" },
-  { date: "Jun 14", purpose: "Client meeting", from: "Home office", to: "Downtown office", distance: "18 mi", amount: "$11.34" },
+  { date: mkDate(2026, 7, 2), purpose: "Client meeting", from: "Home office", to: "Downtown office", distanceKm: 18 },
+  { date: mkDate(2026, 6, 28), purpose: "Supply run", from: "Home office", to: "Staples", distanceKm: 9 },
+  { date: mkDate(2026, 6, 24), purpose: "Client meeting", from: "Home office", to: "Client site", distanceKm: 32 },
+  { date: mkDate(2026, 6, 20), purpose: "Bank deposit", from: "Home office", to: "Bank branch", distanceKm: 6 },
+  { date: mkDate(2026, 6, 14), purpose: "Client meeting", from: "Home office", to: "Downtown office", distanceKm: 18 },
 ];
 
-const RATE_PER_MILE = 0.63;
+function toDisplay(trip: Trip, distanceUnit: DistanceUnit, mileageRate: number): TripDisplay {
+  const distanceValue = distanceInUnit(trip.distanceKm, distanceUnit);
+  return { ...trip, distanceValue, amount: distanceValue * mileageRate };
+}
 
-function LogTripDialog({ onAdd }: { onAdd: (trip: Trip) => void }) {
+function LogTripDialog({
+  distanceUnit,
+  mileageRate,
+  onAdd,
+}: {
+  distanceUnit: DistanceUnit;
+  mileageRate: number;
+  onAdd: (trip: Trip) => void;
+}) {
   const [open, setOpen] = useState(false);
   const [purpose, setPurpose] = useState("");
   const [from, setFrom] = useState("");
@@ -51,18 +67,17 @@ function LogTripDialog({ onAdd }: { onAdd: (trip: Trip) => void }) {
   };
 
   const handleSave = () => {
-    const miles = parseFloat(distance);
-    if (!purpose.trim() || !from.trim() || !to.trim() || !miles || miles <= 0) {
+    const enteredDistance = parseFloat(distance);
+    if (!purpose.trim() || !from.trim() || !to.trim() || !enteredDistance || enteredDistance <= 0) {
       toast.error("Fill in purpose, both locations, and a valid distance.");
       return;
     }
     onAdd({
-      date: new Date().toLocaleDateString("en-US", { month: "short", day: "numeric" }),
+      date: new Date(),
       purpose: purpose.trim(),
       from: from.trim(),
       to: to.trim(),
-      distance: `${miles} mi`,
-      amount: `$${(miles * RATE_PER_MILE).toFixed(2)}`,
+      distanceKm: distanceUnit === "km" ? enteredDistance : miToKm(enteredDistance),
     });
     toast.success("Trip logged (demo only — not saved to your account yet).");
     reset();
@@ -83,7 +98,7 @@ function LogTripDialog({ onAdd }: { onAdd: (trip: Trip) => void }) {
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>Log a trip</DialogTitle>
-          <DialogDescription>Mileage is calculated at ${RATE_PER_MILE.toFixed(2)}/mile.</DialogDescription>
+          <DialogDescription>Mileage is calculated at {money(mileageRate)}/{distanceUnit}.</DialogDescription>
         </DialogHeader>
         <div className="space-y-3">
           <div className="space-y-1.5">
@@ -116,7 +131,7 @@ function LogTripDialog({ onAdd }: { onAdd: (trip: Trip) => void }) {
             </div>
           </div>
           <div className="space-y-1.5">
-            <label className="block text-xs font-medium text-black/55">Distance (miles)</label>
+            <label className="block text-xs font-medium text-black/55">Distance ({distanceUnit})</label>
             <input
               value={distance}
               onChange={(e) => setDistance(e.target.value)}
@@ -140,14 +155,24 @@ function LogTripDialog({ onAdd }: { onAdd: (trip: Trip) => void }) {
   );
 }
 
-function RouteMapDialog({ trip, onOpenChange }: { trip: Trip | null; onOpenChange: (open: boolean) => void }) {
+function RouteMapDialog({
+  trip,
+  distanceUnit,
+  dateFormat,
+  onOpenChange,
+}: {
+  trip: TripDisplay | null;
+  distanceUnit: DistanceUnit;
+  dateFormat: DateFormat;
+  onOpenChange: (open: boolean) => void;
+}) {
   return (
     <Dialog open={trip !== null} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-lg">
         <DialogHeader>
           <DialogTitle>Trip route</DialogTitle>
           <DialogDescription>
-            {trip ? `${trip.purpose} — ${trip.date}` : ""}
+            {trip ? `${trip.purpose} — ${formatDate(trip.date, dateFormat)}` : ""}
           </DialogDescription>
         </DialogHeader>
         {trip && (
@@ -158,7 +183,9 @@ function RouteMapDialog({ trip, onOpenChange }: { trip: Trip | null; onOpenChang
                 <MapPin className="size-3.5 text-black/35" aria-hidden />
                 {trip.from} → {trip.to}
               </span>
-              <span className="tabular-nums font-medium text-black">{trip.distance} · {trip.amount}</span>
+              <span className="tabular-nums font-medium text-black">
+                {formatDistance(trip.distanceValue, distanceUnit)} · {money(trip.amount)}
+              </span>
             </div>
             <p className="text-xs text-black/40">
               Preview only — this will show your actual route once trips sync from the ReceiptOne mobile app.
@@ -171,11 +198,15 @@ function RouteMapDialog({ trip, onOpenChange }: { trip: Trip | null; onOpenChang
 }
 
 function MileagePage() {
+  const { distanceUnit, mileageRate, dateFormat } = useDashboardContext();
   const [trips, setTrips] = useState<Trip[]>(INITIAL_TRIPS);
   const [selectedTrip, setSelectedTrip] = useState<Trip | null>(null);
 
-  const totalMiles = trips.reduce((sum, t) => sum + parseFloat(t.distance), 0);
-  const totalAmount = trips.reduce((sum, t) => sum + parseFloat(t.amount.replace("$", "")), 0);
+  const displayTrips = trips.map((t) => toDisplay(t, distanceUnit, mileageRate));
+  const selectedTripDisplay = selectedTrip ? toDisplay(selectedTrip, distanceUnit, mileageRate) : null;
+
+  const totalDistance = displayTrips.reduce((sum, t) => sum + t.distanceValue, 0);
+  const totalAmount = displayTrips.reduce((sum, t) => sum + t.amount, 0);
 
   return (
     <div className="mx-auto w-full max-w-[1200px] flex-1 px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
@@ -184,7 +215,11 @@ function MileagePage() {
           <h1 className="text-2xl font-semibold tracking-tight text-black">Mileage</h1>
           <p className="mt-1 text-sm text-black/55">Track trips and deductible mileage.</p>
         </div>
-        <LogTripDialog onAdd={(trip) => setTrips((prev) => [trip, ...prev])} />
+        <LogTripDialog
+          distanceUnit={distanceUnit}
+          mileageRate={mileageRate}
+          onAdd={(trip) => setTrips((prev) => [trip, ...prev])}
+        />
       </div>
 
       {/* Stats */}
@@ -196,7 +231,7 @@ function MileagePage() {
               <Car className="size-4" aria-hidden />
             </span>
           </div>
-          <p className="mt-3 text-2xl font-semibold tracking-tight text-black">{totalMiles.toFixed(0)} mi</p>
+          <p className="mt-3 text-2xl font-semibold tracking-tight text-black">{formatDistance(totalDistance, distanceUnit)}</p>
           <p className="mt-1 text-xs text-black/45">this year</p>
         </div>
         <div className="rounded-2xl border border-black/[0.07] bg-white p-5 shadow-[0_2px_12px_rgba(0,0,0,0.06)]">
@@ -206,8 +241,8 @@ function MileagePage() {
               <Wallet className="size-4" aria-hidden />
             </span>
           </div>
-          <p className="mt-3 text-2xl font-semibold tracking-tight text-black">${totalAmount.toFixed(2)}</p>
-          <p className="mt-1 text-xs text-black/45">at ${RATE_PER_MILE.toFixed(2)}/mile</p>
+          <p className="mt-3 text-2xl font-semibold tracking-tight text-black">{money(totalAmount)}</p>
+          <p className="mt-1 text-xs text-black/45">at {money(mileageRate)}/{distanceUnit}</p>
         </div>
         <div className="rounded-2xl border border-black/[0.07] bg-white p-5 shadow-[0_2px_12px_rgba(0,0,0,0.06)]">
           <div className="flex items-center justify-between">
@@ -238,22 +273,22 @@ function MileagePage() {
               </tr>
             </thead>
             <tbody>
-              {trips.map((t, i) => (
-                <tr key={`${t.date}-${t.purpose}-${i}`} className="border-t border-black/[0.05]">
-                  <td className="px-5 py-3 text-black/60">{t.date}</td>
+              {displayTrips.map((t, i) => (
+                <tr key={`${t.date.toISOString()}-${t.purpose}-${i}`} className="border-t border-black/[0.05]">
+                  <td className="px-5 py-3 text-black/60">{formatDate(t.date, dateFormat)}</td>
                   <td className="px-5 py-3 font-medium text-black">{t.purpose}</td>
                   <td className="px-5 py-3 text-black/60">
                     <button
                       type="button"
-                      onClick={() => setSelectedTrip(t)}
+                      onClick={() => setSelectedTrip(trips[i])}
                       className="inline-flex items-center gap-1 rounded-md text-black/60 underline-offset-2 transition-colors hover:text-[#f97316] hover:underline focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#f97316]/40"
                     >
                       <MapPin className="size-3.5 text-black/35" aria-hidden />
                       {t.from} → {t.to}
                     </button>
                   </td>
-                  <td className="px-5 py-3 text-right tabular-nums text-black">{t.distance}</td>
-                  <td className="px-5 py-3 text-right tabular-nums text-black">{t.amount}</td>
+                  <td className="px-5 py-3 text-right tabular-nums text-black">{formatDistance(t.distanceValue, distanceUnit)}</td>
+                  <td className="px-5 py-3 text-right tabular-nums text-black">{money(t.amount)}</td>
                 </tr>
               ))}
             </tbody>
@@ -261,7 +296,12 @@ function MileagePage() {
         </div>
       </div>
 
-      <RouteMapDialog trip={selectedTrip} onOpenChange={(open) => !open && setSelectedTrip(null)} />
+      <RouteMapDialog
+        trip={selectedTripDisplay}
+        distanceUnit={distanceUnit}
+        dateFormat={dateFormat}
+        onOpenChange={(open) => !open && setSelectedTrip(null)}
+      />
     </div>
   );
 }

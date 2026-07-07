@@ -4,6 +4,8 @@ import { Download, FileSpreadsheet, FileText } from "lucide-react";
 import { toast } from "sonner";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ReportPreviewDialog } from "@/components/dashboard/ReportPreviewDialog";
+import { useDashboardContext } from "@/components/dashboard/DashboardContext";
+import { formatDate, mkDate } from "@/lib/dashboard-format";
 
 export const Route = createFileRoute("/dashboard/reports")({
   component: ReportsPage,
@@ -17,17 +19,18 @@ type ReportRow = {
   name: string;
   range: string;
   format: "PDF" | "CSV";
-  createdAt: string;
+  createdAt: Date;
 };
 
 const HISTORY: ReportRow[] = [
-  { name: "Expense Summary", range: "Jan – Jun 2026", format: "PDF", createdAt: "Jul 1, 2026" },
-  { name: "Tax Summary", range: "2025", format: "PDF", createdAt: "Apr 12, 2026" },
-  { name: "Mileage Report", range: "Q1 2026", format: "CSV", createdAt: "Apr 2, 2026" },
-  { name: "Expense Summary", range: "2025", format: "CSV", createdAt: "Jan 8, 2026" },
+  { name: "Expense Summary", range: "Jan – Jun 2026", format: "PDF", createdAt: mkDate(2026, 7, 1) },
+  { name: "Tax Summary", range: "2025", format: "PDF", createdAt: mkDate(2026, 4, 12) },
+  { name: "Mileage Report", range: "Q1 2026", format: "CSV", createdAt: mkDate(2026, 4, 2) },
+  { name: "Expense Summary", range: "2025", format: "CSV", createdAt: mkDate(2026, 1, 8) },
 ];
 
 function ReportsPage() {
+  const { dateFormat } = useDashboardContext();
   const [type, setType] = useState(REPORT_TYPES[0]);
   const [range, setRange] = useState(DATE_RANGES[0]);
   const [format, setFormat] = useState(FORMATS[0]);
@@ -119,7 +122,7 @@ function ReportsPage() {
             </thead>
             <tbody>
               {HISTORY.map((r) => (
-                <tr key={r.name + r.createdAt} className="border-t border-black/[0.05]">
+                <tr key={r.name + r.createdAt.toISOString()} className="border-t border-black/[0.05]">
                   <td className="flex items-center gap-2 px-5 py-3 font-medium text-black">
                     {r.format === "PDF" ? (
                       <FileText className="size-4 text-black/40" aria-hidden />
@@ -130,7 +133,7 @@ function ReportsPage() {
                   </td>
                   <td className="px-5 py-3 text-black/60">{r.range}</td>
                   <td className="px-5 py-3 text-black/60">{r.format}</td>
-                  <td className="px-5 py-3 text-black/60">{r.createdAt}</td>
+                  <td className="px-5 py-3 text-black/60">{formatDate(r.createdAt, dateFormat)}</td>
                   <td className="px-5 py-3 text-right">
                     <button
                       type="button"
