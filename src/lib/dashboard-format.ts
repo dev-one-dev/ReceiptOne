@@ -1,0 +1,46 @@
+import type { DateFormat, DistanceUnit } from "@/components/dashboard/DashboardContext";
+
+const KM_PER_MILE = 1.60934;
+
+export function mkDate(year: number, month: number, day: number): Date {
+  return new Date(year, month - 1, day);
+}
+
+export function kmToMi(km: number): number {
+  return km / KM_PER_MILE;
+}
+
+export function miToKm(mi: number): number {
+  return mi * KM_PER_MILE;
+}
+
+export function formatDate(date: Date, format: DateFormat): string {
+  const mm = String(date.getMonth() + 1).padStart(2, "0");
+  const dd = String(date.getDate()).padStart(2, "0");
+  const yyyy = date.getFullYear();
+  switch (format) {
+    case "DD/MM/YYYY":
+      return `${dd}/${mm}/${yyyy}`;
+    case "YYYY-MM-DD":
+      return `${yyyy}-${mm}-${dd}`;
+    case "MM/DD/YYYY":
+    default:
+      return `${mm}/${dd}/${yyyy}`;
+  }
+}
+
+export function formatDistance(valueInSelectedUnit: number, unit: DistanceUnit): string {
+  return `${Math.round(valueInSelectedUnit)} ${unit}`;
+}
+
+export function distanceInUnit(km: number, unit: DistanceUnit): number {
+  return unit === "km" ? km : kmToMi(km);
+}
+
+export function money(n: number): string {
+  return `$${n.toFixed(2)}`;
+}
+
+export function moneyWhole(n: number): string {
+  return `$${Math.round(n)}`;
+}

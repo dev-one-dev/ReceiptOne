@@ -8,6 +8,8 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Download } from "lucide-react";
+import { useDashboardContext } from "@/components/dashboard/DashboardContext";
+import { distanceInUnit, formatDate, formatDistance, mkDate, money } from "@/lib/dashboard-format";
 
 const CATEGORY_TOTALS = [
   { category: "Office Rent", amount: 1920.0 },
@@ -19,14 +21,12 @@ const CATEGORY_TOTALS = [
 ];
 
 const MILEAGE_ROWS = [
-  { date: "Jul 2", purpose: "Client meeting", distance: "18 mi", amount: "$11.34" },
-  { date: "Jun 28", purpose: "Supply run", distance: "9 mi", amount: "$5.67" },
-  { date: "Jun 24", purpose: "Client meeting", distance: "32 mi", amount: "$20.16" },
-  { date: "Jun 20", purpose: "Bank deposit", distance: "6 mi", amount: "$3.78" },
-  { date: "Jun 14", purpose: "Client meeting", distance: "18 mi", amount: "$11.34" },
+  { date: mkDate(2026, 7, 2), purpose: "Client meeting", distanceKm: 18 },
+  { date: mkDate(2026, 6, 28), purpose: "Supply run", distanceKm: 9 },
+  { date: mkDate(2026, 6, 24), purpose: "Client meeting", distanceKm: 32 },
+  { date: mkDate(2026, 6, 20), purpose: "Bank deposit", distanceKm: 6 },
+  { date: mkDate(2026, 6, 14), purpose: "Client meeting", distanceKm: 18 },
 ];
-
-const money = (n: number) => `$${n.toFixed(2)}`;
 
 function ExpenseSummaryPreview({ label }: { label: string }) {
   const total = CATEGORY_TOTALS.reduce((sum, c) => sum + c.amount, 0);
@@ -59,8 +59,13 @@ function ExpenseSummaryPreview({ label }: { label: string }) {
 }
 
 function MileageReportPreview() {
-  const totalMiles = MILEAGE_ROWS.reduce((sum, t) => sum + parseFloat(t.distance), 0);
-  const totalAmount = MILEAGE_ROWS.reduce((sum, t) => sum + parseFloat(t.amount.replace("$", "")), 0);
+  const { distanceUnit, mileageRate, dateFormat } = useDashboardContext();
+  const rows = MILEAGE_ROWS.map((t) => {
+    const distanceValue = distanceInUnit(t.distanceKm, distanceUnit);
+    return { ...t, distanceValue, amount: distanceValue * mileageRate };
+  });
+  const totalDistance = rows.reduce((sum, t) => sum + t.distanceValue, 0);
+  const totalAmount = rows.reduce((sum, t) => sum + t.amount, 0);
   return (
     <div className="rounded-xl border border-black/[0.07]">
       <table className="w-full border-collapse text-left text-sm">
@@ -73,19 +78,19 @@ function MileageReportPreview() {
           </tr>
         </thead>
         <tbody>
-          {MILEAGE_ROWS.map((t, i) => (
-            <tr key={t.date + i} className="border-t border-black/[0.05]">
-              <td className="px-4 py-2.5 text-black/60">{t.date}</td>
+          {rows.map((t, i) => (
+            <tr key={t.date.toISOString() + i} className="border-t border-black/[0.05]">
+              <td className="px-4 py-2.5 text-black/60">{formatDate(t.date, dateFormat)}</td>
               <td className="px-4 py-2.5 text-black/70">{t.purpose}</td>
-              <td className="px-4 py-2.5 text-right tabular-nums text-black">{t.distance}</td>
-              <td className="px-4 py-2.5 text-right tabular-nums text-black">{t.amount}</td>
+              <td className="px-4 py-2.5 text-right tabular-nums text-black">{formatDistance(t.distanceValue, distanceUnit)}</td>
+              <td className="px-4 py-2.5 text-right tabular-nums text-black">{money(t.amount)}</td>
             </tr>
           ))}
         </tbody>
         <tfoot>
           <tr className="border-t border-black/[0.1]">
             <td colSpan={2} className="px-4 py-2.5 text-sm font-semibold text-black">Total</td>
-            <td className="px-4 py-2.5 text-right text-sm font-semibold tabular-nums text-black">{totalMiles.toFixed(0)} mi</td>
+            <td className="px-4 py-2.5 text-right text-sm font-semibold tabular-nums text-black">{formatDistance(totalDistance, distanceUnit)}</td>
             <td className="px-4 py-2.5 text-right text-sm font-semibold tabular-nums text-black">{money(totalAmount)}</td>
           </tr>
         </tfoot>

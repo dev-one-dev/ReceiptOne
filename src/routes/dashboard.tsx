@@ -4,7 +4,14 @@ import { AppSidebar } from "@/components/dashboard/AppSidebar";
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { Separator } from "@/components/ui/separator";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { DashboardProvider, type DashboardRegion } from "@/components/dashboard/DashboardContext";
+import {
+  DashboardProvider,
+  type DashboardRegion,
+  type DateFormat,
+  type DistanceUnit,
+  type Language,
+  type TaxRateSetting,
+} from "@/components/dashboard/DashboardContext";
 
 export const Route = createFileRoute("/dashboard")({
   component: DashboardLayout,
@@ -24,6 +31,11 @@ const TAX_YEARS = ["2026", "2025", "2024"];
 
 function DashboardLayout() {
   const [year, setYear] = useState(TAX_YEARS[0]);
+  const [language, setLanguage] = useState<Language>("en");
+  const [distanceUnit, setDistanceUnit] = useState<DistanceUnit>("km");
+  const [taxRate, setTaxRate] = useState<TaxRateSetting>({ name: "GST", percent: 5 });
+  const [mileageRate, setMileageRate] = useState(0.73);
+  const [dateFormat, setDateFormat] = useState<DateFormat>("MM/DD/YYYY");
 
   return (
     <SidebarProvider>
@@ -63,7 +75,22 @@ function DashboardLayout() {
           </div>
         </header>
         <div className="flex flex-1 flex-col">
-          <DashboardProvider value={{ year, region: ACCOUNT_REGION.region }}>
+          <DashboardProvider
+            value={{
+              year,
+              region: ACCOUNT_REGION.region,
+              language,
+              setLanguage,
+              distanceUnit,
+              setDistanceUnit,
+              taxRate,
+              setTaxRate,
+              mileageRate,
+              setMileageRate,
+              dateFormat,
+              setDateFormat,
+            }}
+          >
             <Outlet />
           </DashboardProvider>
         </div>

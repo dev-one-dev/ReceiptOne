@@ -5,6 +5,8 @@ import { toast } from "sonner";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ReviewReceiptDialog, type ReceiptRow } from "@/components/dashboard/ReviewReceiptDialog";
+import { useDashboardContext } from "@/components/dashboard/DashboardContext";
+import { formatDate, mkDate } from "@/lib/dashboard-format";
 
 export const Route = createFileRoute("/dashboard/receipts")({
   component: ReceiptsPage,
@@ -14,16 +16,16 @@ const CATEGORIES = ["All categories", "Office Supplies", "Travel", "Fuel", "Soft
 const STATUSES = ["All statuses", "Categorized", "Needs review"];
 
 const INITIAL_RECEIPTS: ReceiptRow[] = [
-  { merchant: "Staples", category: "Office Supplies", date: "Jul 2", amount: "$84.20", status: "Categorized" },
-  { merchant: "Uber", category: "Travel", date: "Jun 29", amount: "$23.50", status: "Categorized" },
-  { merchant: "Shell", category: "Fuel", date: "Jun 27", amount: "$61.10", status: "Needs review" },
-  { merchant: "Adobe", category: "Software", date: "Jun 24", amount: "$54.99", status: "Categorized" },
-  { merchant: "WeWork", category: "Office Rent", date: "Jun 20", amount: "$320.00", status: "Categorized" },
-  { merchant: "Home Depot", category: "Supplies", date: "Jun 18", amount: "$142.75", status: "Needs review" },
-  { merchant: "Chipotle", category: "Meals", date: "Jun 16", amount: "$18.40", status: "Categorized" },
-  { merchant: "Best Buy", category: "Office Supplies", date: "Jun 12", amount: "$249.00", status: "Categorized" },
-  { merchant: "Esso", category: "Fuel", date: "Jun 9", amount: "$58.30", status: "Needs review" },
-  { merchant: "Notion", category: "Software", date: "Jun 5", amount: "$16.00", status: "Categorized" },
+  { merchant: "Staples", category: "Office Supplies", date: mkDate(2026, 7, 2), amount: "$84.20", status: "Categorized" },
+  { merchant: "Uber", category: "Travel", date: mkDate(2026, 6, 29), amount: "$23.50", status: "Categorized" },
+  { merchant: "Shell", category: "Fuel", date: mkDate(2026, 6, 27), amount: "$61.10", status: "Needs review" },
+  { merchant: "Adobe", category: "Software", date: mkDate(2026, 6, 24), amount: "$54.99", status: "Categorized" },
+  { merchant: "WeWork", category: "Office Rent", date: mkDate(2026, 6, 20), amount: "$320.00", status: "Categorized" },
+  { merchant: "Home Depot", category: "Supplies", date: mkDate(2026, 6, 18), amount: "$142.75", status: "Needs review" },
+  { merchant: "Chipotle", category: "Meals", date: mkDate(2026, 6, 16), amount: "$18.40", status: "Categorized" },
+  { merchant: "Best Buy", category: "Office Supplies", date: mkDate(2026, 6, 12), amount: "$249.00", status: "Categorized" },
+  { merchant: "Esso", category: "Fuel", date: mkDate(2026, 6, 9), amount: "$58.30", status: "Needs review" },
+  { merchant: "Notion", category: "Software", date: mkDate(2026, 6, 5), amount: "$16.00", status: "Categorized" },
 ];
 
 function StatusBadge({ status, onClick }: { status: ReceiptRow["status"]; onClick: () => void }) {
@@ -43,6 +45,7 @@ function StatusBadge({ status, onClick }: { status: ReceiptRow["status"]; onClic
 }
 
 function AllReceiptsTab() {
+  const { dateFormat } = useDashboardContext();
   const [receipts, setReceipts] = useState<ReceiptRow[]>(INITIAL_RECEIPTS);
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState(CATEGORIES[0]);
@@ -107,10 +110,10 @@ function AllReceiptsTab() {
             </thead>
             <tbody>
               {rows.map((row) => (
-                <tr key={row.merchant + row.date} className="border-t border-black/[0.05]">
+                <tr key={row.merchant + row.date.toISOString()} className="border-t border-black/[0.05]">
                   <td className="px-5 py-3 font-medium text-black">{row.merchant}</td>
                   <td className="px-5 py-3 text-black/60">{row.category}</td>
-                  <td className="px-5 py-3 text-black/60">{row.date}</td>
+                  <td className="px-5 py-3 text-black/60">{formatDate(row.date, dateFormat)}</td>
                   <td className="px-5 py-3 text-right tabular-nums text-black">{row.amount}</td>
                   <td className="px-5 py-3 text-right">
                     <StatusBadge status={row.status} onClick={() => setSelected(row)} />

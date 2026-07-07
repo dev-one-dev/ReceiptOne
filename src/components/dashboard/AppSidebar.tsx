@@ -81,7 +81,7 @@ export function AppSidebar() {
     <Sidebar collapsible="icon">
       <SidebarHeader className="px-3 py-4">
         <Link to={"/dashboard" as any} className="flex items-center gap-2.5 px-1">
-          <img src={logoMark} alt="" aria-hidden className="size-7 shrink-0 brightness-0 invert" />
+          <img src={logoMark} alt="" aria-hidden className="size-7 shrink-0" />
           <img
             src={logoWordmark}
             alt="ReceiptOne"
