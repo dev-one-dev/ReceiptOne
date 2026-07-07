@@ -4,6 +4,7 @@ import { AppSidebar } from "@/components/dashboard/AppSidebar";
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { Separator } from "@/components/ui/separator";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { DashboardProvider, type DashboardRegion } from "@/components/dashboard/DashboardContext";
 
 export const Route = createFileRoute("/dashboard")({
   component: DashboardLayout,
@@ -12,7 +13,13 @@ export const Route = createFileRoute("/dashboard")({
 // Mock account context -- reflects the user's real region/tax-year once
 // auth and data are wired up. Region changes only happen deliberately in
 // Profile & Billing, never from this header, so it's a static label here.
-const ACCOUNT_REGION = { flag: "🇨🇦", label: "Canada" };
+// "region" is the single source of truth threaded to every dashboard page
+// via DashboardProvider below.
+const ACCOUNT_REGION: { flag: string; label: string; region: DashboardRegion } = {
+  flag: "🇨🇦",
+  label: "Canada",
+  region: "ca",
+};
 const TAX_YEARS = ["2026", "2025", "2024"];
 
 function DashboardLayout() {
@@ -56,7 +63,9 @@ function DashboardLayout() {
           </div>
         </header>
         <div className="flex flex-1 flex-col">
-          <Outlet />
+          <DashboardProvider value={{ year, region: ACCOUNT_REGION.region }}>
+            <Outlet />
+          </DashboardProvider>
         </div>
       </SidebarInset>
     </SidebarProvider>
