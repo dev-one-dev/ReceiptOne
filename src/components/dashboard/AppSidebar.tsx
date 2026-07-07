@@ -27,7 +27,7 @@ import {
   SidebarMenuItem,
   SidebarSeparator,
 } from "@/components/ui/sidebar";
-import { useAuth } from "@/integrations/firebase/auth-context";
+import { getInitials, useAuth } from "@/integrations/firebase/auth-context";
 import { auth } from "@/integrations/firebase/client";
 
 type NavItem = { label: string; href: string; icon: LucideIcon };
@@ -77,15 +77,6 @@ function NavGroup({ items, pathname }: { items: NavItem[]; pathname: string }) {
       </SidebarGroupContent>
     </SidebarGroup>
   );
-}
-
-function getInitials(name: string | null, email: string | null): string {
-  if (name?.trim()) {
-    const parts = name.trim().split(/\s+/);
-    return (parts[0][0] + (parts.length > 1 ? parts[parts.length - 1][0] : "")).toUpperCase();
-  }
-  if (email) return email[0].toUpperCase();
-  return "?";
 }
 
 export function AppSidebar() {

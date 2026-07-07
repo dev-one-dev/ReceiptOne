@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Download, ExternalLink, Mail, Pencil, User } from "lucide-react";
 import { toast } from "sonner";
+import { getInitials, useAuth } from "@/integrations/firebase/auth-context";
 
 export const Route = createFileRoute("/dashboard/billing")({
   component: BillingPage,
@@ -47,6 +48,10 @@ function notWiredUp() {
 }
 
 function BillingPage() {
+  const { user } = useAuth();
+  const displayName = user?.displayName || "Account";
+  const email = user?.email || "";
+
   return (
     <div className="mx-auto w-full max-w-[1200px] flex-1 px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
       <div>
@@ -70,11 +75,11 @@ function BillingPage() {
           </div>
           <div className="mt-4 flex items-center gap-3">
             <span className="flex size-12 shrink-0 items-center justify-center rounded-full bg-[#f97316]/15 text-sm font-semibold text-[#f97316]">
-              JD
+              {getInitials(user?.displayName ?? null, user?.email ?? null)}
             </span>
             <div>
-              <p className="text-sm font-semibold text-black">Jane Doe</p>
-              <p className="text-xs text-black/50">jane@example.com</p>
+              <p className="text-sm font-semibold text-black">{displayName}</p>
+              <p className="text-xs text-black/50">{email}</p>
             </div>
           </div>
           <dl className="mt-4 space-y-2.5 border-t border-black/[0.05] pt-4">
@@ -83,14 +88,14 @@ function BillingPage() {
                 <User className="size-3.5" aria-hidden />
                 Full name
               </dt>
-              <dd className="font-medium text-black">Jane Doe</dd>
+              <dd className="font-medium text-black">{displayName}</dd>
             </div>
             <div className="flex items-center justify-between text-sm">
               <dt className="flex items-center gap-2 text-black/55">
                 <Mail className="size-3.5" aria-hidden />
                 Email
               </dt>
-              <dd className="font-medium text-black">jane@example.com</dd>
+              <dd className="font-medium text-black">{email}</dd>
             </div>
             <div className="flex items-center justify-between text-sm">
               <dt className="text-black/55">Tax jurisdiction</dt>

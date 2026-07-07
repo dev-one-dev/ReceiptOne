@@ -31,3 +31,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 export function useAuth(): AuthContextValue {
   return useContext(AuthContext);
 }
+
+export function getInitials(name: string | null, email: string | null): string {
+  if (name?.trim()) {
+    const parts = name.trim().split(/\s+/);
+    return (parts[0][0] + (parts.length > 1 ? parts[parts.length - 1][0] : "")).toUpperCase();
+  }
+  if (email) return email[0].toUpperCase();
+  return "?";
+}

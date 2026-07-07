@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
 import {
   createUserWithEmailAndPassword,
@@ -10,7 +10,6 @@ import { toast } from "sonner";
 import logoMark from "@/assets/figma/logo-mark.svg";
 import logoWordmark from "@/assets/figma/logo-wordmark.svg";
 import { auth } from "@/integrations/firebase/client";
-import { useAuth } from "@/integrations/firebase/auth-context";
 import { getAuthErrorMessage, isDismissedPopupError } from "@/integrations/firebase/auth-errors";
 
 export const Route = createFileRoute("/signup")({
@@ -59,20 +58,11 @@ function AppleIcon() {
 
 function SignupPage() {
   const navigate = useNavigate();
-  const { user } = useAuth();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
-
-  // Navigate once the shared auth context actually reflects the signed-in
-  // user, rather than right after the Firebase call resolves -- otherwise
-  // the dashboard guard can mount before onAuthStateChanged has updated
-  // context, see a stale `user: null`, and bounce straight back here.
-  useEffect(() => {
-    if (user) navigate({ to: "/dashboard" });
-  }, [user, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -82,6 +72,11 @@ function SignupPage() {
       if (name.trim()) {
         await updateProfile(credential.user, { displayName: name.trim() });
       }
+      // auth.currentUser is already set synchronously at this point, even
+      // though the auth-context's onAuthStateChanged hasn't necessarily
+      // caught up yet -- the dashboard guard checks currentUser directly
+      // too, so navigating immediately here is safe.
+      navigate({ to: "/dashboard" });
     } catch (error) {
       toast.error(getAuthErrorMessage(error));
       setLoading(false);
@@ -92,6 +87,7 @@ function SignupPage() {
     setGoogleLoading(true);
     try {
       await signInWithPopup(auth, new GoogleAuthProvider());
+      navigate({ to: "/dashboard" });
     } catch (error) {
       if (!isDismissedPopupError(error)) toast.error(getAuthErrorMessage(error));
       setGoogleLoading(false);

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { createFileRoute, Outlet, useNavigate } from "@tanstack/react-router";
 import { useAuth } from "@/integrations/firebase/auth-context";
+import { auth } from "@/integrations/firebase/client";
 import { AppSidebar } from "@/components/dashboard/AppSidebar";
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { Separator } from "@/components/ui/separator";
@@ -40,6 +41,14 @@ function DashboardLayout() {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
 
+  // `auth.currentUser` updates synchronously the instant a sign-in call
+  // resolves, but the `user` above comes from onAuthStateChanged, which
+  // notifies listeners asynchronously -- right after login's redirect,
+  // this component can mount before that notification lands. Checking
+  // currentUser directly closes that gap instead of trusting context
+  // alone to be caught up by the time we render.
+  const isSignedIn = Boolean(user) || Boolean(auth.currentUser);
+
   const [year, setYear] = useState(TAX_YEARS[0]);
   const [language, setLanguage] = useState<Language>("en");
   const [distanceUnit, setDistanceUnit] = useState<DistanceUnit>("km");
@@ -48,12 +57,12 @@ function DashboardLayout() {
   const [dateFormat, setDateFormat] = useState<DateFormat>("MM/DD/YYYY");
 
   useEffect(() => {
-    if (!loading && !user) {
+    if (!loading && !isSignedIn) {
       navigate({ to: "/login" });
     }
-  }, [loading, user, navigate]);
+  }, [loading, isSignedIn, navigate]);
 
-  if (loading || !user) {
+  if (loading || !isSignedIn) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-[#f5f4f0]">
         <p className="text-sm text-black/50">Loading…</p>
