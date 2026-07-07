@@ -122,7 +122,7 @@ function BillingPage() {
                 href={store.manageUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex flex-1 items-center justify-center gap-2 rounded-full border border-black/10 px-4 py-2.5 text-xs font-semibold text-black transition-colors hover:bg-black/5"
+                className="inline-flex flex-1 items-center justify-center gap-2 rounded-full bg-black px-4 py-2.5 text-xs font-semibold text-white transition-colors hover:bg-black/85"
               >
                 Manage on {store.name}
                 <ExternalLink className="size-3.5" aria-hidden />
