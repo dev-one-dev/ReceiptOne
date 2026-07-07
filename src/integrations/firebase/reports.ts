@@ -94,7 +94,15 @@ export async function fetchReports(uid: string): Promise<Report[]> {
   // Logs the raw, unmapped document data so we can see exactly what
   // fields/values actually exist, rather than guessing.
   snapshot.docs.forEach((doc) => {
-    console.log("[reports debug]", doc.id, doc.data());
+    console.log("[reports debug] raw", doc.id, doc.data());
   });
-  return snapshot.docs.map((doc) => toReport(doc.id, doc.data()));
+  const mapped = snapshot.docs.map((doc) => toReport(doc.id, doc.data()));
+  // TEMPORARY DEBUG -- shows the value AFTER toReport() mapping, so we can
+  // tell whether the bug is inside the mapping function or downstream in
+  // the component that renders it.
+  console.log(
+    "[reports debug] mapped",
+    mapped.map((r) => ({ id: r.id, title: r.title, countryCode: r.countryCode, pdfUrl: r.pdfUrl })),
+  );
+  return mapped;
 }
