@@ -15,52 +15,94 @@ import { TripDetailDialog } from "@/components/dashboard/TripDetailDialog";
 import { useDashboardContext, type DistanceUnit } from "@/components/dashboard/DashboardContext";
 import { useAuth } from "@/integrations/firebase/auth-context";
 import { auth } from "@/integrations/firebase/client";
-import { fetchTrips, tripDistance, type Trip } from "@/integrations/firebase/trips";
+import { createTrip, fetchTrips, tripDistance, type Trip } from "@/integrations/firebase/trips";
 import { formatCurrency, formatDate, formatDistance, money } from "@/lib/dashboard-format";
 import { errorMessage } from "@/lib/utils";
+
+function todayInputValue(): string {
+  const d = new Date();
+  const yyyy = d.getFullYear();
+  const mm = String(d.getMonth() + 1).padStart(2, "0");
+  const dd = String(d.getDate()).padStart(2, "0");
+  return `${yyyy}-${mm}-${dd}`;
+}
 
 export const Route = createFileRoute("/dashboard/mileage")({
   component: MileagePage,
 });
 
 /**
- * TODO(write-access): purely a UI demo -- doesn't write to Firestore, and
- * its output is intentionally never merged into the real fetched trips
- * list/stats (that would silently inflate a real user's mileage totals
- * with a trip that was never actually saved). Real trip creation would
- * need write access and likely matches the mobile app's GPS-tracking
- * flow -- out of scope for this read-only pass. See README's
- * "Known Limitations" section.
+ * Writes a real document to the `routes` collection (this app's first
+ * real Firestore write). start_route/end_route only get a plain-text
+ * `name` -- no geocoding, no generated map -- see createTrip's own doc
+ * comment for why. On success, calls onSaved so the caller refetches
+ * from Firestore rather than trusting an optimistic local update.
  */
 function LogTripDialog({
+  uid,
   distanceUnit,
   mileageRate,
+  currency,
+  onSaved,
 }: {
+  uid: string | null;
   distanceUnit: DistanceUnit;
   mileageRate: number;
+  currency: string;
+  onSaved: () => void;
 }) {
   const [open, setOpen] = useState(false);
   const [purpose, setPurpose] = useState("");
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
   const [distance, setDistance] = useState("");
+  const [date, setDate] = useState(todayInputValue());
+  const [roundTrip, setRoundTrip] = useState(false);
+  const [saving, setSaving] = useState(false);
 
   const reset = () => {
     setPurpose("");
     setFrom("");
     setTo("");
     setDistance("");
+    setDate(todayInputValue());
+    setRoundTrip(false);
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     const enteredDistance = parseFloat(distance);
     if (!purpose.trim() || !from.trim() || !to.trim() || !enteredDistance || enteredDistance <= 0) {
       toast.error("Fill in purpose, both locations, and a valid distance.");
       return;
     }
-    toast.success("Trip logged (demo only — not saved to your account yet).");
-    reset();
-    setOpen(false);
+    if (!uid) {
+      toast.error("You need to be signed in to log a trip.");
+      return;
+    }
+    const tripDate = date ? new Date(`${date}T00:00:00`) : new Date();
+    setSaving(true);
+    try {
+      await createTrip({
+        uid,
+        comment: purpose.trim(),
+        fromName: from.trim(),
+        toName: to.trim(),
+        date: tripDate,
+        distance: enteredDistance,
+        unit: distanceUnit,
+        roundTrip,
+        rate: mileageRate,
+        currency,
+      });
+      toast.success("Trip logged.");
+      reset();
+      setOpen(false);
+      onSaved();
+    } catch (e) {
+      toast.error(errorMessage(e, "Couldn't save this trip."));
+    } finally {
+      setSaving(false);
+    }
   };
 
   return (
@@ -111,26 +153,47 @@ function LogTripDialog({
               />
             </div>
           </div>
-          <div className="space-y-1.5">
-            <label className="block text-xs font-medium text-black/55">
-              Distance ({distanceUnit})
-            </label>
-            <input
-              value={distance}
-              onChange={(e) => setDistance(e.target.value)}
-              inputMode="decimal"
-              placeholder="18"
-              className="h-9 w-full rounded-xl border border-black/10 bg-white px-3 text-sm outline-none focus:border-black/25"
-            />
+          <div className="grid grid-cols-2 gap-3">
+            <div className="space-y-1.5">
+              <label className="block text-xs font-medium text-black/55">Date</label>
+              <input
+                type="date"
+                value={date}
+                onChange={(e) => setDate(e.target.value)}
+                className="h-9 w-full appearance-none rounded-xl border border-black/10 bg-white px-3 text-sm outline-none focus:border-black/25"
+              />
+            </div>
+            <div className="space-y-1.5">
+              <label className="block text-xs font-medium text-black/55">
+                Distance ({distanceUnit})
+              </label>
+              <input
+                value={distance}
+                onChange={(e) => setDistance(e.target.value)}
+                inputMode="decimal"
+                placeholder="18"
+                className="h-9 w-full rounded-xl border border-black/10 bg-white px-3 text-sm outline-none focus:border-black/25"
+              />
+            </div>
           </div>
+          <label className="flex items-center gap-2 text-xs font-medium text-black/55">
+            <input
+              type="checkbox"
+              checked={roundTrip}
+              onChange={(e) => setRoundTrip(e.target.checked)}
+              className="size-3.5 rounded border-black/20"
+            />
+            Round trip (doubles the distance above)
+          </label>
         </div>
         <DialogFooter>
           <button
             type="button"
             onClick={handleSave}
-            className="inline-flex w-full items-center justify-center rounded-full bg-black px-5 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90 sm:w-auto"
+            disabled={saving}
+            className="inline-flex w-full items-center justify-center rounded-full bg-black px-5 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-50 sm:w-auto"
           >
-            Save trip
+            {saving ? "Saving…" : "Save trip"}
           </button>
         </DialogFooter>
       </DialogContent>
@@ -147,6 +210,15 @@ function MileagePage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedTrip, setSelectedTrip] = useState<Trip | null>(null);
+
+  const loadTrips = (targetUid: string) => {
+    setLoading(true);
+    setError(null);
+    return fetchTrips(targetUid)
+      .then((data) => setTrips(data))
+      .catch((e) => setError(errorMessage(e, "Couldn't load trips.")))
+      .finally(() => setLoading(false));
+  };
 
   useEffect(() => {
     if (!uid) return;
@@ -179,7 +251,13 @@ function MileagePage() {
           <h1 className="text-2xl font-semibold tracking-tight text-black">Mileage</h1>
           <p className="mt-1 text-sm text-black/55">Track trips and deductible mileage.</p>
         </div>
-        <LogTripDialog distanceUnit={distanceUnit} mileageRate={mileageRate} />
+        <LogTripDialog
+          uid={uid}
+          distanceUnit={distanceUnit}
+          mileageRate={mileageRate}
+          currency={summaryCurrency}
+          onSaved={() => uid && loadTrips(uid)}
+        />
       </div>
 
       {/* Stats */}

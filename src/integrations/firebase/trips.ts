@@ -1,6 +1,16 @@
-import { collection, getDocs, orderBy, query, Timestamp, where } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  getDocs,
+  orderBy,
+  query,
+  serverTimestamp,
+  Timestamp,
+  where,
+} from "firebase/firestore";
 import { db } from "@/integrations/firebase/client";
 import type { DistanceUnit } from "@/components/dashboard/DashboardContext";
+import { kmToMi, miToKm } from "@/lib/dashboard-format";
 
 export type RouteLocation = {
   address: string;
@@ -14,8 +24,9 @@ export type RouteLocation = {
 /**
  * Mirrors the real `routes` collection written by the mobile app --
  * (named "trips" here, not "routes", to avoid colliding with this app's
- * own src/lib/routes.ts page-path constants). Read-only: nothing in this
- * module writes to Firestore.
+ * own src/lib/routes.ts page-path constants). Mostly read-only, except
+ * for `createTrip` below, which is this app's first real Firestore
+ * write.
  */
 export type Trip = {
   id: string;
@@ -116,4 +127,57 @@ export function formatLocation(loc: RouteLocation): string {
 export function recolorRouteMap(url: string): string {
   if (!url) return url;
   return url.replace(/color:green/gi, "color:0x000000").replace(/color:red/gi, "color:0xf97316");
+}
+
+export type NewTripInput = {
+  uid: string;
+  comment: string;
+  fromName: string;
+  toName: string;
+  date: Date;
+  /** One-way distance in `unit` -- doubled internally if roundTrip is true. */
+  distance: number;
+  unit: DistanceUnit;
+  roundTrip: boolean;
+  /** Settings' current mileage rate ($/unit) at the time this trip is logged -- stored as this trip's own `rate`, matching how a real mobile-app-logged trip carries the rate active when it was created, not a value recomputed later. */
+  rate: number;
+  currency: string;
+};
+
+/**
+ * Creates a new document in `routes`, matching the real mobile-app
+ * schema as closely as a web form reasonably can: start_route/end_route
+ * only get a plain-text `name` (no geocoded address/city/state -- see
+ * RouteLocation's other fields, left empty), and routeMap is left empty
+ * since there's no real map to generate client-side. Both km and mi
+ * distance fields are populated regardless of `unit` so the trip reads
+ * correctly under either Settings distance unit later. created_by is
+ * the signed-in user's uid, matching the security rules' ownership
+ * check exactly.
+ */
+export async function createTrip(input: NewTripInput): Promise<void> {
+  const oneWayKm = input.unit === "km" ? input.distance : miToKm(input.distance);
+  const oneWayMi = input.unit === "mi" ? input.distance : kmToMi(input.distance);
+  const totalDistance = input.roundTrip ? input.distance * 2 : input.distance;
+  const emptyLocation = { address: "", city: "", country: "", state: "", zip_code: "" };
+
+  await addDoc(collection(db, "routes"), {
+    comment: input.comment,
+    created_at: serverTimestamp(),
+    created_by: input.uid,
+    currency: input.currency,
+    date: Timestamp.fromDate(input.date),
+    distance: input.unit,
+    start_route: { ...emptyLocation, name: input.fromName },
+    end_route: { ...emptyLocation, name: input.toName },
+    is_reimbursable: false,
+    mileage: oneWayKm,
+    mileage_km_RoundTrip: oneWayKm * 2,
+    mileage_ml: oneWayMi,
+    mileage_ml_RoundTrip: oneWayMi * 2,
+    rate: input.rate,
+    round_trip: input.roundTrip,
+    routeMap: "",
+    total_price: totalDistance * input.rate,
+  });
 }
