@@ -17,8 +17,34 @@ import { useDashboardContext } from "@/components/dashboard/DashboardContext";
 import { useAuth } from "@/integrations/firebase/auth-context";
 import { auth, functions, storage } from "@/integrations/firebase/client";
 import { fetchReceipts, type Receipt } from "@/integrations/firebase/receipts";
+import { fetchUserProfile } from "@/integrations/firebase/user-profile";
+import { getReceiptCategories } from "@/integrations/receipt-parsing/categories";
+import { extractReceiptWithGemini } from "@/integrations/receipt-parsing/gemini";
+import { extractJsonFromText } from "@/integrations/receipt-parsing/extract-json";
+import { parseReceiptFromJson } from "@/integrations/receipt-parsing/parse-receipt";
+import { applyTaxListUpdate } from "@/integrations/receipt-parsing/apply-tax-settings";
 import { formatCurrency, formatDate } from "@/lib/dashboard-format";
 import { errorMessage } from "@/lib/utils";
+
+type ReviewTaxRow = { taxName: string; taxPercent: string; tax: string; isRefundable: boolean };
+
+type ReviewForm = {
+  merchantName: string;
+  merchantCategory: string;
+  date: string;
+  price: string;
+  tax: string;
+  paymentMethod: "Cash" | "Card";
+  typeOfTaxDeduction: "Business" | "Personal";
+  comment: string;
+};
+
+function toDateInputValue(date: Date): string {
+  const yyyy = date.getFullYear();
+  const mm = String(date.getMonth() + 1).padStart(2, "0");
+  const dd = String(date.getDate()).padStart(2, "0");
+  return `${yyyy}-${mm}-${dd}`;
+}
 
 export const Route = createFileRoute("/dashboard/receipts")({
   component: ReceiptsPage,
@@ -286,16 +312,17 @@ function BulkUploadTab() {
 }
 
 /**
- * Phase 1 OCR diagnostic -- proves the real end-to-end pipeline works
- * from the web: upload to Storage, get its download URL, call the real
- * getTextFromImage callable with that URL (never raw file bytes -- the
- * function's contract is { downloadUrl }, per the deployed Cloud
- * Function source). Deliberately separate from Bulk Upload above, which
- * is still a polished-looking mock for a different, multi-file flow --
- * this stays visibly a diagnostic so it's not mistaken for a finished
- * feature. Does not touch the receipts collection, does not parse the
- * OCR text into structured fields, and does not call any AI parsing --
- * that's later phases.
+ * Phase 1+2 OCR/AI diagnostic. Phase 1: upload to Storage, get its
+ * download URL, call the real getTextFromImage callable with that URL
+ * (never raw file bytes -- the function's contract is { downloadUrl },
+ * per the deployed Cloud Function source). Phase 2: send that OCR text
+ * + the same image to Gemini via Vertex AI, parse the response using
+ * the ported mobile business logic (src/integrations/receipt-parsing/),
+ * and show the result in an editable review form. Deliberately separate
+ * from Bulk Upload above, which is still a polished-looking mock for a
+ * different, multi-file flow -- this stays visibly a diagnostic so it's
+ * not mistaken for a finished feature. Still no Firestore write of any
+ * kind -- Phase 3.
  */
 function OcrTestTab() {
   const { user } = useAuth();
@@ -305,6 +332,13 @@ function OcrTestTab() {
   const [processing, setProcessing] = useState(false);
   const [fileName, setFileName] = useState("");
   const [resultText, setResultText] = useState("");
+  const [downloadUrl, setDownloadUrl] = useState("");
+
+  const [parsing, setParsing] = useState(false);
+  const [parseError, setParseError] = useState<string | null>(null);
+  const [categories, setCategories] = useState<string[]>([]);
+  const [review, setReview] = useState<ReviewForm | null>(null);
+  const [taxRows, setTaxRows] = useState<ReviewTaxRow[]>([]);
 
   const handleFile = async (file: File | undefined) => {
     if (!file) return;
@@ -314,6 +348,9 @@ function OcrTestTab() {
     }
     setProcessing(true);
     setResultText("");
+    setDownloadUrl("");
+    setReview(null);
+    setParseError(null);
     setFileName(file.name);
     try {
       // Storage rules only allow writes under /users/{uid}/... by the
@@ -321,13 +358,14 @@ function OcrTestTab() {
       const path = `users/${uid}/receipt-ocr-test/${Date.now()}-${file.name}`;
       const fileRef = storageRef(storage, path);
       await uploadBytes(fileRef, file);
-      const downloadUrl = await getDownloadURL(fileRef);
+      const url = await getDownloadURL(fileRef);
+      setDownloadUrl(url);
 
       const getTextFromImage = httpsCallable<
         { downloadUrl: string },
         { text: string; parsedItems: unknown[] }
       >(functions, "getTextFromImage");
-      const result = await getTextFromImage({ downloadUrl });
+      const result = await getTextFromImage({ downloadUrl: url });
       setResultText(result.data.text || "(empty response)");
       toast.success("OCR completed.");
     } catch (e) {
@@ -337,14 +375,74 @@ function OcrTestTab() {
     }
   };
 
+  const handleParse = async () => {
+    if (!uid || !downloadUrl || !resultText) return;
+    setParsing(true);
+    setParseError(null);
+    try {
+      const profile = await fetchUserProfile(uid);
+      const countryCode = profile?.countryCode || "us";
+      const cats = getReceiptCategories(countryCode);
+      setCategories(cats);
+
+      const rawResponseText = await extractReceiptWithGemini(resultText, cats, downloadUrl);
+      const rawJson = extractJsonFromText(rawResponseText);
+      const parsed = parseReceiptFromJson(
+        rawJson,
+        rawResponseText,
+        profile?.stateCountry ?? "",
+        profile?.stateState ?? "",
+      );
+      const { taxList, tax } = applyTaxListUpdate(parsed, profile?.taxList ?? []);
+
+      setReview({
+        merchantName: parsed.merchantName ?? "",
+        merchantCategory: parsed.merchantCategory ?? cats[0] ?? "",
+        date: parsed.date ? toDateInputValue(parsed.date) : "",
+        price: parsed.price.toFixed(2),
+        tax: tax.toFixed(2),
+        paymentMethod: parsed.paymentMethod,
+        typeOfTaxDeduction: parsed.typeOfTaxDeduction,
+        comment: parsed.comment ?? "",
+      });
+      setTaxRows(
+        taxList.map((t) => ({
+          taxName: t.taxName,
+          taxPercent: t.taxPercent.toFixed(2),
+          tax: t.tax.toFixed(2),
+          isRefundable: t.isRefundable,
+        })),
+      );
+      toast.success("Parsed with AI.");
+    } catch (e) {
+      setParseError(errorMessage(e, "Couldn't parse the AI response."));
+    } finally {
+      setParsing(false);
+    }
+  };
+
+  const updateTaxRow = (index: number, patch: Partial<ReviewTaxRow>) => {
+    setTaxRows((prev) => prev.map((row, i) => (i === index ? { ...row, ...patch } : row)));
+  };
+
+  const removeTaxRow = (index: number) => {
+    setTaxRows((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  const addTaxRow = () => {
+    setTaxRows((prev) => [
+      ...prev,
+      { taxName: "Tax", taxPercent: "0.00", tax: "0.00", isRefundable: false },
+    ]);
+  };
+
   return (
     <div className="mt-5 space-y-4">
       <div className="rounded-2xl border border-black/[0.07] bg-white p-5 shadow-[0_2px_12px_rgba(0,0,0,0.06)]">
-        <p className="text-sm font-semibold text-black">OCR test (diagnostic)</p>
+        <p className="text-sm font-semibold text-black">OCR + AI parsing test (diagnostic)</p>
         <p className="mt-1 text-xs text-black/50">
-          Uploads a single file to Storage, then calls the real OCR function to confirm the pipeline
-          works end-to-end. Nothing here is saved to your receipts -- this only shows the raw text
-          the OCR step returns.
+          Uploads a single file to Storage, runs OCR, then sends the text + image to Gemini to
+          extract structured fields. Nothing here is saved to your receipts yet.
         </p>
         <div className="mt-4 flex items-center gap-3">
           <button
@@ -381,6 +479,202 @@ function OcrTestTab() {
               {resultText}
             </pre>
           )}
+        </div>
+      )}
+
+      {resultText && !processing && !review && (
+        <div className="rounded-2xl border border-black/[0.07] bg-white p-5 shadow-[0_2px_12px_rgba(0,0,0,0.06)]">
+          <button
+            type="button"
+            onClick={() => void handleParse()}
+            disabled={parsing}
+            className="inline-flex items-center gap-2 rounded-full bg-black px-4 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            {parsing ? "Parsing with AI…" : "Parse with AI"}
+          </button>
+          {parseError && <p className="mt-2 text-sm text-red-600">{parseError}</p>}
+        </div>
+      )}
+
+      {review && (
+        <div className="rounded-2xl border border-black/[0.07] bg-white p-5 shadow-[0_2px_12px_rgba(0,0,0,0.06)]">
+          <p className="text-sm font-semibold text-black">Review (editable, not saved yet)</p>
+          <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
+            <div className="space-y-1.5">
+              <label className="block text-xs font-medium text-black/55">Merchant name</label>
+              <input
+                value={review.merchantName}
+                onChange={(e) => setReview({ ...review, merchantName: e.target.value })}
+                className="h-9 w-full rounded-xl border border-black/10 bg-white px-3 text-sm outline-none focus:border-black/25"
+              />
+            </div>
+            <div className="space-y-1.5">
+              <label className="block text-xs font-medium text-black/55">Category</label>
+              <select
+                value={review.merchantCategory}
+                onChange={(e) => setReview({ ...review, merchantCategory: e.target.value })}
+                className="h-9 w-full rounded-xl border border-black/10 bg-white px-3 text-sm outline-none focus:border-black/25"
+              >
+                {categories.map((c) => (
+                  <option key={c} value={c}>
+                    {c}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="space-y-1.5">
+              <label className="block text-xs font-medium text-black/55">Date</label>
+              <input
+                type="date"
+                value={review.date}
+                onChange={(e) => setReview({ ...review, date: e.target.value })}
+                className="h-9 w-full appearance-none rounded-xl border border-black/10 bg-white px-3 text-sm outline-none focus:border-black/25"
+              />
+            </div>
+            <div className="space-y-1.5">
+              <label className="block text-xs font-medium text-black/55">Price</label>
+              <input
+                value={review.price}
+                onChange={(e) => setReview({ ...review, price: e.target.value })}
+                inputMode="decimal"
+                className="h-9 w-full rounded-xl border border-black/10 bg-white px-3 text-sm outline-none focus:border-black/25"
+              />
+            </div>
+            <div className="space-y-1.5">
+              <label className="block text-xs font-medium text-black/55">Tax (total)</label>
+              <input
+                value={review.tax}
+                onChange={(e) => setReview({ ...review, tax: e.target.value })}
+                inputMode="decimal"
+                className="h-9 w-full rounded-xl border border-black/10 bg-white px-3 text-sm outline-none focus:border-black/25"
+              />
+            </div>
+            <div className="space-y-1.5">
+              <label className="block text-xs font-medium text-black/55">Payment method</label>
+              <select
+                value={review.paymentMethod}
+                onChange={(e) =>
+                  setReview({ ...review, paymentMethod: e.target.value as "Cash" | "Card" })
+                }
+                className="h-9 w-full rounded-xl border border-black/10 bg-white px-3 text-sm outline-none focus:border-black/25"
+              >
+                <option value="Cash">Cash</option>
+                <option value="Card">Card</option>
+              </select>
+            </div>
+            <div className="space-y-1.5">
+              <label className="block text-xs font-medium text-black/55">
+                Business or personal
+              </label>
+              <select
+                value={review.typeOfTaxDeduction}
+                onChange={(e) =>
+                  setReview({
+                    ...review,
+                    typeOfTaxDeduction: e.target.value as "Business" | "Personal",
+                  })
+                }
+                className="h-9 w-full rounded-xl border border-black/10 bg-white px-3 text-sm outline-none focus:border-black/25"
+              >
+                <option value="Business">Business</option>
+                <option value="Personal">Personal</option>
+              </select>
+            </div>
+            <div className="space-y-1.5 sm:col-span-2">
+              <label className="block text-xs font-medium text-black/55">Comment</label>
+              <input
+                value={review.comment}
+                onChange={(e) => setReview({ ...review, comment: e.target.value })}
+                className="h-9 w-full rounded-xl border border-black/10 bg-white px-3 text-sm outline-none focus:border-black/25"
+              />
+            </div>
+          </div>
+
+          <div className="mt-4">
+            <p className="text-xs font-medium text-black/55">Tax breakdown</p>
+            <div className="mt-2 overflow-hidden rounded-xl border border-black/[0.07]">
+              <table className="w-full border-collapse text-left text-xs">
+                <thead>
+                  <tr className="text-black/45">
+                    <th className="px-3 py-2 font-medium">Name</th>
+                    <th className="px-3 py-2 font-medium">Percent</th>
+                    <th className="px-3 py-2 font-medium">Amount</th>
+                    <th className="px-3 py-2 font-medium">Refundable</th>
+                    <th className="px-3 py-2" />
+                  </tr>
+                </thead>
+                <tbody>
+                  {taxRows.map((row, i) => (
+                    <tr key={i} className="border-t border-black/[0.05]">
+                      <td className="px-3 py-2">
+                        <input
+                          value={row.taxName}
+                          onChange={(e) => updateTaxRow(i, { taxName: e.target.value })}
+                          className="h-8 w-full rounded-lg border border-black/10 bg-white px-2 text-xs outline-none focus:border-black/25"
+                        />
+                      </td>
+                      <td className="px-3 py-2">
+                        <input
+                          value={row.taxPercent}
+                          onChange={(e) => updateTaxRow(i, { taxPercent: e.target.value })}
+                          inputMode="decimal"
+                          className="h-8 w-20 rounded-lg border border-black/10 bg-white px-2 text-xs outline-none focus:border-black/25"
+                        />
+                      </td>
+                      <td className="px-3 py-2">
+                        <input
+                          value={row.tax}
+                          onChange={(e) => updateTaxRow(i, { tax: e.target.value })}
+                          inputMode="decimal"
+                          className="h-8 w-24 rounded-lg border border-black/10 bg-white px-2 text-xs outline-none focus:border-black/25"
+                        />
+                      </td>
+                      <td className="px-3 py-2">
+                        <input
+                          type="checkbox"
+                          checked={row.isRefundable}
+                          onChange={(e) => updateTaxRow(i, { isRefundable: e.target.checked })}
+                          className="size-3.5 rounded border-black/20"
+                        />
+                      </td>
+                      <td className="px-3 py-2 text-right">
+                        <button
+                          type="button"
+                          onClick={() => removeTaxRow(i)}
+                          aria-label="Remove tax row"
+                          className="text-black/40 transition-colors hover:text-black"
+                        >
+                          <X className="size-3.5" aria-hidden />
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                  {taxRows.length === 0 && (
+                    <tr>
+                      <td colSpan={5} className="px-3 py-4 text-center text-black/40">
+                        No tax breakdown
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+            <button
+              type="button"
+              onClick={addTaxRow}
+              className="mt-2 text-xs font-medium text-black/55 transition-colors hover:text-black"
+            >
+              + Add tax row
+            </button>
+          </div>
+
+          <button
+            type="button"
+            onClick={() => toast.info("Saving isn't wired up yet — that's Phase 3.")}
+            className="mt-4 inline-flex items-center justify-center gap-2 rounded-full bg-black px-5 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90"
+          >
+            Looks good
+          </button>
         </div>
       )}
     </div>
