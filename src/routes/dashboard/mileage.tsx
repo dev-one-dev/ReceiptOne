@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { Car, Gauge, MapPin, Plus, Wallet } from "lucide-react";
 import { toast } from "sonner";
@@ -15,9 +15,55 @@ import { TripDetailDialog } from "@/components/dashboard/TripDetailDialog";
 import { useDashboardContext, type DistanceUnit } from "@/components/dashboard/DashboardContext";
 import { useAuth } from "@/integrations/firebase/auth-context";
 import { auth } from "@/integrations/firebase/client";
-import { createTrip, fetchTrips, tripDistance, type Trip } from "@/integrations/firebase/trips";
-import { formatCurrency, formatDate, formatDistance, money } from "@/lib/dashboard-format";
+import {
+  buildStaticMapUrl,
+  getDirections,
+  loadGoogleMaps,
+} from "@/integrations/google-maps/loader";
+import {
+  createTrip,
+  fetchTrips,
+  tripDistance,
+  type RouteLocation,
+  type Trip,
+} from "@/integrations/firebase/trips";
+import { formatCurrency, formatDate, formatDistance, kmToMi, money } from "@/lib/dashboard-format";
 import { errorMessage } from "@/lib/utils";
+
+const EMPTY_LOCATION: Omit<RouteLocation, "name"> = {
+  address: "",
+  city: "",
+  country: "",
+  state: "",
+  zipCode: "",
+  location: null,
+};
+
+/**
+ * Maps a Places Autocomplete result to our RouteLocation shape. Only
+ * requests the fields we actually use (address_components, geometry,
+ * name, formatted_address) to keep each Autocomplete selection cheap.
+ */
+function placeToRouteLocation(place: google.maps.places.PlaceResult): RouteLocation {
+  const components = place.address_components ?? [];
+  const component = (type: string, useShortName = false) => {
+    const match = components.find((c) => c.types.includes(type));
+    if (!match) return "";
+    return useShortName ? match.short_name : match.long_name;
+  };
+  const address = [component("street_number"), component("route")].filter(Boolean).join(" ");
+  const lat = place.geometry?.location?.lat();
+  const lng = place.geometry?.location?.lng();
+  return {
+    address,
+    city: component("locality") || component("postal_town") || component("sublocality"),
+    state: component("administrative_area_level_1", true),
+    zipCode: component("postal_code"),
+    country: component("country"),
+    name: place.name || place.formatted_address || "",
+    location: typeof lat === "number" && typeof lng === "number" ? { lat, lng } : null,
+  };
+}
 
 function todayInputValue(): string {
   const d = new Date();
@@ -32,11 +78,15 @@ export const Route = createFileRoute("/dashboard/mileage")({
 });
 
 /**
- * Writes a real document to the `routes` collection (this app's first
- * real Firestore write). start_route/end_route only get a plain-text
- * `name` -- no geocoding, no generated map -- see createTrip's own doc
- * comment for why. On success, calls onSaved so the caller refetches
- * from Firestore rather than trusting an optimistic local update.
+ * Writes a real document to the `routes` collection. From/To are Places
+ * Autocomplete-backed (uncontrolled inputs -- Autocomplete mutates the
+ * DOM value directly when a suggestion is picked, so controlled React
+ * state would fight it) with driving distance and a Static Maps route
+ * image calculated automatically once both are selected. Any failure
+ * along that path (script load, no place selected, no route found) is
+ * non-fatal: distance stays a normal editable field and the trip still
+ * saves with plain-text names and no map, exactly like before this
+ * feature existed.
  */
 function LogTripDialog({
   uid,
@@ -53,25 +103,112 @@ function LogTripDialog({
 }) {
   const [open, setOpen] = useState(false);
   const [purpose, setPurpose] = useState("");
-  const [from, setFrom] = useState("");
-  const [to, setTo] = useState("");
   const [distance, setDistance] = useState("");
   const [date, setDate] = useState(todayInputValue());
   const [roundTrip, setRoundTrip] = useState(false);
   const [saving, setSaving] = useState(false);
 
+  const [mapsReady, setMapsReady] = useState(false);
+  const [fromPlace, setFromPlace] = useState<RouteLocation | null>(null);
+  const [toPlace, setToPlace] = useState<RouteLocation | null>(null);
+  const [calculatingDistance, setCalculatingDistance] = useState(false);
+  const [routeMapUrl, setRouteMapUrl] = useState("");
+
+  const fromInputRef = useRef<HTMLInputElement>(null);
+  const toInputRef = useRef<HTMLInputElement>(null);
+
   const reset = () => {
     setPurpose("");
-    setFrom("");
-    setTo("");
     setDistance("");
     setDate(todayInputValue());
     setRoundTrip(false);
+    setFromPlace(null);
+    setToPlace(null);
+    setRouteMapUrl("");
+    setCalculatingDistance(false);
+    if (fromInputRef.current) fromInputRef.current.value = "";
+    if (toInputRef.current) toInputRef.current.value = "";
   };
 
+  // Loads the Maps script only while the dialog is open (no reason to
+  // pay for it on every page load), and only once per dialog session.
+  useEffect(() => {
+    if (!open) return;
+    let cancelled = false;
+    loadGoogleMaps()
+      .then(() => {
+        if (!cancelled) setMapsReady(true);
+      })
+      .catch(() => {
+        if (!cancelled) {
+          setMapsReady(false);
+          toast.error("Address autocomplete unavailable — enter locations and distance manually.");
+        }
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [open]);
+
+  // Attaches Autocomplete once the script is ready and the dialog's
+  // inputs exist in the DOM (Radix unmounts DialogContent while closed,
+  // so this can't run until both open and mapsReady are true).
+  useEffect(() => {
+    if (!open || !mapsReady || !fromInputRef.current || !toInputRef.current) return;
+
+    const fields = ["address_components", "geometry", "name", "formatted_address"];
+    const fromAutocomplete = new google.maps.places.Autocomplete(fromInputRef.current, {
+      fields,
+    });
+    const toAutocomplete = new google.maps.places.Autocomplete(toInputRef.current, { fields });
+
+    fromAutocomplete.addListener("place_changed", () => {
+      setFromPlace(placeToRouteLocation(fromAutocomplete.getPlace()));
+    });
+    toAutocomplete.addListener("place_changed", () => {
+      setToPlace(placeToRouteLocation(toAutocomplete.getPlace()));
+    });
+
+    return () => {
+      google.maps.event.clearInstanceListeners(fromAutocomplete);
+      google.maps.event.clearInstanceListeners(toAutocomplete);
+    };
+  }, [open, mapsReady]);
+
+  // Auto-calculates distance + route map the moment both ends resolve
+  // to a real geocoded place. Never blocks: on any failure the distance
+  // field just stays whatever the user last typed, editable as normal.
+  useEffect(() => {
+    const origin = fromPlace?.location;
+    const destination = toPlace?.location;
+    if (!origin || !destination) return;
+    let cancelled = false;
+    setCalculatingDistance(true);
+    getDirections(origin, destination)
+      .then((result) => {
+        if (cancelled) return;
+        if (!result) {
+          toast.error("Couldn't calculate distance automatically — enter it manually.");
+          return;
+        }
+        const km = result.distanceMeters / 1000;
+        setDistance((distanceUnit === "km" ? km : kmToMi(km)).toFixed(1));
+        const mapUrl = buildStaticMapUrl(origin, destination, result.encodedPolyline);
+        if (mapUrl) setRouteMapUrl(mapUrl);
+      })
+      .finally(() => {
+        if (!cancelled) setCalculatingDistance(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [fromPlace, toPlace, distanceUnit]);
+
   const handleSave = async () => {
+    const fromName = fromInputRef.current?.value.trim() ?? "";
+    const toName = toInputRef.current?.value.trim() ?? "";
     const enteredDistance = parseFloat(distance);
-    if (!purpose.trim() || !from.trim() || !to.trim() || !enteredDistance || enteredDistance <= 0) {
+    if (!purpose.trim() || !fromName || !toName || !enteredDistance || enteredDistance <= 0) {
       toast.error("Fill in purpose, both locations, and a valid distance.");
       return;
     }
@@ -80,19 +217,22 @@ function LogTripDialog({
       return;
     }
     const tripDate = date ? new Date(`${date}T00:00:00`) : new Date();
+    const startRoute: RouteLocation = fromPlace ?? { ...EMPTY_LOCATION, name: fromName };
+    const endRoute: RouteLocation = toPlace ?? { ...EMPTY_LOCATION, name: toName };
     setSaving(true);
     try {
       await createTrip({
         uid,
         comment: purpose.trim(),
-        fromName: from.trim(),
-        toName: to.trim(),
+        startRoute,
+        endRoute,
         date: tripDate,
         distance: enteredDistance,
         unit: distanceUnit,
         roundTrip,
         rate: mileageRate,
         currency,
+        routeMapUrl,
       });
       toast.success("Trip logged.");
       reset();
@@ -106,7 +246,13 @@ function LogTripDialog({
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog
+      open={open}
+      onOpenChange={(next) => {
+        setOpen(next);
+        if (!next) reset();
+      }}
+    >
       <DialogTrigger asChild>
         <button
           type="button"
@@ -137,18 +283,16 @@ function LogTripDialog({
             <div className="space-y-1.5">
               <label className="block text-xs font-medium text-black/55">From</label>
               <input
-                value={from}
-                onChange={(e) => setFrom(e.target.value)}
-                placeholder="Home office"
+                ref={fromInputRef}
+                placeholder="Start typing an address…"
                 className="h-9 w-full rounded-xl border border-black/10 bg-white px-3 text-sm outline-none focus:border-black/25"
               />
             </div>
             <div className="space-y-1.5">
               <label className="block text-xs font-medium text-black/55">To</label>
               <input
-                value={to}
-                onChange={(e) => setTo(e.target.value)}
-                placeholder="Client site"
+                ref={toInputRef}
+                placeholder="Start typing an address…"
                 className="h-9 w-full rounded-xl border border-black/10 bg-white px-3 text-sm outline-none focus:border-black/25"
               />
             </div>
@@ -165,7 +309,7 @@ function LogTripDialog({
             </div>
             <div className="space-y-1.5">
               <label className="block text-xs font-medium text-black/55">
-                Distance ({distanceUnit})
+                Distance ({distanceUnit}){calculatingDistance ? " — calculating…" : ""}
               </label>
               <input
                 value={distance}

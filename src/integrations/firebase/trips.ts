@@ -1,6 +1,7 @@
 import {
   addDoc,
   collection,
+  GeoPoint,
   getDocs,
   orderBy,
   query,
@@ -19,6 +20,8 @@ export type RouteLocation = {
   name: string;
   state: string;
   zipCode: string;
+  /** Real trip documents always carry this (a Firestore GeoPoint); null here means a web-logged trip where geocoding wasn't available. */
+  location: { lat: number; lng: number } | null;
 };
 
 /**
@@ -65,6 +68,10 @@ function toLocation(value: unknown): RouteLocation {
     name: typeof v.name === "string" ? v.name : "",
     state: typeof v.state === "string" ? v.state : "",
     zipCode: typeof v.zip_code === "string" ? v.zip_code : "",
+    location:
+      v.location instanceof GeoPoint
+        ? { lat: v.location.latitude, lng: v.location.longitude }
+        : null,
   };
 }
 
@@ -132,8 +139,8 @@ export function recolorRouteMap(url: string): string {
 export type NewTripInput = {
   uid: string;
   comment: string;
-  fromName: string;
-  toName: string;
+  startRoute: RouteLocation;
+  endRoute: RouteLocation;
   date: Date;
   /** One-way distance in `unit` -- doubled internally if roundTrip is true. */
   distance: number;
@@ -142,24 +149,36 @@ export type NewTripInput = {
   /** Settings' current mileage rate ($/unit) at the time this trip is logged -- stored as this trip's own `rate`, matching how a real mobile-app-logged trip carries the rate active when it was created, not a value recomputed later. */
   rate: number;
   currency: string;
+  /** Google Static Maps URL from buildStaticMapUrl(), or "" if geocoding/routing wasn't available -- matches the empty-string fallback TripDetailDialog already handles via RouteMap's illustrated placeholder. */
+  routeMapUrl: string;
 };
+
+function toFirestoreLocation(loc: RouteLocation) {
+  return {
+    address: loc.address,
+    city: loc.city,
+    country: loc.country,
+    name: loc.name,
+    state: loc.state,
+    zip_code: loc.zipCode,
+    location: loc.location ? new GeoPoint(loc.location.lat, loc.location.lng) : null,
+  };
+}
 
 /**
  * Creates a new document in `routes`, matching the real mobile-app
- * schema as closely as a web form reasonably can: start_route/end_route
- * only get a plain-text `name` (no geocoded address/city/state -- see
- * RouteLocation's other fields, left empty), and routeMap is left empty
- * since there's no real map to generate client-side. Both km and mi
- * distance fields are populated regardless of `unit` so the trip reads
- * correctly under either Settings distance unit later. created_by is
- * the signed-in user's uid, matching the security rules' ownership
- * check exactly.
+ * schema as closely as a web form reasonably can -- full structured
+ * start_route/end_route (including the geopoint) when Places Autocomplete
+ * resolved a real place, or just a plain-text `name` with everything
+ * else empty when it didn't. Both km and mi distance fields are
+ * populated regardless of `unit` so the trip reads correctly under
+ * either Settings distance unit later. created_by is the signed-in
+ * user's uid, matching the security rules' ownership check exactly.
  */
 export async function createTrip(input: NewTripInput): Promise<void> {
   const oneWayKm = input.unit === "km" ? input.distance : miToKm(input.distance);
   const oneWayMi = input.unit === "mi" ? input.distance : kmToMi(input.distance);
   const totalDistance = input.roundTrip ? input.distance * 2 : input.distance;
-  const emptyLocation = { address: "", city: "", country: "", state: "", zip_code: "" };
 
   await addDoc(collection(db, "routes"), {
     comment: input.comment,
@@ -168,8 +187,8 @@ export async function createTrip(input: NewTripInput): Promise<void> {
     currency: input.currency,
     date: Timestamp.fromDate(input.date),
     distance: input.unit,
-    start_route: { ...emptyLocation, name: input.fromName },
-    end_route: { ...emptyLocation, name: input.toName },
+    start_route: toFirestoreLocation(input.startRoute),
+    end_route: toFirestoreLocation(input.endRoute),
     is_reimbursable: false,
     mileage: oneWayKm,
     mileage_km_RoundTrip: oneWayKm * 2,
@@ -177,7 +196,7 @@ export async function createTrip(input: NewTripInput): Promise<void> {
     mileage_ml_RoundTrip: oneWayMi * 2,
     rate: input.rate,
     round_trip: input.roundTrip,
-    routeMap: "",
+    routeMap: input.routeMapUrl,
     total_price: totalDistance * input.rate,
   });
 }
