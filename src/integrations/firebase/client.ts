@@ -1,4 +1,5 @@
 import { getApps, initializeApp, type FirebaseOptions } from "firebase/app";
+import { initializeAppCheck, ReCaptchaV3Provider } from "firebase/app-check";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
@@ -34,6 +35,19 @@ function getFirebaseConfig(): FirebaseOptions {
   return { apiKey, authDomain, projectId, storageBucket, messagingSenderId, appId, measurementId };
 }
 
+// App Check's reCAPTCHA site key isn't part of FirebaseOptions -- it's a
+// separate value only used when initializing App Check itself. Missing
+// is handled as a soft skip (see below), not a thrown error, since App
+// Check is additive: the rest of the app should keep working even
+// before this var exists in Vercel.
+function getAppCheckSiteKey(): string | undefined {
+  return (
+    import.meta.env.VITE_FIREBASE_APP_CHECK_SITE_KEY ||
+    process.env.VITE_FIREBASE_APP_CHECK_SITE_KEY ||
+    undefined
+  );
+}
+
 // Reuse the existing app instance if one was already initialized (e.g. by
 // HMR) instead of calling initializeApp twice. getAuth/getFirestore are
 // cheap, synchronous, and safe to call eagerly even during SSR -- they
@@ -47,6 +61,34 @@ function getFirebaseConfig(): FirebaseOptions {
 // target instead of the real instance -- this caused auth-state listener
 // bookkeeping to desync after the first sign-in in a tab.
 export const firebaseApp = getApps().length > 0 ? getApps()[0] : initializeApp(getFirebaseConfig());
+
+// Initialized right after firebaseApp and before the other services so
+// Auth/Firestore/Storage/Functions calls all carry a valid App Check
+// token from the start -- Firebase AI Logic (Gemini via Vertex AI)
+// specifically requires this as of July 2026, which is why "Parse with
+// AI" was failing with a "config is missing" error before this existed.
+// Guarded by `typeof window` since this file also runs during SSR,
+// where reCAPTCHA has no DOM to attach to. Skips (with a console
+// warning) rather than throwing if the site key isn't set yet, so the
+// rest of the app keeps working before the Vercel env var is added.
+//
+// Local dev note: App Check has a debug token mechanism for localhost
+// (self.FIREBASE_APPCHECK_DEBUG_TOKEN) -- not implemented here; worth
+// knowing about if local dev with AI Logic ever breaks.
+if (typeof window !== "undefined") {
+  const appCheckSiteKey = getAppCheckSiteKey();
+  if (appCheckSiteKey) {
+    initializeAppCheck(firebaseApp, {
+      provider: new ReCaptchaV3Provider(appCheckSiteKey),
+      isTokenAutoRefreshEnabled: true,
+    });
+  } else {
+    console.warn(
+      "Missing VITE_FIREBASE_APP_CHECK_SITE_KEY -- App Check not initialized; AI Logic (Gemini) calls will fail until this is set.",
+    );
+  }
+}
+
 export const auth = getAuth(firebaseApp);
 export const db = getFirestore(firebaseApp);
 export const storage = getStorage(firebaseApp);
