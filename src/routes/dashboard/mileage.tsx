@@ -262,7 +262,22 @@ function LogTripDialog({
           Log trip
         </button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent
+        className="sm:max-w-md"
+        onPointerDownOutside={(e) => {
+          // Google appends the Autocomplete suggestion dropdown to
+          // document.body, outside this DialogContent's own DOM subtree.
+          // Radix's dismissable layer treats a pointerdown there as an
+          // "outside" interaction and would otherwise close the dialog
+          // before the click ever reaches a .pac-item suggestion. Only
+          // suppress the dismiss for clicks actually inside the
+          // dropdown -- a genuine outside click (e.g. the overlay) still
+          // closes the dialog as normal.
+          if ((e.target as HTMLElement | null)?.closest(".pac-container")) {
+            e.preventDefault();
+          }
+        }}
+      >
         <DialogHeader>
           <DialogTitle>Log a trip</DialogTitle>
           <DialogDescription>
