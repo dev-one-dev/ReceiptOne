@@ -1,27 +1,21 @@
 import { useEffect, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { Download, ExternalLink, Gift, Mail, Pencil, User, Users } from "lucide-react";
+import { ExternalLink, Gift, Mail, Pencil, User, Users } from "lucide-react";
 import { toast } from "sonner";
+import { useDashboardContext } from "@/components/dashboard/DashboardContext";
 import { getInitials, useAuth } from "@/integrations/firebase/auth-context";
 import { auth } from "@/integrations/firebase/client";
 import { fetchReferralCount } from "@/integrations/firebase/referrals";
 import { fetchUserProfile } from "@/integrations/firebase/user-profile";
+import {
+  fetchBillingHistory,
+  type BillingHistory,
+} from "@/integrations/revenuecat/get-billing-history";
+import { formatCurrency, formatDate } from "@/lib/dashboard-format";
 
 export const Route = createFileRoute("/dashboard/billing")({
   component: BillingPage,
 });
-
-type Invoice = {
-  date: string;
-  amount: string;
-  status: "Paid";
-};
-
-const INVOICES: Invoice[] = [
-  { date: "Jun 1, 2026", amount: "$19.00", status: "Paid" },
-  { date: "May 1, 2026", amount: "$19.00", status: "Paid" },
-  { date: "Apr 1, 2026", amount: "$19.00", status: "Paid" },
-];
 
 // No real auth/account data yet, so there's no way to know which store a
 // user actually subscribed through -- and unlike an install CTA, guessing
@@ -75,6 +69,7 @@ function formatTrialStatus(trialExpDate: Date | null): string | null {
 }
 
 function BillingPage() {
+  const { dateFormat } = useDashboardContext();
   const { user } = useAuth();
   const displayName = user?.displayName || "Account";
   const email = user?.email || "";
@@ -84,6 +79,7 @@ function BillingPage() {
   const [trialStatus, setTrialStatus] = useState<string | null>(null);
   const [referralCode, setReferralCode] = useState("");
   const [referralCount, setReferralCount] = useState<number | null>(null);
+  const [billing, setBilling] = useState<BillingHistory | null>(null);
 
   useEffect(() => {
     if (!uid) return;
@@ -106,6 +102,31 @@ function BillingPage() {
       cancelled = true;
     };
   }, [uid]);
+
+  // Fetched separately from the profile/referral group above -- a
+  // billing-history failure (or, very commonly right now, a real
+  // "knownToRevenueCat: false" empty result) should never blank out
+  // jurisdiction/referral data too. Quiet console.error only; the UI
+  // just keeps showing the trial-based fallback below, since "no
+  // RevenueCat data yet" is the expected common case, not an error
+  // state worth alarming the user over.
+  useEffect(() => {
+    if (!uid) return;
+    let cancelled = false;
+    fetchBillingHistory()
+      .then((data) => {
+        if (!cancelled) setBilling(data);
+      })
+      .catch((e) => {
+        console.error("Couldn't load billing history:", e);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [uid]);
+
+  const activeSubscription = billing?.subscriptions.find((s) => s.givesAccess === true) ?? null;
+  const purchases = billing?.purchases ?? [];
 
   return (
     <div className="mx-auto w-full max-w-[1200px] flex-1 px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
@@ -191,15 +212,28 @@ function BillingPage() {
               </span>
             )}
           </div>
-          <div className="mt-4 flex items-center justify-between rounded-xl bg-black/[0.03] px-4 py-3">
-            <div>
-              <p className="text-sm font-semibold text-black">Pro — Monthly</p>
-              <p className="text-xs text-black/50">Renews Aug 1, 2026</p>
+          {activeSubscription ? (
+            <div className="mt-4 rounded-xl bg-black/[0.03] px-4 py-3">
+              <p className="text-sm font-semibold text-black">
+                {activeSubscription.productId || "Active plan"}
+              </p>
+              <p className="mt-0.5 text-xs text-black/50">
+                {activeSubscription.currentPeriodEndsAt
+                  ? // RevenueCat's auto_renewal_status enum isn't confirmed
+                    // against a real live response yet -- WILL_RENEW is the
+                    // documented "will renew" value; anything else (or
+                    // missing) reads as "Ends" rather than assuming renewal.
+                    `${activeSubscription.autoRenewalStatus === "WILL_RENEW" ? "Renews" : "Ends"} ${formatDate(new Date(activeSubscription.currentPeriodEndsAt), dateFormat)}`
+                  : activeSubscription.status || "Active"}
+              </p>
             </div>
-            <p className="text-lg font-semibold text-black">
-              $19<span className="text-xs font-normal text-black/45">/mo</span>
-            </p>
-          </div>
+          ) : (
+            <div className="mt-4 rounded-xl bg-black/[0.03] px-4 py-3 text-sm text-black/60">
+              {trialStatus
+                ? `No active store subscription found — ${trialStatus.toLowerCase()}.`
+                : "No subscription or trial data found."}
+            </div>
+          )}
           <p className="mt-4 text-sm text-black/55">
             Managed through the mobile app's store — billing, plan changes, and cancellation all
             happen there, not on the web. Pick whichever store you originally subscribed through.
@@ -221,7 +255,7 @@ function BillingPage() {
         </div>
       </div>
 
-      {/* Invoices */}
+      {/* Billing history */}
       <div className="mt-6 rounded-2xl border border-black/[0.07] bg-white shadow-[0_2px_12px_rgba(0,0,0,0.06)]">
         <div className="px-5 py-4">
           <h2 className="text-sm font-semibold text-black">Billing history</h2>
@@ -232,32 +266,30 @@ function BillingPage() {
               <tr className="border-t border-black/[0.07] text-xs text-black/45">
                 <th className="px-5 py-2 font-medium">Date</th>
                 <th className="px-5 py-2 font-medium">Amount</th>
-                <th className="px-5 py-2 font-medium">Status</th>
-                <th className="px-5 py-2 text-right font-medium">Invoice</th>
+                <th className="px-5 py-2 font-medium">Product / Store</th>
               </tr>
             </thead>
             <tbody>
-              {INVOICES.map((inv) => (
-                <tr key={inv.date} className="border-t border-black/[0.05]">
-                  <td className="px-5 py-3 text-black/60">{inv.date}</td>
-                  <td className="px-5 py-3 tabular-nums text-black">{inv.amount}</td>
-                  <td className="px-5 py-3">
-                    <span className="rounded-full bg-black/[0.05] px-2.5 py-1 text-xs font-medium text-black/60">
-                      {inv.status}
-                    </span>
+              {purchases.map((p, i) => (
+                <tr key={p.id ?? i} className="border-t border-black/[0.05]">
+                  <td className="px-5 py-3 text-black/60">
+                    {p.purchasedAt ? formatDate(new Date(p.purchasedAt), dateFormat) : "—"}
                   </td>
-                  <td className="px-5 py-3 text-right">
-                    <button
-                      type="button"
-                      onClick={notWiredUp}
-                      className="inline-flex items-center gap-1 rounded-full p-1.5 text-black/40 transition-colors hover:bg-black/5 hover:text-black"
-                      aria-label={`Download invoice for ${inv.date}`}
-                    >
-                      <Download className="size-4" aria-hidden />
-                    </button>
+                  <td className="px-5 py-3 tabular-nums text-black">
+                    {p.amount !== null && p.currency ? formatCurrency(p.amount, p.currency) : "—"}
+                  </td>
+                  <td className="px-5 py-3 text-black/60">
+                    {[p.productId, p.store].filter(Boolean).join(" · ") || "—"}
                   </td>
                 </tr>
               ))}
+              {purchases.length === 0 && (
+                <tr>
+                  <td colSpan={3} className="px-5 py-10 text-center text-sm text-black/45">
+                    No purchases yet.
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>
