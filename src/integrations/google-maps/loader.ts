@@ -122,3 +122,80 @@ export function buildStaticMapUrl(
   ];
   return `https://maps.googleapis.com/maps/api/staticmap?${params.join("&")}`;
 }
+
+/**
+ * Predictions for an in-progress query, via AutocompleteService directly
+ * rather than the google.maps.places.Autocomplete widget -- that widget
+ * renders its dropdown into document.body, outside of wherever the input
+ * lives in the page, which fights Radix Dialog's focus trap when the
+ * input is inside a modal. Resolves an empty array (never rejects) on
+ * any failure, including a genuinely empty result set, so callers don't
+ * need to distinguish "no matches" from "API error."
+ */
+export function getAutocompletePredictions(
+  input: string,
+  sessionToken?: google.maps.places.AutocompleteSessionToken,
+): Promise<google.maps.places.AutocompletePrediction[]> {
+  return new Promise((resolve) => {
+    if (!input.trim()) {
+      resolve([]);
+      return;
+    }
+    try {
+      const service = new google.maps.places.AutocompleteService();
+      service.getPlacePredictions({ input, sessionToken }, (predictions, status) => {
+        if (status !== google.maps.places.PlacesServiceStatus.OK || !predictions) {
+          resolve([]);
+          return;
+        }
+        resolve(predictions);
+      });
+    } catch {
+      resolve([]);
+    }
+  });
+}
+
+let placesServiceNode: HTMLDivElement | null = null;
+
+function getPlacesService(): google.maps.places.PlacesService {
+  // PlacesService requires a Map or an HTMLElement to construct (for
+  // attribution), even though we never render an actual map -- a
+  // detached div is the standard workaround for this.
+  if (!placesServiceNode) placesServiceNode = document.createElement("div");
+  return new google.maps.places.PlacesService(placesServiceNode);
+}
+
+/**
+ * Full place details for a predicted place_id -- the same data
+ * (address_components, geometry, name, formatted_address) the old
+ * Autocomplete widget's place_changed event used to hand over, just
+ * fetched explicitly once the user clicks a prediction instead of
+ * arriving via that widget. Resolves null on any failure.
+ */
+export function getPlaceDetails(
+  placeId: string,
+  sessionToken?: google.maps.places.AutocompleteSessionToken,
+): Promise<google.maps.places.PlaceResult | null> {
+  return new Promise((resolve) => {
+    try {
+      const service = getPlacesService();
+      service.getDetails(
+        {
+          placeId,
+          fields: ["address_components", "geometry", "name", "formatted_address"],
+          sessionToken,
+        },
+        (result, status) => {
+          if (status !== google.maps.places.PlacesServiceStatus.OK || !result) {
+            resolve(null);
+            return;
+          }
+          resolve(result);
+        },
+      );
+    } catch {
+      resolve(null);
+    }
+  });
+}

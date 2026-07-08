@@ -17,7 +17,9 @@ import { useAuth } from "@/integrations/firebase/auth-context";
 import { auth } from "@/integrations/firebase/client";
 import {
   buildStaticMapUrl,
+  getAutocompletePredictions,
   getDirections,
+  getPlaceDetails,
   loadGoogleMaps,
 } from "@/integrations/google-maps/loader";
 import {
@@ -65,6 +67,88 @@ function placeToRouteLocation(place: google.maps.places.PlaceResult): RouteLocat
   };
 }
 
+/**
+ * Drives one From/To field: a debounced AutocompleteService predictions
+ * fetch as the user types, a manually-rendered predictions list (a
+ * normal sibling in the component tree, never portaled to
+ * document.body), and its own click-outside/Escape handling done in
+ * plain React/DOM -- deliberately not the google.maps.places.Autocomplete
+ * widget, whose body-appended dropdown fights Radix Dialog's focus trap
+ * when the field lives inside a modal.
+ */
+function usePlaceAutocompleteField(mapsReady: boolean) {
+  const [query, setQuery] = useState("");
+  const [predictions, setPredictions] = useState<google.maps.places.AutocompletePrediction[]>([]);
+  const [open, setOpen] = useState(false);
+  const [place, setPlace] = useState<RouteLocation | null>(null);
+  const tokenRef = useRef<google.maps.places.AutocompleteSessionToken | null>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!mapsReady || !query.trim() || place) {
+      setPredictions([]);
+      return;
+    }
+    let cancelled = false;
+    const timer = setTimeout(() => {
+      if (!tokenRef.current) {
+        tokenRef.current = new google.maps.places.AutocompleteSessionToken();
+      }
+      getAutocompletePredictions(query, tokenRef.current).then((results) => {
+        if (!cancelled) setPredictions(results);
+      });
+    }, 300);
+    return () => {
+      cancelled = true;
+      clearTimeout(timer);
+    };
+  }, [query, place, mapsReady]);
+
+  // Plain DOM click-outside, scoped to this field's own wrapper -- not
+  // Radix machinery, so it can't be affected by (or interfere with) the
+  // Dialog's own outside-interaction/focus handling.
+  useEffect(() => {
+    function handlePointerDown(e: PointerEvent) {
+      if (wrapperRef.current && !wrapperRef.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    }
+    document.addEventListener("pointerdown", handlePointerDown);
+    return () => document.removeEventListener("pointerdown", handlePointerDown);
+  }, []);
+
+  const onInputChange = (value: string) => {
+    setQuery(value);
+    setPlace(null);
+    setOpen(true);
+  };
+
+  const select = async (prediction: google.maps.places.AutocompletePrediction) => {
+    setOpen(false);
+    setPredictions([]);
+    const details = await getPlaceDetails(prediction.place_id, tokenRef.current ?? undefined);
+    tokenRef.current = null;
+    if (!details) {
+      toast.error("Couldn't load that address — try again or enter details manually.");
+      setQuery(prediction.description);
+      return;
+    }
+    const location = placeToRouteLocation(details);
+    setQuery(location.name || prediction.description);
+    setPlace(location);
+  };
+
+  const reset = () => {
+    setQuery("");
+    setPredictions([]);
+    setOpen(false);
+    setPlace(null);
+    tokenRef.current = null;
+  };
+
+  return { query, predictions, open, setOpen, place, wrapperRef, onInputChange, select, reset };
+}
+
 function todayInputValue(): string {
   const d = new Date();
   const yyyy = d.getFullYear();
@@ -78,15 +162,16 @@ export const Route = createFileRoute("/dashboard/mileage")({
 });
 
 /**
- * Writes a real document to the `routes` collection. From/To are Places
- * Autocomplete-backed (uncontrolled inputs -- Autocomplete mutates the
- * DOM value directly when a suggestion is picked, so controlled React
- * state would fight it) with driving distance and a Static Maps route
- * image calculated automatically once both are selected. Any failure
- * along that path (script load, no place selected, no route found) is
- * non-fatal: distance stays a normal editable field and the trip still
- * saves with plain-text names and no map, exactly like before this
- * feature existed.
+ * Writes a real document to the `routes` collection. From/To use a
+ * manually-rendered predictions list (see usePlaceAutocompleteField),
+ * not the google.maps.places.Autocomplete widget, since that widget's
+ * body-portaled dropdown fights Radix Dialog's focus trap. Driving
+ * distance and a Static Maps route image are calculated automatically
+ * once both ends resolve to a real place. Any failure along that path
+ * (script load, no place selected, no route found) is non-fatal:
+ * distance stays a normal editable field and the trip still saves with
+ * plain-text names and no map, exactly like before this feature
+ * existed.
  */
 function LogTripDialog({
   uid,
@@ -109,25 +194,21 @@ function LogTripDialog({
   const [saving, setSaving] = useState(false);
 
   const [mapsReady, setMapsReady] = useState(false);
-  const [fromPlace, setFromPlace] = useState<RouteLocation | null>(null);
-  const [toPlace, setToPlace] = useState<RouteLocation | null>(null);
   const [calculatingDistance, setCalculatingDistance] = useState(false);
   const [routeMapUrl, setRouteMapUrl] = useState("");
 
-  const fromInputRef = useRef<HTMLInputElement>(null);
-  const toInputRef = useRef<HTMLInputElement>(null);
+  const fromField = usePlaceAutocompleteField(mapsReady);
+  const toField = usePlaceAutocompleteField(mapsReady);
 
   const reset = () => {
     setPurpose("");
     setDistance("");
     setDate(todayInputValue());
     setRoundTrip(false);
-    setFromPlace(null);
-    setToPlace(null);
     setRouteMapUrl("");
     setCalculatingDistance(false);
-    if (fromInputRef.current) fromInputRef.current.value = "";
-    if (toInputRef.current) toInputRef.current.value = "";
+    fromField.reset();
+    toField.reset();
   };
 
   // Loads the Maps script only while the dialog is open (no reason to
@@ -150,37 +231,12 @@ function LogTripDialog({
     };
   }, [open]);
 
-  // Attaches Autocomplete once the script is ready and the dialog's
-  // inputs exist in the DOM (Radix unmounts DialogContent while closed,
-  // so this can't run until both open and mapsReady are true).
-  useEffect(() => {
-    if (!open || !mapsReady || !fromInputRef.current || !toInputRef.current) return;
-
-    const fields = ["address_components", "geometry", "name", "formatted_address"];
-    const fromAutocomplete = new google.maps.places.Autocomplete(fromInputRef.current, {
-      fields,
-    });
-    const toAutocomplete = new google.maps.places.Autocomplete(toInputRef.current, { fields });
-
-    fromAutocomplete.addListener("place_changed", () => {
-      setFromPlace(placeToRouteLocation(fromAutocomplete.getPlace()));
-    });
-    toAutocomplete.addListener("place_changed", () => {
-      setToPlace(placeToRouteLocation(toAutocomplete.getPlace()));
-    });
-
-    return () => {
-      google.maps.event.clearInstanceListeners(fromAutocomplete);
-      google.maps.event.clearInstanceListeners(toAutocomplete);
-    };
-  }, [open, mapsReady]);
-
   // Auto-calculates distance + route map the moment both ends resolve
   // to a real geocoded place. Never blocks: on any failure the distance
   // field just stays whatever the user last typed, editable as normal.
   useEffect(() => {
-    const origin = fromPlace?.location;
-    const destination = toPlace?.location;
+    const origin = fromField.place?.location;
+    const destination = toField.place?.location;
     if (!origin || !destination) return;
     let cancelled = false;
     setCalculatingDistance(true);
@@ -202,11 +258,11 @@ function LogTripDialog({
     return () => {
       cancelled = true;
     };
-  }, [fromPlace, toPlace, distanceUnit]);
+  }, [fromField.place, toField.place, distanceUnit]);
 
   const handleSave = async () => {
-    const fromName = fromInputRef.current?.value.trim() ?? "";
-    const toName = toInputRef.current?.value.trim() ?? "";
+    const fromName = fromField.query.trim();
+    const toName = toField.query.trim();
     const enteredDistance = parseFloat(distance);
     if (!purpose.trim() || !fromName || !toName || !enteredDistance || enteredDistance <= 0) {
       toast.error("Fill in purpose, both locations, and a valid distance.");
@@ -217,8 +273,8 @@ function LogTripDialog({
       return;
     }
     const tripDate = date ? new Date(`${date}T00:00:00`) : new Date();
-    const startRoute: RouteLocation = fromPlace ?? { ...EMPTY_LOCATION, name: fromName };
-    const endRoute: RouteLocation = toPlace ?? { ...EMPTY_LOCATION, name: toName };
+    const startRoute: RouteLocation = fromField.place ?? { ...EMPTY_LOCATION, name: fromName };
+    const endRoute: RouteLocation = toField.place ?? { ...EMPTY_LOCATION, name: toName };
     setSaving(true);
     try {
       await createTrip({
@@ -262,22 +318,7 @@ function LogTripDialog({
           Log trip
         </button>
       </DialogTrigger>
-      <DialogContent
-        className="sm:max-w-md"
-        onPointerDownOutside={(e) => {
-          // Google appends the Autocomplete suggestion dropdown to
-          // document.body, outside this DialogContent's own DOM subtree.
-          // Radix's dismissable layer treats a pointerdown there as an
-          // "outside" interaction and would otherwise close the dialog
-          // before the click ever reaches a .pac-item suggestion. Only
-          // suppress the dismiss for clicks actually inside the
-          // dropdown -- a genuine outside click (e.g. the overlay) still
-          // closes the dialog as normal.
-          if ((e.target as HTMLElement | null)?.closest(".pac-container")) {
-            e.preventDefault();
-          }
-        }}
-      >
+      <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>Log a trip</DialogTitle>
           <DialogDescription>
@@ -297,19 +338,67 @@ function LogTripDialog({
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-1.5">
               <label className="block text-xs font-medium text-black/55">From</label>
-              <input
-                ref={fromInputRef}
-                placeholder="Start typing an address…"
-                className="h-9 w-full rounded-xl border border-black/10 bg-white px-3 text-sm outline-none focus:border-black/25"
-              />
+              <div ref={fromField.wrapperRef} className="relative">
+                <input
+                  value={fromField.query}
+                  onChange={(e) => fromField.onInputChange(e.target.value)}
+                  onFocus={() => fromField.predictions.length > 0 && fromField.setOpen(true)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Escape" && fromField.open) {
+                      e.stopPropagation();
+                      fromField.setOpen(false);
+                    }
+                  }}
+                  placeholder="Start typing an address…"
+                  className="h-9 w-full rounded-xl border border-black/10 bg-white px-3 text-sm outline-none focus:border-black/25"
+                />
+                {fromField.open && fromField.predictions.length > 0 && (
+                  <div className="absolute z-10 mt-1 w-full overflow-hidden rounded-xl border border-black/10 bg-white shadow-lg">
+                    {fromField.predictions.map((p) => (
+                      <button
+                        key={p.place_id}
+                        type="button"
+                        onClick={() => fromField.select(p)}
+                        className="block w-full px-3 py-2 text-left text-sm text-black hover:bg-black/5"
+                      >
+                        {p.description}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
             <div className="space-y-1.5">
               <label className="block text-xs font-medium text-black/55">To</label>
-              <input
-                ref={toInputRef}
-                placeholder="Start typing an address…"
-                className="h-9 w-full rounded-xl border border-black/10 bg-white px-3 text-sm outline-none focus:border-black/25"
-              />
+              <div ref={toField.wrapperRef} className="relative">
+                <input
+                  value={toField.query}
+                  onChange={(e) => toField.onInputChange(e.target.value)}
+                  onFocus={() => toField.predictions.length > 0 && toField.setOpen(true)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Escape" && toField.open) {
+                      e.stopPropagation();
+                      toField.setOpen(false);
+                    }
+                  }}
+                  placeholder="Start typing an address…"
+                  className="h-9 w-full rounded-xl border border-black/10 bg-white px-3 text-sm outline-none focus:border-black/25"
+                />
+                {toField.open && toField.predictions.length > 0 && (
+                  <div className="absolute z-10 mt-1 w-full overflow-hidden rounded-xl border border-black/10 bg-white shadow-lg">
+                    {toField.predictions.map((p) => (
+                      <button
+                        key={p.place_id}
+                        type="button"
+                        onClick={() => toField.select(p)}
+                        className="block w-full px-3 py-2 text-left text-sm text-black hover:bg-black/5"
+                      >
+                        {p.description}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
           </div>
           <div className="grid grid-cols-2 gap-3">

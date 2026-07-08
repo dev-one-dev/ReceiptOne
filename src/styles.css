@@ -225,8 +225,3 @@ html { scroll-behavior: smooth; }
   h1, h2, h3 { break-after: avoid; }
   section { break-inside: avoid-page; }
 }
-
-/* Google Places Autocomplete's suggestion dropdown is appended to
-   document.body with its own default z-index, which can render behind
-   the Log Trip dialog's z-50 overlay. Pin it just above the dialog. */
-.pac-container { z-index: 60; }
