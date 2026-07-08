@@ -1,4 +1,13 @@
-import { collection, getDocs, orderBy, query, Timestamp, where } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  getDocs,
+  orderBy,
+  query,
+  serverTimestamp,
+  Timestamp,
+  where,
+} from "firebase/firestore";
 import { db } from "@/integrations/firebase/client";
 
 export type TaxListEntry = {
@@ -11,8 +20,9 @@ export type TaxListEntry = {
 /**
  * Mirrors the real `receipts` collection written by the mobile app --
  * field names kept as camelCase here, mapped from the Firestore
- * document's snake_case fields in `toReceipt` below. This is
- * read-only: nothing in this module writes to Firestore.
+ * document's snake_case fields in `toReceipt` below. Mostly read-only,
+ * except for `createReceipt` below, which is this app's second real
+ * Firestore write (after createTrip in trips.ts).
  */
 export type Receipt = {
   id: string;
@@ -86,4 +96,63 @@ export async function fetchReceipts(uid: string): Promise<Receipt[]> {
   );
   const snapshot = await getDocs(q);
   return snapshot.docs.map((doc) => toReceipt(doc.id, doc.data()));
+}
+
+export type NewReceiptInput = {
+  uid: string;
+  comment: string;
+  companyCategory: string;
+  companyName: string;
+  currency: string;
+  date: Date;
+  isPreTax: boolean;
+  paymentMethod: string;
+  price: number;
+  receiptFile: string;
+  receiptImage: string;
+  tax: number;
+  taxLists: TaxListEntry[];
+  typeOfTaxDeduction: string;
+};
+
+/**
+ * Creates a new document in `receipts`, matching the real mobile-app
+ * schema. created_by is the signed-in user's uid, matching the security
+ * rules' ownership check exactly, same as createTrip.
+ *
+ * Known, deliberate gaps (not filled here):
+ * - merchant_id: always "" -- there's no merchant-matching feature on
+ *   web (the `merchants` collection and its merchantIdAdd trigger are a
+ *   separate, unimplemented feature).
+ * - company_image: always "" -- Gemini's own extraction schema doesn't
+ *   return this field either (confirmed dead in the mobile source too).
+ * - is_reimbursable: always false, no UI toggle -- same precedent set
+ *   in createTrip (trips.ts), which also has no UI for this field.
+ */
+export async function createReceipt(input: NewReceiptInput): Promise<void> {
+  await addDoc(collection(db, "receipts"), {
+    comment: input.comment,
+    company_category: input.companyCategory,
+    company_image: "",
+    company_name: input.companyName,
+    created_at: serverTimestamp(),
+    created_by: input.uid,
+    currency: input.currency,
+    date: Timestamp.fromDate(input.date),
+    is_pre_tax: input.isPreTax,
+    is_reimbursable: false,
+    merchant_id: "",
+    payment_method: input.paymentMethod,
+    price: input.price,
+    receipt_file: input.receiptFile,
+    receipt_image: input.receiptImage,
+    tax: input.tax,
+    tax_lists: input.taxLists.map((t) => ({
+      is_refundable: t.isRefundable,
+      tax: t.tax,
+      tax_name: t.taxName,
+      tax_percent: t.taxPercent,
+    })),
+    type_of_tax_deduction: input.typeOfTaxDeduction,
+  });
 }

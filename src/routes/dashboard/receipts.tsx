@@ -16,8 +16,13 @@ import { ReceiptDetailDialog } from "@/components/dashboard/ReceiptDetailDialog"
 import { useDashboardContext } from "@/components/dashboard/DashboardContext";
 import { useAuth } from "@/integrations/firebase/auth-context";
 import { auth, functions, storage } from "@/integrations/firebase/client";
-import { fetchReceipts, type Receipt } from "@/integrations/firebase/receipts";
-import { fetchUserProfile } from "@/integrations/firebase/user-profile";
+import {
+  createReceipt,
+  fetchReceipts,
+  type Receipt,
+  type TaxListEntry,
+} from "@/integrations/firebase/receipts";
+import { fetchUserProfile, type UserProfile } from "@/integrations/firebase/user-profile";
 import { getReceiptCategories } from "@/integrations/receipt-parsing/categories";
 import { extractReceiptWithGemini } from "@/integrations/receipt-parsing/gemini";
 import { extractJsonFromText } from "@/integrations/receipt-parsing/extract-json";
@@ -209,31 +214,247 @@ function AllReceiptsTab() {
   );
 }
 
-// TODO(write-access): visual only -- no real upload/OCR pipeline behind
-// this yet. Revisit once Stage 4's read-only scope is done; see README's
-// "Known Limitations" section.
+type FileStatus = "uploading" | "ocr" | "parsing" | "review" | "saving" | "error";
+
+type FileCard = {
+  id: string;
+  file: File;
+  status: FileStatus;
+  errorMessage?: string;
+  downloadUrl?: string;
+  categories: string[];
+  isPreTax: boolean;
+  review?: ReviewForm;
+  taxRows?: ReviewTaxRow[];
+};
+
+const STATUS_LABELS: Record<FileStatus, string> = {
+  uploading: "Uploading…",
+  ocr: "Running OCR…",
+  parsing: "Parsing with AI…",
+  review: "Ready for review",
+  saving: "Saving…",
+  error: "Failed",
+};
+
+/**
+ * Runs one file through the full real pipeline: upload to Storage (the
+ * permanent users/{uid}/receipts/... path, not OCR Test's old diagnostic
+ * receipt-ocr-test/ path), OCR via the real getTextFromImage callable,
+ * then the same Gemini parsing pipeline from src/integrations/
+ * receipt-parsing/ that the old OCR Test tab used, unchanged. Skips
+ * re-uploading on retry if a downloadUrl already exists (upload
+ * succeeded, only OCR/parsing failed) -- each file's status updates
+ * independently, so failures never block or hide sibling files.
+ */
+async function processFileCard(
+  uid: string,
+  card: FileCard,
+  profile: UserProfile | null,
+  updateCard: (id: string, patch: Partial<FileCard>) => void,
+) {
+  try {
+    let downloadUrl = card.downloadUrl;
+    if (!downloadUrl) {
+      updateCard(card.id, { status: "uploading", errorMessage: undefined });
+      const path = `users/${uid}/receipts/${Date.now()}-${card.file.name}`;
+      const fileRef = storageRef(storage, path);
+      await uploadBytes(fileRef, card.file);
+      downloadUrl = await getDownloadURL(fileRef);
+      updateCard(card.id, { downloadUrl });
+    }
+
+    updateCard(card.id, { status: "ocr" });
+    const getTextFromImage = httpsCallable<
+      { downloadUrl: string },
+      { text: string; parsedItems: unknown[] }
+    >(functions, "getTextFromImage");
+    const ocrResult = await getTextFromImage({ downloadUrl });
+    const ocrText = ocrResult.data.text || "";
+
+    updateCard(card.id, { status: "parsing" });
+    const countryCode = profile?.countryCode || "us";
+    const cats = getReceiptCategories(countryCode);
+    const rawResponseText = await extractReceiptWithGemini(ocrText, cats, downloadUrl);
+    const rawJson = extractJsonFromText(rawResponseText);
+    const parsed = parseReceiptFromJson(
+      rawJson,
+      rawResponseText,
+      profile?.stateCountry ?? "",
+      profile?.stateState ?? "",
+    );
+    const { taxList, tax } = applyTaxListUpdate(parsed, profile?.taxList ?? []);
+
+    updateCard(card.id, {
+      status: "review",
+      categories: cats,
+      isPreTax: parsed.isPreTax,
+      review: {
+        merchantName: parsed.merchantName ?? "",
+        merchantCategory: parsed.merchantCategory ?? cats[0] ?? "",
+        date: parsed.date ? toDateInputValue(parsed.date) : "",
+        price: parsed.price.toFixed(2),
+        tax: tax.toFixed(2),
+        paymentMethod: parsed.paymentMethod,
+        typeOfTaxDeduction: parsed.typeOfTaxDeduction,
+        comment: parsed.comment ?? "",
+      },
+      taxRows: taxList.map((t) => ({
+        taxName: t.taxName,
+        taxPercent: t.taxPercent.toFixed(2),
+        tax: t.tax.toFixed(2),
+        isRefundable: t.isRefundable,
+      })),
+    });
+  } catch (e) {
+    updateCard(card.id, {
+      status: "error",
+      errorMessage: errorMessage(e, "Something went wrong processing this file."),
+    });
+  }
+}
+
+/**
+ * Real multi-file receipt pipeline (Phase 3) -- replaces the old
+ * visual-only mock and absorbs the OCR Test tab's diagnostic flow.
+ * Each dropped/picked file gets its own card and its own independent
+ * processing run (not awaited in sequence, so file 2 never waits on
+ * file 1); user profile + tax settings are fetched once per tab session
+ * and shared across every file's pipeline run rather than refetched per
+ * file. Saving calls createReceipt() with that card's current
+ * (possibly edited) fields and removes the card on success -- the
+ * receipt then shows up in All Receipts automatically since that tab
+ * already reads live Firestore data.
+ */
 function BulkUploadTab() {
+  const { user } = useAuth();
+  const uid = user?.uid ?? auth.currentUser?.uid ?? null;
+
   const [dragging, setDragging] = useState(false);
-  const [pending, setPending] = useState<string[]>([]);
+  const [cards, setCards] = useState<FileCard[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const [profile, setProfile] = useState<UserProfile | null>(null);
+  // No per-account currency setting exists yet -- same precedent as
+  // trips.ts/mileage.tsx (trips[0]?.currency ?? "USD"): use an existing
+  // receipt's currency if the user has any, else fall back by country.
+  const [defaultCurrency, setDefaultCurrency] = useState("USD");
+
+  useEffect(() => {
+    if (!uid) return;
+    let cancelled = false;
+    Promise.all([fetchUserProfile(uid), fetchReceipts(uid)])
+      .then(([p, receipts]) => {
+        if (cancelled) return;
+        setProfile(p);
+        setDefaultCurrency(
+          receipts[0]?.currency ?? (p?.countryCode?.toLowerCase() === "ca" ? "CAD" : "USD"),
+        );
+      })
+      .catch(() => {
+        // Non-fatal -- falls back to US categories, no province
+        // disambiguation, no user tax settings, and USD for this
+        // session if this fails.
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [uid]);
+
+  const updateCard = (id: string, patch: Partial<FileCard>) => {
+    setCards((prev) => prev.map((c) => (c.id === id ? { ...c, ...patch } : c)));
+  };
+
+  const removeCard = (id: string) => {
+    setCards((prev) => prev.filter((c) => c.id !== id));
+  };
 
   const addFiles = (files: FileList | null) => {
     if (!files || files.length === 0) return;
-    setPending((prev) => [...prev, ...Array.from(files).map((f) => f.name)]);
+    if (!uid) {
+      toast.error("You need to be signed in to upload receipts.");
+      return;
+    }
+    const newCards: FileCard[] = Array.from(files).map((file) => ({
+      id: `${Date.now()}-${Math.random().toString(36).slice(2)}-${file.name}`,
+      file,
+      status: "uploading",
+      categories: [],
+      isPreTax: false,
+    }));
+    setCards((prev) => [...prev, ...newCards]);
+    for (const card of newCards) {
+      void processFileCard(uid, card, profile, updateCard);
+    }
   };
 
-  const removeFile = (name: string) => {
-    setPending((prev) => prev.filter((f) => f !== name));
+  const retryCard = (card: FileCard) => {
+    if (!uid) return;
+    void processFileCard(uid, card, profile, updateCard);
   };
 
-  const handleUpload = () => {
-    if (pending.length === 0) return;
-    toast.info("Bulk upload isn't wired up yet — this is a static mockup.");
-    setPending([]);
+  const handleSave = async (card: FileCard) => {
+    if (!uid || !card.review) return;
+    updateCard(card.id, { status: "saving" });
+    try {
+      const taxLists: TaxListEntry[] = (card.taxRows ?? []).map((r) => ({
+        taxName: r.taxName,
+        tax: parseFloat(r.tax) || 0,
+        taxPercent: parseFloat(r.taxPercent) || 0,
+        isRefundable: r.isRefundable,
+      }));
+      await createReceipt({
+        uid,
+        comment: card.review.comment,
+        companyCategory: card.review.merchantCategory,
+        companyName: card.review.merchantName,
+        currency: defaultCurrency,
+        date: card.review.date ? new Date(`${card.review.date}T00:00:00`) : new Date(),
+        isPreTax: card.isPreTax,
+        paymentMethod: card.review.paymentMethod,
+        price: parseFloat(card.review.price) || 0,
+        receiptFile: card.downloadUrl ?? "",
+        receiptImage: card.downloadUrl ?? "",
+        tax: parseFloat(card.review.tax) || 0,
+        taxLists,
+        typeOfTaxDeduction: card.review.typeOfTaxDeduction,
+      });
+      toast.success(`Saved ${card.file.name}.`);
+      removeCard(card.id);
+    } catch (e) {
+      updateCard(card.id, {
+        status: "error",
+        errorMessage: errorMessage(e, "Couldn't save this receipt."),
+      });
+    }
+  };
+
+  const updateReviewField = (card: FileCard, patch: Partial<ReviewForm>) => {
+    if (!card.review) return;
+    updateCard(card.id, { review: { ...card.review, ...patch } });
+  };
+
+  const updateTaxRow = (card: FileCard, index: number, patch: Partial<ReviewTaxRow>) => {
+    const rows = card.taxRows ?? [];
+    updateCard(card.id, {
+      taxRows: rows.map((row, i) => (i === index ? { ...row, ...patch } : row)),
+    });
+  };
+
+  const removeTaxRow = (card: FileCard, index: number) => {
+    const rows = card.taxRows ?? [];
+    updateCard(card.id, { taxRows: rows.filter((_, i) => i !== index) });
+  };
+
+  const addTaxRow = (card: FileCard) => {
+    const rows = card.taxRows ?? [];
+    updateCard(card.id, {
+      taxRows: [...rows, { taxName: "Tax", taxPercent: "0.00", tax: "0.00", isRefundable: false }],
+    });
   };
 
   return (
-    <div className="mt-5">
+    <div className="mt-5 space-y-4">
       <div
         onDragOver={(e) => {
           e.preventDefault();
@@ -271,412 +492,235 @@ function BulkUploadTab() {
           multiple
           accept="image/*,.pdf"
           className="hidden"
-          onChange={(e) => addFiles(e.target.files)}
+          onChange={(e) => {
+            addFiles(e.target.files);
+            e.target.value = "";
+          }}
         />
       </div>
 
-      {pending.length > 0 && (
-        <div className="mt-4 rounded-2xl border border-black/[0.07] bg-white p-4 shadow-[0_2px_12px_rgba(0,0,0,0.06)]">
-          <p className="text-xs font-medium text-black/55">
-            {pending.length} file{pending.length === 1 ? "" : "s"} ready to upload
-          </p>
-          <ul className="mt-2 space-y-1.5">
-            {pending.map((name) => (
-              <li
-                key={name}
-                className="flex items-center justify-between rounded-lg bg-black/[0.03] px-3 py-2 text-sm text-black"
+      {cards.map((card) => (
+        <div
+          key={card.id}
+          className="rounded-2xl border border-black/[0.07] bg-white p-5 shadow-[0_2px_12px_rgba(0,0,0,0.06)]"
+        >
+          <div className="flex items-center justify-between gap-3">
+            <div className="min-w-0">
+              <p className="truncate text-sm font-semibold text-black">{card.file.name}</p>
+              <p
+                className={[
+                  "mt-0.5 text-xs",
+                  card.status === "error" ? "text-red-600" : "text-black/50",
+                ].join(" ")}
               >
-                <span className="truncate">{name}</span>
-                <button
-                  type="button"
-                  onClick={() => removeFile(name)}
-                  className="ml-2 rounded-full p-1 text-black/40 transition-colors hover:bg-black/5 hover:text-black"
-                  aria-label={`Remove ${name}`}
-                >
-                  <X className="size-3.5" aria-hidden />
-                </button>
-              </li>
-            ))}
-          </ul>
-          <button
-            type="button"
-            onClick={handleUpload}
-            className="mt-3 inline-flex items-center justify-center gap-2 rounded-full bg-black px-5 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90"
-          >
-            Upload {pending.length} file{pending.length === 1 ? "" : "s"}
-          </button>
-        </div>
-      )}
-    </div>
-  );
-}
-
-/**
- * Phase 1+2 OCR/AI diagnostic. Phase 1: upload to Storage, get its
- * download URL, call the real getTextFromImage callable with that URL
- * (never raw file bytes -- the function's contract is { downloadUrl },
- * per the deployed Cloud Function source). Phase 2: send that OCR text
- * + the same image to Gemini via Vertex AI, parse the response using
- * the ported mobile business logic (src/integrations/receipt-parsing/),
- * and show the result in an editable review form. Deliberately separate
- * from Bulk Upload above, which is still a polished-looking mock for a
- * different, multi-file flow -- this stays visibly a diagnostic so it's
- * not mistaken for a finished feature. Still no Firestore write of any
- * kind -- Phase 3.
- */
-function OcrTestTab() {
-  const { user } = useAuth();
-  const uid = user?.uid ?? auth.currentUser?.uid ?? null;
-  const inputRef = useRef<HTMLInputElement>(null);
-
-  const [processing, setProcessing] = useState(false);
-  const [fileName, setFileName] = useState("");
-  const [resultText, setResultText] = useState("");
-  const [downloadUrl, setDownloadUrl] = useState("");
-
-  const [parsing, setParsing] = useState(false);
-  const [parseError, setParseError] = useState<string | null>(null);
-  const [categories, setCategories] = useState<string[]>([]);
-  const [review, setReview] = useState<ReviewForm | null>(null);
-  const [taxRows, setTaxRows] = useState<ReviewTaxRow[]>([]);
-
-  const handleFile = async (file: File | undefined) => {
-    if (!file) return;
-    if (!uid) {
-      toast.error("You need to be signed in to test this.");
-      return;
-    }
-    setProcessing(true);
-    setResultText("");
-    setDownloadUrl("");
-    setReview(null);
-    setParseError(null);
-    setFileName(file.name);
-    try {
-      // Storage rules only allow writes under /users/{uid}/... by the
-      // matching uid -- this path satisfies that exactly.
-      const path = `users/${uid}/receipt-ocr-test/${Date.now()}-${file.name}`;
-      const fileRef = storageRef(storage, path);
-      await uploadBytes(fileRef, file);
-      const url = await getDownloadURL(fileRef);
-      setDownloadUrl(url);
-
-      const getTextFromImage = httpsCallable<
-        { downloadUrl: string },
-        { text: string; parsedItems: unknown[] }
-      >(functions, "getTextFromImage");
-      const result = await getTextFromImage({ downloadUrl: url });
-      setResultText(result.data.text || "(empty response)");
-      toast.success("OCR completed.");
-    } catch (e) {
-      toast.error(errorMessage(e, "Upload or OCR failed."));
-    } finally {
-      setProcessing(false);
-    }
-  };
-
-  const handleParse = async () => {
-    if (!uid || !downloadUrl || !resultText) return;
-    setParsing(true);
-    setParseError(null);
-    try {
-      const profile = await fetchUserProfile(uid);
-      const countryCode = profile?.countryCode || "us";
-      const cats = getReceiptCategories(countryCode);
-      setCategories(cats);
-
-      const rawResponseText = await extractReceiptWithGemini(resultText, cats, downloadUrl);
-      const rawJson = extractJsonFromText(rawResponseText);
-      const parsed = parseReceiptFromJson(
-        rawJson,
-        rawResponseText,
-        profile?.stateCountry ?? "",
-        profile?.stateState ?? "",
-      );
-      const { taxList, tax } = applyTaxListUpdate(parsed, profile?.taxList ?? []);
-
-      setReview({
-        merchantName: parsed.merchantName ?? "",
-        merchantCategory: parsed.merchantCategory ?? cats[0] ?? "",
-        date: parsed.date ? toDateInputValue(parsed.date) : "",
-        price: parsed.price.toFixed(2),
-        tax: tax.toFixed(2),
-        paymentMethod: parsed.paymentMethod,
-        typeOfTaxDeduction: parsed.typeOfTaxDeduction,
-        comment: parsed.comment ?? "",
-      });
-      setTaxRows(
-        taxList.map((t) => ({
-          taxName: t.taxName,
-          taxPercent: t.taxPercent.toFixed(2),
-          tax: t.tax.toFixed(2),
-          isRefundable: t.isRefundable,
-        })),
-      );
-      toast.success("Parsed with AI.");
-    } catch (e) {
-      setParseError(errorMessage(e, "Couldn't parse the AI response."));
-    } finally {
-      setParsing(false);
-    }
-  };
-
-  const updateTaxRow = (index: number, patch: Partial<ReviewTaxRow>) => {
-    setTaxRows((prev) => prev.map((row, i) => (i === index ? { ...row, ...patch } : row)));
-  };
-
-  const removeTaxRow = (index: number) => {
-    setTaxRows((prev) => prev.filter((_, i) => i !== index));
-  };
-
-  const addTaxRow = () => {
-    setTaxRows((prev) => [
-      ...prev,
-      { taxName: "Tax", taxPercent: "0.00", tax: "0.00", isRefundable: false },
-    ]);
-  };
-
-  return (
-    <div className="mt-5 space-y-4">
-      <div className="rounded-2xl border border-black/[0.07] bg-white p-5 shadow-[0_2px_12px_rgba(0,0,0,0.06)]">
-        <p className="text-sm font-semibold text-black">OCR + AI parsing test (diagnostic)</p>
-        <p className="mt-1 text-xs text-black/50">
-          Uploads a single file to Storage, runs OCR, then sends the text + image to Gemini to
-          extract structured fields. Nothing here is saved to your receipts yet.
-        </p>
-        <div className="mt-4 flex items-center gap-3">
-          <button
-            type="button"
-            onClick={() => inputRef.current?.click()}
-            disabled={processing}
-            className="inline-flex items-center gap-2 rounded-full bg-black px-4 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
-          >
-            <UploadCloud className="size-4" aria-hidden />
-            {processing ? "Processing…" : "Choose file"}
-          </button>
-          {fileName && <span className="truncate text-xs text-black/50">{fileName}</span>}
-          <input
-            ref={inputRef}
-            type="file"
-            accept="image/*,.pdf"
-            className="hidden"
-            onChange={(e) => {
-              const file = e.target.files?.[0];
-              e.target.value = "";
-              void handleFile(file);
-            }}
-          />
-        </div>
-      </div>
-
-      {(processing || resultText) && (
-        <div className="rounded-2xl border border-black/[0.07] bg-white p-5 shadow-[0_2px_12px_rgba(0,0,0,0.06)]">
-          <p className="text-xs font-medium text-black/55">Raw OCR text</p>
-          {processing ? (
-            <p className="mt-2 text-sm text-black/45">Uploading and running OCR…</p>
-          ) : (
-            <pre className="mt-2 max-h-96 overflow-auto whitespace-pre-wrap rounded-xl bg-black/[0.03] p-3 text-xs text-black/80">
-              {resultText}
-            </pre>
-          )}
-        </div>
-      )}
-
-      {resultText && !processing && !review && (
-        <div className="rounded-2xl border border-black/[0.07] bg-white p-5 shadow-[0_2px_12px_rgba(0,0,0,0.06)]">
-          <button
-            type="button"
-            onClick={() => void handleParse()}
-            disabled={parsing}
-            className="inline-flex items-center gap-2 rounded-full bg-black px-4 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
-          >
-            {parsing ? "Parsing with AI…" : "Parse with AI"}
-          </button>
-          {parseError && <p className="mt-2 text-sm text-red-600">{parseError}</p>}
-        </div>
-      )}
-
-      {review && (
-        <div className="rounded-2xl border border-black/[0.07] bg-white p-5 shadow-[0_2px_12px_rgba(0,0,0,0.06)]">
-          <p className="text-sm font-semibold text-black">Review (editable, not saved yet)</p>
-          <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
-            <div className="space-y-1.5">
-              <label className="block text-xs font-medium text-black/55">Merchant name</label>
-              <input
-                value={review.merchantName}
-                onChange={(e) => setReview({ ...review, merchantName: e.target.value })}
-                className="h-9 w-full rounded-xl border border-black/10 bg-white px-3 text-sm outline-none focus:border-black/25"
-              />
-            </div>
-            <div className="space-y-1.5">
-              <label className="block text-xs font-medium text-black/55">Category</label>
-              <select
-                value={review.merchantCategory}
-                onChange={(e) => setReview({ ...review, merchantCategory: e.target.value })}
-                className="h-9 w-full rounded-xl border border-black/10 bg-white px-3 text-sm outline-none focus:border-black/25"
-              >
-                {categories.map((c) => (
-                  <option key={c} value={c}>
-                    {c}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="space-y-1.5">
-              <label className="block text-xs font-medium text-black/55">Date</label>
-              <input
-                type="date"
-                value={review.date}
-                onChange={(e) => setReview({ ...review, date: e.target.value })}
-                className="h-9 w-full appearance-none rounded-xl border border-black/10 bg-white px-3 text-sm outline-none focus:border-black/25"
-              />
-            </div>
-            <div className="space-y-1.5">
-              <label className="block text-xs font-medium text-black/55">Price</label>
-              <input
-                value={review.price}
-                onChange={(e) => setReview({ ...review, price: e.target.value })}
-                inputMode="decimal"
-                className="h-9 w-full rounded-xl border border-black/10 bg-white px-3 text-sm outline-none focus:border-black/25"
-              />
-            </div>
-            <div className="space-y-1.5">
-              <label className="block text-xs font-medium text-black/55">Tax (total)</label>
-              <input
-                value={review.tax}
-                onChange={(e) => setReview({ ...review, tax: e.target.value })}
-                inputMode="decimal"
-                className="h-9 w-full rounded-xl border border-black/10 bg-white px-3 text-sm outline-none focus:border-black/25"
-              />
-            </div>
-            <div className="space-y-1.5">
-              <label className="block text-xs font-medium text-black/55">Payment method</label>
-              <select
-                value={review.paymentMethod}
-                onChange={(e) =>
-                  setReview({ ...review, paymentMethod: e.target.value as "Cash" | "Card" })
-                }
-                className="h-9 w-full rounded-xl border border-black/10 bg-white px-3 text-sm outline-none focus:border-black/25"
-              >
-                <option value="Cash">Cash</option>
-                <option value="Card">Card</option>
-              </select>
-            </div>
-            <div className="space-y-1.5">
-              <label className="block text-xs font-medium text-black/55">
-                Business or personal
-              </label>
-              <select
-                value={review.typeOfTaxDeduction}
-                onChange={(e) =>
-                  setReview({
-                    ...review,
-                    typeOfTaxDeduction: e.target.value as "Business" | "Personal",
-                  })
-                }
-                className="h-9 w-full rounded-xl border border-black/10 bg-white px-3 text-sm outline-none focus:border-black/25"
-              >
-                <option value="Business">Business</option>
-                <option value="Personal">Personal</option>
-              </select>
-            </div>
-            <div className="space-y-1.5 sm:col-span-2">
-              <label className="block text-xs font-medium text-black/55">Comment</label>
-              <input
-                value={review.comment}
-                onChange={(e) => setReview({ ...review, comment: e.target.value })}
-                className="h-9 w-full rounded-xl border border-black/10 bg-white px-3 text-sm outline-none focus:border-black/25"
-              />
-            </div>
-          </div>
-
-          <div className="mt-4">
-            <p className="text-xs font-medium text-black/55">Tax breakdown</p>
-            <div className="mt-2 overflow-hidden rounded-xl border border-black/[0.07]">
-              <table className="w-full border-collapse text-left text-xs">
-                <thead>
-                  <tr className="text-black/45">
-                    <th className="px-3 py-2 font-medium">Name</th>
-                    <th className="px-3 py-2 font-medium">Percent</th>
-                    <th className="px-3 py-2 font-medium">Amount</th>
-                    <th className="px-3 py-2 font-medium">Refundable</th>
-                    <th className="px-3 py-2" />
-                  </tr>
-                </thead>
-                <tbody>
-                  {taxRows.map((row, i) => (
-                    <tr key={i} className="border-t border-black/[0.05]">
-                      <td className="px-3 py-2">
-                        <input
-                          value={row.taxName}
-                          onChange={(e) => updateTaxRow(i, { taxName: e.target.value })}
-                          className="h-8 w-full rounded-lg border border-black/10 bg-white px-2 text-xs outline-none focus:border-black/25"
-                        />
-                      </td>
-                      <td className="px-3 py-2">
-                        <input
-                          value={row.taxPercent}
-                          onChange={(e) => updateTaxRow(i, { taxPercent: e.target.value })}
-                          inputMode="decimal"
-                          className="h-8 w-20 rounded-lg border border-black/10 bg-white px-2 text-xs outline-none focus:border-black/25"
-                        />
-                      </td>
-                      <td className="px-3 py-2">
-                        <input
-                          value={row.tax}
-                          onChange={(e) => updateTaxRow(i, { tax: e.target.value })}
-                          inputMode="decimal"
-                          className="h-8 w-24 rounded-lg border border-black/10 bg-white px-2 text-xs outline-none focus:border-black/25"
-                        />
-                      </td>
-                      <td className="px-3 py-2">
-                        <input
-                          type="checkbox"
-                          checked={row.isRefundable}
-                          onChange={(e) => updateTaxRow(i, { isRefundable: e.target.checked })}
-                          className="size-3.5 rounded border-black/20"
-                        />
-                      </td>
-                      <td className="px-3 py-2 text-right">
-                        <button
-                          type="button"
-                          onClick={() => removeTaxRow(i)}
-                          aria-label="Remove tax row"
-                          className="text-black/40 transition-colors hover:text-black"
-                        >
-                          <X className="size-3.5" aria-hidden />
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                  {taxRows.length === 0 && (
-                    <tr>
-                      <td colSpan={5} className="px-3 py-4 text-center text-black/40">
-                        No tax breakdown
-                      </td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
+                {card.status === "error" ? card.errorMessage : STATUS_LABELS[card.status]}
+              </p>
             </div>
             <button
               type="button"
-              onClick={addTaxRow}
-              className="mt-2 text-xs font-medium text-black/55 transition-colors hover:text-black"
+              onClick={() => removeCard(card.id)}
+              aria-label={`Remove ${card.file.name}`}
+              className="shrink-0 rounded-full p-1.5 text-black/40 transition-colors hover:bg-black/5 hover:text-black"
             >
-              + Add tax row
+              <X className="size-3.5" aria-hidden />
             </button>
           </div>
 
-          <button
-            type="button"
-            onClick={() => toast.info("Saving isn't wired up yet — that's Phase 3.")}
-            className="mt-4 inline-flex items-center justify-center gap-2 rounded-full bg-black px-5 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90"
-          >
-            Looks good
-          </button>
+          {card.status === "error" && (
+            <button
+              type="button"
+              onClick={() => retryCard(card)}
+              className="mt-3 inline-flex items-center gap-2 rounded-full bg-black px-4 py-2 text-xs font-semibold text-white transition-opacity hover:opacity-90"
+            >
+              Retry
+            </button>
+          )}
+
+          {card.status === "review" && card.review && (
+            <div className="mt-4">
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-medium text-black/55">Merchant name</label>
+                  <input
+                    value={card.review.merchantName}
+                    onChange={(e) => updateReviewField(card, { merchantName: e.target.value })}
+                    className="h-9 w-full rounded-xl border border-black/10 bg-white px-3 text-sm outline-none focus:border-black/25"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-medium text-black/55">Category</label>
+                  <select
+                    value={card.review.merchantCategory}
+                    onChange={(e) => updateReviewField(card, { merchantCategory: e.target.value })}
+                    className="h-9 w-full rounded-xl border border-black/10 bg-white px-3 text-sm outline-none focus:border-black/25"
+                  >
+                    {card.categories.map((c) => (
+                      <option key={c} value={c}>
+                        {c}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-medium text-black/55">Date</label>
+                  <input
+                    type="date"
+                    value={card.review.date}
+                    onChange={(e) => updateReviewField(card, { date: e.target.value })}
+                    className="h-9 w-full appearance-none rounded-xl border border-black/10 bg-white px-3 text-sm outline-none focus:border-black/25"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-medium text-black/55">Price</label>
+                  <input
+                    value={card.review.price}
+                    onChange={(e) => updateReviewField(card, { price: e.target.value })}
+                    inputMode="decimal"
+                    className="h-9 w-full rounded-xl border border-black/10 bg-white px-3 text-sm outline-none focus:border-black/25"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-medium text-black/55">Tax (total)</label>
+                  <input
+                    value={card.review.tax}
+                    onChange={(e) => updateReviewField(card, { tax: e.target.value })}
+                    inputMode="decimal"
+                    className="h-9 w-full rounded-xl border border-black/10 bg-white px-3 text-sm outline-none focus:border-black/25"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-medium text-black/55">Payment method</label>
+                  <select
+                    value={card.review.paymentMethod}
+                    onChange={(e) =>
+                      updateReviewField(card, { paymentMethod: e.target.value as "Cash" | "Card" })
+                    }
+                    className="h-9 w-full rounded-xl border border-black/10 bg-white px-3 text-sm outline-none focus:border-black/25"
+                  >
+                    <option value="Cash">Cash</option>
+                    <option value="Card">Card</option>
+                  </select>
+                </div>
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-medium text-black/55">
+                    Business or personal
+                  </label>
+                  <select
+                    value={card.review.typeOfTaxDeduction}
+                    onChange={(e) =>
+                      updateReviewField(card, {
+                        typeOfTaxDeduction: e.target.value as "Business" | "Personal",
+                      })
+                    }
+                    className="h-9 w-full rounded-xl border border-black/10 bg-white px-3 text-sm outline-none focus:border-black/25"
+                  >
+                    <option value="Business">Business</option>
+                    <option value="Personal">Personal</option>
+                  </select>
+                </div>
+                <div className="space-y-1.5 sm:col-span-2">
+                  <label className="block text-xs font-medium text-black/55">Comment</label>
+                  <input
+                    value={card.review.comment}
+                    onChange={(e) => updateReviewField(card, { comment: e.target.value })}
+                    className="h-9 w-full rounded-xl border border-black/10 bg-white px-3 text-sm outline-none focus:border-black/25"
+                  />
+                </div>
+              </div>
+
+              <div className="mt-4">
+                <p className="text-xs font-medium text-black/55">Tax breakdown</p>
+                <div className="mt-2 overflow-hidden rounded-xl border border-black/[0.07]">
+                  <table className="w-full border-collapse text-left text-xs">
+                    <thead>
+                      <tr className="text-black/45">
+                        <th className="px-3 py-2 font-medium">Name</th>
+                        <th className="px-3 py-2 font-medium">Percent</th>
+                        <th className="px-3 py-2 font-medium">Amount</th>
+                        <th className="px-3 py-2 font-medium">Refundable</th>
+                        <th className="px-3 py-2" />
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {(card.taxRows ?? []).map((row, i) => (
+                        <tr key={i} className="border-t border-black/[0.05]">
+                          <td className="px-3 py-2">
+                            <input
+                              value={row.taxName}
+                              onChange={(e) => updateTaxRow(card, i, { taxName: e.target.value })}
+                              className="h-8 w-full rounded-lg border border-black/10 bg-white px-2 text-xs outline-none focus:border-black/25"
+                            />
+                          </td>
+                          <td className="px-3 py-2">
+                            <input
+                              value={row.taxPercent}
+                              onChange={(e) =>
+                                updateTaxRow(card, i, { taxPercent: e.target.value })
+                              }
+                              inputMode="decimal"
+                              className="h-8 w-20 rounded-lg border border-black/10 bg-white px-2 text-xs outline-none focus:border-black/25"
+                            />
+                          </td>
+                          <td className="px-3 py-2">
+                            <input
+                              value={row.tax}
+                              onChange={(e) => updateTaxRow(card, i, { tax: e.target.value })}
+                              inputMode="decimal"
+                              className="h-8 w-24 rounded-lg border border-black/10 bg-white px-2 text-xs outline-none focus:border-black/25"
+                            />
+                          </td>
+                          <td className="px-3 py-2">
+                            <input
+                              type="checkbox"
+                              checked={row.isRefundable}
+                              onChange={(e) =>
+                                updateTaxRow(card, i, { isRefundable: e.target.checked })
+                              }
+                              className="size-3.5 rounded border-black/20"
+                            />
+                          </td>
+                          <td className="px-3 py-2 text-right">
+                            <button
+                              type="button"
+                              onClick={() => removeTaxRow(card, i)}
+                              aria-label="Remove tax row"
+                              className="text-black/40 transition-colors hover:text-black"
+                            >
+                              <X className="size-3.5" aria-hidden />
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                      {(card.taxRows ?? []).length === 0 && (
+                        <tr>
+                          <td colSpan={5} className="px-3 py-4 text-center text-black/40">
+                            No tax breakdown
+                          </td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => addTaxRow(card)}
+                  className="mt-2 text-xs font-medium text-black/55 transition-colors hover:text-black"
+                >
+                  + Add tax row
+                </button>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => void handleSave(card)}
+                className="mt-4 inline-flex items-center justify-center gap-2 rounded-full bg-black px-5 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90"
+              >
+                Save receipt
+              </button>
+            </div>
+          )}
         </div>
-      )}
+      ))}
     </div>
   );
 }
@@ -705,21 +749,12 @@ function ReceiptsPage() {
           >
             Bulk Upload
           </TabsTrigger>
-          <TabsTrigger
-            value="ocr-test"
-            className="rounded-lg px-3 text-sm font-medium text-black/55 data-[state=active]:bg-white data-[state=active]:text-black data-[state=active]:shadow-[0_1px_4px_rgba(0,0,0,0.08)]"
-          >
-            OCR Test
-          </TabsTrigger>
         </TabsList>
         <TabsContent value="all">
           <AllReceiptsTab />
         </TabsContent>
         <TabsContent value="bulk">
           <BulkUploadTab />
-        </TabsContent>
-        <TabsContent value="ocr-test">
-          <OcrTestTab />
         </TabsContent>
       </Tabs>
     </div>
