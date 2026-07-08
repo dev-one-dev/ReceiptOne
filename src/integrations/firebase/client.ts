@@ -1,6 +1,8 @@
 import { getApps, initializeApp, type FirebaseOptions } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
+import { getFunctions } from "firebase/functions";
 
 // Adds a Web client to the existing "check-app" Firebase project used by
 // the mobile apps -- this must never touch the Android/iOS app configs,
@@ -47,3 +49,5 @@ function getFirebaseConfig(): FirebaseOptions {
 export const firebaseApp = getApps().length > 0 ? getApps()[0] : initializeApp(getFirebaseConfig());
 export const auth = getAuth(firebaseApp);
 export const db = getFirestore(firebaseApp);
+export const storage = getStorage(firebaseApp);
+export const functions = getFunctions(firebaseApp);

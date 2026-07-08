@@ -2,6 +2,8 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { Search, UploadCloud, X } from "lucide-react";
 import { toast } from "sonner";
+import { httpsCallable } from "firebase/functions";
+import { getDownloadURL, ref as storageRef, uploadBytes } from "firebase/storage";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Select,
@@ -13,7 +15,7 @@ import {
 import { ReceiptDetailDialog } from "@/components/dashboard/ReceiptDetailDialog";
 import { useDashboardContext } from "@/components/dashboard/DashboardContext";
 import { useAuth } from "@/integrations/firebase/auth-context";
-import { auth } from "@/integrations/firebase/client";
+import { auth, functions, storage } from "@/integrations/firebase/client";
 import { fetchReceipts, type Receipt } from "@/integrations/firebase/receipts";
 import { formatCurrency, formatDate } from "@/lib/dashboard-format";
 import { errorMessage } from "@/lib/utils";
@@ -283,6 +285,108 @@ function BulkUploadTab() {
   );
 }
 
+/**
+ * Phase 1 OCR diagnostic -- proves the real end-to-end pipeline works
+ * from the web: upload to Storage, get its download URL, call the real
+ * getTextFromImage callable with that URL (never raw file bytes -- the
+ * function's contract is { downloadUrl }, per the deployed Cloud
+ * Function source). Deliberately separate from Bulk Upload above, which
+ * is still a polished-looking mock for a different, multi-file flow --
+ * this stays visibly a diagnostic so it's not mistaken for a finished
+ * feature. Does not touch the receipts collection, does not parse the
+ * OCR text into structured fields, and does not call any AI parsing --
+ * that's later phases.
+ */
+function OcrTestTab() {
+  const { user } = useAuth();
+  const uid = user?.uid ?? auth.currentUser?.uid ?? null;
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const [processing, setProcessing] = useState(false);
+  const [fileName, setFileName] = useState("");
+  const [resultText, setResultText] = useState("");
+
+  const handleFile = async (file: File | undefined) => {
+    if (!file) return;
+    if (!uid) {
+      toast.error("You need to be signed in to test this.");
+      return;
+    }
+    setProcessing(true);
+    setResultText("");
+    setFileName(file.name);
+    try {
+      // Storage rules only allow writes under /users/{uid}/... by the
+      // matching uid -- this path satisfies that exactly.
+      const path = `users/${uid}/receipt-ocr-test/${Date.now()}-${file.name}`;
+      const fileRef = storageRef(storage, path);
+      await uploadBytes(fileRef, file);
+      const downloadUrl = await getDownloadURL(fileRef);
+
+      const getTextFromImage = httpsCallable<
+        { downloadUrl: string },
+        { text: string; parsedItems: unknown[] }
+      >(functions, "getTextFromImage");
+      const result = await getTextFromImage({ downloadUrl });
+      setResultText(result.data.text || "(empty response)");
+      toast.success("OCR completed.");
+    } catch (e) {
+      toast.error(errorMessage(e, "Upload or OCR failed."));
+    } finally {
+      setProcessing(false);
+    }
+  };
+
+  return (
+    <div className="mt-5 space-y-4">
+      <div className="rounded-2xl border border-black/[0.07] bg-white p-5 shadow-[0_2px_12px_rgba(0,0,0,0.06)]">
+        <p className="text-sm font-semibold text-black">OCR test (diagnostic)</p>
+        <p className="mt-1 text-xs text-black/50">
+          Uploads a single file to Storage, then calls the real OCR function to confirm the pipeline
+          works end-to-end. Nothing here is saved to your receipts -- this only shows the raw text
+          the OCR step returns.
+        </p>
+        <div className="mt-4 flex items-center gap-3">
+          <button
+            type="button"
+            onClick={() => inputRef.current?.click()}
+            disabled={processing}
+            className="inline-flex items-center gap-2 rounded-full bg-black px-4 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            <UploadCloud className="size-4" aria-hidden />
+            {processing ? "Processing…" : "Choose file"}
+          </button>
+          {fileName && <span className="truncate text-xs text-black/50">{fileName}</span>}
+          <input
+            ref={inputRef}
+            type="file"
+            accept="image/*,.pdf"
+            className="hidden"
+            onChange={(e) => {
+              const file = e.target.files?.[0];
+              e.target.value = "";
+              void handleFile(file);
+            }}
+          />
+        </div>
+      </div>
+
+      {(processing || resultText) && (
+        <div className="rounded-2xl border border-black/[0.07] bg-white p-5 shadow-[0_2px_12px_rgba(0,0,0,0.06)]">
+          <p className="text-xs font-medium text-black/55">Raw OCR text</p>
+          {processing ? (
+            <p className="mt-2 text-sm text-black/45">Uploading and running OCR…</p>
+          ) : (
+            <pre className="mt-2 max-h-96 overflow-auto whitespace-pre-wrap rounded-xl bg-black/[0.03] p-3 text-xs text-black/80">
+              {resultText}
+            </pre>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
 function ReceiptsPage() {
   return (
     <div className="mx-auto w-full max-w-[1200px] flex-1 px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
@@ -307,12 +411,21 @@ function ReceiptsPage() {
           >
             Bulk Upload
           </TabsTrigger>
+          <TabsTrigger
+            value="ocr-test"
+            className="rounded-lg px-3 text-sm font-medium text-black/55 data-[state=active]:bg-white data-[state=active]:text-black data-[state=active]:shadow-[0_1px_4px_rgba(0,0,0,0.08)]"
+          >
+            OCR Test
+          </TabsTrigger>
         </TabsList>
         <TabsContent value="all">
           <AllReceiptsTab />
         </TabsContent>
         <TabsContent value="bulk">
           <BulkUploadTab />
+        </TabsContent>
+        <TabsContent value="ocr-test">
+          <OcrTestTab />
         </TabsContent>
       </Tabs>
     </div>
