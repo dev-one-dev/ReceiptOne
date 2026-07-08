@@ -13,6 +13,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { ReceiptDetailDialog } from "@/components/dashboard/ReceiptDetailDialog";
+import {
+  ReceiptEditFields,
+  toDateInputValue,
+  type ReviewForm,
+  type ReviewTaxRow,
+} from "@/components/dashboard/ReceiptEditFields";
 import { useDashboardContext } from "@/components/dashboard/DashboardContext";
 import { useAuth } from "@/integrations/firebase/auth-context";
 import { auth, functions, storage } from "@/integrations/firebase/client";
@@ -30,26 +36,6 @@ import { parseReceiptFromJson } from "@/integrations/receipt-parsing/parse-recei
 import { applyTaxListUpdate } from "@/integrations/receipt-parsing/apply-tax-settings";
 import { formatCurrency, formatDate } from "@/lib/dashboard-format";
 import { errorMessage } from "@/lib/utils";
-
-type ReviewTaxRow = { taxName: string; taxPercent: string; tax: string; isRefundable: boolean };
-
-type ReviewForm = {
-  merchantName: string;
-  merchantCategory: string;
-  date: string;
-  price: string;
-  tax: string;
-  paymentMethod: "Cash" | "Card";
-  typeOfTaxDeduction: "Business" | "Personal";
-  comment: string;
-};
-
-function toDateInputValue(date: Date): string {
-  const yyyy = date.getFullYear();
-  const mm = String(date.getMonth() + 1).padStart(2, "0");
-  const dd = String(date.getDate()).padStart(2, "0");
-  return `${yyyy}-${mm}-${dd}`;
-}
 
 export const Route = createFileRoute("/dashboard/receipts")({
   component: ReceiptsPage,
@@ -74,6 +60,15 @@ function AllReceiptsTab() {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState(ALL_CATEGORIES);
   const [selected, setSelected] = useState<Receipt | null>(null);
+
+  const loadReceipts = (targetUid: string) => {
+    setLoading(true);
+    setError(null);
+    return fetchReceipts(targetUid)
+      .then((data) => setReceipts(data))
+      .catch((e) => setError(errorMessage(e, "Couldn't load receipts.")))
+      .finally(() => setLoading(false));
+  };
 
   useEffect(() => {
     if (!uid) return;
@@ -209,6 +204,7 @@ function AllReceiptsTab() {
         receipt={selected}
         dateFormat={dateFormat}
         onOpenChange={(open) => !open && setSelected(null)}
+        onChanged={() => uid && loadReceipts(uid)}
       />
     </div>
   );
@@ -538,177 +534,15 @@ function BulkUploadTab() {
 
           {card.status === "review" && card.review && (
             <div className="mt-4">
-              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                <div className="space-y-1.5">
-                  <label className="block text-xs font-medium text-black/55">Merchant name</label>
-                  <input
-                    value={card.review.merchantName}
-                    onChange={(e) => updateReviewField(card, { merchantName: e.target.value })}
-                    className="h-9 w-full rounded-xl border border-black/10 bg-white px-3 text-sm outline-none focus:border-black/25"
-                  />
-                </div>
-                <div className="space-y-1.5">
-                  <label className="block text-xs font-medium text-black/55">Category</label>
-                  <select
-                    value={card.review.merchantCategory}
-                    onChange={(e) => updateReviewField(card, { merchantCategory: e.target.value })}
-                    className="h-9 w-full rounded-xl border border-black/10 bg-white px-3 text-sm outline-none focus:border-black/25"
-                  >
-                    {card.categories.map((c) => (
-                      <option key={c} value={c}>
-                        {c}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div className="space-y-1.5">
-                  <label className="block text-xs font-medium text-black/55">Date</label>
-                  <input
-                    type="date"
-                    value={card.review.date}
-                    onChange={(e) => updateReviewField(card, { date: e.target.value })}
-                    className="h-9 w-full appearance-none rounded-xl border border-black/10 bg-white px-3 text-sm outline-none focus:border-black/25"
-                  />
-                </div>
-                <div className="space-y-1.5">
-                  <label className="block text-xs font-medium text-black/55">Price</label>
-                  <input
-                    value={card.review.price}
-                    onChange={(e) => updateReviewField(card, { price: e.target.value })}
-                    inputMode="decimal"
-                    className="h-9 w-full rounded-xl border border-black/10 bg-white px-3 text-sm outline-none focus:border-black/25"
-                  />
-                </div>
-                <div className="space-y-1.5">
-                  <label className="block text-xs font-medium text-black/55">Tax (total)</label>
-                  <input
-                    value={card.review.tax}
-                    onChange={(e) => updateReviewField(card, { tax: e.target.value })}
-                    inputMode="decimal"
-                    className="h-9 w-full rounded-xl border border-black/10 bg-white px-3 text-sm outline-none focus:border-black/25"
-                  />
-                </div>
-                <div className="space-y-1.5">
-                  <label className="block text-xs font-medium text-black/55">Payment method</label>
-                  <select
-                    value={card.review.paymentMethod}
-                    onChange={(e) =>
-                      updateReviewField(card, { paymentMethod: e.target.value as "Cash" | "Card" })
-                    }
-                    className="h-9 w-full rounded-xl border border-black/10 bg-white px-3 text-sm outline-none focus:border-black/25"
-                  >
-                    <option value="Cash">Cash</option>
-                    <option value="Card">Card</option>
-                  </select>
-                </div>
-                <div className="space-y-1.5">
-                  <label className="block text-xs font-medium text-black/55">
-                    Business or personal
-                  </label>
-                  <select
-                    value={card.review.typeOfTaxDeduction}
-                    onChange={(e) =>
-                      updateReviewField(card, {
-                        typeOfTaxDeduction: e.target.value as "Business" | "Personal",
-                      })
-                    }
-                    className="h-9 w-full rounded-xl border border-black/10 bg-white px-3 text-sm outline-none focus:border-black/25"
-                  >
-                    <option value="Business">Business</option>
-                    <option value="Personal">Personal</option>
-                  </select>
-                </div>
-                <div className="space-y-1.5 sm:col-span-2">
-                  <label className="block text-xs font-medium text-black/55">Comment</label>
-                  <input
-                    value={card.review.comment}
-                    onChange={(e) => updateReviewField(card, { comment: e.target.value })}
-                    className="h-9 w-full rounded-xl border border-black/10 bg-white px-3 text-sm outline-none focus:border-black/25"
-                  />
-                </div>
-              </div>
-
-              <div className="mt-4">
-                <p className="text-xs font-medium text-black/55">Tax breakdown</p>
-                <div className="mt-2 overflow-hidden rounded-xl border border-black/[0.07]">
-                  <table className="w-full border-collapse text-left text-xs">
-                    <thead>
-                      <tr className="text-black/45">
-                        <th className="px-3 py-2 font-medium">Name</th>
-                        <th className="px-3 py-2 font-medium">Percent</th>
-                        <th className="px-3 py-2 font-medium">Amount</th>
-                        <th className="px-3 py-2 font-medium">Refundable</th>
-                        <th className="px-3 py-2" />
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {(card.taxRows ?? []).map((row, i) => (
-                        <tr key={i} className="border-t border-black/[0.05]">
-                          <td className="px-3 py-2">
-                            <input
-                              value={row.taxName}
-                              onChange={(e) => updateTaxRow(card, i, { taxName: e.target.value })}
-                              className="h-8 w-full rounded-lg border border-black/10 bg-white px-2 text-xs outline-none focus:border-black/25"
-                            />
-                          </td>
-                          <td className="px-3 py-2">
-                            <input
-                              value={row.taxPercent}
-                              onChange={(e) =>
-                                updateTaxRow(card, i, { taxPercent: e.target.value })
-                              }
-                              inputMode="decimal"
-                              className="h-8 w-20 rounded-lg border border-black/10 bg-white px-2 text-xs outline-none focus:border-black/25"
-                            />
-                          </td>
-                          <td className="px-3 py-2">
-                            <input
-                              value={row.tax}
-                              onChange={(e) => updateTaxRow(card, i, { tax: e.target.value })}
-                              inputMode="decimal"
-                              className="h-8 w-24 rounded-lg border border-black/10 bg-white px-2 text-xs outline-none focus:border-black/25"
-                            />
-                          </td>
-                          <td className="px-3 py-2">
-                            <input
-                              type="checkbox"
-                              checked={row.isRefundable}
-                              onChange={(e) =>
-                                updateTaxRow(card, i, { isRefundable: e.target.checked })
-                              }
-                              className="size-3.5 rounded border-black/20"
-                            />
-                          </td>
-                          <td className="px-3 py-2 text-right">
-                            <button
-                              type="button"
-                              onClick={() => removeTaxRow(card, i)}
-                              aria-label="Remove tax row"
-                              className="text-black/40 transition-colors hover:text-black"
-                            >
-                              <X className="size-3.5" aria-hidden />
-                            </button>
-                          </td>
-                        </tr>
-                      ))}
-                      {(card.taxRows ?? []).length === 0 && (
-                        <tr>
-                          <td colSpan={5} className="px-3 py-4 text-center text-black/40">
-                            No tax breakdown
-                          </td>
-                        </tr>
-                      )}
-                    </tbody>
-                  </table>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => addTaxRow(card)}
-                  className="mt-2 text-xs font-medium text-black/55 transition-colors hover:text-black"
-                >
-                  + Add tax row
-                </button>
-              </div>
+              <ReceiptEditFields
+                categories={card.categories}
+                review={card.review}
+                taxRows={card.taxRows ?? []}
+                onChangeField={(patch) => updateReviewField(card, patch)}
+                onChangeTaxRow={(index, patch) => updateTaxRow(card, index, patch)}
+                onAddTaxRow={() => addTaxRow(card)}
+                onRemoveTaxRow={(index) => removeTaxRow(card, index)}
+              />
 
               <button
                 type="button"

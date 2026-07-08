@@ -269,53 +269,61 @@ function RealMileageReportPreview({
   distanceUnit,
   dateFormat,
   currency,
+  mileageRate,
 }: {
   rows: MileageRow[];
   distanceUnit: DistanceUnit;
   dateFormat: DateFormat;
   currency: string;
+  mileageRate: number;
 }) {
   const totalDistance = rows.reduce((sum, r) => sum + r.distanceValue, 0);
   const totalAmount = rows.reduce((sum, r) => sum + r.amount, 0);
   return (
-    <div className="rounded-xl border border-black/[0.07]">
-      <table className="w-full border-collapse text-left text-sm">
-        <thead>
-          <tr className="text-xs text-black/45">
-            <th className="px-4 py-2 font-medium">Date</th>
-            <th className="px-4 py-2 font-medium">Purpose</th>
-            <th className="px-4 py-2 text-right font-medium">Distance</th>
-            <th className="px-4 py-2 text-right font-medium">Amount</th>
-          </tr>
-        </thead>
-        <tbody>
-          {rows.map((r, i) => (
-            <tr key={r.date.toISOString() + i} className="border-t border-black/[0.05]">
-              <td className="px-4 py-2.5 text-black/60">{formatDate(r.date, dateFormat)}</td>
-              <td className="px-4 py-2.5 text-black/70">{r.purpose}</td>
-              <td className="px-4 py-2.5 text-right tabular-nums text-black">
-                {formatDistance(r.distanceValue, distanceUnit)}
+    <div>
+      <div className="rounded-xl border border-black/[0.07]">
+        <table className="w-full border-collapse text-left text-sm">
+          <thead>
+            <tr className="text-xs text-black/45">
+              <th className="px-4 py-2 font-medium">Date</th>
+              <th className="px-4 py-2 font-medium">Purpose</th>
+              <th className="px-4 py-2 text-right font-medium">Distance</th>
+              <th className="px-4 py-2 text-right font-medium">Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((r, i) => (
+              <tr key={r.date.toISOString() + i} className="border-t border-black/[0.05]">
+                <td className="px-4 py-2.5 text-black/60">{formatDate(r.date, dateFormat)}</td>
+                <td className="px-4 py-2.5 text-black/70">{r.purpose}</td>
+                <td className="px-4 py-2.5 text-right tabular-nums text-black">
+                  {formatDistance(r.distanceValue, distanceUnit)}
+                </td>
+                <td className="px-4 py-2.5 text-right tabular-nums text-black">
+                  {formatCurrency(r.amount, currency)}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+          <tfoot>
+            <tr className="border-t border-black/[0.1]">
+              <td colSpan={2} className="px-4 py-2.5 text-sm font-semibold text-black">
+                Total
               </td>
-              <td className="px-4 py-2.5 text-right tabular-nums text-black">
-                {formatCurrency(r.amount, currency)}
+              <td className="px-4 py-2.5 text-right text-sm font-semibold tabular-nums text-black">
+                {formatDistance(totalDistance, distanceUnit)}
+              </td>
+              <td className="px-4 py-2.5 text-right text-sm font-semibold tabular-nums text-black">
+                {formatCurrency(totalAmount, currency)}
               </td>
             </tr>
-          ))}
-        </tbody>
-        <tfoot>
-          <tr className="border-t border-black/[0.1]">
-            <td colSpan={2} className="px-4 py-2.5 text-sm font-semibold text-black">
-              Total
-            </td>
-            <td className="px-4 py-2.5 text-right text-sm font-semibold tabular-nums text-black">
-              {formatDistance(totalDistance, distanceUnit)}
-            </td>
-            <td className="px-4 py-2.5 text-right text-sm font-semibold tabular-nums text-black">
-              {formatCurrency(totalAmount, currency)}
-            </td>
-          </tr>
-        </tfoot>
-      </table>
+          </tfoot>
+        </table>
+      </div>
+      <p className="mt-2 text-xs text-black/40">
+        Amounts reflect each trip's rate at the time it was logged, which may differ from your
+        current Settings rate ({money(mileageRate)}/{distanceUnit}).
+      </p>
     </div>
   );
 }
@@ -503,7 +511,7 @@ export function ReportPreviewDialog({
   format: string;
   uid: string | null;
 }) {
-  const { distanceUnit, dateFormat } = useDashboardContext();
+  const { distanceUnit, dateFormat, mileageRate } = useDashboardContext();
 
   const [receipts, setReceipts] = useState<Receipt[]>([]);
   const [trips, setTrips] = useState<Trip[]>([]);
@@ -643,6 +651,7 @@ export function ReportPreviewDialog({
               distanceUnit={distanceUnit}
               dateFormat={dateFormat}
               currency={tripsCurrency}
+              mileageRate={mileageRate}
             />
           ))}
 

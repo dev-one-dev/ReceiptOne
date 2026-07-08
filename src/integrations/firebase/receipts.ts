@@ -1,11 +1,14 @@
 import {
   addDoc,
   collection,
+  deleteDoc,
+  doc,
   getDocs,
   orderBy,
   query,
   serverTimestamp,
   Timestamp,
+  updateDoc,
   where,
 } from "firebase/firestore";
 import { db } from "@/integrations/firebase/client";
@@ -155,4 +158,50 @@ export async function createReceipt(input: NewReceiptInput): Promise<void> {
     })),
     type_of_tax_deduction: input.typeOfTaxDeduction,
   });
+}
+
+export type ReceiptUpdateInput = {
+  companyCategory: string;
+  companyName: string;
+  comment: string;
+  date: Date;
+  paymentMethod: string;
+  price: number;
+  tax: number;
+  taxLists: TaxListEntry[];
+  typeOfTaxDeduction: string;
+};
+
+/**
+ * Updates an existing receipt -- only the fields the edit form actually
+ * exposes. Deliberately never touches created_by, created_at,
+ * receipt_image, receipt_file, or merchant_id: those aren't part of the
+ * edit UI and shouldn't be reassignable through this path.
+ */
+export async function updateReceipt(id: string, patch: ReceiptUpdateInput): Promise<void> {
+  await updateDoc(doc(db, "receipts", id), {
+    company_category: patch.companyCategory,
+    company_name: patch.companyName,
+    comment: patch.comment,
+    date: Timestamp.fromDate(patch.date),
+    payment_method: patch.paymentMethod,
+    price: patch.price,
+    tax: patch.tax,
+    tax_lists: patch.taxLists.map((t) => ({
+      is_refundable: t.isRefundable,
+      tax: t.tax,
+      tax_name: t.taxName,
+      tax_percent: t.taxPercent,
+    })),
+    type_of_tax_deduction: patch.typeOfTaxDeduction,
+  });
+}
+
+/**
+ * A real, permanent hard delete -- not a soft-delete flag. Security
+ * rules already allow this for the document's own creator. Callers must
+ * confirm with the user before calling this; nothing here prompts.
+ */
+export async function deleteReceipt(id: string): Promise<void> {
+  await deleteDoc(doc(db, "receipts", id));
 }
