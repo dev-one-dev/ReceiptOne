@@ -154,6 +154,7 @@ function ReportsPage() {
         type={type}
         range={range}
         format={format}
+        uid={uid}
       />
 
       {/* History */}

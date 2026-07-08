@@ -1,4 +1,7 @@
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
 import {
   Dialog,
   DialogContent,
@@ -8,9 +11,21 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Download } from "lucide-react";
-import { useDashboardContext } from "@/components/dashboard/DashboardContext";
-import { distanceInUnit, formatDate, formatDistance, mkDate, money } from "@/lib/dashboard-format";
+import {
+  useDashboardContext,
+  type DateFormat,
+  type DistanceUnit,
+} from "@/components/dashboard/DashboardContext";
+import { fetchReceipts, type Receipt } from "@/integrations/firebase/receipts";
+import { fetchTrips, tripDistance, type Trip } from "@/integrations/firebase/trips";
+import { formatCurrency, formatDate, formatDistance, money } from "@/lib/dashboard-format";
+import { errorMessage } from "@/lib/utils";
 
+/**
+ * Tax Summary stays fully mock -- the real backend-generated PDF is a
+ * full CRA T2125 tax form, a separate, more complex piece out of scope
+ * here. Both this preview and its Download button are untouched.
+ */
 const CATEGORY_TOTALS = [
   { category: "Office Rent", amount: 1920.0 },
   { category: "Travel", amount: 612.5 },
@@ -20,15 +35,7 @@ const CATEGORY_TOTALS = [
   { category: "Meals", amount: 156.4 },
 ];
 
-const MILEAGE_ROWS = [
-  { date: mkDate(2026, 7, 2), purpose: "Client meeting", distanceKm: 18 },
-  { date: mkDate(2026, 6, 28), purpose: "Supply run", distanceKm: 9 },
-  { date: mkDate(2026, 6, 24), purpose: "Client meeting", distanceKm: 32 },
-  { date: mkDate(2026, 6, 20), purpose: "Bank deposit", distanceKm: 6 },
-  { date: mkDate(2026, 6, 14), purpose: "Client meeting", distanceKm: 18 },
-];
-
-function ExpenseSummaryPreview({ label }: { label: string }) {
+function TaxSummaryPreview() {
   const total = CATEGORY_TOTALS.reduce((sum, c) => sum + c.amount, 0);
   return (
     <div className="rounded-xl border border-black/[0.07]">
@@ -36,7 +43,7 @@ function ExpenseSummaryPreview({ label }: { label: string }) {
         <thead>
           <tr className="text-xs text-black/45">
             <th className="px-4 py-2 font-medium">Category</th>
-            <th className="px-4 py-2 text-right font-medium">{label}</th>
+            <th className="px-4 py-2 text-right font-medium">Deductible amount</th>
           </tr>
         </thead>
         <tbody>
@@ -50,7 +57,9 @@ function ExpenseSummaryPreview({ label }: { label: string }) {
         <tfoot>
           <tr className="border-t border-black/[0.1]">
             <td className="px-4 py-2.5 text-sm font-semibold text-black">Total</td>
-            <td className="px-4 py-2.5 text-right text-sm font-semibold tabular-nums text-black">{money(total)}</td>
+            <td className="px-4 py-2.5 text-right text-sm font-semibold tabular-nums text-black">
+              {money(total)}
+            </td>
           </tr>
         </tfoot>
       </table>
@@ -58,14 +67,131 @@ function ExpenseSummaryPreview({ label }: { label: string }) {
   );
 }
 
-function MileageReportPreview() {
-  const { distanceUnit, mileageRate, dateFormat } = useDashboardContext();
-  const rows = MILEAGE_ROWS.map((t) => {
-    const distanceValue = distanceInUnit(t.distanceKm, distanceUnit);
-    return { ...t, distanceValue, amount: distanceValue * mileageRate };
-  });
-  const totalDistance = rows.reduce((sum, t) => sum + t.distanceValue, 0);
-  const totalAmount = rows.reduce((sum, t) => sum + t.amount, 0);
+/**
+ * Independent of the Dashboard header's own "tax year" selector --
+ * these ranges are always relative to today's real calendar date.
+ * "Last 90 days" is a rolling window (today minus 89 days through
+ * today); the other three are calendar-aligned periods.
+ */
+function resolveDateRange(range: string, now: Date = new Date()): { start: Date; end: Date } {
+  const year = now.getFullYear();
+  const month = now.getMonth();
+
+  if (range === "Last year") {
+    return {
+      start: new Date(year - 1, 0, 1, 0, 0, 0, 0),
+      end: new Date(year - 1, 11, 31, 23, 59, 59, 999),
+    };
+  }
+
+  if (range === "Last quarter") {
+    const currentQuarter = Math.floor(month / 3);
+    let quarter = currentQuarter - 1;
+    let quarterYear = year;
+    if (quarter < 0) {
+      quarter = 3;
+      quarterYear -= 1;
+    }
+    const startMonth = quarter * 3;
+    return {
+      start: new Date(quarterYear, startMonth, 1, 0, 0, 0, 0),
+      end: new Date(quarterYear, startMonth + 3, 0, 23, 59, 59, 999),
+    };
+  }
+
+  if (range === "Last 90 days") {
+    const end = new Date(year, month, now.getDate(), 23, 59, 59, 999);
+    const start = new Date(end);
+    start.setDate(start.getDate() - 89);
+    start.setHours(0, 0, 0, 0);
+    return { start, end };
+  }
+
+  // "This year"
+  return {
+    start: new Date(year, 0, 1, 0, 0, 0, 0),
+    end: new Date(year, 11, 31, 23, 59, 59, 999),
+  };
+}
+
+type CategoryTotal = { category: string; amount: number };
+
+function groupReceiptsByCategory(receipts: Receipt[]): CategoryTotal[] {
+  const totals = new Map<string, number>();
+  for (const r of receipts) {
+    const key = r.companyCategory || "Uncategorized";
+    totals.set(key, (totals.get(key) ?? 0) + r.price);
+  }
+  return Array.from(totals.entries())
+    .map(([category, amount]) => ({ category, amount }))
+    .sort((a, b) => b.amount - a.amount);
+}
+
+function RealExpenseSummaryPreview({
+  categories,
+  currency,
+}: {
+  categories: CategoryTotal[];
+  currency: string;
+}) {
+  const total = categories.reduce((sum, c) => sum + c.amount, 0);
+  return (
+    <div className="rounded-xl border border-black/[0.07]">
+      <table className="w-full border-collapse text-left text-sm">
+        <thead>
+          <tr className="text-xs text-black/45">
+            <th className="px-4 py-2 font-medium">Category</th>
+            <th className="px-4 py-2 text-right font-medium">Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          {categories.map((c) => (
+            <tr key={c.category} className="border-t border-black/[0.05]">
+              <td className="px-4 py-2.5 text-black/70">{c.category}</td>
+              <td className="px-4 py-2.5 text-right tabular-nums text-black">
+                {formatCurrency(c.amount, currency)}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+        <tfoot>
+          <tr className="border-t border-black/[0.1]">
+            <td className="px-4 py-2.5 text-sm font-semibold text-black">Total</td>
+            <td className="px-4 py-2.5 text-right text-sm font-semibold tabular-nums text-black">
+              {formatCurrency(total, currency)}
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  );
+}
+
+type MileageRow = { date: Date; purpose: string; distanceValue: number; amount: number };
+
+/** amount is each trip's own real, recorded totalPrice (its rate at the time it was logged) -- not recomputed from Settings' current mileage rate. */
+function buildMileageRows(trips: Trip[], distanceUnit: DistanceUnit): MileageRow[] {
+  return trips.map((t) => ({
+    date: t.date,
+    purpose: t.comment || "—",
+    distanceValue: tripDistance(t, distanceUnit),
+    amount: t.totalPrice,
+  }));
+}
+
+function RealMileageReportPreview({
+  rows,
+  distanceUnit,
+  dateFormat,
+  currency,
+}: {
+  rows: MileageRow[];
+  distanceUnit: DistanceUnit;
+  dateFormat: DateFormat;
+  currency: string;
+}) {
+  const totalDistance = rows.reduce((sum, r) => sum + r.distanceValue, 0);
+  const totalAmount = rows.reduce((sum, r) => sum + r.amount, 0);
   return (
     <div className="rounded-xl border border-black/[0.07]">
       <table className="w-full border-collapse text-left text-sm">
@@ -78,25 +204,159 @@ function MileageReportPreview() {
           </tr>
         </thead>
         <tbody>
-          {rows.map((t, i) => (
-            <tr key={t.date.toISOString() + i} className="border-t border-black/[0.05]">
-              <td className="px-4 py-2.5 text-black/60">{formatDate(t.date, dateFormat)}</td>
-              <td className="px-4 py-2.5 text-black/70">{t.purpose}</td>
-              <td className="px-4 py-2.5 text-right tabular-nums text-black">{formatDistance(t.distanceValue, distanceUnit)}</td>
-              <td className="px-4 py-2.5 text-right tabular-nums text-black">{money(t.amount)}</td>
+          {rows.map((r, i) => (
+            <tr key={r.date.toISOString() + i} className="border-t border-black/[0.05]">
+              <td className="px-4 py-2.5 text-black/60">{formatDate(r.date, dateFormat)}</td>
+              <td className="px-4 py-2.5 text-black/70">{r.purpose}</td>
+              <td className="px-4 py-2.5 text-right tabular-nums text-black">
+                {formatDistance(r.distanceValue, distanceUnit)}
+              </td>
+              <td className="px-4 py-2.5 text-right tabular-nums text-black">
+                {formatCurrency(r.amount, currency)}
+              </td>
             </tr>
           ))}
         </tbody>
         <tfoot>
           <tr className="border-t border-black/[0.1]">
-            <td colSpan={2} className="px-4 py-2.5 text-sm font-semibold text-black">Total</td>
-            <td className="px-4 py-2.5 text-right text-sm font-semibold tabular-nums text-black">{formatDistance(totalDistance, distanceUnit)}</td>
-            <td className="px-4 py-2.5 text-right text-sm font-semibold tabular-nums text-black">{money(totalAmount)}</td>
+            <td colSpan={2} className="px-4 py-2.5 text-sm font-semibold text-black">
+              Total
+            </td>
+            <td className="px-4 py-2.5 text-right text-sm font-semibold tabular-nums text-black">
+              {formatDistance(totalDistance, distanceUnit)}
+            </td>
+            <td className="px-4 py-2.5 text-right text-sm font-semibold tabular-nums text-black">
+              {formatCurrency(totalAmount, currency)}
+            </td>
           </tr>
         </tfoot>
       </table>
     </div>
   );
+}
+
+function slugify(s: string): string {
+  return s
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "");
+}
+
+function csvCell(value: string | number): string {
+  const str = String(value);
+  if (str.includes(",") || str.includes('"') || str.includes("\n")) {
+    return `"${str.replace(/"/g, '""')}"`;
+  }
+  return str;
+}
+
+function toCsv(headers: string[], rows: (string | number)[][]): string {
+  return [headers, ...rows].map((row) => row.map(csvCell).join(",")).join("\r\n");
+}
+
+function downloadBlob(content: string, mimeType: string, filename: string) {
+  const blob = new Blob([content], { type: mimeType });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+function downloadExpenseSummary(
+  format: string,
+  categories: CategoryTotal[],
+  range: string,
+  currency: string,
+) {
+  const filename = slugify(`expense-summary-${range}`);
+  const total = categories.reduce((sum, c) => sum + c.amount, 0);
+
+  if (format === "PDF") {
+    const doc = new jsPDF();
+    doc.setFontSize(16);
+    doc.text("Expense Summary", 14, 18);
+    doc.setFontSize(10);
+    doc.setTextColor(100);
+    doc.text(`${range} · Generated ${new Date().toLocaleDateString()}`, 14, 25);
+    autoTable(doc, {
+      startY: 32,
+      head: [["Category", "Amount"]],
+      body: categories.map((c) => [c.category, formatCurrency(c.amount, currency)]),
+      foot: [["Total", formatCurrency(total, currency)]],
+      headStyles: { fillColor: [0, 0, 0] },
+      footStyles: { fillColor: [245, 244, 240], textColor: [0, 0, 0], fontStyle: "bold" },
+    });
+    doc.save(`${filename}.pdf`);
+    return;
+  }
+
+  const csv = toCsv(
+    ["Category", "Amount"],
+    [...categories.map((c) => [c.category, c.amount.toFixed(2)]), ["Total", total.toFixed(2)]],
+  );
+  downloadBlob(csv, "text/csv;charset=utf-8;", `${filename}.csv`);
+}
+
+function downloadMileageReport(
+  format: string,
+  rows: MileageRow[],
+  range: string,
+  distanceUnit: DistanceUnit,
+  dateFormat: DateFormat,
+  currency: string,
+) {
+  const filename = slugify(`mileage-report-${range}`);
+  const totalDistance = rows.reduce((sum, r) => sum + r.distanceValue, 0);
+  const totalAmount = rows.reduce((sum, r) => sum + r.amount, 0);
+
+  if (format === "PDF") {
+    const doc = new jsPDF();
+    doc.setFontSize(16);
+    doc.text("Mileage Report", 14, 18);
+    doc.setFontSize(10);
+    doc.setTextColor(100);
+    doc.text(`${range} · Generated ${new Date().toLocaleDateString()}`, 14, 25);
+    autoTable(doc, {
+      startY: 32,
+      head: [["Date", "Purpose", "Distance", "Amount"]],
+      body: rows.map((r) => [
+        formatDate(r.date, dateFormat),
+        r.purpose,
+        formatDistance(r.distanceValue, distanceUnit),
+        formatCurrency(r.amount, currency),
+      ]),
+      foot: [
+        [
+          "Total",
+          "",
+          formatDistance(totalDistance, distanceUnit),
+          formatCurrency(totalAmount, currency),
+        ],
+      ],
+      headStyles: { fillColor: [0, 0, 0] },
+      footStyles: { fillColor: [245, 244, 240], textColor: [0, 0, 0], fontStyle: "bold" },
+    });
+    doc.save(`${filename}.pdf`);
+    return;
+  }
+
+  const csv = toCsv(
+    ["Date", "Purpose", "Distance", "Amount"],
+    [
+      ...rows.map((r) => [
+        formatDate(r.date, dateFormat),
+        r.purpose,
+        r.distanceValue.toFixed(1),
+        r.amount.toFixed(2),
+      ]),
+      ["Total", "", totalDistance.toFixed(1), totalAmount.toFixed(2)],
+    ],
+  );
+  downloadBlob(csv, "text/csv;charset=utf-8;", `${filename}.csv`);
 }
 
 export function ReportPreviewDialog({
@@ -105,39 +365,165 @@ export function ReportPreviewDialog({
   type,
   range,
   format,
+  uid,
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   type: string;
   range: string;
   format: string;
+  uid: string | null;
 }) {
+  const { distanceUnit, dateFormat } = useDashboardContext();
+
+  const [receipts, setReceipts] = useState<Receipt[]>([]);
+  const [trips, setTrips] = useState<Trip[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!open || !uid) return;
+    let cancelled = false;
+
+    if (type === "Expense Summary") {
+      setLoading(true);
+      setError(null);
+      fetchReceipts(uid)
+        .then((data) => {
+          if (!cancelled) setReceipts(data);
+        })
+        .catch((e) => {
+          if (!cancelled) setError(errorMessage(e, "Couldn't load your receipts."));
+        })
+        .finally(() => {
+          if (!cancelled) setLoading(false);
+        });
+    } else if (type === "Mileage Report") {
+      setLoading(true);
+      setError(null);
+      fetchTrips(uid)
+        .then((data) => {
+          if (!cancelled) setTrips(data);
+        })
+        .catch((e) => {
+          if (!cancelled) setError(errorMessage(e, "Couldn't load your trips."));
+        })
+        .finally(() => {
+          if (!cancelled) setLoading(false);
+        });
+    }
+
+    return () => {
+      cancelled = true;
+    };
+  }, [open, type, uid]);
+
+  const { start, end } = resolveDateRange(range);
+
+  const filteredReceipts = receipts.filter((r) => r.date >= start && r.date <= end);
+  const categories = groupReceiptsByCategory(filteredReceipts);
+  const receiptsCurrency = filteredReceipts[0]?.currency ?? "CAD";
+
+  const filteredTrips = trips.filter((t) => t.date >= start && t.date <= end);
+  const mileageRows = buildMileageRows(filteredTrips, distanceUnit);
+  const tripsCurrency = filteredTrips[0]?.currency ?? "CAD";
+
+  const isRealType = type === "Expense Summary" || type === "Mileage Report";
+  const hasData =
+    type === "Expense Summary"
+      ? categories.length > 0
+      : type === "Mileage Report"
+        ? mileageRows.length > 0
+        : true;
+
+  const handleDownload = () => {
+    if (type === "Tax Summary") {
+      toast.info("Downloads aren't wired up yet — this is a static mockup.");
+      onOpenChange(false);
+      return;
+    }
+    if (!hasData) {
+      toast.error(
+        `No ${type === "Mileage Report" ? "trips" : "receipts"} in this date range — nothing to download.`,
+      );
+      return;
+    }
+    try {
+      if (type === "Expense Summary") {
+        downloadExpenseSummary(format, categories, range, receiptsCurrency);
+      } else {
+        downloadMileageReport(format, mileageRows, range, distanceUnit, dateFormat, tripsCurrency);
+      }
+      toast.success(`${type} downloaded.`);
+      onOpenChange(false);
+    } catch (e) {
+      toast.error(errorMessage(e, "Couldn't generate this file."));
+    }
+  };
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-lg">
         <DialogHeader>
           <DialogTitle>{type} preview</DialogTitle>
-          <DialogDescription>{range} · {format}</DialogDescription>
+          <DialogDescription>
+            {range} · {format}
+          </DialogDescription>
         </DialogHeader>
 
-        {type === "Mileage Report" ? (
-          <MileageReportPreview />
-        ) : (
-          <ExpenseSummaryPreview label={type === "Tax Summary" ? "Deductible amount" : "Amount"} />
-        )}
+        {type === "Tax Summary" && <TaxSummaryPreview />}
+
+        {type === "Expense Summary" &&
+          (loading ? (
+            <p className="rounded-xl bg-black/[0.03] px-4 py-6 text-center text-sm text-black/45">
+              Loading your receipts…
+            </p>
+          ) : error ? (
+            <p className="rounded-xl bg-black/[0.03] px-4 py-6 text-center text-sm text-red-600">
+              {error}
+            </p>
+          ) : categories.length === 0 ? (
+            <p className="rounded-xl bg-black/[0.03] px-4 py-6 text-center text-sm text-black/45">
+              No receipts in this date range.
+            </p>
+          ) : (
+            <RealExpenseSummaryPreview categories={categories} currency={receiptsCurrency} />
+          ))}
+
+        {type === "Mileage Report" &&
+          (loading ? (
+            <p className="rounded-xl bg-black/[0.03] px-4 py-6 text-center text-sm text-black/45">
+              Loading your trips…
+            </p>
+          ) : error ? (
+            <p className="rounded-xl bg-black/[0.03] px-4 py-6 text-center text-sm text-red-600">
+              {error}
+            </p>
+          ) : mileageRows.length === 0 ? (
+            <p className="rounded-xl bg-black/[0.03] px-4 py-6 text-center text-sm text-black/45">
+              No trips in this date range.
+            </p>
+          ) : (
+            <RealMileageReportPreview
+              rows={mileageRows}
+              distanceUnit={distanceUnit}
+              dateFormat={dateFormat}
+              currency={tripsCurrency}
+            />
+          ))}
 
         <p className="text-xs text-black/40">
-          Preview only — reflects mock data, not your actual records for this range.
+          {type === "Tax Summary"
+            ? "Preview only — reflects mock data, not your actual records for this range."
+            : "Reflects your real records for this range."}
         </p>
 
         <DialogFooter>
           <button
             type="button"
-            onClick={() => {
-              toast.info("Downloads aren't wired up yet — this is a static mockup.");
-              onOpenChange(false);
-            }}
-            className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-black px-5 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90 sm:w-auto"
+            onClick={handleDownload}
+            disabled={isRealType && (loading || Boolean(error) || !hasData)}
+            className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-black px-5 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
           >
             <Download className="size-4" aria-hidden />
             Download {format}
