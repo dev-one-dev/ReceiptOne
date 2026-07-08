@@ -127,42 +127,127 @@ function groupReceiptsByCategory(receipts: Receipt[]): CategoryTotal[] {
     .sort((a, b) => b.amount - a.amount);
 }
 
+type TaxTotal = { taxName: string; totalTax: number; refundableTax: number };
+
+/**
+ * Same aggregation as sumRefundableTax() in dashboard/index.tsx (raw
+ * entry.tax sums, isRefundable as the refundable filter -- never
+ * recomputed from taxPercent) with one deliberate difference: that
+ * function only sums tax names matching the user's configured Settings
+ * tax list, since it needs one clean reclaim number. This report shows
+ * every distinct tax name that actually appears on the receipts in
+ * range (GST, PST, HST, VAT, whatever's really there), not just
+ * configured ones. Tax names are grouped case-insensitively (so "GST"
+ * and "gst" merge) but displayed using the first-seen original casing.
+ */
+function groupReceiptsByTax(receipts: Receipt[]): TaxTotal[] {
+  const totals = new Map<
+    string,
+    { displayName: string; totalTax: number; refundableTax: number }
+  >();
+  for (const r of receipts) {
+    for (const entry of r.taxLists) {
+      const displayName = entry.taxName.trim() || "Unspecified";
+      const key = displayName.toLowerCase();
+      const existing = totals.get(key) ?? { displayName, totalTax: 0, refundableTax: 0 };
+      existing.totalTax += entry.tax;
+      if (entry.isRefundable) existing.refundableTax += entry.tax;
+      totals.set(key, existing);
+    }
+  }
+  return Array.from(totals.values())
+    .map((v) => ({ taxName: v.displayName, totalTax: v.totalTax, refundableTax: v.refundableTax }))
+    .sort((a, b) => b.totalTax - a.totalTax);
+}
+
 function RealExpenseSummaryPreview({
   categories,
+  taxTotals,
   currency,
 }: {
   categories: CategoryTotal[];
+  taxTotals: TaxTotal[];
   currency: string;
 }) {
   const total = categories.reduce((sum, c) => sum + c.amount, 0);
+  const totalTax = taxTotals.reduce((sum, t) => sum + t.totalTax, 0);
+  const totalRefundable = taxTotals.reduce((sum, t) => sum + t.refundableTax, 0);
   return (
-    <div className="rounded-xl border border-black/[0.07]">
-      <table className="w-full border-collapse text-left text-sm">
-        <thead>
-          <tr className="text-xs text-black/45">
-            <th className="px-4 py-2 font-medium">Category</th>
-            <th className="px-4 py-2 text-right font-medium">Amount</th>
-          </tr>
-        </thead>
-        <tbody>
-          {categories.map((c) => (
-            <tr key={c.category} className="border-t border-black/[0.05]">
-              <td className="px-4 py-2.5 text-black/70">{c.category}</td>
-              <td className="px-4 py-2.5 text-right tabular-nums text-black">
-                {formatCurrency(c.amount, currency)}
+    <div className="space-y-3">
+      <div className="rounded-xl border border-black/[0.07]">
+        <table className="w-full border-collapse text-left text-sm">
+          <thead>
+            <tr className="text-xs text-black/45">
+              <th className="px-4 py-2 font-medium">Category</th>
+              <th className="px-4 py-2 text-right font-medium">Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            {categories.map((c) => (
+              <tr key={c.category} className="border-t border-black/[0.05]">
+                <td className="px-4 py-2.5 text-black/70">{c.category}</td>
+                <td className="px-4 py-2.5 text-right tabular-nums text-black">
+                  {formatCurrency(c.amount, currency)}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+          <tfoot>
+            <tr className="border-t border-black/[0.1]">
+              <td className="px-4 py-2.5 text-sm font-semibold text-black">Total</td>
+              <td className="px-4 py-2.5 text-right text-sm font-semibold tabular-nums text-black">
+                {formatCurrency(total, currency)}
               </td>
             </tr>
-          ))}
-        </tbody>
-        <tfoot>
-          <tr className="border-t border-black/[0.1]">
-            <td className="px-4 py-2.5 text-sm font-semibold text-black">Total</td>
-            <td className="px-4 py-2.5 text-right text-sm font-semibold tabular-nums text-black">
-              {formatCurrency(total, currency)}
-            </td>
-          </tr>
-        </tfoot>
-      </table>
+            {taxTotals.length > 0 && (
+              <tr className="border-t border-black/[0.05]">
+                <td className="px-4 py-2 text-xs text-black/55">Total refundable tax</td>
+                <td className="px-4 py-2 text-right text-xs font-medium tabular-nums text-black/70">
+                  {formatCurrency(totalRefundable, currency)}
+                </td>
+              </tr>
+            )}
+          </tfoot>
+        </table>
+      </div>
+
+      {taxTotals.length > 0 && (
+        <div className="rounded-xl border border-black/[0.07]">
+          <table className="w-full border-collapse text-left text-sm">
+            <thead>
+              <tr className="text-xs text-black/45">
+                <th className="px-4 py-2 font-medium">Tax type</th>
+                <th className="px-4 py-2 text-right font-medium">Total tax</th>
+                <th className="px-4 py-2 text-right font-medium">Refundable amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              {taxTotals.map((t) => (
+                <tr key={t.taxName} className="border-t border-black/[0.05]">
+                  <td className="px-4 py-2.5 text-black/70">{t.taxName}</td>
+                  <td className="px-4 py-2.5 text-right tabular-nums text-black">
+                    {formatCurrency(t.totalTax, currency)}
+                  </td>
+                  <td className="px-4 py-2.5 text-right tabular-nums text-black">
+                    {formatCurrency(t.refundableTax, currency)}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+            <tfoot>
+              <tr className="border-t border-black/[0.1]">
+                <td className="px-4 py-2.5 text-sm font-semibold text-black">Total</td>
+                <td className="px-4 py-2.5 text-right text-sm font-semibold tabular-nums text-black">
+                  {formatCurrency(totalTax, currency)}
+                </td>
+                <td className="px-4 py-2.5 text-right text-sm font-semibold tabular-nums text-black">
+                  {formatCurrency(totalRefundable, currency)}
+                </td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      )}
     </div>
   );
 }
@@ -269,11 +354,14 @@ function downloadBlob(content: string, mimeType: string, filename: string) {
 function downloadExpenseSummary(
   format: string,
   categories: CategoryTotal[],
+  taxTotals: TaxTotal[],
   range: string,
   currency: string,
 ) {
   const filename = slugify(`expense-summary-${range}`);
   const total = categories.reduce((sum, c) => sum + c.amount, 0);
+  const totalTax = taxTotals.reduce((sum, t) => sum + t.totalTax, 0);
+  const totalRefundable = taxTotals.reduce((sum, t) => sum + t.refundableTax, 0);
 
   if (format === "PDF") {
     const doc = new jsPDF();
@@ -290,15 +378,56 @@ function downloadExpenseSummary(
       headStyles: { fillColor: [0, 0, 0] },
       footStyles: { fillColor: [245, 244, 240], textColor: [0, 0, 0], fontStyle: "bold" },
     });
+
+    if (taxTotals.length > 0) {
+      const afterCategoryTable = (doc as unknown as { lastAutoTable: { finalY: number } })
+        .lastAutoTable.finalY;
+      doc.setFontSize(10);
+      doc.setTextColor(0);
+      doc.text(
+        `Total refundable tax: ${formatCurrency(totalRefundable, currency)}`,
+        14,
+        afterCategoryTable + 8,
+      );
+      autoTable(doc, {
+        startY: afterCategoryTable + 14,
+        head: [["Tax type", "Total tax", "Refundable amount"]],
+        body: taxTotals.map((t) => [
+          t.taxName,
+          formatCurrency(t.totalTax, currency),
+          formatCurrency(t.refundableTax, currency),
+        ]),
+        foot: [
+          ["Total", formatCurrency(totalTax, currency), formatCurrency(totalRefundable, currency)],
+        ],
+        headStyles: { fillColor: [0, 0, 0] },
+        footStyles: { fillColor: [245, 244, 240], textColor: [0, 0, 0], fontStyle: "bold" },
+      });
+    }
+
     doc.save(`${filename}.pdf`);
     return;
   }
 
-  const csv = toCsv(
-    ["Category", "Amount"],
-    [...categories.map((c) => [c.category, c.amount.toFixed(2)]), ["Total", total.toFixed(2)]],
-  );
-  downloadBlob(csv, "text/csv;charset=utf-8;", `${filename}.csv`);
+  const csvSections = [
+    toCsv(
+      ["Category", "Amount"],
+      [...categories.map((c) => [c.category, c.amount.toFixed(2)]), ["Total", total.toFixed(2)]],
+    ),
+  ];
+  if (taxTotals.length > 0) {
+    csvSections.push(`Total refundable tax,${totalRefundable.toFixed(2)}`);
+    csvSections.push(
+      toCsv(
+        ["Tax type", "Total tax", "Refundable amount"],
+        [
+          ...taxTotals.map((t) => [t.taxName, t.totalTax.toFixed(2), t.refundableTax.toFixed(2)]),
+          ["Total", totalTax.toFixed(2), totalRefundable.toFixed(2)],
+        ],
+      ),
+    );
+  }
+  downloadBlob(csvSections.join("\r\n\r\n"), "text/csv;charset=utf-8;", `${filename}.csv`);
 }
 
 function downloadMileageReport(
@@ -422,6 +551,7 @@ export function ReportPreviewDialog({
 
   const filteredReceipts = receipts.filter((r) => r.date >= start && r.date <= end);
   const categories = groupReceiptsByCategory(filteredReceipts);
+  const taxTotals = groupReceiptsByTax(filteredReceipts);
   const receiptsCurrency = filteredReceipts[0]?.currency ?? "CAD";
 
   const filteredTrips = trips.filter((t) => t.date >= start && t.date <= end);
@@ -450,7 +580,7 @@ export function ReportPreviewDialog({
     }
     try {
       if (type === "Expense Summary") {
-        downloadExpenseSummary(format, categories, range, receiptsCurrency);
+        downloadExpenseSummary(format, categories, taxTotals, range, receiptsCurrency);
       } else {
         downloadMileageReport(format, mileageRows, range, distanceUnit, dateFormat, tripsCurrency);
       }
@@ -487,7 +617,11 @@ export function ReportPreviewDialog({
               No receipts in this date range.
             </p>
           ) : (
-            <RealExpenseSummaryPreview categories={categories} currency={receiptsCurrency} />
+            <RealExpenseSummaryPreview
+              categories={categories}
+              taxTotals={taxTotals}
+              currency={receiptsCurrency}
+            />
           ))}
 
         {type === "Mileage Report" &&
