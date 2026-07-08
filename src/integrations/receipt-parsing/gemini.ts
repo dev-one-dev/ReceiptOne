@@ -244,19 +244,26 @@ let cachedModel: ReturnType<typeof getGenerativeModel> | null = null;
 
 function getReceiptExtractionModel() {
   if (cachedModel) return cachedModel;
-  const ai = getAI(firebaseApp, { backend: new VertexAIBackend() });
-  // Verbatim model config from the real agent JSON: gemini-2.5-flash,
-  // temperature 1, topP 0.95, maxOutputTokens 32000. responseMimeType is
-  // deliberately left unset -- the real config's responseType is
-  // PLAINTEXT, not JSON; the JSON constraint lives only in the prompt
-  // text, and extract-json.ts salvages JSON out of free-form output.
+  // location: "global" is required to reach Gemini 3.x models -- they
+  // aren't published in us-central1 (the SDK's default), which is
+  // exactly the region in the 403 errors this was producing before.
+  // Older Gemini 1.5/2.0/2.5 models are also published globally, so
+  // this is safe across the supported model range. Ported verbatim from
+  // the updated mobile source after gemini-2.5-flash was deprecated.
+  const ai = getAI(firebaseApp, { backend: new VertexAIBackend("global") });
+  // Verbatim model config from the updated real agent JSON:
+  // gemini-3.5-flash, temperature 1, topP 0.95, maxOutputTokens 8192.
+  // responseMimeType is deliberately left unset -- the real config's
+  // responseType is PLAINTEXT, not JSON; the JSON constraint lives only
+  // in the prompt text, and extract-json.ts salvages JSON out of
+  // free-form output.
   cachedModel = getGenerativeModel(ai, {
-    model: "gemini-2.5-flash",
+    model: "gemini-3.5-flash",
     systemInstruction: SYSTEM_INSTRUCTION,
     generationConfig: {
       temperature: 1,
       topP: 0.95,
-      maxOutputTokens: 32000,
+      maxOutputTokens: 8192,
     },
   });
   return cachedModel;
