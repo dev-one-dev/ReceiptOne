@@ -150,11 +150,15 @@ export async function createReceipt(input: NewReceiptInput): Promise<void> {
     receipt_file: input.receiptFile,
     receipt_image: input.receiptImage,
     tax: input.tax,
+    // tax_lists entries use camelCase sub-fields (isRefundable/taxName/
+    // taxPercent), matching the real mobile-app schema and toTaxList's
+    // read expectations above -- a genuine quirk where this one nested
+    // array isn't snake_case like the rest of the document.
     tax_lists: input.taxLists.map((t) => ({
-      is_refundable: t.isRefundable,
+      isRefundable: t.isRefundable,
       tax: t.tax,
-      tax_name: t.taxName,
-      tax_percent: t.taxPercent,
+      taxName: t.taxName,
+      taxPercent: t.taxPercent,
     })),
     type_of_tax_deduction: input.typeOfTaxDeduction,
   });
@@ -187,11 +191,13 @@ export async function updateReceipt(id: string, patch: ReceiptUpdateInput): Prom
     payment_method: patch.paymentMethod,
     price: patch.price,
     tax: patch.tax,
+    // Same camelCase-sub-field convention as createReceipt above --
+    // matches the real mobile schema and toTaxList's read expectations.
     tax_lists: patch.taxLists.map((t) => ({
-      is_refundable: t.isRefundable,
+      isRefundable: t.isRefundable,
       tax: t.tax,
-      tax_name: t.taxName,
-      tax_percent: t.taxPercent,
+      taxName: t.taxName,
+      taxPercent: t.taxPercent,
     })),
     type_of_tax_deduction: patch.typeOfTaxDeduction,
   });
