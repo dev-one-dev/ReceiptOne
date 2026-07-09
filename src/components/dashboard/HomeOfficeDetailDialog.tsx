@@ -99,7 +99,9 @@ export function HomeOfficeDetailDialog({
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-black/55">% of home used for work</span>
-                <span className="font-medium text-black">{homeOffice.workspacePercent}%</span>
+                <span className="font-medium text-black">
+                  {homeOffice.workspacePercent.toFixed(1)}%
+                </span>
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-black/55">Work period</span>
