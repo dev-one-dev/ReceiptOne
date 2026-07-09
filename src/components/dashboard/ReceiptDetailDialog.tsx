@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ExternalLink, Pencil, Trash2 } from "lucide-react";
+import { Expand, Pencil, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import {
   Dialog,
@@ -28,6 +28,11 @@ import { fetchUserProfile } from "@/integrations/firebase/user-profile";
 import { getReceiptCategories } from "@/integrations/receipt-parsing/categories";
 import { formatCurrency, formatDate } from "@/lib/dashboard-format";
 import { errorMessage } from "@/lib/utils";
+
+/** Bulk Upload accepts PDF receipts too (accept="image/*,.pdf") -- the Storage path keeps the original filename, so the download URL still ends in .pdf before its query string. */
+function isPdfUrl(url: string): boolean {
+  return /\.pdf(\?|$)/i.test(url);
+}
 
 /**
  * Read-only detail view, with an edit mode (same ReceiptEditFields set
@@ -59,6 +64,8 @@ export function ReceiptDetailDialog({
 
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [deleting, setDeleting] = useState(false);
+
+  const [lightboxOpen, setLightboxOpen] = useState(false);
 
   useEffect(() => {
     if (!uid) return;
@@ -150,7 +157,10 @@ export function ReceiptDetailDialog({
     <Dialog
       open={receipt !== null}
       onOpenChange={(open) => {
-        if (!open) setEditing(false);
+        if (!open) {
+          setEditing(false);
+          setLightboxOpen(false);
+        }
         onOpenChange(open);
       }}
     >
@@ -282,15 +292,14 @@ export function ReceiptDetailDialog({
                   )}
 
                   {receipt.receiptImage && (
-                    <a
-                      href={receipt.receiptImage}
-                      target="_blank"
-                      rel="noreferrer"
+                    <button
+                      type="button"
+                      onClick={() => setLightboxOpen(true)}
                       className="inline-flex items-center gap-1.5 text-sm font-medium text-black underline underline-offset-4 transition-colors hover:text-[#f97316]"
                     >
                       View receipt image
-                      <ExternalLink className="size-3.5" aria-hidden />
-                    </a>
+                      <Expand className="size-3.5" aria-hidden />
+                    </button>
                   )}
                 </div>
 
@@ -347,6 +356,30 @@ export function ReceiptDetailDialog({
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {receipt?.receiptImage && (
+        <Dialog open={lightboxOpen} onOpenChange={setLightboxOpen}>
+          <DialogContent
+            className="flex h-auto max-h-[90vh] w-auto max-w-[90vw] items-center justify-center border-none bg-transparent p-0 shadow-none sm:rounded-none [&>button]:rounded-full [&>button]:bg-black/60 [&>button]:p-1.5 [&>button]:text-white [&>button]:opacity-90 [&>button]:hover:bg-black/80 [&>button]:hover:opacity-100"
+            onOpenAutoFocus={(e) => e.preventDefault()}
+          >
+            <DialogTitle className="sr-only">Receipt image</DialogTitle>
+            {isPdfUrl(receipt.receiptImage) ? (
+              <iframe
+                src={receipt.receiptImage}
+                title="Receipt PDF"
+                className="h-[85vh] w-[85vw] max-w-4xl rounded-lg bg-white"
+              />
+            ) : (
+              <img
+                src={receipt.receiptImage}
+                alt="Receipt"
+                className="max-h-[85vh] max-w-[85vw] rounded-lg object-contain"
+              />
+            )}
+          </DialogContent>
+        </Dialog>
+      )}
     </Dialog>
   );
 }
