@@ -90,15 +90,27 @@ function toReceipt(id: string, data: Record<string, unknown>): Receipt {
   };
 }
 
-/** Fetches the signed-in user's own receipts, newest first -- matches the security rules' `created_by == request.auth.uid` scoping. */
-export async function fetchReceipts(uid: string): Promise<Receipt[]> {
+/**
+ * Fetches the signed-in user's own receipts, newest first -- matches the
+ * security rules' `created_by == request.auth.uid` scoping. `year`
+ * (optional) filters client-side by each receipt's own `date` field,
+ * same fetch-then-filter pattern as fetchHomeOffice's `forYear` match --
+ * Firestore has no server-side index on a derived year here, and the
+ * per-user document count is small enough that this is cheap. Omit
+ * `year` for callers that intentionally want every receipt regardless
+ * of date (Reports' own date-range picker, Bulk Upload's
+ * most-recent-receipt currency default).
+ */
+export async function fetchReceipts(uid: string, year?: string): Promise<Receipt[]> {
   const q = query(
     collection(db, "receipts"),
     where("created_by", "==", uid),
     orderBy("date", "desc"),
   );
   const snapshot = await getDocs(q);
-  return snapshot.docs.map((doc) => toReceipt(doc.id, doc.data()));
+  const receipts = snapshot.docs.map((doc) => toReceipt(doc.id, doc.data()));
+  if (!year) return receipts;
+  return receipts.filter((r) => String(r.date.getFullYear()) === year);
 }
 
 export type NewReceiptInput = {

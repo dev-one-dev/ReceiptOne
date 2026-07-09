@@ -472,7 +472,7 @@ function SortIcon({ active, direction }: { active: boolean; direction: SortDirec
 }
 
 function MileagePage() {
-  const { distanceUnit, mileageRate, dateFormat } = useDashboardContext();
+  const { distanceUnit, mileageRate, dateFormat, year } = useDashboardContext();
   const { user } = useAuth();
   const uid = user?.uid ?? auth.currentUser?.uid ?? null;
 
@@ -495,7 +495,7 @@ function MileagePage() {
   const loadTrips = (targetUid: string) => {
     setLoading(true);
     setError(null);
-    return fetchTrips(targetUid)
+    return fetchTrips(targetUid, year)
       .then((data) => setTrips(data))
       .catch((e) => setError(errorMessage(e, "Couldn't load trips.")))
       .finally(() => setLoading(false));
@@ -506,7 +506,7 @@ function MileagePage() {
     let cancelled = false;
     setLoading(true);
     setError(null);
-    fetchTrips(uid)
+    fetchTrips(uid, year)
       .then((data) => {
         if (!cancelled) setTrips(data);
       })
@@ -519,7 +519,7 @@ function MileagePage() {
     return () => {
       cancelled = true;
     };
-  }, [uid]);
+  }, [uid, year]);
 
   const totalDistance = trips.reduce((sum, t) => sum + tripDistance(t, distanceUnit), 0);
   const totalAmount = trips.reduce((sum, t) => sum + t.totalPrice, 0);
@@ -673,7 +673,7 @@ function MileagePage() {
               {!loading && !error && trips.length === 0 && (
                 <tr>
                   <td colSpan={5} className="px-5 py-10 text-center text-sm text-black/45">
-                    No trips yet — trips logged from the ReceiptOne mobile app will show up here.
+                    {`No trips for ${year} yet — trips logged from the ReceiptOne mobile app will show up here.`}
                   </td>
                 </tr>
               )}

@@ -282,7 +282,7 @@ function DashboardPage() {
     let cancelled = false;
     setReceiptsLoading(true);
     setReceiptsError(null);
-    fetchReceipts(uid)
+    fetchReceipts(uid, year)
       .then((data) => {
         if (!cancelled) setReceipts(data);
       })
@@ -295,7 +295,7 @@ function DashboardPage() {
     return () => {
       cancelled = true;
     };
-  }, [uid]);
+  }, [uid, year]);
 
   const [trips, setTrips] = useState<Trip[]>([]);
   const [tripsLoading, setTripsLoading] = useState(true);
@@ -304,7 +304,7 @@ function DashboardPage() {
     if (!uid) return;
     let cancelled = false;
     setTripsLoading(true);
-    fetchTrips(uid)
+    fetchTrips(uid, year)
       .then((data) => {
         if (!cancelled) setTrips(data);
       })
@@ -317,7 +317,7 @@ function DashboardPage() {
     return () => {
       cancelled = true;
     };
-  }, [uid]);
+  }, [uid, year]);
 
   const content = buildTaxContent(
     region,
@@ -454,8 +454,7 @@ function DashboardPage() {
               {!receiptsLoading && !receiptsError && recentReceipts.length === 0 && (
                 <tr>
                   <td colSpan={5} className="px-5 py-10 text-center text-sm text-black/45">
-                    No receipts yet — receipts scanned from the ReceiptOne mobile app will show up
-                    here.
+                    {`No receipts for ${year} yet — receipts scanned from the ReceiptOne mobile app will show up here.`}
                   </td>
                 </tr>
               )}

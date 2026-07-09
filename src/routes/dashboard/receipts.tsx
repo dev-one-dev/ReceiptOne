@@ -60,7 +60,7 @@ function SortIcon({ active, direction }: { active: boolean; direction: SortDirec
 // the real `receipts` collection yet. Revisit once Stage 4's read-only
 // scope is done; see README's "Known Limitations" section.
 function AllReceiptsTab() {
-  const { dateFormat } = useDashboardContext();
+  const { dateFormat, year } = useDashboardContext();
   const { user } = useAuth();
   // Falls back to auth.currentUser for the same reason the dashboard guard
   // does: context can briefly lag a fresh sign-in, and we'd rather fetch
@@ -88,7 +88,7 @@ function AllReceiptsTab() {
   const loadReceipts = (targetUid: string) => {
     setLoading(true);
     setError(null);
-    return fetchReceipts(targetUid)
+    return fetchReceipts(targetUid, year)
       .then((data) => setReceipts(data))
       .catch((e) => setError(errorMessage(e, "Couldn't load receipts.")))
       .finally(() => setLoading(false));
@@ -99,7 +99,7 @@ function AllReceiptsTab() {
     let cancelled = false;
     setLoading(true);
     setError(null);
-    fetchReceipts(uid)
+    fetchReceipts(uid, year)
       .then((data) => {
         if (!cancelled) setReceipts(data);
       })
@@ -112,7 +112,7 @@ function AllReceiptsTab() {
     return () => {
       cancelled = true;
     };
-  }, [uid]);
+  }, [uid, year]);
 
   const categories = useMemo(() => {
     const unique = Array.from(new Set(receipts.map((r) => r.companyCategory).filter(Boolean)));
@@ -252,7 +252,7 @@ function AllReceiptsTab() {
                 <tr>
                   <td colSpan={5} className="px-5 py-10 text-center text-sm text-black/45">
                     {receipts.length === 0
-                      ? "No receipts yet — receipts scanned from the ReceiptOne mobile app will show up here."
+                      ? `No receipts for ${year} yet — receipts scanned from the ReceiptOne mobile app will show up here.`
                       : "No receipts match these filters."}
                   </td>
                 </tr>

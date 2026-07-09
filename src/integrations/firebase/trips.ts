@@ -100,15 +100,24 @@ function toTrip(id: string, data: Record<string, unknown>): Trip {
   };
 }
 
-/** Fetches the signed-in user's own trips, newest first -- matches the security rules' `created_by == request.auth.uid` scoping. */
-export async function fetchTrips(uid: string): Promise<Trip[]> {
+/**
+ * Fetches the signed-in user's own trips, newest first -- matches the
+ * security rules' `created_by == request.auth.uid` scoping. `year`
+ * (optional) filters client-side by each trip's own `date` field, same
+ * fetch-then-filter pattern as fetchHomeOffice's `forYear` match. Omit
+ * `year` for callers that intentionally want every trip regardless of
+ * date (Reports' own date-range picker).
+ */
+export async function fetchTrips(uid: string, year?: string): Promise<Trip[]> {
   const q = query(
     collection(db, "routes"),
     where("created_by", "==", uid),
     orderBy("date", "desc"),
   );
   const snapshot = await getDocs(q);
-  return snapshot.docs.map((doc) => toTrip(doc.id, doc.data()));
+  const trips = snapshot.docs.map((doc) => toTrip(doc.id, doc.data()));
+  if (!year) return trips;
+  return trips.filter((t) => String(t.date.getFullYear()) === year);
 }
 
 /** Distance for this trip in the requested display unit, respecting round_trip (the stored one-way vs round-trip fields differ). */
