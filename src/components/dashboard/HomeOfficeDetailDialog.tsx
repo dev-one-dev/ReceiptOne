@@ -138,7 +138,7 @@ export function HomeOfficeDetailDialog({
               <div className="flex items-center justify-between text-xs text-black/55">
                 <span>
                   {formatCurrency(homeOffice.totalHomeExpenses, homeOffice.currency)} home expenses
-                  × {homeOffice.workspacePercent}%
+                  × {homeOffice.workspacePercent.toFixed(1)}%
                 </span>
                 <span className="font-medium text-black">
                   {formatCurrency(homeOffice.totalEmploymentHomeExpenses, homeOffice.currency)}
