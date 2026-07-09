@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { Search, UploadCloud, X } from "lucide-react";
+import { ChevronDown, ChevronsUpDown, ChevronUp, Search, UploadCloud, X } from "lucide-react";
 import { toast } from "sonner";
 import { httpsCallable } from "firebase/functions";
 import { getDownloadURL, ref as storageRef, uploadBytes } from "firebase/storage";
@@ -43,6 +43,19 @@ export const Route = createFileRoute("/dashboard/receipts")({
 
 const ALL_CATEGORIES = "All categories";
 
+type SortColumn = "date" | "amount";
+type SortDirection = "asc" | "desc";
+
+/** Small ▲/▼ sort indicator for a clickable <th> -- neutral ChevronsUpDown when this isn't the active sort column, a filled Chevron pointing the active direction when it is. */
+function SortIcon({ active, direction }: { active: boolean; direction: SortDirection }) {
+  if (!active) return <ChevronsUpDown className="size-3.5 text-black/25" aria-hidden />;
+  return direction === "asc" ? (
+    <ChevronUp className="size-3.5 text-black" aria-hidden />
+  ) : (
+    <ChevronDown className="size-3.5 text-black" aria-hidden />
+  );
+}
+
 // TODO(write-access): view-only for now -- no create/edit/delete against
 // the real `receipts` collection yet. Revisit once Stage 4's read-only
 // scope is done; see README's "Known Limitations" section.
@@ -60,6 +73,17 @@ function AllReceiptsTab() {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState(ALL_CATEGORIES);
   const [selected, setSelected] = useState<Receipt | null>(null);
+  const [sortColumn, setSortColumn] = useState<SortColumn | null>(null);
+  const [sortDirection, setSortDirection] = useState<SortDirection>("asc");
+
+  const handleSort = (column: SortColumn) => {
+    if (sortColumn === column) {
+      setSortDirection((d) => (d === "asc" ? "desc" : "asc"));
+    } else {
+      setSortColumn(column);
+      setSortDirection("asc");
+    }
+  };
 
   const loadReceipts = (targetUid: string) => {
     setLoading(true);
@@ -95,12 +119,19 @@ function AllReceiptsTab() {
     return [ALL_CATEGORIES, ...unique.sort()];
   }, [receipts]);
 
-  const rows = receipts.filter((r) => {
+  const filteredRows = receipts.filter((r) => {
     if (category !== ALL_CATEGORIES && r.companyCategory !== category) return false;
     if (search.trim() && !r.companyName.toLowerCase().includes(search.trim().toLowerCase()))
       return false;
     return true;
   });
+
+  const rows = sortColumn
+    ? [...filteredRows].sort((a, b) => {
+        const cmp = sortColumn === "date" ? a.date.getTime() - b.date.getTime() : a.price - b.price;
+        return sortDirection === "asc" ? cmp : -cmp;
+      })
+    : filteredRows;
 
   return (
     <div className="mt-5">
@@ -141,8 +172,24 @@ function AllReceiptsTab() {
               <tr className="text-xs text-black/45">
                 <th className="px-5 py-3 font-medium">Merchant</th>
                 <th className="px-5 py-3 font-medium">Category</th>
-                <th className="px-5 py-3 font-medium">Date</th>
-                <th className="px-5 py-3 text-right font-medium">Amount</th>
+                <th
+                  onClick={() => handleSort("date")}
+                  className="cursor-pointer select-none px-5 py-3 font-medium transition-colors hover:text-black"
+                >
+                  <span className="inline-flex items-center gap-1">
+                    Date
+                    <SortIcon active={sortColumn === "date"} direction={sortDirection} />
+                  </span>
+                </th>
+                <th
+                  onClick={() => handleSort("amount")}
+                  className="cursor-pointer select-none px-5 py-3 text-right font-medium transition-colors hover:text-black"
+                >
+                  <span className="inline-flex items-center justify-end gap-1">
+                    Amount
+                    <SortIcon active={sortColumn === "amount"} direction={sortDirection} />
+                  </span>
+                </th>
                 <th className="px-5 py-3 text-right font-medium">Tax deduction</th>
               </tr>
             </thead>
@@ -170,7 +217,22 @@ function AllReceiptsTab() {
                     className="cursor-pointer border-t border-black/[0.05] transition-colors hover:bg-black/[0.02]"
                   >
                     <td className="px-5 py-3 font-medium text-black">{row.companyName || "—"}</td>
-                    <td className="px-5 py-3 text-black/60">{row.companyCategory || "—"}</td>
+                    <td className="px-5 py-3 text-black/60">
+                      {row.companyCategory ? (
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setCategory(row.companyCategory);
+                          }}
+                          className="-mx-1 -my-0.5 cursor-pointer rounded px-1 py-0.5 transition-colors hover:bg-black/5 hover:text-black"
+                        >
+                          {row.companyCategory}
+                        </button>
+                      ) : (
+                        "—"
+                      )}
+                    </td>
                     <td className="px-5 py-3 text-black/60">{formatDate(row.date, dateFormat)}</td>
                     <td className="px-5 py-3 text-right tabular-nums text-black">
                       {formatCurrency(row.price, row.currency)}

@@ -1,6 +1,15 @@
 import { useEffect, useRef, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { Car, Gauge, MapPin, Plus, Wallet } from "lucide-react";
+import {
+  Car,
+  ChevronDown,
+  ChevronsUpDown,
+  ChevronUp,
+  Gauge,
+  MapPin,
+  Plus,
+  Wallet,
+} from "lucide-react";
 import { toast } from "sonner";
 import {
   Dialog,
@@ -449,6 +458,19 @@ function LogTripDialog({
   );
 }
 
+type SortColumn = "date" | "distance" | "amount";
+type SortDirection = "asc" | "desc";
+
+/** Small ▲/▼ sort indicator for a clickable <th> -- neutral ChevronsUpDown when this isn't the active sort column, a filled Chevron pointing the active direction when it is. */
+function SortIcon({ active, direction }: { active: boolean; direction: SortDirection }) {
+  if (!active) return <ChevronsUpDown className="size-3.5 text-black/25" aria-hidden />;
+  return direction === "asc" ? (
+    <ChevronUp className="size-3.5 text-black" aria-hidden />
+  ) : (
+    <ChevronDown className="size-3.5 text-black" aria-hidden />
+  );
+}
+
 function MileagePage() {
   const { distanceUnit, mileageRate, dateFormat } = useDashboardContext();
   const { user } = useAuth();
@@ -457,6 +479,17 @@ function MileagePage() {
   const [trips, setTrips] = useState<Trip[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [sortColumn, setSortColumn] = useState<SortColumn | null>(null);
+  const [sortDirection, setSortDirection] = useState<SortDirection>("asc");
+
+  const handleSort = (column: SortColumn) => {
+    if (sortColumn === column) {
+      setSortDirection((d) => (d === "asc" ? "desc" : "asc"));
+    } else {
+      setSortColumn(column);
+      setSortDirection("asc");
+    }
+  };
   const [selectedTrip, setSelectedTrip] = useState<Trip | null>(null);
 
   const loadTrips = (targetUid: string) => {
@@ -491,6 +524,18 @@ function MileagePage() {
   const totalDistance = trips.reduce((sum, t) => sum + tripDistance(t, distanceUnit), 0);
   const totalAmount = trips.reduce((sum, t) => sum + t.totalPrice, 0);
   const summaryCurrency = trips[0]?.currency ?? "USD";
+
+  const sortedTrips = sortColumn
+    ? [...trips].sort((a, b) => {
+        const cmp =
+          sortColumn === "date"
+            ? a.date.getTime() - b.date.getTime()
+            : sortColumn === "distance"
+              ? tripDistance(a, distanceUnit) - tripDistance(b, distanceUnit)
+              : a.totalPrice - b.totalPrice;
+        return sortDirection === "asc" ? cmp : -cmp;
+      })
+    : trips;
 
   return (
     <div className="mx-auto w-full max-w-[1200px] flex-1 px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
@@ -555,11 +600,35 @@ function MileagePage() {
           <table className="w-full min-w-[620px] border-collapse text-left text-sm">
             <thead>
               <tr className="border-t border-black/[0.07] text-xs text-black/45">
-                <th className="px-5 py-2 font-medium">Date</th>
+                <th
+                  onClick={() => handleSort("date")}
+                  className="cursor-pointer select-none px-5 py-2 font-medium transition-colors hover:text-black"
+                >
+                  <span className="inline-flex items-center gap-1">
+                    Date
+                    <SortIcon active={sortColumn === "date"} direction={sortDirection} />
+                  </span>
+                </th>
                 <th className="px-5 py-2 font-medium">Note</th>
                 <th className="px-5 py-2 font-medium">Route</th>
-                <th className="px-5 py-2 text-right font-medium">Distance</th>
-                <th className="px-5 py-2 text-right font-medium">Amount</th>
+                <th
+                  onClick={() => handleSort("distance")}
+                  className="cursor-pointer select-none px-5 py-2 text-right font-medium transition-colors hover:text-black"
+                >
+                  <span className="inline-flex items-center justify-end gap-1">
+                    Distance
+                    <SortIcon active={sortColumn === "distance"} direction={sortDirection} />
+                  </span>
+                </th>
+                <th
+                  onClick={() => handleSort("amount")}
+                  className="cursor-pointer select-none px-5 py-2 text-right font-medium transition-colors hover:text-black"
+                >
+                  <span className="inline-flex items-center justify-end gap-1">
+                    Amount
+                    <SortIcon active={sortColumn === "amount"} direction={sortDirection} />
+                  </span>
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -579,7 +648,7 @@ function MileagePage() {
               )}
               {!loading &&
                 !error &&
-                trips.map((t) => (
+                sortedTrips.map((t) => (
                   <tr key={t.id} className="border-t border-black/[0.05]">
                     <td className="px-5 py-3 text-black/60">{formatDate(t.date, dateFormat)}</td>
                     <td className="px-5 py-3 font-medium text-black">{t.comment || "—"}</td>
