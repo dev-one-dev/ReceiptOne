@@ -131,6 +131,12 @@ function buildTaxContent(
   const mock = REGION_MOCK[region];
   const taxReclaim = sumRefundableTax(receipts, taxList);
   const label = taxLabel(taxList);
+  // Stat card label only -- reads "GST/HST" when the sole configured
+  // tax is GST, since GST and HST are mutually exclusive per-province
+  // equivalents in Canada. Display only: the sum above still only
+  // includes tax_lists entries literally named "GST" (see
+  // sumRefundableTax), and heroNote below still uses the raw label.
+  const statLabel = label.trim().toLowerCase() === "gst" ? "GST/HST" : label;
 
   // Real per-trip data, same source and per-trip rate logic as the
   // Mileage page (tripDistance + totalPrice) -- not a recomputation
@@ -194,7 +200,7 @@ function buildTaxContent(
       stats: [
         expensesStat,
         {
-          label: `${label} reclaim`,
+          label: `${statLabel} reclaim`,
           value: receiptsLoading ? "…" : money(taxReclaim),
           note: receiptsLoading ? "Loading…" : "Sum of refundable tax recorded on your receipts",
           icon: Landmark,
