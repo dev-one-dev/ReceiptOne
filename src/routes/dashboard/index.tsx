@@ -3,6 +3,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Car, Home, Landmark, Receipt, type LucideIcon } from "lucide-react";
 import { ReceiptDetailDialog } from "@/components/dashboard/ReceiptDetailDialog";
 import { HomeOfficeDetailDialog } from "@/components/dashboard/HomeOfficeDetailDialog";
+import { CategoryDonutChart } from "@/components/dashboard/CategoryDonutChart";
 import {
   useDashboardContext,
   type DashboardRegion,
@@ -391,6 +392,8 @@ function DashboardPage() {
           </div>
         ))}
       </div>
+
+      <CategoryDonutChart receipts={receipts} year={year} loading={receiptsLoading} />
 
       {/* Recent receipts */}
       <div className="mt-6 rounded-2xl border border-black/[0.07] bg-white shadow-[0_2px_12px_rgba(0,0,0,0.06)]">
