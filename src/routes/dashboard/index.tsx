@@ -17,13 +17,7 @@ import {
   type TaxListEntry as ReceiptTaxEntry,
 } from "@/integrations/firebase/receipts";
 import { fetchTrips, tripDistance, type Trip } from "@/integrations/firebase/trips";
-import {
-  formatCurrency,
-  formatDate,
-  formatDistance,
-  money,
-  moneyWhole,
-} from "@/lib/dashboard-format";
+import { formatCurrency, formatDate, formatDistance, money } from "@/lib/dashboard-format";
 import { errorMessage } from "@/lib/utils";
 
 export const Route = createFileRoute("/dashboard/")({
@@ -79,6 +73,13 @@ const REGION_MOCK: Record<DashboardRegion, RegionMock> = {
  * "estimated tax savings" rather than "refundable taxes," since nothing
  * is actually refunded the way a GST/HST credit is.
  */
+/** Splits a money()-formatted string like "$183.94" into its whole-dollar part ("$183") and cents part (".94"), for the hero stat's large/bold-plus-small/muted display -- matching mobile's own visual treatment of this figure. */
+function splitMoney(formatted: string): { whole: string; cents: string } {
+  const dotIndex = formatted.lastIndexOf(".");
+  if (dotIndex === -1) return { whole: formatted, cents: "" };
+  return { whole: formatted.slice(0, dotIndex), cents: formatted.slice(dotIndex) };
+}
+
 /** Real accounts can have more than one active tax (e.g. GST + PST in BC) -- sums them for the reclaim total and picks a label that reads naturally for either one tax or several. */
 function taxLabel(taxList: TaxListEntry[]): string {
   if (taxList.length === 0) return "Sales tax";
@@ -195,7 +196,7 @@ function buildTaxContent(
   if (region === "ca") {
     return {
       heroLabel: "Estimated refundable taxes",
-      heroTotal: moneyWhole(taxReclaim + homeOfficeReclaim + mileageTotal),
+      heroTotal: money(taxReclaim + homeOfficeReclaim + mileageTotal),
       heroNote: `${label} reclaim plus estimated tax savings from home office and mileage`,
       stats: [
         expensesStat,
@@ -219,7 +220,7 @@ function buildTaxContent(
 
   return {
     heroLabel: "Estimated tax savings",
-    heroTotal: moneyWhole(mock.homeOfficeSaving + mileageTotal),
+    heroTotal: money(mock.homeOfficeSaving + mileageTotal),
     heroNote: "Estimated tax savings from home office and mileage deductions",
     stats: [
       expensesStat,
@@ -349,7 +350,10 @@ function DashboardPage() {
           {content.heroLabel} for {year}
         </p>
         <p className="mt-2 text-4xl font-semibold tracking-tight text-emerald-600 sm:text-5xl">
-          {content.heroTotal}
+          {splitMoney(content.heroTotal).whole}
+          <span className="text-2xl text-emerald-600/60 sm:text-3xl">
+            {splitMoney(content.heroTotal).cents}
+          </span>
         </p>
         <p className="mt-2 text-sm text-black/45">{content.heroNote}</p>
       </div>

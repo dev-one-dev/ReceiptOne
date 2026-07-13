@@ -41,10 +41,6 @@ export function money(n: number): string {
   return `$${n.toFixed(2)}`;
 }
 
-export function moneyWhole(n: number): string {
-  return `$${Math.round(n)}`;
-}
-
 /** Formats a raw number using a specific ISO currency code (e.g. real Firestore records that carry their own `currency` field), unlike `money()` which always assumes `$`. */
 export function formatCurrency(amount: number, currency: string): string {
   try {
