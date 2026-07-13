@@ -99,3 +99,39 @@ export async function updateUserProfile(uid: string, patch: ProfileUpdateInput):
   if (Object.keys(updates).length === 0) return;
   await updateDoc(doc(db, "users", uid), updates);
 }
+
+export type UserSettingsUpdateInput = {
+  language?: string;
+  distanceUnit?: "km" | "mi";
+  distanceRate?: number;
+  taxList?: ProfileTaxEntry[];
+};
+
+/**
+ * Updates the real, confirmed Settings-page fields on the user's own
+ * profile document -- language, distance (the unit string, NOT
+ * "distance_unit"), distance_rate, and taxList (camelCase sub-fields,
+ * same convention already handled correctly for receipts.tax_lists
+ * elsewhere in this codebase). Deliberately narrow: never touches
+ * `currency` (not a confirmed real field on this schema) or
+ * date_format_type (enum mapping unconfirmed) -- both stay local-only/
+ * cosmetic on the Settings page until those are resolved separately.
+ */
+export async function updateUserSettings(
+  uid: string,
+  patch: UserSettingsUpdateInput,
+): Promise<void> {
+  const updates: Record<string, unknown> = {};
+  if (patch.language !== undefined) updates.language = patch.language;
+  if (patch.distanceUnit !== undefined) updates.distance = patch.distanceUnit;
+  if (patch.distanceRate !== undefined) updates.distance_rate = patch.distanceRate;
+  if (patch.taxList !== undefined) {
+    updates.taxList = patch.taxList.map((t) => ({
+      isRefundable: t.isRefundable,
+      taxName: t.taxName,
+      taxPercent: t.taxPercent,
+    }));
+  }
+  if (Object.keys(updates).length === 0) return;
+  await updateDoc(doc(db, "users", uid), updates);
+}

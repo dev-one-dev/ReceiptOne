@@ -26,6 +26,10 @@ import {
   type Language,
   type TaxListEntry,
 } from "@/components/dashboard/DashboardContext";
+import { useAuth } from "@/integrations/firebase/auth-context";
+import { auth } from "@/integrations/firebase/client";
+import { updateUserSettings } from "@/integrations/firebase/user-profile";
+import { errorMessage } from "@/lib/utils";
 
 export const Route = createFileRoute("/dashboard/settings")({
   component: SettingsPage,
@@ -64,11 +68,16 @@ function ToggleRow({
 }
 
 // TODO(write-access): language/distance unit/tax list/mileage rate are
-// now seeded from the real users/{uid} profile (see dashboard.tsx), but
-// editing them here is still local-only -- nothing persists back to
-// Firestore yet. date_format_type is intentionally not wired at all
-// (its enum mapping isn't confirmed). See README's "Known Limitations".
+// seeded from the real users/{uid} profile (see dashboard.tsx) and now
+// persist back to Firestore via updateUserSettings (Preferences' and
+// Tax & mileage's own Save buttons below). currency and date_format_type
+// remain intentionally local-only/cosmetic -- currency isn't a
+// confirmed real field on this schema, and date_format_type's enum
+// mapping isn't confirmed. See README's "Known Limitations".
 function SettingsPage() {
+  const { user } = useAuth();
+  const uid = user?.uid ?? auth.currentUser?.uid ?? null;
+
   const [emailNotifs, setEmailNotifs] = useState(true);
   const [weeklySummary, setWeeklySummary] = useState(true);
   const [receiptReminders, setReceiptReminders] = useState(false);
@@ -89,6 +98,8 @@ function SettingsPage() {
   } = useDashboardContext();
 
   const [mileageRateInput, setMileageRateInput] = useState(String(mileageRate));
+  const [savingPreferences, setSavingPreferences] = useState(false);
+  const [savingTaxMileage, setSavingTaxMileage] = useState(false);
 
   // mileageRate can change out from under this input when the real
   // profile finishes loading (dashboard.tsx) -- only resync the buffer
@@ -113,8 +124,41 @@ function SettingsPage() {
     }
   };
 
-  const handleSave = () => {
-    toast.success("Settings saved (demo only — not persisted).");
+  // language/distanceUnit already live in DashboardContext, the single
+  // shared source every other page (e.g. Mileage's mileageRate/
+  // distanceUnit) already reads -- so the on-page and app-wide state is
+  // already current the moment a dropdown changes. This just persists
+  // that same context state to Firestore so a refresh doesn't revert it.
+  const handleSavePreferences = async () => {
+    if (!uid) {
+      toast.error("You need to be signed in to save settings.");
+      return;
+    }
+    setSavingPreferences(true);
+    try {
+      await updateUserSettings(uid, { language, distanceUnit });
+      toast.success("Preferences saved.");
+    } catch (e) {
+      toast.error(errorMessage(e, "Couldn't save your preferences."));
+    } finally {
+      setSavingPreferences(false);
+    }
+  };
+
+  const handleSaveTaxMileage = async () => {
+    if (!uid) {
+      toast.error("You need to be signed in to save settings.");
+      return;
+    }
+    setSavingTaxMileage(true);
+    try {
+      await updateUserSettings(uid, { distanceRate: mileageRate, taxList });
+      toast.success("Tax & mileage settings saved.");
+    } catch (e) {
+      toast.error(errorMessage(e, "Couldn't save tax & mileage settings."));
+    } finally {
+      setSavingTaxMileage(false);
+    }
   };
 
   const handleDelete = () => {
@@ -219,10 +263,11 @@ function SettingsPage() {
 
           <button
             type="button"
-            onClick={handleSave}
-            className="mt-5 inline-flex items-center justify-center rounded-full bg-black px-5 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90"
+            onClick={() => void handleSavePreferences()}
+            disabled={savingPreferences}
+            className="mt-5 inline-flex items-center justify-center rounded-full bg-black px-5 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
           >
-            Save changes
+            {savingPreferences ? "Saving…" : "Save changes"}
           </button>
         </div>
 
@@ -230,7 +275,8 @@ function SettingsPage() {
         <div className="rounded-2xl border border-black/[0.07] bg-white p-5 shadow-[0_2px_12px_rgba(0,0,0,0.06)] lg:col-span-2">
           <h2 className="text-sm font-semibold text-black">Tax &amp; mileage</h2>
           <p className="mt-1 text-xs text-black/50">
-            Applies instantly to the tax reclaim and mileage figures on Dashboard and Mileage.
+            Updates the tax reclaim and mileage figures on Dashboard and Mileage right away — click
+            Save to keep these on future visits.
           </p>
 
           <div className="mt-4 space-y-3">
@@ -293,6 +339,15 @@ function SettingsPage() {
               </div>
             )}
           </div>
+
+          <button
+            type="button"
+            onClick={() => void handleSaveTaxMileage()}
+            disabled={savingTaxMileage}
+            className="mt-5 inline-flex items-center justify-center rounded-full bg-black px-5 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            {savingTaxMileage ? "Saving…" : "Save changes"}
+          </button>
         </div>
       </div>
 
