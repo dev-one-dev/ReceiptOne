@@ -1,6 +1,38 @@
-import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
+import { useState } from "react";
+import { Cell, Pie, PieChart, ResponsiveContainer, Sector, Tooltip } from "recharts";
 import type { Receipt } from "@/integrations/firebase/receipts";
 import { formatCurrency } from "@/lib/dashboard-format";
+
+const ACTIVE_OUTER_RADIUS = 92;
+
+// A local, minimal shape instead of reaching into recharts' internal
+// (non-exported-from-package-root) PieSectorDataItem type -- the Pie
+// component's activeShape prop passes an object with (at least) these
+// fields at render time regardless, so this is enough to render Sector.
+type ActiveShapeProps = {
+  cx?: number;
+  cy?: number;
+  innerRadius?: number;
+  outerRadius?: number;
+  startAngle?: number;
+  endAngle?: number;
+  fill?: string;
+};
+
+function renderActiveShape(props: ActiveShapeProps) {
+  const { cx, cy, innerRadius, outerRadius, startAngle, endAngle, fill } = props;
+  return (
+    <Sector
+      cx={cx}
+      cy={cy}
+      innerRadius={innerRadius}
+      outerRadius={ACTIVE_OUTER_RADIUS}
+      startAngle={startAngle}
+      endAngle={endAngle}
+      fill={fill}
+    />
+  );
+}
 
 // Deliberately no orange (#f97316 is this app's own brand accent, used
 // on every stat card icon) and no black -- a distinct categorical
@@ -77,6 +109,7 @@ export function CategoryDonutChart({
 }) {
   const currency = receipts[0]?.currency ?? "CAD";
   const slices = buildSlices(receipts);
+  const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
   return (
     <div className="mt-3 rounded-2xl border border-black/[0.07] bg-white p-5 shadow-[0_2px_12px_rgba(0,0,0,0.06)]">
@@ -103,9 +136,21 @@ export function CategoryDonutChart({
                   innerRadius={55}
                   outerRadius={85}
                   paddingAngle={2}
+                  activeIndex={activeIndex ?? undefined}
+                  activeShape={renderActiveShape}
+                  onMouseEnter={(_, index) => setActiveIndex(index)}
+                  onMouseLeave={() => setActiveIndex(null)}
                 >
-                  {slices.map((slice) => (
-                    <Cell key={slice.category} fill={slice.color} stroke="none" />
+                  {slices.map((slice, index) => (
+                    <Cell
+                      key={slice.category}
+                      fill={slice.color}
+                      stroke="none"
+                      style={{
+                        opacity: activeIndex === null || activeIndex === index ? 1 : 0.45,
+                        transition: "opacity 150ms",
+                      }}
+                    />
                   ))}
                 </Pie>
                 <Tooltip
@@ -118,8 +163,16 @@ export function CategoryDonutChart({
             </ResponsiveContainer>
           </div>
           <div className="w-full max-w-xs shrink-0 space-y-2 sm:w-72">
-            {slices.map((slice) => (
-              <div key={slice.category} className="flex items-center gap-2 text-sm">
+            {slices.map((slice, index) => (
+              <div
+                key={slice.category}
+                onMouseEnter={() => setActiveIndex(index)}
+                onMouseLeave={() => setActiveIndex(null)}
+                className={[
+                  "flex items-center gap-2 rounded-lg px-1.5 py-1 text-sm transition-colors",
+                  activeIndex === index ? "bg-black/[0.04]" : "",
+                ].join(" ")}
+              >
                 <span
                   className="size-2.5 shrink-0 rounded-full"
                   style={{ backgroundColor: slice.color }}
