@@ -36,7 +36,8 @@ const ACCOUNT_REGION: { flag: string; label: string; region: DashboardRegion } =
   label: "Canada",
   region: "ca",
 };
-const TAX_YEARS = ["2026", "2025", "2024"];
+const CURRENT_YEAR = new Date().getFullYear();
+const TAX_YEARS = [String(CURRENT_YEAR), String(CURRENT_YEAR - 1)];
 
 function DashboardLayout() {
   const { user, loading } = useAuth();
