@@ -1,18 +1,27 @@
 import { useEffect, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { ExternalLink, Gift, Mail, Pencil, User, Users } from "lucide-react";
+import { updateProfile } from "firebase/auth";
+import { ExternalLink, Gift, Mail, MapPin, Pencil, User, Users } from "lucide-react";
 import { toast } from "sonner";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { useDashboardContext } from "@/components/dashboard/DashboardContext";
 import { getInitials, useAuth } from "@/integrations/firebase/auth-context";
 import { auth } from "@/integrations/firebase/client";
 import { fetchReferralCount } from "@/integrations/firebase/referrals";
-import { fetchUserProfile } from "@/integrations/firebase/user-profile";
+import { fetchUserProfile, updateUserProfile } from "@/integrations/firebase/user-profile";
 import {
   fetchBillingHistory,
   type BillingHistory,
 } from "@/integrations/revenuecat/get-billing-history";
 import { findActiveSubscription } from "@/integrations/entitlement";
 import { formatCurrency, formatDate } from "@/lib/dashboard-format";
+import { errorMessage } from "@/lib/utils";
 
 export const Route = createFileRoute("/dashboard/billing")({
   component: BillingPage,
@@ -42,10 +51,6 @@ const STORES = [
   },
 ] as const;
 
-function notWiredUp() {
-  toast.info("This isn't wired up yet — static mockup only.");
-}
-
 const COUNTRY_NAMES: Record<string, { flag: string; name: string }> = {
   ca: { flag: "🇨🇦", name: "Canada" },
   us: { flag: "🇺🇸", name: "United States" },
@@ -72,15 +77,30 @@ function formatTrialStatus(trialExpDate: Date | null): string | null {
 function BillingPage() {
   const { dateFormat } = useDashboardContext();
   const { user } = useAuth();
-  const displayName = user?.displayName || "Account";
   const email = user?.email || "";
   const uid = user?.uid ?? auth.currentUser?.uid ?? null;
 
   const [jurisdiction, setJurisdiction] = useState<Jurisdiction | null>(null);
+  const [countryCode, setCountryCode] = useState("");
+  const [stateState, setStateState] = useState("");
   const [trialStatus, setTrialStatus] = useState<string | null>(null);
   const [referralCode, setReferralCode] = useState("");
   const [referralCount, setReferralCount] = useState<number | null>(null);
   const [billing, setBilling] = useState<BillingHistory | null>(null);
+
+  // Firebase Auth's updateProfile() mutates auth.currentUser in place
+  // but doesn't re-fire onAuthStateChanged, so useAuth()'s own `user`
+  // won't reflect a saved name change on its own -- this override is
+  // the thing that actually updates the header immediately after save.
+  const [displayNameOverride, setDisplayNameOverride] = useState<string | null>(null);
+  const displayName = displayNameOverride || user?.displayName || "Account";
+
+  const [editing, setEditing] = useState(false);
+  const [editName, setEditName] = useState("");
+  const [editCountryCode, setEditCountryCode] = useState("");
+  const [editState, setEditState] = useState("");
+  const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!uid) return;
@@ -89,6 +109,8 @@ function BillingPage() {
       .then(([profile, count]) => {
         if (cancelled) return;
         if (profile) {
+          setCountryCode(profile.countryCode);
+          setStateState(profile.stateState);
           setJurisdiction(formatJurisdiction(profile.countryCode, profile.stateState));
           setTrialStatus(formatTrialStatus(profile.trialExpDate));
           setReferralCode(profile.promo);
@@ -103,6 +125,40 @@ function BillingPage() {
       cancelled = true;
     };
   }, [uid]);
+
+  const handleEditOpen = () => {
+    setEditName(displayName === "Account" ? "" : displayName);
+    setEditCountryCode(countryCode || "ca");
+    setEditState(stateState);
+    setSaveError(null);
+    setEditing(true);
+  };
+
+  const handleSaveProfile = async () => {
+    if (!uid) return;
+    setSaving(true);
+    setSaveError(null);
+    try {
+      if (auth.currentUser) {
+        await updateProfile(auth.currentUser, { displayName: editName.trim() });
+      }
+      await updateUserProfile(uid, {
+        countryCode: editCountryCode,
+        stateCountry: editCountryCode,
+        stateState: editState.trim(),
+      });
+      setDisplayNameOverride(editName.trim() || null);
+      setCountryCode(editCountryCode);
+      setStateState(editState.trim());
+      setJurisdiction(formatJurisdiction(editCountryCode, editState.trim()));
+      toast.success("Profile updated.");
+      setEditing(false);
+    } catch (e) {
+      setSaveError(errorMessage(e, "Couldn't save your changes."));
+    } finally {
+      setSaving(false);
+    }
+  };
 
   // Fetched separately from the profile/referral group above -- a
   // billing-history failure (or, very commonly right now, a real
@@ -141,14 +197,16 @@ function BillingPage() {
         <div className="rounded-2xl border border-black/[0.07] bg-white p-5 shadow-[0_2px_12px_rgba(0,0,0,0.06)]">
           <div className="flex items-center justify-between">
             <h2 className="text-sm font-semibold text-black">Profile</h2>
-            <button
-              type="button"
-              onClick={notWiredUp}
-              className="inline-flex items-center gap-1.5 rounded-full border border-black/10 px-3 py-1.5 text-xs font-medium text-black/60 transition-colors hover:bg-black/5 hover:text-black"
-            >
-              <Pencil className="size-3.5" aria-hidden />
-              Edit
-            </button>
+            {!editing && (
+              <button
+                type="button"
+                onClick={handleEditOpen}
+                className="inline-flex items-center gap-1.5 rounded-full border border-black/10 px-3 py-1.5 text-xs font-medium text-black/60 transition-colors hover:bg-black/5 hover:text-black"
+              >
+                <Pencil className="size-3.5" aria-hidden />
+                Edit
+              </button>
+            )}
           </div>
           <div className="mt-4 flex items-center gap-3">
             <span className="flex size-12 shrink-0 items-center justify-center rounded-full bg-[#f97316]/15 text-sm font-semibold text-[#f97316]">
@@ -159,48 +217,121 @@ function BillingPage() {
               <p className="text-xs text-black/50">{email}</p>
             </div>
           </div>
-          <dl className="mt-4 space-y-2.5 border-t border-black/[0.05] pt-4">
-            <div className="flex items-center justify-between text-sm">
-              <dt className="flex items-center gap-2 text-black/55">
-                <User className="size-3.5" aria-hidden />
-                Full name
-              </dt>
-              <dd className="font-medium text-black">{displayName}</dd>
+
+          {editing ? (
+            <div className="mt-4 space-y-3 border-t border-black/[0.05] pt-4">
+              <div className="space-y-1.5">
+                <label htmlFor="edit-name" className="text-xs font-medium text-black/55">
+                  Full name
+                </label>
+                <input
+                  id="edit-name"
+                  type="text"
+                  value={editName}
+                  onChange={(e) => setEditName(e.target.value)}
+                  className="h-9 w-full rounded-xl border border-black/10 bg-white px-3 text-sm text-black outline-none focus:border-black/25"
+                />
+              </div>
+              <div className="space-y-1.5">
+                <p className="flex items-center gap-2 text-xs font-medium text-black/55">
+                  <MapPin className="size-3.5" aria-hidden />
+                  Tax jurisdiction
+                </p>
+              </div>
+              <div className="grid grid-cols-2 gap-2">
+                <div className="space-y-1.5">
+                  <label className="text-xs font-medium text-black/55">Country</label>
+                  <Select value={editCountryCode} onValueChange={setEditCountryCode}>
+                    <SelectTrigger className="h-9 w-full rounded-xl border-black/10 bg-white text-sm shadow-none">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="ca">🇨🇦 Canada</SelectItem>
+                      <SelectItem value="us">🇺🇸 United States</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-1.5">
+                  <label htmlFor="edit-state" className="text-xs font-medium text-black/55">
+                    State / Province
+                  </label>
+                  <input
+                    id="edit-state"
+                    type="text"
+                    value={editState}
+                    onChange={(e) => setEditState(e.target.value)}
+                    placeholder="e.g. British Columbia"
+                    className="h-9 w-full rounded-xl border border-black/10 bg-white px-3 text-sm text-black outline-none focus:border-black/25"
+                  />
+                </div>
+              </div>
+              {saveError && <p className="text-xs text-red-600">{saveError}</p>}
+              <div className="flex items-center gap-2 pt-1">
+                <button
+                  type="button"
+                  onClick={() => void handleSaveProfile()}
+                  disabled={saving}
+                  className="inline-flex items-center justify-center rounded-full bg-black px-4 py-2 text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  {saving ? "Saving…" : "Save"}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setEditing(false)}
+                  disabled={saving}
+                  className="inline-flex items-center justify-center rounded-full border border-black/10 px-4 py-2 text-sm font-medium text-black transition-colors hover:bg-black/5 disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  Cancel
+                </button>
+              </div>
             </div>
-            <div className="flex items-center justify-between text-sm">
-              <dt className="flex items-center gap-2 text-black/55">
-                <Mail className="size-3.5" aria-hidden />
-                Email
-              </dt>
-              <dd className="font-medium text-black">{email}</dd>
-            </div>
-            <div className="flex items-center justify-between text-sm">
-              <dt className="text-black/55">Tax jurisdiction</dt>
-              <dd className="inline-flex items-center gap-1.5 font-medium text-black">
-                {jurisdiction ? (
-                  <>
-                    <span aria-hidden>{jurisdiction.flag}</span> {jurisdiction.text}
-                  </>
-                ) : (
-                  "—"
-                )}
-              </dd>
-            </div>
-            <div className="flex items-center justify-between text-sm">
-              <dt className="flex items-center gap-2 text-black/55">
-                <Gift className="size-3.5" aria-hidden />
-                Your referral code
-              </dt>
-              <dd className="font-medium text-black">{referralCode || "—"}</dd>
-            </div>
-            <div className="flex items-center justify-between text-sm">
-              <dt className="flex items-center gap-2 text-black/55">
-                <Users className="size-3.5" aria-hidden />
-                Friends referred
-              </dt>
-              <dd className="font-medium text-black">{referralCount ?? "—"}</dd>
-            </div>
-          </dl>
+          ) : (
+            <dl className="mt-4 space-y-2.5 border-t border-black/[0.05] pt-4">
+              <div className="flex items-center justify-between text-sm">
+                <dt className="flex items-center gap-2 text-black/55">
+                  <User className="size-3.5" aria-hidden />
+                  Full name
+                </dt>
+                <dd className="font-medium text-black">{displayName}</dd>
+              </div>
+              <div className="flex items-center justify-between text-sm">
+                <dt className="flex items-center gap-2 text-black/55">
+                  <Mail className="size-3.5" aria-hidden />
+                  Email
+                </dt>
+                <dd className="font-medium text-black">{email}</dd>
+              </div>
+              <div className="flex items-center justify-between text-sm">
+                <dt className="flex items-center gap-2 text-black/55">
+                  <MapPin className="size-3.5" aria-hidden />
+                  Tax jurisdiction
+                </dt>
+                <dd className="inline-flex items-center gap-1.5 font-medium text-black">
+                  {jurisdiction ? (
+                    <>
+                      <span aria-hidden>{jurisdiction.flag}</span> {jurisdiction.text}
+                    </>
+                  ) : (
+                    "—"
+                  )}
+                </dd>
+              </div>
+              <div className="flex items-center justify-between text-sm">
+                <dt className="flex items-center gap-2 text-black/55">
+                  <Gift className="size-3.5" aria-hidden />
+                  Your referral code
+                </dt>
+                <dd className="font-medium text-black">{referralCode || "—"}</dd>
+              </div>
+              <div className="flex items-center justify-between text-sm">
+                <dt className="flex items-center gap-2 text-black/55">
+                  <Users className="size-3.5" aria-hidden />
+                  Friends referred
+                </dt>
+                <dd className="font-medium text-black">{referralCount ?? "—"}</dd>
+              </div>
+            </dl>
+          )}
         </div>
 
         {/* Subscription */}

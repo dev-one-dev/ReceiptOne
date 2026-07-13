@@ -1,4 +1,4 @@
-import { doc, getDoc, Timestamp } from "firebase/firestore";
+import { doc, getDoc, Timestamp, updateDoc } from "firebase/firestore";
 import { db } from "@/integrations/firebase/client";
 
 export type ProfileTaxEntry = {
@@ -74,4 +74,28 @@ export async function fetchUserProfile(uid: string): Promise<UserProfile | null>
   const snapshot = await getDoc(doc(db, "users", uid));
   if (!snapshot.exists()) return null;
   return toProfile(snapshot.id, snapshot.data());
+}
+
+export type ProfileUpdateInput = {
+  countryCode?: string;
+  stateCountry?: string;
+  stateState?: string;
+};
+
+/**
+ * Updates only the Tax jurisdiction fields on the user's own profile
+ * document -- country_code (top-level) and the nested state.country/
+ * state.state fields, matching how toProfile above reads them (dot-
+ * notation so only those two sub-fields of `state` are touched, not
+ * the whole map). Deliberately narrow: never touches taxList,
+ * distance_rate, language, or any other Settings-page field -- wiring
+ * those up is a separate, not-yet-built task.
+ */
+export async function updateUserProfile(uid: string, patch: ProfileUpdateInput): Promise<void> {
+  const updates: Record<string, unknown> = {};
+  if (patch.countryCode !== undefined) updates.country_code = patch.countryCode;
+  if (patch.stateCountry !== undefined) updates["state.country"] = patch.stateCountry;
+  if (patch.stateState !== undefined) updates["state.state"] = patch.stateState;
+  if (Object.keys(updates).length === 0) return;
+  await updateDoc(doc(db, "users", uid), updates);
 }
