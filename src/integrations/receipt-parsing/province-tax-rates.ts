@@ -106,3 +106,16 @@ export function findProvinceTaxInfo(country: string, region: string): ProvinceTa
   const needle = region.trim().toLowerCase();
   return list.find((p) => p.region.toLowerCase() === needle) ?? null;
 }
+
+/**
+ * All region names for a country (CA -> provinces/territories, anything
+ * else -> US states) -- the canonical source for any region picker UI,
+ * so it can't drift out of sync with what the AI-parsing disambiguation
+ * above actually recognizes. Same country-matching rule as
+ * findProvinceTaxInfo, so the two never disagree about which list a
+ * given country code maps to.
+ */
+export function listRegions(country: string): string[] {
+  const list = country.trim().toLowerCase() === "ca" ? CA_PROVINCE_TAXES : US_STATE_TAXES;
+  return list.map((p) => p.region);
+}

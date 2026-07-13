@@ -15,6 +15,7 @@ import { getInitials, useAuth } from "@/integrations/firebase/auth-context";
 import { auth } from "@/integrations/firebase/client";
 import { fetchReferralCount } from "@/integrations/firebase/referrals";
 import { fetchUserProfile, updateUserProfile } from "@/integrations/firebase/user-profile";
+import { listRegions } from "@/integrations/receipt-parsing/province-tax-rates";
 import {
   fetchBillingHistory,
   type BillingHistory,
@@ -62,6 +63,12 @@ function formatJurisdiction(countryCode: string, state: string): Jurisdiction | 
   const country = COUNTRY_NAMES[countryCode];
   if (!country) return null;
   return { flag: country.flag, text: state ? `${country.name} — ${state}` : country.name };
+}
+
+/** Case-insensitive match against a country's real region list -- returns the canonical-cased name if found, else "" (never a value the State/Province Select can't actually render as one of its options). */
+function matchRegion(regions: string[], raw: string): string {
+  const needle = raw.trim().toLowerCase();
+  return regions.find((r) => r.toLowerCase() === needle) ?? "";
 }
 
 /** null if there's no trial date to show; otherwise a short status string, handling both "still in trial" and "already ended" since a real account's trial_exp_date can be in the past. */
@@ -128,8 +135,12 @@ function BillingPage() {
 
   const handleEditOpen = () => {
     setEditName(displayName === "Account" ? "" : displayName);
-    setEditCountryCode(countryCode || "ca");
-    setEditState(stateState);
+    const initialCountry = countryCode || "ca";
+    setEditCountryCode(initialCountry);
+    // stateState may predate this dropdown (free text, any casing) --
+    // match it against the real region list rather than assuming it's
+    // already an exact, Select-renderable value.
+    setEditState(matchRegion(listRegions(initialCountry), stateState));
     setSaveError(null);
     setEditing(true);
   };
@@ -241,7 +252,17 @@ function BillingPage() {
               <div className="grid grid-cols-2 gap-2">
                 <div className="space-y-1.5">
                   <label className="text-xs font-medium text-black/55">Country</label>
-                  <Select value={editCountryCode} onValueChange={setEditCountryCode}>
+                  <Select
+                    value={editCountryCode}
+                    onValueChange={(v) => {
+                      setEditCountryCode(v);
+                      // Switching country invalidates the old selection
+                      // unless it happens to also be a real region in
+                      // the new country's list -- matchRegion clears it
+                      // rather than leaving a mismatched value behind.
+                      setEditState((prev) => matchRegion(listRegions(v), prev));
+                    }}
+                  >
                     <SelectTrigger className="h-9 w-full rounded-xl border-black/10 bg-white text-sm shadow-none">
                       <SelectValue />
                     </SelectTrigger>
@@ -252,17 +273,19 @@ function BillingPage() {
                   </Select>
                 </div>
                 <div className="space-y-1.5">
-                  <label htmlFor="edit-state" className="text-xs font-medium text-black/55">
-                    State / Province
-                  </label>
-                  <input
-                    id="edit-state"
-                    type="text"
-                    value={editState}
-                    onChange={(e) => setEditState(e.target.value)}
-                    placeholder="e.g. British Columbia"
-                    className="h-9 w-full rounded-xl border border-black/10 bg-white px-3 text-sm text-black outline-none focus:border-black/25"
-                  />
+                  <label className="text-xs font-medium text-black/55">State / Province</label>
+                  <Select value={editState} onValueChange={setEditState}>
+                    <SelectTrigger className="h-9 w-full rounded-xl border-black/10 bg-white text-sm shadow-none">
+                      <SelectValue placeholder="Select…" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {listRegions(editCountryCode).map((region) => (
+                        <SelectItem key={region} value={region}>
+                          {region}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
               </div>
               {saveError && <p className="text-xs text-red-600">{saveError}</p>}
