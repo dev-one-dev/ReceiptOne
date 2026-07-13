@@ -52,8 +52,13 @@ import { hasActiveAccess } from "@/integrations/entitlement";
 import { formatCurrency, formatDate } from "@/lib/dashboard-format";
 import { errorMessage } from "@/lib/utils";
 
+type ReceiptsSearch = { category?: string };
+
 export const Route = createFileRoute("/dashboard/receipts")({
   component: ReceiptsPage,
+  validateSearch: (search: Record<string, unknown>): ReceiptsSearch => ({
+    category: typeof search.category === "string" ? search.category : undefined,
+  }),
 });
 
 const ALL_CATEGORIES = "All categories";
@@ -89,6 +94,8 @@ function AllReceiptsTab() {
   // than silently skip loading this user's receipts.
   const uid = user?.uid ?? auth.currentUser?.uid ?? null;
 
+  const routeSearch = Route.useSearch();
+
   const [receipts, setReceipts] = useState<Receipt[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -97,6 +104,12 @@ function AllReceiptsTab() {
   const [selected, setSelected] = useState<Receipt | null>(null);
   const [sortColumn, setSortColumn] = useState<SortColumn | null>(null);
   const [sortDirection, setSortDirection] = useState<SortDirection>("asc");
+  // Applies the ?category= URL param (e.g. arriving from the Dashboard
+  // donut chart) to the category filter exactly once, the first time
+  // receipts have actually loaded -- not on every subsequent reload
+  // (year switches, etc.), so it never stomps a category the user
+  // picked manually from the dropdown afterward.
+  const appliedRouteCategoryRef = useRef(false);
 
   const handleSort = (column: SortColumn) => {
     if (sortColumn === column) {
@@ -140,6 +153,19 @@ function AllReceiptsTab() {
     const unique = Array.from(new Set(receipts.map((r) => r.companyCategory).filter(Boolean)));
     return [ALL_CATEGORIES, ...unique.sort()];
   }, [receipts]);
+
+  useEffect(() => {
+    if (appliedRouteCategoryRef.current) return;
+    if (!routeSearch.category) return;
+    if (loading) return;
+    appliedRouteCategoryRef.current = true;
+    // Falls back silently to ALL_CATEGORIES if the URL's category
+    // doesn't match anything actually in this account's derived list
+    // (e.g. a stale link, or "Other"/"Uncategorized" from the donut
+    // chart, which never appear here since blank categories are
+    // excluded from `categories` above).
+    setCategory(categories.includes(routeSearch.category) ? routeSearch.category : ALL_CATEGORIES);
+  }, [routeSearch.category, categories, loading]);
 
   const filteredRows = receipts.filter((r) => {
     if (category !== ALL_CATEGORIES && r.companyCategory !== category) return false;

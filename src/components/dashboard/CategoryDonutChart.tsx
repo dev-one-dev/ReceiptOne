@@ -1,7 +1,17 @@
 import { useState } from "react";
+import { useNavigate } from "@tanstack/react-router";
 import { Cell, Pie, PieChart, ResponsiveContainer, Sector, Tooltip } from "recharts";
 import type { Receipt } from "@/integrations/firebase/receipts";
 import { formatCurrency } from "@/lib/dashboard-format";
+
+// Neither is a real, selectable value on the Receipts page's own
+// category filter -- "Other" is synthetic (small categories folded
+// together here), and "Uncategorized" stands in for a blank
+// companyCategory, which that page's own derived category list
+// excludes (r.companyCategory, blanks filtered out). Clicking either
+// one goes to Receipts unfiltered rather than with a category param
+// that could never match anything there.
+const UNFILTERABLE_CATEGORIES = new Set(["Other", "Uncategorized"]);
 
 const ACTIVE_OUTER_RADIUS = 92;
 
@@ -110,6 +120,15 @@ export function CategoryDonutChart({
   const currency = receipts[0]?.currency ?? "CAD";
   const slices = buildSlices(receipts);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const navigate = useNavigate();
+
+  const goToCategory = (category: string) => {
+    if (UNFILTERABLE_CATEGORIES.has(category)) {
+      void navigate({ to: "/dashboard/receipts" });
+    } else {
+      void navigate({ to: "/dashboard/receipts", search: { category } });
+    }
+  };
 
   return (
     <div className="mt-3 rounded-2xl border border-black/[0.07] bg-white p-5 shadow-[0_2px_12px_rgba(0,0,0,0.06)]">
@@ -140,6 +159,7 @@ export function CategoryDonutChart({
                   activeShape={renderActiveShape}
                   onMouseEnter={(_, index) => setActiveIndex(index)}
                   onMouseLeave={() => setActiveIndex(null)}
+                  onClick={(_, index) => goToCategory(slices[index].category)}
                 >
                   {slices.map((slice, index) => (
                     <Cell
@@ -149,6 +169,7 @@ export function CategoryDonutChart({
                       style={{
                         opacity: activeIndex === null || activeIndex === index ? 1 : 0.45,
                         transition: "opacity 150ms",
+                        cursor: "pointer",
                       }}
                     />
                   ))}
@@ -168,8 +189,9 @@ export function CategoryDonutChart({
                 key={slice.category}
                 onMouseEnter={() => setActiveIndex(index)}
                 onMouseLeave={() => setActiveIndex(null)}
+                onClick={() => goToCategory(slice.category)}
                 className={[
-                  "flex items-center gap-2 rounded-lg px-1.5 py-1 text-sm transition-colors",
+                  "flex cursor-pointer items-center gap-2 rounded-lg px-1.5 py-1 text-sm transition-colors",
                   activeIndex === index ? "bg-black/[0.04]" : "",
                 ].join(" ")}
               >
