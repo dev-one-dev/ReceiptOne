@@ -3,6 +3,7 @@ import {
   collection,
   deleteDoc,
   doc,
+  getCountFromServer,
   getDocs,
   orderBy,
   query,
@@ -111,6 +112,30 @@ export async function fetchReceipts(uid: string, year?: string): Promise<Receipt
   const receipts = snapshot.docs.map((doc) => toReceipt(doc.id, doc.data()));
   if (!year) return receipts;
   return receipts.filter((r) => String(r.date.getFullYear()) === year);
+}
+
+/**
+ * Counts the signed-in user's own receipts created today -- by
+ * created_at (the real scan timestamp), NOT the receipt's own `date`
+ * field, which can be backdated to a different day than when it was
+ * actually scanned. Mirrors mobile's daily-cap check
+ * (add_check_source_widget.dart): local calendar day boundaries
+ * (midnight to midnight in the browser's own time zone), not a UTC
+ * day. A real Firestore count() aggregate query, not a full fetch --
+ * cheap regardless of how many receipts the user has in total.
+ */
+export async function countTodayReceipts(uid: string): Promise<number> {
+  const now = new Date();
+  const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const startOfTomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+  const q = query(
+    collection(db, "receipts"),
+    where("created_by", "==", uid),
+    where("created_at", ">=", Timestamp.fromDate(startOfDay)),
+    where("created_at", "<", Timestamp.fromDate(startOfTomorrow)),
+  );
+  const snapshot = await getCountFromServer(q);
+  return snapshot.data().count;
 }
 
 export type NewReceiptInput = {

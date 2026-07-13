@@ -1,6 +1,15 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ChevronDown, ChevronsUpDown, ChevronUp, Lock, Search, UploadCloud, X } from "lucide-react";
+import {
+  Ban,
+  ChevronDown,
+  ChevronsUpDown,
+  ChevronUp,
+  Lock,
+  Search,
+  UploadCloud,
+  X,
+} from "lucide-react";
 import { toast } from "sonner";
 import { httpsCallable } from "firebase/functions";
 import { getDownloadURL, ref as storageRef, uploadBytes } from "firebase/storage";
@@ -23,6 +32,7 @@ import { useDashboardContext } from "@/components/dashboard/DashboardContext";
 import { useAuth } from "@/integrations/firebase/auth-context";
 import { auth, functions, storage } from "@/integrations/firebase/client";
 import {
+  countTodayReceipts,
   createReceipt,
   fetchReceipts,
   type Receipt,
@@ -47,6 +57,13 @@ export const Route = createFileRoute("/dashboard/receipts")({
 });
 
 const ALL_CATEGORIES = "All categories";
+
+// Parity with mobile's add_check_source_widget.dart: a hard cap of 100
+// new receipts per local calendar day, enforced even for users with an
+// active trial/subscription -- a separate, additional limit on top of
+// the entitlement gate below.
+const DAILY_RECEIPT_CAP = 100;
+const DAILY_CAP_MESSAGE = "You can add no more than 100 checks per day.";
 
 type SortColumn = "date" | "amount";
 type SortDirection = "asc" | "desc";
@@ -418,6 +435,10 @@ function BulkUploadTab() {
   const [defaultCurrency, setDefaultCurrency] = useState("USD");
   const [billing, setBilling] = useState<BillingHistory | null>(null);
   const [accessLoading, setAccessLoading] = useState(true);
+  // null = still loading (not yet known) -- distinct from 0, so
+  // addFiles/retryCard don't wrongly treat "not loaded yet" as "cap
+  // already reached."
+  const [todayCount, setTodayCount] = useState<number | null>(null);
 
   useEffect(() => {
     if (!uid) return;
@@ -467,7 +488,31 @@ function BulkUploadTab() {
     };
   }, [uid]);
 
+  // Also fetched separately -- same isolation reasoning as billing
+  // history above. Fails open (treats the count as 0) rather than
+  // getting stuck at null and blocking uploads forever if this one
+  // query fails; the entitlement gate above still applies regardless.
+  useEffect(() => {
+    if (!uid) {
+      setTodayCount(0);
+      return;
+    }
+    let cancelled = false;
+    countTodayReceipts(uid)
+      .then((count) => {
+        if (!cancelled) setTodayCount(count);
+      })
+      .catch((e) => {
+        console.error("Couldn't load today's receipt count:", e);
+        if (!cancelled) setTodayCount(0);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [uid]);
+
   const access = hasActiveAccess(profile, billing);
+  const remainingToday = todayCount === null ? null : Math.max(0, DAILY_RECEIPT_CAP - todayCount);
 
   const updateCard = (id: string, patch: Partial<FileCard>) => {
     setCards((prev) => prev.map((c) => (c.id === id ? { ...c, ...patch } : c)));
@@ -489,14 +534,44 @@ function BulkUploadTab() {
       );
       return;
     }
-    const newCards: FileCard[] = Array.from(files).map((file) => ({
+    const remaining = remainingToday ?? DAILY_RECEIPT_CAP;
+    if (remaining <= 0) {
+      toast.error(DAILY_CAP_MESSAGE);
+      return;
+    }
+
+    // Only the files up to today's remaining cap actually get
+    // processed; the rest show up as their own rejected cards with the
+    // cap message, matching how every other per-file failure already
+    // renders -- never silently dropped, never allowed to push the
+    // day's real count past 100.
+    const incoming = Array.from(files);
+    const accepted = incoming.slice(0, remaining);
+    const rejected = incoming.slice(remaining);
+
+    const makeCard = (file: File): FileCard => ({
       id: `${Date.now()}-${Math.random().toString(36).slice(2)}-${file.name}`,
       file,
       status: "uploading",
       categories: [],
       isPreTax: false,
+    });
+
+    const newCards = accepted.map(makeCard);
+    const rejectedCards = rejected.map((file) => ({
+      ...makeCard(file),
+      status: "error" as const,
+      errorMessage: DAILY_CAP_MESSAGE,
     }));
-    setCards((prev) => [...prev, ...newCards]);
+
+    setCards((prev) => [...prev, ...newCards, ...rejectedCards]);
+    if (newCards.length > 0) {
+      // Reserved immediately, not at save time -- a card that's only
+      // been OCR'd/parsed but not yet saved still cost a real AI call,
+      // and a second addFiles later in the same session must see these
+      // slots as already spoken for, not available again.
+      setTodayCount((prev) => (prev ?? 0) + newCards.length);
+    }
     for (const card of newCards) {
       void processFileCard(uid, card, profile, updateCard, access);
     }
@@ -504,6 +579,20 @@ function BulkUploadTab() {
 
   const retryCard = (card: FileCard) => {
     if (!uid) return;
+    // Only a card that was rejected for the daily cap was never
+    // reserved in the first place (addFiles skips processFileCard
+    // entirely for those) -- any other failed card was already
+    // reserved when it was first added, so retrying it must not
+    // reserve a second slot.
+    const wasCapRejected = card.status === "error" && card.errorMessage === DAILY_CAP_MESSAGE;
+    if (wasCapRejected) {
+      const remaining = remainingToday ?? DAILY_RECEIPT_CAP;
+      if (remaining <= 0) {
+        updateCard(card.id, { status: "error", errorMessage: DAILY_CAP_MESSAGE });
+        return;
+      }
+      setTodayCount((prev) => (prev ?? 0) + 1);
+    }
     void processFileCard(uid, card, profile, updateCard, access);
   };
 
@@ -574,7 +663,7 @@ function BulkUploadTab() {
 
   return (
     <div className="mt-5 space-y-4">
-      {accessLoading ? (
+      {accessLoading || todayCount === null ? (
         <div className="flex flex-col items-center justify-center gap-3 rounded-2xl border-2 border-dashed border-black/10 bg-white px-6 py-16 text-center">
           <p className="text-sm text-black/45">Checking your access…</p>
         </div>
@@ -595,6 +684,16 @@ function BulkUploadTab() {
           >
             Go to Billing
           </Link>
+        </div>
+      ) : remainingToday === 0 ? (
+        <div className="flex flex-col items-center justify-center gap-3 rounded-2xl border-2 border-dashed border-black/15 bg-white px-6 py-16 text-center">
+          <span className="flex size-12 items-center justify-center rounded-full bg-black/[0.05] text-black/40">
+            <Ban className="size-6" aria-hidden />
+          </span>
+          <div>
+            <p className="text-sm font-medium text-black">{DAILY_CAP_MESSAGE}</p>
+            <p className="mt-1 text-xs text-black/50">This resets tomorrow.</p>
+          </div>
         </div>
       ) : (
         <div
