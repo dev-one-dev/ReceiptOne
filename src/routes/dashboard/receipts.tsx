@@ -835,7 +835,14 @@ function AddManuallyTab() {
   const [categories, setCategories] = useState<string[]>([]);
   const [review, setReview] = useState<ReviewForm>(() => blankReview([]));
   const [taxRows, setTaxRows] = useState<ReviewTaxRow[]>([]);
-  const [saving, setSaving] = useState(false);
+  const [attachedFile, setAttachedFile] = useState<File | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  // "uploading" only applies while an attached photo is being uploaded
+  // to Storage; "saving" covers the createReceipt() call itself (which
+  // always runs, with or without a photo) -- distinct labels so the
+  // button reflects which step is actually in flight.
+  const [saveStatus, setSaveStatus] = useState<"idle" | "uploading" | "saving">("idle");
+  const saving = saveStatus !== "idle";
 
   useEffect(() => {
     if (!uid) return;
@@ -885,8 +892,22 @@ function AddManuallyTab() {
       toast.error("You need to be signed in to add a receipt.");
       return;
     }
-    setSaving(true);
     try {
+      // Attaching a photo here is mobile's ungated "Add image" option
+      // folded into this same form -- no OCR, no Gemini call, so it
+      // never touches hasActiveAccess or the daily cap either. Same
+      // real Storage path Bulk Upload uses, just without any AI step
+      // after it.
+      let downloadUrl = "";
+      if (attachedFile) {
+        setSaveStatus("uploading");
+        const path = `users/${uid}/receipts/${Date.now()}-${attachedFile.name}`;
+        const fileRef = storageRef(storage, path);
+        await uploadBytes(fileRef, attachedFile);
+        downloadUrl = await getDownloadURL(fileRef);
+      }
+
+      setSaveStatus("saving");
       const taxLists: TaxListEntry[] = taxRows.map((r) => ({
         taxName: r.taxName,
         tax: parseFloat(r.tax) || 0,
@@ -906,11 +927,12 @@ function AddManuallyTab() {
         isPreTax: !taxRows.some((r) => r.isRefundable),
         paymentMethod: review.paymentMethod,
         price: parseFloat(review.price) || 0,
-        // No file was ever involved -- createReceipt and every reader
-        // (ReceiptDetailDialog's "View receipt image") already treat an
-        // empty string as "no image" and simply don't show a link.
-        receiptFile: "",
-        receiptImage: "",
+        // Empty when no photo was attached -- createReceipt and every
+        // reader (ReceiptDetailDialog's "View receipt image") already
+        // treat an empty string as "no image" and simply don't show a
+        // link, so no changes were needed there for either case.
+        receiptFile: downloadUrl,
+        receiptImage: downloadUrl,
         tax: parseFloat(review.tax) || 0,
         taxLists,
         typeOfTaxDeduction: review.typeOfTaxDeduction,
@@ -918,19 +940,65 @@ function AddManuallyTab() {
       toast.success("Receipt added.");
       setReview(blankReview(categories));
       setTaxRows([]);
+      setAttachedFile(null);
+      if (fileInputRef.current) fileInputRef.current.value = "";
     } catch (e) {
-      toast.error(errorMessage(e, "Couldn't add this receipt."));
+      toast.error(
+        errorMessage(
+          e,
+          attachedFile
+            ? "Couldn't upload the photo or save this receipt."
+            : "Couldn't add this receipt.",
+        ),
+      );
     } finally {
-      setSaving(false);
+      setSaveStatus("idle");
     }
   };
 
   return (
     <div className="mt-5 max-w-2xl rounded-2xl border border-black/[0.07] bg-white p-5 shadow-[0_2px_12px_rgba(0,0,0,0.06)]">
       <h2 className="text-sm font-semibold text-black">Add a receipt manually</h2>
-      <p className="mt-1 text-xs text-black/50">
-        No file or AI scan needed — enter the details yourself.
-      </p>
+      <p className="mt-1 text-xs text-black/50">No AI scan needed — enter the details yourself.</p>
+
+      <div className="mt-4 space-y-1.5">
+        <label className="block text-xs font-medium text-black/55">Attach photo (optional)</label>
+        {attachedFile ? (
+          <div className="flex items-center justify-between gap-3 rounded-xl border border-black/10 bg-black/[0.02] px-3 py-2">
+            <span className="truncate text-sm text-black/70">{attachedFile.name}</span>
+            <button
+              type="button"
+              onClick={() => {
+                setAttachedFile(null);
+                if (fileInputRef.current) fileInputRef.current.value = "";
+              }}
+              disabled={saving}
+              aria-label="Remove attached photo"
+              className="shrink-0 rounded-full p-1 text-black/40 transition-colors hover:bg-black/5 hover:text-black disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              <X className="size-3.5" aria-hidden />
+            </button>
+          </div>
+        ) : (
+          <button
+            type="button"
+            onClick={() => fileInputRef.current?.click()}
+            disabled={saving}
+            className="inline-flex items-center gap-1.5 rounded-full border border-black/10 bg-white px-3 py-1.5 text-xs font-medium text-black/60 transition-colors hover:bg-black/5 hover:text-black disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            <UploadCloud className="size-3.5" aria-hidden />
+            Attach photo
+          </button>
+        )}
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/*,.pdf"
+          className="hidden"
+          onChange={(e) => setAttachedFile(e.target.files?.[0] ?? null)}
+        />
+      </div>
+
       <div className="mt-4">
         <ReceiptEditFields
           categories={categories}
@@ -948,7 +1016,11 @@ function AddManuallyTab() {
         disabled={saving}
         className="mt-4 inline-flex items-center justify-center gap-2 rounded-full bg-black px-5 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
       >
-        {saving ? "Saving…" : "Add receipt"}
+        {saveStatus === "uploading"
+          ? "Uploading…"
+          : saveStatus === "saving"
+            ? "Saving…"
+            : "Add receipt"}
       </button>
     </div>
   );
