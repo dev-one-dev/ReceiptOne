@@ -46,21 +46,26 @@ function ToggleRow({
   description,
   checked,
   onCheckedChange,
+  disabled,
 }: {
   label: string;
   description: string;
   checked: boolean;
   onCheckedChange: (v: boolean) => void;
+  disabled?: boolean;
 }) {
   return (
     <div className="flex items-center justify-between gap-4 py-3">
       <div>
-        <p className="text-sm font-medium text-black">{label}</p>
-        <p className="text-xs text-black/50">{description}</p>
+        <p className={`text-sm font-medium ${disabled ? "text-black/40" : "text-black"}`}>
+          {label}
+        </p>
+        <p className={`text-xs ${disabled ? "text-black/30" : "text-black/50"}`}>{description}</p>
       </div>
       <Switch
         checked={checked}
         onCheckedChange={onCheckedChange}
+        disabled={disabled}
         className="data-[state=checked]:bg-[#f97316]"
       />
     </div>
@@ -178,25 +183,33 @@ function SettingsPage() {
       <div className="mt-5 grid grid-cols-1 gap-4 lg:grid-cols-2">
         {/* Notifications */}
         <div className="rounded-2xl border border-black/[0.07] bg-white p-5 shadow-[0_2px_12px_rgba(0,0,0,0.06)]">
-          <h2 className="text-sm font-semibold text-black">Notifications</h2>
+          <div className="flex items-center gap-2">
+            <h2 className="text-sm font-semibold text-black">Notifications</h2>
+            <span className="rounded-full bg-black/[0.05] px-3 py-1 text-xs font-medium text-black/55">
+              Coming soon
+            </span>
+          </div>
           <div className="mt-1 divide-y divide-black/[0.05]">
             <ToggleRow
               label="Email notifications"
               description="Get notified about account activity by email."
               checked={emailNotifs}
               onCheckedChange={setEmailNotifs}
+              disabled
             />
             <ToggleRow
               label="Weekly summary"
               description="A weekly digest of receipts and spending."
               checked={weeklySummary}
               onCheckedChange={setWeeklySummary}
+              disabled
             />
             <ToggleRow
               label="Receipt reminders"
               description="Reminders to scan receipts you may have missed."
               checked={receiptReminders}
               onCheckedChange={setReceiptReminders}
+              disabled
             />
           </div>
         </div>
