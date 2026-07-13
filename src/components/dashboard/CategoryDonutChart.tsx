@@ -92,16 +92,16 @@ export function CategoryDonutChart({
           No expenses yet for {year}
         </div>
       ) : (
-        <div className="mt-4 flex flex-col items-center gap-6 sm:flex-row">
-          <div className="h-[220px] w-full shrink-0 sm:w-[220px]">
+        <div className="mt-4 flex flex-col items-center gap-6 sm:mx-auto sm:w-fit sm:flex-row">
+          <div className="h-[200px] w-[200px] shrink-0">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
                   data={slices}
                   dataKey="amount"
                   nameKey="category"
-                  innerRadius={60}
-                  outerRadius={90}
+                  innerRadius={55}
+                  outerRadius={85}
                   paddingAngle={2}
                 >
                   {slices.map((slice) => (
@@ -117,23 +117,21 @@ export function CategoryDonutChart({
               </PieChart>
             </ResponsiveContainer>
           </div>
-          <div className="w-full flex-1 space-y-2">
+          <div className="w-full max-w-xs shrink-0 space-y-2 sm:w-72">
             {slices.map((slice) => (
-              <div key={slice.category} className="flex items-center justify-between gap-3 text-sm">
-                <div className="flex min-w-0 items-center gap-2">
-                  <span
-                    className="size-2.5 shrink-0 rounded-full"
-                    style={{ backgroundColor: slice.color }}
-                    aria-hidden
-                  />
-                  <span className="truncate text-black/70">{slice.category}</span>
-                </div>
-                <div className="flex shrink-0 items-center gap-2 tabular-nums">
-                  <span className="font-medium text-black">
-                    {formatCurrency(slice.amount, currency)}
-                  </span>
-                  <span className="text-xs text-black/40">{slice.percentage.toFixed(0)}%</span>
-                </div>
+              <div key={slice.category} className="flex items-center gap-2 text-sm">
+                <span
+                  className="size-2.5 shrink-0 rounded-full"
+                  style={{ backgroundColor: slice.color }}
+                  aria-hidden
+                />
+                <span className="min-w-0 flex-1 truncate text-black/70">{slice.category}</span>
+                <span className="shrink-0 font-medium tabular-nums text-black">
+                  {formatCurrency(slice.amount, currency)}
+                </span>
+                <span className="w-9 shrink-0 text-right text-xs tabular-nums text-black/40">
+                  {slice.percentage.toFixed(0)}%
+                </span>
               </div>
             ))}
           </div>

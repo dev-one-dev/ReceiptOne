@@ -805,6 +805,155 @@ function BulkUploadTab() {
   );
 }
 
+function blankReview(categories: string[]): ReviewForm {
+  return {
+    merchantName: "",
+    merchantCategory: categories[0] ?? "",
+    date: toDateInputValue(new Date()),
+    price: "0.00",
+    tax: "0.00",
+    paymentMethod: "Card",
+    typeOfTaxDeduction: "Business",
+    comment: "",
+  };
+}
+
+/**
+ * Pure manual entry, matching mobile's "Add manually" option in
+ * add_check_source_widget.dart -- no file, no OCR, no Gemini call, so
+ * none of Bulk Upload's entitlement gate or daily cap apply here.
+ * Those exist specifically to protect the paid AI pipeline; this path
+ * never touches it. Reuses the same ReceiptEditFields component Bulk
+ * Upload's review cards and ReceiptDetailDialog's edit mode already
+ * share, so the field set stays identical across all three.
+ */
+function AddManuallyTab() {
+  const { user } = useAuth();
+  const uid = user?.uid ?? auth.currentUser?.uid ?? null;
+
+  const [defaultCurrency, setDefaultCurrency] = useState("USD");
+  const [categories, setCategories] = useState<string[]>([]);
+  const [review, setReview] = useState<ReviewForm>(() => blankReview([]));
+  const [taxRows, setTaxRows] = useState<ReviewTaxRow[]>([]);
+  const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    if (!uid) return;
+    let cancelled = false;
+    Promise.all([fetchUserProfile(uid), fetchReceipts(uid)])
+      .then(([p, receipts]) => {
+        if (cancelled) return;
+        setDefaultCurrency(
+          receipts[0]?.currency ?? (p?.countryCode?.toLowerCase() === "ca" ? "CAD" : "USD"),
+        );
+        const cats = getReceiptCategories(p?.countryCode || "us");
+        setCategories(cats);
+        setReview((prev) =>
+          prev.merchantCategory ? prev : { ...prev, merchantCategory: cats[0] ?? "" },
+        );
+      })
+      .catch(() => {
+        // Non-fatal -- falls back to no category list / USD default
+        // currency for this session if this fails.
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [uid]);
+
+  const updateReviewField = (patch: Partial<ReviewForm>) => {
+    setReview((prev) => ({ ...prev, ...patch }));
+  };
+
+  const updateTaxRow = (index: number, patch: Partial<ReviewTaxRow>) => {
+    setTaxRows((prev) => prev.map((row, i) => (i === index ? { ...row, ...patch } : row)));
+  };
+
+  const removeTaxRow = (index: number) => {
+    setTaxRows((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  const addTaxRow = () => {
+    setTaxRows((prev) => [
+      ...prev,
+      { taxName: "Tax", taxPercent: "0.00", tax: "0.00", isRefundable: false },
+    ]);
+  };
+
+  const handleSave = async () => {
+    if (!uid) {
+      toast.error("You need to be signed in to add a receipt.");
+      return;
+    }
+    setSaving(true);
+    try {
+      const taxLists: TaxListEntry[] = taxRows.map((r) => ({
+        taxName: r.taxName,
+        tax: parseFloat(r.tax) || 0,
+        taxPercent: parseFloat(r.taxPercent) || 0,
+        isRefundable: r.isRefundable,
+      }));
+      await createReceipt({
+        uid,
+        comment: review.comment,
+        companyCategory: review.merchantCategory,
+        companyName: review.merchantName,
+        currency: defaultCurrency,
+        date: review.date ? new Date(`${review.date}T00:00:00`) : new Date(),
+        // Same rule as the AI path (parseReceiptFromJson): pre-tax only
+        // when nothing in the breakdown is refundable -- here driven by
+        // the user's own checkbox choices, not an AI guess.
+        isPreTax: !taxRows.some((r) => r.isRefundable),
+        paymentMethod: review.paymentMethod,
+        price: parseFloat(review.price) || 0,
+        // No file was ever involved -- createReceipt and every reader
+        // (ReceiptDetailDialog's "View receipt image") already treat an
+        // empty string as "no image" and simply don't show a link.
+        receiptFile: "",
+        receiptImage: "",
+        tax: parseFloat(review.tax) || 0,
+        taxLists,
+        typeOfTaxDeduction: review.typeOfTaxDeduction,
+      });
+      toast.success("Receipt added.");
+      setReview(blankReview(categories));
+      setTaxRows([]);
+    } catch (e) {
+      toast.error(errorMessage(e, "Couldn't add this receipt."));
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  return (
+    <div className="mt-5 max-w-2xl rounded-2xl border border-black/[0.07] bg-white p-5 shadow-[0_2px_12px_rgba(0,0,0,0.06)]">
+      <h2 className="text-sm font-semibold text-black">Add a receipt manually</h2>
+      <p className="mt-1 text-xs text-black/50">
+        No file or AI scan needed — enter the details yourself.
+      </p>
+      <div className="mt-4">
+        <ReceiptEditFields
+          categories={categories}
+          review={review}
+          taxRows={taxRows}
+          onChangeField={updateReviewField}
+          onChangeTaxRow={updateTaxRow}
+          onAddTaxRow={addTaxRow}
+          onRemoveTaxRow={removeTaxRow}
+        />
+      </div>
+      <button
+        type="button"
+        onClick={() => void handleSave()}
+        disabled={saving}
+        className="mt-4 inline-flex items-center justify-center gap-2 rounded-full bg-black px-5 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+      >
+        {saving ? "Saving…" : "Add receipt"}
+      </button>
+    </div>
+  );
+}
+
 function ReceiptsPage() {
   return (
     <div className="mx-auto w-full max-w-[1200px] flex-1 px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
@@ -829,12 +978,21 @@ function ReceiptsPage() {
           >
             Bulk Upload
           </TabsTrigger>
+          <TabsTrigger
+            value="manual"
+            className="rounded-lg px-3 text-sm font-medium text-black/55 data-[state=active]:bg-white data-[state=active]:text-black data-[state=active]:shadow-[0_1px_4px_rgba(0,0,0,0.08)]"
+          >
+            Add manually
+          </TabsTrigger>
         </TabsList>
         <TabsContent value="all">
           <AllReceiptsTab />
         </TabsContent>
         <TabsContent value="bulk">
           <BulkUploadTab />
+        </TabsContent>
+        <TabsContent value="manual">
+          <AddManuallyTab />
         </TabsContent>
       </Tabs>
     </div>
