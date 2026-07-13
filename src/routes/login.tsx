@@ -9,18 +9,6 @@ import { ROUTES } from "@/lib/routes";
 import { auth } from "@/integrations/firebase/client";
 import { getAuthErrorMessage, isDismissedPopupError } from "@/integrations/firebase/auth-errors";
 
-// ============================================================================
-// TEMPORARY SIGN-IN BLOCK -- urgent, see chat 2026-07-12. Blocks new
-// sign-ins on web while proper trial/subscription entitlement gating is
-// built, to stop free access to the costly AI scanning feature in the
-// meantime. Existing sessions are NOT affected (dashboard.tsx's auth
-// guard is untouched) -- this only stops the login form from rendering.
-//
-// TO REVERT: set AUTH_ENABLED back to `true` and delete this comment
-// block. That's the entire change to undo.
-// ============================================================================
-const AUTH_ENABLED: boolean = false;
-
 export const Route = createFileRoute("/login")({
   head: () => {
     const seo = pageSEO({
@@ -98,28 +86,6 @@ function LoginPage() {
       setGoogleLoading(false);
     }
   };
-
-  if (!AUTH_ENABLED) {
-    return (
-      <main className="flex min-h-screen items-center justify-center bg-background px-4 py-10 text-foreground sm:px-6 lg:px-8">
-        <div className="mx-auto flex max-w-md flex-col items-center gap-8">
-          <Link to="/ca" className="flex items-center gap-2">
-            <img src={logoMark} alt="" aria-hidden className="block size-10" />
-            <img src={logoWordmark} alt="ReceiptOne" className="block h-6 w-auto" />
-          </Link>
-          <section className="w-full rounded-3xl border border-border bg-card p-6 text-center shadow-sm sm:p-8">
-            <h1 className="font-display text-2xl font-semibold tracking-normal">
-              Temporarily unavailable
-            </h1>
-            <p className="mt-3 text-sm leading-6 text-muted-foreground">
-              ReceiptOne web is temporarily unavailable while we roll out an update. Please check
-              back soon.
-            </p>
-          </section>
-        </div>
-      </main>
-    );
-  }
 
   return (
     <main className="min-h-screen bg-background px-4 py-10 text-foreground sm:px-6 lg:px-8">

@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { createFileRoute } from "@tanstack/react-router";
-import { ChevronDown, ChevronsUpDown, ChevronUp, Search, UploadCloud, X } from "lucide-react";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { ChevronDown, ChevronsUpDown, ChevronUp, Lock, Search, UploadCloud, X } from "lucide-react";
 import { toast } from "sonner";
 import { httpsCallable } from "firebase/functions";
 import { getDownloadURL, ref as storageRef, uploadBytes } from "firebase/storage";
@@ -34,6 +34,11 @@ import { extractReceiptWithGemini } from "@/integrations/receipt-parsing/gemini"
 import { extractJsonFromText } from "@/integrations/receipt-parsing/extract-json";
 import { parseReceiptFromJson } from "@/integrations/receipt-parsing/parse-receipt";
 import { applyTaxListUpdate } from "@/integrations/receipt-parsing/apply-tax-settings";
+import {
+  fetchBillingHistory,
+  type BillingHistory,
+} from "@/integrations/revenuecat/get-billing-history";
+import { hasActiveAccess } from "@/integrations/entitlement";
 import { formatCurrency, formatDate } from "@/lib/dashboard-format";
 import { errorMessage } from "@/lib/utils";
 
@@ -310,7 +315,21 @@ async function processFileCard(
   card: FileCard,
   profile: UserProfile | null,
   updateCard: (id: string, patch: Partial<FileCard>) => void,
+  hasAccess: boolean,
 ) {
+  // Defense in depth beyond hiding the upload UI: bail out before any
+  // Storage upload or OCR/Gemini call (the actually costly part) even
+  // if this somehow gets triggered without an active trial or
+  // subscription. The real UI gate lives in BulkUploadTab's render
+  // below; this is the backstop for that gate.
+  if (!hasAccess) {
+    updateCard(card.id, {
+      status: "error",
+      errorMessage:
+        "Your trial or subscription has ended. Upgrade on the Billing page to scan receipts.",
+    });
+    return;
+  }
   try {
     let downloadUrl = card.downloadUrl;
     if (!downloadUrl) {
@@ -397,6 +416,8 @@ function BulkUploadTab() {
   // trips.ts/mileage.tsx (trips[0]?.currency ?? "USD"): use an existing
   // receipt's currency if the user has any, else fall back by country.
   const [defaultCurrency, setDefaultCurrency] = useState("USD");
+  const [billing, setBilling] = useState<BillingHistory | null>(null);
+  const [accessLoading, setAccessLoading] = useState(true);
 
   useEffect(() => {
     if (!uid) return;
@@ -419,6 +440,35 @@ function BulkUploadTab() {
     };
   }, [uid]);
 
+  // Fetched separately from the profile/receipts group above, matching
+  // billing.tsx's own precedent -- a billing-history failure (or, very
+  // commonly, a genuine "no RevenueCat data" empty result) shouldn't
+  // block the profile fetch, and vice versa. Drives the entitlement
+  // gate below: accessLoading avoids a flash of "no access" before this
+  // settles for users who actually do have an active trial/subscription.
+  useEffect(() => {
+    if (!uid) {
+      setAccessLoading(false);
+      return;
+    }
+    let cancelled = false;
+    fetchBillingHistory()
+      .then((data) => {
+        if (!cancelled) setBilling(data);
+      })
+      .catch((e) => {
+        console.error("Couldn't load billing history:", e);
+      })
+      .finally(() => {
+        if (!cancelled) setAccessLoading(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [uid]);
+
+  const access = hasActiveAccess(profile, billing);
+
   const updateCard = (id: string, patch: Partial<FileCard>) => {
     setCards((prev) => prev.map((c) => (c.id === id ? { ...c, ...patch } : c)));
   };
@@ -433,6 +483,12 @@ function BulkUploadTab() {
       toast.error("You need to be signed in to upload receipts.");
       return;
     }
+    if (!access) {
+      toast.error(
+        "Your trial or subscription has ended. Upgrade on the Billing page to scan receipts.",
+      );
+      return;
+    }
     const newCards: FileCard[] = Array.from(files).map((file) => ({
       id: `${Date.now()}-${Math.random().toString(36).slice(2)}-${file.name}`,
       file,
@@ -442,13 +498,13 @@ function BulkUploadTab() {
     }));
     setCards((prev) => [...prev, ...newCards]);
     for (const card of newCards) {
-      void processFileCard(uid, card, profile, updateCard);
+      void processFileCard(uid, card, profile, updateCard, access);
     }
   };
 
   const retryCard = (card: FileCard) => {
     if (!uid) return;
-    void processFileCard(uid, card, profile, updateCard);
+    void processFileCard(uid, card, profile, updateCard, access);
   };
 
   const handleSave = async (card: FileCard) => {
@@ -511,51 +567,80 @@ function BulkUploadTab() {
     });
   };
 
+  // "Your trial has ended" if a trial was recorded but we've fallen
+  // through to !access anyway (must have expired); "No active
+  // subscription" if there was never a trial recorded at all.
+  const gateHeadline = profile?.trialExpDate ? "Your trial has ended" : "No active subscription";
+
   return (
     <div className="mt-5 space-y-4">
-      <div
-        onDragOver={(e) => {
-          e.preventDefault();
-          setDragging(true);
-        }}
-        onDragLeave={() => setDragging(false)}
-        onDrop={(e) => {
-          e.preventDefault();
-          setDragging(false);
-          addFiles(e.dataTransfer.files);
-        }}
-        onClick={() => inputRef.current?.click()}
-        role="button"
-        tabIndex={0}
-        onKeyDown={(e) => {
-          if (e.key === "Enter" || e.key === " ") inputRef.current?.click();
-        }}
-        className={[
-          "flex cursor-pointer flex-col items-center justify-center gap-3 rounded-2xl border-2 border-dashed px-6 py-16 text-center transition-colors",
-          dragging
-            ? "border-[#f97316] bg-[#f97316]/5"
-            : "border-black/15 bg-white hover:border-black/25",
-        ].join(" ")}
-      >
-        <span className="flex size-12 items-center justify-center rounded-full bg-[#f97316]/10 text-[#f97316]">
-          <UploadCloud className="size-6" aria-hidden />
-        </span>
-        <div>
-          <p className="text-sm font-medium text-black">Drag and drop receipts here</p>
-          <p className="mt-1 text-xs text-black/50">or click to browse — JPG, PNG, or PDF</p>
+      {accessLoading ? (
+        <div className="flex flex-col items-center justify-center gap-3 rounded-2xl border-2 border-dashed border-black/10 bg-white px-6 py-16 text-center">
+          <p className="text-sm text-black/45">Checking your access…</p>
         </div>
-        <input
-          ref={inputRef}
-          type="file"
-          multiple
-          accept="image/*,.pdf"
-          className="hidden"
-          onChange={(e) => {
-            addFiles(e.target.files);
-            e.target.value = "";
+      ) : !access ? (
+        <div className="flex flex-col items-center justify-center gap-3 rounded-2xl border-2 border-dashed border-black/15 bg-white px-6 py-16 text-center">
+          <span className="flex size-12 items-center justify-center rounded-full bg-black/[0.05] text-black/40">
+            <Lock className="size-6" aria-hidden />
+          </span>
+          <div>
+            <p className="text-sm font-medium text-black">{gateHeadline}</p>
+            <p className="mt-1 text-xs text-black/50">
+              Upgrade your plan to keep scanning receipts with AI.
+            </p>
+          </div>
+          <Link
+            to={"/dashboard/billing" as any}
+            className="mt-2 inline-flex items-center justify-center gap-2 rounded-full bg-black px-5 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90"
+          >
+            Go to Billing
+          </Link>
+        </div>
+      ) : (
+        <div
+          onDragOver={(e) => {
+            e.preventDefault();
+            setDragging(true);
           }}
-        />
-      </div>
+          onDragLeave={() => setDragging(false)}
+          onDrop={(e) => {
+            e.preventDefault();
+            setDragging(false);
+            addFiles(e.dataTransfer.files);
+          }}
+          onClick={() => inputRef.current?.click()}
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") inputRef.current?.click();
+          }}
+          className={[
+            "flex cursor-pointer flex-col items-center justify-center gap-3 rounded-2xl border-2 border-dashed px-6 py-16 text-center transition-colors",
+            dragging
+              ? "border-[#f97316] bg-[#f97316]/5"
+              : "border-black/15 bg-white hover:border-black/25",
+          ].join(" ")}
+        >
+          <span className="flex size-12 items-center justify-center rounded-full bg-[#f97316]/10 text-[#f97316]">
+            <UploadCloud className="size-6" aria-hidden />
+          </span>
+          <div>
+            <p className="text-sm font-medium text-black">Drag and drop receipts here</p>
+            <p className="mt-1 text-xs text-black/50">or click to browse — JPG, PNG, or PDF</p>
+          </div>
+          <input
+            ref={inputRef}
+            type="file"
+            multiple
+            accept="image/*,.pdf"
+            className="hidden"
+            onChange={(e) => {
+              addFiles(e.target.files);
+              e.target.value = "";
+            }}
+          />
+        </div>
+      )}
 
       {cards.map((card) => (
         <div

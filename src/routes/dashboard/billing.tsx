@@ -11,6 +11,7 @@ import {
   fetchBillingHistory,
   type BillingHistory,
 } from "@/integrations/revenuecat/get-billing-history";
+import { findActiveSubscription } from "@/integrations/entitlement";
 import { formatCurrency, formatDate } from "@/lib/dashboard-format";
 
 export const Route = createFileRoute("/dashboard/billing")({
@@ -125,7 +126,7 @@ function BillingPage() {
     };
   }, [uid]);
 
-  const activeSubscription = billing?.subscriptions.find((s) => s.givesAccess === true) ?? null;
+  const activeSubscription = findActiveSubscription(billing);
   const purchases = billing?.purchases ?? [];
 
   return (
