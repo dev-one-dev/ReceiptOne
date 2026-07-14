@@ -20,6 +20,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { TripDetailDialog } from "@/components/dashboard/TripDetailDialog";
 import { AddVehicleExpensesDialog } from "@/components/dashboard/AddVehicleExpensesDialog";
 import { VehicleExpensesDetailDialog } from "@/components/dashboard/VehicleExpensesDetailDialog";
@@ -619,7 +620,7 @@ function MileagePage() {
         </div>
         <div className="rounded-2xl border border-black/[0.07] bg-white p-5 shadow-[0_2px_12px_rgba(0,0,0,0.06)]">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-medium text-black/55">Deductible amount</span>
+            <span className="text-xs font-medium text-black/55">Logged trip value</span>
             <span className="flex size-8 items-center justify-center rounded-full bg-[#f97316]/10 text-[#f97316]">
               <Wallet className="size-4" aria-hidden />
             </span>
@@ -627,7 +628,10 @@ function MileagePage() {
           <p className="mt-3 text-2xl font-semibold tracking-tight text-black">
             {formatCurrency(totalAmount, summaryCurrency)}
           </p>
-          <p className="mt-1 text-xs text-black/45">from each trip's recorded rate</p>
+          <p className="mt-1 text-xs text-black/45">
+            Mileage at recorded rates — not the CRA deduction. That's computed from actual costs in
+            Vehicle expenses below.
+          </p>
         </div>
         <div className="rounded-2xl border border-black/[0.07] bg-white p-5 shadow-[0_2px_12px_rgba(0,0,0,0.06)]">
           <div className="flex items-center justify-between">
@@ -641,171 +645,199 @@ function MileagePage() {
         </div>
       </div>
 
-      {/* Trip log */}
-      <div className="mt-6 rounded-2xl border border-black/[0.07] bg-white shadow-[0_2px_12px_rgba(0,0,0,0.06)]">
-        <div className="px-5 py-4">
-          <h2 className="text-sm font-semibold text-black">Trip log</h2>
-        </div>
-        <div className="overflow-x-auto">
-          <table className="w-full min-w-[620px] border-collapse text-left text-sm">
-            <thead>
-              <tr className="border-t border-black/[0.07] text-xs text-black/45">
-                <th
-                  onClick={() => handleSort("date")}
-                  className="cursor-pointer select-none px-5 py-2 font-medium transition-colors hover:text-black"
-                >
-                  <span className="inline-flex items-center gap-1">
-                    Date
-                    <SortIcon active={sortColumn === "date"} direction={sortDirection} />
-                  </span>
-                </th>
-                <th className="px-5 py-2 font-medium">Note</th>
-                <th className="px-5 py-2 font-medium">Route</th>
-                <th
-                  onClick={() => handleSort("distance")}
-                  className="cursor-pointer select-none px-5 py-2 text-right font-medium transition-colors hover:text-black"
-                >
-                  <span className="inline-flex items-center justify-end gap-1">
-                    Distance
-                    <SortIcon active={sortColumn === "distance"} direction={sortDirection} />
-                  </span>
-                </th>
-                <th
-                  onClick={() => handleSort("amount")}
-                  className="cursor-pointer select-none px-5 py-2 text-right font-medium transition-colors hover:text-black"
-                >
-                  <span className="inline-flex items-center justify-end gap-1">
-                    Amount
-                    <SortIcon active={sortColumn === "amount"} direction={sortDirection} />
-                  </span>
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {loading && (
-                <tr>
-                  <td colSpan={5} className="px-5 py-10 text-center text-sm text-black/45">
-                    Loading trips…
-                  </td>
-                </tr>
-              )}
-              {!loading && error && (
-                <tr>
-                  <td colSpan={5} className="px-5 py-10 text-center text-sm text-red-600">
-                    {error}
-                  </td>
-                </tr>
-              )}
-              {!loading &&
-                !error &&
-                sortedTrips.map((t) => (
-                  <tr key={t.id} className="border-t border-black/[0.05]">
-                    <td className="px-5 py-3 text-black/60">{formatDate(t.date, dateFormat)}</td>
-                    <td className="px-5 py-3 font-medium text-black">{t.comment || "—"}</td>
-                    <td className="px-5 py-3 text-black/60">
-                      <button
-                        type="button"
-                        onClick={() => setSelectedTrip(t)}
-                        className="inline-flex items-center gap-1 rounded-md text-black/60 underline-offset-2 transition-colors hover:text-[#f97316] hover:underline focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#f97316]/40"
-                      >
-                        <MapPin className="size-3.5 text-black/35" aria-hidden />
-                        {t.startRoute.name || "—"} → {t.endRoute.name || "—"}
-                      </button>
-                    </td>
-                    <td className="px-5 py-3 text-right tabular-nums text-black">
-                      {formatDistance(tripDistance(t, distanceUnit), distanceUnit)}
-                    </td>
-                    <td className="px-5 py-3 text-right tabular-nums text-black">
-                      {formatCurrency(t.totalPrice, t.currency)}
-                    </td>
-                  </tr>
-                ))}
-              {!loading && !error && trips.length === 0 && (
-                <tr>
-                  <td colSpan={5} className="px-5 py-10 text-center text-sm text-black/45">
-                    {`No trips for ${year} yet — trips logged from the ReceiptOne mobile app will show up here.`}
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
-      </div>
+      {/* Trip log / Vehicle expenses -- tabs so Vehicle expenses stays
+          reachable without scrolling past a full year of trips (the trip
+          table scrolls within its own bounded container instead). */}
+      <Tabs defaultValue="trips" className="mt-6">
+        <TabsList className="h-9 gap-1 rounded-xl bg-black/[0.04] p-1">
+          <TabsTrigger
+            value="trips"
+            className="rounded-lg px-3 text-sm font-medium text-black/55 data-[state=active]:bg-white data-[state=active]:text-black data-[state=active]:shadow-[0_1px_4px_rgba(0,0,0,0.08)]"
+          >
+            Trip log
+          </TabsTrigger>
+          <TabsTrigger
+            value="vehicle"
+            className="rounded-lg px-3 text-sm font-medium text-black/55 data-[state=active]:bg-white data-[state=active]:text-black data-[state=active]:shadow-[0_1px_4px_rgba(0,0,0,0.08)]"
+          >
+            Vehicle expenses
+          </TabsTrigger>
+        </TabsList>
 
-      {/* Vehicle expenses (CRA Chart A) */}
-      <div className="mt-6 rounded-2xl border border-black/[0.07] bg-white shadow-[0_2px_12px_rgba(0,0,0,0.06)]">
-        <div className="flex flex-col justify-between gap-3 px-5 py-4 sm:flex-row sm:items-center">
-          <div>
-            <h2 className="text-sm font-semibold text-black">Vehicle expenses</h2>
-            <p className="mt-1 max-w-md text-xs text-black/50">
-              CRA Chart A method for line 9281: actual vehicle costs × business-use % — your trip
-              logbook establishes the percentage, not the deduction itself.
-            </p>
-          </div>
-          <AddVehicleExpensesDialog
-            uid={uid}
-            year={year}
-            businessKmHint={businessKmHint}
-            currency={summaryCurrency}
-            onSaved={() => uid && loadVehicleExpenses(uid)}
-          />
-        </div>
-        <div className="overflow-x-auto">
-          <table className="w-full min-w-[520px] border-collapse text-left text-sm">
-            <thead>
-              <tr className="border-t border-black/[0.07] text-xs text-black/45">
-                <th className="px-5 py-2 font-medium">Period</th>
-                <th className="px-5 py-2 text-right font-medium">Business use</th>
-                <th className="px-5 py-2 text-right font-medium">Deductible</th>
-              </tr>
-            </thead>
-            <tbody>
-              {vehicleLoading && (
-                <tr>
-                  <td colSpan={3} className="px-5 py-10 text-center text-sm text-black/45">
-                    Loading vehicle expenses…
-                  </td>
-                </tr>
-              )}
-              {!vehicleLoading && vehicleError && (
-                <tr>
-                  <td colSpan={3} className="px-5 py-10 text-center text-sm text-red-600">
-                    {vehicleError}
-                  </td>
-                </tr>
-              )}
-              {!vehicleLoading &&
-                !vehicleError &&
-                vehicleExpenses.map((v) => (
-                  <tr
-                    key={v.id}
-                    onClick={() => setSelectedVehicleExpenses(v)}
-                    className="cursor-pointer border-t border-black/[0.05] transition-colors hover:bg-black/[0.02]"
-                  >
-                    <td className="px-5 py-3 font-medium text-black">
-                      {v.startDate && v.endDate
-                        ? `${formatDate(v.startDate, dateFormat)} – ${formatDate(v.endDate, dateFormat)}`
-                        : year}
-                    </td>
-                    <td className="px-5 py-3 text-right tabular-nums text-black">
-                      {v.businessUsePercent.toFixed(1)}%
-                    </td>
-                    <td className="px-5 py-3 text-right tabular-nums text-black">
-                      {formatCurrency(v.totalDeductible, summaryCurrency)}
-                    </td>
+        <TabsContent value="trips" className="mt-3">
+          <div className="rounded-2xl border border-black/[0.07] bg-white shadow-[0_2px_12px_rgba(0,0,0,0.06)]">
+            <div className="px-5 py-4">
+              <h2 className="text-sm font-semibold text-black">Trip log</h2>
+            </div>
+            <div className="max-h-[480px] overflow-y-auto overflow-x-auto">
+              <table className="w-full min-w-[620px] border-collapse text-left text-sm">
+                <thead>
+                  <tr className="text-xs text-black/45">
+                    <th
+                      onClick={() => handleSort("date")}
+                      className="sticky top-0 z-10 cursor-pointer select-none border-t border-b border-black/[0.07] bg-white px-5 py-2 font-medium transition-colors hover:text-black"
+                    >
+                      <span className="inline-flex items-center gap-1">
+                        Date
+                        <SortIcon active={sortColumn === "date"} direction={sortDirection} />
+                      </span>
+                    </th>
+                    <th className="sticky top-0 z-10 border-t border-b border-black/[0.07] bg-white px-5 py-2 font-medium">
+                      Note
+                    </th>
+                    <th className="sticky top-0 z-10 border-t border-b border-black/[0.07] bg-white px-5 py-2 font-medium">
+                      Route
+                    </th>
+                    <th
+                      onClick={() => handleSort("distance")}
+                      className="sticky top-0 z-10 cursor-pointer select-none border-t border-b border-black/[0.07] bg-white px-5 py-2 text-right font-medium transition-colors hover:text-black"
+                    >
+                      <span className="inline-flex items-center justify-end gap-1">
+                        Distance
+                        <SortIcon active={sortColumn === "distance"} direction={sortDirection} />
+                      </span>
+                    </th>
+                    <th
+                      onClick={() => handleSort("amount")}
+                      className="sticky top-0 z-10 cursor-pointer select-none border-t border-b border-black/[0.07] bg-white px-5 py-2 text-right font-medium transition-colors hover:text-black"
+                    >
+                      <span className="inline-flex items-center justify-end gap-1">
+                        Amount
+                        <SortIcon active={sortColumn === "amount"} direction={sortDirection} />
+                      </span>
+                    </th>
                   </tr>
-                ))}
-              {!vehicleLoading && !vehicleError && vehicleExpenses.length === 0 && (
-                <tr>
-                  <td colSpan={3} className="px-5 py-10 text-center text-sm text-black/45">
-                    {`No vehicle expenses recorded for ${year} yet.`}
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
-      </div>
+                </thead>
+                <tbody>
+                  {loading && (
+                    <tr>
+                      <td colSpan={5} className="px-5 py-10 text-center text-sm text-black/45">
+                        Loading trips…
+                      </td>
+                    </tr>
+                  )}
+                  {!loading && error && (
+                    <tr>
+                      <td colSpan={5} className="px-5 py-10 text-center text-sm text-red-600">
+                        {error}
+                      </td>
+                    </tr>
+                  )}
+                  {!loading &&
+                    !error &&
+                    sortedTrips.map((t) => (
+                      <tr key={t.id} className="border-t border-black/[0.05]">
+                        <td className="px-5 py-3 text-black/60">
+                          {formatDate(t.date, dateFormat)}
+                        </td>
+                        <td className="px-5 py-3 font-medium text-black">{t.comment || "—"}</td>
+                        <td className="px-5 py-3 text-black/60">
+                          <button
+                            type="button"
+                            onClick={() => setSelectedTrip(t)}
+                            className="inline-flex items-center gap-1 rounded-md text-black/60 underline-offset-2 transition-colors hover:text-[#f97316] hover:underline focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#f97316]/40"
+                          >
+                            <MapPin className="size-3.5 text-black/35" aria-hidden />
+                            {t.startRoute.name || "—"} → {t.endRoute.name || "—"}
+                          </button>
+                        </td>
+                        <td className="px-5 py-3 text-right tabular-nums text-black">
+                          {formatDistance(tripDistance(t, distanceUnit), distanceUnit)}
+                        </td>
+                        <td className="px-5 py-3 text-right tabular-nums text-black">
+                          {formatCurrency(t.totalPrice, t.currency)}
+                        </td>
+                      </tr>
+                    ))}
+                  {!loading && !error && trips.length === 0 && (
+                    <tr>
+                      <td colSpan={5} className="px-5 py-10 text-center text-sm text-black/45">
+                        {`No trips for ${year} yet — trips logged from the ReceiptOne mobile app will show up here.`}
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </TabsContent>
+
+        <TabsContent value="vehicle" className="mt-3">
+          <div className="rounded-2xl border border-black/[0.07] bg-white shadow-[0_2px_12px_rgba(0,0,0,0.06)]">
+            <div className="flex flex-col justify-between gap-3 px-5 py-4 sm:flex-row sm:items-center">
+              <div>
+                <h2 className="text-sm font-semibold text-black">Vehicle expenses</h2>
+                <p className="mt-1 max-w-md text-xs text-black/50">
+                  CRA Chart A method for line 9281: actual vehicle costs × business-use % — your
+                  trip logbook establishes the percentage, not the deduction itself.
+                </p>
+              </div>
+              <AddVehicleExpensesDialog
+                uid={uid}
+                year={year}
+                businessKmHint={businessKmHint}
+                currency={summaryCurrency}
+                onSaved={() => uid && loadVehicleExpenses(uid)}
+              />
+            </div>
+            <div className="overflow-x-auto">
+              <table className="w-full min-w-[520px] border-collapse text-left text-sm">
+                <thead>
+                  <tr className="border-t border-black/[0.07] text-xs text-black/45">
+                    <th className="px-5 py-2 font-medium">Period</th>
+                    <th className="px-5 py-2 text-right font-medium">Business use</th>
+                    <th className="px-5 py-2 text-right font-medium">Deductible</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {vehicleLoading && (
+                    <tr>
+                      <td colSpan={3} className="px-5 py-10 text-center text-sm text-black/45">
+                        Loading vehicle expenses…
+                      </td>
+                    </tr>
+                  )}
+                  {!vehicleLoading && vehicleError && (
+                    <tr>
+                      <td colSpan={3} className="px-5 py-10 text-center text-sm text-red-600">
+                        {vehicleError}
+                      </td>
+                    </tr>
+                  )}
+                  {!vehicleLoading &&
+                    !vehicleError &&
+                    vehicleExpenses.map((v) => (
+                      <tr
+                        key={v.id}
+                        onClick={() => setSelectedVehicleExpenses(v)}
+                        className="cursor-pointer border-t border-black/[0.05] transition-colors hover:bg-black/[0.02]"
+                      >
+                        <td className="px-5 py-3 font-medium text-black">
+                          {v.startDate && v.endDate
+                            ? `${formatDate(v.startDate, dateFormat)} – ${formatDate(v.endDate, dateFormat)}`
+                            : year}
+                        </td>
+                        <td className="px-5 py-3 text-right tabular-nums text-black">
+                          {v.businessUsePercent.toFixed(2)}%
+                        </td>
+                        <td className="px-5 py-3 text-right tabular-nums text-black">
+                          {formatCurrency(v.totalDeductible, summaryCurrency)}
+                        </td>
+                      </tr>
+                    ))}
+                  {!vehicleLoading && !vehicleError && vehicleExpenses.length === 0 && (
+                    <tr>
+                      <td colSpan={3} className="px-5 py-10 text-center text-sm text-black/45">
+                        {`No vehicle expenses recorded for ${year} yet.`}
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </TabsContent>
+      </Tabs>
 
       <TripDetailDialog
         trip={selectedTrip}

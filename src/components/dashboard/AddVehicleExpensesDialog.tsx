@@ -69,9 +69,13 @@ export function AddVehicleExpensesDialog({
       await createVehicleExpenses({
         uid,
         forYear: year,
+        ...parseVehicleExpensesForm(form),
+        // Explicitly after the spread -- parseVehicleExpensesForm's own
+        // startDate/endDate are `Date | null` (fine for the live
+        // preview), but createVehicleExpenses requires real Dates, and
+        // we've already validated both are set above.
         startDate: new Date(`${form.startDate}T00:00:00`),
         endDate: new Date(`${form.endDate}T00:00:00`),
-        ...parseVehicleExpensesForm(form),
       });
       toast.success("Vehicle expenses saved.");
       setOpen(false);

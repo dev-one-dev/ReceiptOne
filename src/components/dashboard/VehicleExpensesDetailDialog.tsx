@@ -35,7 +35,8 @@ function toForm(record: VehicleExpenses): VehicleExpensesForm {
     insurance: record.insurance.toFixed(2),
     maintenance: record.maintenance.toFixed(2),
     licenceRegistration: record.licenceRegistration.toFixed(2),
-    interestLeasing: record.interestLeasing.toFixed(2),
+    interest: record.interest.toFixed(2),
+    leasing: record.leasing.toFixed(2),
     parking: record.parking.toFixed(2),
     other: record.other.toFixed(2),
   };
@@ -89,9 +90,13 @@ export function VehicleExpensesDetailDialog({
     setSaving(true);
     try {
       await updateVehicleExpenses(record.id, {
+        ...parseVehicleExpensesForm(form),
+        // Explicitly after the spread -- parseVehicleExpensesForm's own
+        // startDate/endDate are `Date | null` (fine for the live
+        // preview), but updateVehicleExpenses requires real Dates, and
+        // we've already validated both are set above.
         startDate: new Date(`${form.startDate}T00:00:00`),
         endDate: new Date(`${form.endDate}T00:00:00`),
-        ...parseVehicleExpensesForm(form),
       });
       toast.success("Vehicle expenses updated.");
       setEditing(false);
@@ -122,7 +127,7 @@ export function VehicleExpensesDetailDialog({
 
   const liveTotals = form
     ? computeVehicleExpensesTotals(parseVehicleExpensesForm(form))
-    : { businessUsePercent: 0, totalVehicleExpenses: 0, totalDeductible: 0 };
+    : { businessUsePercent: 0, deductibleInterest: 0, totalVehicleExpenses: 0, totalDeductible: 0 };
 
   return (
     <>
@@ -194,7 +199,7 @@ export function VehicleExpensesDetailDialog({
                     <div className="flex items-center justify-between">
                       <span className="text-black/55">Business-use %</span>
                       <span className="font-medium text-black">
-                        {record.businessUsePercent.toFixed(1)}%
+                        {record.businessUsePercent.toFixed(2)}%
                       </span>
                     </div>
                   </div>
@@ -202,8 +207,16 @@ export function VehicleExpensesDetailDialog({
                   <div className="space-y-2 rounded-xl bg-black/[0.03] px-4 py-3 text-sm">
                     <div className="flex items-center justify-between text-xs text-black/55">
                       <span>
+                        Interest — capped from {formatCurrency(record.interest, currency)}
+                      </span>
+                      <span className="font-medium text-black">
+                        {formatCurrency(record.deductibleInterest, currency)}
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between text-xs text-black/55">
+                      <span>
                         {formatCurrency(record.totalVehicleExpenses, currency)} vehicle expenses ×{" "}
-                        {record.businessUsePercent.toFixed(1)}%
+                        {record.businessUsePercent.toFixed(2)}%
                       </span>
                       <span className="font-medium text-black">
                         {formatCurrency(

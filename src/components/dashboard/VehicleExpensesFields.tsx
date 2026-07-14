@@ -1,4 +1,10 @@
-import type { VehicleExpensesTotals } from "@/integrations/firebase/vehicle-expenses";
+import { TriangleAlert } from "lucide-react";
+import {
+  daysInPeriod,
+  DAILY_INTEREST_LIMIT,
+  DAILY_INTEREST_LIMIT_TAX_YEAR,
+  type VehicleExpensesTotals,
+} from "@/integrations/firebase/vehicle-expenses";
 import { formatCurrency } from "@/lib/dashboard-format";
 
 /** String form-state mirror of VehicleExpensesTotalsInput -- shared by the Add and Detail/Edit dialogs, same role ReceiptEditFields plays for receipts. */
@@ -11,7 +17,8 @@ export type VehicleExpensesForm = {
   insurance: string;
   maintenance: string;
   licenceRegistration: string;
-  interestLeasing: string;
+  interest: string;
+  leasing: string;
   parking: string;
   other: string;
 };
@@ -30,22 +37,30 @@ export function blankVehicleExpensesForm(
     insurance: "0.00",
     maintenance: "0.00",
     licenceRegistration: "0.00",
-    interestLeasing: "0.00",
+    interest: "0.00",
+    leasing: "0.00",
     parking: "0.00",
     other: "0.00",
   };
 }
 
+function parseFormDate(value: string): Date | null {
+  return value ? new Date(`${value}T00:00:00`) : null;
+}
+
 export function parseVehicleExpensesForm(form: VehicleExpensesForm) {
   const n = (v: string) => parseFloat(v) || 0;
   return {
+    startDate: parseFormDate(form.startDate),
+    endDate: parseFormDate(form.endDate),
     totalKm: n(form.totalKm),
     businessKm: n(form.businessKm),
     fuel: n(form.fuel),
     insurance: n(form.insurance),
     maintenance: n(form.maintenance),
     licenceRegistration: n(form.licenceRegistration),
-    interestLeasing: n(form.interestLeasing),
+    interest: n(form.interest),
+    leasing: n(form.leasing),
     parking: n(form.parking),
     other: n(form.other),
   };
@@ -56,7 +71,6 @@ const EXPENSE_FIELDS: { key: keyof VehicleExpensesForm; label: string }[] = [
   { key: "insurance", label: "Insurance" },
   { key: "maintenance", label: "Maintenance and repairs" },
   { key: "licenceRegistration", label: "Licence and registration" },
-  { key: "interestLeasing", label: "Interest or leasing costs" },
   { key: "other", label: "Other" },
 ];
 
@@ -82,6 +96,9 @@ export function VehicleExpensesFields({
   currency: string;
   totals: VehicleExpensesTotals;
 }) {
+  const rawInterest = parseFloat(form.interest) || 0;
+  const periodDays = daysInPeriod(parseFormDate(form.startDate), parseFormDate(form.endDate));
+
   return (
     <div className="space-y-4">
       <div className="grid grid-cols-2 gap-3">
@@ -150,6 +167,38 @@ export function VehicleExpensesFields({
       </div>
 
       <div className="space-y-1.5">
+        <label className="block text-xs font-medium text-black/55">Loan interest</label>
+        <input
+          value={form.interest}
+          onChange={(e) => onChangeField({ interest: e.target.value })}
+          inputMode="decimal"
+          className="h-9 w-full rounded-xl border border-black/10 bg-white px-3 text-sm outline-none focus:border-black/25"
+        />
+        <p className="text-xs text-black/40">
+          CRA caps deductible interest at {formatCurrency(DAILY_INTEREST_LIMIT, currency)}/day for{" "}
+          {DAILY_INTEREST_LIMIT_TAX_YEAR}. You entered {formatCurrency(rawInterest, currency)} —{" "}
+          {formatCurrency(totals.deductibleInterest, currency)} is deductible ({periodDays} day
+          {periodDays === 1 ? "" : "s"}).
+        </p>
+      </div>
+
+      <div className="space-y-1.5">
+        <label className="block text-xs font-medium text-black/55">Leasing costs</label>
+        <input
+          value={form.leasing}
+          onChange={(e) => onChangeField({ leasing: e.target.value })}
+          inputMode="decimal"
+          className="h-9 w-full rounded-xl border border-black/10 bg-white px-3 text-sm outline-none focus:border-black/25"
+        />
+        <p className="flex items-start gap-1.5 text-xs text-[#c2410c]">
+          <TriangleAlert className="mt-0.5 size-3.5 shrink-0" aria-hidden />
+          Leasing costs are subject to a separate CRA limit (Chart C, based on the vehicle's
+          manufacturer's list price) that this app doesn't yet compute. Verify your deductible
+          leasing amount before filing.
+        </p>
+      </div>
+
+      <div className="space-y-1.5">
         <label className="block text-xs font-medium text-black/55">
           Parking (100% deductible — not prorated by business use)
         </label>
@@ -166,12 +215,18 @@ export function VehicleExpensesFields({
           <span>
             Business use ({form.businessKm || "0"} / {form.totalKm || "0"} km)
           </span>
-          <span className="font-medium text-black">{totals.businessUsePercent.toFixed(1)}%</span>
+          <span className="font-medium text-black">{totals.businessUsePercent.toFixed(2)}%</span>
+        </div>
+        <div className="flex items-center justify-between text-xs text-black/55">
+          <span>Interest — capped from {formatCurrency(rawInterest, currency)}</span>
+          <span className="font-medium text-black">
+            {formatCurrency(totals.deductibleInterest, currency)}
+          </span>
         </div>
         <div className="flex items-center justify-between text-xs text-black/55">
           <span>
             {formatCurrency(totals.totalVehicleExpenses, currency)} vehicle expenses ×{" "}
-            {totals.businessUsePercent.toFixed(1)}%
+            {totals.businessUsePercent.toFixed(2)}%
           </span>
           <span className="font-medium text-black">
             {formatCurrency(
