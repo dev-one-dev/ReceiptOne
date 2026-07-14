@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
-import { Cell, Pie, PieChart, ResponsiveContainer, Sector, Tooltip } from "recharts";
+import { Cell, Pie, PieChart, ResponsiveContainer, Sector } from "recharts";
 import type { Receipt } from "@/integrations/firebase/receipts";
 import { formatCurrency } from "@/lib/dashboard-format";
 
@@ -40,6 +40,7 @@ function renderActiveShape(props: ActiveShapeProps) {
       startAngle={startAngle}
       endAngle={endAngle}
       fill={fill}
+      className="outline-none focus:outline-none focus-visible:outline-none"
     />
   );
 }
@@ -145,7 +146,7 @@ export function CategoryDonutChart({
         </div>
       ) : (
         <div className="mt-4 flex flex-col items-center gap-6 sm:mx-auto sm:w-fit sm:flex-row">
-          <div className="h-[200px] w-[200px] shrink-0">
+          <div className="h-[200px] w-[200px] shrink-0 outline-none [&_*]:outline-none [&_*]:focus:outline-none [&_*]:focus-visible:outline-none">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
@@ -160,12 +161,14 @@ export function CategoryDonutChart({
                   onMouseEnter={(_, index) => setActiveIndex(index)}
                   onMouseLeave={() => setActiveIndex(null)}
                   onClick={(_, index) => goToCategory(slices[index].category)}
+                  className="outline-none focus:outline-none focus-visible:outline-none"
                 >
                   {slices.map((slice, index) => (
                     <Cell
                       key={slice.category}
                       fill={slice.color}
                       stroke="none"
+                      className="outline-none focus:outline-none focus-visible:outline-none"
                       style={{
                         opacity: activeIndex === null || activeIndex === index ? 1 : 0.45,
                         transition: "opacity 150ms",
@@ -174,12 +177,6 @@ export function CategoryDonutChart({
                     />
                   ))}
                 </Pie>
-                <Tooltip
-                  formatter={(value: number, _name, item) => [
-                    formatCurrency(value, currency),
-                    item.payload.category,
-                  ]}
-                />
               </PieChart>
             </ResponsiveContainer>
           </div>
