@@ -13,7 +13,12 @@ export default defineConfig({
   cloudflare: deployVercel ? false : undefined,
   vite: deployVercel
     ? {
-        plugins: [nitro({ preset: "vercel" })],
+        // serverDir points Nitro's file-based route scanning at
+        // src/server (routesDir defaults to "routes" beneath it), so
+        // src/server/routes/api/helpdesk/notify.post.ts registers as
+        // POST /api/helpdesk/notify -- kept under src/ so it's covered
+        // by the existing tsconfig "include" without changes there.
+        plugins: [nitro({ preset: "vercel", serverDir: "src/server" })],
       }
     : {},
 });
