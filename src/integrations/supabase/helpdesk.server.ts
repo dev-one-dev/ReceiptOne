@@ -37,8 +37,30 @@ export function isPubliclyVisible(status: FeatureIdeaStatus): boolean {
   return status !== "pending_review";
 }
 
-function failIfError(error: { message: string } | null): void {
-  if (error) throw new Error(error.message);
+/**
+ * PostgrestError carries message/code/details/hint -- reading only
+ * `.message` (as this used to) throws a textless Error whenever the
+ * actual cause lives in `code`/`details`/`hint` instead (e.g. a bare
+ * permission-denied error can have an empty message with a populated
+ * code), which is exactly how the earlier "swallowed error" bug reached
+ * every layer above this as blank. `label` identifies which query
+ * failed, since a bare error/message alone doesn't say which of several
+ * parallel queries in a Promise.all it came from.
+ */
+function failIfError(
+  error: { message: string; code?: string; details?: string; hint?: string } | null,
+  label: string,
+): void {
+  if (!error) return;
+  const segments = [
+    error.code ? `[${error.code}]` : null,
+    error.message ? error.message : null,
+    error.details ? `details: ${error.details}` : null,
+    error.hint ? `hint: ${error.hint}` : null,
+  ].filter((s): s is string => Boolean(s));
+  const text =
+    segments.length > 0 ? segments.join(" — ") : `empty error object: ${JSON.stringify(error)}`;
+  throw new Error(`[${label}] ${text}`);
 }
 
 /**
@@ -117,12 +139,15 @@ export const fetchHelpdeskOverview = createServerFn({ method: "POST" })
           .limit(5),
       ]);
 
-      failIfError(pendingReview.error);
-      failIfError(totalIdeas.error);
-      failIfError(openSupport.error);
-      failIfError(totalVotes.error);
-      failIfError(pendingIdeas.error);
-      failIfError(latestSupportRequests.error);
+      failIfError(
+        pendingReview.error,
+        "pendingReview count (feature_ideas, status=pending_review)",
+      );
+      failIfError(totalIdeas.error, "totalIdeas count (feature_ideas)");
+      failIfError(openSupport.error, "openSupport count (support_requests, status!=resolved)");
+      failIfError(totalVotes.error, "totalVotes count (feature_votes)");
+      failIfError(pendingIdeas.error, "pendingIdeas rows (feature_ideas, status=pending_review)");
+      failIfError(latestSupportRequests.error, "latestSupportRequests rows (support_requests)");
 
       const result: HelpdeskOverview = {
         stats: {
@@ -170,7 +195,7 @@ export const fetchAllIdeas = createServerFn({ method: "POST" })
         .from("feature_ideas")
         .select("*")
         .order("created_at", { ascending: false });
-      failIfError(error);
+      failIfError(error, "fetchAllIdeas");
       return data ?? [];
     } catch (e) {
       logAndRethrow("fetchAllIdeas", e);
@@ -193,7 +218,7 @@ export const updateIdeaStatus = createServerFn({ method: "POST" })
         .eq("id", data.id)
         .select("*")
         .single();
-      failIfError(error);
+      failIfError(error, "updateIdeaStatus");
       if (!row) throw new Error("Idea not found.");
       return row;
     } catch (e) {
@@ -210,7 +235,7 @@ export const deleteIdea = createServerFn({ method: "POST" })
   .handler(async ({ data }): Promise<void> => {
     try {
       const { error } = await supabaseAdmin.from("feature_ideas").delete().eq("id", data.id);
-      failIfError(error);
+      failIfError(error, "deleteIdea");
     } catch (e) {
       logAndRethrow("deleteIdea", e);
     }
@@ -229,7 +254,7 @@ export const fetchAllSupportRequests = createServerFn({ method: "POST" })
         .from("support_requests")
         .select("*")
         .order("created_at", { ascending: false });
-      failIfError(error);
+      failIfError(error, "fetchAllSupportRequests");
       return data ?? [];
     } catch (e) {
       logAndRethrow("fetchAllSupportRequests", e);
@@ -252,7 +277,7 @@ export const updateSupportRequestStatus = createServerFn({ method: "POST" })
         .eq("id", data.id)
         .select("*")
         .single();
-      failIfError(error);
+      failIfError(error, "updateSupportRequestStatus");
       if (!row) throw new Error("Support request not found.");
       return row;
     } catch (e) {
@@ -267,7 +292,7 @@ export const deleteSupportRequest = createServerFn({ method: "POST" })
   .handler(async ({ data }): Promise<void> => {
     try {
       const { error } = await supabaseAdmin.from("support_requests").delete().eq("id", data.id);
-      failIfError(error);
+      failIfError(error, "deleteSupportRequest");
     } catch (e) {
       logAndRethrow("deleteSupportRequest", e);
     }
