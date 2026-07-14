@@ -81,42 +81,22 @@ export const requireSupabaseAuth = createMiddleware({ type: "function" }).server
 export const requireHelpdeskAdmin = createMiddleware({ type: "function" })
   .middleware([requireSupabaseAuth])
   .server(async ({ context, next }) => {
-    // TEMPORARY DEBUGGING: /helpdesk calls were failing with an empty
-    // {"error":{"message":""}} on the client and nothing in Vercel's
-    // function logs -- wrapping this in try/catch guarantees the real
-    // message + stack land in the logs no matter what happens to the
-    // error afterward. Remove once the underlying bug is found.
-    try {
-      const rawAllowlist = process.env.ADMIN_USER_IDS;
+    const rawAllowlist = process.env.ADMIN_USER_IDS;
 
-      if (!rawAllowlist) {
-        throw new Response("Server misconfiguration: ADMIN_USER_IDS is not set.", { status: 500 });
-      }
-
-      const allowlist = rawAllowlist
-        .split(",")
-        .map((id) => id.trim())
-        .filter(Boolean);
-
-      if (!allowlist.includes(context.userId)) {
-        throw new Response("Forbidden: this Supabase account is not an approved helpdesk admin.", {
-          status: 403,
-        });
-      }
-
-      return next();
-    } catch (e) {
-      console.error("[requireHelpdeskAdmin] failed:", e);
-      if (e instanceof Error) {
-        console.error(`[requireHelpdeskAdmin] message="${e.message}"`);
-        console.error("[requireHelpdeskAdmin] stack:", e.stack);
-      } else if (e instanceof Response) {
-        console.error(
-          `[requireHelpdeskAdmin] Response thrown: status=${e.status} statusText=${e.statusText}`,
-        );
-      } else {
-        console.error(`[requireHelpdeskAdmin] non-Error thrown value, typeof=${typeof e}`, e);
-      }
-      throw e;
+    if (!rawAllowlist) {
+      throw new Response("Server misconfiguration: ADMIN_USER_IDS is not set.", { status: 500 });
     }
+
+    const allowlist = rawAllowlist
+      .split(",")
+      .map((id) => id.trim())
+      .filter(Boolean);
+
+    if (!allowlist.includes(context.userId)) {
+      throw new Response("Forbidden: this Supabase account is not an approved helpdesk admin.", {
+        status: 403,
+      });
+    }
+
+    return next();
   });

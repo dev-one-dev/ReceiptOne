@@ -39,19 +39,19 @@ export function isPubliclyVisible(status: FeatureIdeaStatus): boolean {
 
 /**
  * PostgrestError carries message/code/details/hint -- reading only
- * `.message` (as this used to) throws a textless Error whenever the
- * actual cause lives in `code`/`details`/`hint` instead (e.g. a bare
- * permission-denied error can have an empty message with a populated
- * code), which is exactly how the earlier "swallowed error" bug reached
- * every layer above this as blank. `label` identifies which query
+ * `.message` throws a textless Error whenever the actual cause lives in
+ * `code`/`details`/`hint` instead. `label` identifies which query
  * failed, since a bare error/message alone doesn't say which of several
- * parallel queries in a Promise.all it came from.
+ * parallel queries in a Promise.all it came from. Logs the untouched
+ * raw error object server-side before throwing a clean, readable
+ * message built from whatever fields are actually populated.
  */
 function failIfError(
   error: { message: string; code?: string; details?: string; hint?: string } | null,
   label: string,
 ): void {
   if (!error) return;
+  console.error(`[helpdesk.server] ${label} failed:`, error);
   const segments = [
     error.code ? `[${error.code}]` : null,
     error.message ? error.message : null,
@@ -63,24 +63,9 @@ function failIfError(
   throw new Error(`[${label}] ${text}`);
 }
 
-/**
- * TEMPORARY DEBUGGING HELPER -- /helpdesk server functions were failing
- * with an empty {"error":{"message":""}} on the client and nothing in
- * Vercel's function logs, meaning something upstream was swallowing the
- * real error before it ever got logged. Every handler below now wraps
- * its body in try/catch and routes the failure through this so the full
- * message + stack always reach Vercel's logs, regardless of what the
- * framework does with the error afterward. Remove once the underlying
- * bug is found and fixed.
- */
+/** Logs unexpected failures server-side before rethrowing, so Vercel's function logs always show what actually happened. */
 function logAndRethrow(fnName: string, e: unknown): never {
   console.error(`[helpdesk.server:${fnName}] failed:`, e);
-  if (e instanceof Error) {
-    console.error(`[helpdesk.server:${fnName}] message="${e.message}"`);
-    console.error(`[helpdesk.server:${fnName}] stack:`, e.stack);
-  } else {
-    console.error(`[helpdesk.server:${fnName}] non-Error thrown value, typeof=${typeof e}`, e);
-  }
   throw e;
 }
 
@@ -109,74 +94,51 @@ export const fetchHelpdeskOverview = createServerFn({ method: "POST" })
   .middleware([requireHelpdeskAdmin])
   .handler(async (): Promise<HelpdeskOverview> => {
     try {
-      const [
-        pendingReview,
-        totalIdeas,
-        openSupport,
-        totalVotes,
-        pendingIdeas,
-        latestSupportRequests,
-      ] = await Promise.all([
-        supabaseAdmin
-          .from("feature_ideas")
-          .select("*", { count: "exact", head: true })
-          .eq("status", "pending_review"),
-        supabaseAdmin.from("feature_ideas").select("*", { count: "exact", head: true }),
-        supabaseAdmin
-          .from("support_requests")
-          .select("*", { count: "exact", head: true })
-          .neq("status", "resolved"),
-        supabaseAdmin.from("feature_votes").select("*", { count: "exact", head: true }),
-        supabaseAdmin
-          .from("feature_ideas")
-          .select("*")
-          .eq("status", "pending_review")
-          .order("created_at", { ascending: false }),
-        supabaseAdmin
-          .from("support_requests")
-          .select("*")
-          .order("created_at", { ascending: false })
-          .limit(5),
-      ]);
+      // No `head: true` here -- a HEAD request has no response body, and
+      // this runtime's fetch/Supabase client combination hands back a
+      // degenerate, code-less `{ message: "" }` error when it tries to
+      // parse one anyway. `.select("id", { count: "exact" })` gets a
+      // real (tiny) body to parse instead. pendingReviewCount needs no
+      // query of its own at all -- pendingIdeas below already fetches
+      // every pending_review row in full, so its length IS the count.
+      const [totalIdeas, openSupport, totalVotes, pendingIdeas, latestSupportRequests] =
+        await Promise.all([
+          supabaseAdmin.from("feature_ideas").select("id", { count: "exact" }),
+          supabaseAdmin
+            .from("support_requests")
+            .select("id", { count: "exact" })
+            .neq("status", "resolved"),
+          supabaseAdmin.from("feature_votes").select("id", { count: "exact" }),
+          supabaseAdmin
+            .from("feature_ideas")
+            .select("*")
+            .eq("status", "pending_review")
+            .order("created_at", { ascending: false }),
+          supabaseAdmin
+            .from("support_requests")
+            .select("*")
+            .order("created_at", { ascending: false })
+            .limit(5),
+        ]);
 
-      failIfError(
-        pendingReview.error,
-        "pendingReview count (feature_ideas, status=pending_review)",
-      );
       failIfError(totalIdeas.error, "totalIdeas count (feature_ideas)");
       failIfError(openSupport.error, "openSupport count (support_requests, status!=resolved)");
       failIfError(totalVotes.error, "totalVotes count (feature_votes)");
       failIfError(pendingIdeas.error, "pendingIdeas rows (feature_ideas, status=pending_review)");
       failIfError(latestSupportRequests.error, "latestSupportRequests rows (support_requests)");
 
-      const result: HelpdeskOverview = {
+      const pendingIdeaRows = pendingIdeas.data ?? [];
+
+      return {
         stats: {
-          pendingReviewCount: pendingReview.count ?? 0,
+          pendingReviewCount: pendingIdeaRows.length,
           totalIdeasCount: totalIdeas.count ?? 0,
           openSupportCount: openSupport.count ?? 0,
           totalVotesCount: totalVotes.count ?? 0,
         },
-        pendingIdeas: pendingIdeas.data ?? [],
+        pendingIdeas: pendingIdeaRows,
         latestSupportRequests: latestSupportRequests.data ?? [],
       };
-
-      // TEMPORARY DIAGNOSTIC: the client was failing during response
-      // DEserialization (not the Supabase queries -- those return 200s),
-      // so before guessing at a fix, confirm the actual runtime shape of
-      // what we're about to return and whether it's even JSON-safe. If
-      // JSON.stringify itself throws, the caught error below pinpoints
-      // the exact non-serializable field. Remove once the real cause is
-      // confirmed via Vercel's function logs.
-      try {
-        console.log("[fetchHelpdeskOverview] about to return:", JSON.stringify(result));
-      } catch (stringifyError) {
-        console.error(
-          "[fetchHelpdeskOverview] JSON.stringify(result) THREW -- this is the smoking gun:",
-          stringifyError,
-        );
-      }
-
-      return result;
     } catch (e) {
       logAndRethrow("fetchHelpdeskOverview", e);
     }
