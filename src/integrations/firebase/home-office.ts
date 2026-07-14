@@ -112,3 +112,20 @@ export async function fetchHomeOffice(uid: string, year: string): Promise<HomeOf
   records.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
   return records[0];
 }
+
+/**
+ * Same query/filter shape as fetchHomeOffice above, but returns every
+ * matching record instead of collapsing to the newest one -- a tax form
+ * (T2125) needs to sum ALL of a user's home office records for the
+ * year, since a user can have more than one in a single tax year (e.g.
+ * after moving or resizing the workspace partway through the year).
+ */
+export async function fetchHomeOfficeRecords(uid: string, year: string): Promise<HomeOffice[]> {
+  const q = query(collection(db, "homeOffice"), where("created_by", "==", uid));
+  const snapshot = await getDocs(q);
+  const records = snapshot.docs
+    .map((doc) => toHomeOffice(doc.id, doc.data()))
+    .filter((record) => String(record.forYear) === String(year));
+  records.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+  return records;
+}

@@ -44,7 +44,7 @@ function formatRange(report: Report, dateFormat: Parameters<typeof formatDate>[1
 }
 
 function ReportsPage() {
-  const { dateFormat } = useDashboardContext();
+  const { dateFormat, year } = useDashboardContext();
   const { user } = useAuth();
   const uid = user?.uid ?? auth.currentUser?.uid ?? null;
 
@@ -109,19 +109,27 @@ function ReportsPage() {
             </Select>
           </div>
           <div className="space-y-1.5">
-            <label className="block text-xs font-medium text-black/55">Date range</label>
-            <Select value={range} onValueChange={setRange}>
-              <SelectTrigger className="h-9 w-full rounded-xl border-black/10 bg-white text-sm shadow-none">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                {DATE_RANGES.map((r) => (
-                  <SelectItem key={r} value={r}>
-                    {r}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <label className="block text-xs font-medium text-black/55">
+              {type === "Tax Summary" ? "Tax year" : "Date range"}
+            </label>
+            {type === "Tax Summary" ? (
+              <div className="flex h-9 w-full items-center rounded-xl border border-black/10 bg-black/[0.03] px-3 text-sm text-black/70">
+                {year}
+              </div>
+            ) : (
+              <Select value={range} onValueChange={setRange}>
+                <SelectTrigger className="h-9 w-full rounded-xl border-black/10 bg-white text-sm shadow-none">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {DATE_RANGES.map((r) => (
+                    <SelectItem key={r} value={r}>
+                      {r}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            )}
           </div>
           <div className="space-y-1.5">
             <label className="block text-xs font-medium text-black/55">Format</label>

@@ -18,51 +18,106 @@ import {
 } from "@/components/dashboard/DashboardContext";
 import { fetchReceipts, type Receipt } from "@/integrations/firebase/receipts";
 import { fetchTrips, tripDistance, type Trip } from "@/integrations/firebase/trips";
+import { fetchHomeOfficeRecords, type HomeOffice } from "@/integrations/firebase/home-office";
+import { buildT2125Summary, type T2125Summary } from "@/lib/t2125";
 import { formatCurrency, formatDate, formatDistance, money } from "@/lib/dashboard-format";
 import { errorMessage } from "@/lib/utils";
 
 /**
- * Tax Summary stays fully mock -- the real backend-generated PDF is a
- * full CRA T2125 tax form, a separate, more complex piece out of scope
- * here. Both this preview and its Download button are untouched.
+ * Real CRA T2125 Part 4 preview -- step 1 of 2. All aggregation lives in
+ * src/lib/t2125.ts (pure, no Firestore calls); this just renders it.
+ * PDF generation is a separate, later piece: the Download button stays
+ * disabled for this report type (see handleDownload/isRealType below).
  */
-const CATEGORY_TOTALS = [
-  { category: "Office Rent", amount: 1920.0 },
-  { category: "Travel", amount: 612.5 },
-  { category: "Office Supplies", amount: 458.2 },
-  { category: "Fuel", amount: 340.75 },
-  { category: "Software", amount: 289.99 },
-  { category: "Meals", amount: 156.4 },
-];
-
-function TaxSummaryPreview() {
-  const total = CATEGORY_TOTALS.reduce((sum, c) => sum + c.amount, 0);
+function TaxSummaryPreview({
+  summary,
+  currency,
+  claimsITC,
+  onClaimsITCChange,
+}: {
+  summary: T2125Summary;
+  currency: string;
+  claimsITC: boolean;
+  onClaimsITCChange: (value: boolean) => void;
+}) {
   return (
-    <div className="rounded-xl border border-black/[0.07]">
-      <table className="w-full border-collapse text-left text-sm">
-        <thead>
-          <tr className="text-xs text-black/45">
-            <th className="px-4 py-2 font-medium">Category</th>
-            <th className="px-4 py-2 text-right font-medium">Deductible amount</th>
-          </tr>
-        </thead>
-        <tbody>
-          {CATEGORY_TOTALS.map((c) => (
-            <tr key={c.category} className="border-t border-black/[0.05]">
-              <td className="px-4 py-2.5 text-black/70">{c.category}</td>
-              <td className="px-4 py-2.5 text-right tabular-nums text-black">{money(c.amount)}</td>
+    <div className="space-y-3">
+      <label className="flex items-start gap-2 rounded-xl bg-black/[0.03] px-4 py-3 text-sm">
+        <input
+          type="checkbox"
+          checked={claimsITC}
+          onChange={(e) => onClaimsITCChange(e.target.checked)}
+          className="mt-0.5 size-3.5 shrink-0 rounded border-black/20"
+        />
+        <span>
+          <span className="font-medium text-black">I claim GST/HST input tax credits (ITC)</span>
+          <span className="mt-0.5 block text-xs text-black/50">
+            When on, the recoverable GST/HST on your receipts is excluded from the expense lines
+            below, since you reclaim it separately as an ITC rather than as a deduction.
+          </span>
+        </span>
+      </label>
+
+      <div className="rounded-xl border border-black/[0.07]">
+        <table className="w-full border-collapse text-left text-sm">
+          <thead>
+            <tr className="text-xs text-black/45">
+              <th className="px-4 py-2 font-medium">Line</th>
+              <th className="px-4 py-2 font-medium">Description</th>
+              <th className="px-4 py-2 text-right font-medium">Amount</th>
             </tr>
-          ))}
-        </tbody>
-        <tfoot>
-          <tr className="border-t border-black/[0.1]">
-            <td className="px-4 py-2.5 text-sm font-semibold text-black">Total</td>
-            <td className="px-4 py-2.5 text-right text-sm font-semibold tabular-nums text-black">
-              {money(total)}
-            </td>
-          </tr>
-        </tfoot>
-      </table>
+          </thead>
+          <tbody>
+            {summary.lines.map((li) => {
+              const isZero = li.amount === 0 && li.actual === undefined;
+              return (
+                <tr key={li.lineNumber} className="border-t border-black/[0.05]">
+                  <td
+                    className={`px-4 py-2.5 tabular-nums ${isZero ? "text-black/30" : "text-black/55"}`}
+                  >
+                    {li.lineNumber}
+                  </td>
+                  <td className={`px-4 py-2.5 ${isZero ? "text-black/30" : "text-black/70"}`}>
+                    {li.label}
+                  </td>
+                  <td
+                    className={`px-4 py-2.5 text-right tabular-nums ${isZero ? "text-black/30" : "text-black"}`}
+                  >
+                    <div>{formatCurrency(li.amount, currency)}</div>
+                    {li.actual !== undefined && (
+                      <div className="text-xs font-normal text-black/40">
+                        50% of {formatCurrency(li.actual, currency)}
+                      </div>
+                    )}
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+          <tfoot>
+            <tr className="border-t border-black/[0.1]">
+              <td colSpan={2} className="px-4 py-3 text-sm font-semibold text-black">
+                9368 Total expenses
+              </td>
+              <td className="px-4 py-3 text-right text-base font-semibold tabular-nums text-black">
+                {formatCurrency(summary.totalExpenses, currency)}
+              </td>
+            </tr>
+            <tr className="border-t border-black/[0.05]">
+              <td colSpan={3} className="px-4 py-2 text-xs text-black/50">
+                GST/HST reclaim (ITC): {formatCurrency(summary.totalRefundableTax, currency)} — not
+                an expense; recovered separately.
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+
+      <p className="text-xs text-black/40">
+        Line 9281 is computed from your logged mileage (distance × the rate recorded on each trip).
+        If you deduct actual vehicle expenses instead of a per-distance rate, fill that line in
+        yourself.
+      </p>
     </div>
   );
 }
@@ -511,10 +566,12 @@ export function ReportPreviewDialog({
   format: string;
   uid: string | null;
 }) {
-  const { distanceUnit, dateFormat, mileageRate } = useDashboardContext();
+  const { distanceUnit, dateFormat, mileageRate, year } = useDashboardContext();
 
   const [receipts, setReceipts] = useState<Receipt[]>([]);
   const [trips, setTrips] = useState<Trip[]>([]);
+  const [homeOfficeRecords, setHomeOfficeRecords] = useState<HomeOffice[]>([]);
+  const [claimsITC, setClaimsITC] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -548,12 +605,33 @@ export function ReportPreviewDialog({
         .finally(() => {
           if (!cancelled) setLoading(false);
         });
+    } else if (type === "Tax Summary") {
+      setLoading(true);
+      setError(null);
+      Promise.all([
+        fetchReceipts(uid, year),
+        fetchTrips(uid, year),
+        fetchHomeOfficeRecords(uid, year),
+      ])
+        .then(([receiptsData, tripsData, homeOfficeData]) => {
+          if (!cancelled) {
+            setReceipts(receiptsData);
+            setTrips(tripsData);
+            setHomeOfficeRecords(homeOfficeData);
+          }
+        })
+        .catch((e) => {
+          if (!cancelled) setError(errorMessage(e, "Couldn't load your tax summary data."));
+        })
+        .finally(() => {
+          if (!cancelled) setLoading(false);
+        });
     }
 
     return () => {
       cancelled = true;
     };
-  }, [open, type, uid]);
+  }, [open, type, uid, year]);
 
   const { start, end } = resolveDateRange(range);
 
@@ -566,6 +644,10 @@ export function ReportPreviewDialog({
   const mileageRows = buildMileageRows(filteredTrips, distanceUnit);
   const tripsCurrency = filteredTrips[0]?.currency ?? "CAD";
 
+  const taxSummary = buildT2125Summary(receipts, trips, homeOfficeRecords, year, claimsITC);
+  const taxSummaryCurrency = receipts[0]?.currency ?? trips[0]?.currency ?? "CAD";
+  const taxSummaryHasData = receipts.length > 0 || trips.length > 0 || homeOfficeRecords.length > 0;
+
   const isRealType = type === "Expense Summary" || type === "Mileage Report";
   const hasData =
     type === "Expense Summary"
@@ -576,8 +658,9 @@ export function ReportPreviewDialog({
 
   const handleDownload = () => {
     if (type === "Tax Summary") {
-      toast.info("Downloads aren't wired up yet — this is a static mockup.");
-      onOpenChange(false);
+      toast.info(
+        "PDF/CSV export for Tax Summary is coming next — this preview reflects your real records.",
+      );
       return;
     }
     if (!hasData) {
@@ -605,11 +688,31 @@ export function ReportPreviewDialog({
         <DialogHeader>
           <DialogTitle>{type} preview</DialogTitle>
           <DialogDescription>
-            {range} · {format}
+            {type === "Tax Summary" ? `Tax year ${year}` : range} · {format}
           </DialogDescription>
         </DialogHeader>
 
-        {type === "Tax Summary" && <TaxSummaryPreview />}
+        {type === "Tax Summary" &&
+          (loading ? (
+            <p className="rounded-xl bg-black/[0.03] px-4 py-6 text-center text-sm text-black/45">
+              Loading your tax summary…
+            </p>
+          ) : error ? (
+            <p className="rounded-xl bg-black/[0.03] px-4 py-6 text-center text-sm text-red-600">
+              {error}
+            </p>
+          ) : !taxSummaryHasData ? (
+            <p className="rounded-xl bg-black/[0.03] px-4 py-6 text-center text-sm text-black/45">
+              No receipts, trips, or home office records for {year}.
+            </p>
+          ) : (
+            <TaxSummaryPreview
+              summary={taxSummary}
+              currency={taxSummaryCurrency}
+              claimsITC={claimsITC}
+              onClaimsITCChange={setClaimsITC}
+            />
+          ))}
 
         {type === "Expense Summary" &&
           (loading ? (
@@ -657,7 +760,7 @@ export function ReportPreviewDialog({
 
         <p className="text-xs text-black/40">
           {type === "Tax Summary"
-            ? "Preview only — reflects mock data, not your actual records for this range."
+            ? `Reflects your real records for tax year ${year}. PDF/CSV export is coming next.`
             : "Reflects your real records for this range."}
         </p>
 
@@ -665,11 +768,13 @@ export function ReportPreviewDialog({
           <button
             type="button"
             onClick={handleDownload}
-            disabled={isRealType && (loading || Boolean(error) || !hasData)}
+            disabled={
+              type === "Tax Summary" ? true : isRealType && (loading || Boolean(error) || !hasData)
+            }
             className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-black px-5 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
           >
             <Download className="size-4" aria-hidden />
-            Download {format}
+            {type === "Tax Summary" ? "Download — coming next" : `Download ${format}`}
           </button>
         </DialogFooter>
       </DialogContent>
