@@ -29,16 +29,18 @@ type TripEditForm = {
   /** One-way distance, in the trip's own recordedUnit -- never the current Settings display unit, since the unit a trip was recorded in is fixed. */
   distance: string;
   roundTrip: boolean;
-  isReimbursable: boolean;
 };
 
 /**
  * Read-only detail view (route map, addresses, rate, currency -- never
  * editable through this dialog), with an edit mode for date, comment,
- * one-way distance, round trip, and reimbursable, plus a real,
- * permanent delete. Both mutations call `onChanged` on success so the
- * caller (Mileage page) refetches from Firestore -- this dialog never
- * holds its own source of truth beyond the `trip` prop it's given.
+ * one-way distance, and round trip, plus a real, permanent delete.
+ * isReimbursable is deliberately not surfaced anywhere here -- it's
+ * dead in this schema (no mobile UI ever sets or displays it, nothing
+ * on web consumes it), so showing a toggle for it would be actively
+ * misleading. Both mutations call `onChanged` on success so the caller
+ * (Mileage page) refetches from Firestore -- this dialog never holds
+ * its own source of truth beyond the `trip` prop it's given.
  */
 export function TripDetailDialog({
   trip,
@@ -68,7 +70,6 @@ export function TripDetailDialog({
       comment: trip.comment,
       distance: String(trip.recordedUnit === "mi" ? trip.mileageMi : trip.mileageKm),
       roundTrip: trip.roundTrip,
-      isReimbursable: trip.isReimbursable,
     });
     setEditing(true);
   };
@@ -81,7 +82,6 @@ export function TripDetailDialog({
         date: editForm.date ? new Date(`${editForm.date}T00:00:00`) : trip.date,
         comment: editForm.comment,
         roundTrip: editForm.roundTrip,
-        isReimbursable: editForm.isReimbursable,
         distance: parseFloat(editForm.distance) || 0,
         recordedUnit: trip.recordedUnit === "mi" ? "mi" : "km",
         rate: trip.rate,
@@ -216,17 +216,6 @@ export function TripDetailDialog({
                     />
                     Round trip
                   </label>
-                  <label className="flex items-center gap-2 text-sm text-black/70">
-                    <input
-                      type="checkbox"
-                      checked={editForm.isReimbursable}
-                      onChange={(e) =>
-                        setEditForm({ ...editForm, isReimbursable: e.target.checked })
-                      }
-                      className="size-3.5 rounded border-black/20"
-                    />
-                    Reimbursable
-                  </label>
                 </div>
                 <DialogFooter className="gap-2 sm:gap-0">
                   <button
@@ -248,18 +237,11 @@ export function TripDetailDialog({
               </>
             ) : (
               <>
-                {(trip.roundTrip || trip.isReimbursable) && (
+                {trip.roundTrip && (
                   <div className="flex items-center gap-2">
-                    {trip.roundTrip && (
-                      <span className="rounded-full bg-black/[0.05] px-2.5 py-1 text-xs font-medium text-black/60">
-                        Round trip
-                      </span>
-                    )}
-                    {trip.isReimbursable && (
-                      <span className="rounded-full bg-black/[0.05] px-2.5 py-1 text-xs font-medium text-black/60">
-                        Reimbursable
-                      </span>
-                    )}
+                    <span className="rounded-full bg-black/[0.05] px-2.5 py-1 text-xs font-medium text-black/60">
+                      Round trip
+                    </span>
                   </div>
                 )}
 

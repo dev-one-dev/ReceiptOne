@@ -217,7 +217,6 @@ export type TripUpdateInput = {
   date: Date;
   comment: string;
   roundTrip: boolean;
-  isReimbursable: boolean;
   /** One-way distance in `recordedUnit` -- doubled internally if roundTrip is true, same convention as NewTripInput.distance. */
   distance: number;
   /** The trip's own recorded unit ("km"|"mi") -- read-only context for recomputing the distance-derived fields below, never written back (the `distance` Firestore field itself, which stores this unit string, is untouched by this function). */
@@ -228,17 +227,19 @@ export type TripUpdateInput = {
 
 /**
  * Updates an existing trip -- only the fields the edit form actually
- * exposes: date, comment, round_trip, is_reimbursable, and the
- * distance-derived fields (mileage/mileage_km_RoundTrip/mileage_ml/
- * mileage_ml_RoundTrip/total_price), recomputed together every time
- * since distance and round_trip are edited as one form, exactly
- * mirroring createTrip's own km/mi-both-populated computation (reusing
- * kmToMi/miToKm the same way). Deliberately never touches rate
- * (historical, recorded when the trip was logged -- never recomputed
- * from current Settings), routeMap, start_route/end_route (including
- * geopoints), currency, created_by, created_at, or distance (the
- * recorded unit string) -- those aren't part of the edit UI and
- * shouldn't be reassignable through this path.
+ * exposes: date, comment, round_trip, and the distance-derived fields
+ * (mileage/mileage_km_RoundTrip/mileage_ml/mileage_ml_RoundTrip/
+ * total_price), recomputed together every time since distance and
+ * round_trip are edited as one form, exactly mirroring createTrip's
+ * own km/mi-both-populated computation (reusing kmToMi/miToKm the same
+ * way). Deliberately never touches rate (historical, recorded when the
+ * trip was logged -- never recomputed from current Settings), routeMap,
+ * start_route/end_route (including geopoints), currency, created_by,
+ * created_at, distance (the recorded unit string), or is_reimbursable
+ * (dead in this schema -- no mobile UI ever sets or displays it,
+ * nothing on web consumes it, so it's not exposed as editable here) --
+ * those aren't part of the edit UI and shouldn't be reassignable
+ * through this path.
  */
 export async function updateTrip(id: string, patch: TripUpdateInput): Promise<void> {
   const oneWayKm = patch.recordedUnit === "km" ? patch.distance : miToKm(patch.distance);
@@ -249,7 +250,6 @@ export async function updateTrip(id: string, patch: TripUpdateInput): Promise<vo
     date: Timestamp.fromDate(patch.date),
     comment: patch.comment,
     round_trip: patch.roundTrip,
-    is_reimbursable: patch.isReimbursable,
     mileage: oneWayKm,
     mileage_km_RoundTrip: oneWayKm * 2,
     mileage_ml: oneWayMi,

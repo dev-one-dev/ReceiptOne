@@ -243,18 +243,11 @@ export function ReceiptDetailDialog({
                     </div>
                   </div>
 
-                  {(receipt.isReimbursable || receipt.isPreTax) && (
+                  {receipt.isPreTax && (
                     <div className="flex items-center gap-2">
-                      {receipt.isReimbursable && (
-                        <span className="rounded-full bg-black/[0.05] px-2.5 py-1 text-xs font-medium text-black/60">
-                          Reimbursable
-                        </span>
-                      )}
-                      {receipt.isPreTax && (
-                        <span className="rounded-full bg-black/[0.05] px-2.5 py-1 text-xs font-medium text-black/60">
-                          Pre-tax
-                        </span>
-                      )}
+                      <span className="rounded-full bg-black/[0.05] px-2.5 py-1 text-xs font-medium text-black/60">
+                        Pre-tax
+                      </span>
                     </div>
                   )}
 
