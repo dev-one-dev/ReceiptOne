@@ -21,6 +21,8 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { TripDetailDialog } from "@/components/dashboard/TripDetailDialog";
+import { AddVehicleExpensesDialog } from "@/components/dashboard/AddVehicleExpensesDialog";
+import { VehicleExpensesDetailDialog } from "@/components/dashboard/VehicleExpensesDetailDialog";
 import { useDashboardContext, type DistanceUnit } from "@/components/dashboard/DashboardContext";
 import { useAuth } from "@/integrations/firebase/auth-context";
 import { auth } from "@/integrations/firebase/client";
@@ -38,6 +40,10 @@ import {
   type RouteLocation,
   type Trip,
 } from "@/integrations/firebase/trips";
+import {
+  fetchVehicleExpensesRecords,
+  type VehicleExpenses,
+} from "@/integrations/firebase/vehicle-expenses";
 import { formatCurrency, formatDate, formatDistance, kmToMi, money } from "@/lib/dashboard-format";
 import { errorMessage } from "@/lib/utils";
 
@@ -525,6 +531,50 @@ function MileagePage() {
   const totalAmount = trips.reduce((sum, t) => sum + t.totalPrice, 0);
   const summaryCurrency = trips[0]?.currency ?? "USD";
 
+  // Vehicle expenses (CRA Chart A) -- a separate collection from trips,
+  // scoped to the same tax year. businessKmHint is always summed in km
+  // regardless of the page's own distanceUnit setting, since
+  // vehicleExpenses.business_km is stored in km (matching Chart A's own
+  // units) -- never silently overwrites what the user typed, only shown
+  // as a hint alongside the editable field.
+  const [vehicleExpenses, setVehicleExpenses] = useState<VehicleExpenses[]>([]);
+  const [vehicleLoading, setVehicleLoading] = useState(true);
+  const [vehicleError, setVehicleError] = useState<string | null>(null);
+  const [selectedVehicleExpenses, setSelectedVehicleExpenses] = useState<VehicleExpenses | null>(
+    null,
+  );
+
+  const loadVehicleExpenses = (targetUid: string) => {
+    setVehicleLoading(true);
+    setVehicleError(null);
+    return fetchVehicleExpensesRecords(targetUid, year)
+      .then((data) => setVehicleExpenses(data))
+      .catch((e) => setVehicleError(errorMessage(e, "Couldn't load vehicle expenses.")))
+      .finally(() => setVehicleLoading(false));
+  };
+
+  useEffect(() => {
+    if (!uid) return;
+    let cancelled = false;
+    setVehicleLoading(true);
+    setVehicleError(null);
+    fetchVehicleExpensesRecords(uid, year)
+      .then((data) => {
+        if (!cancelled) setVehicleExpenses(data);
+      })
+      .catch((e) => {
+        if (!cancelled) setVehicleError(errorMessage(e, "Couldn't load vehicle expenses."));
+      })
+      .finally(() => {
+        if (!cancelled) setVehicleLoading(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [uid, year]);
+
+  const businessKmHint = trips.reduce((sum, t) => sum + tripDistance(t, "km"), 0);
+
   const sortedTrips = sortColumn
     ? [...trips].sort((a, b) => {
         const cmp =
@@ -682,12 +732,97 @@ function MileagePage() {
         </div>
       </div>
 
+      {/* Vehicle expenses (CRA Chart A) */}
+      <div className="mt-6 rounded-2xl border border-black/[0.07] bg-white shadow-[0_2px_12px_rgba(0,0,0,0.06)]">
+        <div className="flex flex-col justify-between gap-3 px-5 py-4 sm:flex-row sm:items-center">
+          <div>
+            <h2 className="text-sm font-semibold text-black">Vehicle expenses</h2>
+            <p className="mt-1 max-w-md text-xs text-black/50">
+              CRA Chart A method for line 9281: actual vehicle costs × business-use % — your trip
+              logbook establishes the percentage, not the deduction itself.
+            </p>
+          </div>
+          <AddVehicleExpensesDialog
+            uid={uid}
+            year={year}
+            businessKmHint={businessKmHint}
+            currency={summaryCurrency}
+            onSaved={() => uid && loadVehicleExpenses(uid)}
+          />
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full min-w-[520px] border-collapse text-left text-sm">
+            <thead>
+              <tr className="border-t border-black/[0.07] text-xs text-black/45">
+                <th className="px-5 py-2 font-medium">Period</th>
+                <th className="px-5 py-2 text-right font-medium">Business use</th>
+                <th className="px-5 py-2 text-right font-medium">Deductible</th>
+              </tr>
+            </thead>
+            <tbody>
+              {vehicleLoading && (
+                <tr>
+                  <td colSpan={3} className="px-5 py-10 text-center text-sm text-black/45">
+                    Loading vehicle expenses…
+                  </td>
+                </tr>
+              )}
+              {!vehicleLoading && vehicleError && (
+                <tr>
+                  <td colSpan={3} className="px-5 py-10 text-center text-sm text-red-600">
+                    {vehicleError}
+                  </td>
+                </tr>
+              )}
+              {!vehicleLoading &&
+                !vehicleError &&
+                vehicleExpenses.map((v) => (
+                  <tr
+                    key={v.id}
+                    onClick={() => setSelectedVehicleExpenses(v)}
+                    className="cursor-pointer border-t border-black/[0.05] transition-colors hover:bg-black/[0.02]"
+                  >
+                    <td className="px-5 py-3 font-medium text-black">
+                      {v.startDate && v.endDate
+                        ? `${formatDate(v.startDate, dateFormat)} – ${formatDate(v.endDate, dateFormat)}`
+                        : year}
+                    </td>
+                    <td className="px-5 py-3 text-right tabular-nums text-black">
+                      {v.businessUsePercent.toFixed(1)}%
+                    </td>
+                    <td className="px-5 py-3 text-right tabular-nums text-black">
+                      {formatCurrency(v.totalDeductible, summaryCurrency)}
+                    </td>
+                  </tr>
+                ))}
+              {!vehicleLoading && !vehicleError && vehicleExpenses.length === 0 && (
+                <tr>
+                  <td colSpan={3} className="px-5 py-10 text-center text-sm text-black/45">
+                    {`No vehicle expenses recorded for ${year} yet.`}
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
       <TripDetailDialog
         trip={selectedTrip}
         distanceUnit={distanceUnit}
         dateFormat={dateFormat}
         onOpenChange={(open) => !open && setSelectedTrip(null)}
         onChanged={() => uid && loadTrips(uid)}
+      />
+
+      <VehicleExpensesDetailDialog
+        record={selectedVehicleExpenses}
+        businessKmHint={businessKmHint}
+        year={year}
+        currency={summaryCurrency}
+        dateFormat={dateFormat}
+        onOpenChange={(open) => !open && setSelectedVehicleExpenses(null)}
+        onChanged={() => uid && loadVehicleExpenses(uid)}
       />
     </div>
   );
