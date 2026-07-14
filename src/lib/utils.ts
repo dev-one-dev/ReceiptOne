@@ -1,8 +1,15 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { formatDistanceToNow } from "date-fns";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
+}
+
+/** Relative timestamp, e.g. "2 hours ago" -- accepts an ISO string (as Supabase rows carry) or a Date. */
+export function timeAgo(value: string | Date): string {
+  const date = typeof value === "string" ? new Date(value) : value;
+  return formatDistanceToNow(date, { addSuffix: true });
 }
 
 /**

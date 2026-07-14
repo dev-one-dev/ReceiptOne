@@ -14,16 +14,20 @@ import { Route as TermsRouteImport } from './routes/terms'
 import { Route as SignupRouteImport } from './routes/signup'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as HelpdeskRouteImport } from './routes/helpdesk'
 import { Route as FaqRouteImport } from './routes/faq'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CaRouteImport } from './routes/ca'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as UsIndexRouteImport } from './routes/us/index'
+import { Route as HelpdeskIndexRouteImport } from './routes/helpdesk/index'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
 import { Route as ArticlesIndexRouteImport } from './routes/articles/index'
 import { Route as UsFaqRouteImport } from './routes/us/faq'
 import { Route as UsContactRouteImport } from './routes/us/contact'
+import { Route as HelpdeskSupportRouteImport } from './routes/helpdesk/support'
+import { Route as HelpdeskIdeasRouteImport } from './routes/helpdesk/ideas'
 import { Route as DashboardSettingsRouteImport } from './routes/dashboard/settings'
 import { Route as DashboardRoadmapRouteImport } from './routes/dashboard/roadmap'
 import { Route as DashboardReportsRouteImport } from './routes/dashboard/reports'
@@ -60,6 +64,11 @@ const LoginRoute = LoginRouteImport.update({
   path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
+const HelpdeskRoute = HelpdeskRouteImport.update({
+  id: '/helpdesk',
+  path: '/helpdesk',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const FaqRoute = FaqRouteImport.update({
   id: '/faq',
   path: '/faq',
@@ -90,6 +99,11 @@ const UsIndexRoute = UsIndexRouteImport.update({
   path: '/',
   getParentRoute: () => UsRoute,
 } as any)
+const HelpdeskIndexRoute = HelpdeskIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => HelpdeskRoute,
+} as any)
 const DashboardIndexRoute = DashboardIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -109,6 +123,16 @@ const UsContactRoute = UsContactRouteImport.update({
   id: '/contact',
   path: '/contact',
   getParentRoute: () => UsRoute,
+} as any)
+const HelpdeskSupportRoute = HelpdeskSupportRouteImport.update({
+  id: '/support',
+  path: '/support',
+  getParentRoute: () => HelpdeskRoute,
+} as any)
+const HelpdeskIdeasRoute = HelpdeskIdeasRouteImport.update({
+  id: '/ideas',
+  path: '/ideas',
+  getParentRoute: () => HelpdeskRoute,
 } as any)
 const DashboardSettingsRoute = DashboardSettingsRouteImport.update({
   id: '/settings',
@@ -167,6 +191,7 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/dashboard': typeof DashboardRouteWithChildren
   '/faq': typeof FaqRoute
+  '/helpdesk': typeof HelpdeskRouteWithChildren
   '/login': typeof LoginRoute
   '/privacy': typeof PrivacyRoute
   '/signup': typeof SignupRoute
@@ -180,10 +205,13 @@ export interface FileRoutesByFullPath {
   '/dashboard/reports': typeof DashboardReportsRoute
   '/dashboard/roadmap': typeof DashboardRoadmapRoute
   '/dashboard/settings': typeof DashboardSettingsRoute
+  '/helpdesk/ideas': typeof HelpdeskIdeasRoute
+  '/helpdesk/support': typeof HelpdeskSupportRoute
   '/us/contact': typeof UsContactRoute
   '/us/faq': typeof UsFaqRoute
   '/articles/': typeof ArticlesIndexRoute
   '/dashboard/': typeof DashboardIndexRoute
+  '/helpdesk/': typeof HelpdeskIndexRoute
   '/us/': typeof UsIndexRoute
   '/us/articles/$slug': typeof UsArticlesSlugRoute
   '/us/articles/': typeof UsArticlesIndexRoute
@@ -205,10 +233,13 @@ export interface FileRoutesByTo {
   '/dashboard/reports': typeof DashboardReportsRoute
   '/dashboard/roadmap': typeof DashboardRoadmapRoute
   '/dashboard/settings': typeof DashboardSettingsRoute
+  '/helpdesk/ideas': typeof HelpdeskIdeasRoute
+  '/helpdesk/support': typeof HelpdeskSupportRoute
   '/us/contact': typeof UsContactRoute
   '/us/faq': typeof UsFaqRoute
   '/articles': typeof ArticlesIndexRoute
   '/dashboard': typeof DashboardIndexRoute
+  '/helpdesk': typeof HelpdeskIndexRoute
   '/us': typeof UsIndexRoute
   '/us/articles/$slug': typeof UsArticlesSlugRoute
   '/us/articles': typeof UsArticlesIndexRoute
@@ -220,6 +251,7 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/dashboard': typeof DashboardRouteWithChildren
   '/faq': typeof FaqRoute
+  '/helpdesk': typeof HelpdeskRouteWithChildren
   '/login': typeof LoginRoute
   '/privacy': typeof PrivacyRoute
   '/signup': typeof SignupRoute
@@ -233,10 +265,13 @@ export interface FileRoutesById {
   '/dashboard/reports': typeof DashboardReportsRoute
   '/dashboard/roadmap': typeof DashboardRoadmapRoute
   '/dashboard/settings': typeof DashboardSettingsRoute
+  '/helpdesk/ideas': typeof HelpdeskIdeasRoute
+  '/helpdesk/support': typeof HelpdeskSupportRoute
   '/us/contact': typeof UsContactRoute
   '/us/faq': typeof UsFaqRoute
   '/articles/': typeof ArticlesIndexRoute
   '/dashboard/': typeof DashboardIndexRoute
+  '/helpdesk/': typeof HelpdeskIndexRoute
   '/us/': typeof UsIndexRoute
   '/us/articles/$slug': typeof UsArticlesSlugRoute
   '/us/articles/': typeof UsArticlesIndexRoute
@@ -249,6 +284,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/dashboard'
     | '/faq'
+    | '/helpdesk'
     | '/login'
     | '/privacy'
     | '/signup'
@@ -262,10 +298,13 @@ export interface FileRouteTypes {
     | '/dashboard/reports'
     | '/dashboard/roadmap'
     | '/dashboard/settings'
+    | '/helpdesk/ideas'
+    | '/helpdesk/support'
     | '/us/contact'
     | '/us/faq'
     | '/articles/'
     | '/dashboard/'
+    | '/helpdesk/'
     | '/us/'
     | '/us/articles/$slug'
     | '/us/articles/'
@@ -287,10 +326,13 @@ export interface FileRouteTypes {
     | '/dashboard/reports'
     | '/dashboard/roadmap'
     | '/dashboard/settings'
+    | '/helpdesk/ideas'
+    | '/helpdesk/support'
     | '/us/contact'
     | '/us/faq'
     | '/articles'
     | '/dashboard'
+    | '/helpdesk'
     | '/us'
     | '/us/articles/$slug'
     | '/us/articles'
@@ -301,6 +343,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/dashboard'
     | '/faq'
+    | '/helpdesk'
     | '/login'
     | '/privacy'
     | '/signup'
@@ -314,10 +357,13 @@ export interface FileRouteTypes {
     | '/dashboard/reports'
     | '/dashboard/roadmap'
     | '/dashboard/settings'
+    | '/helpdesk/ideas'
+    | '/helpdesk/support'
     | '/us/contact'
     | '/us/faq'
     | '/articles/'
     | '/dashboard/'
+    | '/helpdesk/'
     | '/us/'
     | '/us/articles/$slug'
     | '/us/articles/'
@@ -329,6 +375,7 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRoute
   DashboardRoute: typeof DashboardRouteWithChildren
   FaqRoute: typeof FaqRoute
+  HelpdeskRoute: typeof HelpdeskRouteWithChildren
   LoginRoute: typeof LoginRoute
   PrivacyRoute: typeof PrivacyRoute
   SignupRoute: typeof SignupRoute
@@ -375,6 +422,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/helpdesk': {
+      id: '/helpdesk'
+      path: '/helpdesk'
+      fullPath: '/helpdesk'
+      preLoaderRoute: typeof HelpdeskRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/faq': {
       id: '/faq'
       path: '/faq'
@@ -417,6 +471,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UsIndexRouteImport
       parentRoute: typeof UsRoute
     }
+    '/helpdesk/': {
+      id: '/helpdesk/'
+      path: '/'
+      fullPath: '/helpdesk/'
+      preLoaderRoute: typeof HelpdeskIndexRouteImport
+      parentRoute: typeof HelpdeskRoute
+    }
     '/dashboard/': {
       id: '/dashboard/'
       path: '/'
@@ -444,6 +505,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/us/contact'
       preLoaderRoute: typeof UsContactRouteImport
       parentRoute: typeof UsRoute
+    }
+    '/helpdesk/support': {
+      id: '/helpdesk/support'
+      path: '/support'
+      fullPath: '/helpdesk/support'
+      preLoaderRoute: typeof HelpdeskSupportRouteImport
+      parentRoute: typeof HelpdeskRoute
+    }
+    '/helpdesk/ideas': {
+      id: '/helpdesk/ideas'
+      path: '/ideas'
+      fullPath: '/helpdesk/ideas'
+      preLoaderRoute: typeof HelpdeskIdeasRouteImport
+      parentRoute: typeof HelpdeskRoute
     }
     '/dashboard/settings': {
       id: '/dashboard/settings'
@@ -544,6 +619,22 @@ const DashboardRouteWithChildren = DashboardRoute._addFileChildren(
   DashboardRouteChildren,
 )
 
+interface HelpdeskRouteChildren {
+  HelpdeskIdeasRoute: typeof HelpdeskIdeasRoute
+  HelpdeskSupportRoute: typeof HelpdeskSupportRoute
+  HelpdeskIndexRoute: typeof HelpdeskIndexRoute
+}
+
+const HelpdeskRouteChildren: HelpdeskRouteChildren = {
+  HelpdeskIdeasRoute: HelpdeskIdeasRoute,
+  HelpdeskSupportRoute: HelpdeskSupportRoute,
+  HelpdeskIndexRoute: HelpdeskIndexRoute,
+}
+
+const HelpdeskRouteWithChildren = HelpdeskRoute._addFileChildren(
+  HelpdeskRouteChildren,
+)
+
 interface UsRouteChildren {
   UsContactRoute: typeof UsContactRoute
   UsFaqRoute: typeof UsFaqRoute
@@ -568,6 +659,7 @@ const rootRouteChildren: RootRouteChildren = {
   ContactRoute: ContactRoute,
   DashboardRoute: DashboardRouteWithChildren,
   FaqRoute: FaqRoute,
+  HelpdeskRoute: HelpdeskRouteWithChildren,
   LoginRoute: LoginRoute,
   PrivacyRoute: PrivacyRoute,
   SignupRoute: SignupRoute,

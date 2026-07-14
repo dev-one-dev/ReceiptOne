@@ -22,7 +22,7 @@ const PRIORITY = {
 const EXCLUDE = new Set(["/login", "/signup"]);
 
 /** Prefix-excluded routes -- authenticated app surfaces, never public/indexed. */
-const EXCLUDE_PREFIXES = ["/dashboard"];
+const EXCLUDE_PREFIXES = ["/dashboard", "/helpdesk"];
 
 function isExcluded(path) {
   return EXCLUDE.has(path) || EXCLUDE_PREFIXES.some((p) => path === p || path.startsWith(`${p}/`));
