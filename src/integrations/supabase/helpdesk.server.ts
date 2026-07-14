@@ -124,7 +124,7 @@ export const fetchHelpdeskOverview = createServerFn({ method: "POST" })
       failIfError(pendingIdeas.error);
       failIfError(latestSupportRequests.error);
 
-      return {
+      const result: HelpdeskOverview = {
         stats: {
           pendingReviewCount: pendingReview.count ?? 0,
           totalIdeasCount: totalIdeas.count ?? 0,
@@ -134,6 +134,24 @@ export const fetchHelpdeskOverview = createServerFn({ method: "POST" })
         pendingIdeas: pendingIdeas.data ?? [],
         latestSupportRequests: latestSupportRequests.data ?? [],
       };
+
+      // TEMPORARY DIAGNOSTIC: the client was failing during response
+      // DEserialization (not the Supabase queries -- those return 200s),
+      // so before guessing at a fix, confirm the actual runtime shape of
+      // what we're about to return and whether it's even JSON-safe. If
+      // JSON.stringify itself throws, the caught error below pinpoints
+      // the exact non-serializable field. Remove once the real cause is
+      // confirmed via Vercel's function logs.
+      try {
+        console.log("[fetchHelpdeskOverview] about to return:", JSON.stringify(result));
+      } catch (stringifyError) {
+        console.error(
+          "[fetchHelpdeskOverview] JSON.stringify(result) THREW -- this is the smoking gun:",
+          stringifyError,
+        );
+      }
+
+      return result;
     } catch (e) {
       logAndRethrow("fetchHelpdeskOverview", e);
     }
