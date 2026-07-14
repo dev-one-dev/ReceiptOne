@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Mail, Trash2 } from "lucide-react";
+import { Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import {
   Sheet,
@@ -22,17 +22,14 @@ import { useHelpdeskAuth } from "@/components/helpdesk/HelpdeskAuthContext";
 import {
   SUPPORT_REQUEST_STATUSES,
   deleteSupportRequest,
+  fetchSupportReplies,
+  sendSupportReply,
   updateSupportRequestStatus,
+  type SupportReply,
   type SupportRequest,
   type SupportRequestStatus,
 } from "@/integrations/supabase/helpdesk.server";
 import { errorMessage, timeAgo } from "@/lib/utils";
-
-/** mailto: link with the subject pre-filled -- the only way to actually answer a ticket today, since there's no in-app reply system. */
-function replyMailto(request: SupportRequest): string {
-  const subject = `Re: ${request.subject}`;
-  return `mailto:${encodeURIComponent(request.email)}?subject=${encodeURIComponent(subject)}`;
-}
 
 export function SupportPanel({
   request,
@@ -45,23 +42,56 @@ export function SupportPanel({
 }) {
   const { authHeaders } = useHelpdeskAuth();
 
+  // Local, possibly-ahead-of-the-prop copy -- sendSupportReply can bump
+  // status to in_progress without closing the panel, so this (not the
+  // `request` prop, which only updates when the caller refetches its
+  // list and reopens the panel) is the source of truth for what's shown.
+  const [effectiveRequest, setEffectiveRequest] = useState<SupportRequest | null>(request);
   const [status, setStatus] = useState<SupportRequestStatus>("new");
   const [saving, setSaving] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [deleting, setDeleting] = useState(false);
 
+  const [replies, setReplies] = useState<SupportReply[]>([]);
+  const [repliesLoading, setRepliesLoading] = useState(false);
+  const [replyText, setReplyText] = useState("");
+  const [sendingReply, setSendingReply] = useState(false);
+
   useEffect(() => {
+    setEffectiveRequest(request);
     if (request) setStatus(request.status);
   }, [request]);
 
-  const dirty = request !== null && status !== request.status;
+  useEffect(() => {
+    if (!request) {
+      setReplies([]);
+      return;
+    }
+    let cancelled = false;
+    setRepliesLoading(true);
+    fetchSupportReplies({ data: { supportRequestId: request.id }, headers: authHeaders() })
+      .then((rows) => {
+        if (!cancelled) setReplies(rows);
+      })
+      .catch((e) => {
+        if (!cancelled) toast.error(errorMessage(e, "Couldn't load replies."));
+      })
+      .finally(() => {
+        if (!cancelled) setRepliesLoading(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [request, authHeaders]);
+
+  const dirty = effectiveRequest !== null && status !== effectiveRequest.status;
 
   const handleSave = async () => {
-    if (!request) return;
+    if (!effectiveRequest) return;
     setSaving(true);
     try {
       await updateSupportRequestStatus({
-        data: { id: request.id, status },
+        data: { id: effectiveRequest.id, status },
         headers: authHeaders(),
       });
       toast.success("Support request updated.");
@@ -75,10 +105,10 @@ export function SupportPanel({
   };
 
   const handleDelete = async () => {
-    if (!request) return;
+    if (!effectiveRequest) return;
     setDeleting(true);
     try {
-      await deleteSupportRequest({ data: { id: request.id }, headers: authHeaders() });
+      await deleteSupportRequest({ data: { id: effectiveRequest.id }, headers: authHeaders() });
       toast.success("Support request deleted.");
       setDeleteOpen(false);
       onOpenChange(false);
@@ -87,6 +117,27 @@ export function SupportPanel({
       toast.error(errorMessage(e, "Couldn't delete this support request."));
     } finally {
       setDeleting(false);
+    }
+  };
+
+  const handleSendReply = async () => {
+    if (!effectiveRequest || !replyText.trim()) return;
+    setSendingReply(true);
+    try {
+      const result = await sendSupportReply({
+        data: { supportRequestId: effectiveRequest.id, body: replyText },
+        headers: authHeaders(),
+      });
+      setReplies((prev) => [...prev, result.reply]);
+      setEffectiveRequest(result.request);
+      setStatus(result.request.status);
+      setReplyText("");
+      toast.success("Reply sent.");
+      onChanged();
+    } catch (e) {
+      toast.error(errorMessage(e, "Couldn't send the reply."));
+    } finally {
+      setSendingReply(false);
     }
   };
 
@@ -100,40 +151,78 @@ export function SupportPanel({
         }}
       >
         <SheetContent className="flex w-full flex-col gap-0 overflow-y-auto sm:max-w-md">
-          {request && (
+          {effectiveRequest && (
             <>
               <SheetHeader>
-                <SheetTitle className="text-black">{request.subject}</SheetTitle>
+                <SheetTitle className="text-black">{effectiveRequest.subject}</SheetTitle>
                 <SheetDescription>
-                  {request.name} · {request.email}
+                  {effectiveRequest.name} · {effectiveRequest.email}
                 </SheetDescription>
               </SheetHeader>
 
               <div className="mt-4 space-y-3 text-sm">
-                <a
-                  href={replyMailto(request)}
-                  className="inline-flex items-center gap-1.5 rounded-full bg-black px-3 py-1.5 text-xs font-semibold text-white transition-opacity hover:opacity-90"
-                >
-                  <Mail className="size-3.5" aria-hidden />
-                  Reply by email
-                </a>
+                {/* Conversation thread -- the original message, then every reply, oldest first */}
+                <div className="space-y-3 rounded-xl bg-black/[0.03] px-4 py-3">
+                  <div>
+                    <div className="flex items-center justify-between text-xs text-black/40">
+                      <span className="font-medium text-black/60">{effectiveRequest.name}</span>
+                      <span>{timeAgo(effectiveRequest.created_at)}</span>
+                    </div>
+                    <p className="mt-1 whitespace-pre-wrap leading-relaxed text-black/70">
+                      {effectiveRequest.message}
+                    </p>
+                  </div>
 
-                <p className="whitespace-pre-wrap rounded-xl bg-black/[0.03] px-4 py-3 leading-relaxed text-black/70">
-                  {request.message}
-                </p>
+                  {repliesLoading && <p className="text-xs text-black/40">Loading replies…</p>}
+
+                  {replies.map((reply) => (
+                    <div key={reply.id} className="border-t border-black/[0.07] pt-3">
+                      <div className="flex items-center justify-between text-xs text-black/40">
+                        <span className="font-medium text-black/60">You</span>
+                        <span>{timeAgo(reply.sent_at)}</span>
+                      </div>
+                      <p className="mt-1 whitespace-pre-wrap leading-relaxed text-black/70">
+                        {reply.body}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-medium text-black/55">Reply</label>
+                  <textarea
+                    value={replyText}
+                    onChange={(e) => setReplyText(e.target.value)}
+                    rows={4}
+                    placeholder="Write a reply — sent from support@receipt-one.com"
+                    className="w-full rounded-xl border border-black/10 bg-white px-3 py-2 text-sm outline-none focus:border-black/25"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => void handleSendReply()}
+                    disabled={!replyText.trim() || sendingReply}
+                    className="inline-flex items-center justify-center rounded-full bg-black px-4 py-2 text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+                  >
+                    {sendingReply ? "Sending…" : "Send reply"}
+                  </button>
+                </div>
 
                 <div className="space-y-2 rounded-xl bg-black/[0.03] px-4 py-3">
                   <div className="flex items-center justify-between">
                     <span className="text-black/55">Region</span>
-                    <RegionBadge region={request.region} />
+                    <RegionBadge region={effectiveRequest.region} />
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-black/55">Created</span>
-                    <span className="font-medium text-black">{timeAgo(request.created_at)}</span>
+                    <span className="font-medium text-black">
+                      {timeAgo(effectiveRequest.created_at)}
+                    </span>
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-black/55">Updated</span>
-                    <span className="font-medium text-black">{timeAgo(request.updated_at)}</span>
+                    <span className="font-medium text-black">
+                      {timeAgo(effectiveRequest.updated_at)}
+                    </span>
                   </div>
                 </div>
 
@@ -180,12 +269,12 @@ export function SupportPanel({
         </SheetContent>
       </Sheet>
 
-      {request && (
+      {effectiveRequest && (
         <ConfirmDeleteDialog
           open={deleteOpen}
           onOpenChange={setDeleteOpen}
           title="Delete this support request?"
-          description={`This permanently removes "${request.subject}" from your inbox. This can't be undone.`}
+          description={`This permanently removes "${effectiveRequest.subject}" from your inbox. This can't be undone.`}
           confirmLabel="Delete request"
           pendingLabel="Deleting…"
           pending={deleting}

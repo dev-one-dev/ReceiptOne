@@ -1,6 +1,7 @@
 import { createHash, timingSafeEqual } from "node:crypto";
 import { defineHandler } from "nitro";
-import { Resend } from "resend";
+import { createResendClient, sanitizeEmailHeaderValue } from "@/integrations/resend/client.server";
+import { escapeHtml } from "@/lib/html-escape";
 
 /**
  * Supabase Database Webhook target for INSERT on public.support_requests --
@@ -25,20 +26,6 @@ function timingSafeCompare(a: string, b: string): boolean {
   const hashA = createHash("sha256").update(a).digest();
   const hashB = createHash("sha256").update(b).digest();
   return timingSafeEqual(hashA, hashB);
-}
-
-function escapeHtml(value: string): string {
-  return value
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#39;");
-}
-
-/** Email subject headers don't tolerate embedded newlines -- strip them even though Resend's JSON API isn't classic SMTP. */
-function sanitizeForHeader(value: string): string {
-  return value.replace(/[\r\n]+/g, " ").trim();
 }
 
 function str(value: unknown): string {
@@ -82,9 +69,11 @@ export default defineHandler(async (event) => {
   const subject = str(record.subject);
   const message = str(record.message);
 
-  const apiKey = process.env.RESEND_API_KEY;
-  if (!apiKey) {
-    console.error("[api/helpdesk/notify] RESEND_API_KEY is not set.");
+  let resend;
+  try {
+    resend = createResendClient();
+  } catch (e) {
+    console.error("[api/helpdesk/notify]", e);
     return new Response(null, { status: 500 });
   }
 
@@ -108,11 +97,10 @@ export default defineHandler(async (event) => {
     <p><a href="${NOTIFY_URL}">Open in Helpdesk</a></p>
   `;
 
-  const resend = new Resend(apiKey);
   const { error } = await resend.emails.send({
     from: FROM_ADDRESS,
     to: recipients,
-    subject: `New support request: ${sanitizeForHeader(subject) || "(no subject)"}`,
+    subject: `New support request: ${sanitizeEmailHeaderValue(subject) || "(no subject)"}`,
     html,
   });
 

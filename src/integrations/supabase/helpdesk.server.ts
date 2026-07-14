@@ -16,9 +16,12 @@ import { createServerFn } from "@tanstack/react-start";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
 import { requireHelpdeskAdmin } from "@/integrations/supabase/auth-middleware";
 import type { Tables } from "@/integrations/supabase/types";
+import { createResendClient, sanitizeEmailHeaderValue } from "@/integrations/resend/client.server";
+import { escapeHtml } from "@/lib/html-escape";
 
 export type FeatureIdea = Tables<"feature_ideas">;
 export type SupportRequest = Tables<"support_requests">;
+export type SupportReply = Tables<"support_replies">;
 
 export const FEATURE_IDEA_STATUSES = [
   "pending_review",
@@ -257,5 +260,113 @@ export const deleteSupportRequest = createServerFn({ method: "POST" })
       failIfError(error, "deleteSupportRequest");
     } catch (e) {
       logAndRethrow("deleteSupportRequest", e);
+    }
+  });
+
+const supportRequestIdInput = z.object({ supportRequestId: z.string().uuid() });
+
+/** A ticket's reply thread, oldest first (newest last) -- fetched separately from the ticket list, only for whichever ticket the panel has open. */
+export const fetchSupportReplies = createServerFn({ method: "POST" })
+  .middleware([requireHelpdeskAdmin])
+  .inputValidator(supportRequestIdInput)
+  .handler(async ({ data }): Promise<SupportReply[]> => {
+    try {
+      const { data: rows, error } = await supabaseAdmin
+        .from("support_replies")
+        .select("*")
+        .eq("support_request_id", data.supportRequestId)
+        .order("sent_at", { ascending: true });
+      failIfError(error, "fetchSupportReplies");
+      return rows ?? [];
+    } catch (e) {
+      logAndRethrow("fetchSupportReplies", e);
+    }
+  });
+
+const sendSupportReplyInput = z.object({
+  supportRequestId: z.string().uuid(),
+  body: z.string().trim().min(1, "Reply can't be empty."),
+});
+
+export type SendSupportReplyResult = {
+  reply: SupportReply;
+  request: SupportRequest;
+};
+
+/**
+ * Sends the admin's reply to the requester's real email via Resend, from
+ * support@receipt-one.com with reply-to set to the same address -- so
+ * the user sees a reply from the company, not a private individual, and
+ * their own reply lands in the real support inbox rather than the
+ * admin's personal one. Only writes support_replies (and only bumps
+ * status new -> in_progress, never auto-resolves) once the email has
+ * actually sent -- a reply that wasn't delivered must never look like
+ * it was, so a Resend failure never touches the database at all.
+ */
+export const sendSupportReply = createServerFn({ method: "POST" })
+  .middleware([requireHelpdeskAdmin])
+  .inputValidator(sendSupportReplyInput)
+  .handler(async ({ data, context }): Promise<SendSupportReplyResult> => {
+    try {
+      const { data: request, error: requestError } = await supabaseAdmin
+        .from("support_requests")
+        .select("*")
+        .eq("id", data.supportRequestId)
+        .single();
+      failIfError(requestError, "sendSupportReply: load support request");
+      if (!request) throw new Error("Support request not found.");
+
+      const resend = createResendClient();
+
+      // The original message is attacker-controlled text (it's the
+      // requester's own submission) -- escaped just like the admin's
+      // own reply body, both landing in an HTML email.
+      const html = `
+        <p style="white-space: pre-wrap;">${escapeHtml(data.body)}</p>
+        <hr style="border: none; border-top: 1px solid #ddd; margin: 16px 0;" />
+        <p style="color: #666; font-size: 12px;">You originally wrote:</p>
+        <blockquote style="border-left: 3px solid #ddd; margin: 0; padding-left: 12px; color: #666; white-space: pre-wrap;">${escapeHtml(request.message)}</blockquote>
+      `;
+
+      const { error: sendError } = await resend.emails.send({
+        from: "ReceiptOne Support <support@receipt-one.com>",
+        to: request.email,
+        replyTo: "support@receipt-one.com",
+        subject: `Re: ${sanitizeEmailHeaderValue(request.subject) || "your support request"}`,
+        html,
+      });
+
+      if (sendError) {
+        console.error("[helpdesk.server:sendSupportReply] Resend error:", sendError);
+        throw new Error(`Couldn't send the reply email: ${sendError.message}`);
+      }
+
+      const { data: replyRow, error: insertError } = await supabaseAdmin
+        .from("support_replies")
+        .insert({
+          support_request_id: data.supportRequestId,
+          body: data.body,
+          sent_by: context.userId,
+        })
+        .select("*")
+        .single();
+      failIfError(insertError, "sendSupportReply: insert reply row");
+      if (!replyRow) throw new Error("Reply row not returned after insert.");
+
+      let updatedRequest = request;
+      if (request.status === "new") {
+        const { data: statusRow, error: statusError } = await supabaseAdmin
+          .from("support_requests")
+          .update({ status: "in_progress", updated_at: new Date().toISOString() })
+          .eq("id", data.supportRequestId)
+          .select("*")
+          .single();
+        failIfError(statusError, "sendSupportReply: bump status to in_progress");
+        if (statusRow) updatedRequest = statusRow;
+      }
+
+      return { reply: replyRow, request: updatedRequest };
+    } catch (e) {
+      logAndRethrow("sendSupportReply", e);
     }
   });

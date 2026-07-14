@@ -140,6 +140,38 @@ export type Database = {
         }
         Relationships: []
       }
+      support_replies: {
+        Row: {
+          body: string
+          id: string
+          sent_at: string
+          sent_by: string | null
+          support_request_id: string
+        }
+        Insert: {
+          body: string
+          id?: string
+          sent_at?: string
+          sent_by?: string | null
+          support_request_id: string
+        }
+        Update: {
+          body?: string
+          id?: string
+          sent_at?: string
+          sent_by?: string | null
+          support_request_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "support_replies_support_request_id_fkey"
+            columns: ["support_request_id"]
+            isOneToOne: false
+            referencedRelation: "support_requests"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
