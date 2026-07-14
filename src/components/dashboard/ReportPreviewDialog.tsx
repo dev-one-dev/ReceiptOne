@@ -34,15 +34,17 @@ function TaxSummaryPreview({
   currency,
   claimsITC,
   onClaimsITCChange,
+  year,
 }: {
   summary: T2125Summary;
   currency: string;
   claimsITC: boolean;
   onClaimsITCChange: (value: boolean) => void;
+  year: string;
 }) {
   return (
-    <div className="space-y-3">
-      <label className="flex items-start gap-2 rounded-xl bg-black/[0.03] px-4 py-3 text-sm">
+    <div className="flex min-h-0 flex-1 flex-col gap-3">
+      <label className="flex shrink-0 items-start gap-2 rounded-xl bg-black/[0.03] px-4 py-3 text-sm">
         <input
           type="checkbox"
           checked={claimsITC}
@@ -58,66 +60,73 @@ function TaxSummaryPreview({
         </span>
       </label>
 
-      <div className="rounded-xl border border-black/[0.07]">
-        <table className="w-full border-collapse text-left text-sm">
-          <thead>
-            <tr className="text-xs text-black/45">
-              <th className="px-4 py-2 font-medium">Line</th>
-              <th className="px-4 py-2 font-medium">Description</th>
-              <th className="px-4 py-2 text-right font-medium">Amount</th>
-            </tr>
-          </thead>
-          <tbody>
-            {summary.lines.map((li) => {
-              const isZero = li.amount === 0 && li.actual === undefined;
-              return (
-                <tr key={li.lineNumber} className="border-t border-black/[0.05]">
-                  <td
-                    className={`px-4 py-2.5 tabular-nums ${isZero ? "text-black/30" : "text-black/55"}`}
-                  >
-                    {li.lineNumber}
-                  </td>
-                  <td className={`px-4 py-2.5 ${isZero ? "text-black/30" : "text-black/70"}`}>
-                    {li.label}
-                  </td>
-                  <td
-                    className={`px-4 py-2.5 text-right tabular-nums ${isZero ? "text-black/30" : "text-black"}`}
-                  >
-                    <div>{formatCurrency(li.amount, currency)}</div>
-                    {li.actual !== undefined && (
-                      <div className="text-xs font-normal text-black/40">
-                        50% of {formatCurrency(li.actual, currency)}
-                      </div>
-                    )}
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-          <tfoot>
-            <tr className="border-t border-black/[0.1]">
-              <td colSpan={2} className="px-4 py-3 text-sm font-semibold text-black">
-                9368 Total expenses
-              </td>
-              <td className="px-4 py-3 text-right text-base font-semibold tabular-nums text-black">
-                {formatCurrency(summary.totalExpenses, currency)}
-              </td>
-            </tr>
-            <tr className="border-t border-black/[0.05]">
-              <td colSpan={3} className="px-4 py-2 text-xs text-black/50">
-                GST/HST reclaim (ITC): {formatCurrency(summary.totalRefundableTax, currency)} — not
-                an expense; recovered separately.
-              </td>
-            </tr>
-          </tfoot>
-        </table>
+      {/* Only this table scrolls -- the header row stays sticky, and the
+          9368 total / ITC memo / download button below stay pinned. */}
+      <div className="min-h-0 flex-1 overflow-hidden rounded-xl border border-black/[0.07]">
+        <div className="h-full overflow-y-auto">
+          <table className="w-full border-collapse text-left text-sm">
+            <thead>
+              <tr className="text-xs text-black/45">
+                <th className="sticky top-0 z-10 bg-white px-4 py-2 font-medium">Line</th>
+                <th className="sticky top-0 z-10 bg-white px-4 py-2 font-medium">Description</th>
+                <th className="sticky top-0 z-10 bg-white px-4 py-2 text-right font-medium">
+                  Amount
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {summary.lines.map((li) => {
+                const isZero = li.amount === 0 && li.actual === undefined;
+                return (
+                  <tr key={li.lineNumber} className="border-t border-black/[0.05]">
+                    <td
+                      className={`px-4 py-2.5 tabular-nums ${isZero ? "text-black/30" : "text-black/55"}`}
+                    >
+                      {li.lineNumber}
+                    </td>
+                    <td className={`px-4 py-2.5 ${isZero ? "text-black/30" : "text-black/70"}`}>
+                      {li.label}
+                    </td>
+                    <td
+                      className={`px-4 py-2.5 text-right tabular-nums ${isZero ? "text-black/30" : "text-black"}`}
+                    >
+                      <div>{formatCurrency(li.amount, currency)}</div>
+                      {li.actual !== undefined && (
+                        <div className="text-xs font-normal text-black/40">
+                          50% of {formatCurrency(li.actual, currency)}
+                        </div>
+                      )}
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+          <div className="space-y-1.5 border-t border-black/[0.05] px-4 py-3">
+            <p className="text-xs text-black/40">
+              Line 9281 is computed from your logged mileage (distance × the rate recorded on each
+              trip). If you deduct actual vehicle expenses instead of a per-distance rate, fill that
+              line in yourself.
+            </p>
+            <p className="text-xs text-black/40">
+              Reflects your real records for tax year {year}. PDF/CSV export is coming next.
+            </p>
+          </div>
+        </div>
       </div>
 
-      <p className="text-xs text-black/40">
-        Line 9281 is computed from your logged mileage (distance × the rate recorded on each trip).
-        If you deduct actual vehicle expenses instead of a per-distance rate, fill that line in
-        yourself.
-      </p>
+      <div className="shrink-0 space-y-1 rounded-xl border border-black/[0.07] bg-black/[0.02] px-4 py-3">
+        <div className="flex items-center justify-between gap-3">
+          <span className="text-sm font-semibold text-black">9368 Total expenses</span>
+          <span className="text-right text-base font-semibold tabular-nums text-black">
+            {formatCurrency(summary.totalExpenses, currency)}
+          </span>
+        </div>
+        <p className="text-xs text-black/50">
+          GST/HST reclaim (ITC): {formatCurrency(summary.totalRefundableTax, currency)} — not an
+          expense; recovered separately.
+        </p>
+      </div>
     </div>
   );
 }
@@ -684,8 +693,8 @@ export function ReportPreviewDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-lg">
-        <DialogHeader>
+      <DialogContent className="flex max-h-[85vh] flex-col overflow-hidden sm:max-w-lg">
+        <DialogHeader className="shrink-0">
           <DialogTitle>{type} preview</DialogTitle>
           <DialogDescription>
             {type === "Tax Summary" ? `Tax year ${year}` : range} · {format}
@@ -711,60 +720,61 @@ export function ReportPreviewDialog({
               currency={taxSummaryCurrency}
               claimsITC={claimsITC}
               onClaimsITCChange={setClaimsITC}
+              year={year}
             />
           ))}
 
-        {type === "Expense Summary" &&
-          (loading ? (
-            <p className="rounded-xl bg-black/[0.03] px-4 py-6 text-center text-sm text-black/45">
-              Loading your receipts…
-            </p>
-          ) : error ? (
-            <p className="rounded-xl bg-black/[0.03] px-4 py-6 text-center text-sm text-red-600">
-              {error}
-            </p>
-          ) : categories.length === 0 ? (
-            <p className="rounded-xl bg-black/[0.03] px-4 py-6 text-center text-sm text-black/45">
-              No receipts in this date range.
-            </p>
-          ) : (
-            <RealExpenseSummaryPreview
-              categories={categories}
-              taxTotals={taxTotals}
-              currency={receiptsCurrency}
-            />
-          ))}
+        {type !== "Tax Summary" && (
+          <div className="min-h-0 flex-1 space-y-3 overflow-y-auto pr-1">
+            {type === "Expense Summary" &&
+              (loading ? (
+                <p className="rounded-xl bg-black/[0.03] px-4 py-6 text-center text-sm text-black/45">
+                  Loading your receipts…
+                </p>
+              ) : error ? (
+                <p className="rounded-xl bg-black/[0.03] px-4 py-6 text-center text-sm text-red-600">
+                  {error}
+                </p>
+              ) : categories.length === 0 ? (
+                <p className="rounded-xl bg-black/[0.03] px-4 py-6 text-center text-sm text-black/45">
+                  No receipts in this date range.
+                </p>
+              ) : (
+                <RealExpenseSummaryPreview
+                  categories={categories}
+                  taxTotals={taxTotals}
+                  currency={receiptsCurrency}
+                />
+              ))}
 
-        {type === "Mileage Report" &&
-          (loading ? (
-            <p className="rounded-xl bg-black/[0.03] px-4 py-6 text-center text-sm text-black/45">
-              Loading your trips…
-            </p>
-          ) : error ? (
-            <p className="rounded-xl bg-black/[0.03] px-4 py-6 text-center text-sm text-red-600">
-              {error}
-            </p>
-          ) : mileageRows.length === 0 ? (
-            <p className="rounded-xl bg-black/[0.03] px-4 py-6 text-center text-sm text-black/45">
-              No trips in this date range.
-            </p>
-          ) : (
-            <RealMileageReportPreview
-              rows={mileageRows}
-              distanceUnit={distanceUnit}
-              dateFormat={dateFormat}
-              currency={tripsCurrency}
-              mileageRate={mileageRate}
-            />
-          ))}
+            {type === "Mileage Report" &&
+              (loading ? (
+                <p className="rounded-xl bg-black/[0.03] px-4 py-6 text-center text-sm text-black/45">
+                  Loading your trips…
+                </p>
+              ) : error ? (
+                <p className="rounded-xl bg-black/[0.03] px-4 py-6 text-center text-sm text-red-600">
+                  {error}
+                </p>
+              ) : mileageRows.length === 0 ? (
+                <p className="rounded-xl bg-black/[0.03] px-4 py-6 text-center text-sm text-black/45">
+                  No trips in this date range.
+                </p>
+              ) : (
+                <RealMileageReportPreview
+                  rows={mileageRows}
+                  distanceUnit={distanceUnit}
+                  dateFormat={dateFormat}
+                  currency={tripsCurrency}
+                  mileageRate={mileageRate}
+                />
+              ))}
 
-        <p className="text-xs text-black/40">
-          {type === "Tax Summary"
-            ? `Reflects your real records for tax year ${year}. PDF/CSV export is coming next.`
-            : "Reflects your real records for this range."}
-        </p>
+            <p className="text-xs text-black/40">Reflects your real records for this range.</p>
+          </div>
+        )}
 
-        <DialogFooter>
+        <DialogFooter className="shrink-0">
           <button
             type="button"
             onClick={handleDownload}
