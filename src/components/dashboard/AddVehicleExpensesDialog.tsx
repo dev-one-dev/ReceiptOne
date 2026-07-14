@@ -99,7 +99,7 @@ export function AddVehicleExpensesDialog({
           Add vehicle period
         </button>
       </DialogTrigger>
-      <DialogContent className="flex max-h-[85vh] flex-col overflow-hidden sm:max-w-2xl">
+      <DialogContent className="flex max-h-[85vh] flex-col overflow-hidden sm:max-w-3xl">
         <DialogHeader className="shrink-0">
           <DialogTitle>Add vehicle expenses</DialogTitle>
           <DialogDescription>

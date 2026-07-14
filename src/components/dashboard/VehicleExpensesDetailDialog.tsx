@@ -141,7 +141,7 @@ export function VehicleExpensesDetailDialog({
       >
         <DialogContent
           className={
-            editing ? "flex max-h-[85vh] flex-col overflow-hidden sm:max-w-2xl" : "sm:max-w-lg"
+            editing ? "flex max-h-[85vh] flex-col overflow-hidden sm:max-w-3xl" : "sm:max-w-lg"
           }
         >
           {record && (

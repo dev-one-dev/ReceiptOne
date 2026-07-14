@@ -66,12 +66,19 @@ export function parseVehicleExpensesForm(form: VehicleExpensesForm) {
   };
 }
 
-const EXPENSE_FIELDS: { key: keyof VehicleExpensesForm; label: string }[] = [
+// Plain amount fields only -- no explanatory note underneath any of
+// these, so they can share one clean grid where every input aligns on
+// the same baseline. Loan interest and leasing costs carry long CRA
+// notes/warnings and are deliberately rendered in their own section
+// below instead of this array, so that text never affects this grid's
+// row heights.
+const AMOUNT_FIELDS: { key: keyof VehicleExpensesForm; label: string }[] = [
   { key: "fuel", label: "Fuel" },
   { key: "insurance", label: "Insurance" },
   { key: "maintenance", label: "Maintenance and repairs" },
   { key: "licenceRegistration", label: "Licence and registration" },
   { key: "other", label: "Other" },
+  { key: "parking", label: "Parking (100% deductible — not prorated by business use)" },
 ];
 
 /**
@@ -154,10 +161,16 @@ export function VehicleExpensesFields({
         </div>
       </div>
 
+      {/* Plain amount fields -- every label is pinned to the same
+          reserved height (and clamped at 2 lines) so a longer label like
+          Parking's never pushes its own input lower than its neighbours
+          in the same grid row. */}
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-        {EXPENSE_FIELDS.map(({ key, label }) => (
+        {AMOUNT_FIELDS.map(({ key, label }) => (
           <div key={key} className="space-y-1.5">
-            <label className="block text-xs font-medium text-black/55">{label}</label>
+            <label className="line-clamp-2 min-h-8 text-xs font-medium leading-4 text-black/55">
+              {label}
+            </label>
             <input
               value={form[key]}
               onChange={(e) => onChangeField({ [key]: e.target.value })}
@@ -166,7 +179,12 @@ export function VehicleExpensesFields({
             />
           </div>
         ))}
+      </div>
 
+      {/* Loan interest and leasing costs each carry a long CRA note/
+          warning -- kept out of the amount-fields grid above so that
+          text never disturbs the alignment of the plain fields. */}
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         <div className="space-y-1.5">
           <label className="block text-xs font-medium text-black/55">Loan interest</label>
           <input
@@ -197,18 +215,6 @@ export function VehicleExpensesFields({
             manufacturer's list price) that this app doesn't yet compute. Verify your deductible
             leasing amount before filing.
           </p>
-        </div>
-
-        <div className="space-y-1.5">
-          <label className="block text-xs font-medium text-black/55">
-            Parking (100% deductible — not prorated by business use)
-          </label>
-          <input
-            value={form.parking}
-            onChange={(e) => onChangeField({ parking: e.target.value })}
-            inputMode="decimal"
-            className="h-9 w-full rounded-xl border border-black/10 bg-white px-3 text-sm outline-none focus:border-black/25"
-          />
         </div>
       </div>
     </div>
