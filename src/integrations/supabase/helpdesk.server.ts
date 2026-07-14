@@ -41,6 +41,27 @@ function failIfError(error: { message: string } | null): void {
   if (error) throw new Error(error.message);
 }
 
+/**
+ * TEMPORARY DEBUGGING HELPER -- /helpdesk server functions were failing
+ * with an empty {"error":{"message":""}} on the client and nothing in
+ * Vercel's function logs, meaning something upstream was swallowing the
+ * real error before it ever got logged. Every handler below now wraps
+ * its body in try/catch and routes the failure through this so the full
+ * message + stack always reach Vercel's logs, regardless of what the
+ * framework does with the error afterward. Remove once the underlying
+ * bug is found and fixed.
+ */
+function logAndRethrow(fnName: string, e: unknown): never {
+  console.error(`[helpdesk.server:${fnName}] failed:`, e);
+  if (e instanceof Error) {
+    console.error(`[helpdesk.server:${fnName}] message="${e.message}"`);
+    console.error(`[helpdesk.server:${fnName}] stack:`, e.stack);
+  } else {
+    console.error(`[helpdesk.server:${fnName}] non-Error thrown value, typeof=${typeof e}`, e);
+  }
+  throw e;
+}
+
 // ---------------------------------------------------------------------
 // Overview
 // ---------------------------------------------------------------------
@@ -65,53 +86,57 @@ export type HelpdeskOverview = {
 export const fetchHelpdeskOverview = createServerFn({ method: "POST" })
   .middleware([requireHelpdeskAdmin])
   .handler(async (): Promise<HelpdeskOverview> => {
-    const [
-      pendingReview,
-      totalIdeas,
-      openSupport,
-      totalVotes,
-      pendingIdeas,
-      latestSupportRequests,
-    ] = await Promise.all([
-      supabaseAdmin
-        .from("feature_ideas")
-        .select("*", { count: "exact", head: true })
-        .eq("status", "pending_review"),
-      supabaseAdmin.from("feature_ideas").select("*", { count: "exact", head: true }),
-      supabaseAdmin
-        .from("support_requests")
-        .select("*", { count: "exact", head: true })
-        .neq("status", "resolved"),
-      supabaseAdmin.from("feature_votes").select("*", { count: "exact", head: true }),
-      supabaseAdmin
-        .from("feature_ideas")
-        .select("*")
-        .eq("status", "pending_review")
-        .order("created_at", { ascending: false }),
-      supabaseAdmin
-        .from("support_requests")
-        .select("*")
-        .order("created_at", { ascending: false })
-        .limit(5),
-    ]);
+    try {
+      const [
+        pendingReview,
+        totalIdeas,
+        openSupport,
+        totalVotes,
+        pendingIdeas,
+        latestSupportRequests,
+      ] = await Promise.all([
+        supabaseAdmin
+          .from("feature_ideas")
+          .select("*", { count: "exact", head: true })
+          .eq("status", "pending_review"),
+        supabaseAdmin.from("feature_ideas").select("*", { count: "exact", head: true }),
+        supabaseAdmin
+          .from("support_requests")
+          .select("*", { count: "exact", head: true })
+          .neq("status", "resolved"),
+        supabaseAdmin.from("feature_votes").select("*", { count: "exact", head: true }),
+        supabaseAdmin
+          .from("feature_ideas")
+          .select("*")
+          .eq("status", "pending_review")
+          .order("created_at", { ascending: false }),
+        supabaseAdmin
+          .from("support_requests")
+          .select("*")
+          .order("created_at", { ascending: false })
+          .limit(5),
+      ]);
 
-    failIfError(pendingReview.error);
-    failIfError(totalIdeas.error);
-    failIfError(openSupport.error);
-    failIfError(totalVotes.error);
-    failIfError(pendingIdeas.error);
-    failIfError(latestSupportRequests.error);
+      failIfError(pendingReview.error);
+      failIfError(totalIdeas.error);
+      failIfError(openSupport.error);
+      failIfError(totalVotes.error);
+      failIfError(pendingIdeas.error);
+      failIfError(latestSupportRequests.error);
 
-    return {
-      stats: {
-        pendingReviewCount: pendingReview.count ?? 0,
-        totalIdeasCount: totalIdeas.count ?? 0,
-        openSupportCount: openSupport.count ?? 0,
-        totalVotesCount: totalVotes.count ?? 0,
-      },
-      pendingIdeas: pendingIdeas.data ?? [],
-      latestSupportRequests: latestSupportRequests.data ?? [],
-    };
+      return {
+        stats: {
+          pendingReviewCount: pendingReview.count ?? 0,
+          totalIdeasCount: totalIdeas.count ?? 0,
+          openSupportCount: openSupport.count ?? 0,
+          totalVotesCount: totalVotes.count ?? 0,
+        },
+        pendingIdeas: pendingIdeas.data ?? [],
+        latestSupportRequests: latestSupportRequests.data ?? [],
+      };
+    } catch (e) {
+      logAndRethrow("fetchHelpdeskOverview", e);
+    }
   });
 
 // ---------------------------------------------------------------------
@@ -122,12 +147,16 @@ export const fetchHelpdeskOverview = createServerFn({ method: "POST" })
 export const fetchAllIdeas = createServerFn({ method: "POST" })
   .middleware([requireHelpdeskAdmin])
   .handler(async (): Promise<FeatureIdea[]> => {
-    const { data, error } = await supabaseAdmin
-      .from("feature_ideas")
-      .select("*")
-      .order("created_at", { ascending: false });
-    failIfError(error);
-    return data ?? [];
+    try {
+      const { data, error } = await supabaseAdmin
+        .from("feature_ideas")
+        .select("*")
+        .order("created_at", { ascending: false });
+      failIfError(error);
+      return data ?? [];
+    } catch (e) {
+      logAndRethrow("fetchAllIdeas", e);
+    }
   });
 
 const updateIdeaStatusInput = z.object({
@@ -139,15 +168,19 @@ export const updateIdeaStatus = createServerFn({ method: "POST" })
   .middleware([requireHelpdeskAdmin])
   .inputValidator(updateIdeaStatusInput)
   .handler(async ({ data }): Promise<FeatureIdea> => {
-    const { data: row, error } = await supabaseAdmin
-      .from("feature_ideas")
-      .update({ status: data.status, updated_at: new Date().toISOString() })
-      .eq("id", data.id)
-      .select("*")
-      .single();
-    failIfError(error);
-    if (!row) throw new Error("Idea not found.");
-    return row;
+    try {
+      const { data: row, error } = await supabaseAdmin
+        .from("feature_ideas")
+        .update({ status: data.status, updated_at: new Date().toISOString() })
+        .eq("id", data.id)
+        .select("*")
+        .single();
+      failIfError(error);
+      if (!row) throw new Error("Idea not found.");
+      return row;
+    } catch (e) {
+      logAndRethrow("updateIdeaStatus", e);
+    }
   });
 
 const idInput = z.object({ id: z.string().uuid() });
@@ -157,8 +190,12 @@ export const deleteIdea = createServerFn({ method: "POST" })
   .middleware([requireHelpdeskAdmin])
   .inputValidator(idInput)
   .handler(async ({ data }): Promise<void> => {
-    const { error } = await supabaseAdmin.from("feature_ideas").delete().eq("id", data.id);
-    failIfError(error);
+    try {
+      const { error } = await supabaseAdmin.from("feature_ideas").delete().eq("id", data.id);
+      failIfError(error);
+    } catch (e) {
+      logAndRethrow("deleteIdea", e);
+    }
   });
 
 // ---------------------------------------------------------------------
@@ -169,12 +206,16 @@ export const deleteIdea = createServerFn({ method: "POST" })
 export const fetchAllSupportRequests = createServerFn({ method: "POST" })
   .middleware([requireHelpdeskAdmin])
   .handler(async (): Promise<SupportRequest[]> => {
-    const { data, error } = await supabaseAdmin
-      .from("support_requests")
-      .select("*")
-      .order("created_at", { ascending: false });
-    failIfError(error);
-    return data ?? [];
+    try {
+      const { data, error } = await supabaseAdmin
+        .from("support_requests")
+        .select("*")
+        .order("created_at", { ascending: false });
+      failIfError(error);
+      return data ?? [];
+    } catch (e) {
+      logAndRethrow("fetchAllSupportRequests", e);
+    }
   });
 
 const updateSupportStatusInput = z.object({
@@ -186,15 +227,19 @@ export const updateSupportRequestStatus = createServerFn({ method: "POST" })
   .middleware([requireHelpdeskAdmin])
   .inputValidator(updateSupportStatusInput)
   .handler(async ({ data }): Promise<SupportRequest> => {
-    const { data: row, error } = await supabaseAdmin
-      .from("support_requests")
-      .update({ status: data.status, updated_at: new Date().toISOString() })
-      .eq("id", data.id)
-      .select("*")
-      .single();
-    failIfError(error);
-    if (!row) throw new Error("Support request not found.");
-    return row;
+    try {
+      const { data: row, error } = await supabaseAdmin
+        .from("support_requests")
+        .update({ status: data.status, updated_at: new Date().toISOString() })
+        .eq("id", data.id)
+        .select("*")
+        .single();
+      failIfError(error);
+      if (!row) throw new Error("Support request not found.");
+      return row;
+    } catch (e) {
+      logAndRethrow("updateSupportRequestStatus", e);
+    }
   });
 
 /** A real, permanent hard delete. Callers must confirm with the admin first. */
@@ -202,6 +247,10 @@ export const deleteSupportRequest = createServerFn({ method: "POST" })
   .middleware([requireHelpdeskAdmin])
   .inputValidator(idInput)
   .handler(async ({ data }): Promise<void> => {
-    const { error } = await supabaseAdmin.from("support_requests").delete().eq("id", data.id);
-    failIfError(error);
+    try {
+      const { error } = await supabaseAdmin.from("support_requests").delete().eq("id", data.id);
+      failIfError(error);
+    } catch (e) {
+      logAndRethrow("deleteSupportRequest", e);
+    }
   });
