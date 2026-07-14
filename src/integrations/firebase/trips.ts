@@ -1,12 +1,15 @@
 import {
   addDoc,
   collection,
+  deleteDoc,
+  doc,
   GeoPoint,
   getDocs,
   orderBy,
   query,
   serverTimestamp,
   Timestamp,
+  updateDoc,
   where,
 } from "firebase/firestore";
 import { db } from "@/integrations/firebase/client";
@@ -208,4 +211,58 @@ export async function createTrip(input: NewTripInput): Promise<void> {
     routeMap: input.routeMapUrl,
     total_price: totalDistance * input.rate,
   });
+}
+
+export type TripUpdateInput = {
+  date: Date;
+  comment: string;
+  roundTrip: boolean;
+  isReimbursable: boolean;
+  /** One-way distance in `recordedUnit` -- doubled internally if roundTrip is true, same convention as NewTripInput.distance. */
+  distance: number;
+  /** The trip's own recorded unit ("km"|"mi") -- read-only context for recomputing the distance-derived fields below, never written back (the `distance` Firestore field itself, which stores this unit string, is untouched by this function). */
+  recordedUnit: DistanceUnit;
+  /** The trip's own historical rate ($/recordedUnit) -- read-only context for recomputing total_price, never written back. Never recomputed from Settings' current mileage rate. */
+  rate: number;
+};
+
+/**
+ * Updates an existing trip -- only the fields the edit form actually
+ * exposes: date, comment, round_trip, is_reimbursable, and the
+ * distance-derived fields (mileage/mileage_km_RoundTrip/mileage_ml/
+ * mileage_ml_RoundTrip/total_price), recomputed together every time
+ * since distance and round_trip are edited as one form, exactly
+ * mirroring createTrip's own km/mi-both-populated computation (reusing
+ * kmToMi/miToKm the same way). Deliberately never touches rate
+ * (historical, recorded when the trip was logged -- never recomputed
+ * from current Settings), routeMap, start_route/end_route (including
+ * geopoints), currency, created_by, created_at, or distance (the
+ * recorded unit string) -- those aren't part of the edit UI and
+ * shouldn't be reassignable through this path.
+ */
+export async function updateTrip(id: string, patch: TripUpdateInput): Promise<void> {
+  const oneWayKm = patch.recordedUnit === "km" ? patch.distance : miToKm(patch.distance);
+  const oneWayMi = patch.recordedUnit === "mi" ? patch.distance : kmToMi(patch.distance);
+  const totalDistance = patch.roundTrip ? patch.distance * 2 : patch.distance;
+
+  await updateDoc(doc(db, "routes", id), {
+    date: Timestamp.fromDate(patch.date),
+    comment: patch.comment,
+    round_trip: patch.roundTrip,
+    is_reimbursable: patch.isReimbursable,
+    mileage: oneWayKm,
+    mileage_km_RoundTrip: oneWayKm * 2,
+    mileage_ml: oneWayMi,
+    mileage_ml_RoundTrip: oneWayMi * 2,
+    total_price: totalDistance * patch.rate,
+  });
+}
+
+/**
+ * A real, permanent hard delete -- not a soft-delete flag. Security
+ * rules already allow this for the document's own creator. Callers must
+ * confirm with the user before calling this; nothing here prompts.
+ */
+export async function deleteTrip(id: string): Promise<void> {
+  await deleteDoc(doc(db, "routes", id));
 }

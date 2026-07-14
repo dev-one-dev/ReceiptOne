@@ -687,6 +687,7 @@ function MileagePage() {
         distanceUnit={distanceUnit}
         dateFormat={dateFormat}
         onOpenChange={(open) => !open && setSelectedTrip(null)}
+        onChanged={() => uid && loadTrips(uid)}
       />
     </div>
   );
