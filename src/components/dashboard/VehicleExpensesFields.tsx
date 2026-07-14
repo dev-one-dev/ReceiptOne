@@ -1,7 +1,7 @@
 import { TriangleAlert } from "lucide-react";
 import {
   daysInPeriod,
-  DAILY_INTEREST_LIMIT,
+  DAILY_INTEREST_LIMIT_ESTIMATE,
   DAILY_INTEREST_LIMIT_TAX_YEAR,
   type VehicleExpensesTotals,
 } from "@/integrations/firebase/vehicle-expenses";
@@ -110,6 +110,11 @@ export function VehicleExpensesFields({
 
   return (
     <div className="space-y-4">
+      <p className="text-xs text-black/40">
+        These figures are estimates based on what you enter -- confirm your final vehicle-expense
+        deduction with an accountant before filing.
+      </p>
+
       <div className="grid grid-cols-2 gap-3">
         <div className="space-y-1.5">
           <label className="block text-xs font-medium text-black/55">Period start</label>
@@ -194,10 +199,12 @@ export function VehicleExpensesFields({
             className="h-9 w-full rounded-xl border border-black/10 bg-white px-3 text-sm outline-none focus:border-black/25"
           />
           <p className="text-xs text-black/40">
-            CRA caps deductible interest at {formatCurrency(DAILY_INTEREST_LIMIT, currency)}/day for{" "}
-            {DAILY_INTEREST_LIMIT_TAX_YEAR}. You entered {formatCurrency(rawInterest, currency)} —{" "}
-            {formatCurrency(totals.deductibleInterest, currency)} is deductible ({periodDays} day
-            {periodDays === 1 ? "" : "s"}).
+            CRA limits deductible interest on a passenger-vehicle loan to a daily cap (approx.{" "}
+            {formatCurrency(DAILY_INTEREST_LIMIT_ESTIMATE, currency)}/day for{" "}
+            {DAILY_INTEREST_LIMIT_TAX_YEAR} — verify the current limit). Based on that cap,{" "}
+            {formatCurrency(totals.deductibleInterest, currency)} of your{" "}
+            {formatCurrency(rawInterest, currency)} entered is deductible over {periodDays} day
+            {periodDays === 1 ? "" : "s"}.
           </p>
         </div>
 

@@ -55,7 +55,7 @@ export type VehicleExpenses = {
   licenceRegistration: number;
   /** Raw entered interest, before the CRA daily cap -- see deductibleInterest for the actually-deductible figure. */
   interest: number;
-  /** interest after the CRA daily cap (min(interest, DAILY_INTEREST_LIMIT x days in period)) -- this, not `interest`, is what feeds totalVehicleExpenses. Stored (not just computed on read) so the user can always see what they entered vs what's deductible without recomputing. */
+  /** interest after the CRA daily cap (min(interest, DAILY_INTEREST_LIMIT_ESTIMATE x days in period)) -- this, not `interest`, is what feeds totalVehicleExpenses. Stored (not just computed on read) so the user can always see what they entered vs what's deductible without recomputing. */
   deductibleInterest: number;
   /**
    * Leasing has its own, separate CRA limit (Chart C on the T2125),
@@ -156,13 +156,15 @@ export async function fetchVehicleExpensesRecords(
 
 /**
  * CRA's daily cap on deductible interest for a loan used to buy a
- * passenger vehicle (T2125 motor vehicle expenses). This is a fixed
- * dollar figure set by CRA that changes every tax year -- 2026's is
- * $11.67/day (~$350 per 30-day period). MUST be reviewed and updated
- * for each new tax year; do not assume it stays the same.
+ * passenger vehicle (T2125 motor vehicle expenses). This dollar figure
+ * changes every tax year -- 2026's is approximately $11.67/day (~$350
+ * per 30-day period), but this is OUR best-known estimate, not a
+ * confirmed-current CRA figure. MUST be reviewed against the actual
+ * published limit for each new tax year, and the UI presents it as
+ * approximate ("verify the current limit") rather than asserted fact.
  */
 export const DAILY_INTEREST_LIMIT_TAX_YEAR = 2026;
-export const DAILY_INTEREST_LIMIT = 11.67;
+export const DAILY_INTEREST_LIMIT_ESTIMATE = 11.67;
 
 /** Whole days in [startDate, endDate], inclusive of both ends -- 0 if either date is missing. */
 export function daysInPeriod(startDate: Date | null, endDate: Date | null): number {
@@ -201,7 +203,7 @@ export type VehicleExpensesTotals = {
  * guaranteed to match what actually gets stored).
  *
  * Interest is capped first (the LESSER of the amount actually paid and
- * DAILY_INTEREST_LIMIT x days in the period), and that capped figure --
+ * DAILY_INTEREST_LIMIT_ESTIMATE x days in the period), and that capped figure --
  * not the raw entered interest -- is what gets prorated by business-use
  * % like every other expense line.
  *
@@ -220,7 +222,7 @@ export function computeVehicleExpensesTotals(
 ): VehicleExpensesTotals {
   const businessUsePercent = input.totalKm > 0 ? (input.businessKm / input.totalKm) * 100 : 0;
 
-  const interestCap = DAILY_INTEREST_LIMIT * daysInPeriod(input.startDate, input.endDate);
+  const interestCap = DAILY_INTEREST_LIMIT_ESTIMATE * daysInPeriod(input.startDate, input.endDate);
   const deductibleInterest = Math.min(input.interest, interestCap);
 
   const totalVehicleExpenses =
