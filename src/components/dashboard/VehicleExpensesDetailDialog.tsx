@@ -12,6 +12,7 @@ import {
 import { toDateInputValue } from "@/components/dashboard/ReceiptEditFields";
 import {
   VehicleExpensesFields,
+  VehicleExpensesSummary,
   parseVehicleExpensesForm,
   type VehicleExpensesForm,
 } from "@/components/dashboard/VehicleExpensesFields";
@@ -138,10 +139,14 @@ export function VehicleExpensesDetailDialog({
           onOpenChange(open);
         }}
       >
-        <DialogContent className="sm:max-w-lg">
+        <DialogContent
+          className={
+            editing ? "flex max-h-[85vh] flex-col overflow-hidden sm:max-w-2xl" : "sm:max-w-lg"
+          }
+        >
           {record && (
             <>
-              <DialogHeader>
+              <DialogHeader className="shrink-0">
                 <DialogTitle>Vehicle expenses</DialogTitle>
                 <DialogDescription>
                   {record.startDate && record.endDate
@@ -153,33 +158,38 @@ export function VehicleExpensesDetailDialog({
 
               {editing && form ? (
                 <>
-                  <VehicleExpensesFields
-                    form={form}
-                    onChangeField={(patch) =>
-                      setForm((prev) => (prev ? { ...prev, ...patch } : prev))
-                    }
-                    businessKmHint={businessKmHint}
-                    year={year}
-                    currency={currency}
-                    totals={liveTotals}
-                  />
-                  <DialogFooter className="gap-2 sm:gap-0">
-                    <button
-                      type="button"
-                      onClick={() => setEditing(false)}
-                      className="inline-flex items-center justify-center rounded-full border border-black/10 px-4 py-2 text-sm font-medium text-black transition-colors hover:bg-black/5"
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => void handleSave()}
-                      disabled={saving}
-                      className="inline-flex items-center justify-center rounded-full bg-black px-4 py-2 text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
-                    >
-                      {saving ? "Saving…" : "Save changes"}
-                    </button>
-                  </DialogFooter>
+                  <div className="min-h-0 flex-1 overflow-y-auto pr-1">
+                    <VehicleExpensesFields
+                      form={form}
+                      onChangeField={(patch) =>
+                        setForm((prev) => (prev ? { ...prev, ...patch } : prev))
+                      }
+                      businessKmHint={businessKmHint}
+                      year={year}
+                      currency={currency}
+                      totals={liveTotals}
+                    />
+                  </div>
+                  <div className="shrink-0 space-y-4">
+                    <VehicleExpensesSummary form={form} totals={liveTotals} currency={currency} />
+                    <DialogFooter className="gap-2 sm:gap-0">
+                      <button
+                        type="button"
+                        onClick={() => setEditing(false)}
+                        className="inline-flex items-center justify-center rounded-full border border-black/10 px-4 py-2 text-sm font-medium text-black transition-colors hover:bg-black/5"
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => void handleSave()}
+                        disabled={saving}
+                        className="inline-flex items-center justify-center rounded-full bg-black px-4 py-2 text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+                      >
+                        {saving ? "Saving…" : "Save changes"}
+                      </button>
+                    </DialogFooter>
+                  </div>
                 </>
               ) : (
                 <>

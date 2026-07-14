@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/dialog";
 import {
   VehicleExpensesFields,
+  VehicleExpensesSummary,
   blankVehicleExpensesForm,
   parseVehicleExpensesForm,
   type VehicleExpensesForm,
@@ -98,31 +99,36 @@ export function AddVehicleExpensesDialog({
           Add vehicle period
         </button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-lg">
-        <DialogHeader>
+      <DialogContent className="flex max-h-[85vh] flex-col overflow-hidden sm:max-w-2xl">
+        <DialogHeader className="shrink-0">
           <DialogTitle>Add vehicle expenses</DialogTitle>
           <DialogDescription>
             CRA Chart A method — actual costs × business-use %, for {year}.
           </DialogDescription>
         </DialogHeader>
-        <VehicleExpensesFields
-          form={form}
-          onChangeField={(patch) => setForm((prev) => ({ ...prev, ...patch }))}
-          businessKmHint={businessKmHint}
-          year={year}
-          currency={currency}
-          totals={totals}
-        />
-        <DialogFooter>
-          <button
-            type="button"
-            onClick={() => void handleSave()}
-            disabled={saving}
-            className="inline-flex w-full items-center justify-center rounded-full bg-black px-5 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-50 sm:w-auto"
-          >
-            {saving ? "Saving…" : "Save vehicle expenses"}
-          </button>
-        </DialogFooter>
+        <div className="min-h-0 flex-1 overflow-y-auto pr-1">
+          <VehicleExpensesFields
+            form={form}
+            onChangeField={(patch) => setForm((prev) => ({ ...prev, ...patch }))}
+            businessKmHint={businessKmHint}
+            year={year}
+            currency={currency}
+            totals={totals}
+          />
+        </div>
+        <div className="shrink-0 space-y-4">
+          <VehicleExpensesSummary form={form} totals={totals} currency={currency} />
+          <DialogFooter>
+            <button
+              type="button"
+              onClick={() => void handleSave()}
+              disabled={saving}
+              className="inline-flex w-full items-center justify-center rounded-full bg-black px-5 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-50 sm:w-auto"
+            >
+              {saving ? "Saving…" : "Save vehicle expenses"}
+            </button>
+          </DialogFooter>
+        </div>
       </DialogContent>
     </Dialog>
   );

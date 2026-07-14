@@ -79,7 +79,9 @@ const EXPENSE_FIELDS: { key: keyof VehicleExpensesForm; label: string }[] = [
  * AddVehicleExpensesDialog and VehicleExpensesDetailDialog's edit mode.
  * `totals` is always computed by the caller via
  * computeVehicleExpensesTotals so both dialogs and the eventual saved
- * record can never disagree on the math.
+ * record can never disagree on the math. Renders fields only -- the Chart
+ * A summary lives in the sibling VehicleExpensesSummary component so
+ * callers can pin it outside this component's scroll container.
  */
 export function VehicleExpensesFields({
   form,
@@ -152,7 +154,7 @@ export function VehicleExpensesFields({
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {EXPENSE_FIELDS.map(({ key, label }) => (
           <div key={key} className="space-y-1.5">
             <label className="block text-xs font-medium text-black/55">{label}</label>
@@ -164,89 +166,110 @@ export function VehicleExpensesFields({
             />
           </div>
         ))}
-      </div>
 
-      <div className="space-y-1.5">
-        <label className="block text-xs font-medium text-black/55">Loan interest</label>
-        <input
-          value={form.interest}
-          onChange={(e) => onChangeField({ interest: e.target.value })}
-          inputMode="decimal"
-          className="h-9 w-full rounded-xl border border-black/10 bg-white px-3 text-sm outline-none focus:border-black/25"
-        />
-        <p className="text-xs text-black/40">
-          CRA caps deductible interest at {formatCurrency(DAILY_INTEREST_LIMIT, currency)}/day for{" "}
-          {DAILY_INTEREST_LIMIT_TAX_YEAR}. You entered {formatCurrency(rawInterest, currency)} —{" "}
-          {formatCurrency(totals.deductibleInterest, currency)} is deductible ({periodDays} day
-          {periodDays === 1 ? "" : "s"}).
-        </p>
-      </div>
+        <div className="space-y-1.5">
+          <label className="block text-xs font-medium text-black/55">Loan interest</label>
+          <input
+            value={form.interest}
+            onChange={(e) => onChangeField({ interest: e.target.value })}
+            inputMode="decimal"
+            className="h-9 w-full rounded-xl border border-black/10 bg-white px-3 text-sm outline-none focus:border-black/25"
+          />
+          <p className="text-xs text-black/40">
+            CRA caps deductible interest at {formatCurrency(DAILY_INTEREST_LIMIT, currency)}/day for{" "}
+            {DAILY_INTEREST_LIMIT_TAX_YEAR}. You entered {formatCurrency(rawInterest, currency)} —{" "}
+            {formatCurrency(totals.deductibleInterest, currency)} is deductible ({periodDays} day
+            {periodDays === 1 ? "" : "s"}).
+          </p>
+        </div>
 
-      <div className="space-y-1.5">
-        <label className="block text-xs font-medium text-black/55">Leasing costs</label>
-        <input
-          value={form.leasing}
-          onChange={(e) => onChangeField({ leasing: e.target.value })}
-          inputMode="decimal"
-          className="h-9 w-full rounded-xl border border-black/10 bg-white px-3 text-sm outline-none focus:border-black/25"
-        />
-        <p className="flex items-start gap-1.5 text-xs text-[#c2410c]">
-          <TriangleAlert className="mt-0.5 size-3.5 shrink-0" aria-hidden />
-          Leasing costs are subject to a separate CRA limit (Chart C, based on the vehicle's
-          manufacturer's list price) that this app doesn't yet compute. Verify your deductible
-          leasing amount before filing.
-        </p>
-      </div>
+        <div className="space-y-1.5">
+          <label className="block text-xs font-medium text-black/55">Leasing costs</label>
+          <input
+            value={form.leasing}
+            onChange={(e) => onChangeField({ leasing: e.target.value })}
+            inputMode="decimal"
+            className="h-9 w-full rounded-xl border border-black/10 bg-white px-3 text-sm outline-none focus:border-black/25"
+          />
+          <p className="flex items-start gap-1.5 text-xs text-[#c2410c]">
+            <TriangleAlert className="mt-0.5 size-3.5 shrink-0" aria-hidden />
+            Leasing costs are subject to a separate CRA limit (Chart C, based on the vehicle's
+            manufacturer's list price) that this app doesn't yet compute. Verify your deductible
+            leasing amount before filing.
+          </p>
+        </div>
 
-      <div className="space-y-1.5">
-        <label className="block text-xs font-medium text-black/55">
-          Parking (100% deductible — not prorated by business use)
-        </label>
-        <input
-          value={form.parking}
-          onChange={(e) => onChangeField({ parking: e.target.value })}
-          inputMode="decimal"
-          className="h-9 w-full rounded-xl border border-black/10 bg-white px-3 text-sm outline-none focus:border-black/25"
-        />
+        <div className="space-y-1.5">
+          <label className="block text-xs font-medium text-black/55">
+            Parking (100% deductible — not prorated by business use)
+          </label>
+          <input
+            value={form.parking}
+            onChange={(e) => onChangeField({ parking: e.target.value })}
+            inputMode="decimal"
+            className="h-9 w-full rounded-xl border border-black/10 bg-white px-3 text-sm outline-none focus:border-black/25"
+          />
+        </div>
       </div>
+    </div>
+  );
+}
 
-      <div className="space-y-2 rounded-xl bg-black/[0.03] px-4 py-3 text-sm">
-        <div className="flex items-center justify-between text-xs text-black/55">
-          <span>
-            Business use ({form.businessKm || "0"} / {form.totalKm || "0"} km)
-          </span>
-          <span className="font-medium text-black">{totals.businessUsePercent.toFixed(2)}%</span>
-        </div>
-        <div className="flex items-center justify-between text-xs text-black/55">
-          <span>Interest — capped from {formatCurrency(rawInterest, currency)}</span>
-          <span className="font-medium text-black">
-            {formatCurrency(totals.deductibleInterest, currency)}
-          </span>
-        </div>
-        <div className="flex items-center justify-between text-xs text-black/55">
-          <span>
-            {formatCurrency(totals.totalVehicleExpenses, currency)} vehicle expenses ×{" "}
-            {totals.businessUsePercent.toFixed(2)}%
-          </span>
-          <span className="font-medium text-black">
-            {formatCurrency(
-              totals.totalVehicleExpenses * (totals.businessUsePercent / 100),
-              currency,
-            )}
-          </span>
-        </div>
-        <div className="flex items-center justify-between text-xs text-black/55">
-          <span>+ Parking (100%, not prorated)</span>
-          <span className="font-medium text-black">
-            {formatCurrency(parseFloat(form.parking) || 0, currency)}
-          </span>
-        </div>
-        <div className="flex items-center justify-between border-t border-black/[0.07] pt-2 text-sm">
-          <span className="font-semibold text-black">Deductible amount (line 9281)</span>
-          <span className="font-semibold text-black">
-            {formatCurrency(totals.totalDeductible, currency)}
-          </span>
-        </div>
+/**
+ * The Chart A deductible summary -- split out from VehicleExpensesFields
+ * so callers can pin it full-width outside the fields' scroll container
+ * (same fixed-header/scrollable-middle/fixed-footer shape as the Tax
+ * Summary preview dialog), rather than have it scroll away with the rest
+ * of the form.
+ */
+export function VehicleExpensesSummary({
+  form,
+  totals,
+  currency,
+}: {
+  form: VehicleExpensesForm;
+  totals: VehicleExpensesTotals;
+  currency: string;
+}) {
+  const rawInterest = parseFloat(form.interest) || 0;
+
+  return (
+    <div className="space-y-2 rounded-xl bg-black/[0.03] px-4 py-3 text-sm">
+      <div className="flex items-center justify-between text-xs text-black/55">
+        <span>
+          Business use ({form.businessKm || "0"} / {form.totalKm || "0"} km)
+        </span>
+        <span className="font-medium text-black">{totals.businessUsePercent.toFixed(2)}%</span>
+      </div>
+      <div className="flex items-center justify-between text-xs text-black/55">
+        <span>Interest — capped from {formatCurrency(rawInterest, currency)}</span>
+        <span className="font-medium text-black">
+          {formatCurrency(totals.deductibleInterest, currency)}
+        </span>
+      </div>
+      <div className="flex items-center justify-between text-xs text-black/55">
+        <span>
+          {formatCurrency(totals.totalVehicleExpenses, currency)} vehicle expenses ×{" "}
+          {totals.businessUsePercent.toFixed(2)}%
+        </span>
+        <span className="font-medium text-black">
+          {formatCurrency(
+            totals.totalVehicleExpenses * (totals.businessUsePercent / 100),
+            currency,
+          )}
+        </span>
+      </div>
+      <div className="flex items-center justify-between text-xs text-black/55">
+        <span>+ Parking (100%, not prorated)</span>
+        <span className="font-medium text-black">
+          {formatCurrency(parseFloat(form.parking) || 0, currency)}
+        </span>
+      </div>
+      <div className="flex items-center justify-between border-t border-black/[0.07] pt-2 text-sm">
+        <span className="font-semibold text-black">Deductible amount (line 9281)</span>
+        <span className="font-semibold text-black">
+          {formatCurrency(totals.totalDeductible, currency)}
+        </span>
       </div>
     </div>
   );
