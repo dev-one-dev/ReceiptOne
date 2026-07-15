@@ -10,7 +10,6 @@ import { Advantages } from "@/components/site/Advantages";
 import { Pricing } from "@/components/site/Pricing";
 import { Faq, faqItems } from "@/components/site/Faq";
 import { Footer } from "@/components/site/Footer";
-import { SuggestFeatureWidget } from "@/components/site/SuggestFeatureWidget";
 import {
   pageSEO,
   HREFLANG_US_CA,
@@ -70,7 +69,6 @@ function CanadaPage() {
       <Pricing region="ca" />
       <Faq />
       <Footer />
-      <SuggestFeatureWidget region="ca" />
     </main>
   );
 }

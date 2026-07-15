@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { GitCommitHorizontal, Milestone, Rocket } from "lucide-react";
 import { toast } from "sonner";
+import { useDashboardContext } from "@/components/dashboard/DashboardContext";
+import { SuggestFeatureWidget } from "@/components/site/SuggestFeatureWidget";
 import { supabase } from "@/integrations/supabase/client";
 import { errorMessage } from "@/lib/utils";
 
@@ -66,6 +68,7 @@ function CardSkeleton() {
 }
 
 function RoadmapPage() {
+  const { region } = useDashboardContext();
   const [ideas, setIdeas] = useState<FeatureIdea[] | null>(null);
   const [loadError, setLoadError] = useState(false);
 
@@ -183,6 +186,8 @@ function RoadmapPage() {
           </div>
         )}
       </div>
+
+      <SuggestFeatureWidget region={region} />
     </div>
   );
 }
