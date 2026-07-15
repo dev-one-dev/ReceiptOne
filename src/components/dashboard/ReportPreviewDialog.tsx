@@ -70,96 +70,98 @@ function TaxSummaryPreview({
       </label>
 
       {/* Only this table scrolls -- the header row stays sticky, and the
-          9368 total / ITC memo / download button below stay pinned. */}
-      <div className="min-h-0 flex-1 overflow-hidden rounded-xl border border-black/[0.07]">
-        <div className="h-full overflow-y-auto">
-          <table className="w-full border-collapse text-left text-sm">
-            <thead>
-              <tr className="text-xs text-black/45">
-                <th className="sticky top-0 z-10 bg-white px-4 py-2 font-medium">Line</th>
-                <th className="sticky top-0 z-10 bg-white px-4 py-2 font-medium">Description</th>
-                <th className="sticky top-0 z-10 bg-white px-4 py-2 text-right font-medium">
-                  Amount
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {summary.lines.map((li) => {
-                const isZero = li.amount === 0 && li.actual === undefined && !li.notEntered;
-                const muted = isZero || li.notEntered;
-                return (
-                  <tr key={li.lineNumber} className="border-t border-black/[0.05]">
-                    <td
-                      className={`px-4 py-2.5 tabular-nums ${muted ? "text-black/30" : "text-black/55"}`}
-                    >
-                      {li.lineNumber}
-                    </td>
-                    <td className={`px-4 py-2.5 ${muted ? "text-black/30" : "text-black/70"}`}>
-                      {li.label}
-                      {li.notEntered && (
-                        <div className="mt-0.5 text-xs font-normal text-[#c2410c]">
-                          No vehicle expenses entered for {year}. Add them under Mileage →{" "}
-                          <Link
-                            to="/dashboard/mileage"
-                            className="underline underline-offset-2 hover:text-black"
-                          >
-                            Vehicle expenses
-                          </Link>{" "}
-                          to calculate this line.
-                        </div>
-                      )}
-                      {li.lineNumber === "9281" && !li.notEntered && (
-                        <div className="mt-1 space-y-0.5 text-xs font-normal text-black/40">
-                          {vehicleExpenses.map((v) => (
-                            <div key={v.id} className="flex items-baseline justify-between gap-3">
-                              <span>
-                                {v.startDate && v.endDate
-                                  ? `${formatDate(v.startDate, dateFormat)}–${formatDate(v.endDate, dateFormat)}`
-                                  : "Period"}
-                                : {v.businessUsePercent.toFixed(2)}% of{" "}
-                                {formatCurrency(v.totalVehicleExpenses, currency)}
-                                {v.parking > 0 &&
-                                  ` + ${formatCurrency(v.parking, currency)} parking`}
-                              </span>
-                              <span className="shrink-0 tabular-nums">
-                                {formatCurrency(v.totalDeductible, currency)}
-                              </span>
-                            </div>
-                          ))}
-                          {vehicleExpenses.length > 1 && (
-                            <div className="flex items-baseline justify-between gap-3 border-t border-black/10 pt-0.5 font-medium">
-                              <span>Sum across {vehicleExpenses.length} periods</span>
-                              <span className="shrink-0 tabular-nums">
-                                {formatCurrency(li.amount, currency)}
-                              </span>
-                            </div>
-                          )}
-                        </div>
-                      )}
-                    </td>
-                    <td
-                      className={`px-4 py-2.5 text-right tabular-nums ${muted ? "text-black/30" : "text-black"}`}
-                    >
-                      <div>{li.notEntered ? "—" : formatCurrency(li.amount, currency)}</div>
-                      {li.actual !== undefined && (
-                        <div className="text-xs font-normal text-black/40">
-                          50% of {formatCurrency(li.actual, currency)}
-                        </div>
-                      )}
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-          <div className="space-y-1.5 border-t border-black/[0.05] px-4 py-3">
-            <p className="text-xs text-black/40">
-              {summary.lines.find((li) => li.lineNumber === "9281")?.notEntered
-                ? "Line 9281 requires Vehicle expenses records (CRA Chart A: actual costs × business-use %) — see the prompt above."
-                : "Line 9281 reflects the CRA Chart A method (actual vehicle costs × business-use %) from your Vehicle expenses records, not a per-distance mileage rate."}
-            </p>
-            <p className="text-xs text-black/40">Reflects your real records for tax year {year}.</p>
-          </div>
+          9368 total / ITC memo / download button below stay pinned. This
+          div is both the flex item (min-h-0 flex-1) and the scroll
+          container itself -- a separate inner h-full overflow-y-auto div
+          previously left this outer div's overflow-hidden clipping
+          content instead of scrolling it, since the inner div's h-full
+          didn't reliably resolve to a bounded height. */}
+      <div className="min-h-0 flex-1 overflow-y-auto rounded-xl border border-black/[0.07]">
+        <table className="w-full border-collapse text-left text-sm">
+          <thead>
+            <tr className="text-xs text-black/45">
+              <th className="sticky top-0 z-10 bg-white px-4 py-2 font-medium">Line</th>
+              <th className="sticky top-0 z-10 bg-white px-4 py-2 font-medium">Description</th>
+              <th className="sticky top-0 z-10 bg-white px-4 py-2 text-right font-medium">
+                Amount
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {summary.lines.map((li) => {
+              const isZero = li.amount === 0 && li.actual === undefined && !li.notEntered;
+              const muted = isZero || li.notEntered;
+              return (
+                <tr key={li.lineNumber} className="border-t border-black/[0.05]">
+                  <td
+                    className={`px-4 py-2.5 tabular-nums ${muted ? "text-black/30" : "text-black/55"}`}
+                  >
+                    {li.lineNumber}
+                  </td>
+                  <td className={`px-4 py-2.5 ${muted ? "text-black/30" : "text-black/70"}`}>
+                    {li.label}
+                    {li.notEntered && (
+                      <div className="mt-0.5 text-xs font-normal text-[#c2410c]">
+                        No vehicle expenses entered for {year}. Add them under Mileage →{" "}
+                        <Link
+                          to="/dashboard/mileage"
+                          className="underline underline-offset-2 hover:text-black"
+                        >
+                          Vehicle expenses
+                        </Link>{" "}
+                        to calculate this line.
+                      </div>
+                    )}
+                    {li.lineNumber === "9281" && !li.notEntered && (
+                      <div className="mt-1 space-y-0.5 text-xs font-normal text-black/40">
+                        {vehicleExpenses.map((v) => (
+                          <div key={v.id} className="flex items-baseline justify-between gap-3">
+                            <span>
+                              {v.startDate && v.endDate
+                                ? `${formatDate(v.startDate, dateFormat)}–${formatDate(v.endDate, dateFormat)}`
+                                : "Period"}
+                              : {v.businessUsePercent.toFixed(2)}% of{" "}
+                              {formatCurrency(v.totalVehicleExpenses, currency)}
+                              {v.parking > 0 && ` + ${formatCurrency(v.parking, currency)} parking`}
+                            </span>
+                            <span className="shrink-0 tabular-nums">
+                              {formatCurrency(v.totalDeductible, currency)}
+                            </span>
+                          </div>
+                        ))}
+                        {vehicleExpenses.length > 1 && (
+                          <div className="flex items-baseline justify-between gap-3 border-t border-black/10 pt-0.5 font-medium">
+                            <span>Sum across {vehicleExpenses.length} periods</span>
+                            <span className="shrink-0 tabular-nums">
+                              {formatCurrency(li.amount, currency)}
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </td>
+                  <td
+                    className={`px-4 py-2.5 text-right tabular-nums ${muted ? "text-black/30" : "text-black"}`}
+                  >
+                    <div>{li.notEntered ? "—" : formatCurrency(li.amount, currency)}</div>
+                    {li.actual !== undefined && (
+                      <div className="text-xs font-normal text-black/40">
+                        50% of {formatCurrency(li.actual, currency)}
+                      </div>
+                    )}
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+        <div className="space-y-1.5 border-t border-black/[0.05] px-4 py-3">
+          <p className="text-xs text-black/40">
+            {summary.lines.find((li) => li.lineNumber === "9281")?.notEntered
+              ? "Line 9281 requires Vehicle expenses records (CRA Chart A: actual costs × business-use %) — see the prompt above."
+              : "Line 9281 reflects the CRA Chart A method (actual vehicle costs × business-use %) from your Vehicle expenses records, not a per-distance mileage rate."}
+          </p>
+          <p className="text-xs text-black/40">Reflects your real records for tax year {year}.</p>
         </div>
       </div>
 
