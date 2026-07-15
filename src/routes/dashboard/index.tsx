@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { Car, Home, Landmark, Receipt, type LucideIcon } from "lucide-react";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { Car, Home, Landmark, Receipt, Wallet, type LucideIcon } from "lucide-react";
 import { ReceiptDetailDialog } from "@/components/dashboard/ReceiptDetailDialog";
 import { HomeOfficeDetailDialog } from "@/components/dashboard/HomeOfficeDetailDialog";
 import { CategoryDonutChart } from "@/components/dashboard/CategoryDonutChart";
@@ -18,6 +18,10 @@ import {
   type TaxListEntry as ReceiptTaxEntry,
 } from "@/integrations/firebase/receipts";
 import { fetchTrips, tripDistance, type Trip } from "@/integrations/firebase/trips";
+import {
+  fetchVehicleExpensesRecords,
+  type VehicleExpenses,
+} from "@/integrations/firebase/vehicle-expenses";
 import { formatCurrency, formatDate, formatDistance, money } from "@/lib/dashboard-format";
 import { errorMessage } from "@/lib/utils";
 
@@ -129,6 +133,9 @@ function buildTaxContent(
   receiptsLoading: boolean,
   trips: Trip[],
   tripsLoading: boolean,
+  vehicleExpenses: VehicleExpenses[],
+  vehicleExpensesLoading: boolean,
+  onGoToVehicleExpenses: () => void,
 ): RegionTaxContent {
   const mock = REGION_MOCK[region];
   const taxReclaim = sumRefundableTax(receipts, taxList);
@@ -153,7 +160,7 @@ function buildTaxContent(
     note: tripsLoading
       ? "Loading…"
       : trips.length > 0
-        ? `${formatCurrency(mileageTotal, mileageCurrency)} deductible from your logged trips`
+        ? `${formatCurrency(mileageTotal, mileageCurrency)} at recorded rates — not the CRA deduction`
         : "No trips logged yet",
     icon: Car,
   };
@@ -194,11 +201,38 @@ function buildTaxContent(
       : "No home office expenses recorded yet — add this in the mobile app";
   const homeOfficeOnClick = homeOffice ? onOpenHomeOffice : undefined;
 
+  // The real CRA vehicle deduction (T2125 line 9281, Chart A: actual
+  // costs × business-use %) -- Canada-specific, like homeOffice above,
+  // so it only ever applies on the "ca" branch. This, not mileageTotal
+  // (mileage × recorded rate), is what actually feeds 9281; see
+  // src/lib/t2125.ts. Same three-state honesty as homeOffice: loading,
+  // a real (possibly $0) sum across the year's vehicleExpenses records,
+  // or genuinely none entered yet -- a clear affordance to go add them,
+  // never a fake zero.
+  const vehicleDeductible = vehicleExpenses.reduce((sum, v) => sum + v.totalDeductible, 0);
+  const vehicleDeductibleValue = vehicleExpensesLoading
+    ? "…"
+    : vehicleExpenses.length > 0
+      ? money(vehicleDeductible)
+      : "—";
+  const vehicleDeductibleNote = vehicleExpensesLoading
+    ? "Loading…"
+    : vehicleExpenses.length > 0
+      ? "CRA Chart A: actual vehicle costs × business-use %"
+      : "Not entered yet — add under Mileage → Vehicle expenses";
+  const vehicleDeductibleStat: TaxStat = {
+    label: "Vehicle deduction (9281)",
+    value: vehicleDeductibleValue,
+    note: vehicleDeductibleNote,
+    icon: Wallet,
+    onClick: onGoToVehicleExpenses,
+  };
+
   if (region === "ca") {
     return {
       heroLabel: "Estimated refundable taxes",
-      heroTotal: money(taxReclaim + homeOfficeReclaim + mileageTotal),
-      heroNote: `${label} reclaim plus estimated tax savings from home office and mileage`,
+      heroTotal: money(taxReclaim + homeOfficeReclaim + vehicleDeductible),
+      heroNote: `${label} reclaim plus estimated tax savings from home office and vehicle expenses`,
       stats: [
         expensesStat,
         {
@@ -214,6 +248,7 @@ function buildTaxContent(
           icon: Home,
           onClick: homeOfficeOnClick,
         },
+        vehicleDeductibleStat,
         mileageStat,
       ],
     };
@@ -321,6 +356,36 @@ function DashboardPage() {
     };
   }, [uid, year]);
 
+  // CRA Chart A vehicle deduction (T2125 line 9281) -- Canada-specific,
+  // like homeOffice above, so only fetched on the "ca" branch.
+  const [vehicleExpenses, setVehicleExpenses] = useState<VehicleExpenses[]>([]);
+  const [vehicleExpensesLoading, setVehicleExpensesLoading] = useState(true);
+
+  useEffect(() => {
+    if (!uid || region !== "ca") {
+      setVehicleExpenses([]);
+      setVehicleExpensesLoading(false);
+      return;
+    }
+    let cancelled = false;
+    setVehicleExpensesLoading(true);
+    fetchVehicleExpensesRecords(uid, year)
+      .then((data) => {
+        if (!cancelled) setVehicleExpenses(data);
+      })
+      .catch(() => {
+        if (!cancelled) setVehicleExpenses([]);
+      })
+      .finally(() => {
+        if (!cancelled) setVehicleExpensesLoading(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [uid, year, region]);
+
+  const navigate = useNavigate();
+
   const content = buildTaxContent(
     region,
     taxList,
@@ -332,6 +397,9 @@ function DashboardPage() {
     receiptsLoading,
     trips,
     tripsLoading,
+    vehicleExpenses,
+    vehicleExpensesLoading,
+    () => void navigate({ to: "/dashboard/mileage" }),
   );
   const recentReceipts = receipts.slice(0, 6);
 

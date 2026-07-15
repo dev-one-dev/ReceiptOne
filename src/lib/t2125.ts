@@ -1,13 +1,13 @@
 import type { Receipt } from "@/integrations/firebase/receipts";
-import type { Trip } from "@/integrations/firebase/trips";
 import type { HomeOffice } from "@/integrations/firebase/home-office";
+import type { VehicleExpenses } from "@/integrations/firebase/vehicle-expenses";
 
 /**
  * Pure aggregation for CRA T2125 (Statement of Business or Professional
  * Activities), Part 4 expenses -- no Firestore reads here. Callers pass
- * already-fetched receipts/trips/homeOffice records, all pre-scoped to
- * the selected tax year (via fetchReceipts/fetchTrips/
- * fetchHomeOfficeRecords' own `year` filter).
+ * already-fetched receipts/vehicleExpenses/homeOffice records, all
+ * pre-scoped to the selected tax year (via fetchReceipts/
+ * fetchVehicleExpensesRecords/fetchHomeOfficeRecords' own `year` filter).
  *
  * Step 1 of 2: this builds the on-screen preview only. PDF generation
  * is a separate, later piece.
@@ -43,6 +43,8 @@ export type T2125LineItem = {
   amount: number;
   /** Only set on 8523 (Meals and entertainment): the full, actual (100%) figure. `amount` above is already the CRA-allowable 50% figure that feeds totalExpenses. */
   actual?: number;
+  /** Only set on 9281 (Motor vehicle expenses): true when there are no vehicleExpenses records for the year. `amount` is 0 in this case (a safe default for totalExpenses' sum), but the UI must render this as "not entered", never as a real $0.00. */
+  notEntered?: boolean;
 };
 
 export type T2125Summary = {
@@ -168,7 +170,7 @@ function homeOfficeOverlapsPeriod(record: HomeOffice, periodStart: Date, periodE
 
 export function buildT2125Summary(
   receipts: Receipt[],
-  trips: Trip[],
+  vehicleExpenses: VehicleExpenses[],
   homeOfficeRecords: HomeOffice[],
   year: string,
   claimsITC: boolean,
@@ -198,10 +200,14 @@ export function buildT2125Summary(
 
   amounts.set("8523", mealsActual * 0.5);
 
-  amounts.set(
-    "9281",
-    trips.reduce((sum, t) => sum + t.totalPrice, 0),
-  );
+  // Line 9281 comes from the CRA Chart A method (actual vehicle costs x
+  // business-use %) already computed and stored on each vehicleExpenses
+  // record -- NOT recomputed here, and NOT the mileage x rate figure the
+  // trips logbook produces (that figure only establishes business-use %,
+  // it is not itself a valid CRA deduction). A user can have more than
+  // one vehicle period in a year, so this sums every record's own total.
+  const vehicleDeductible = vehicleExpenses.reduce((sum, v) => sum + v.totalDeductible, 0);
+  amounts.set("9281", vehicleDeductible);
 
   const periodStart = new Date(Number(year), 0, 1);
   const periodEnd = new Date(Number(year) + 1, 0, 1);
@@ -212,9 +218,18 @@ export function buildT2125Summary(
 
   const lines: T2125LineItem[] = LINE_ORDER.map((lineNumber) => {
     const amount = amounts.get(lineNumber) ?? 0;
-    return lineNumber === "8523"
-      ? { lineNumber, label: LINE_LABELS[lineNumber], amount, actual: mealsActual }
-      : { lineNumber, label: LINE_LABELS[lineNumber], amount };
+    if (lineNumber === "8523") {
+      return { lineNumber, label: LINE_LABELS[lineNumber], amount, actual: mealsActual };
+    }
+    if (lineNumber === "9281") {
+      return {
+        lineNumber,
+        label: LINE_LABELS[lineNumber],
+        amount,
+        notEntered: vehicleExpenses.length === 0,
+      };
+    }
+    return { lineNumber, label: LINE_LABELS[lineNumber], amount };
   });
 
   const totalExpenses = lines.reduce((sum, li) => sum + li.amount, 0);

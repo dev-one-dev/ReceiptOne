@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "@tanstack/react-router";
 import { toast } from "sonner";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
@@ -19,6 +20,10 @@ import {
 import { fetchReceipts, type Receipt } from "@/integrations/firebase/receipts";
 import { fetchTrips, tripDistance, type Trip } from "@/integrations/firebase/trips";
 import { fetchHomeOfficeRecords, type HomeOffice } from "@/integrations/firebase/home-office";
+import {
+  fetchVehicleExpensesRecords,
+  type VehicleExpenses,
+} from "@/integrations/firebase/vehicle-expenses";
 import { buildT2125Summary, type T2125Summary } from "@/lib/t2125";
 import { formatCurrency, formatDate, formatDistance, money } from "@/lib/dashboard-format";
 import { errorMessage } from "@/lib/utils";
@@ -76,21 +81,34 @@ function TaxSummaryPreview({
             </thead>
             <tbody>
               {summary.lines.map((li) => {
-                const isZero = li.amount === 0 && li.actual === undefined;
+                const isZero = li.amount === 0 && li.actual === undefined && !li.notEntered;
+                const muted = isZero || li.notEntered;
                 return (
                   <tr key={li.lineNumber} className="border-t border-black/[0.05]">
                     <td
-                      className={`px-4 py-2.5 tabular-nums ${isZero ? "text-black/30" : "text-black/55"}`}
+                      className={`px-4 py-2.5 tabular-nums ${muted ? "text-black/30" : "text-black/55"}`}
                     >
                       {li.lineNumber}
                     </td>
-                    <td className={`px-4 py-2.5 ${isZero ? "text-black/30" : "text-black/70"}`}>
+                    <td className={`px-4 py-2.5 ${muted ? "text-black/30" : "text-black/70"}`}>
                       {li.label}
+                      {li.notEntered && (
+                        <div className="mt-0.5 text-xs font-normal text-[#c2410c]">
+                          No vehicle expenses entered for {year}. Add them under Mileage →{" "}
+                          <Link
+                            to="/dashboard/mileage"
+                            className="underline underline-offset-2 hover:text-black"
+                          >
+                            Vehicle expenses
+                          </Link>{" "}
+                          to calculate this line.
+                        </div>
+                      )}
                     </td>
                     <td
-                      className={`px-4 py-2.5 text-right tabular-nums ${isZero ? "text-black/30" : "text-black"}`}
+                      className={`px-4 py-2.5 text-right tabular-nums ${muted ? "text-black/30" : "text-black"}`}
                     >
-                      <div>{formatCurrency(li.amount, currency)}</div>
+                      <div>{li.notEntered ? "—" : formatCurrency(li.amount, currency)}</div>
                       {li.actual !== undefined && (
                         <div className="text-xs font-normal text-black/40">
                           50% of {formatCurrency(li.actual, currency)}
@@ -104,9 +122,9 @@ function TaxSummaryPreview({
           </table>
           <div className="space-y-1.5 border-t border-black/[0.05] px-4 py-3">
             <p className="text-xs text-black/40">
-              Line 9281 is computed from your logged mileage (distance × the rate recorded on each
-              trip). If you deduct actual vehicle expenses instead of a per-distance rate, fill that
-              line in yourself.
+              {summary.lines.find((li) => li.lineNumber === "9281")?.notEntered
+                ? "Line 9281 requires Vehicle expenses records (CRA Chart A: actual costs × business-use %) — see the prompt above."
+                : "Line 9281 reflects the CRA Chart A method (actual vehicle costs × business-use %) from your Vehicle expenses records, not a per-distance mileage rate."}
             </p>
             <p className="text-xs text-black/40">
               Reflects your real records for tax year {year}. PDF/CSV export is coming next.
@@ -580,6 +598,7 @@ export function ReportPreviewDialog({
   const [receipts, setReceipts] = useState<Receipt[]>([]);
   const [trips, setTrips] = useState<Trip[]>([]);
   const [homeOfficeRecords, setHomeOfficeRecords] = useState<HomeOffice[]>([]);
+  const [vehicleExpenses, setVehicleExpenses] = useState<VehicleExpenses[]>([]);
   const [claimsITC, setClaimsITC] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -621,12 +640,14 @@ export function ReportPreviewDialog({
         fetchReceipts(uid, year),
         fetchTrips(uid, year),
         fetchHomeOfficeRecords(uid, year),
+        fetchVehicleExpensesRecords(uid, year),
       ])
-        .then(([receiptsData, tripsData, homeOfficeData]) => {
+        .then(([receiptsData, tripsData, homeOfficeData, vehicleExpensesData]) => {
           if (!cancelled) {
             setReceipts(receiptsData);
             setTrips(tripsData);
             setHomeOfficeRecords(homeOfficeData);
+            setVehicleExpenses(vehicleExpensesData);
           }
         })
         .catch((e) => {
@@ -653,9 +674,19 @@ export function ReportPreviewDialog({
   const mileageRows = buildMileageRows(filteredTrips, distanceUnit);
   const tripsCurrency = filteredTrips[0]?.currency ?? "CAD";
 
-  const taxSummary = buildT2125Summary(receipts, trips, homeOfficeRecords, year, claimsITC);
+  const taxSummary = buildT2125Summary(
+    receipts,
+    vehicleExpenses,
+    homeOfficeRecords,
+    year,
+    claimsITC,
+  );
   const taxSummaryCurrency = receipts[0]?.currency ?? trips[0]?.currency ?? "CAD";
-  const taxSummaryHasData = receipts.length > 0 || trips.length > 0 || homeOfficeRecords.length > 0;
+  const taxSummaryHasData =
+    receipts.length > 0 ||
+    trips.length > 0 ||
+    homeOfficeRecords.length > 0 ||
+    vehicleExpenses.length > 0;
 
   const isRealType = type === "Expense Summary" || type === "Mileage Report";
   const hasData =
