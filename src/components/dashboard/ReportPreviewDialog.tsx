@@ -29,23 +29,27 @@ import { formatCurrency, formatDate, formatDistance, money } from "@/lib/dashboa
 import { errorMessage } from "@/lib/utils";
 
 /**
- * Real CRA T2125 Part 4 preview -- step 1 of 2. All aggregation lives in
- * src/lib/t2125.ts (pure, no Firestore calls); this just renders it.
- * PDF generation is a separate, later piece: the Download button stays
- * disabled for this report type (see handleDownload/isRealType below).
+ * Real CRA T2125 Part 4 preview. All aggregation lives in src/lib/t2125.ts
+ * (pure, no Firestore calls); this just renders it. PDF export is handled
+ * by downloadTaxSummaryPdf below -- CSV isn't implemented for this report
+ * type yet, so the format selector is ignored when downloading.
  */
 function TaxSummaryPreview({
   summary,
+  vehicleExpenses,
   currency,
   claimsITC,
   onClaimsITCChange,
   year,
+  dateFormat,
 }: {
   summary: T2125Summary;
+  vehicleExpenses: VehicleExpenses[];
   currency: string;
   claimsITC: boolean;
   onClaimsITCChange: (value: boolean) => void;
   year: string;
+  dateFormat: DateFormat;
 }) {
   return (
     <div className="flex min-h-0 flex-1 flex-col gap-3">
@@ -104,6 +108,34 @@ function TaxSummaryPreview({
                           to calculate this line.
                         </div>
                       )}
+                      {li.lineNumber === "9281" && !li.notEntered && (
+                        <div className="mt-1 space-y-0.5 text-xs font-normal text-black/40">
+                          {vehicleExpenses.map((v) => (
+                            <div key={v.id} className="flex items-baseline justify-between gap-3">
+                              <span>
+                                {v.startDate && v.endDate
+                                  ? `${formatDate(v.startDate, dateFormat)}–${formatDate(v.endDate, dateFormat)}`
+                                  : "Period"}
+                                : {v.businessUsePercent.toFixed(2)}% of{" "}
+                                {formatCurrency(v.totalVehicleExpenses, currency)}
+                                {v.parking > 0 &&
+                                  ` + ${formatCurrency(v.parking, currency)} parking`}
+                              </span>
+                              <span className="shrink-0 tabular-nums">
+                                {formatCurrency(v.totalDeductible, currency)}
+                              </span>
+                            </div>
+                          ))}
+                          {vehicleExpenses.length > 1 && (
+                            <div className="flex items-baseline justify-between gap-3 border-t border-black/10 pt-0.5 font-medium">
+                              <span>Sum across {vehicleExpenses.length} periods</span>
+                              <span className="shrink-0 tabular-nums">
+                                {formatCurrency(li.amount, currency)}
+                              </span>
+                            </div>
+                          )}
+                        </div>
+                      )}
                     </td>
                     <td
                       className={`px-4 py-2.5 text-right tabular-nums ${muted ? "text-black/30" : "text-black"}`}
@@ -126,9 +158,7 @@ function TaxSummaryPreview({
                 ? "Line 9281 requires Vehicle expenses records (CRA Chart A: actual costs × business-use %) — see the prompt above."
                 : "Line 9281 reflects the CRA Chart A method (actual vehicle costs × business-use %) from your Vehicle expenses records, not a per-distance mileage rate."}
             </p>
-            <p className="text-xs text-black/40">
-              Reflects your real records for tax year {year}. PDF/CSV export is coming next.
-            </p>
+            <p className="text-xs text-black/40">Reflects your real records for tax year {year}.</p>
           </div>
         </div>
       </div>
@@ -578,6 +608,136 @@ function downloadMileageReport(
   downloadBlob(csv, "text/csv;charset=utf-8;", `${filename}.csv`);
 }
 
+/**
+ * Tax Summary export -- PDF only for now (CSV isn't implemented for this
+ * report type; the format selector is ignored when generating it, same
+ * as how Expense Summary/Mileage Report ignore it for their own single
+ * supported format branches). Mirrors downloadExpenseSummary/
+ * downloadMileageReport's jsPDF + autoTable style. `summary` already
+ * reflects the live ITC toggle (buildT2125Summary was called with the
+ * current claimsITC value), so the line amounts here always match what's
+ * on screen -- this function only adds the ITC state as an explanatory
+ * note, it never recomputes anything.
+ */
+function downloadTaxSummaryPdf(
+  summary: T2125Summary,
+  vehicleExpenses: VehicleExpenses[],
+  currency: string,
+  year: string,
+  claimsITC: boolean,
+  dateFormat: DateFormat,
+) {
+  const filename = slugify(`t2125-tax-summary-${year}`);
+  const doc = new jsPDF();
+  const marginX = 14;
+  const maxWidth = doc.internal.pageSize.getWidth() - marginX * 2;
+
+  doc.setFontSize(16);
+  doc.text(`T2125 Tax Summary - Tax year ${year}`, marginX, 18);
+  doc.setFontSize(10);
+  doc.setTextColor(100);
+  doc.text(`Generated ${new Date().toLocaleDateString()}`, marginX, 25);
+
+  doc.setFontSize(9);
+  doc.setTextColor(120);
+  const estimateNote = doc.splitTextToSize(
+    "These figures are an estimate based on the records in your account -- review with an accountant before filing.",
+    maxWidth,
+  );
+  doc.text(estimateNote, marginX, 31);
+
+  autoTable(doc, {
+    startY: 31 + estimateNote.length * 4.5 + 3,
+    head: [["Line", "Description", "Amount"]],
+    body: summary.lines.map((li) => [
+      li.lineNumber,
+      li.lineNumber === "8523" && li.actual !== undefined
+        ? `${li.label} (50% of ${formatCurrency(li.actual, currency)} actual)`
+        : li.label,
+      li.notEntered ? "-" : formatCurrency(li.amount, currency),
+    ]),
+    foot: [["9368", "Total expenses", formatCurrency(summary.totalExpenses, currency)]],
+    headStyles: { fillColor: [0, 0, 0] },
+    footStyles: { fillColor: [245, 244, 240], textColor: [0, 0, 0], fontStyle: "bold" },
+  });
+
+  let y = (doc as unknown as { lastAutoTable: { finalY: number } }).lastAutoTable.finalY + 8;
+
+  doc.setFontSize(9);
+  doc.setTextColor(0);
+  doc.text(
+    `GST/HST reclaim (ITC): ${formatCurrency(summary.totalRefundableTax, currency)} -- not an expense; recovered separately.`,
+    marginX,
+    y,
+  );
+  y += 6;
+  doc.setTextColor(100);
+  doc.text(
+    claimsITC
+      ? "GST/HST input tax credits (ITC): claimed -- recoverable GST/HST is excluded from the expense lines above."
+      : "GST/HST input tax credits (ITC): not claimed -- recoverable GST/HST is included in the expense lines above.",
+    marginX,
+    y,
+  );
+  y += 10;
+
+  const vehicleLine = summary.lines.find((li) => li.lineNumber === "9281");
+
+  doc.setFontSize(11);
+  doc.setTextColor(0);
+  doc.text("Line 9281 - Chart A breakdown", marginX, y);
+  y += 5;
+
+  if (vehicleExpenses.length > 0) {
+    autoTable(doc, {
+      startY: y,
+      head: [["Period", "Business use", "Vehicle costs", "Parking", "Deductible"]],
+      body: vehicleExpenses.map((v) => [
+        v.startDate && v.endDate
+          ? `${formatDate(v.startDate, dateFormat)}-${formatDate(v.endDate, dateFormat)}`
+          : year,
+        `${v.businessUsePercent.toFixed(2)}%`,
+        formatCurrency(v.totalVehicleExpenses, currency),
+        formatCurrency(v.parking, currency),
+        formatCurrency(v.totalDeductible, currency),
+      ]),
+      foot: [["Total", "", "", "", formatCurrency(vehicleLine?.amount ?? 0, currency)]],
+      headStyles: { fillColor: [0, 0, 0] },
+      footStyles: { fillColor: [245, 244, 240], textColor: [0, 0, 0], fontStyle: "bold" },
+    });
+    y = (doc as unknown as { lastAutoTable: { finalY: number } }).lastAutoTable.finalY + 8;
+  } else {
+    doc.setFontSize(9);
+    doc.setTextColor(120);
+    const notEnteredNote = doc.splitTextToSize(
+      `No vehicle expenses entered for ${year}. Add them under Mileage > Vehicle expenses to calculate this line.`,
+      maxWidth,
+    );
+    doc.text(notEnteredNote, marginX, y);
+    y += notEnteredNote.length * 4.5 + 6;
+  }
+
+  doc.setFontSize(9);
+  doc.setTextColor(120);
+  const footnotes = [
+    vehicleLine?.notEntered
+      ? "Line 9281 requires Vehicle expenses records (CRA Chart A: actual costs x business-use %)."
+      : "Line 9281 reflects the CRA Chart A method (actual vehicle costs x business-use %) from your Vehicle expenses records, not a per-distance mileage rate.",
+  ];
+  if (vehicleExpenses.some((v) => v.leasing > 0)) {
+    footnotes.push(
+      "Leasing costs are subject to a separate CRA limit (Chart C, based on the vehicle's manufacturer's list price) that this app doesn't yet compute -- verify your deductible leasing amount before filing.",
+    );
+  }
+  for (const note of footnotes) {
+    const wrapped = doc.splitTextToSize(note, maxWidth);
+    doc.text(wrapped, marginX, y);
+    y += wrapped.length * 4.5 + 3;
+  }
+
+  doc.save(`${filename}.pdf`);
+}
+
 export function ReportPreviewDialog({
   open,
   onOpenChange,
@@ -698,9 +858,26 @@ export function ReportPreviewDialog({
 
   const handleDownload = () => {
     if (type === "Tax Summary") {
-      toast.info(
-        "PDF/CSV export for Tax Summary is coming next — this preview reflects your real records.",
-      );
+      if (!taxSummaryHasData) {
+        toast.error(
+          `No receipts, trips, home office, or vehicle expense records for ${year} — nothing to download.`,
+        );
+        return;
+      }
+      try {
+        downloadTaxSummaryPdf(
+          taxSummary,
+          vehicleExpenses,
+          taxSummaryCurrency,
+          year,
+          claimsITC,
+          dateFormat,
+        );
+        toast.success("Tax Summary downloaded.");
+        onOpenChange(false);
+      } catch (e) {
+        toast.error(errorMessage(e, "Couldn't generate this file."));
+      }
       return;
     }
     if (!hasData) {
@@ -748,10 +925,12 @@ export function ReportPreviewDialog({
           ) : (
             <TaxSummaryPreview
               summary={taxSummary}
+              vehicleExpenses={vehicleExpenses}
               currency={taxSummaryCurrency}
               claimsITC={claimsITC}
               onClaimsITCChange={setClaimsITC}
               year={year}
+              dateFormat={dateFormat}
             />
           ))}
 
@@ -810,12 +989,14 @@ export function ReportPreviewDialog({
             type="button"
             onClick={handleDownload}
             disabled={
-              type === "Tax Summary" ? true : isRealType && (loading || Boolean(error) || !hasData)
+              type === "Tax Summary"
+                ? loading || Boolean(error) || !taxSummaryHasData
+                : isRealType && (loading || Boolean(error) || !hasData)
             }
             className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-black px-5 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
           >
             <Download className="size-4" aria-hidden />
-            {type === "Tax Summary" ? "Download — coming next" : `Download ${format}`}
+            {type === "Tax Summary" ? "Download PDF" : `Download ${format}`}
           </button>
         </DialogFooter>
       </DialogContent>
