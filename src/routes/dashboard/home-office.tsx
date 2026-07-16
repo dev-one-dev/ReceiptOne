@@ -21,7 +21,7 @@ function formatUnit(unit: string): string {
 }
 
 function HomeOfficePage() {
-  const { year, dateFormat } = useDashboardContext();
+  const { year, dateFormat, currency: regionCurrency } = useDashboardContext();
   const { user } = useAuth();
   const uid = user?.uid ?? auth.currentUser?.uid ?? null;
 
@@ -60,7 +60,7 @@ function HomeOfficePage() {
   }, [uid, year]);
 
   const totalEmploymentExpenses = records.reduce((sum, r) => sum + r.totalEmploymentExpenses, 0);
-  const summaryCurrency = records[0]?.currency ?? "USD";
+  const summaryCurrency = records[0]?.currency ?? regionCurrency;
 
   return (
     <div className="mx-auto w-full max-w-[1200px] flex-1 px-4 py-6 sm:px-6 sm:py-8 lg:px-8">

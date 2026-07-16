@@ -479,7 +479,13 @@ function SortIcon({ active, direction }: { active: boolean; direction: SortDirec
 }
 
 function MileagePage() {
-  const { distanceUnit, mileageRate, dateFormat, year } = useDashboardContext();
+  const {
+    distanceUnit,
+    mileageRate,
+    dateFormat,
+    year,
+    currency: regionCurrency,
+  } = useDashboardContext();
   const { user } = useAuth();
   const uid = user?.uid ?? auth.currentUser?.uid ?? null;
 
@@ -530,7 +536,7 @@ function MileagePage() {
 
   const totalDistance = trips.reduce((sum, t) => sum + tripDistance(t, distanceUnit), 0);
   const totalAmount = trips.reduce((sum, t) => sum + t.totalPrice, 0);
-  const summaryCurrency = trips[0]?.currency ?? "USD";
+  const summaryCurrency = trips[0]?.currency ?? regionCurrency;
 
   // Vehicle expenses (CRA Chart A) -- a separate collection from trips,
   // scoped to the same tax year. businessKmHint is always summed in km

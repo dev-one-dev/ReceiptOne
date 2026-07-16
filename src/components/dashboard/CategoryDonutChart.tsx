@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { PieChart as PieChartIcon } from "lucide-react";
 import { Cell, Pie, PieChart, ResponsiveContainer, Sector } from "recharts";
+import { useDashboardContext } from "@/components/dashboard/DashboardContext";
 import type { Receipt } from "@/integrations/firebase/receipts";
 import { formatCurrency } from "@/lib/dashboard-format";
 
@@ -119,7 +120,8 @@ export function CategoryDonutChart({
   year: string;
   loading: boolean;
 }) {
-  const currency = receipts[0]?.currency ?? "CAD";
+  const { currency: regionCurrency } = useDashboardContext();
+  const currency = receipts[0]?.currency ?? regionCurrency;
   const slices = buildSlices(receipts);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const navigate = useNavigate();

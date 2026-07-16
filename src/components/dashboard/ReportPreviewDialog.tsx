@@ -755,7 +755,13 @@ export function ReportPreviewDialog({
   format: string;
   uid: string | null;
 }) {
-  const { distanceUnit, dateFormat, mileageRate, year } = useDashboardContext();
+  const {
+    distanceUnit,
+    dateFormat,
+    mileageRate,
+    year,
+    currency: regionCurrency,
+  } = useDashboardContext();
 
   const [receipts, setReceipts] = useState<Receipt[]>([]);
   const [trips, setTrips] = useState<Trip[]>([]);
@@ -830,11 +836,11 @@ export function ReportPreviewDialog({
   const filteredReceipts = receipts.filter((r) => r.date >= start && r.date <= end);
   const categories = groupReceiptsByCategory(filteredReceipts);
   const taxTotals = groupReceiptsByTax(filteredReceipts);
-  const receiptsCurrency = filteredReceipts[0]?.currency ?? "CAD";
+  const receiptsCurrency = filteredReceipts[0]?.currency ?? regionCurrency;
 
   const filteredTrips = trips.filter((t) => t.date >= start && t.date <= end);
   const mileageRows = buildMileageRows(filteredTrips, distanceUnit);
-  const tripsCurrency = filteredTrips[0]?.currency ?? "CAD";
+  const tripsCurrency = filteredTrips[0]?.currency ?? regionCurrency;
 
   const taxSummary = buildT2125Summary(
     receipts,
@@ -843,7 +849,7 @@ export function ReportPreviewDialog({
     year,
     claimsITC,
   );
-  const taxSummaryCurrency = receipts[0]?.currency ?? trips[0]?.currency ?? "CAD";
+  const taxSummaryCurrency = receipts[0]?.currency ?? trips[0]?.currency ?? regionCurrency;
   const taxSummaryHasData =
     receipts.length > 0 ||
     trips.length > 0 ||

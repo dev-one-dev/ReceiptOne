@@ -14,6 +14,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import {
+  currencyForRegion,
   DashboardProvider,
   type DashboardRegion,
   type DateFormat,
@@ -145,6 +146,7 @@ function DashboardLayout() {
             value={{
               year,
               region: ACCOUNT_REGION.region,
+              currency: currencyForRegion(ACCOUNT_REGION.region),
               language,
               setLanguage,
               distanceUnit,

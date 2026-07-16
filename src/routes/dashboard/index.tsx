@@ -5,6 +5,7 @@ import { ReceiptDetailDialog } from "@/components/dashboard/ReceiptDetailDialog"
 import { HomeOfficeDetailDialog } from "@/components/dashboard/HomeOfficeDetailDialog";
 import { CategoryDonutChart } from "@/components/dashboard/CategoryDonutChart";
 import {
+  currencyForRegion,
   useDashboardContext,
   type DashboardRegion,
   type TaxListEntry,
@@ -139,6 +140,7 @@ function buildTaxContent(
   onGoToVehicleExpenses: () => void,
 ): RegionTaxContent {
   const mock = REGION_MOCK[region];
+  const regionCurrency = currencyForRegion(region);
   const taxReclaim = sumRefundableTax(receipts, taxList);
   const label = taxLabel(taxList);
   // Stat card label only -- reads "GST/HST" when the sole configured
@@ -153,7 +155,7 @@ function buildTaxContent(
   // carries its own recorded rate from when it was logged.
   const mileageDistance = trips.reduce((sum, t) => sum + tripDistance(t, distanceUnit), 0);
   const mileageTotal = trips.reduce((sum, t) => sum + t.totalPrice, 0);
-  const mileageCurrency = trips[0]?.currency ?? "CAD";
+  const mileageCurrency = trips[0]?.currency ?? regionCurrency;
   const mileageStat: TaxStat = {
     label: "Mileage Logged",
     value: tripsLoading ? "…" : formatDistance(mileageDistance, distanceUnit),
@@ -170,7 +172,7 @@ function buildTaxContent(
   // fallback, same "loading vs. real (even $0) vs. none" honesty as the
   // rest of this stage.
   const receiptsTotal = receipts.reduce((sum, r) => sum + r.price, 0);
-  const receiptsCurrency = receipts[0]?.currency ?? "CAD";
+  const receiptsCurrency = receipts[0]?.currency ?? regionCurrency;
   const expensesStat: TaxStat = {
     label: "Total expenses scanned",
     value: receiptsLoading ? "…" : String(receipts.length),
