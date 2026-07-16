@@ -23,7 +23,7 @@ import {
   fetchVehicleExpensesRecords,
   type VehicleExpenses,
 } from "@/integrations/firebase/vehicle-expenses";
-import { formatCurrency, formatDate, formatDistance, money } from "@/lib/dashboard-format";
+import { formatCurrency, formatDate, formatDistance } from "@/lib/dashboard-format";
 import { errorMessage } from "@/lib/utils";
 
 export const Route = createFileRoute("/dashboard/")({
@@ -195,11 +195,15 @@ function buildTaxContent(
   // for the selected year (a clear, actionable empty state instead of
   // a fake number).
   const homeOfficeReclaim = homeOffice?.totalEmploymentExpenses ?? 0;
-  const homeOfficeValue = homeOfficeLoading ? "…" : homeOffice ? money(homeOfficeReclaim) : "—";
+  const homeOfficeValue = homeOfficeLoading
+    ? "…"
+    : homeOffice
+      ? formatCurrency(homeOfficeReclaim, homeOffice.currency)
+      : "—";
   const homeOfficeNote = homeOfficeLoading
     ? "Loading…"
     : homeOffice
-      ? `${money(homeOffice.totalEmploymentHomeExpenses)} home + ${money(homeOffice.totalEmploymentWorkspaceExpenses)} workspace`
+      ? `${formatCurrency(homeOffice.totalEmploymentHomeExpenses, homeOffice.currency)} home + ${formatCurrency(homeOffice.totalEmploymentWorkspaceExpenses, homeOffice.currency)} workspace`
       : "Not entered yet — add under Home Office";
   const homeOfficeOnClick = homeOffice ? onOpenHomeOffice : onGoToHomeOffice;
 
@@ -215,7 +219,7 @@ function buildTaxContent(
   const vehicleDeductibleValue = vehicleExpensesLoading
     ? "…"
     : vehicleExpenses.length > 0
-      ? money(vehicleDeductible)
+      ? formatCurrency(vehicleDeductible, regionCurrency)
       : "—";
   const vehicleDeductibleNote = vehicleExpensesLoading
     ? "Loading…"
@@ -235,7 +239,7 @@ function buildTaxContent(
       refundStats: [
         {
           label: `${statLabel} reclaim`,
-          value: receiptsLoading ? "…" : money(taxReclaim),
+          value: receiptsLoading ? "…" : formatCurrency(taxReclaim, receiptsCurrency),
           note: receiptsLoading ? "Loading…" : "Sum of refundable tax recorded on your receipts",
           icon: Landmark,
         },
@@ -264,14 +268,14 @@ function buildTaxContent(
     deductionStats: [
       {
         label: "Sales tax tracked",
-        value: receiptsLoading ? "…" : money(taxReclaim),
+        value: receiptsLoading ? "…" : formatCurrency(taxReclaim, receiptsCurrency),
         note: receiptsLoading ? "Loading…" : "Included in your deductible totals",
         icon: Landmark,
       },
       {
         label: "Home office deduction",
-        value: money(mock.homeOfficeAmount),
-        note: `≈ ${money(mock.homeOfficeSaving)} estimated tax saving`,
+        value: formatCurrency(mock.homeOfficeAmount, regionCurrency),
+        note: `≈ ${formatCurrency(mock.homeOfficeSaving, regionCurrency)} estimated tax saving`,
         icon: Home,
       },
     ],

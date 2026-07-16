@@ -45,7 +45,7 @@ import {
   fetchVehicleExpensesRecords,
   type VehicleExpenses,
 } from "@/integrations/firebase/vehicle-expenses";
-import { formatCurrency, formatDate, formatDistance, kmToMi, money } from "@/lib/dashboard-format";
+import { formatCurrency, formatDate, formatDistance, kmToMi } from "@/lib/dashboard-format";
 import { errorMessage } from "@/lib/utils";
 
 const EMPTY_LOCATION: Omit<RouteLocation, "name"> = {
@@ -338,7 +338,7 @@ function LogTripDialog({
         <DialogHeader>
           <DialogTitle>Log a trip</DialogTitle>
           <DialogDescription>
-            Mileage is calculated at {money(mileageRate)}/{distanceUnit}.
+            Mileage is calculated at {formatCurrency(mileageRate, currency)}/{distanceUnit}.
           </DialogDescription>
         </DialogHeader>
         <div className="space-y-3">

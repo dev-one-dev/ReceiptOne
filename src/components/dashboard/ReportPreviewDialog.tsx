@@ -25,7 +25,7 @@ import {
   type VehicleExpenses,
 } from "@/integrations/firebase/vehicle-expenses";
 import { buildT2125Summary, type T2125Summary } from "@/lib/t2125";
-import { formatCurrency, formatDate, formatDistance, money } from "@/lib/dashboard-format";
+import { formatCurrency, formatDate, formatDistance } from "@/lib/dashboard-format";
 import { errorMessage } from "@/lib/utils";
 
 /**
@@ -436,7 +436,7 @@ function RealMileageReportPreview({
       </div>
       <p className="mt-2 text-xs text-black/40">
         Amounts reflect each trip's rate at the time it was logged, which may differ from your
-        current Settings rate ({money(mileageRate)}/{distanceUnit}).
+        current Settings rate ({formatCurrency(mileageRate, currency)}/{distanceUnit}).
       </p>
     </div>
   );
