@@ -33,6 +33,7 @@ import { Route as DashboardRoadmapRouteImport } from './routes/dashboard/roadmap
 import { Route as DashboardReportsRouteImport } from './routes/dashboard/reports'
 import { Route as DashboardReceiptsRouteImport } from './routes/dashboard/receipts'
 import { Route as DashboardMileageRouteImport } from './routes/dashboard/mileage'
+import { Route as DashboardHomeOfficeRouteImport } from './routes/dashboard/home-office'
 import { Route as DashboardFileManagerRouteImport } from './routes/dashboard/file-manager'
 import { Route as DashboardBillingRouteImport } from './routes/dashboard/billing'
 import { Route as ArticlesSlugRouteImport } from './routes/articles/$slug'
@@ -159,6 +160,11 @@ const DashboardMileageRoute = DashboardMileageRouteImport.update({
   path: '/mileage',
   getParentRoute: () => DashboardRoute,
 } as any)
+const DashboardHomeOfficeRoute = DashboardHomeOfficeRouteImport.update({
+  id: '/home-office',
+  path: '/home-office',
+  getParentRoute: () => DashboardRoute,
+} as any)
 const DashboardFileManagerRoute = DashboardFileManagerRouteImport.update({
   id: '/file-manager',
   path: '/file-manager',
@@ -200,6 +206,7 @@ export interface FileRoutesByFullPath {
   '/articles/$slug': typeof ArticlesSlugRoute
   '/dashboard/billing': typeof DashboardBillingRoute
   '/dashboard/file-manager': typeof DashboardFileManagerRoute
+  '/dashboard/home-office': typeof DashboardHomeOfficeRoute
   '/dashboard/mileage': typeof DashboardMileageRoute
   '/dashboard/receipts': typeof DashboardReceiptsRoute
   '/dashboard/reports': typeof DashboardReportsRoute
@@ -228,6 +235,7 @@ export interface FileRoutesByTo {
   '/articles/$slug': typeof ArticlesSlugRoute
   '/dashboard/billing': typeof DashboardBillingRoute
   '/dashboard/file-manager': typeof DashboardFileManagerRoute
+  '/dashboard/home-office': typeof DashboardHomeOfficeRoute
   '/dashboard/mileage': typeof DashboardMileageRoute
   '/dashboard/receipts': typeof DashboardReceiptsRoute
   '/dashboard/reports': typeof DashboardReportsRoute
@@ -260,6 +268,7 @@ export interface FileRoutesById {
   '/articles/$slug': typeof ArticlesSlugRoute
   '/dashboard/billing': typeof DashboardBillingRoute
   '/dashboard/file-manager': typeof DashboardFileManagerRoute
+  '/dashboard/home-office': typeof DashboardHomeOfficeRoute
   '/dashboard/mileage': typeof DashboardMileageRoute
   '/dashboard/receipts': typeof DashboardReceiptsRoute
   '/dashboard/reports': typeof DashboardReportsRoute
@@ -293,6 +302,7 @@ export interface FileRouteTypes {
     | '/articles/$slug'
     | '/dashboard/billing'
     | '/dashboard/file-manager'
+    | '/dashboard/home-office'
     | '/dashboard/mileage'
     | '/dashboard/receipts'
     | '/dashboard/reports'
@@ -321,6 +331,7 @@ export interface FileRouteTypes {
     | '/articles/$slug'
     | '/dashboard/billing'
     | '/dashboard/file-manager'
+    | '/dashboard/home-office'
     | '/dashboard/mileage'
     | '/dashboard/receipts'
     | '/dashboard/reports'
@@ -352,6 +363,7 @@ export interface FileRouteTypes {
     | '/articles/$slug'
     | '/dashboard/billing'
     | '/dashboard/file-manager'
+    | '/dashboard/home-office'
     | '/dashboard/mileage'
     | '/dashboard/receipts'
     | '/dashboard/reports'
@@ -555,6 +567,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardMileageRouteImport
       parentRoute: typeof DashboardRoute
     }
+    '/dashboard/home-office': {
+      id: '/dashboard/home-office'
+      path: '/home-office'
+      fullPath: '/dashboard/home-office'
+      preLoaderRoute: typeof DashboardHomeOfficeRouteImport
+      parentRoute: typeof DashboardRoute
+    }
     '/dashboard/file-manager': {
       id: '/dashboard/file-manager'
       path: '/file-manager'
@@ -596,6 +615,7 @@ declare module '@tanstack/react-router' {
 interface DashboardRouteChildren {
   DashboardBillingRoute: typeof DashboardBillingRoute
   DashboardFileManagerRoute: typeof DashboardFileManagerRoute
+  DashboardHomeOfficeRoute: typeof DashboardHomeOfficeRoute
   DashboardMileageRoute: typeof DashboardMileageRoute
   DashboardReceiptsRoute: typeof DashboardReceiptsRoute
   DashboardReportsRoute: typeof DashboardReportsRoute
@@ -607,6 +627,7 @@ interface DashboardRouteChildren {
 const DashboardRouteChildren: DashboardRouteChildren = {
   DashboardBillingRoute: DashboardBillingRoute,
   DashboardFileManagerRoute: DashboardFileManagerRoute,
+  DashboardHomeOfficeRoute: DashboardHomeOfficeRoute,
   DashboardMileageRoute: DashboardMileageRoute,
   DashboardReceiptsRoute: DashboardReceiptsRoute,
   DashboardReportsRoute: DashboardReportsRoute,

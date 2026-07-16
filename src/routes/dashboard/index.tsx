@@ -129,6 +129,7 @@ function buildTaxContent(
   homeOffice: HomeOffice | null,
   homeOfficeLoading: boolean,
   onOpenHomeOffice: () => void,
+  onGoToHomeOffice: () => void,
   receipts: ReceiptRecord[],
   receiptsLoading: boolean,
   trips: Trip[],
@@ -198,8 +199,8 @@ function buildTaxContent(
     ? "Loading…"
     : homeOffice
       ? `${money(homeOffice.totalEmploymentHomeExpenses)} home + ${money(homeOffice.totalEmploymentWorkspaceExpenses)} workspace`
-      : "No home office expenses recorded yet — add this in the mobile app";
-  const homeOfficeOnClick = homeOffice ? onOpenHomeOffice : undefined;
+      : "Not entered yet — add under Home Office";
+  const homeOfficeOnClick = homeOffice ? onOpenHomeOffice : onGoToHomeOffice;
 
   // The real CRA vehicle deduction (T2125 line 9281, Chart A: actual
   // costs × business-use %) -- Canada-specific, like homeOffice above,
@@ -285,6 +286,14 @@ function DashboardPage() {
   const [homeOffice, setHomeOffice] = useState<HomeOffice | null>(null);
   const [homeOfficeLoading, setHomeOfficeLoading] = useState(true);
   const [homeOfficeDialogOpen, setHomeOfficeDialogOpen] = useState(false);
+
+  const loadHomeOffice = (targetUid: string) => {
+    setHomeOfficeLoading(true);
+    return fetchHomeOffice(targetUid, year)
+      .then((record) => setHomeOffice(record))
+      .catch(() => setHomeOffice(null))
+      .finally(() => setHomeOfficeLoading(false));
+  };
 
   useEffect(() => {
     if (!uid || region !== "ca") {
@@ -393,6 +402,7 @@ function DashboardPage() {
     homeOffice,
     homeOfficeLoading,
     () => setHomeOfficeDialogOpen(true),
+    () => void navigate({ to: "/dashboard/home-office" }),
     receipts,
     receiptsLoading,
     trips,
@@ -548,6 +558,7 @@ function DashboardPage() {
         homeOffice={homeOfficeDialogOpen ? homeOffice : null}
         dateFormat={dateFormat}
         onOpenChange={(open) => setHomeOfficeDialogOpen(open)}
+        onChanged={() => uid && loadHomeOffice(uid)}
       />
     </div>
   );
