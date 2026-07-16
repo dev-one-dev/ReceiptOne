@@ -476,10 +476,10 @@ function DashboardPage() {
       </div>
 
       {/* Hero — the #1 thing on this page, so it gets more presence than
-          the stat cards below: a bigger number, more breathing room, and
-          a faint accent wash using the same orange token the stat-card
-          icons already use (just a background tint, not a new color). */}
-      <div className="mt-6 overflow-hidden rounded-2xl border border-black/[0.07] bg-gradient-to-br from-white to-[#f97316]/[0.06] p-7 shadow-[0_2px_12px_rgba(0,0,0,0.06)] sm:p-8">
+          the stat cards below via size and breathing room alone: a
+          bigger number and more padding, same plain white card style as
+          every other panel on this page (no tinted background). */}
+      <div className="mt-6 rounded-2xl border border-black/[0.07] bg-white p-7 shadow-[0_2px_12px_rgba(0,0,0,0.06)] sm:p-8">
         <p className="text-xs font-medium uppercase tracking-wide text-black/55">
           {content.heroLabel} for {year}
         </p>
