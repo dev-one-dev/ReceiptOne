@@ -65,6 +65,31 @@ function parseFormDate(value: string): Date | null {
   return value ? new Date(`${value}T00:00:00`) : null;
 }
 
+/**
+ * A renter doesn't pay property tax on the home (their landlord does),
+ * and an owner doesn't pay rent -- so each field only ever applies to
+ * some housing situations. "changed" covers a mixed year (e.g. rented
+ * part of the year, bought partway through), so it shows both.
+ */
+function rentApplies(homeRentType: string): boolean {
+  return homeRentType === "rent" || homeRentType === "changed";
+}
+function propertyTaxesApply(homeRentType: string): boolean {
+  return homeRentType === "own" || homeRentType === "changed";
+}
+
+/**
+ * Zeroes any field that's inapplicable to the current housing situation
+ * regardless of what's still sitting in form state -- the single choke
+ * point computeHomeOfficeTotals and the Firestore write both go through,
+ * so a hidden field can never silently contribute a stale amount (e.g. a
+ * user entered rent, switched to Own, and the rent input disappeared
+ * without its value being cleared). This is a backstop on top of
+ * HomeOfficeFields' own onChangeField handler, which already zeroes the
+ * form field itself the moment it's hidden -- belt and suspenders, since
+ * this also covers records loaded from Firestore that might carry a
+ * stale value from before this fix.
+ */
 export function parseHomeOfficeForm(form: HomeOfficeForm) {
   const n = (v: string) => parseFloat(v) || 0;
   return {
@@ -76,13 +101,13 @@ export function parseHomeOfficeForm(form: HomeOfficeForm) {
     endWorkDate: parseFormDate(form.endWorkDate),
     homeSize: n(form.homeSize),
     workspaceSize: n(form.workspaceSize),
-    rentExpenses: n(form.rentExpenses),
+    rentExpenses: rentApplies(form.homeRentType) ? n(form.rentExpenses) : 0,
     electricity: n(form.electricity),
     heat: n(form.heat),
     insurance: n(form.insurance),
     internet: n(form.internet),
     maintenance: n(form.maintenance),
-    propertyTaxes: n(form.propertyTaxes),
+    propertyTaxes: propertyTaxesApply(form.homeRentType) ? n(form.propertyTaxes) : 0,
     other: n(form.other),
     otherExpenses: n(form.otherExpenses),
   };
@@ -114,15 +139,15 @@ function unitLabel(unit: string): string {
 // Plain amount fields only -- no explanatory note underneath any of
 // these, so they can share one clean grid where every input aligns on
 // the same baseline (same reasoning as vehicle-expenses' AMOUNT_FIELDS).
-// Rent is folded in here too (conditionally, when home_rent_type is
-// "rent") since it's also a plain amount field with no attached note.
+// Rent and property taxes are NOT here -- both are conditional on
+// housing situation (rentApplies/propertyTaxesApply above) and rendered
+// separately below, alongside the logic that zeroes them out on hide.
 const EXPENSE_FIELDS: { key: keyof HomeOfficeForm; label: string }[] = [
   { key: "electricity", label: "Electricity" },
   { key: "heat", label: "Heat" },
   { key: "insurance", label: "Insurance" },
   { key: "internet", label: "Internet" },
   { key: "maintenance", label: "Maintenance" },
-  { key: "propertyTaxes", label: "Property taxes" },
 ];
 
 const selectTriggerClass = "h-9 w-full rounded-xl border-black/10 bg-white text-sm shadow-none";
@@ -182,7 +207,16 @@ export function HomeOfficeFields({
           <label className={labelClass}>What is your housing situation?</label>
           <Select
             value={form.homeRentType}
-            onValueChange={(v) => onChangeField({ homeRentType: v })}
+            onValueChange={(v) => {
+              // Zero whichever of rent/property-taxes is no longer
+              // applicable under the new housing situation -- a hidden
+              // field must never keep contributing a stale amount to the
+              // total once it disappears from the form.
+              const patch: Partial<HomeOfficeForm> = { homeRentType: v };
+              if (!rentApplies(v)) patch.rentExpenses = "0.00";
+              if (!propertyTaxesApply(v)) patch.propertyTaxes = "0.00";
+              onChangeField(patch);
+            }}
           >
             <SelectTrigger className={selectTriggerClass}>
               <SelectValue />
@@ -305,7 +339,7 @@ export function HomeOfficeFields({
           Enter $0 if you are not claiming the expense.
         </p>
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {form.homeRentType === "rent" && (
+          {rentApplies(form.homeRentType) && (
             <div className="space-y-1.5">
               <label className="line-clamp-2 min-h-8 text-xs font-medium leading-4 text-black/55">
                 {rentPeriod ? `Total rent you paid from ${rentPeriod}` : "Total rent you paid"}
@@ -313,6 +347,19 @@ export function HomeOfficeFields({
               <input
                 value={form.rentExpenses}
                 onChange={(e) => onChangeField({ rentExpenses: e.target.value })}
+                inputMode="decimal"
+                className={inputClass}
+              />
+            </div>
+          )}
+          {propertyTaxesApply(form.homeRentType) && (
+            <div className="space-y-1.5">
+              <label className="line-clamp-2 min-h-8 text-xs font-medium leading-4 text-black/55">
+                Property taxes
+              </label>
+              <input
+                value={form.propertyTaxes}
+                onChange={(e) => onChangeField({ propertyTaxes: e.target.value })}
                 inputMode="decimal"
                 className={inputClass}
               />
