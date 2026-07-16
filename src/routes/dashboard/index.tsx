@@ -38,9 +38,6 @@ type TaxStat = {
 };
 
 type RegionTaxContent = {
-  heroLabel: string;
-  heroTotal: string;
-  heroNote: string;
   /** The tax-deduction figures (GST/HST reclaim, home office, vehicle) -- grouped together and visually tinted since they're this product's whole point. */
   deductionStats: TaxStat[];
   /** Logging/activity figures (receipts scanned, mileage) -- informational, not deductions themselves. */
@@ -73,20 +70,16 @@ const REGION_MOCK: Record<DashboardRegion, RegionMock> = {
 
 /**
  * CA and US deliberately aren't a find-and-replace of each other: Canadian
- * GST/HST input tax credits are a direct, refundable credit (the tracked
- * amount already IS the "saving" -- no separate tax-saving figure), but US
- * sales tax has no equivalent reclaim mechanism -- it's just folded into
- * the deductible expense total, per this site's own FAQ copy. So the US
- * card is "Sales tax tracked," not "reclaim," and the hero is framed as
- * "estimated tax savings" rather than "refundable taxes," since nothing
- * is actually refunded the way a GST/HST credit is.
+ * GST/HST input tax credits are a direct, refundable credit, but US sales
+ * tax has no equivalent reclaim mechanism -- it's just folded into the
+ * deductible expense total, per this site's own FAQ copy. So the US card
+ * is "Sales tax tracked," not "reclaim." There is deliberately no single
+ * summed "total" anywhere on this page: a GST/HST reclaim (real money
+ * back) and a home-office/vehicle deduction (lowers taxable income, not a
+ * refund itself) aren't the same kind of number, and adding them together
+ * would imply a refund figure this app has no business computing -- that
+ * judgment belongs to the user's accountant.
  */
-/** Splits a money()-formatted string like "$183.94" into its whole-dollar part ("$183") and cents part (".94"), for the hero stat's large/bold-plus-small/muted display -- matching mobile's own visual treatment of this figure. */
-function splitMoney(formatted: string): { whole: string; cents: string } {
-  const dotIndex = formatted.lastIndexOf(".");
-  if (dotIndex === -1) return { whole: formatted, cents: "" };
-  return { whole: formatted.slice(0, dotIndex), cents: formatted.slice(dotIndex) };
-}
 
 /** Real accounts can have more than one active tax (e.g. GST + PST in BC) -- sums them for the reclaim total and picks a label that reads naturally for either one tax or several. */
 function taxLabel(taxList: TaxListEntry[]): string {
@@ -147,8 +140,7 @@ function buildTaxContent(
   // Stat card label only -- reads "GST/HST" when the sole configured
   // tax is GST, since GST and HST are mutually exclusive per-province
   // equivalents in Canada. Display only: the sum above still only
-  // includes tax_lists entries literally named "GST" (see
-  // sumRefundableTax), and heroNote below still uses the raw label.
+  // includes tax_lists entries literally named "GST" (see sumRefundableTax).
   const statLabel = label.trim().toLowerCase() === "gst" ? "GST/HST" : label;
 
   // Real per-trip data, same source and per-trip rate logic as the
@@ -234,9 +226,6 @@ function buildTaxContent(
 
   if (region === "ca") {
     return {
-      heroLabel: "Estimated refundable taxes",
-      heroTotal: money(taxReclaim + homeOfficeReclaim + vehicleDeductible),
-      heroNote: `${label} reclaim plus estimated tax savings from home office and vehicle expenses`,
       deductionStats: [
         {
           label: `${statLabel} reclaim`,
@@ -258,9 +247,6 @@ function buildTaxContent(
   }
 
   return {
-    heroLabel: "Estimated tax savings",
-    heroTotal: money(mock.homeOfficeSaving + mileageTotal),
-    heroNote: "Estimated tax savings from home office and mileage deductions",
     deductionStats: [
       {
         label: "Sales tax tracked",
@@ -475,21 +461,38 @@ function DashboardPage() {
         </p>
       </div>
 
-      {/* Hero — the #1 thing on this page, so it gets more presence than
-          the stat cards below via size and breathing room alone: a
-          bigger number and more padding, same plain white card style as
-          every other panel on this page (no tinted background). */}
+      {/* Hero — deliberately NOT a summed dollar total: a GST/HST reclaim
+          (real money back) and a home-office/vehicle deduction (lowers
+          taxable income, not a refund itself) aren't the same kind of
+          number, and adding them together would imply a refund figure
+          this app has no business computing. A neutral header instead,
+          same prominent position and plain white card style as every
+          other panel -- emphasis comes from size/padding, not a total. */}
       <div className="mt-6 rounded-2xl border border-black/[0.07] bg-white p-7 shadow-[0_2px_12px_rgba(0,0,0,0.06)] sm:p-8">
-        <p className="text-xs font-medium uppercase tracking-wide text-black/55">
-          {content.heroLabel} for {year}
+        <p className="text-3xl font-semibold tracking-tight text-black sm:text-4xl">
+          Your {year} tax summary
         </p>
-        <p className="mt-3 text-5xl font-semibold tracking-tight text-emerald-600 sm:text-6xl">
-          {splitMoney(content.heroTotal).whole}
-          <span className="text-3xl text-emerald-600/60 sm:text-4xl">
-            {splitMoney(content.heroTotal).cents}
+        <p className="mt-2 max-w-2xl text-sm text-black/45">
+          These figures are collected for your records and{" "}
+          {region === "ca" ? "T2125 filing" : "tax filing"} — final decisions on what's deductible
+          are up to your accountant.
+        </p>
+        <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2">
+          <span className="text-sm text-black/55">
+            {receiptsLoading
+              ? "Loading…"
+              : `${receipts.length} receipt${receipts.length === 1 ? "" : "s"} scanned this year`}
           </span>
-        </p>
-        <p className="mt-2 text-sm text-black/45">{content.heroNote}</p>
+          <span className="text-black/20" aria-hidden>
+            ·
+          </span>
+          <Link
+            to={"/dashboard/reports" as any}
+            className="inline-flex items-center gap-1 text-sm font-medium text-[#f97316] transition-colors hover:text-[#f97316]/80"
+          >
+            Generate your tax summary report
+          </Link>
+        </div>
       </div>
 
       {/* Tax-deduction cards -- the reason this product exists, so they're
