@@ -1,6 +1,15 @@
 import { useEffect, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { Download, FileText } from "lucide-react";
+import { Download, FileText, Trash2 } from "lucide-react";
+import { toast } from "sonner";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import {
   Select,
   SelectContent,
@@ -12,7 +21,7 @@ import { ReportPreviewDialog } from "@/components/dashboard/ReportPreviewDialog"
 import { useDashboardContext } from "@/components/dashboard/DashboardContext";
 import { useAuth } from "@/integrations/firebase/auth-context";
 import { auth } from "@/integrations/firebase/client";
-import { fetchReports, type Report } from "@/integrations/firebase/reports";
+import { deleteReport, fetchReports, type Report } from "@/integrations/firebase/reports";
 import { formatCurrency, formatDate } from "@/lib/dashboard-format";
 import { errorMessage } from "@/lib/utils";
 
@@ -59,6 +68,24 @@ function ReportsPage() {
   const [reports, setReports] = useState<Report[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  const [deleteTarget, setDeleteTarget] = useState<Report | null>(null);
+  const [deleting, setDeleting] = useState(false);
+
+  const handleDelete = async () => {
+    if (!deleteTarget) return;
+    setDeleting(true);
+    try {
+      await deleteReport(deleteTarget);
+      toast.success("Report deleted.");
+      setReports((prev) => prev.filter((r) => r.id !== deleteTarget.id));
+      setDeleteTarget(null);
+    } catch (e) {
+      toast.error(errorMessage(e, "Couldn't delete this report."));
+    } finally {
+      setDeleting(false);
+    }
+  };
 
   useEffect(() => {
     if (!uid) return;
@@ -179,7 +206,7 @@ function ReportsPage() {
                 <th className="px-5 py-2 font-medium">Created</th>
                 <th className="px-5 py-2 font-medium">Country</th>
                 <th className="px-5 py-2 text-right font-medium">Amount</th>
-                <th className="px-5 py-2 text-right font-medium">Download</th>
+                <th className="px-5 py-2 text-right font-medium">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -225,24 +252,34 @@ function ReportsPage() {
                         {formatCurrency(r.totalAmount, r.currency)}
                       </td>
                       <td className="px-5 py-3 text-right">
-                        {r.pdfUrl ? (
-                          <a
-                            href={r.pdfUrl}
-                            target="_blank"
-                            rel="noreferrer"
+                        <div className="flex items-center justify-end gap-1">
+                          {r.pdfUrl ? (
+                            <a
+                              href={r.pdfUrl}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="inline-flex items-center gap-1 rounded-full p-1.5 text-black/40 transition-colors hover:bg-black/5 hover:text-black"
+                              aria-label={`Download ${r.title}`}
+                            >
+                              <Download className="size-4" aria-hidden />
+                            </a>
+                          ) : (
+                            <span
+                              className="inline-flex items-center gap-1 rounded-full p-1.5 text-black/20"
+                              aria-label="No PDF available"
+                            >
+                              <Download className="size-4" aria-hidden />
+                            </span>
+                          )}
+                          <button
+                            type="button"
+                            onClick={() => setDeleteTarget(r)}
                             className="inline-flex items-center gap-1 rounded-full p-1.5 text-black/40 transition-colors hover:bg-black/5 hover:text-black"
-                            aria-label={`Download ${r.title}`}
+                            aria-label={`Delete ${r.title}`}
                           >
-                            <Download className="size-4" aria-hidden />
-                          </a>
-                        ) : (
-                          <span
-                            className="inline-flex items-center gap-1 rounded-full p-1.5 text-black/20"
-                            aria-label="No PDF available"
-                          >
-                            <Download className="size-4" aria-hidden />
-                          </span>
-                        )}
+                            <Trash2 className="size-4" aria-hidden />
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   );
@@ -259,6 +296,34 @@ function ReportsPage() {
           </table>
         </div>
       </div>
+
+      <Dialog open={deleteTarget !== null} onOpenChange={(open) => !open && setDeleteTarget(null)}>
+        <DialogContent className="sm:max-w-sm">
+          <DialogHeader>
+            <DialogTitle>Delete this report?</DialogTitle>
+            <DialogDescription>
+              This can't be undone — the generated PDF will also be removed.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="gap-2 sm:gap-0">
+            <button
+              type="button"
+              onClick={() => setDeleteTarget(null)}
+              className="inline-flex items-center justify-center rounded-full border border-black/10 px-4 py-2 text-sm font-medium text-black transition-colors hover:bg-black/5"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              onClick={() => void handleDelete()}
+              disabled={deleting}
+              className="inline-flex items-center justify-center rounded-full bg-red-600 px-4 py-2 text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              {deleting ? "Deleting…" : "Delete report"}
+            </button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

@@ -1,5 +1,15 @@
-import { collection, getDocs, orderBy, query, Timestamp, where } from "firebase/firestore";
-import { db } from "@/integrations/firebase/client";
+import {
+  collection,
+  deleteDoc,
+  doc,
+  getDocs,
+  orderBy,
+  query,
+  Timestamp,
+  where,
+} from "firebase/firestore";
+import { deleteObject, ref } from "firebase/storage";
+import { db, storage } from "@/integrations/firebase/client";
 
 export type ReportFilters = {
   amountFrom: number | null;
@@ -91,4 +101,28 @@ export async function fetchReports(uid: string): Promise<Report[]> {
   );
   const snapshot = await getDocs(q);
   return snapshot.docs.map((doc) => toReport(doc.id, doc.data()));
+}
+
+/**
+ * A real, permanent hard delete -- not a soft-delete flag. Security rules
+ * already allow this for the document's own creator. Callers must confirm
+ * with the user before calling this; nothing here prompts.
+ *
+ * Also deletes the generated PDF from Storage so a removed report doesn't
+ * leave an orphaned file behind. `ref(storage, url)` resolves a Storage
+ * download URL straight to its object, so no separate path bookkeeping is
+ * needed. If `pdfUrl` is missing or doesn't resolve to a Storage object (or
+ * the delete itself fails, e.g. already gone), the Firestore doc is still
+ * deleted -- Storage cleanup is best-effort and must never block removing
+ * the report the user asked to delete.
+ */
+export async function deleteReport(report: Report): Promise<void> {
+  if (report.pdfUrl) {
+    try {
+      await deleteObject(ref(storage, report.pdfUrl));
+    } catch (e) {
+      console.error("Couldn't delete report PDF from Storage:", e);
+    }
+  }
+  await deleteDoc(doc(db, "reports", report.id));
 }
