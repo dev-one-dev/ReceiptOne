@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
+import { PieChart as PieChartIcon } from "lucide-react";
 import { Cell, Pie, PieChart, ResponsiveContainer, Sector } from "recharts";
 import type { Receipt } from "@/integrations/firebase/receipts";
 import { formatCurrency } from "@/lib/dashboard-format";
@@ -132,7 +133,7 @@ export function CategoryDonutChart({
   };
 
   return (
-    <div className="mt-3 rounded-2xl border border-black/[0.07] bg-white p-5 shadow-[0_2px_12px_rgba(0,0,0,0.06)]">
+    <div className="mt-6 rounded-2xl border border-black/[0.07] bg-white p-5 shadow-[0_2px_12px_rgba(0,0,0,0.06)]">
       <h2 className="text-sm font-semibold text-black">Spending by category</h2>
       <p className="mt-1 text-xs text-black/50">For {year}</p>
 
@@ -141,8 +142,22 @@ export function CategoryDonutChart({
           Loading…
         </div>
       ) : slices.length === 0 ? (
-        <div className="flex h-[220px] items-center justify-center text-sm text-black/45">
-          No expenses yet for {year}
+        <div className="flex h-[220px] flex-col items-center justify-center gap-3 text-center">
+          <span className="flex size-12 items-center justify-center rounded-full bg-black/[0.04] text-black/25">
+            <PieChartIcon className="size-5" aria-hidden />
+          </span>
+          <div className="space-y-1.5">
+            <p className="max-w-xs text-sm text-black/45">
+              No expenses yet for {year} — scan a receipt to see your spending breakdown.
+            </p>
+            <button
+              type="button"
+              onClick={() => void navigate({ to: "/dashboard/receipts" })}
+              className="text-xs font-medium text-[#f97316] transition-colors hover:text-[#f97316]/80"
+            >
+              Go to Receipts
+            </button>
+          </div>
         </div>
       ) : (
         <div className="mt-4 flex flex-col items-center gap-6 sm:mx-auto sm:w-fit sm:flex-row">

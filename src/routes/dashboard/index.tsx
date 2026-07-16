@@ -41,7 +41,10 @@ type RegionTaxContent = {
   heroLabel: string;
   heroTotal: string;
   heroNote: string;
-  stats: TaxStat[];
+  /** The tax-deduction figures (GST/HST reclaim, home office, vehicle) -- grouped together and visually tinted since they're this product's whole point. */
+  deductionStats: TaxStat[];
+  /** Logging/activity figures (receipts scanned, mileage) -- informational, not deductions themselves. */
+  activityStats: TaxStat[];
 };
 
 /**
@@ -234,8 +237,7 @@ function buildTaxContent(
       heroLabel: "Estimated refundable taxes",
       heroTotal: money(taxReclaim + homeOfficeReclaim + vehicleDeductible),
       heroNote: `${label} reclaim plus estimated tax savings from home office and vehicle expenses`,
-      stats: [
-        expensesStat,
+      deductionStats: [
         {
           label: `${statLabel} reclaim`,
           value: receiptsLoading ? "…" : money(taxReclaim),
@@ -250,8 +252,8 @@ function buildTaxContent(
           onClick: homeOfficeOnClick,
         },
         vehicleDeductibleStat,
-        mileageStat,
       ],
+      activityStats: [expensesStat, mileageStat],
     };
   }
 
@@ -259,8 +261,7 @@ function buildTaxContent(
     heroLabel: "Estimated tax savings",
     heroTotal: money(mock.homeOfficeSaving + mileageTotal),
     heroNote: "Estimated tax savings from home office and mileage deductions",
-    stats: [
-      expensesStat,
+    deductionStats: [
       {
         label: "Sales tax tracked",
         value: receiptsLoading ? "…" : money(taxReclaim),
@@ -273,9 +274,61 @@ function buildTaxContent(
         note: `≈ ${money(mock.homeOfficeSaving)} estimated tax saving`,
         icon: Home,
       },
-      mileageStat,
     ],
+    activityStats: [expensesStat, mileageStat],
   };
+}
+
+/**
+ * The only visual difference between the two clusters: deduction cards
+ * keep the orange icon chip (this app's brand accent, already used for
+ * every stat-card icon before this change), activity cards get a
+ * neutral gray chip -- subtle enough that it reads as "these are the
+ * money ones" without shouting, no new colors introduced.
+ */
+function StatCard({
+  stat: { label, value, note, icon: Icon, onClick },
+  variant,
+}: {
+  stat: TaxStat;
+  variant: "deduction" | "activity";
+}) {
+  return (
+    <div
+      onClick={onClick}
+      role={onClick ? "button" : undefined}
+      tabIndex={onClick ? 0 : undefined}
+      onKeyDown={
+        onClick
+          ? (e) => {
+              if (e.key === "Enter" || e.key === " ") onClick();
+            }
+          : undefined
+      }
+      className={[
+        "rounded-2xl border border-black/[0.07] bg-white p-5 shadow-[0_2px_12px_rgba(0,0,0,0.06)]",
+        onClick
+          ? "cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-[0_12px_40px_rgba(0,0,0,0.10)] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#f97316]/40"
+          : "",
+      ].join(" ")}
+    >
+      <div className="flex items-center justify-between">
+        <span className="text-xs font-medium text-black/55">{label}</span>
+        <span
+          className={[
+            "flex size-8 items-center justify-center rounded-full",
+            variant === "deduction"
+              ? "bg-[#f97316]/10 text-[#f97316]"
+              : "bg-black/[0.05] text-black/45",
+          ].join(" ")}
+        >
+          <Icon className="size-4" aria-hidden />
+        </span>
+      </div>
+      <p className="mt-3 text-2xl font-semibold tracking-tight text-black">{value}</p>
+      <p className="mt-1 text-xs text-black/45">{note}</p>
+    </div>
+  );
 }
 
 function DashboardPage() {
@@ -422,53 +475,48 @@ function DashboardPage() {
         </p>
       </div>
 
-      {/* Hero — same light card style as the stat cards below, not a
-          standalone dark block. */}
-      <div className="mt-6 rounded-2xl border border-black/[0.07] bg-white p-6 shadow-[0_2px_12px_rgba(0,0,0,0.06)] sm:p-7">
+      {/* Hero — the #1 thing on this page, so it gets more presence than
+          the stat cards below: a bigger number, more breathing room, and
+          a faint accent wash using the same orange token the stat-card
+          icons already use (just a background tint, not a new color). */}
+      <div className="mt-6 overflow-hidden rounded-2xl border border-black/[0.07] bg-gradient-to-br from-white to-[#f97316]/[0.06] p-7 shadow-[0_2px_12px_rgba(0,0,0,0.06)] sm:p-8">
         <p className="text-xs font-medium uppercase tracking-wide text-black/55">
           {content.heroLabel} for {year}
         </p>
-        <p className="mt-2 text-4xl font-semibold tracking-tight text-emerald-600 sm:text-5xl">
+        <p className="mt-3 text-5xl font-semibold tracking-tight text-emerald-600 sm:text-6xl">
           {splitMoney(content.heroTotal).whole}
-          <span className="text-2xl text-emerald-600/60 sm:text-3xl">
+          <span className="text-3xl text-emerald-600/60 sm:text-4xl">
             {splitMoney(content.heroTotal).cents}
           </span>
         </p>
         <p className="mt-2 text-sm text-black/45">{content.heroNote}</p>
       </div>
 
-      {/* Stat cards */}
-      <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        {content.stats.map(({ label, value, note, icon: Icon, onClick }) => (
-          <div
-            key={label}
-            onClick={onClick}
-            role={onClick ? "button" : undefined}
-            tabIndex={onClick ? 0 : undefined}
-            onKeyDown={
-              onClick
-                ? (e) => {
-                    if (e.key === "Enter" || e.key === " ") onClick();
-                  }
-                : undefined
-            }
-            className={[
-              "rounded-2xl border border-black/[0.07] bg-white p-5 shadow-[0_2px_12px_rgba(0,0,0,0.06)]",
-              onClick
-                ? "cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-[0_12px_40px_rgba(0,0,0,0.10)] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#f97316]/40"
-                : "",
-            ].join(" ")}
-          >
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-black/55">{label}</span>
-              <span className="flex size-8 items-center justify-center rounded-full bg-[#f97316]/10 text-[#f97316]">
-                <Icon className="size-4" aria-hidden />
-              </span>
-            </div>
-            <p className="mt-3 text-2xl font-semibold tracking-tight text-black">{value}</p>
-            <p className="mt-1 text-xs text-black/45">{note}</p>
-          </div>
-        ))}
+      {/* Tax-deduction cards -- the reason this product exists, so they're
+          grouped first and get the same orange icon-chip treatment as the
+          hero's accent, distinguishing them from the plain activity cards
+          below. auto-fit fills the row exactly regardless of how many
+          deduction cards this region has (3 for CA, 2 for US) -- no
+          orphan card, no dead space on the right. */}
+      <div className="mt-6">
+        <h2 className="text-sm font-semibold text-black">Tax deductions</h2>
+        <div className="mt-3 grid grid-cols-[repeat(auto-fit,minmax(220px,1fr))] gap-3">
+          {content.deductionStats.map((stat) => (
+            <StatCard key={stat.label} stat={stat} variant="deduction" />
+          ))}
+        </div>
+      </div>
+
+      {/* Activity cards -- informational (billing/logbook reference), kept
+          visually plain/neutral so they never read as another deduction
+          figure. */}
+      <div className="mt-6">
+        <h2 className="text-sm font-semibold text-black">Your activity</h2>
+        <div className="mt-3 grid grid-cols-[repeat(auto-fit,minmax(220px,1fr))] gap-3">
+          {content.activityStats.map((stat) => (
+            <StatCard key={stat.label} stat={stat} variant="activity" />
+          ))}
+        </div>
       </div>
 
       <CategoryDonutChart receipts={receipts} year={year} loading={receiptsLoading} />
