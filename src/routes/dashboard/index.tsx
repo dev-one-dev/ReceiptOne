@@ -38,7 +38,11 @@ type TaxStat = {
 };
 
 type RegionTaxContent = {
-  /** The tax-deduction figures (GST/HST reclaim, home office, vehicle) -- grouped together and visually tinted since they're this product's whole point. */
+  /** GST/HST (or equivalent) Input Tax Credit reclaim -- an actual cash refund, a fundamentally different kind of money from a deduction. Empty for regions with no such mechanism (US -- sales tax there just folds into the deductible total, see deductionStats below). */
+  refundStats: TaxStat[];
+  /** Names the actual configured tax (e.g. "GST/HST") for the refund group's heading -- only meaningful when refundStats is non-empty. */
+  refundHeading: string;
+  /** Income-tax DEDUCTIONS (home office, vehicle) -- these only lower taxable income, they are NOT a cash refund like refundStats above. The actual tax saved depends on the user's bracket, determined at filing. */
   deductionStats: TaxStat[];
   /** Logging/activity figures (receipts scanned, mileage) -- informational, not deductions themselves. */
   activityStats: TaxStat[];
@@ -226,13 +230,16 @@ function buildTaxContent(
 
   if (region === "ca") {
     return {
-      deductionStats: [
+      refundStats: [
         {
           label: `${statLabel} reclaim`,
           value: receiptsLoading ? "…" : money(taxReclaim),
           note: receiptsLoading ? "Loading…" : "Sum of refundable tax recorded on your receipts",
           icon: Landmark,
         },
+      ],
+      refundHeading: `${statLabel} — refundable (money back)`,
+      deductionStats: [
         {
           label: "Home office reclaim",
           value: homeOfficeValue,
@@ -247,6 +254,11 @@ function buildTaxContent(
   }
 
   return {
+    // US sales tax has no ITC-style reclaim mechanism -- it's just
+    // folded into the deductible total below, so there's no refund
+    // group to show here (the JSX skips rendering it when empty).
+    refundStats: [],
+    refundHeading: "",
     deductionStats: [
       {
         label: "Sales tax tracked",
@@ -495,14 +507,38 @@ function DashboardPage() {
         </div>
       </div>
 
-      {/* Tax-deduction cards -- the reason this product exists, so they're
-          grouped first and get the same orange icon-chip treatment as the
-          hero's accent, distinguishing them from the plain activity cards
-          below. auto-fit fills the row exactly regardless of how many
-          deduction cards this region has (3 for CA, 2 for US) -- no
-          orphan card, no dead space on the right. */}
+      {/* Refund cards -- an actual cash refund (ITC), a fundamentally
+          different kind of money from the deductions below. Its own
+          group so it never reads as the same thing. Only rendered for
+          regions with a real reclaim mechanism (CA; US sales tax has
+          none, see refundStats' own doc comment). */}
+      {content.refundStats.length > 0 && (
+        <div className="mt-6">
+          <h2 className="text-sm font-semibold text-black">{content.refundHeading}</h2>
+          <p className="mt-1 text-xs text-black/45">
+            An actual cash refund via Input Tax Credits — not a deduction.
+          </p>
+          <div className="mt-3 grid grid-cols-[repeat(auto-fit,minmax(220px,1fr))] gap-3">
+            {content.refundStats.map((stat) => (
+              <StatCard key={stat.label} stat={stat} variant="deduction" />
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Deduction cards -- lower taxable income, NOT a cash refund like
+          the group above. Same orange icon-chip treatment as the refund
+          group (both are "the money ones," distinguished from activity
+          cards below), but the heading/note here make the distinction
+          between the two explicit. auto-fit fills the row exactly
+          regardless of how many cards this region has (2 for both CA and
+          US) -- no orphan card, no dead space on the right. */}
       <div className="mt-6">
-        <h2 className="text-sm font-semibold text-black">Tax deductions</h2>
+        <h2 className="text-sm font-semibold text-black">Income tax deductions</h2>
+        <p className="mt-1 text-xs text-black/45">
+          These lower your taxable income — the actual tax saved depends on your tax bracket,
+          determined at filing.
+        </p>
         <div className="mt-3 grid grid-cols-[repeat(auto-fit,minmax(220px,1fr))] gap-3">
           {content.deductionStats.map((stat) => (
             <StatCard key={stat.label} stat={stat} variant="deduction" />
