@@ -1,81 +1,69 @@
-import avatar2 from "@/assets/figma/avatar-2.webp";
-import avatar3 from "@/assets/figma/avatar-3.webp";
-import avatarDavid from "@/assets/figma/crypto.png";
-import avatarCryptopunk from "@/assets/figma/cryptopunk.png";
+import { Laptop2, Palette, Users } from "lucide-react";
 
-type Testimonial = {
-  quote: string;
-  name: string;
+type Persona = {
   role: string;
-  location: string;
-} & ({ avatar: string; initials?: never; avatarBg?: never } | { initials: string; avatarBg: string; avatar?: never });
+  description: string;
+  icon: typeof Palette;
+  iconBg: string;
+};
 
-const CA_TESTIMONIALS: Testimonial[] = [
+const CA_PERSONAS: Persona[] = [
   {
-    quote:
-      "ReceiptOne saved me hours every week. I used to spend Sunday evenings sorting receipts — now I just snap and forget. My accountant loves the export format.",
-    name: "Maria Chen",
     role: "Freelance Graphic Designer",
-    location: "Vancouver, BC",
-    avatar: avatar3,
+    description:
+      "Snap receipts for software, client meetings, and gear the moment you buy them — no digging through your inbox come tax season.",
+    icon: Palette,
+    iconBg: "#7c3aed",
   },
   {
-    quote:
-      "Tracking GST/HST used to be a nightmare. Now I know exactly what I can claim back before I even talk to my accountant. Pays for itself every single month.",
-    name: "David Okonkwo",
     role: "Independent IT Contractor",
-    location: "Toronto, ON",
-    avatar: avatarDavid,
+    description:
+      "GST/HST on every purchase is tracked automatically, so you know exactly what you can claim back before you even talk to your accountant.",
+    icon: Laptop2,
+    iconBg: "#0891b2",
   },
   {
-    quote:
-      "I run a small photography studio and ReceiptOne handles everything — vehicle expenses, equipment, client meals. Tax season is actually stress-free now.",
-    name: "Sophie Tremblay",
-    role: "Studio Owner",
-    location: "Montréal, QC",
-    avatar: avatar2,
+    role: "Freelance Consultant",
+    description:
+      "Vehicle expenses, equipment, client meals — all sorted in one place, so tax season isn't a scramble.",
+    icon: Users,
+    iconBg: "#f97316",
   },
 ];
 
-const US_TESTIMONIALS: Testimonial[] = [
+const US_PERSONAS: Persona[] = [
   {
-    quote:
-      "I used to scramble every April digging up receipts for my CPA. Now I snap them as they happen and she gets a clean export at tax time. 1099 season is no longer something I dread.",
-    name: "Ashley Morgan",
     role: "Freelance Graphic Designer",
-    location: "Austin, TX",
-    initials: "AM",
-    avatarBg: "#7c3aed",
+    description:
+      "Snap receipts as they happen so your CPA gets a clean export at tax time — no more scrambling every April.",
+    icon: Palette,
+    iconBg: "#7c3aed",
   },
   {
-    quote:
-      "Tracking deductions used to eat up hours. Now everything's organized automatically before I even talk to my accountant. Pays for itself every month.",
-    name: "James Rivera",
-    role: "Independent IT Consultant",
-    location: "Chicago, IL",
-    avatar: avatarCryptopunk,
+    role: "Independent IT Contractor",
+    description:
+      "Deductions get organized automatically, ready before you even sit down with your accountant.",
+    icon: Laptop2,
+    iconBg: "#0891b2",
   },
   {
-    quote:
-      "Running a studio means receipts for everything — gear, locations, client meals, mileage. ReceiptOne keeps it all sorted. Filing my Schedule C went from a full weekend to about an hour.",
-    name: "Megan Torres",
-    role: "Studio Owner",
-    location: "Brooklyn, NY",
-    initials: "MT",
-    avatarBg: "#0891b2",
+    role: "Freelance Consultant",
+    description:
+      "Gear, mileage, client meals — all sorted, so filing your Schedule C takes an hour, not a weekend.",
+    icon: Users,
+    iconBg: "#f97316",
   },
 ];
 
 export function Testimonials({ region = "ca" }: { region?: "ca" | "us" }) {
-  const testimonials = region === "us" ? US_TESTIMONIALS : CA_TESTIMONIALS;
-  const heading = region === "us" ? "Trusted by US freelancers" : "Trusted by Canadian freelancers";
+  const personas = region === "us" ? US_PERSONAS : CA_PERSONAS;
+  const heading = region === "us" ? "Made for US freelancers" : "Built for Canadian freelancers";
   return (
     <section className="w-full px-4 pt-4 pb-12 sm:px-6 sm:pt-6 sm:pb-16 lg:px-8">
       <div className="mx-auto w-full max-w-[1200px]">
-
         <div className="mb-12 text-center">
           <p className="font-sans text-xs font-semibold uppercase tracking-widest text-black/55">
-            Testimonials
+            Who it's for
           </p>
           <h2 className="mt-2 font-display text-3xl font-semibold leading-tight tracking-tight text-black sm:text-4xl lg:text-[2.75rem]">
             {heading}
@@ -83,61 +71,28 @@ export function Testimonials({ region = "ca" }: { region?: "ca" | "us" }) {
         </div>
 
         <div className="grid gap-5 sm:grid-cols-3">
-          {testimonials.map((t) => (
+          {personas.map((p) => (
             <figure
-              key={t.name}
-              className="flex flex-col gap-5 rounded-3xl border border-black/[0.07] bg-white p-6 shadow-[0_2px_12px_rgba(0,0,0,0.06)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_8px_32px_rgba(0,0,0,0.10)] sm:p-8"
+              key={p.role}
+              className="flex flex-col gap-4 rounded-3xl border border-black/[0.07] bg-white p-6 shadow-[0_2px_12px_rgba(0,0,0,0.06)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_8px_32px_rgba(0,0,0,0.10)] sm:p-8"
             >
-              {/* Stars */}
-              <div className="flex gap-0.5" aria-label="5 out of 5 stars">
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <StarIcon key={i} />
-                ))}
+              <div
+                className="flex size-11 shrink-0 items-center justify-center rounded-full text-white"
+                style={{ backgroundColor: p.iconBg }}
+                aria-hidden
+              >
+                <p.icon className="size-5" />
               </div>
-
-              <blockquote className="flex-1 font-sans text-[15px] leading-relaxed text-black/70">
-                &ldquo;{t.quote}&rdquo;
-              </blockquote>
-
-              <figcaption className="flex items-center gap-3">
-                {t.initials ? (
-                  <div
-                    className="flex size-10 shrink-0 items-center justify-center rounded-full font-display text-xs font-bold text-white"
-                    style={{ backgroundColor: t.avatarBg }}
-                    aria-label={t.name}
-                  >
-                    {t.initials}
-                  </div>
-                ) : (
-                  <img
-                    src={t.avatar}
-                    alt={t.name}
-                    className="size-10 shrink-0 rounded-full object-cover"
-                    width={40}
-                    height={40}
-                    loading="lazy"
-                    decoding="async"
-                  />
-                )}
-                <div>
-                  <p className="font-display text-sm font-semibold text-black">{t.name}</p>
-                  <p className="font-sans text-xs text-black/55">
-                    {t.role} · {t.location}
-                  </p>
-                </div>
+              <figcaption>
+                <p className="font-display text-base font-semibold text-black">{p.role}</p>
+                <p className="mt-2 font-sans text-[15px] leading-relaxed text-black/70">
+                  {p.description}
+                </p>
               </figcaption>
             </figure>
           ))}
         </div>
       </div>
     </section>
-  );
-}
-
-function StarIcon() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" className="text-[#f97316]" aria-hidden>
-      <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-    </svg>
   );
 }
