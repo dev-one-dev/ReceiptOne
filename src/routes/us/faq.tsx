@@ -88,8 +88,7 @@ function USFaqPage() {
             Start managing your receipts in minutes
           </h2>
           <p className="mx-auto mt-2 max-w-md font-sans text-base text-white/55">
-            Join thousands of US freelancers who use ReceiptOne to stay IRS-ready
-            without the paperwork headache.
+            Built for US freelancers who want to stay IRS-ready without the paperwork headache.
           </p>
           <div className="mt-4 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
             <Link

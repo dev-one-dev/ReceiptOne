@@ -52,16 +52,14 @@ function scrollToTop() {
 export function Footer({ region = "ca" }: FooterProps) {
   const tagline =
     region === "us"
-      ? "The fastest way to turn receipts into IRS-ready expense reports. Built for US freelancers and contractors."
+      ? "Turn receipts into IRS-ready expense reports in seconds. Built for US freelancers and contractors."
       : "Snap a receipt, get a CRA-ready report. Built for Canadian freelancers and contractors who'd rather work than do paperwork.";
 
   return (
     <footer className="w-full bg-[#0d0d14] text-white">
       <div className="mx-auto max-w-[1200px] px-4 pt-8 pb-4 sm:px-6 lg:px-8 lg:pt-10">
-
         {/* Main grid */}
         <div className="grid gap-6 lg:grid-cols-4">
-
           {/* Brand column */}
           <div className="lg:col-span-1">
             <button
@@ -71,12 +69,14 @@ export function Footer({ region = "ca" }: FooterProps) {
               aria-label="Back to top"
             >
               <img src={logoMark} alt="" aria-hidden className="size-8 shrink-0" />
-              <img src={logoWordmark} alt="ReceiptOne" className="h-5 shrink-0 brightness-0 invert" />
+              <img
+                src={logoWordmark}
+                alt="ReceiptOne"
+                className="h-5 shrink-0 brightness-0 invert"
+              />
             </button>
 
-            <p className="mt-3 text-sm leading-relaxed text-white/45">
-              {tagline}
-            </p>
+            <p className="mt-3 text-sm leading-relaxed text-white/45">{tagline}</p>
 
             {/* Social */}
             <div className="mt-4 flex items-center gap-4">
@@ -103,7 +103,6 @@ export function Footer({ region = "ca" }: FooterProps) {
 
           {/* Nav columns */}
           <div className="grid grid-cols-3 gap-4 lg:col-span-3">
-
             {/* Product */}
             <div>
               <p className="font-display text-sm font-semibold uppercase tracking-widest text-white/50">
@@ -132,7 +131,7 @@ export function Footer({ region = "ca" }: FooterProps) {
                 {COMPANY_LINKS_CA.map(({ label, href }) => (
                   <li key={label}>
                     <Link
-                      to={href as typeof ROUTES[keyof typeof ROUTES]}
+                      to={href as (typeof ROUTES)[keyof typeof ROUTES]}
                       className="font-sans text-sm text-white/55 transition-colors hover:text-white"
                     >
                       {label}
@@ -151,7 +150,7 @@ export function Footer({ region = "ca" }: FooterProps) {
                 {LEGAL_LINKS.map(({ label, href }) => (
                   <li key={label}>
                     <Link
-                      to={href as typeof ROUTES[keyof typeof ROUTES]}
+                      to={href as (typeof ROUTES)[keyof typeof ROUTES]}
                       className="font-sans text-sm text-white/55 transition-colors hover:text-white"
                     >
                       {label}
@@ -160,7 +159,6 @@ export function Footer({ region = "ca" }: FooterProps) {
                 ))}
               </ul>
             </div>
-
           </div>
         </div>
 
@@ -173,7 +171,7 @@ export function Footer({ region = "ca" }: FooterProps) {
             {LEGAL_LINKS.map(({ label, href }) => (
               <Link
                 key={label}
-                to={href as typeof ROUTES[keyof typeof ROUTES]}
+                to={href as (typeof ROUTES)[keyof typeof ROUTES]}
                 className="font-sans text-sm text-white/50 transition-colors hover:text-white/80"
               >
                 {label}
@@ -181,7 +179,6 @@ export function Footer({ region = "ca" }: FooterProps) {
             ))}
           </div>
         </div>
-
       </div>
     </footer>
   );

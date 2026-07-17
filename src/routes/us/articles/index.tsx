@@ -80,8 +80,8 @@ function USArticlesIndexPage() {
             Tax guides for US freelancers
           </h1>
           <p className="mx-auto mt-4 max-w-xl font-sans text-base leading-relaxed text-black/55 sm:text-lg">
-            IRS-ready tips on receipts, deductions, mileage, and Schedule C — written for
-            1099 contractors and self-employed Americans.
+            IRS-ready tips on receipts, deductions, mileage, and Schedule C — written for 1099
+            contractors and self-employed Americans.
           </p>
         </div>
       </section>
@@ -106,8 +106,7 @@ function CtaBanner() {
           Start managing your receipts in minutes
         </h2>
         <p className="mx-auto mt-2 max-w-md font-sans text-base text-white/55">
-          Join thousands of US freelancers who use ReceiptOne to stay IRS-ready
-          without the paperwork headache.
+          Built for US freelancers who want to stay IRS-ready without the paperwork headache.
         </p>
         <div className="mt-4 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
           <Link

@@ -34,7 +34,7 @@ const CA_FEATURES = [
   {
     label: "Mileage",
     title: "Mileage tracking, right on your phone",
-    desc: "Log every business trip and apply the CRA per-kilometre rate in one tap. Never lose a deduction because you forgot to note the odometer.",
+    desc: "Log every business trip and apply the CRA per-kilometre rate in one tap. Every trip is recorded automatically, even if you forget to check the odometer.",
     img: abScreenMileage,
     alt: "ReceiptOne app showing mileage map tracking",
   },
@@ -48,10 +48,24 @@ const CA_FEATURES = [
 ];
 
 const US_FEATURES = CA_FEATURES.map((f) => {
-  if (f.label === "Receipts") return { ...f, alt: "ReceiptOne app showing receipts list with USD amounts" };
-  if (f.label === "Export") return { ...f, img: usExport, alt: "ReceiptOne app showing CSV export screen" };
-  if (f.label === "Mileage") return { ...f, img: usMileage, alt: "ReceiptOne app showing mileage map tracking", desc: "Log every business trip and apply the IRS per-mile rate in one tap. Never lose a deduction because you forgot to note the odometer." };
-  if (f.label === "Home office") return { ...f, img: usHomeOffice, alt: "ReceiptOne app showing home office deduction results", desc: "Calculate your home office deduction in minutes. ReceiptOne tracks utilities, internet, and workspace costs, then applies the IRS deduction formula automatically." };
+  if (f.label === "Receipts")
+    return { ...f, alt: "ReceiptOne app showing receipts list with USD amounts" };
+  if (f.label === "Export")
+    return { ...f, img: usExport, alt: "ReceiptOne app showing CSV export screen" };
+  if (f.label === "Mileage")
+    return {
+      ...f,
+      img: usMileage,
+      alt: "ReceiptOne app showing mileage map tracking",
+      desc: "Log every business trip and apply the IRS per-mile rate in one tap. Every trip is recorded automatically, even if you forget to check the odometer.",
+    };
+  if (f.label === "Home office")
+    return {
+      ...f,
+      img: usHomeOffice,
+      alt: "ReceiptOne app showing home office deduction results",
+      desc: "Calculate your home office deduction in minutes. ReceiptOne tracks utilities, internet, and workspace costs, then applies the IRS deduction formula automatically.",
+    };
   return f;
 });
 
@@ -61,7 +75,6 @@ export function InfoCards({ region = "ca" }: { region?: "ca" | "us" }) {
   return (
     <section id="benefits" className="w-full px-4 pt-16 pb-4 sm:px-6 sm:pt-20 sm:pb-6 lg:px-8">
       <div className="mx-auto w-full max-w-[1200px]">
-
         {/* Header image — negative margins bleed past the content column */}
         <div className="-mx-4 mb-10 sm:-mx-6 sm:mb-14 lg:-mx-8">
           <img
@@ -80,7 +93,6 @@ export function InfoCards({ region = "ca" }: { region?: "ca" | "us" }) {
             return (
               <div key={f.title} className="rounded-3xl bg-white p-8 shadow-sm lg:p-12">
                 <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
-
                   {/* Text */}
                   <div className="text-center lg:text-left">
                     <p className="font-sans text-xs font-semibold uppercase tracking-widest text-[#f97316]">
@@ -89,9 +101,7 @@ export function InfoCards({ region = "ca" }: { region?: "ca" | "us" }) {
                     <h3 className="mt-3 font-display text-3xl font-semibold tracking-tight text-black sm:text-4xl">
                       {f.title}
                     </h3>
-                    <p className="mt-4 text-base leading-relaxed text-black/70">
-                      {f.desc}
-                    </p>
+                    <p className="mt-4 text-base leading-relaxed text-black/70">{f.desc}</p>
                   </div>
 
                   {/* Phone mockup — order-first on odd rows puts image left */}
@@ -107,15 +117,12 @@ export function InfoCards({ region = "ca" }: { region?: "ca" | "us" }) {
                       />
                     </div>
                   </div>
-
                 </div>
               </div>
             );
           })}
         </div>
-
       </div>
     </section>
   );
 }
-

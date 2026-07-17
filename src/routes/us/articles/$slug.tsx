@@ -53,7 +53,9 @@ function ArticleNotFound() {
     <main className="min-h-screen overflow-x-clip bg-[#f5f4f0] font-sans text-black antialiased">
       <Header />
       <div className="mx-auto flex min-h-[60vh] max-w-[760px] flex-col items-center justify-center px-4 py-24 text-center sm:px-6">
-        <p className="font-sans text-xs font-semibold uppercase tracking-widest text-black/55">404</p>
+        <p className="font-sans text-xs font-semibold uppercase tracking-widest text-black/55">
+          404
+        </p>
         <h1 className="mt-3 font-display text-3xl font-semibold text-black">Article not found</h1>
         <p className="mt-4 font-sans text-base text-black/55">
           The article you're looking for doesn't exist or may have been moved.
@@ -98,7 +100,10 @@ function renderBlock(block: ContentBlock, index: number) {
       );
     case "callout":
       return (
-        <div key={index} className="mb-5 overflow-hidden rounded-2xl border border-black/[0.07] bg-[#f5f4f0]">
+        <div
+          key={index}
+          className="mb-5 overflow-hidden rounded-2xl border border-black/[0.07] bg-[#f5f4f0]"
+        >
           <div className="flex gap-0">
             <div className="w-1 shrink-0 bg-[#f97316]" aria-hidden />
             <p className="p-6 font-sans text-[17px] leading-[1.7] text-black/70">{block.text}</p>
@@ -165,8 +170,7 @@ function CtaBanner() {
           Start managing your receipts in minutes
         </h2>
         <p className="mx-auto mt-4 max-w-md font-sans text-base text-white/55">
-          Join thousands of US freelancers who use ReceiptOne to stay IRS-ready
-          without the paperwork headache.
+          Built for US freelancers who want to stay IRS-ready without the paperwork headache.
         </p>
         <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
           <Link
@@ -203,7 +207,10 @@ function USArticleDetailPage() {
 
       {/* Back link + breadcrumb */}
       <div className="mx-auto max-w-[1200px] px-4 pt-28 pb-6 sm:px-6 lg:px-8">
-        <nav aria-label="breadcrumb" className="flex items-center gap-2 font-sans text-sm text-black/55">
+        <nav
+          aria-label="breadcrumb"
+          className="flex items-center gap-2 font-sans text-sm text-black/55"
+        >
           <Link
             to={"/us/articles/" as any}
             className="inline-flex items-center gap-1.5 transition-colors duration-150 hover:text-black"
@@ -255,7 +262,10 @@ function USArticleDetailPage() {
           <p className="mt-4 font-sans text-lg leading-relaxed text-black/60">{article.excerpt}</p>
           <div className="mt-6 flex flex-wrap items-center gap-4 border-t border-black/[0.07] pt-6">
             <div className="flex size-10 shrink-0 items-center justify-center rounded-full bg-[#fed7aa] font-display text-sm font-semibold text-[#9a3412]">
-              {article.author.name.split(" ").map((n) => n[0]).join("")}
+              {article.author.name
+                .split(" ")
+                .map((n) => n[0])
+                .join("")}
             </div>
             <div className="min-w-0">
               <p className="font-sans text-sm font-semibold text-black">{article.author.name}</p>

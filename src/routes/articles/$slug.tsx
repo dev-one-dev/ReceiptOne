@@ -64,9 +64,7 @@ function ArticleNotFound() {
         <p className="font-sans text-xs font-semibold uppercase tracking-widest text-black/55">
           404
         </p>
-        <h1 className="mt-3 font-display text-3xl font-semibold text-black">
-          Article not found
-        </h1>
+        <h1 className="mt-3 font-display text-3xl font-semibold text-black">Article not found</h1>
         <p className="mt-4 font-sans text-base text-black/55">
           The article you're looking for doesn't exist or may have been moved.
         </p>
@@ -89,20 +87,14 @@ function renderBlock(block: ContentBlock, index: number) {
   switch (block.type) {
     case "p":
       return (
-        <p
-          key={index}
-          className="mb-5 font-sans text-[17px] leading-[1.7] text-black/70"
-        >
+        <p key={index} className="mb-5 font-sans text-[17px] leading-[1.7] text-black/70">
           {block.text}
         </p>
       );
 
     case "h2":
       return (
-        <h2
-          key={index}
-          className="mb-4 mt-10 font-display text-2xl font-semibold text-black"
-        >
+        <h2 key={index} className="mb-4 mt-10 font-display text-2xl font-semibold text-black">
           {block.text}
         </h2>
       );
@@ -112,13 +104,8 @@ function renderBlock(block: ContentBlock, index: number) {
         <ul key={index} className="mb-5 space-y-3">
           {block.items.map((item, i) => (
             <li key={i} className="flex gap-3">
-              <CheckCircle2
-                className="mt-0.5 size-5 shrink-0 text-[#f97316]"
-                aria-hidden
-              />
-              <span className="font-sans text-[17px] leading-[1.7] text-black/70">
-                {item}
-              </span>
+              <CheckCircle2 className="mt-0.5 size-5 shrink-0 text-[#f97316]" aria-hidden />
+              <span className="font-sans text-[17px] leading-[1.7] text-black/70">{item}</span>
             </li>
           ))}
         </ul>
@@ -133,9 +120,7 @@ function renderBlock(block: ContentBlock, index: number) {
           <div className="flex gap-0">
             {/* Orange left stripe */}
             <div className="w-1 shrink-0 bg-[#f97316]" aria-hidden />
-            <p className="p-6 font-sans text-[17px] leading-[1.7] text-black/70">
-              {block.text}
-            </p>
+            <p className="p-6 font-sans text-[17px] leading-[1.7] text-black/70">{block.text}</p>
           </div>
         </div>
       );
@@ -204,8 +189,7 @@ function CtaBanner() {
           Start managing your receipts in minutes
         </h2>
         <p className="mx-auto mt-4 max-w-md font-sans text-base text-white/55">
-          Join thousands of Canadian freelancers who use ReceiptOne to stay CRA-compliant
-          without the paperwork headache.
+          Built for Canadian freelancers who want to stay CRA-ready without the paperwork headache.
         </p>
         <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
           <Link
@@ -246,7 +230,10 @@ function ArticleDetailPage() {
 
       {/* Back link + breadcrumb */}
       <div className="mx-auto max-w-[1200px] px-4 pt-28 pb-6 sm:px-6 lg:px-8">
-        <nav aria-label="breadcrumb" className="flex items-center gap-2 font-sans text-sm text-black/55">
+        <nav
+          aria-label="breadcrumb"
+          className="flex items-center gap-2 font-sans text-sm text-black/55"
+        >
           <Link
             to={"/articles/" as any}
             className="inline-flex items-center gap-1.5 transition-colors duration-150 hover:text-black"
@@ -300,9 +287,7 @@ function ArticleDetailPage() {
           </h1>
 
           {/* Excerpt / lead */}
-          <p className="mt-4 font-sans text-lg leading-relaxed text-black/60">
-            {article.excerpt}
-          </p>
+          <p className="mt-4 font-sans text-lg leading-relaxed text-black/60">{article.excerpt}</p>
 
           {/* Author + meta */}
           <div className="mt-6 flex flex-wrap items-center gap-4 border-t border-black/[0.07] pt-6">
@@ -314,9 +299,7 @@ function ArticleDetailPage() {
                 .join("")}
             </div>
             <div className="min-w-0">
-              <p className="font-sans text-sm font-semibold text-black">
-                {article.author.name}
-              </p>
+              <p className="font-sans text-sm font-semibold text-black">{article.author.name}</p>
               <p className="font-sans text-xs text-black/55">{article.author.role}</p>
             </div>
 

@@ -81,8 +81,8 @@ function ArticlesIndexPage() {
           </h1>
 
           <p className="mx-auto mt-4 max-w-xl font-sans text-base leading-relaxed text-black/55 sm:text-lg">
-            CRA-ready tips on receipts, GST/HST, mileage, and deductions — written for
-            independent contractors and self-employed Canadians.
+            CRA-ready tips on receipts, GST/HST, mileage, and deductions — written for independent
+            contractors and self-employed Canadians.
           </p>
         </div>
       </section>
@@ -109,8 +109,7 @@ function CtaBanner() {
           Start managing your receipts in minutes
         </h2>
         <p className="mx-auto mt-2 max-w-md font-sans text-base text-white/55">
-          Join thousands of Canadian freelancers who use ReceiptOne to stay CRA-compliant
-          without the paperwork headache.
+          Built for Canadian freelancers who want to stay CRA-ready without the paperwork headache.
         </p>
         <div className="mt-4 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
           <Link
