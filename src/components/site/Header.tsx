@@ -86,9 +86,77 @@ export function Header() {
   const mobileNavBtnClass =
     "w-full rounded-xl px-4 py-3 text-left font-sans text-base font-medium leading-6 text-black transition-colors hover:bg-black/5";
 
+  // Rendered twice below (desktop, grouped with the nav; mobile, next to the
+  // hamburger) -- each wrapper's responsive visibility is mutually exclusive
+  // (lg:hidden vs hidden lg:flex), so only one copy is ever visible/reachable
+  // at a time. Both share this component's open/setOpen state.
+  const regionSwitcher = (
+    <div className="relative">
+      <button
+        type="button"
+        onClick={() => {
+          setOpen((v) => !v);
+          setMobileNavOpen(false);
+        }}
+        className="flex items-center gap-1.5 rounded-md px-1 py-1 font-display text-[15px] font-semibold leading-6 text-black sm:text-base sm:leading-7"
+        aria-label="Change region"
+        aria-haspopup="menu"
+        aria-expanded={open}
+      >
+        {current === "ca" ? (
+          <FlagCanada className="size-7 sm:size-8" />
+        ) : (
+          <FlagUSA className="size-7 sm:size-8" />
+        )}
+        <span>{current === "ca" ? "CA" : "US"}</span>
+        <svg
+          width="12"
+          height="12"
+          viewBox="0 0 10 10"
+          className="shrink-0 sm:h-[14px] sm:w-[14px]"
+          aria-hidden
+        >
+          <path
+            d="M2 4l3 3 3-3"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      </button>
+      {open && (
+        <div
+          role="menu"
+          className="absolute right-0 top-full z-50 mt-2 min-w-[11rem] overflow-hidden rounded-xl border border-black/10 bg-white py-1 shadow-lg sm:min-w-[12.5rem]"
+        >
+          <button
+            role="menuitem"
+            type="button"
+            onClick={() => select("ca")}
+            className="flex w-full items-center gap-2.5 px-4 py-2.5 text-left text-[15px] font-medium leading-6 hover:bg-black/5 sm:text-base sm:leading-7"
+          >
+            <FlagCanada className="size-6 shrink-0 sm:size-7" />
+            <span>Canada</span>
+          </button>
+          <button
+            role="menuitem"
+            type="button"
+            onClick={() => select("us")}
+            className="flex w-full items-center gap-2.5 px-4 py-2.5 text-left text-[15px] font-medium leading-6 hover:bg-black/5 sm:text-base sm:leading-7"
+          >
+            <FlagUSA className="size-6 shrink-0 sm:size-7" />
+            <span>USA</span>
+          </button>
+        </div>
+      )}
+    </div>
+  );
+
   return (
     <header className="fixed inset-x-0 top-0 z-50 flex w-full justify-center px-4 pt-3 sm:px-6 sm:pt-4 lg:px-8">
-      <div ref={rootRef} className="relative w-full max-w-[760px]">
+      <div ref={rootRef} className="relative w-full max-w-[1200px]">
         <nav
           className={`flex w-full items-center justify-between gap-2 rounded-[20px] border p-3 backdrop-blur-xl backdrop-saturate-150 transition-all duration-300 sm:gap-3 sm:p-3.5 md:p-4 ${
             scrolled
@@ -112,107 +180,51 @@ export function Header() {
             <LogoWordmark />
           </Link>
 
-          <ul className="hidden flex-1 items-center justify-center gap-3 font-sans text-[15px] font-medium leading-6 text-black lg:flex">
-            <li>
-              <button
-                type="button"
-                onClick={scrollTo("how-it-works")}
-                className="rounded-md px-0.5 py-1 transition-opacity hover:opacity-70 whitespace-nowrap"
-              >
-                How It Works
-              </button>
-            </li>
-            <li>
-              <button
-                type="button"
-                onClick={scrollTo("benefits")}
-                className="rounded-md px-0.5 py-1 transition-opacity hover:opacity-70"
-              >
-                Benefits
-              </button>
-            </li>
-            <li>
-              <button
-                type="button"
-                onClick={scrollTo("pricing")}
-                className="rounded-md px-0.5 py-1 transition-opacity hover:opacity-70"
-              >
-                Pricing
-              </button>
-            </li>
-            <li>
-              <button
-                type="button"
-                onClick={scrollTo("faq")}
-                className="rounded-md px-0.5 py-1 transition-opacity hover:opacity-70"
-              >
-                FAQ
-              </button>
-            </li>
-          </ul>
+          <div className="hidden flex-1 items-center justify-center gap-3 lg:flex">
+            <ul className="flex items-center gap-3 font-sans text-[15px] font-medium leading-6 text-black">
+              <li>
+                <button
+                  type="button"
+                  onClick={scrollTo("how-it-works")}
+                  className="rounded-md px-0.5 py-1 transition-opacity hover:opacity-70 whitespace-nowrap"
+                >
+                  How It Works
+                </button>
+              </li>
+              <li>
+                <button
+                  type="button"
+                  onClick={scrollTo("benefits")}
+                  className="rounded-md px-0.5 py-1 transition-opacity hover:opacity-70"
+                >
+                  Benefits
+                </button>
+              </li>
+              <li>
+                <button
+                  type="button"
+                  onClick={scrollTo("pricing")}
+                  className="rounded-md px-0.5 py-1 transition-opacity hover:opacity-70"
+                >
+                  Pricing
+                </button>
+              </li>
+              <li>
+                <button
+                  type="button"
+                  onClick={scrollTo("faq")}
+                  className="rounded-md px-0.5 py-1 transition-opacity hover:opacity-70"
+                >
+                  FAQ
+                </button>
+              </li>
+            </ul>
+
+            {regionSwitcher}
+          </div>
 
           <div className="flex shrink-0 flex-nowrap items-center justify-end gap-2">
-            <div className="relative">
-              <button
-                type="button"
-                onClick={() => {
-                  setOpen((v) => !v);
-                  setMobileNavOpen(false);
-                }}
-                className="flex items-center gap-1.5 rounded-md px-1 py-1 font-display text-[15px] font-semibold leading-6 text-black sm:text-base sm:leading-7"
-                aria-label="Change region"
-                aria-haspopup="menu"
-                aria-expanded={open}
-              >
-                {current === "ca" ? (
-                  <FlagCanada className="size-7 sm:size-8" />
-                ) : (
-                  <FlagUSA className="size-7 sm:size-8" />
-                )}
-                <span>{current === "ca" ? "CA" : "US"}</span>
-                <svg
-                  width="12"
-                  height="12"
-                  viewBox="0 0 10 10"
-                  className="shrink-0 sm:h-[14px] sm:w-[14px]"
-                  aria-hidden
-                >
-                  <path
-                    d="M2 4l3 3 3-3"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </button>
-              {open && (
-                <div
-                  role="menu"
-                  className="absolute right-0 top-full z-50 mt-2 min-w-[11rem] overflow-hidden rounded-xl border border-black/10 bg-white py-1 shadow-lg sm:min-w-[12.5rem]"
-                >
-                  <button
-                    role="menuitem"
-                    type="button"
-                    onClick={() => select("ca")}
-                    className="flex w-full items-center gap-2.5 px-4 py-2.5 text-left text-[15px] font-medium leading-6 hover:bg-black/5 sm:text-base sm:leading-7"
-                  >
-                    <FlagCanada className="size-6 shrink-0 sm:size-7" />
-                    <span>Canada</span>
-                  </button>
-                  <button
-                    role="menuitem"
-                    type="button"
-                    onClick={() => select("us")}
-                    className="flex w-full items-center gap-2.5 px-4 py-2.5 text-left text-[15px] font-medium leading-6 hover:bg-black/5 sm:text-base sm:leading-7"
-                  >
-                    <FlagUSA className="size-6 shrink-0 sm:size-7" />
-                    <span>USA</span>
-                  </button>
-                </div>
-              )}
-            </div>
+            <div className="lg:hidden">{regionSwitcher}</div>
 
             <div className="hidden items-center gap-2 sm:gap-3 lg:flex">
               <Link
