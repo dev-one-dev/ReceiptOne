@@ -16,7 +16,7 @@ export const faqItems: QA[] = [
   },
   {
     q: 'What does "Estimated refundable taxes" mean?',
-    a: "It's the running total of GST/HST shown on your receipts — the input tax credits (ITCs) a self-employed person or small business can typically claim back from the CRA. It's a reference figure, not a guaranteed refund amount.",
+    a: "It's the running total of GST/HST and QST (where applicable) shown on your receipts — the input tax credits (ITCs) and input tax refunds (ITRs) a self-employed person or small business can typically claim back from the CRA and, for QST, Revenu Québec. It's a reference figure, not a guaranteed refund amount.",
   },
   {
     q: "Why is PST marked as non-refundable?",
