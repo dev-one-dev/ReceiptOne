@@ -97,7 +97,6 @@ function LoginPage() {
 
         <section className="rounded-3xl border border-border bg-card p-6 shadow-sm sm:p-8">
           <div className="space-y-2 text-center">
-            <p className="text-sm text-muted-foreground">Personal cabinet</p>
             <h1 className="font-display text-3xl font-semibold tracking-normal">Log in</h1>
             <p className="text-sm leading-6 text-muted-foreground">
               Enter your account to manage receipts, reports, and tax-ready documents.

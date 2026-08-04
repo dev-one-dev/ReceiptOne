@@ -12,7 +12,7 @@ export const faqItems: QA[] = [
   },
   {
     q: "Does ReceiptOne calculate my tax refund?",
-    a: "No — and we're upfront about that. ReceiptOne captures the GST/HST and PST on your receipts so you have accurate records for your CRA return. Your actual refund depends on your full tax situation, which your accountant or tax software calculates.",
+    a: "No — and we're upfront about that. ReceiptOne organizes your receipts, mileage, and home office expenses with the tax details CRA asks for — GST/HST, PST, and more — so your records are accurate and ready. Your actual refund depends on your full tax situation, which your accountant or tax software calculates.",
   },
   {
     q: 'What does "Estimated refundable taxes" mean?',

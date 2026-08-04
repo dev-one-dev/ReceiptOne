@@ -104,7 +104,6 @@ function SignupPage() {
 
         <section className="rounded-3xl border border-border bg-card p-6 shadow-sm sm:p-8">
           <div className="space-y-2 text-center">
-            <p className="text-sm text-muted-foreground">Personal cabinet</p>
             <h1 className="font-display text-3xl font-semibold tracking-normal">Join now</h1>
             <p className="text-sm leading-6 text-muted-foreground">
               Create your account to start tracking receipts and generating tax-ready reports.
