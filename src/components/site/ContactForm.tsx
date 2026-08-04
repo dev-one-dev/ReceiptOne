@@ -78,7 +78,10 @@ export function ContactForm({ region }: { region: Region }) {
     >
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <div className="space-y-1.5">
-          <label htmlFor="contact-name" className="block font-sans text-xs font-medium text-black/70">
+          <label
+            htmlFor="contact-name"
+            className="block font-sans text-xs font-medium text-black/70"
+          >
             Name
           </label>
           <input
@@ -91,7 +94,10 @@ export function ContactForm({ region }: { region: Region }) {
           />
         </div>
         <div className="space-y-1.5">
-          <label htmlFor="contact-email" className="block font-sans text-xs font-medium text-black/70">
+          <label
+            htmlFor="contact-email"
+            className="block font-sans text-xs font-medium text-black/70"
+          >
             Email
           </label>
           <input
@@ -106,7 +112,10 @@ export function ContactForm({ region }: { region: Region }) {
       </div>
 
       <div className="space-y-1.5">
-        <label htmlFor="contact-subject" className="block font-sans text-xs font-medium text-black/70">
+        <label
+          htmlFor="contact-subject"
+          className="block font-sans text-xs font-medium text-black/70"
+        >
           Subject
         </label>
         <input
@@ -120,7 +129,10 @@ export function ContactForm({ region }: { region: Region }) {
       </div>
 
       <div className="space-y-1.5">
-        <label htmlFor="contact-message" className="block font-sans text-xs font-medium text-black/70">
+        <label
+          htmlFor="contact-message"
+          className="block font-sans text-xs font-medium text-black/70"
+        >
           Message
         </label>
         <textarea
@@ -146,7 +158,17 @@ export function ContactForm({ region }: { region: Region }) {
 
 function CheckIcon() {
   return (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+    <svg
+      width="22"
+      height="22"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+    >
       <path d="M5 12.5l4.5 4.5L19 7" />
     </svg>
   );

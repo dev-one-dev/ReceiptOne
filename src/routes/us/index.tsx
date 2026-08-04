@@ -22,8 +22,7 @@ export const Route = (createFileRoute as any)("/us/")({
   head: () => {
     const seo = pageSEO({
       path: "/us",
-      title:
-        "ReceiptOne US | Receipt, Expense & Mileage Tracker for Freelancers",
+      title: "ReceiptOne US | Receipt, Expense & Mileage Tracker for Freelancers",
       description:
         "Track receipts, expenses, mileage, and export tax-ready reports for freelancers, contractors, and small businesses in the United States.",
       ogTitle: "ReceiptOne US | Receipt, Expense & Mileage Tracker",

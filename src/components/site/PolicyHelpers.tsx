@@ -1,6 +1,14 @@
 import type { ReactNode } from "react";
 
-export function PolicySection({ number, title, children }: { number: string; title: string; children: ReactNode }) {
+export function PolicySection({
+  number,
+  title,
+  children,
+}: {
+  number: string;
+  title: string;
+  children: ReactNode;
+}) {
   return (
     <section className="space-y-4 border-b border-border/70 pb-10 last:border-b-0 last:pb-0">
       <div className="space-y-2">
@@ -15,7 +23,9 @@ export function PolicySection({ number, title, children }: { number: string; tit
 export function SubSection({ title, children }: { title: string; children: ReactNode }) {
   return (
     <section className="space-y-4">
-      <h3 className="font-display text-xl font-semibold tracking-normal text-foreground">{title}</h3>
+      <h3 className="font-display text-xl font-semibold tracking-normal text-foreground">
+        {title}
+      </h3>
       <div className="space-y-4 text-base leading-7 text-muted-foreground">{children}</div>
     </section>
   );

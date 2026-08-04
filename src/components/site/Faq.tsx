@@ -227,9 +227,7 @@ export function FaqAccordion({ items }: { items: QA[] }) {
                * two properties that change — nothing else is animated.
                */
               className={`grid transition-[grid-template-rows,opacity] duration-300 ease-out ${
-                isOpen
-                  ? "mt-3 grid-rows-[1fr] opacity-100"
-                  : "mt-0 grid-rows-[0fr] opacity-0"
+                isOpen ? "mt-3 grid-rows-[1fr] opacity-100" : "mt-0 grid-rows-[0fr] opacity-0"
               }`}
             >
               {/*
@@ -268,7 +266,10 @@ export function Faq({
   const displayed = items.slice(0, limit);
 
   return (
-    <section id="faq" className="mx-auto w-full max-w-[760px] scroll-mt-28 px-4 pt-4 pb-10 sm:px-6 md:pt-6 md:pb-14">
+    <section
+      id="faq"
+      className="mx-auto w-full max-w-[760px] scroll-mt-28 px-4 pt-4 pb-10 sm:px-6 md:pt-6 md:pb-14"
+    >
       {/* Header */}
       <div className="mx-auto mb-10 max-w-2xl text-center">
         <p className="font-sans text-xs font-semibold uppercase tracking-widest text-black/55">
@@ -290,7 +291,13 @@ export function Faq({
         >
           See all help articles in our Help Center
           <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden>
-            <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            <path
+              d="M3 8h10M9 4l4 4-4 4"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
           </svg>
         </Link>
       </div>

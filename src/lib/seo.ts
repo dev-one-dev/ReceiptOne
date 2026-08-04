@@ -9,8 +9,7 @@ export const SITE_NAME = "ReceiptOne";
 export const DEFAULT_OG_IMAGE =
   "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/d249a5d8-b985-4b4b-88cd-bf66621406c2/id-preview-60809a27--c3daaa9c-4a2a-4c75-b06b-6b4389cc6e87.lovable.app-1776985820292.png";
 
-export const url = (path: string) =>
-  `${SITE_URL}${path.startsWith("/") ? path : `/${path}`}`;
+export const url = (path: string) => `${SITE_URL}${path.startsWith("/") ? path : `/${path}`}`;
 
 type MetaEntry =
   | { title: string }
@@ -95,9 +94,7 @@ export function softwareApplicationJsonLd(region: "us" | "ca") {
   };
 }
 
-export function breadcrumbJsonLd(
-  items: { name: string; path: string }[],
-) {
+export function breadcrumbJsonLd(items: { name: string; path: string }[]) {
   return {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",

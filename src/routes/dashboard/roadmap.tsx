@@ -14,7 +14,12 @@ export const Route = createFileRoute("/dashboard/roadmap")({
 // Matches the full DB enum, including pending_review -- RLS filters rows,
 // not the column's type, so Postgrest's return type genuinely includes it
 // even though a pending_review row should never actually reach this query.
-type FeatureIdeaStatus = "pending_review" | "under_review" | "planned" | "coming_soon" | "published";
+type FeatureIdeaStatus =
+  | "pending_review"
+  | "under_review"
+  | "planned"
+  | "coming_soon"
+  | "published";
 
 type FeatureIdea = {
   id: string;
@@ -92,7 +97,9 @@ function RoadmapPage() {
 
   // RLS already excludes pending_review from this query entirely; this
   // filter is a belt-and-suspenders backstop, not the real enforcement.
-  const roadmap = (ideas ?? []).filter((i) => i.status !== "published" && i.status !== "pending_review");
+  const roadmap = (ideas ?? []).filter(
+    (i) => i.status !== "published" && i.status !== "pending_review",
+  );
   const changelog = (ideas ?? [])
     .filter((i) => i.status === "published")
     .sort((a, b) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime());
@@ -135,12 +142,19 @@ function RoadmapPage() {
               >
                 <div className="flex items-start justify-between gap-3">
                   <h3 className="text-sm font-semibold text-black">{item.title}</h3>
-                  <span className={["shrink-0 rounded-full px-2.5 py-1 text-xs font-medium", STATUS_STYLE[item.status]].join(" ")}>
+                  <span
+                    className={[
+                      "shrink-0 rounded-full px-2.5 py-1 text-xs font-medium",
+                      STATUS_STYLE[item.status],
+                    ].join(" ")}
+                  >
                     {STATUS_LABEL[item.status]}
                   </span>
                 </div>
                 <p className="mt-1.5 text-sm leading-relaxed text-black/55">{item.description}</p>
-                <p className="mt-2 text-xs text-black/40">{item.votes_count} vote{item.votes_count === 1 ? "" : "s"}</p>
+                <p className="mt-2 text-xs text-black/40">
+                  {item.votes_count} vote{item.votes_count === 1 ? "" : "s"}
+                </p>
               </div>
             ))}
           </div>
@@ -168,7 +182,10 @@ function RoadmapPage() {
               {changelog.map((item, i) => (
                 <li
                   key={item.id}
-                  className={["flex gap-4 px-5 py-4", i !== 0 ? "border-t border-black/[0.05]" : ""].join(" ")}
+                  className={[
+                    "flex gap-4 px-5 py-4",
+                    i !== 0 ? "border-t border-black/[0.05]" : "",
+                  ].join(" ")}
                 >
                   <span className="mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-full bg-black/[0.05] text-black/40">
                     <GitCommitHorizontal className="size-3.5" aria-hidden />
@@ -178,7 +195,9 @@ function RoadmapPage() {
                       <span className="text-sm font-semibold text-black">{item.title}</span>
                       <span className="text-xs text-black/40">{formatDate(item.updated_at)}</span>
                     </div>
-                    <p className="mt-0.5 text-sm leading-relaxed text-black/55">{item.description}</p>
+                    <p className="mt-0.5 text-sm leading-relaxed text-black/55">
+                      {item.description}
+                    </p>
                   </div>
                 </li>
               ))}

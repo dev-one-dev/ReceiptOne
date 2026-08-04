@@ -57,20 +57,30 @@ export function Header() {
     if (region === current) return;
     const path = location.pathname;
     if (region === "us") {
-      if (path === "/faq") { navigate({ to: "/us/faq" as any }); return; }
-      if (path.startsWith("/articles")) { navigate({ to: "/us/articles/" as any }); return; }
+      if (path === "/faq") {
+        navigate({ to: "/us/faq" as any });
+        return;
+      }
+      if (path.startsWith("/articles")) {
+        navigate({ to: "/us/articles/" as any });
+        return;
+      }
       navigate({ to: "/us" });
     } else {
-      if (path === "/us/faq") { navigate({ to: "/faq" as any }); return; }
-      if (path.startsWith("/us/articles")) { navigate({ to: "/articles/" as any }); return; }
+      if (path === "/us/faq") {
+        navigate({ to: "/faq" as any });
+        return;
+      }
+      if (path.startsWith("/us/articles")) {
+        navigate({ to: "/articles/" as any });
+        return;
+      }
       navigate({ to: "/ca" });
     }
   };
 
   const scrollOffset = () =>
-    typeof window !== "undefined" && window.matchMedia("(max-width: 1023px)").matches
-      ? 88
-      : 104;
+    typeof window !== "undefined" && window.matchMedia("(max-width: 1023px)").matches ? 88 : 104;
 
   const scrollTo = (id: string) => () => {
     setMobileNavOpen(false);
@@ -265,7 +275,11 @@ export function Header() {
             className="absolute left-0 right-0 top-full z-40 mt-2 rounded-2xl border border-black/10 bg-white/95 p-3 shadow-[0_16px_48px_rgba(0,0,0,0.12)] backdrop-blur-xl lg:hidden"
           >
             <div className="flex flex-col gap-0.5 border-b border-black/5 pb-2">
-              <button type="button" className={mobileNavBtnClass} onClick={scrollTo("how-it-works")}>
+              <button
+                type="button"
+                className={mobileNavBtnClass}
+                onClick={scrollTo("how-it-works")}
+              >
                 How It Works
               </button>
               <button type="button" className={mobileNavBtnClass} onClick={scrollTo("benefits")}>
@@ -303,7 +317,15 @@ export function Header() {
 
 function MenuOpenIcon() {
   return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      aria-hidden
+    >
       <path d="M4 6h16M4 12h16M4 18h16" strokeLinecap="round" />
     </svg>
   );
@@ -311,7 +333,15 @@ function MenuOpenIcon() {
 
 function MenuCloseIcon() {
   return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      aria-hidden
+    >
       <path d="M18 6L6 18M6 6l12 12" strokeLinecap="round" />
     </svg>
   );

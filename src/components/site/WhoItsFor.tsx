@@ -1,11 +1,4 @@
-import {
-  Briefcase,
-  Hammer,
-  UserRoundCog,
-  Car,
-  Store,
-  Camera,
-} from "lucide-react";
+import { Briefcase, Hammer, UserRoundCog, Car, Store, Camera } from "lucide-react";
 
 type Region = "ca" | "us";
 
@@ -30,10 +23,7 @@ const personasUS = [
 export function WhoItsFor({ region = "ca" }: { region?: Region }) {
   const personas = region === "us" ? personasUS : personasCA;
   return (
-    <section
-      id="who-its-for"
-      className="w-full px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-24"
-    >
+    <section id="who-its-for" className="w-full px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-24">
       <div className="mx-auto w-full max-w-[1200px]">
         <div className="mx-auto max-w-2xl text-center">
           <p className="font-display text-sm font-semibold uppercase tracking-widest text-black/50">
@@ -43,9 +33,8 @@ export function WhoItsFor({ region = "ca" }: { region?: Region }) {
             Made for the people who run the work
           </h2>
           <p className="mt-4 text-base leading-relaxed text-black/65 sm:text-lg">
-            ReceiptOne fits the way independent professionals and small teams
-            actually work — on the move, between clients, and rarely behind a
-            desk.
+            ReceiptOne fits the way independent professionals and small teams actually work — on the
+            move, between clients, and rarely behind a desk.
           </p>
         </div>
 

@@ -47,9 +47,7 @@ const US_STEPS = [
 export function HowItWorks({ region = "ca" }: { region?: Region }) {
   const steps = region === "us" ? US_STEPS : CA_STEPS;
   const heading =
-    region === "us"
-      ? "Three steps to tax-ready reports"
-      : "Three steps to tax peace of mind";
+    region === "us" ? "Three steps to tax-ready reports" : "Three steps to tax peace of mind";
   const sub =
     region === "us"
       ? "Point your camera, forward that email, upload that PDF. ReceiptOne reads, sorts, and reports — no manual entry, no spreadsheets, no tax-season scramble."
@@ -68,9 +66,7 @@ export function HowItWorks({ region = "ca" }: { region?: Region }) {
           <h2 className="mt-2 font-display text-3xl font-semibold leading-tight tracking-tight text-black sm:text-4xl lg:text-[2.75rem]">
             {heading}
           </h2>
-          <p className="mt-3 text-base leading-relaxed text-black/55 sm:text-lg">
-            {sub}
-          </p>
+          <p className="mt-3 text-base leading-relaxed text-black/55 sm:text-lg">{sub}</p>
         </div>
 
         <ol className="mt-10 grid gap-5 sm:gap-6 md:grid-cols-3 lg:mt-12">

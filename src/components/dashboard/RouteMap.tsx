@@ -7,7 +7,12 @@
 export function RouteMap({ origin, destination }: { origin: string; destination: string }) {
   return (
     <div className="overflow-hidden rounded-2xl border border-black/[0.07] bg-[#faf9f6]">
-      <svg viewBox="0 0 400 220" className="block w-full" role="img" aria-label={`Illustrated route from ${origin} to ${destination}`}>
+      <svg
+        viewBox="0 0 400 220"
+        className="block w-full"
+        role="img"
+        aria-label={`Illustrated route from ${origin} to ${destination}`}
+      >
         {/* Subtle city-block grid -- suggests "map surface" without literal street data */}
         <g stroke="#000000" strokeOpacity="0.05" strokeWidth="1">
           <line x1="40" y1="0" x2="40" y2="220" />

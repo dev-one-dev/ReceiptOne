@@ -78,10 +78,7 @@ export function useLegalUIState(storageKey: string, allPartIds: string[]) {
     (id: string) => setOpenSections((prev) => toggle(prev, id)),
     [],
   );
-  const togglePart = useCallback(
-    (id: string) => setOpenParts((prev) => toggle(prev, id)),
-    [],
-  );
+  const togglePart = useCallback((id: string) => setOpenParts((prev) => toggle(prev, id)), []);
 
   return {
     region,
@@ -135,13 +132,7 @@ export function RegionSwitcher({
   );
 }
 
-export function RegionTag({
-  children,
-  tone,
-}: {
-  children: ReactNode;
-  tone: "us" | "ca";
-}) {
+export function RegionTag({ children, tone }: { children: ReactNode; tone: "us" | "ca" }) {
   const cls =
     tone === "us"
       ? "border-blue-500/40 bg-blue-500/10 text-blue-600 dark:text-blue-300"
@@ -341,18 +332,13 @@ export function LegalSummary({
       </div>
       <ul className="space-y-3">
         {visible.map((item) => (
-          <li
-            key={item.title}
-            className="rounded-lg border border-border/60 bg-background/60 p-3"
-          >
+          <li key={item.title} className="rounded-lg border border-border/60 bg-background/60 p-3">
             <div className="flex items-start justify-between gap-2">
               <p className="text-sm font-semibold text-foreground">{item.title}</p>
               {item.region === "us" && <RegionTag tone="us">US</RegionTag>}
               {item.region === "ca" && <RegionTag tone="ca">CA</RegionTag>}
             </div>
-            <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
-              {item.body}
-            </p>
+            <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{item.body}</p>
           </li>
         ))}
       </ul>

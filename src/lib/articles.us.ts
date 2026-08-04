@@ -8,7 +8,6 @@ const JENNIFER = { name: "Jennifer Walsh", role: "CPA, Tax Advisor" };
 const MICHAEL = { name: "Michael Torres", role: "Tax Specialist" };
 
 export const ARTICLES_US_ONLY: Article[] = [
-
   /* ═══════════════════════════════════════════════════════════════
      CLUSTER 1 — IRS EXPENSE RULES
      ═══════════════════════════════════════════════════════════════ */
@@ -416,7 +415,14 @@ export const ARTICLES_US_ONLY: Article[] = [
     author: MICHAEL,
     imageUrl: "https://picsum.photos/seed/quarterly-taxes-us-freelancers/600/400",
     imageAlt: "Freelancer calculating quarterly estimated tax payments",
-    tags: ["quarterly taxes", "estimated payments", "Form 1040-ES", "freelancer", "IRS", "self-employed"],
+    tags: [
+      "quarterly taxes",
+      "estimated payments",
+      "Form 1040-ES",
+      "freelancer",
+      "IRS",
+      "self-employed",
+    ],
     clusterName: "1099 & Estimated Taxes",
     relatedSlugs: [
       "1099-contractor-tax-guide-us",
@@ -689,7 +695,6 @@ export const ARTICLES_US_ONLY: Article[] = [
       },
     ],
   },
-
 ];
 
 export const US_ARTICLES: Article[] = ARTICLES_US_ONLY;

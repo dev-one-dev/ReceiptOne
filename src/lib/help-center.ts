@@ -6,12 +6,7 @@ import type { Article, Region } from "@/lib/articles";
 import { ARTICLES, getArticlesByRegion } from "@/lib/articles";
 import { US_ARTICLES } from "@/lib/articles.us";
 import type { QA } from "@/components/site/Faq";
-import {
-  faqItems,
-  faqItemsUS,
-  CATEGORIZED_FAQ,
-  CATEGORIZED_FAQ_US,
-} from "@/components/site/Faq";
+import { faqItems, faqItemsUS, CATEGORIZED_FAQ, CATEGORIZED_FAQ_US } from "@/components/site/Faq";
 
 export type { Region };
 
@@ -74,18 +69,11 @@ export const US_HELP_CENTER: HelpCenterConfig = {
 };
 
 /** Lookup helpers scoped to a specific region's article pool. */
-export function getHelpCenterArticle(
-  slug: string,
-  allArticles: Article[],
-): Article | undefined {
+export function getHelpCenterArticle(slug: string, allArticles: Article[]): Article | undefined {
   return allArticles.find((a) => a.slug === slug);
 }
 
-export function getHelpCenterRelated(
-  slug: string,
-  allArticles: Article[],
-  count = 3,
-): Article[] {
+export function getHelpCenterRelated(slug: string, allArticles: Article[], count = 3): Article[] {
   const article = allArticles.find((a) => a.slug === slug);
   if (!article) return allArticles.slice(0, count);
 

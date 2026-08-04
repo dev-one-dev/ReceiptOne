@@ -22,8 +22,7 @@ export const Route = createFileRoute("/ca")({
   head: () => {
     const seo = pageSEO({
       path: "/ca",
-      title:
-        "ReceiptOne Canada — CRA-Ready Receipt & Expense Tracker for Freelancers",
+      title: "ReceiptOne Canada — CRA-Ready Receipt & Expense Tracker for Freelancers",
       description:
         "Snap receipts, track mileage, and export CRA-ready expense reports. Built for Canadian freelancers, contractors, and small businesses. Start free for 7 days.",
       ogTitle: "ReceiptOne Canada | Receipt, Expense & Mileage Tracker",

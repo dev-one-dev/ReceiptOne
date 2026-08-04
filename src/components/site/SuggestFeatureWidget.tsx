@@ -103,10 +103,9 @@ export function SuggestFeatureWidget({ region }: { region: Region }) {
   useEffect(() => {
     const footer = document.querySelector("footer");
     if (!footer) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => setNearFooter(entry.isIntersecting),
-      { rootMargin: "0px 0px -10% 0px" },
-    );
+    const observer = new IntersectionObserver(([entry]) => setNearFooter(entry.isIntersecting), {
+      rootMargin: "0px 0px -10% 0px",
+    });
     observer.observe(footer);
     return () => observer.disconnect();
   }, []);
@@ -127,7 +126,6 @@ export function SuggestFeatureWidget({ region }: { region: Region }) {
   // Load (and refresh) the list every time the panel opens.
   useEffect(() => {
     if (open) loadIdeas();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
 
   const reset = () => {
@@ -261,7 +259,11 @@ export function SuggestFeatureWidget({ region }: { region: Region }) {
                 <SparkIcon className="size-3.5" />
               </span>
               <span className="font-display text-sm font-semibold text-black">
-                {step === "success" ? "Thanks!" : step === "input" ? "Suggest a feature" : "Feature ideas"}
+                {step === "success"
+                  ? "Thanks!"
+                  : step === "input"
+                    ? "Suggest a feature"
+                    : "Feature ideas"}
               </span>
             </div>
             <button
@@ -348,7 +350,10 @@ export function SuggestFeatureWidget({ region }: { region: Region }) {
                 </p>
 
                 <div className="space-y-1.5">
-                  <label htmlFor="feature-title" className="block font-sans text-xs font-medium text-black/70">
+                  <label
+                    htmlFor="feature-title"
+                    className="block font-sans text-xs font-medium text-black/70"
+                  >
                     Title
                   </label>
                   <input
@@ -362,7 +367,10 @@ export function SuggestFeatureWidget({ region }: { region: Region }) {
                 </div>
 
                 <div className="space-y-1.5">
-                  <label htmlFor="feature-description" className="block font-sans text-xs font-medium text-black/70">
+                  <label
+                    htmlFor="feature-description"
+                    className="block font-sans text-xs font-medium text-black/70"
+                  >
                     Description
                   </label>
                   <textarea
@@ -410,12 +418,10 @@ export function SuggestFeatureWidget({ region }: { region: Region }) {
                 <div className="mx-auto flex size-14 items-center justify-center rounded-full bg-black text-white">
                   <CheckIcon />
                 </div>
-                <p className="font-display text-lg font-semibold text-black">
-                  {successMsg}
-                </p>
+                <p className="font-display text-lg font-semibold text-black">{successMsg}</p>
                 <p className="font-sans text-sm text-black/60">
-                  We review every suggestion. Status will update to Planned or Coming soon
-                  when we pick it up.
+                  We review every suggestion. Status will update to Planned or Coming soon when we
+                  pick it up.
                 </p>
                 <div className="flex flex-col gap-2 sm:flex-row">
                   <button
@@ -462,7 +468,17 @@ function SparkIcon({ className = "size-4" }: { className?: string }) {
 
 function ArrowLeftIcon() {
   return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+    >
       <path d="M19 12H5M12 19l-7-7 7-7" />
     </svg>
   );
@@ -470,7 +486,17 @@ function ArrowLeftIcon() {
 
 function CloseIcon() {
   return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+    >
       <path d="M18 6L6 18M6 6l12 12" />
     </svg>
   );
@@ -478,7 +504,17 @@ function CloseIcon() {
 
 function CheckIcon() {
   return (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+    <svg
+      width="22"
+      height="22"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+    >
       <path d="M5 12.5l4.5 4.5L19 7" />
     </svg>
   );
@@ -488,7 +524,12 @@ function Spinner({ className = "size-4" }: { className?: string }) {
   return (
     <svg className={`${className} animate-spin`} viewBox="0 0 24 24" fill="none" aria-hidden>
       <circle cx="12" cy="12" r="10" stroke="currentColor" strokeOpacity="0.25" strokeWidth="3" />
-      <path d="M22 12a10 10 0 0 0-10-10" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
+      <path
+        d="M22 12a10 10 0 0 0-10-10"
+        stroke="currentColor"
+        strokeWidth="3"
+        strokeLinecap="round"
+      />
     </svg>
   );
 }

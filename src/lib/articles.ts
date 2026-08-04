@@ -34,9 +34,7 @@ export interface Article {
 const SARAH = { name: "Sarah Tremblay", role: "CPA, Tax Advisor" };
 const MARCUS = { name: "Marcus Chen", role: "Tax Specialist" };
 
-
 export const ARTICLES: Article[] = [
-
   /* ═══════════════════════════════════════════════════════════════
      CLUSTER 1 — CRA RECEIPT RULES
      Pillar: cra-receipt-rules-canada
@@ -762,7 +760,13 @@ export const ARTICLES: Article[] = [
     author: MARCUS,
     imageUrl: "https://picsum.photos/seed/reimbursable-expenses-canada-freelancers/600/400",
     imageAlt: "Freelancer submitting a client expense reimbursement report",
-    tags: ["reimbursable expenses", "client billing", "freelancer", "invoicing", "expense tracking"],
+    tags: [
+      "reimbursable expenses",
+      "client billing",
+      "freelancer",
+      "invoicing",
+      "expense tracking",
+    ],
     clusterPillar: "expense-tracking-canada-freelancers",
     clusterName: "Expense Tracking",
     relatedSlugs: [
@@ -1182,7 +1186,14 @@ export const ARTICLES: Article[] = [
     author: MARCUS,
     imageUrl: "https://picsum.photos/seed/mileage-deduction-canada-freelancers/600/400",
     imageAlt: "Canadian freelancer tracking business mileage for CRA deduction",
-    tags: ["mileage", "vehicle expenses", "automobile deduction", "logbook", "CRA", "self-employed"],
+    tags: [
+      "mileage",
+      "vehicle expenses",
+      "automobile deduction",
+      "logbook",
+      "CRA",
+      "self-employed",
+    ],
     clusterName: "Mileage & Vehicle Deductions",
     relatedSlugs: [
       "mileage-tracking-self-employed-2025-guide",

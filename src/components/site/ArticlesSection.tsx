@@ -24,9 +24,7 @@ function CategoryPill({
   return (
     <span
       className={`inline-block rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wide ${
-        variant === "featured"
-          ? "bg-[#f97316]/10 text-[#f97316]"
-          : "bg-black/[0.06] text-black/55"
+        variant === "featured" ? "bg-[#f97316]/10 text-[#f97316]" : "bg-black/[0.06] text-black/55"
       }`}
     >
       {label}

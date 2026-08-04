@@ -60,7 +60,8 @@ const CA_PLANS: Plan[] = [
     originalPrice: "15.99",
     period: "/ month",
     currency: "CAD",
-    imageClassName: "pointer-events-none absolute bottom-0 -right-44 z-0 w-[34rem] select-none object-contain sm:-right-48 sm:w-[36rem]",
+    imageClassName:
+      "pointer-events-none absolute bottom-0 -right-44 z-0 w-[34rem] select-none object-contain sm:-right-48 sm:w-[36rem]",
     popular: true,
     features: [
       "Everything in Weekly",
@@ -78,13 +79,10 @@ const CA_PLANS: Plan[] = [
     period: "/ year",
     currency: "CAD",
     badge: "Best Deal",
-    imageClassName: "pointer-events-none absolute bottom-0 -right-44 z-0 w-[34rem] select-none object-contain sm:-right-48 sm:w-[36rem]",
+    imageClassName:
+      "pointer-events-none absolute bottom-0 -right-44 z-0 w-[34rem] select-none object-contain sm:-right-48 sm:w-[36rem]",
     featuresMaxW: "max-w-[55%]",
-    features: [
-      "Everything in Monthly",
-      "Save 13%",
-      "Best value for long-term tracking",
-    ],
+    features: ["Everything in Monthly", "Save 13%", "Best value for long-term tracking"],
   },
 ];
 
@@ -111,7 +109,8 @@ const US_PLANS: Plan[] = [
     originalPrice: "12.99",
     period: "/ month",
     currency: "USD",
-    imageClassName: "pointer-events-none absolute bottom-0 -right-44 z-0 w-[34rem] select-none object-contain sm:-right-48 sm:w-[36rem]",
+    imageClassName:
+      "pointer-events-none absolute bottom-0 -right-44 z-0 w-[34rem] select-none object-contain sm:-right-48 sm:w-[36rem]",
     popular: true,
     features: [
       "Everything in Weekly",
@@ -129,13 +128,10 @@ const US_PLANS: Plan[] = [
     period: "/ year",
     currency: "USD",
     badge: "Best Deal",
-    imageClassName: "pointer-events-none absolute bottom-0 -right-44 z-0 w-[34rem] select-none object-contain sm:-right-48 sm:w-[36rem]",
+    imageClassName:
+      "pointer-events-none absolute bottom-0 -right-44 z-0 w-[34rem] select-none object-contain sm:-right-48 sm:w-[36rem]",
     featuresMaxW: "max-w-[55%]",
-    features: [
-      "Everything in Monthly",
-      "Save 17%",
-      "Best value for long-term tracking",
-    ],
+    features: ["Everything in Monthly", "Save 17%", "Best value for long-term tracking"],
   },
 ];
 
@@ -175,7 +171,6 @@ export function Pricing({ region = "ca" }: { region?: Region }) {
       className="w-full scroll-mt-28 px-4 pt-4 pb-4 sm:px-6 sm:pt-6 sm:pb-6 lg:px-8"
     >
       <div className="mx-auto w-full max-w-[1200px]">
-
         {/* Header */}
         <div className="mx-auto mb-14 max-w-2xl text-center">
           <p className="font-sans text-xs font-semibold uppercase tracking-widest text-black/55">
@@ -209,7 +204,13 @@ export function Pricing({ region = "ca" }: { region?: Region }) {
   );
 }
 
-function PlanCard({ plan, images }: { plan: Plan; images: Record<string, { src: string; alt: string }> }) {
+function PlanCard({
+  plan,
+  images,
+}: {
+  plan: Plan;
+  images: Record<string, { src: string; alt: string }>;
+}) {
   const isPopular = plan.popular === true;
   const hasBadge = isPopular || !!plan.badge;
   const image = images[plan.id];
@@ -220,7 +221,6 @@ function PlanCard({ plan, images }: { plan: Plan; images: Record<string, { src: 
      * above the card. It must NOT have overflow-hidden so the badge is visible.
      */
     <div className="relative pt-4">
-
       {/* Most Popular badge */}
       {isPopular && (
         <span className="absolute top-0 left-1/2 z-20 -translate-x-1/2 rounded-full bg-[#f97316] px-4 py-1 font-sans text-xs font-semibold text-white shadow-[0_4px_12px_rgba(249,115,22,0.4)]">
@@ -259,13 +259,15 @@ function PlanCard({ plan, images }: { plan: Plan; images: Record<string, { src: 
             aria-hidden
             loading="lazy"
             decoding="async"
-            className={plan.imageClassName ?? "pointer-events-none absolute bottom-0 -right-36 z-0 w-[34rem] select-none object-contain sm:-right-40 sm:w-[36rem]"}
+            className={
+              plan.imageClassName ??
+              "pointer-events-none absolute bottom-0 -right-36 z-0 w-[34rem] select-none object-contain sm:-right-40 sm:w-[36rem]"
+            }
           />
         )}
 
         {/* Content layer — z-10 keeps text and CTA above the asset */}
         <div className="relative z-10 flex flex-1 flex-col">
-
           {/* Plan name */}
           <h3
             className={[
@@ -287,10 +289,9 @@ function PlanCard({ plan, images }: { plan: Plan; images: Record<string, { src: 
               {plan.currency === "CAD" ? `CAD ${plan.price}` : `$${plan.price}`}
             </span>
             <span
-              className={[
-                "font-sans text-sm",
-                isPopular ? "text-white/50" : "text-black/55",
-              ].join(" ")}
+              className={["font-sans text-sm", isPopular ? "text-white/50" : "text-black/55"].join(
+                " ",
+              )}
             >
               {plan.period}
             </span>
@@ -298,8 +299,14 @@ function PlanCard({ plan, images }: { plan: Plan; images: Record<string, { src: 
 
           {/* Original price — strikethrough */}
           {plan.originalPrice && (
-            <p className={["mt-1 font-sans text-sm line-through", isPopular ? "text-white/50" : "text-black/55"].join(" ")}>
-              {plan.currency === "CAD" ? `CAD ${plan.originalPrice}` : `$${plan.originalPrice}`} {plan.period}
+            <p
+              className={[
+                "mt-1 font-sans text-sm line-through",
+                isPopular ? "text-white/50" : "text-black/55",
+              ].join(" ")}
+            >
+              {plan.currency === "CAD" ? `CAD ${plan.originalPrice}` : `$${plan.originalPrice}`}{" "}
+              {plan.period}
             </p>
           )}
 
@@ -335,7 +342,6 @@ function PlanCard({ plan, images }: { plan: Plan; images: Record<string, { src: 
               </li>
             ))}
           </ul>
-
         </div>
       </div>
     </div>
@@ -359,4 +365,3 @@ function CheckIcon({ isPopular }: { isPopular: boolean }) {
     </svg>
   );
 }
-

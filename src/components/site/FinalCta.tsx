@@ -3,10 +3,7 @@ import { ArrowRight } from "lucide-react";
 
 export function FinalCta() {
   return (
-    <section
-      id="final-cta"
-      className="w-full px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-24"
-    >
+    <section id="final-cta" className="w-full px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-24">
       <div className="relative mx-auto w-full max-w-[1200px] overflow-hidden rounded-[28px] bg-black px-6 py-14 text-center sm:rounded-[36px] sm:px-10 sm:py-20 lg:px-16 lg:py-24">
         <div
           aria-hidden
@@ -21,8 +18,8 @@ export function FinalCta() {
             Ready for cleaner receipts and easier tax time?
           </h2>
           <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-white/70 sm:text-lg">
-            Start your 7-day free trial and keep receipts, mileage, and expense
-            reports organized in one place.
+            Start your 7-day free trial and keep receipts, mileage, and expense reports organized in
+            one place.
           </p>
           <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <Link

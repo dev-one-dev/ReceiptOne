@@ -18,8 +18,7 @@ const points = [
   {
     icon: KeyRound,
     title: "You control your data",
-    description:
-      "Export anytime to PDF or CSV. Cancel anytime. No long-term lock-in.",
+    description: "Export anytime to PDF or CSV. Cancel anytime. No long-term lock-in.",
   },
   {
     icon: FileText,
@@ -36,10 +35,7 @@ export function TrustSection({ region = "ca" }: { region?: Region }) {
       : "ReceiptOne helps organize records and generate reports for personal and small-business use in Canada. It does not provide tax, accounting, legal, or financial advice. For CRA filings or tax decisions, consult a qualified professional.";
 
   return (
-    <section
-      id="trust"
-      className="w-full px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-24"
-    >
+    <section id="trust" className="w-full px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-24">
       <div className="mx-auto w-full max-w-[1200px]">
         <div className="mx-auto max-w-2xl text-center">
           <p className="font-display text-sm font-semibold uppercase tracking-widest text-black/50">
@@ -62,9 +58,7 @@ export function TrustSection({ region = "ca" }: { region?: Region }) {
               <h3 className="mt-5 font-display text-lg font-semibold leading-snug text-black">
                 {title}
               </h3>
-              <p className="mt-2 text-sm leading-relaxed text-black/65">
-                {description}
-              </p>
+              <p className="mt-2 text-sm leading-relaxed text-black/65">{description}</p>
             </div>
           ))}
         </div>

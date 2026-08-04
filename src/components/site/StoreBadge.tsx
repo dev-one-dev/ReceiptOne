@@ -91,9 +91,15 @@ function AppleGlyph({ className }: { className?: string }) {
 function GooglePlayMark({ className }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 29.4 32" fill="none" aria-hidden>
-      <path fill="#00D9FF" d="M13.3 15.1 1.1 2.9C.4 3.6 0 4.6 0 5.7v20.7c0 1 .4 2 1.1 2.7l12.2-12.2v-.8Z" />
+      <path
+        fill="#00D9FF"
+        d="M13.3 15.1 1.1 2.9C.4 3.6 0 4.6 0 5.7v20.7c0 1 .4 2 1.1 2.7l12.2-12.2v-.8Z"
+      />
       <path fill="#FFD23D" d="m27.5 13.8-5.1-3L14.3 15v2l8.1 4.7 5.1-3c1.6-.9 1.6-3.1 0-4Z" />
-      <path fill="#FF3A44" d="M14.3 17v2L2.1 31.2c.7.7 1.7 1.1 2.8 1.1.6 0 1.2-.1 1.7-.4l12.2-7V17h-4.5Z" />
+      <path
+        fill="#FF3A44"
+        d="M14.3 17v2L2.1 31.2c.7.7 1.7 1.1 2.8 1.1.6 0 1.2-.1 1.7-.4l12.2-7V17h-4.5Z"
+      />
       <path fill="#00F076" d="M14.3 15 4.8.8C4.3.4 3.7.2 3.1.2 2 .2 1 .6.3 1.3L14.3 15Z" />
     </svg>
   );
