@@ -86,7 +86,12 @@ function USArticlesIndexPage() {
         </div>
       </section>
 
-      <ArticlesSection articles={US_ARTICLES} showHeader={false} basePath="/us/articles" />
+      <ArticlesSection
+        articles={US_ARTICLES}
+        showHeader={false}
+        basePath="/us/articles"
+        region="us"
+      />
 
       <CtaBanner />
 

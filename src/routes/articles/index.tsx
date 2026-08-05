@@ -88,7 +88,7 @@ function ArticlesIndexPage() {
       </section>
 
       {/* All articles — no header since the page already has its own H1 */}
-      <ArticlesSection articles={ARTICLES} showHeader={false} />
+      <ArticlesSection articles={ARTICLES} showHeader={false} region="ca" />
 
       {/* CTA strip */}
       <CtaBanner />

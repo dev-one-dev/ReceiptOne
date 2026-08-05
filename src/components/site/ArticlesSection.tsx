@@ -136,6 +136,7 @@ interface ArticlesSectionProps {
   showHeader?: boolean;
   limit?: number;
   basePath?: string;
+  region?: "ca" | "us";
 }
 
 export function ArticlesSection({
@@ -143,6 +144,7 @@ export function ArticlesSection({
   showHeader = true,
   limit,
   basePath = "/articles",
+  region = "ca",
 }: ArticlesSectionProps) {
   const all = articles ?? ARTICLES;
   const items = limit ? all.slice(0, limit) : all;
@@ -163,7 +165,9 @@ export function ArticlesSection({
                 Knowledge Base
               </p>
               <h2 className="mt-1 font-display text-3xl font-semibold leading-tight tracking-tight text-black sm:text-4xl lg:text-[2.75rem]">
-                Tax guides for Canadian freelancers
+                {region === "us"
+                  ? "Tax guides for US freelancers"
+                  : "Tax guides for Canadian freelancers"}
               </h2>
             </div>
 

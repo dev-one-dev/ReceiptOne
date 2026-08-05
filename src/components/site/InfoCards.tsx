@@ -1,5 +1,5 @@
 import infocardsHeading from "@/assets/figma/infocards-heading.png";
-import infocardsHeadingUS from "@/assets/figma/mileage-auto/New-folder/US.png";
+import infocardsHeadingUS from "@/assets/figma/mileage-auto/US/infocards-heading.png";
 import abScreenReceipts from "@/assets/figma/feat-receipts.png";
 import abScreenMileage from "@/assets/figma/feat-mileage.png";
 import icPhoneReports from "@/assets/figma/feat-reports.png";

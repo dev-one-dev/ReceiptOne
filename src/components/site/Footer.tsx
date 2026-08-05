@@ -1,4 +1,4 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { Facebook, Linkedin } from "lucide-react";
 import logoMark from "@/assets/figma/logo-mark.svg";
 import logoWordmark from "@/assets/figma/logo-wordmark.svg";
@@ -49,11 +49,30 @@ function scrollToTop() {
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
+// Matches Header.tsx's scrollTo() -- same mobile/desktop offset and the same
+// find-on-page-else-navigate-with-hash fallback, so a "How It Works"/"Benefits"/
+// "Pricing" click behaves identically whether it's clicked from the header or
+// the footer, and whether or not those sections exist on the current page.
+const scrollOffset = () =>
+  typeof window !== "undefined" && window.matchMedia("(max-width: 1023px)").matches ? 88 : 104;
+
 export function Footer({ region = "ca" }: FooterProps) {
+  const navigate = useNavigate();
   const tagline =
     region === "us"
       ? "Turn receipts into IRS-ready expense reports in seconds. Built for US freelancers and contractors."
       : "Snap a receipt, get a CRA-ready report. Built for Canadian freelancers and contractors who'd rather work than do paperwork.";
+
+  const scrollToSection = (id: string) => (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    const el = document.getElementById(id);
+    if (el) {
+      const top = el.getBoundingClientRect().top + window.scrollY - scrollOffset();
+      window.scrollTo({ top, behavior: "smooth" });
+    } else {
+      navigate({ to: (region === "us" ? "/us" : "/ca") as any, hash: id });
+    }
+  };
 
   return (
     <footer className="w-full bg-[#0d0d14] text-white">
@@ -109,16 +128,20 @@ export function Footer({ region = "ca" }: FooterProps) {
                 Product
               </p>
               <ul className="mt-2 space-y-1.5">
-                {productLinks(region).map(({ label, href }) => (
-                  <li key={label}>
-                    <a
-                      href={href}
-                      className="font-sans text-sm text-white/55 transition-colors hover:text-white"
-                    >
-                      {label}
-                    </a>
-                  </li>
-                ))}
+                {productLinks(region).map(({ label, href }) => {
+                  const isHashLink = href.startsWith("#");
+                  return (
+                    <li key={label}>
+                      <a
+                        href={href}
+                        onClick={isHashLink ? scrollToSection(href.slice(1)) : undefined}
+                        className="font-sans text-sm text-white/55 transition-colors hover:text-white"
+                      >
+                        {label}
+                      </a>
+                    </li>
+                  );
+                })}
               </ul>
             </div>
 
