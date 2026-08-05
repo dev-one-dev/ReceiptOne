@@ -1,10 +1,9 @@
-import { Laptop2, Palette, Users } from "lucide-react";
+import { Briefcase, Laptop2, Palette } from "lucide-react";
 
 type Persona = {
   role: string;
   description: string;
   icon: typeof Palette;
-  iconBg: string;
 };
 
 const CA_PERSONAS: Persona[] = [
@@ -13,21 +12,18 @@ const CA_PERSONAS: Persona[] = [
     description:
       "Snap receipts for software, client meetings, and gear the moment you buy them — no digging through your inbox come tax season.",
     icon: Palette,
-    iconBg: "#7c3aed",
   },
   {
     role: "Independent IT Contractor",
     description:
       "GST/HST on every purchase is tracked automatically, so you know exactly what you can claim back before you even talk to your accountant.",
     icon: Laptop2,
-    iconBg: "#0891b2",
   },
   {
     role: "Freelance Consultant",
     description:
       "Vehicle expenses, equipment, client meals — all sorted in one place, so tax season isn't a scramble.",
-    icon: Users,
-    iconBg: "#f97316",
+    icon: Briefcase,
   },
 ];
 
@@ -37,21 +33,18 @@ const US_PERSONAS: Persona[] = [
     description:
       "Snap receipts as they happen so your CPA gets a clean export at tax time — no more scrambling every April.",
     icon: Palette,
-    iconBg: "#7c3aed",
   },
   {
     role: "Independent IT Contractor",
     description:
       "Deductions get organized automatically, ready before you even sit down with your accountant.",
     icon: Laptop2,
-    iconBg: "#0891b2",
   },
   {
     role: "Freelance Consultant",
     description:
       "Gear, mileage, client meals — all sorted, so filing your Schedule C takes an hour, not a weekend.",
-    icon: Users,
-    iconBg: "#f97316",
+    icon: Briefcase,
   },
 ];
 
@@ -77,8 +70,7 @@ export function Testimonials({ region = "ca" }: { region?: "ca" | "us" }) {
               className="flex flex-col gap-4 rounded-3xl border border-black/[0.07] bg-white p-6 shadow-[0_2px_12px_rgba(0,0,0,0.06)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_8px_32px_rgba(0,0,0,0.10)] sm:p-8"
             >
               <div
-                className="flex size-11 shrink-0 items-center justify-center rounded-full text-white"
-                style={{ backgroundColor: p.iconBg }}
+                className="flex size-11 shrink-0 items-center justify-center rounded-full bg-black text-white"
                 aria-hidden
               >
                 <p.icon className="size-5" />
