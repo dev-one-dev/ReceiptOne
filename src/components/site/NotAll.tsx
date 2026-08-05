@@ -2,13 +2,11 @@ import naBeaverPeace from "@/assets/figma/na-beaver-peace.webp";
 import naBeaverWheel from "@/assets/figma/na-beaver-wheel.webp";
 import naBeaverLaptop from "@/assets/figma/na-beaver-laptop.webp";
 import naBeaverPhoneFolders from "@/assets/figma/na-beaver-phone-folders.webp";
-import naBeaverGlasses from "@/assets/figma/na-beaver-glasses.webp";
 import naBeaverThinking from "@/assets/figma/na-beaver-thinking.webp";
 import usGraphic1 from "@/assets/figma/mileage-auto/US/Graphic-Small1.png";
 import usGraphic2 from "@/assets/figma/mileage-auto/US/Graphic-Small2.png";
 import usGraphic from "@/assets/figma/mileage-auto/US/Graphic-Small.png";
 import usGraphic4 from "@/assets/figma/mileage-auto/US/Graphic-Small4.png";
-import usGraphic5 from "@/assets/figma/mileage-auto/US/Graphic-Small5.png";
 import usGraphic6 from "@/assets/figma/mileage-auto/US/Graphic-Small6.png";
 
 const CA_FEATURES = [
@@ -35,12 +33,6 @@ const CA_FEATURES = [
     desc: "Export structured reports in PDF or Excel, complete with totals and receipt links for your accountant.",
     img: naBeaverPhoneFolders,
     alt: "Beaver with phone and folders",
-  },
-  {
-    title: "Give Your Accountant Direct Access",
-    desc: "ReceiptOne organizes your receipts and gives your accountant direct access to your archive, saving everyone time.",
-    img: naBeaverGlasses,
-    alt: "Beaver with glasses",
   },
   {
     title: "Plug ReceiptOne Into Your Workflow",
@@ -75,12 +67,6 @@ const US_FEATURES = [
     desc: "Export structured reports in PDF or Excel, complete with totals and receipt links for your accountant.",
     img: usGraphic4,
     alt: "Eagle with audit-ready reports",
-  },
-  {
-    title: "Give Your Accountant Direct Access",
-    desc: "ReceiptOne organizes your receipts and gives your accountant direct access to your archive, saving everyone time.",
-    img: usGraphic5,
-    alt: "Eagle inviting accountant",
   },
   {
     title: "Plug ReceiptOne Into Your Workflow",
