@@ -91,10 +91,17 @@ export function NotAll({ region = "ca" }: { region?: "ca" | "us" }) {
           <div className="h-px flex-1 bg-black/10" />
         </div>
 
-        {/* Cards */}
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {/* Cards — flex-wrap instead of grid so an incomplete last row (e.g.
+            5 cards over 3 columns) centers itself instead of left-aligning
+            with a dangling gap; a full row still fills edge-to-edge either way. */}
+        <div className="flex flex-wrap justify-center gap-4">
           {FEATURES.map((f) => (
-            <div key={f.title} className={"comingSoon" in f && f.comingSoon ? "relative" : ""}>
+            <div
+              key={f.title}
+              className={`w-full sm:w-[calc((100%-1rem)/2)] lg:w-[calc((100%-2rem)/3)] ${
+                "comingSoon" in f && f.comingSoon ? "relative" : ""
+              }`}
+            >
               {"comingSoon" in f && f.comingSoon && (
                 <span className="absolute top-0 left-1/2 z-20 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap rounded-full bg-[#f97316] px-4 py-1 font-sans text-xs font-semibold text-white shadow-[0_4px_12px_rgba(249,115,22,0.4)]">
                   Coming soon
