@@ -6,7 +6,7 @@ import { InfoCards } from "@/components/site/InfoCards";
 import { NotAll } from "@/components/site/NotAll";
 import { Testimonials } from "@/components/site/Testimonials";
 import { Trust } from "@/components/site/Trust";
-import { Advantages } from "@/components/site/Advantages";
+import { Integrations } from "@/components/site/Integrations";
 import { Pricing } from "@/components/site/Pricing";
 import { Faq, faqItemsUS } from "@/components/site/Faq";
 import { Footer } from "@/components/site/Footer";
@@ -64,7 +64,7 @@ function USAPage() {
       <NotAll region="us" />
       <Testimonials region="us" />
       <Trust region="us" />
-      <Advantages region="us" />
+      <Integrations />
       <Pricing region="us" />
       <Faq items={faqItemsUS} helpCenterPath="/us/faq" />
       <Footer region="us" />

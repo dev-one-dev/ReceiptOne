@@ -114,8 +114,8 @@ The landing page uses **asymmetric padding** to visually group related sections 
 | NotAll | closes group above / opens below | `pt-4 pb-4 sm:pt-6 sm:pb-6` |
 | Testimonials | closes group | `pt-4 pb-12 sm:pt-6 sm:pb-16` |
 | Trust (dark) | standalone | `pt-12 pb-6 sm:pt-16 sm:pb-8` |
-| Advantages | hugs Trust, hugs Pricing | `pt-4 pb-4 sm:pt-6 sm:pb-6` |
-| Pricing | hugs Advantages | `pt-4 pb-4 sm:pt-6 sm:pb-6` |
+| Integrations | hugs Trust, hugs Pricing | `pt-4 pb-4 sm:pt-6 sm:pb-6` |
+| Pricing | hugs Integrations | `pt-4 pb-4 sm:pt-6 sm:pb-6` |
 | Faq | hugs Pricing | `pt-4 pb-10 md:pt-6 md:pb-14` |
 
 ### Rules
