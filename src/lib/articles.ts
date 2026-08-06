@@ -1181,7 +1181,7 @@ export const ARTICLES: Article[] = [
     excerpt:
       "Everything self-employed Canadians need to know about deducting vehicle expenses — from the logbook requirement to the maximum deductible costs, with 2025 CRA limits.",
     category: "Mileage & Auto",
-    readTime: 10,
+    readTime: 7,
     publishedAt: "2025-01-27",
     author: MARCUS,
     imageUrl: "https://picsum.photos/seed/mileage-deduction-canada-freelancers/600/400",
@@ -1204,7 +1204,7 @@ export const ARTICLES: Article[] = [
     body: [
       {
         type: "p",
-        text: "Vehicle expenses are one of the largest available deductions for Canadian freelancers who drive for work — and one of the most closely scrutinized by the CRA. Done correctly, you can deduct a proportional share of all vehicle operating costs based on the percentage of kilometres driven for business. This guide covers everything: logbook requirements, eligible expenses, 2025 CRA limits, and what happens if you're audited.",
+        text: "Vehicle expenses are one of the largest available deductions for Canadian freelancers who drive for work — and one of the most closely scrutinized by the CRA. Done correctly, you can deduct a proportional share of all vehicle operating costs based on the percentage of kilometres driven for business. This guide covers everything: logbook requirements, eligible expenses, 2025 CRA limits, the simplified logbook method, mileage claims for employees, partnership filing specifics, and what happens if you're audited.",
       },
       {
         type: "h2",
@@ -1252,11 +1252,76 @@ export const ARTICLES: Article[] = [
       },
       {
         type: "p",
-        text: "After keeping a full logbook for one complete year, the CRA allows a simplified approach: keep a 3-month sample logbook in subsequent years. If your business-use percentage stays within 10% of the base year percentage, the sample is sufficient. This dramatically reduces the ongoing record-keeping burden.",
+        text: "After keeping a complete, contemporaneous logbook for one full year — your base year — the CRA allows you to simplify record-keeping in later years. Instead of logging every trip indefinitely, you keep a full logbook for just a 3-month sample period each year and use it to project your annual business-use percentage. The catch is that the projection has to hold up mathematically against your base year, and if it drifts too far, you lose the right to use the shortcut for that year.",
+      },
+      {
+        type: "p",
+        text: "The CRA's formula for the projected annual business-use percentage is: (sample-period business-use % ÷ base-year business-use % for that same period) × base-year annual business-use % = calculated annual business-use %.",
+      },
+      {
+        type: "p",
+        text: "Here's how it works with real numbers. Say your base year showed 40% business use for the full year, broken down by quarter like this:",
+      },
+      {
+        type: "ul",
+        items: [
+          "Q1: 33% business use",
+          "Q2: 45% business use",
+          "Q3: 47% business use",
+          "Q4: 35% business use",
+        ],
+      },
+      {
+        type: "p",
+        text: "In year two, you only track a 3-month sample period — say Q1 again — and it comes out to 50% business use. Plug that into the formula: (50% ÷ 33%) × 40% = 61% calculated annual business-use for year two. That's 21 percentage points above your 40% base-year figure, well outside the CRA's ±10-point tolerance, so you can't rely on the simplified sample for year two. You're required to fall back to a full, contemporaneous logbook for the rest of that year. Nothing is lost, though — you can simply treat year two, now fully logged, as your new base year and resume the 3-month sample method starting in year three.",
+      },
+      {
+        type: "p",
+        text: "Contrast that with a year where the math holds up: if your Q1 sample had come in at 36% instead of 50%, the calculation would be (36% ÷ 33%) × 40% = 44% — only 4 points above the 40% base, comfortably inside the ±10-point tolerance. In that case, the 3-month sample stands in for the whole year and you never have to pick up a full logbook again until your business-use pattern shifts.",
       },
       {
         type: "callout",
-        text: "CRA audit reality: vehicle expense claims are one of the most common audit triggers. A logbook that was clearly prepared all at once (same handwriting, same pen, suspiciously round numbers) rather than contemporaneously is a major red flag. Use an app to timestamp entries automatically.",
+        text: "CRA audit reality: vehicle expense claims are one of the most common audit triggers. A logbook that was clearly prepared all at once — same handwriting, same pen, suspiciously round numbers — rather than contemporaneously is a major red flag, and auditors are trained to spot it.",
+      },
+      {
+        type: "h2",
+        text: "Employee Mileage Claims: The T2200 Requirement",
+      },
+      {
+        type: "p",
+        text: "Employees who use a personal vehicle for work can claim a portion of their vehicle expenses too — but the rules are stricter than for the self-employed. Before you can claim anything, your employer must complete and sign Form T2200, Declaration of Conditions of Employment, confirming that your job requires you to use your own vehicle and cover the associated costs yourself. Without a signed T2200 on file, the CRA will deny the claim outright — a verbal understanding or a line in your offer letter isn't enough.",
+      },
+      {
+        type: "ul",
+        items: [
+          "Travelling salespeople who are ordinarily required to work away from their employer's place of business",
+          "Employees required under their contract of employment to travel regularly to different locations, away from their employer's usual place of business",
+          "Anyone whose employment contract requires them to pay their own vehicle expenses, with no reimbursement from the employer",
+        ],
+      },
+      {
+        type: "p",
+        text: "The rule that trips up the most employees: if your employer reimburses your vehicle expenses — in whole or in part, whether through a per-kilometre allowance or a flat monthly stipend — you generally can't also deduct those same expenses on your return. The T2200 exists specifically to establish that you're covering these costs yourself, not being made whole by your employer. Once you have a signed T2200, you calculate and claim the deduction on Form T777, Statement of Employment Expenses, rather than the T2125 self-employed workers use — but the underlying math is identical: a contemporaneous logbook, a business-use percentage, and that percentage applied to your actual costs, including CCA on the vehicle if you own it. The same 2025 dollar limits apply either way — $1,100/month before tax on leased vehicles, $10/day on loan interest, and the $37,000 CCA ceiling for Class 10.1 vehicles — there's no separate, more generous limit just because you're on a T4 instead of self-employed.",
+      },
+      {
+        type: "h2",
+        text: "Partnership Filing: Where Mileage Goes on the Return",
+      },
+      {
+        type: "p",
+        text: "If you operate through a partnership rather than as a sole proprietor, vehicle expenses are handled a little differently on your return. Each partner reports their share of the partnership's income or loss on their own T1, but vehicle expenses you personally paid out of pocket — and weren't reimbursed for by the partnership — are claimed separately as a deduction against your share of that income.",
+      },
+      {
+        type: "p",
+        text: "This deduction goes on Line 9943, \"Other amounts deductible from your share of net partnership income,\" in Part 6 of Form T2125, Statement of Business or Professional Activities. As with any other mileage claim, you still need a contemporaneous logbook supporting the business-use percentage applied to your vehicle costs — filing as a partner doesn't relax the CRA's documentation requirements, it just changes which line the deduction lands on.",
+      },
+      {
+        type: "p",
+        text: "For example, say you're a 50% partner in a two-person consulting partnership and you personally drove 8,000 of your own vehicle's 20,000 total kilometres for partnership business — a 40% business-use rate. You'd apply that 40% to your own out-of-pocket vehicle costs for the year and report the resulting deduction on Line 9943, entirely separate from the 50% share of partnership profit that flows through elsewhere on your return. If a partner's vehicle costs were paid directly by the partnership instead of out of pocket, they're deducted at the partnership level rather than on Line 9943 — so keep track of who actually paid for what.",
+      },
+      {
+        type: "callout",
+        text: "Ditch the manual logbook math. ReceiptOne's Mileage feature lets you Log Trip by address in seconds — enter your start and end points and it calculates the route and distance automatically, then applies the current CRA rate to give you a dollar value per trip in real time. At year-end, or every quarter if you're running the simplified method, export a CRA-ready PDF report with your trips already mapped to the correct T2125 line — no spreadsheet reconstruction required.",
       },
     ],
   },
