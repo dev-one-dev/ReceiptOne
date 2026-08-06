@@ -1330,9 +1330,9 @@ export const ARTICLES: Article[] = [
     slug: "mileage-tracking-self-employed-2025-guide",
     title: "Mileage Tracking for Self-Employed Workers: The Complete 2025 Guide",
     excerpt:
-      "The CRA's automobile expense deduction can be worth thousands annually — but only if you track your kilometres correctly and maintain a proper logbook. Here's everything you need to know.",
+      "The practical, day-to-day discipline of mileage tracking for self-employed Canadians — what to log in the moment, GPS vs. manual logging, and the habits that keep a logbook audit-ready all year.",
     category: "Mileage & Auto",
-    readTime: 7,
+    readTime: 4,
     publishedAt: "2025-03-24",
     author: MARCUS,
     imageUrl: "https://picsum.photos/seed/mileage-tracking-self-employed-2025-guide/600/400",
@@ -1348,58 +1348,58 @@ export const ARTICLES: Article[] = [
     body: [
       {
         type: "p",
-        text: "If you use your personal vehicle for business purposes, you're entitled to deduct a portion of your vehicle operating costs. The CRA allows self-employed individuals to claim actual vehicle expenses — not just a flat per-kilometre rate like employees use. Done correctly, this deduction can be one of the largest available to freelancers who drive regularly for work.",
+        text: "Knowing that mileage is deductible is the easy part — the deduction actually falls apart at the tracking stage. Most self-employed drivers who lose a vehicle-expense claim don't lose it because the trip wasn't legitimate business driving; they lose it because the logbook wasn't kept the way the CRA expects. This guide is about the day-to-day habit of tracking, not the deduction rules themselves — for what's deductible, the 2025 expense limits, and the simplified logbook method's math, see our complete mileage deduction guide.",
       },
       {
         type: "h2",
-        text: "What Counts as Business Driving?",
+        text: "What to Capture the Moment You Start Driving",
+      },
+      {
+        type: "p",
+        text: 'A trip logged well takes seconds. Before you pull out of the driveway (or right after you park), get into the habit of capturing five things: the date, your starting point, your destination, why you\'re making the trip, and the kilometres involved. The specific business purpose is the field people skimp on most — "client meeting" is weaker evidence than "site visit, 45 Elm St. — kitchen renovation quote," and a vague purpose is exactly what an auditor will push back on first.',
+      },
+      {
+        type: "p",
+        text: "Odometer readings matter more than most people realize. You need a start-of-year and end-of-year reading to establish total kilometres driven, which is the denominator in your business-use percentage. Missing either reading means you're stuck estimating your total annual mileage after the fact — never a strong position if the CRA asks for support.",
+      },
+      {
+        type: "h2",
+        text: "GPS Tracking vs. Manual Logging",
+      },
+      {
+        type: "p",
+        text: "Manual logging works if you're disciplined about it, but it fails in a predictable way: short trips get skipped in the moment and \"added later from memory,\" which is precisely the kind of reconstruction the CRA doesn't accept as contemporaneous. A paper or spreadsheet logbook also can't prove when an entry was actually written, which matters if your claim is ever questioned.",
+      },
+      {
+        type: "p",
+        text: "GPS or address-based tracking removes both problems. The app timestamps the entry automatically, calculates the distance for you instead of relying on an odometer estimate, and creates a record that's inherently contemporaneous because it's generated at the time of the trip. The tradeoff is that you still have to categorize each trip as business or personal — automation handles the distance and the timestamp, not your judgment about why you made the trip.",
+      },
+      {
+        type: "h2",
+        text: "Common Mileage-Tracking Mistakes That Cost You the Deduction",
       },
       {
         type: "ul",
         items: [
-          "Travel to client meetings and job sites",
-          "Driving to pick up supplies or equipment for your business",
-          "Travel to networking events, conferences, or professional development",
-          "Deliveries to customers (if applicable to your business)",
-          "Visits to your accountant, lawyer, or bank for business purposes",
+          "Batching entries at the end of the week or month from memory instead of logging as you go",
+          "Recording only the destination, not a specific enough business purpose to justify it",
+          "Never resetting or checking odometer readings at year start and year end",
+          "Rounding trip distances instead of using actual figures",
+          'Skipping short trips because they "don\'t add up to much" — they do, over a year',
+          "Mixing personal errands into a trip without splitting out the business-only portion",
         ],
       },
       {
-        type: "p",
-        text: "Commuting from your home to a regular fixed place of work is NOT deductible — even for self-employed individuals with a home office. However, if your home is your principal place of business, trips from home to client locations count as business travel.",
-      },
-      {
         type: "h2",
-        text: "The Logbook Requirement",
+        text: "How to Stay Consistent All Year",
       },
       {
         type: "p",
-        text: "The CRA requires a mileage logbook that records every business trip. A complete logbook entry must include the date of the trip, the destination, the business purpose, and the number of kilometres driven. At the end of the year, you calculate the percentage of business use (business km ÷ total km) and apply that percentage to your total vehicle expenses.",
+        text: "The habit that actually survives twelve months is the one with the least friction. Log the trip when it happens, not at tax time — a 10-second entry beats a January reconstruction project every time. If you're on the CRA's simplified method, mark your calendar for the 3-month sample window in advance so it doesn't quietly slide past you. And do a quick monthly review of your logged trips rather than waiting until year-end to notice a gap; catching a missing week in February is a five-minute fix, catching it in December is a guess.",
       },
       {
         type: "callout",
-        text: "2025 CRA simplified method: Once you've kept a full logbook for one complete year, you can use a sample logbook covering a 3-month period in subsequent years — as long as business use stays within 10% of the base year. This dramatically reduces record-keeping burden after the first year.",
-      },
-      {
-        type: "h2",
-        text: "Deductible Vehicle Expenses",
-      },
-      {
-        type: "ul",
-        items: [
-          "Fuel and oil",
-          "Insurance premiums (proportional to business use)",
-          "Repairs and maintenance",
-          "License and registration fees",
-          "Lease payments (subject to limits — 2025 limit: $1,100/month before tax)",
-          "Capital Cost Allowance if you own the vehicle (Class 10 or 10.1)",
-          "Interest on auto loan (2025 limit: $10/day)",
-          "Parking fees at business destinations (but not parking tickets)",
-        ],
-      },
-      {
-        type: "p",
-        text: "The maximum deductible cost for a purchased vehicle in 2025 is $37,000 (before taxes) for Class 10.1 vehicles. Keep all fuel receipts, insurance renewals, and service records — along with your logbook — for the full 6-year retention period.",
+        text: "ReceiptOne's Mileage tool is built around that low-friction habit. Log Trip lets you enter a start and end address and it works out the route and distance for you — no odometer math, no estimating. Every trip is timestamped the moment you save it, and your business-use percentage updates automatically as you go, so there's no year-end scramble to total up a spreadsheet.",
       },
     ],
   },
