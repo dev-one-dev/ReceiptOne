@@ -174,13 +174,6 @@ export function Pricing({ region = "ca" }: { region?: Region }) {
   const weekly = plans.find((p) => p.id === "week")!;
   const monthly = plans.find((p) => p.id === "month")!;
 
-  const savingsLabel =
-    selectedPlan.id === "month"
-      ? `Save ${monthlySavingsPct(weekly, monthly)}% vs Weekly`
-      : selectedPlan.id === "year"
-        ? selectedPlan.discountLabel
-        : undefined;
-
   return (
     <section
       id="pricing"
@@ -256,19 +249,25 @@ export function Pricing({ region = "ca" }: { region?: Region }) {
           {/*
            * Peek-a-boo asset — z-0, sits behind the z-10 content layer.
            * Anchored to bottom-right; overflow-hidden on the card crops it.
-           * Swaps (with a crossfade, like the price block) to match the
-           * selected period, restoring the per-plan mascot variety the
-           * three-card layout had.
+           * All three mascots are stacked in the same spot and crossfaded via
+           * opacity (see the price block below for why: a key-remount fade-in
+           * can only fade the incoming element IN, never fade the outgoing one
+           * OUT, so it wasn't a true crossfade).
            */}
-          <img
-            key={selectedPlan.id}
-            src={planImages[selectedPlan.id]}
-            alt=""
-            aria-hidden
-            loading="lazy"
-            decoding="async"
-            className="animate-in fade-in pointer-events-none absolute bottom-0 -right-36 z-0 w-[28rem] select-none object-contain duration-300 sm:-right-40 sm:w-[30rem]"
-          />
+          {plans.map((plan) => (
+            <img
+              key={plan.id}
+              src={planImages[plan.id]}
+              alt=""
+              aria-hidden
+              loading="lazy"
+              decoding="async"
+              className={cn(
+                "pointer-events-none absolute bottom-0 -right-36 z-0 w-[28rem] select-none object-contain transition-opacity duration-300 sm:-right-40 sm:w-[30rem]",
+                plan.id === selectedId ? "opacity-100" : "opacity-0",
+              )}
+            />
+          ))}
 
           {/* Content layer — z-10 keeps text and CTA above the asset */}
           <div className="relative z-10">
@@ -276,26 +275,53 @@ export function Pricing({ region = "ca" }: { region?: Region }) {
               {selectedPlan.name}
             </h3>
 
-            {/* key remounts this block on toggle change, replaying the fade-in transition */}
-            <div key={selectedPlan.id} className="animate-in fade-in duration-300">
-              <div className="mt-3 flex flex-wrap items-baseline gap-x-1.5 gap-y-0">
-                <span className="font-display text-4xl font-bold tracking-tight whitespace-nowrap text-black sm:text-5xl">
-                  {formatPrice(selectedPlan, selectedPlan.price)}
-                </span>
-                <span className="font-sans text-base text-black/55">{selectedPlan.period}</span>
-              </div>
+            {/*
+             * grid + col/row-start-1 stacks all three periods' price blocks in
+             * the same cell, so the container's width/height is sized to the
+             * WIDEST/TALLEST of the three (e.g. "CAD 129.99") at all times —
+             * switching periods only crossfades opacity between them in place,
+             * instead of resizing a single block to fit whichever price string
+             * is currently rendered (which produced the horizontal jump).
+             */}
+            <div className="mt-3 grid">
+              {plans.map((plan) => {
+                const isActive = plan.id === selectedId;
+                const label =
+                  plan.id === "month"
+                    ? `Save ${monthlySavingsPct(weekly, monthly)}% vs Weekly`
+                    : plan.id === "year"
+                      ? plan.discountLabel
+                      : undefined;
+                return (
+                  <div
+                    key={plan.id}
+                    aria-hidden={!isActive}
+                    className={cn(
+                      "col-start-1 row-start-1 transition-opacity duration-300",
+                      isActive ? "opacity-100" : "pointer-events-none opacity-0",
+                    )}
+                  >
+                    <div className="flex flex-wrap items-baseline gap-x-1.5 gap-y-0">
+                      <span className="font-display text-4xl font-bold tracking-tight whitespace-nowrap text-black sm:text-5xl">
+                        {formatPrice(plan, plan.price)}
+                      </span>
+                      <span className="font-sans text-base text-black/55">{plan.period}</span>
+                    </div>
 
-              {selectedPlan.originalPrice && (
-                <p className="mt-1 font-sans text-sm text-black/55 line-through">
-                  {formatPrice(selectedPlan, selectedPlan.originalPrice)} {selectedPlan.period}
-                </p>
-              )}
+                    {plan.originalPrice && (
+                      <p className="mt-1 font-sans text-sm text-black/55 line-through">
+                        {formatPrice(plan, plan.originalPrice)} {plan.period}
+                      </p>
+                    )}
 
-              {savingsLabel && (
-                <span className="mt-2 inline-block w-fit rounded-full bg-[#fed7aa] px-2.5 py-0.5 font-sans text-xs font-semibold text-black">
-                  {savingsLabel}
-                </span>
-              )}
+                    {label && (
+                      <span className="mt-2 inline-block w-fit rounded-full bg-[#fed7aa] px-2.5 py-0.5 font-sans text-xs font-semibold text-black">
+                        {label}
+                      </span>
+                    )}
+                  </div>
+                );
+              })}
             </div>
 
             {/* Divider — max-w-[60%] keeps it in the text column, away from the peeking animal image */}
