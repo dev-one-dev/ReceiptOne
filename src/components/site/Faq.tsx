@@ -2,7 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { Plus } from "lucide-react";
 import { useState } from "react";
 
-export type QA = { q: string; a: string };
+export type QA = { q: string; a: string; link?: { to: string; slug?: string; label: string } };
 
 /** Shared FAQ list (used both for UI rendering and FAQPage JSON-LD). */
 export const faqItems: QA[] = [
@@ -36,7 +36,7 @@ export const faqItems: QA[] = [
   },
   {
     q: "What's included in the paid plan?",
-    a: "Everything: unlimited receipt scanning, automatic GST/HST/PST extraction, mileage tracking, bulk upload, multi-device sync, PDF & CSV exports, email receipt forwarding, and 10+ years of secure cloud storage.",
+    a: "Everything: unlimited receipt scanning, automatic GST/HST/PST extraction, mileage tracking, bulk upload, multi-device sync, and PDF & CSV exports.",
   },
   {
     q: "Can I cancel anytime?",
@@ -45,6 +45,49 @@ export const faqItems: QA[] = [
   {
     q: "Is ReceiptOne a tax filing service?",
     a: "No. ReceiptOne organizes your receipts and expenses so that filing — whether you do it yourself or hand off to an accountant — is fast, accurate, and stress-free. We don't file taxes on your behalf.",
+  },
+  {
+    q: "How does mileage tracking work?",
+    a: "Log a trip by entering your start and end addresses — ReceiptOne calculates the route and distance automatically via Google Maps, then applies the current CRA rate. No manual odometer math needed.",
+  },
+  {
+    q: "What counts as CRA-acceptable mileage documentation?",
+    a: "The CRA requires a contemporaneous logbook — each trip needs the date, starting location, destination, business purpose, and kilometres driven. ReceiptOne's Log Trip feature captures all of this automatically as you go.",
+    link: {
+      to: "/articles/$slug",
+      slug: "mileage-deduction-canada-freelancers",
+      label: "Read the full mileage deduction guide",
+    },
+  },
+  {
+    q: "How is the home office deduction calculated?",
+    a: "Based on the square footage of your workspace relative to your home's total finished square footage, applied to your home expenses — rent or mortgage interest, home insurance, utilities (heat, electricity, water), and maintenance — per CRA's business-use-of-home rules.",
+  },
+  {
+    q: "Can I claim both mileage and home office deductions?",
+    a: "Yes. They're tracked independently in the app, and both flow into your T2125 report.",
+  },
+  {
+    q: "Can I forward receipts by email?",
+    a: "Not yet — email forwarding is in active development. For now, receipts can be scanned with your camera or uploaded from your photo library.",
+  },
+  {
+    q: "Is there a Telegram integration?",
+    a: "Yes. Send a photo of your receipt to our Telegram bot and it lands in your ReceiptOne account instantly — no app switching required.",
+  },
+  {
+    q: "Where is my data stored?",
+    a: "Your data is stored and processed on Firebase and Google Cloud infrastructure. Depending on where our service providers operate, information may be processed or stored in Canada, the United States, or other jurisdictions — see our Privacy Policy for details.",
+    link: { to: "/privacy", label: "Read our Privacy Policy" },
+  },
+  {
+    q: "What happens to my data if I delete my account?",
+    a: "Your receipts, expenses, and other records are deleted when you delete your account, unless we're required to retain them longer for legal, tax, or security reasons. Some infrastructure providers may keep hashed or cached copies for a limited period (typically up to 30 days) for fraud-prevention and security purposes before those residual copies are removed.",
+    link: { to: "/privacy", label: "Read our Privacy Policy" },
+  },
+  {
+    q: "How long do I need to keep my receipts?",
+    a: "The CRA requires business records, including receipts and logbooks, to be kept for at least six years from the end of the last tax year they relate to.",
   },
 ];
 
@@ -80,7 +123,7 @@ export const faqItemsUS: QA[] = [
   },
   {
     q: "What's included in the paid plan?",
-    a: "Everything: unlimited receipt scanning, automatic sales tax extraction, mileage tracking, bulk upload, multi-device sync, PDF & CSV exports, email receipt forwarding, and 10+ years of secure cloud storage.",
+    a: "Everything: unlimited receipt scanning, automatic sales tax extraction, mileage tracking, bulk upload, multi-device sync, and PDF & CSV exports.",
   },
   {
     q: "Can I cancel anytime?",
@@ -100,11 +143,23 @@ export const CATEGORIZED_FAQ: { category: string; items: QA[] }[] = [
   },
   {
     category: "Tax & CRA",
-    items: [faqItems[1], faqItems[2], faqItems[3], faqItems[9]],
+    items: [faqItems[1], faqItems[2], faqItems[3], faqItems[9], faqItems[18]],
   },
   {
     category: "Pricing & Plans",
     items: [faqItems[7], faqItems[8]],
+  },
+  {
+    category: "Mileage & Home Office",
+    items: [faqItems[10], faqItems[11], faqItems[12], faqItems[13]],
+  },
+  {
+    category: "Integrations",
+    items: [faqItems[14], faqItems[15]],
+  },
+  {
+    category: "Data & Security",
+    items: [faqItems[16], faqItems[17]],
   },
 ];
 
@@ -239,6 +294,18 @@ export function FaqAccordion({ items }: { items: QA[] }) {
                */}
               <p className="overflow-hidden font-display text-[14px] leading-[1.55] text-black/60 md:text-[15px]">
                 {it.a}
+                {it.link && (
+                  <>
+                    {" "}
+                    <Link
+                      to={it.link.to as any}
+                      params={it.link.slug ? ({ slug: it.link.slug } as any) : undefined}
+                      className="font-medium text-black underline underline-offset-2 transition-colors duration-150 hover:text-[#f97316]"
+                    >
+                      {it.link.label}
+                    </Link>
+                  </>
+                )}
               </p>
             </div>
           </li>
