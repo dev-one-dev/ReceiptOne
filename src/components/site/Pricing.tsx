@@ -31,11 +31,35 @@ interface Plan {
   period: string;
   currency: string;
   badge?: string;
-  imageClassName?: string;
-  featuresMaxW?: string;
+  discountLabel?: string;
   popular?: boolean;
-  features: string[];
 }
+
+/**
+ * All billing durations grant the same single "premium" RevenueCat
+ * entitlement (see src/integrations/entitlement.ts) — Weekly, Monthly,
+ * and Yearly are identical in features. Only price, period, and discount
+ * differ, so the feature list is shared across all three plan cards.
+ */
+const CA_FEATURES = [
+  "Unlimited receipt scanning",
+  "Expense & mileage tracking",
+  "GST / HST / PST tracking",
+  "CRA-ready expense reports",
+  "Multi-device sync",
+  "In-app support",
+  "iOS & Android apps",
+];
+
+const US_FEATURES = [
+  "Unlimited receipt scanning",
+  "Expense & mileage tracking",
+  "Sales tax tracking",
+  "IRS-ready expense reports",
+  "Multi-device sync",
+  "In-app support",
+  "iOS & Android apps",
+];
 
 const CA_PLANS: Plan[] = [
   {
@@ -45,13 +69,6 @@ const CA_PLANS: Plan[] = [
     originalPrice: "6.49",
     period: "/ week",
     currency: "CAD",
-    features: [
-      "Unlimited receipt scanning",
-      "Expense & mileage tracking",
-      "GST / HST / PST tracking",
-      "CRA-ready expense reports",
-      "iOS & Android apps",
-    ],
   },
   {
     id: "month",
@@ -60,15 +77,7 @@ const CA_PLANS: Plan[] = [
     originalPrice: "15.99",
     period: "/ month",
     currency: "CAD",
-    imageClassName:
-      "pointer-events-none absolute bottom-0 -right-44 z-0 w-[34rem] select-none object-contain sm:-right-48 sm:w-[36rem]",
     popular: true,
-    features: [
-      "Everything in Weekly",
-      "Unlimited cloud storage",
-      "Multi-device sync",
-      "Priority support",
-    ],
   },
   {
     id: "year",
@@ -78,10 +87,7 @@ const CA_PLANS: Plan[] = [
     period: "/ year",
     currency: "CAD",
     badge: "Best Deal",
-    imageClassName:
-      "pointer-events-none absolute bottom-0 -right-44 z-0 w-[34rem] select-none object-contain sm:-right-48 sm:w-[36rem]",
-    featuresMaxW: "max-w-[55%]",
-    features: ["Everything in Monthly", "Save 13%", "Best value for long-term tracking"],
+    discountLabel: "Save 13%",
   },
 ];
 
@@ -93,13 +99,6 @@ const US_PLANS: Plan[] = [
     originalPrice: "5.19",
     period: "/ week",
     currency: "USD",
-    features: [
-      "Unlimited receipt scanning",
-      "Expense & mileage tracking",
-      "Sales tax tracking",
-      "IRS-ready expense reports",
-      "iOS & Android apps",
-    ],
   },
   {
     id: "month",
@@ -108,15 +107,7 @@ const US_PLANS: Plan[] = [
     originalPrice: "12.99",
     period: "/ month",
     currency: "USD",
-    imageClassName:
-      "pointer-events-none absolute bottom-0 -right-44 z-0 w-[34rem] select-none object-contain sm:-right-48 sm:w-[36rem]",
     popular: true,
-    features: [
-      "Everything in Weekly",
-      "Unlimited cloud storage",
-      "Multi-device sync",
-      "Priority support",
-    ],
   },
   {
     id: "year",
@@ -126,10 +117,7 @@ const US_PLANS: Plan[] = [
     period: "/ year",
     currency: "USD",
     badge: "Best Deal",
-    imageClassName:
-      "pointer-events-none absolute bottom-0 -right-44 z-0 w-[34rem] select-none object-contain sm:-right-48 sm:w-[36rem]",
-    featuresMaxW: "max-w-[55%]",
-    features: ["Everything in Monthly", "Save 17%", "Best value for long-term tracking"],
+    discountLabel: "Save 17%",
   },
 ];
 
@@ -162,6 +150,7 @@ function StoreCTA({ isPopular: _isPopular }: { isPopular: boolean }) {
 export function Pricing({ region = "ca" }: { region?: Region }) {
   const plans = region === "us" ? US_PLANS : CA_PLANS;
   const planImages = region === "us" ? US_PLAN_IMAGES : CA_PLAN_IMAGES;
+  const features = region === "us" ? US_FEATURES : CA_FEATURES;
 
   return (
     <section
@@ -185,7 +174,7 @@ export function Pricing({ region = "ca" }: { region?: Region }) {
         {/* Cards */}
         <div className="grid gap-5 sm:grid-cols-3">
           {plans.map((plan) => (
-            <PlanCard key={plan.id} plan={plan} images={planImages} />
+            <PlanCard key={plan.id} plan={plan} images={planImages} features={features} />
           ))}
         </div>
 
@@ -205,9 +194,11 @@ export function Pricing({ region = "ca" }: { region?: Region }) {
 function PlanCard({
   plan,
   images,
+  features,
 }: {
   plan: Plan;
   images: Record<string, { src: string; alt: string }>;
+  features: string[];
 }) {
   const isPopular = plan.popular === true;
   const hasBadge = isPopular || !!plan.badge;
@@ -257,10 +248,7 @@ function PlanCard({
             aria-hidden
             loading="lazy"
             decoding="async"
-            className={
-              plan.imageClassName ??
-              "pointer-events-none absolute bottom-0 -right-36 z-0 w-[34rem] select-none object-contain sm:-right-40 sm:w-[36rem]"
-            }
+            className="pointer-events-none absolute bottom-0 -right-44 z-0 w-[34rem] select-none object-contain sm:-right-48 sm:w-[36rem]"
           />
         )}
 
@@ -308,6 +296,18 @@ function PlanCard({
             </p>
           )}
 
+          {/* Discount pill — savings from the billing period, not a feature */}
+          {plan.discountLabel && (
+            <span
+              className={[
+                "mt-2 w-fit rounded-full px-2.5 py-0.5 font-sans text-xs font-semibold",
+                isPopular ? "bg-white/15 text-white" : "bg-[#fed7aa] text-black",
+              ].join(" ")}
+            >
+              {plan.discountLabel}
+            </span>
+          )}
+
           {/* Divider — max-w-[60%] keeps it in the text column, away from the peeking animal image */}
           <div
             className={[
@@ -316,9 +316,9 @@ function PlanCard({
             ].join(" ")}
           />
 
-          {/* Features */}
-          <ul className={`flex flex-1 flex-col gap-3 ${plan.featuresMaxW ?? ""}`}>
-            {plan.features.map((f) => (
+          {/* Features — identical across all plans (see CA_FEATURES/US_FEATURES); max-w-[60%] keeps text away from the peeking animal image */}
+          <ul className="flex flex-1 flex-col gap-2.5 max-w-[60%]">
+            {features.map((f) => (
               <li key={f} className="flex items-start gap-2.5">
                 <span
                   className={[
