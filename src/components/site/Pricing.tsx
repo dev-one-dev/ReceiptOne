@@ -1,7 +1,11 @@
 import { useLayoutEffect, useState } from "react";
 import * as TabsPrimitive from "@radix-ui/react-tabs";
-import caFlagshipImg from "@/assets/figma/mileage-auto/Graphic-Small2.webp";
-import usFlagshipImg from "@/assets/figma/mileage-auto/US/3-removebg-preview.webp";
+import caWeeklyImg from "@/assets/figma/mileage-auto/Graphic-Small.webp";
+import caMonthlyImg from "@/assets/figma/mileage-auto/Graphic-Small2.webp";
+import caAnnualImg from "@/assets/figma/mileage-auto/Graphic-Small3.webp";
+import usWeeklyImg from "@/assets/figma/mileage-auto/US/2.webp";
+import usMonthlyImg from "@/assets/figma/mileage-auto/US/3-removebg-preview.webp";
+import usAnnualImg from "@/assets/figma/mileage-auto/US/1.webp";
 import { StoreBadge } from "@/components/site/StoreBadge";
 import { cn } from "@/lib/utils";
 
@@ -120,6 +124,18 @@ const US_PLANS: Plan[] = [
   },
 ];
 
+const CA_PLAN_IMAGES: Record<string, string> = {
+  week: caWeeklyImg,
+  month: caMonthlyImg,
+  year: caAnnualImg,
+};
+
+const US_PLAN_IMAGES: Record<string, string> = {
+  week: usWeeklyImg,
+  month: usMonthlyImg,
+  year: usAnnualImg,
+};
+
 function formatPrice(plan: Plan, price: string) {
   return plan.currency === "CAD" ? `CAD ${price}` : `$${price}`;
 }
@@ -151,7 +167,7 @@ function StoreCTA() {
 export function Pricing({ region = "ca" }: { region?: Region }) {
   const plans = region === "us" ? US_PLANS : CA_PLANS;
   const features = region === "us" ? US_FEATURES : CA_FEATURES;
-  const flagshipImg = region === "us" ? usFlagshipImg : caFlagshipImg;
+  const planImages = region === "us" ? US_PLAN_IMAGES : CA_PLAN_IMAGES;
 
   const [selectedId, setSelectedId] = useState<string>("month");
   const selectedPlan = plans.find((p) => p.id === selectedId) ?? plans[0];
@@ -172,7 +188,7 @@ export function Pricing({ region = "ca" }: { region?: Region }) {
     >
       <div className="mx-auto w-full max-w-[1200px]">
         {/* Header */}
-        <div className="mx-auto mb-10 max-w-2xl text-center">
+        <div className="mx-auto mb-6 max-w-2xl text-center">
           <p className="font-sans text-xs font-semibold uppercase tracking-widest text-black/55">
             Pricing
           </p>
@@ -184,41 +200,54 @@ export function Pricing({ region = "ca" }: { region?: Region }) {
           </p>
         </div>
 
-        {/* Period toggle */}
+        {/*
+         * Period toggle — pt-8 on the outer wrapper reserves clearance above
+         * the pill for badges to float in, well clear of the tabs below them
+         * (fixes the earlier bug where -top-0 + a too-small padding let the
+         * badge's own height overlap the tab underneath it).
+         */}
         <TabsPrimitive.Root
           value={selectedId}
           onValueChange={setSelectedId}
-          className="flex flex-col items-center"
+          className="flex flex-col items-center pt-8"
         >
           <TabsPrimitive.List
             aria-label="Billing period"
             className="flex items-center gap-1 rounded-full border border-black/[0.07] bg-white p-1.5 shadow-[0_2px_12px_rgba(0,0,0,0.06)]"
           >
-            {plans.map((plan) => (
-              <div key={plan.id} className="relative pt-3.5">
-                {plan.popular && (
-                  <span className="absolute top-0 left-1/2 z-10 -translate-x-1/2 whitespace-nowrap rounded-full bg-[#f97316] px-2.5 py-0.5 font-sans text-[10px] font-semibold text-white shadow-[0_4px_12px_rgba(249,115,22,0.4)]">
-                    Most Popular
-                  </span>
-                )}
-                {plan.badge && !plan.popular && (
-                  <span className="absolute top-0 left-1/2 z-10 -translate-x-1/2 whitespace-nowrap rounded-full bg-[#fed7aa] px-2.5 py-0.5 font-sans text-[10px] font-semibold text-black shadow-[0_4px_12px_rgba(0,0,0,0.10)]">
-                    {plan.badge}
-                  </span>
-                )}
-                <TabsPrimitive.Trigger
-                  value={plan.id}
-                  className={cn(
-                    "block rounded-full px-5 py-2.5 font-sans text-sm font-semibold outline-none transition-colors focus-visible:ring-2 focus-visible:ring-[#f97316] focus-visible:ring-offset-2 sm:px-6",
-                    plan.id === selectedId
-                      ? "bg-[#f97316] text-white"
-                      : "text-black/55 hover:text-black",
+            {plans.map((plan) => {
+              const badgeText = plan.popular ? "Most Popular" : plan.badge;
+              return (
+                <div key={plan.id} className="relative">
+                  {/* Floats well above the pill (not just above the tab) so it
+                      never touches — let alone visually fuses with — the tab's
+                      own background in either active or inactive state. */}
+                  {badgeText && (
+                    <span
+                      className={cn(
+                        "absolute -top-7 left-1/2 z-10 -translate-x-1/2 whitespace-nowrap rounded-full px-2.5 py-0.5 font-sans text-[10px] font-semibold",
+                        plan.popular
+                          ? "bg-[#f97316] text-white shadow-[0_4px_12px_rgba(249,115,22,0.4)]"
+                          : "bg-[#fed7aa] text-black shadow-[0_4px_12px_rgba(0,0,0,0.10)]",
+                      )}
+                    >
+                      {badgeText}
+                    </span>
                   )}
-                >
-                  {plan.name}
-                </TabsPrimitive.Trigger>
-              </div>
-            ))}
+                  <TabsPrimitive.Trigger
+                    value={plan.id}
+                    className={cn(
+                      "block rounded-full px-5 py-2.5 font-sans text-sm font-semibold outline-none transition-colors sm:px-6",
+                      plan.id === selectedId
+                        ? "bg-black text-white"
+                        : "text-black/55 hover:text-black",
+                    )}
+                  >
+                    {plan.name}
+                  </TabsPrimitive.Trigger>
+                </div>
+              );
+            })}
           </TabsPrimitive.List>
         </TabsPrimitive.Root>
 
@@ -227,15 +256,18 @@ export function Pricing({ region = "ca" }: { region?: Region }) {
           {/*
            * Peek-a-boo asset — z-0, sits behind the z-10 content layer.
            * Anchored to bottom-right; overflow-hidden on the card crops it.
-           * Stays the same regardless of the selected period.
+           * Swaps (with a crossfade, like the price block) to match the
+           * selected period, restoring the per-plan mascot variety the
+           * three-card layout had.
            */}
           <img
-            src={flagshipImg}
+            key={selectedPlan.id}
+            src={planImages[selectedPlan.id]}
             alt=""
             aria-hidden
             loading="lazy"
             decoding="async"
-            className="pointer-events-none absolute bottom-0 -right-36 z-0 w-[28rem] select-none object-contain sm:-right-40 sm:w-[30rem]"
+            className="animate-in fade-in pointer-events-none absolute bottom-0 -right-36 z-0 w-[28rem] select-none object-contain duration-300 sm:-right-40 sm:w-[30rem]"
           />
 
           {/* Content layer — z-10 keeps text and CTA above the asset */}
