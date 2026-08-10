@@ -1,12 +1,4 @@
-import {
-  Outlet,
-  Link,
-  useLocation,
-  createRootRoute,
-  HeadContent,
-  Scripts,
-} from "@tanstack/react-router";
-import { ArrowRight } from "lucide-react";
+import { Outlet, useLocation, createRootRoute, HeadContent, Scripts } from "@tanstack/react-router";
 
 import appCss from "../styles.css?url";
 import { organizationJsonLd, websiteJsonLd } from "@/lib/seo";
@@ -25,33 +17,8 @@ export function NotFoundComponent() {
     <main className="min-h-screen overflow-x-clip bg-[#f5f4f0] font-sans text-black antialiased">
       <Header />
 
-      <section className="px-4 pb-10 pt-24 text-center sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-[440px]">
-          <p className="font-sans text-xs font-semibold uppercase tracking-widest text-black/55">
-            404
-          </p>
-          <h1 className="mt-2 font-display text-3xl font-semibold leading-tight tracking-tight text-black sm:text-4xl">
-            This page doesn&apos;t add up.
-          </h1>
-          <p className="mx-auto mt-2 max-w-sm font-sans text-base leading-relaxed text-black/55">
-            The link may be broken or the page may have moved. Your receipts are still exactly where
-            you left them.
-          </p>
-
-          <div className="mt-6">
-            <NotFoundBeaver />
-          </div>
-
-          <div className="mt-6">
-            <Link
-              to={region === "us" ? "/us" : "/ca"}
-              className="inline-flex items-center gap-2 rounded-full bg-[#f97316] px-6 py-3 font-sans text-sm font-semibold text-white transition-all duration-200 hover:bg-[#ea6c0a] hover:shadow-[0_8px_24px_rgba(249,115,22,0.35)]"
-            >
-              Back to ReceiptOne
-              <ArrowRight className="size-4" aria-hidden />
-            </Link>
-          </div>
-        </div>
+      <section className="px-4 pb-10 pt-24 sm:px-6 lg:px-8">
+        <NotFoundBeaver />
       </section>
 
       <Footer region={region} />
