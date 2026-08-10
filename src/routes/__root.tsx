@@ -1,29 +1,61 @@
-import { Outlet, Link, createRootRoute, HeadContent, Scripts } from "@tanstack/react-router";
+import {
+  Outlet,
+  Link,
+  useLocation,
+  createRootRoute,
+  HeadContent,
+  Scripts,
+} from "@tanstack/react-router";
+import { ArrowRight } from "lucide-react";
 
 import appCss from "../styles.css?url";
 import { organizationJsonLd, websiteJsonLd } from "@/lib/seo";
 import { Toaster } from "@/components/ui/sonner";
 import { AuthProvider } from "@/integrations/firebase/auth-context";
+import { Header } from "@/components/site/Header";
+import { Footer } from "@/components/site/Footer";
+import { NotFoundBeaver } from "@/components/site/NotFoundBeaver";
 
-function NotFoundComponent() {
+export function NotFoundComponent() {
+  const location = useLocation();
+  const isUS = location.pathname.startsWith("/us");
+  const region = isUS ? "us" : "ca";
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
-      <div className="max-w-md text-center">
-        <h1 className="text-7xl font-bold text-foreground">404</h1>
-        <h2 className="mt-4 text-xl font-semibold text-foreground">Page not found</h2>
-        <p className="mt-2 text-sm text-muted-foreground">
-          The page you're looking for doesn't exist or has been moved.
-        </p>
-        <div className="mt-6">
-          <Link
-            to="/"
-            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
-          >
-            Go home
-          </Link>
+    <main className="min-h-screen overflow-x-clip bg-[#f5f4f0] font-sans text-black antialiased">
+      <Header />
+
+      <section className="px-4 pb-10 pt-24 text-center sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-[440px]">
+          <p className="font-sans text-xs font-semibold uppercase tracking-widest text-black/55">
+            404
+          </p>
+          <h1 className="mt-2 font-display text-3xl font-semibold leading-tight tracking-tight text-black sm:text-4xl">
+            This page doesn&apos;t add up.
+          </h1>
+          <p className="mx-auto mt-2 max-w-sm font-sans text-base leading-relaxed text-black/55">
+            The link may be broken or the page may have moved. Your receipts are still exactly where
+            you left them.
+          </p>
+
+          <div className="mt-6">
+            <NotFoundBeaver />
+          </div>
+
+          <div className="mt-6">
+            <Link
+              to={region === "us" ? "/us" : "/ca"}
+              className="inline-flex items-center gap-2 rounded-full bg-[#f97316] px-6 py-3 font-sans text-sm font-semibold text-white transition-all duration-200 hover:bg-[#ea6c0a] hover:shadow-[0_8px_24px_rgba(249,115,22,0.35)]"
+            >
+              Back to ReceiptOne
+              <ArrowRight className="size-4" aria-hidden />
+            </Link>
+          </div>
         </div>
-      </div>
-    </div>
+      </section>
+
+      <Footer region={region} />
+    </main>
   );
 }
 
@@ -68,7 +100,6 @@ export const Route = createRootRoute({
   }),
   shellComponent: RootShell,
   component: RootComponent,
-  notFoundComponent: NotFoundComponent,
 });
 
 function RootShell({ children }: { children: React.ReactNode }) {
