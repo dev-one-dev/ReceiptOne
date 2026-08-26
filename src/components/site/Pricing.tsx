@@ -216,7 +216,7 @@ export function Pricing({ region = "ca" }: { region?: Region }) {
                       className={cn(
                         "absolute -top-7 left-1/2 z-10 -translate-x-1/2 whitespace-nowrap rounded-pill px-2.5 py-0.5 font-sans text-nav font-semibold",
                         plan.popular
-                          ? "bg-ember text-white shadow-[0_4px_12px_rgba(249,115,22,0.4)]"
+                          ? "bg-ember text-paper shadow-[0_4px_12px_rgba(249,115,22,0.4)]"
                           : "bg-[#fed7aa] text-ink shadow-[0_4px_12px_rgba(0,0,0,0.10)]",
                       )}
                     >
@@ -227,7 +227,7 @@ export function Pricing({ region = "ca" }: { region?: Region }) {
                     value={plan.id}
                     className={cn(
                       "block rounded-pill px-5 py-2.5 font-sans text-sm font-semibold outline-none transition-colors sm:px-6",
-                      plan.id === selectedId ? "bg-ink text-white" : "text-ink-60 hover:text-ink",
+                      plan.id === selectedId ? "bg-ink text-paper" : "text-ink-60 hover:text-ink",
                     )}
                   >
                     {plan.name}

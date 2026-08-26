@@ -31,9 +31,21 @@
   --color-ink-10: color-mix(in oklab, var(--color-ink) 10%, transparent);
   --color-ink-05: color-mix(in oklab, var(--color-ink) 5%, transparent);
 
-  /* Single hairline for the marketing surface. Named to avoid the
-     existing --color-border, which shadcn applies globally. */
+  /* Paper at alpha — the mirror ladder, for text and borders on the
+     void. Same six steps as ink, so dark sections use the same
+     vocabulary instead of ad-hoc white/45, white/55, white/70. */
+
+  --color-paper-80: color-mix(in oklab, var(--color-paper) 80%, transparent);
+  --color-paper-60: color-mix(in oklab, var(--color-paper) 60%, transparent);
+  --color-paper-40: color-mix(in oklab, var(--color-paper) 40%, transparent);
+  --color-paper-20: color-mix(in oklab, var(--color-paper) 20%, transparent);
+  --color-paper-10: color-mix(in oklab, var(--color-paper) 10%, transparent);
+  --color-paper-05: color-mix(in oklab, var(--color-paper) 5%, transparent);
+
+  /* Two hairlines, one per surface. Named to avoid the existing
+     --color-border, which shadcn applies globally. */
   --color-hairline: var(--color-ink-10);
+  --color-hairline-void: var(--color-paper-20);
 
   /* ── Families ──────────────────────────────────────────────────── */
 
@@ -108,28 +120,35 @@
    shadcn primitives (DialogTitle, CardTitle, SheetTitle) render bare
    h1/h2/h3 and must not inherit a 72px display size.                 */
 
-[data-interactive-page] h1 {
-  font-family: var(--font-display);
-  font-size: var(--text-display);
-  line-height: 1.05;
-  letter-spacing: var(--tracking-display);
-  font-weight: var(--font-weight-semibold);
-}
+/* In @layer base so a Tailwind utility can still override a role where a
+   specific heading genuinely needs to differ. Unlayered rules beat every
+   layered utility regardless of specificity, which would have made these
+   role sizes impossible to opt out of. */
 
-[data-interactive-page] h2 {
-  font-family: var(--font-display);
-  font-size: var(--text-h2);
-  line-height: 1.05;
-  letter-spacing: var(--tracking-display);
-  font-weight: var(--font-weight-semibold);
-}
+@layer base {
+  [data-interactive-page] h1 {
+    font-family: var(--font-display);
+    font-size: var(--text-display);
+    line-height: 1.05;
+    letter-spacing: var(--tracking-display);
+    font-weight: var(--font-weight-semibold);
+  }
 
-[data-interactive-page] h3 {
-  font-family: var(--font-display);
-  font-size: var(--text-h3);
-  line-height: 1.2;
-  letter-spacing: var(--tracking-h3);
-  font-weight: var(--font-weight-semibold);
+  [data-interactive-page] h2 {
+    font-family: var(--font-display);
+    font-size: var(--text-h2);
+    line-height: 1.05;
+    letter-spacing: var(--tracking-display);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  [data-interactive-page] h3 {
+    font-family: var(--font-display);
+    font-size: var(--text-h3);
+    line-height: 1.2;
+    letter-spacing: var(--tracking-h3);
+    font-weight: var(--font-weight-semibold);
+  }
 }
 
 /* The eyebrow. One class, above every section heading without exception —
@@ -137,14 +156,37 @@
    Inter/600/tracking-widest treatment; tracking drops from 0.1em to
    0.025em, so these will read noticeably tighter. That is intended. */
 
-.eyebrow {
-  font-family: var(--font-mono);
-  font-size: var(--text-label);
-  line-height: 1.33;
-  letter-spacing: var(--tracking-mono);
-  text-transform: uppercase;
-  font-weight: var(--font-weight-normal);
-  color: var(--color-ink-60);
+/* In @layer components so a colour utility can still override the resolved
+   colour for a genuine one-off. Everything except colour stays fixed.
+   Colour comes from --eyebrow-color, which the surface sets; the ink value
+   is the fallback, so an eyebrow with no surface context still works. */
+
+@layer components {
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: var(--text-label);
+    line-height: 1.33;
+    letter-spacing: var(--tracking-mono);
+    text-transform: uppercase;
+    font-weight: var(--font-weight-normal);
+    color: var(--eyebrow-color, var(--color-ink-60));
+  }
+}
+
+/* Surface context. Put data-surface="void" on any dark section wrapper and
+   the eyebrow flips without a second class. Size stays 12px on both surfaces
+   — the dark sections should not be running 14px.
+
+   This is a custom-property declaration, not a colour declaration, so it
+   never competes with a utility: .text-paper-80 in @layer utilities sets
+   `color` directly and beats .eyebrow's var() lookup in @layer components
+   regardless of where this block sits. It is in @layer base so the property
+   inherits from the wrapper down to the eyebrow. */
+
+@layer base {
+  [data-surface="void"] {
+    --eyebrow-color: var(--color-paper-60);
+  }
 }
 
 /* ── Accent constraint ──────────────────────────────────────────────

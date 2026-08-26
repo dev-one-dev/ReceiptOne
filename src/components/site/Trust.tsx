@@ -80,13 +80,16 @@ export function Trust({ region = "ca" }: { region?: Region }) {
     region === "us" ? "Built for US tax compliance" : "Built for Canadian tax compliance";
 
   return (
-    <section className="w-full bg-ink px-4 pt-12 pb-6 sm:px-6 sm:pt-16 sm:pb-8 lg:px-8">
+    <section
+      data-surface="void"
+      className="w-full bg-ink px-4 pt-12 pb-6 sm:px-6 sm:pt-16 sm:pb-8 lg:px-8"
+    >
       <div className="mx-auto w-full max-w-[1200px]">
         {/* Header */}
         <div className="mx-auto mb-14 max-w-2xl text-center">
-          <p className="eyebrow text-white/50">Security &amp; compliance</p>
-          <h2 className="mt-3 text-white">{heading}</h2>
-          <p className="mt-4 text-body text-white/50 sm:text-lead">
+          <p className="eyebrow">Security &amp; compliance</p>
+          <h2 className="mt-3 text-paper">{heading}</h2>
+          <p className="mt-4 text-body text-paper-40 sm:text-lead">
             {region === "us"
               ? "AES-256 encryption, IRS-ready records, and 10-year cloud backup — built to protect your data and your deductions."
               : "AES-256 encryption, CRA-ready records, and 10-year cloud backup — built to protect your data and your deductions."}
@@ -98,14 +101,14 @@ export function Trust({ region = "ca" }: { region?: Region }) {
           {items.map((item) => (
             <div
               key={item.title}
-              className="flex flex-col gap-4 rounded-card border border-white/[0.07] bg-white/[0.04] p-6 transition-colors hover:bg-white/[0.07]"
+              className="flex flex-col gap-4 rounded-card border border-hairline-void bg-paper-05 p-6 transition-colors hover:bg-paper-05"
             >
-              <div className="flex size-11 items-center justify-center rounded-card bg-white/[0.08] text-white/70">
+              <div className="flex size-11 items-center justify-center rounded-card bg-paper-10 text-paper-80">
                 <item.Icon />
               </div>
               <div>
-                <h3 className="text-lead tracking-body text-white">{item.title}</h3>
-                <p className="mt-1.5 text-sm text-white/50">{item.desc}</p>
+                <h3 className="text-lead tracking-body text-paper">{item.title}</h3>
+                <p className="mt-1.5 text-sm text-paper-40">{item.desc}</p>
               </div>
             </div>
           ))}

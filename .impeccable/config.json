@@ -14,6 +14,12 @@
         "value": "inter",
         "reason": "Pre-existing brand face; retained only as --default-font-family for dashboard/shadcn surfaces",
         "createdAt": "2026-08-26T05:06:22.072Z"
+      },
+      {
+        "rule": "design-system-font",
+        "value": "inter",
+        "reason": "Retained deliberately as --default-font-family for dashboard/helpdesk/shadcn; documented in DESIGN.md",
+        "createdAt": "2026-08-26T05:35:52.547Z"
       }
     ]
   }

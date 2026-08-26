@@ -60,7 +60,7 @@ export function ContactForm({ region }: { region: Region }) {
   if (submitted) {
     return (
       <div className="rounded-card border border-hairline bg-white p-8 text-center shadow-[0_2px_12px_rgba(0,0,0,0.06)] sm:p-10">
-        <div className="mx-auto flex size-14 items-center justify-center rounded-pill bg-ink text-white">
+        <div className="mx-auto flex size-14 items-center justify-center rounded-pill bg-ink text-paper">
           <CheckIcon />
         </div>
         <p className="mt-5 font-display text-lead font-semibold text-ink">Message sent</p>
@@ -148,7 +148,7 @@ export function ContactForm({ region }: { region: Region }) {
       <button
         type="submit"
         disabled={loading}
-        className="inline-flex w-full items-center justify-center gap-2 rounded-pill bg-ink px-5 py-3 font-display text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40"
+        className="inline-flex w-full items-center justify-center gap-2 rounded-pill bg-ink px-5 py-3 font-display text-sm font-semibold text-paper transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40"
       >
         {loading ? "Sending…" : "Send message"}
       </button>

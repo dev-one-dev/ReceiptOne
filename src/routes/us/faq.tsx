@@ -65,7 +65,7 @@ function USFaqPage() {
             {CATEGORIZED_FAQ_US.map(({ category, items }) => (
               <div key={category}>
                 <div className="mb-4 flex items-center gap-3">
-                  <span className="inline-block rounded-pill bg-ink px-3 py-1 eyebrow text-white">
+                  <span className="inline-block rounded-pill bg-ink px-3 py-1 eyebrow text-paper">
                     {category}
                   </span>
                   <div className="h-px flex-1 bg-ink-05" aria-hidden />
@@ -78,25 +78,25 @@ function USFaqPage() {
       </section>
 
       {/* CTA strip */}
-      <section className="bg-ink py-6 sm:py-8">
+      <section data-surface="void" className="bg-ink py-6 sm:py-8">
         <div className="mx-auto max-w-[1200px] px-4 text-center sm:px-6 lg:px-8">
-          <p className="eyebrow text-white/50">Get Started</p>
-          <h2 className="mt-2 text-white">Start managing your receipts in minutes</h2>
-          <p className="mx-auto mt-2 max-w-md font-sans text-body text-white/55">
+          <p className="eyebrow">Get Started</p>
+          <h2 className="mt-2 text-paper">Start managing your receipts in minutes</h2>
+          <p className="mx-auto mt-2 max-w-md font-sans text-body text-paper-60">
             Built for US freelancers who want to stay IRS-ready without the paperwork headache.
           </p>
           <div className="mt-4 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
             <Link
               to={"/us" as any}
               hash="pricing"
-              className="inline-flex items-center gap-2 rounded-pill bg-ember px-6 py-3 font-sans text-sm font-semibold text-white transition-all duration-200 hover:bg-ember-hover hover:shadow-[0_8px_24px_rgba(249,115,22,0.35)]"
+              className="inline-flex items-center gap-2 rounded-pill bg-ember px-6 py-3 font-sans text-sm font-semibold text-paper transition-all duration-200 hover:bg-ember-hover hover:shadow-[0_8px_24px_rgba(249,115,22,0.35)]"
             >
               See pricing
               <ArrowRight className="size-4" aria-hidden />
             </Link>
             <Link
               to={"/us" as any}
-              className="inline-flex items-center gap-2 rounded-pill border border-white/15 px-6 py-3 font-sans text-sm font-semibold text-white transition-all duration-200 hover:border-white/40 hover:bg-white/5"
+              className="inline-flex items-center gap-2 rounded-pill border border-hairline-void px-6 py-3 font-sans text-sm font-semibold text-paper transition-all duration-200 hover:border-paper-40 hover:bg-paper-05"
             >
               Learn more
             </Link>

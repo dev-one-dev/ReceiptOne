@@ -71,7 +71,7 @@ function ArticleNotFound() {
         </p>
         <Link
           to={"/articles/" as any}
-          className="mt-8 inline-flex items-center gap-2 rounded-pill border border-hairline px-5 py-2.5 font-sans text-sm font-semibold text-ink transition-all duration-200 hover:border-ink hover:bg-ink hover:text-white"
+          className="mt-8 inline-flex items-center gap-2 rounded-pill border border-hairline px-5 py-2.5 font-sans text-sm font-semibold text-ink transition-all duration-200 hover:border-ink hover:bg-ink hover:text-paper"
         >
           <ArrowLeft className="size-4" aria-hidden />
           Back to all articles
@@ -179,25 +179,25 @@ function RelatedCard({ article }: { article: Article }) {
 
 function CtaBanner() {
   return (
-    <section className="bg-ink py-16 sm:py-20">
+    <section data-surface="void" className="bg-ink py-16 sm:py-20">
       <div className="mx-auto max-w-[1200px] px-4 text-center sm:px-6 lg:px-8">
-        <p className="eyebrow text-white/50">Get Started</p>
-        <h2 className="mt-3 text-white">Start managing your receipts in minutes</h2>
-        <p className="mx-auto mt-4 max-w-md font-sans text-body text-white/55">
+        <p className="eyebrow">Get Started</p>
+        <h2 className="mt-3 text-paper">Start managing your receipts in minutes</h2>
+        <p className="mx-auto mt-4 max-w-md font-sans text-body text-paper-60">
           Built for Canadian freelancers who want to stay CRA-ready without the paperwork headache.
         </p>
         <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
           <Link
             to={"/ca" as any}
             hash="pricing"
-            className="inline-flex items-center gap-2 rounded-pill bg-ember px-6 py-3 font-sans text-sm font-semibold text-white transition-all duration-200 hover:bg-ember-hover hover:shadow-[0_8px_24px_rgba(249,115,22,0.35)]"
+            className="inline-flex items-center gap-2 rounded-pill bg-ember px-6 py-3 font-sans text-sm font-semibold text-paper transition-all duration-200 hover:bg-ember-hover hover:shadow-[0_8px_24px_rgba(249,115,22,0.35)]"
           >
             See pricing
             <ArrowRight className="size-4" aria-hidden />
           </Link>
           <Link
             to={"/ca" as any}
-            className="inline-flex items-center gap-2 rounded-pill border border-white/15 px-6 py-3 font-sans text-sm font-semibold text-white transition-all duration-200 hover:border-white/40 hover:bg-white/5"
+            className="inline-flex items-center gap-2 rounded-pill border border-hairline-void px-6 py-3 font-sans text-sm font-semibold text-paper transition-all duration-200 hover:border-paper-40 hover:bg-paper-05"
           >
             Learn more
           </Link>

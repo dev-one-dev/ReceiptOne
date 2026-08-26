@@ -165,7 +165,7 @@ export function ArticlesSection({
 
             <Link
               to={`${basePath}/` as any}
-              className="inline-flex shrink-0 items-center gap-2 self-start rounded-pill border border-hairline px-5 py-2.5 font-sans text-sm font-semibold text-ink transition-all duration-200 hover:border-ink hover:bg-ink hover:text-white sm:self-auto"
+              className="inline-flex shrink-0 items-center gap-2 self-start rounded-pill border border-hairline px-5 py-2.5 font-sans text-sm font-semibold text-ink transition-all duration-200 hover:border-ink hover:bg-ink hover:text-paper sm:self-auto"
             >
               All articles
               <ArrowRight className="size-4" aria-hidden />

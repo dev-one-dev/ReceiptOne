@@ -264,7 +264,7 @@ export function FaqAccordion({ items }: { items: QA[] }) {
                  */
                 className={`flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-pill transition-[transform,background-color,color] duration-200 ${
                   isOpen
-                    ? "rotate-45 bg-ink text-white"
+                    ? "rotate-45 bg-ink text-paper"
                     : "bg-ink-10 text-ink group-hover:bg-ink-20"
                 }`}
               >

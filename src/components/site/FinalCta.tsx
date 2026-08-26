@@ -4,7 +4,10 @@ import { ArrowRight } from "lucide-react";
 export function FinalCta() {
   return (
     <section id="final-cta" className="w-full px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-24">
-      <div className="relative mx-auto w-full max-w-[1200px] overflow-hidden rounded-card bg-ink px-6 py-14 text-center sm:px-10 sm:py-20 lg:px-16 lg:py-24">
+      <div
+        data-surface="void"
+        className="relative mx-auto w-full max-w-[1200px] overflow-hidden rounded-card bg-ink px-6 py-14 text-center sm:px-10 sm:py-20 lg:px-16 lg:py-24"
+      >
         <div
           aria-hidden
           className="pointer-events-none absolute inset-0 opacity-70"
@@ -15,19 +18,19 @@ export function FinalCta() {
         />
         <div className="relative">
           {/* TODO(eyebrow): this section has no label above its heading. Every
-              other section carries one. Add <p className="eyebrow text-white/50">
+              other section carries one. Add <p className="eyebrow">
               with real copy -- deliberately not invented here. */}
-          <h2 className="mx-auto max-w-3xl text-white">
+          <h2 className="mx-auto max-w-3xl text-paper">
             Ready for cleaner receipts and easier tax time?
           </h2>
-          <p className="mx-auto mt-5 max-w-2xl text-body text-white/70 sm:text-lead">
+          <p className="mx-auto mt-5 max-w-2xl text-body text-paper-80 sm:text-lead">
             Start your 7-day free trial and keep receipts, mileage, and expense reports organized in
             one place.
           </p>
           <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <Link
               to="/signup"
-              className="group inline-flex w-full items-center justify-center gap-2 rounded-pill bg-white px-7 py-3.5 font-display text-body font-semibold text-ink transition-transform duration-200 hover:-translate-y-0.5 sm:w-auto"
+              className="group inline-flex w-full items-center justify-center gap-2 rounded-pill bg-paper px-7 py-3.5 font-display text-body font-semibold text-ink transition-transform duration-200 hover:-translate-y-0.5 sm:w-auto"
             >
               Start 7-day free trial
               <ArrowRight
@@ -37,12 +40,12 @@ export function FinalCta() {
             </Link>
             <Link
               to="/login"
-              className="inline-flex w-full items-center justify-center rounded-pill border border-white/25 px-7 py-3.5 text-lead tracking-body text-white transition-colors hover:bg-white/10 sm:w-auto"
+              className="inline-flex w-full items-center justify-center rounded-pill border border-hairline-void px-7 py-3.5 text-lead tracking-body text-paper transition-colors hover:bg-paper-10 sm:w-auto"
             >
               Log in
             </Link>
           </div>
-          <p className="mt-5 text-sm text-white/55">
+          <p className="mt-5 text-sm text-paper-60">
             Cancel anytime · Export anytime · 7-day free trial
           </p>
         </div>

@@ -245,7 +245,7 @@ export function Header() {
               </Link>
               <Link
                 to="/signup"
-                className="shrink-0 whitespace-nowrap rounded-pill bg-ink px-3 py-2 font-display text-body font-semibold text-white transition-opacity hover:opacity-90"
+                className="shrink-0 whitespace-nowrap rounded-pill bg-ink px-3 py-2 font-display text-body font-semibold text-paper transition-opacity hover:opacity-90"
               >
                 Join now
               </Link>
@@ -303,7 +303,7 @@ export function Header() {
               <Link
                 to="/signup"
                 onClick={() => setMobileNavOpen(false)}
-                className="block w-full rounded-pill bg-ink py-3 text-center font-display text-body font-semibold text-white transition-opacity hover:opacity-90"
+                className="block w-full rounded-pill bg-ink py-3 text-center font-display text-body font-semibold text-paper transition-opacity hover:opacity-90"
               >
                 Join now
               </Link>

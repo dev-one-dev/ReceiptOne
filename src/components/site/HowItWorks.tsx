@@ -74,7 +74,7 @@ export function HowItWorks({ region = "ca" }: { region?: Region }) {
                 className="group relative flex flex-col rounded-card border border-hairline bg-white p-6 shadow-[0_2px_12px_rgba(0,0,0,0.06)] transition-all duration-300 hover:-translate-y-1 hover:border-hairline hover:shadow-[0_20px_40px_-20px_rgba(0,0,0,0.18)] sm:p-8"
               >
                 <div className="flex items-center justify-between">
-                  <div className="inline-flex size-12 items-center justify-center rounded-card bg-ink text-white">
+                  <div className="inline-flex size-12 items-center justify-center rounded-card bg-ink text-paper">
                     <Icon className="size-6" aria-hidden />
                   </div>
                   <span
