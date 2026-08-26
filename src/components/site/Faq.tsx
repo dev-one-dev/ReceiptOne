@@ -241,7 +241,7 @@ export function FaqAccordion({ items }: { items: QA[] }) {
              * narrow. We only animate the three visual properties that change on
              * hover/open. transform is excluded to prevent card-lift side effects.
              */
-            className={`group rounded-3xl bg-white px-5 py-4 shadow-sm transition-[box-shadow,background-color,border-color] duration-200 hover:bg-black/[0.015] md:px-6 md:py-5 ${
+            className={`group rounded-card bg-white px-5 py-4 shadow-sm transition-[box-shadow,background-color,border-color] duration-200 hover:bg-black/[0.015] md:px-6 md:py-5 ${
               isOpen
                 ? "shadow-[0_18px_40px_-18px_rgba(0,0,0,0.18)] ring-1 ring-black/5"
                 : "border border-black/[0.07]"
@@ -262,7 +262,7 @@ export function FaqAccordion({ items }: { items: QA[] }) {
                  * the icon pushed surrounding text sideways on click, causing a
                  * visible positional jump in the question row.
                  */
-                className={`flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full transition-[transform,background-color,color] duration-200 ${
+                className={`flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-pill transition-[transform,background-color,color] duration-200 ${
                   isOpen
                     ? "rotate-45 bg-black text-white"
                     : "bg-black/10 text-black group-hover:bg-black/20"

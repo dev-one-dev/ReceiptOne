@@ -106,7 +106,7 @@ export function Footer({ region = "ca" }: FooterProps) {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={label}
-                  className="flex size-9 items-center justify-center rounded-full border border-white/10 text-white/40 transition-colors hover:border-white/25 hover:text-white"
+                  className="flex size-9 items-center justify-center rounded-pill border border-white/10 text-white/40 transition-colors hover:border-white/25 hover:text-white"
                 >
                   <Icon className="size-4" />
                 </a>

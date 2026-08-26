@@ -55,12 +55,12 @@ export function TopBanner({ region = "ca" }: { region?: "ca" | "us" }) {
           <div className="relative flex items-center justify-center overflow-visible">
             {/* Radial glow */}
             <div
-              className="pointer-events-none absolute inset-0 scale-110 rounded-full bg-[#f97316]/[0.08] blur-[80px]"
+              className="pointer-events-none absolute inset-0 scale-110 rounded-pill bg-[#f97316]/[0.08] blur-[80px]"
               aria-hidden
             />
             {/* Ground shadow */}
             <div
-              className="pointer-events-none absolute bottom-[3%] left-1/2 h-10 w-4/5 -translate-x-1/2 rounded-full bg-black/[0.13] blur-3xl"
+              className="pointer-events-none absolute bottom-[3%] left-1/2 h-10 w-4/5 -translate-x-1/2 rounded-pill bg-black/[0.13] blur-3xl"
               aria-hidden
             />
             {/* Mascot — dominates right side */}

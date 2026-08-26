@@ -63,10 +63,10 @@ export function Testimonials({ region = "ca" }: { region?: "ca" | "us" }) {
           {personas.map((p) => (
             <figure
               key={p.role}
-              className="flex flex-col gap-4 rounded-3xl border border-black/[0.07] bg-white p-6 shadow-[0_2px_12px_rgba(0,0,0,0.06)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_8px_32px_rgba(0,0,0,0.10)] sm:p-8"
+              className="flex flex-col gap-4 rounded-card border border-black/[0.07] bg-white p-6 shadow-[0_2px_12px_rgba(0,0,0,0.06)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_8px_32px_rgba(0,0,0,0.10)] sm:p-8"
             >
               <div
-                className="flex size-11 shrink-0 items-center justify-center rounded-full bg-black text-white"
+                className="flex size-11 shrink-0 items-center justify-center rounded-pill bg-black text-white"
                 aria-hidden
               >
                 <p.icon className="size-5" />

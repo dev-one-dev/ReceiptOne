@@ -91,7 +91,7 @@ export function InfoCards({ region = "ca" }: { region?: "ca" | "us" }) {
           {FEATURES.map((f, i) => {
             const isEven = i % 2 === 0;
             return (
-              <div key={f.title} className="rounded-3xl bg-white p-8 shadow-sm lg:p-12">
+              <div key={f.title} className="rounded-card bg-white p-8 shadow-sm lg:p-12">
                 <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
                   {/* Text */}
                   <div className="text-center lg:text-left">

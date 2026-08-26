@@ -98,9 +98,9 @@ export function Trust({ region = "ca" }: { region?: Region }) {
           {items.map((item) => (
             <div
               key={item.title}
-              className="flex flex-col gap-4 rounded-2xl border border-white/[0.07] bg-white/[0.04] p-6 transition-colors hover:bg-white/[0.07]"
+              className="flex flex-col gap-4 rounded-card border border-white/[0.07] bg-white/[0.04] p-6 transition-colors hover:bg-white/[0.07]"
             >
-              <div className="flex size-11 items-center justify-center rounded-xl bg-white/[0.08] text-white/70">
+              <div className="flex size-11 items-center justify-center rounded-card bg-white/[0.08] text-white/70">
                 <item.Icon />
               </div>
               <div>

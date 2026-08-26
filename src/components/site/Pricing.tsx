@@ -202,7 +202,7 @@ export function Pricing({ region = "ca" }: { region?: Region }) {
         >
           <TabsPrimitive.List
             aria-label="Billing period"
-            className="flex items-center gap-1 rounded-full border border-black/[0.07] bg-white p-1.5 shadow-[0_2px_12px_rgba(0,0,0,0.06)]"
+            className="flex items-center gap-1 rounded-pill border border-black/[0.07] bg-white p-1.5 shadow-[0_2px_12px_rgba(0,0,0,0.06)]"
           >
             {plans.map((plan) => {
               const badgeText = plan.popular ? "Most Popular" : plan.badge;
@@ -214,7 +214,7 @@ export function Pricing({ region = "ca" }: { region?: Region }) {
                   {badgeText && (
                     <span
                       className={cn(
-                        "absolute -top-7 left-1/2 z-10 -translate-x-1/2 whitespace-nowrap rounded-full px-2.5 py-0.5 font-sans text-nav font-semibold",
+                        "absolute -top-7 left-1/2 z-10 -translate-x-1/2 whitespace-nowrap rounded-pill px-2.5 py-0.5 font-sans text-nav font-semibold",
                         plan.popular
                           ? "bg-[#f97316] text-white shadow-[0_4px_12px_rgba(249,115,22,0.4)]"
                           : "bg-[#fed7aa] text-black shadow-[0_4px_12px_rgba(0,0,0,0.10)]",
@@ -226,7 +226,7 @@ export function Pricing({ region = "ca" }: { region?: Region }) {
                   <TabsPrimitive.Trigger
                     value={plan.id}
                     className={cn(
-                      "block rounded-full px-5 py-2.5 font-sans text-sm font-semibold outline-none transition-colors sm:px-6",
+                      "block rounded-pill px-5 py-2.5 font-sans text-sm font-semibold outline-none transition-colors sm:px-6",
                       plan.id === selectedId
                         ? "bg-black text-white"
                         : "text-black/55 hover:text-black",
@@ -241,7 +241,7 @@ export function Pricing({ region = "ca" }: { region?: Region }) {
         </TabsPrimitive.Root>
 
         {/* Card */}
-        <div className="relative mx-auto mt-8 w-full max-w-xl overflow-hidden rounded-2xl border border-black/[0.07] bg-white p-7 shadow-[0_2px_12px_rgba(0,0,0,0.06)] sm:p-9">
+        <div className="relative mx-auto mt-8 w-full max-w-xl overflow-hidden rounded-card border border-black/[0.07] bg-white p-7 shadow-[0_2px_12px_rgba(0,0,0,0.06)] sm:p-9">
           {/*
            * Peek-a-boo asset — z-0, sits behind the z-10 content layer.
            * Anchored to bottom-right; overflow-hidden on the card crops it.
@@ -309,7 +309,7 @@ export function Pricing({ region = "ca" }: { region?: Region }) {
                     )}
 
                     {label && (
-                      <span className="mt-2 inline-block w-fit rounded-full bg-[#fed7aa] px-2.5 py-0.5 font-sans text-label font-semibold text-black">
+                      <span className="mt-2 inline-block w-fit rounded-pill bg-[#fed7aa] px-2.5 py-0.5 font-sans text-label font-semibold text-black">
                         {label}
                       </span>
                     )}
@@ -326,7 +326,7 @@ export function Pricing({ region = "ca" }: { region?: Region }) {
               {features.map((f) => (
                 <li key={f} className="flex items-start gap-2.5">
                   <span
-                    className="mt-0.5 flex size-4 shrink-0 items-center justify-center rounded-full bg-black/[0.06]"
+                    className="mt-0.5 flex size-4 shrink-0 items-center justify-center rounded-pill bg-black/[0.06]"
                     aria-hidden
                   >
                     <CheckIcon />

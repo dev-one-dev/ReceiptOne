@@ -65,7 +65,7 @@ function USFaqPage() {
             {CATEGORIZED_FAQ_US.map(({ category, items }) => (
               <div key={category}>
                 <div className="mb-4 flex items-center gap-3">
-                  <span className="inline-block rounded-full bg-black px-3 py-1 eyebrow text-white">
+                  <span className="inline-block rounded-pill bg-black px-3 py-1 eyebrow text-white">
                     {category}
                   </span>
                   <div className="h-px flex-1 bg-black/[0.07]" aria-hidden />
@@ -89,14 +89,14 @@ function USFaqPage() {
             <Link
               to={"/us" as any}
               hash="pricing"
-              className="inline-flex items-center gap-2 rounded-full bg-[#f97316] px-6 py-3 font-sans text-sm font-semibold text-white transition-all duration-200 hover:bg-[#ea6c0a] hover:shadow-[0_8px_24px_rgba(249,115,22,0.35)]"
+              className="inline-flex items-center gap-2 rounded-pill bg-[#f97316] px-6 py-3 font-sans text-sm font-semibold text-white transition-all duration-200 hover:bg-[#ea6c0a] hover:shadow-[0_8px_24px_rgba(249,115,22,0.35)]"
             >
               See pricing
               <ArrowRight className="size-4" aria-hidden />
             </Link>
             <Link
               to={"/us" as any}
-              className="inline-flex items-center gap-2 rounded-full border border-white/15 px-6 py-3 font-sans text-sm font-semibold text-white transition-all duration-200 hover:border-white/40 hover:bg-white/5"
+              className="inline-flex items-center gap-2 rounded-pill border border-white/15 px-6 py-3 font-sans text-sm font-semibold text-white transition-all duration-200 hover:border-white/40 hover:bg-white/5"
             >
               Learn more
             </Link>

@@ -71,10 +71,10 @@ export function HowItWorks({ region = "ca" }: { region?: Region }) {
             return (
               <li
                 key={step.title}
-                className="group relative flex flex-col rounded-3xl border border-black/[0.07] bg-white p-6 shadow-[0_2px_12px_rgba(0,0,0,0.06)] transition-all duration-300 hover:-translate-y-1 hover:border-black/15 hover:shadow-[0_20px_40px_-20px_rgba(0,0,0,0.18)] sm:p-8"
+                className="group relative flex flex-col rounded-card border border-black/[0.07] bg-white p-6 shadow-[0_2px_12px_rgba(0,0,0,0.06)] transition-all duration-300 hover:-translate-y-1 hover:border-black/15 hover:shadow-[0_20px_40px_-20px_rgba(0,0,0,0.18)] sm:p-8"
               >
                 <div className="flex items-center justify-between">
-                  <div className="inline-flex size-12 items-center justify-center rounded-2xl bg-black text-white">
+                  <div className="inline-flex size-12 items-center justify-center rounded-card bg-black text-white">
                     <Icon className="size-6" aria-hidden />
                   </div>
                   <span

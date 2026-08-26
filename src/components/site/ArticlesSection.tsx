@@ -23,7 +23,7 @@ function CategoryPill({
 }) {
   return (
     <span
-      className={`inline-block rounded-full px-3 py-1 eyebrow ${
+      className={`inline-block rounded-pill px-3 py-1 eyebrow ${
         variant === "featured" ? "bg-[#f97316]/10 text-[#f97316]" : "bg-black/[0.06] text-black/55"
       }`}
     >
@@ -39,7 +39,7 @@ function FeaturedCard({ article, basePath }: { article: Article; basePath: strin
     <Link
       to={`${basePath}/$slug` as any}
       params={{ slug: article.slug } as any}
-      className="group flex h-full flex-col overflow-hidden rounded-2xl border border-black/[0.07] bg-white shadow-[0_2px_12px_rgba(0,0,0,0.06)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_40px_rgba(0,0,0,0.10)]"
+      className="group flex h-full flex-col overflow-hidden rounded-card border border-black/[0.07] bg-white shadow-[0_2px_12px_rgba(0,0,0,0.06)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_40px_rgba(0,0,0,0.10)]"
     >
       {/* Image */}
       <div className="overflow-hidden">
@@ -90,7 +90,7 @@ function SmallCard({ article, basePath }: { article: Article; basePath: string }
     <Link
       to={`${basePath}/$slug` as any}
       params={{ slug: article.slug } as any}
-      className="group flex h-full flex-col overflow-hidden rounded-2xl border border-black/[0.07] bg-white shadow-[0_2px_12px_rgba(0,0,0,0.06)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_40px_rgba(0,0,0,0.10)]"
+      className="group flex h-full flex-col overflow-hidden rounded-card border border-black/[0.07] bg-white shadow-[0_2px_12px_rgba(0,0,0,0.06)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_40px_rgba(0,0,0,0.10)]"
     >
       {/* Image */}
       <div className="overflow-hidden">
@@ -165,7 +165,7 @@ export function ArticlesSection({
 
             <Link
               to={`${basePath}/` as any}
-              className="inline-flex shrink-0 items-center gap-2 self-start rounded-full border border-black/15 px-5 py-2.5 font-sans text-sm font-semibold text-black transition-all duration-200 hover:border-black hover:bg-black hover:text-white sm:self-auto"
+              className="inline-flex shrink-0 items-center gap-2 self-start rounded-pill border border-black/15 px-5 py-2.5 font-sans text-sm font-semibold text-black transition-all duration-200 hover:border-black hover:bg-black hover:text-white sm:self-auto"
             >
               All articles
               <ArrowRight className="size-4" aria-hidden />

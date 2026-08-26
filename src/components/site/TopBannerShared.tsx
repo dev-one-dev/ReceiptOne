@@ -13,7 +13,7 @@ export function Avatar({
     <img
       src={src}
       alt={alt}
-      className={`size-11 rounded-full border-[3px] border-white object-cover shadow-sm${offset ? " -ml-3" : ""}`}
+      className={`size-11 rounded-pill border-[3px] border-white object-cover shadow-sm${offset ? " -ml-3" : ""}`}
       loading="lazy"
     />
   );

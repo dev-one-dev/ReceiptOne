@@ -54,7 +54,7 @@ export function StoreBadge({
       rel="noopener noreferrer"
       aria-label={ariaLabel}
       className={cn(
-        "inline-flex h-11 items-center gap-2 rounded-xl border px-3.5 font-display",
+        "inline-flex h-11 items-center gap-2 rounded-card border px-3.5 font-display",
         transitionClass,
         FILL_STYLES[platform][variant],
         className,

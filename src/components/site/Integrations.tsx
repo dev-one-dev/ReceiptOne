@@ -66,7 +66,7 @@ export function Integrations() {
           {INTEGRATIONS.map((integration) => (
             <div
               key={integration.name}
-              className="flex flex-col gap-3 rounded-2xl border border-black/[0.07] bg-white p-5 shadow-[0_2px_12px_rgba(0,0,0,0.06)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_40px_rgba(0,0,0,0.10)]"
+              className="flex flex-col gap-3 rounded-card border border-black/[0.07] bg-white p-5 shadow-[0_2px_12px_rgba(0,0,0,0.06)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_40px_rgba(0,0,0,0.10)]"
             >
               <div className="flex items-start justify-between gap-2">
                 {integration.brand === "logo" ? (
@@ -76,12 +76,12 @@ export function Integrations() {
                     className={`${integration.logoHeightClassName ?? "h-5"} w-auto object-contain`}
                   />
                 ) : (
-                  <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-black/[0.05] text-black/45">
+                  <span className="flex size-9 shrink-0 items-center justify-center rounded-pill bg-black/[0.05] text-black/45">
                     <integration.icon className="size-4" aria-hidden />
                   </span>
                 )}
                 {integration.comingSoon && (
-                  <span className="shrink-0 rounded-full bg-black/[0.05] px-2.5 py-1 text-label font-medium text-black/55">
+                  <span className="shrink-0 rounded-pill bg-black/[0.05] px-2.5 py-1 text-label font-medium text-black/55">
                     Coming soon
                   </span>
                 )}
