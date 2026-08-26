@@ -191,7 +191,7 @@ export const CATEGORIZED_FAQ_US: { category: string; items: QA[] }[] = [
  *    Because all cards sit in a stacked list, this vertical shift caused the
  *    cards below to visually "jump" relative to the hovered one, making the
  *    whole list feel unstable. Replaced with a pure background-color tint
- *    (hover:bg-black/[0.015]) which signals interactivity without moving anything.
+ *    (hover:bg-ink-05) which signals interactivity without moving anything.
  *
  * 2. REMOVED: transition-all on the <li> card.
  *    `transition-all` intercepts EVERY CSS property change, including any
@@ -241,10 +241,10 @@ export function FaqAccordion({ items }: { items: QA[] }) {
              * narrow. We only animate the three visual properties that change on
              * hover/open. transform is excluded to prevent card-lift side effects.
              */
-            className={`group rounded-card bg-white px-5 py-4 shadow-sm transition-[box-shadow,background-color,border-color] duration-200 hover:bg-black/[0.015] md:px-6 md:py-5 ${
+            className={`group rounded-card bg-white px-5 py-4 shadow-sm transition-[box-shadow,background-color,border-color] duration-200 hover:bg-ink-05 md:px-6 md:py-5 ${
               isOpen
-                ? "shadow-[0_18px_40px_-18px_rgba(0,0,0,0.18)] ring-1 ring-black/5"
-                : "border border-black/[0.07]"
+                ? "shadow-[0_18px_40px_-18px_rgba(0,0,0,0.18)] ring-1 ring-ink-05"
+                : "border border-hairline"
             }`}
           >
             <button
@@ -253,7 +253,7 @@ export function FaqAccordion({ items }: { items: QA[] }) {
               aria-expanded={isOpen}
               className="flex w-full items-center justify-between gap-4 text-left"
             >
-              <span className="font-display text-body font-semibold text-black md:text-body">
+              <span className="font-display text-body font-semibold text-ink md:text-body">
                 {it.q}
               </span>
               <span
@@ -264,8 +264,8 @@ export function FaqAccordion({ items }: { items: QA[] }) {
                  */
                 className={`flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-pill transition-[transform,background-color,color] duration-200 ${
                   isOpen
-                    ? "rotate-45 bg-black text-white"
-                    : "bg-black/10 text-black group-hover:bg-black/20"
+                    ? "rotate-45 bg-ink text-white"
+                    : "bg-ink-10 text-ink group-hover:bg-ink-20"
                 }`}
               >
                 <Plus className="h-4 w-4" strokeWidth={2.5} />
@@ -292,7 +292,7 @@ export function FaqAccordion({ items }: { items: QA[] }) {
                * -translate-y-1 entrance effect was removed because it caused a
                * vertical micro-bounce during the expand animation.
                */}
-              <p className="overflow-hidden font-display text-sm text-black/60 md:text-body">
+              <p className="overflow-hidden font-display text-sm text-ink-60 md:text-body">
                 {it.a}
                 {it.link && (
                   <>
@@ -300,7 +300,7 @@ export function FaqAccordion({ items }: { items: QA[] }) {
                     <Link
                       to={it.link.to as any}
                       params={it.link.slug ? ({ slug: it.link.slug } as any) : undefined}
-                      className="font-medium text-black underline underline-offset-2 transition-colors duration-150 hover:text-[#f97316]"
+                      className="font-medium text-ink underline underline-offset-2 transition-colors duration-150 hover:text-ember"
                     >
                       {it.link.label}
                     </Link>
@@ -340,7 +340,7 @@ export function Faq({
       {/* Header */}
       <div className="mx-auto mb-10 max-w-2xl text-center">
         <p className="eyebrow">FAQ</p>
-        <h2 className="mt-2 text-black">Everything you need to know</h2>
+        <h2 className="mt-2 text-ink">Everything you need to know</h2>
       </div>
 
       {/* Accordion */}
@@ -350,7 +350,7 @@ export function Faq({
       <div className="mt-6 text-center">
         <Link
           to={helpCenterPath as any}
-          className="inline-flex items-center gap-1.5 font-sans text-sm font-medium text-black/60 transition-colors duration-200 hover:text-black"
+          className="inline-flex items-center gap-1.5 font-sans text-sm font-medium text-ink-60 transition-colors duration-200 hover:text-ink"
         >
           See all help articles in our Help Center
           <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden>

@@ -17,26 +17,26 @@ export function TopBanner({ region = "ca" }: { region?: "ca" | "us" }) {
                 <p className="eyebrow"> with real copy -- deliberately not
                 invented here. */}
             {/* H1 */}
-            <h1 className="text-black">
+            <h1 className="text-ink">
               {region === "us" ? (
                 <>
                   Turn receipts into IRS-ready reports — automatically
-                  <span className="text-[#f97316]">.</span>
+                  <span className="text-ember">.</span>
                 </>
               ) : (
                 <>
                   Turn receipts into CRA-ready reports — automatically
-                  <span className="text-[#f97316]">.</span>
+                  <span className="text-ember">.</span>
                 </>
               )}
             </h1>
 
             {/* Subheadline — both paragraphs same size and color */}
             <div className="mt-5 max-w-[500px] font-sans">
-              <p className="text-lead text-black/55 sm:text-lead">
+              <p className="text-lead text-ink-60 sm:text-lead">
                 Snap receipts &amp; mileage, organize expenses, and export audit-ready reports.
               </p>
-              <p className="mt-2 text-lead text-black/55 sm:text-lead">
+              <p className="mt-2 text-lead text-ink-60 sm:text-lead">
                 {region === "us"
                   ? "Built for US freelancers, contractors, and small businesses."
                   : "Built for Canadian freelancers, contractors, and small businesses."}
@@ -45,7 +45,7 @@ export function TopBanner({ region = "ca" }: { region?: "ca" | "us" }) {
 
             {/* Store badges — single horizontal line */}
             <div className="mt-6 flex flex-wrap items-center gap-3">
-              <span className="font-sans text-sm text-black/55">Available on:</span>
+              <span className="font-sans text-sm text-ink-60">Available on:</span>
               <StoreBadge platform="apple" />
               <StoreBadge platform="google" />
             </div>
@@ -55,12 +55,12 @@ export function TopBanner({ region = "ca" }: { region?: "ca" | "us" }) {
           <div className="relative flex items-center justify-center overflow-visible">
             {/* Radial glow */}
             <div
-              className="pointer-events-none absolute inset-0 scale-110 rounded-pill bg-[#f97316]/[0.08] blur-[80px]"
+              className="pointer-events-none absolute inset-0 scale-110 rounded-pill bg-ember/[0.08] blur-[80px]"
               aria-hidden
             />
             {/* Ground shadow */}
             <div
-              className="pointer-events-none absolute bottom-[3%] left-1/2 h-10 w-4/5 -translate-x-1/2 rounded-pill bg-black/[0.13] blur-3xl"
+              className="pointer-events-none absolute bottom-[3%] left-1/2 h-10 w-4/5 -translate-x-1/2 rounded-pill bg-ink-10 blur-3xl"
               aria-hidden
             />
             {/* Mascot — dominates right side */}

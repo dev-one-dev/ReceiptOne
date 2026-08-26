@@ -16,7 +16,7 @@ export function NotFoundComponent() {
   return (
     <main
       data-interactive-page
-      className="min-h-screen overflow-x-clip bg-[#f5f4f0] font-sans text-black antialiased"
+      className="min-h-screen overflow-x-clip bg-paper font-sans text-ink antialiased"
     >
       <Header />
 

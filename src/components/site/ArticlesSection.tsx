@@ -24,7 +24,7 @@ function CategoryPill({
   return (
     <span
       className={`inline-block rounded-pill px-3 py-1 eyebrow ${
-        variant === "featured" ? "bg-[#f97316]/10 text-[#f97316]" : "bg-black/[0.06] text-black/55"
+        variant === "featured" ? "bg-ember/10 text-ember" : "bg-ink-05 text-ink-60"
       }`}
     >
       {label}
@@ -39,7 +39,7 @@ function FeaturedCard({ article, basePath }: { article: Article; basePath: strin
     <Link
       to={`${basePath}/$slug` as any}
       params={{ slug: article.slug } as any}
-      className="group flex h-full flex-col overflow-hidden rounded-card border border-black/[0.07] bg-white shadow-[0_2px_12px_rgba(0,0,0,0.06)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_40px_rgba(0,0,0,0.10)]"
+      className="group flex h-full flex-col overflow-hidden rounded-card border border-hairline bg-white shadow-[0_2px_12px_rgba(0,0,0,0.06)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_40px_rgba(0,0,0,0.10)]"
     >
       {/* Image */}
       <div className="overflow-hidden">
@@ -56,12 +56,12 @@ function FeaturedCard({ article, basePath }: { article: Article; basePath: strin
       <div className="flex flex-1 flex-col p-4 sm:p-5">
         <CategoryPill label={article.category} variant="featured" />
 
-        <h3 className="mt-2 text-h3 text-black">{article.title}</h3>
+        <h3 className="mt-2 text-h3 text-ink">{article.title}</h3>
 
-        <p className="mt-1.5 flex-1 font-sans text-body text-black/60">{article.excerpt}</p>
+        <p className="mt-1.5 flex-1 font-sans text-body text-ink-60">{article.excerpt}</p>
 
         {/* Meta row */}
-        <div className="mt-3 flex items-center gap-4 text-sm text-black/55">
+        <div className="mt-3 flex items-center gap-4 text-sm text-ink-60">
           <span className="flex items-center gap-1.5">
             <Clock className="size-3.5" aria-hidden />
             {article.readTime} min read
@@ -71,7 +71,7 @@ function FeaturedCard({ article, basePath }: { article: Article; basePath: strin
         </div>
 
         {/* CTA */}
-        <div className="mt-3 flex items-center gap-1.5 font-sans text-sm font-semibold text-[#f97316]">
+        <div className="mt-3 flex items-center gap-1.5 font-sans text-sm font-semibold text-ember">
           Read article
           <ArrowRight
             className="size-4 transition-transform duration-200 group-hover:translate-x-1"
@@ -90,7 +90,7 @@ function SmallCard({ article, basePath }: { article: Article; basePath: string }
     <Link
       to={`${basePath}/$slug` as any}
       params={{ slug: article.slug } as any}
-      className="group flex h-full flex-col overflow-hidden rounded-card border border-black/[0.07] bg-white shadow-[0_2px_12px_rgba(0,0,0,0.06)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_40px_rgba(0,0,0,0.10)]"
+      className="group flex h-full flex-col overflow-hidden rounded-card border border-hairline bg-white shadow-[0_2px_12px_rgba(0,0,0,0.06)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_40px_rgba(0,0,0,0.10)]"
     >
       {/* Image */}
       <div className="overflow-hidden">
@@ -107,10 +107,10 @@ function SmallCard({ article, basePath }: { article: Article; basePath: string }
       <div className="flex flex-1 flex-col p-3">
         <CategoryPill label={article.category} variant="neutral" />
 
-        <h3 className="mt-1.5 text-lead tracking-body text-black">{article.title}</h3>
+        <h3 className="mt-1.5 text-lead tracking-body text-ink">{article.title}</h3>
 
         {/* Meta row */}
-        <div className="mt-auto pt-2 flex items-center gap-3 text-label text-black/55">
+        <div className="mt-auto pt-2 flex items-center gap-3 text-label text-ink-60">
           <span className="flex items-center gap-1">
             <Clock className="size-3" aria-hidden />
             {article.readTime} min
@@ -156,7 +156,7 @@ export function ArticlesSection({
           <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <p className="eyebrow">Knowledge Base</p>
-              <h2 className="mt-1 text-black">
+              <h2 className="mt-1 text-ink">
                 {region === "us"
                   ? "Tax guides for US freelancers"
                   : "Tax guides for Canadian freelancers"}
@@ -165,7 +165,7 @@ export function ArticlesSection({
 
             <Link
               to={`${basePath}/` as any}
-              className="inline-flex shrink-0 items-center gap-2 self-start rounded-pill border border-black/15 px-5 py-2.5 font-sans text-sm font-semibold text-black transition-all duration-200 hover:border-black hover:bg-black hover:text-white sm:self-auto"
+              className="inline-flex shrink-0 items-center gap-2 self-start rounded-pill border border-hairline px-5 py-2.5 font-sans text-sm font-semibold text-ink transition-all duration-200 hover:border-ink hover:bg-ink hover:text-white sm:self-auto"
             >
               All articles
               <ArrowRight className="size-4" aria-hidden />

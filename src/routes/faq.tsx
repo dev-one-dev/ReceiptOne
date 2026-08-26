@@ -35,7 +35,7 @@ function FaqPage() {
   return (
     <main
       data-interactive-page
-      className="min-h-screen overflow-x-clip bg-[#f5f4f0] font-sans text-black antialiased"
+      className="min-h-screen overflow-x-clip bg-paper font-sans text-ink antialiased"
     >
       <Header />
 
@@ -43,12 +43,12 @@ function FaqPage() {
       <section className="pt-24 pb-4 text-center">
         <div className="mx-auto max-w-[760px] px-4 sm:px-6 lg:px-0">
           <p className="eyebrow">Help Center</p>
-          <h1 className="mt-3 text-black">Frequently asked questions</h1>
-          <p className="mx-auto mt-3 max-w-lg font-sans text-body text-black/55">
+          <h1 className="mt-3 text-ink">Frequently asked questions</h1>
+          <p className="mx-auto mt-3 max-w-lg font-sans text-body text-ink-60">
             Can't find what you're looking for?{" "}
             <Link
               to={"/contact" as any}
-              className="font-medium text-black underline underline-offset-2 transition-colors duration-150 hover:text-[#f97316]"
+              className="font-medium text-ink underline underline-offset-2 transition-colors duration-150 hover:text-ember"
             >
               Reach out to our team
             </Link>{" "}
@@ -65,10 +65,10 @@ function FaqPage() {
               <div key={category}>
                 {/* Category header */}
                 <div className="mb-4 flex items-center gap-3">
-                  <span className="inline-block rounded-pill bg-black px-3 py-1 eyebrow text-white">
+                  <span className="inline-block rounded-pill bg-ink px-3 py-1 eyebrow text-white">
                     {category}
                   </span>
-                  <div className="h-px flex-1 bg-black/[0.07]" aria-hidden />
+                  <div className="h-px flex-1 bg-ink-05" aria-hidden />
                 </div>
 
                 <FaqAccordion items={items} />
@@ -79,7 +79,7 @@ function FaqPage() {
       </section>
 
       {/* CTA strip */}
-      <section className="bg-[#0d0d14] py-6 sm:py-8">
+      <section className="bg-ink py-6 sm:py-8">
         <div className="mx-auto max-w-[1200px] px-4 text-center sm:px-6 lg:px-8">
           <p className="eyebrow text-white/50">Get Started</p>
           <h2 className="mt-2 text-white">Start managing your receipts in minutes</h2>
@@ -91,7 +91,7 @@ function FaqPage() {
             <Link
               to={"/ca" as any}
               hash="pricing"
-              className="inline-flex items-center gap-2 rounded-pill bg-[#f97316] px-6 py-3 font-sans text-sm font-semibold text-white transition-all duration-200 hover:bg-[#ea6c0a] hover:shadow-[0_8px_24px_rgba(249,115,22,0.35)]"
+              className="inline-flex items-center gap-2 rounded-pill bg-ember px-6 py-3 font-sans text-sm font-semibold text-white transition-all duration-200 hover:bg-ember-hover hover:shadow-[0_8px_24px_rgba(249,115,22,0.35)]"
             >
               See pricing
               <ArrowRight className="size-4" aria-hidden />

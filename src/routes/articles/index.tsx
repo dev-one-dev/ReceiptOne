@@ -68,7 +68,7 @@ function ArticlesIndexPage() {
   return (
     <main
       data-interactive-page
-      className="min-h-screen overflow-x-clip bg-[#f5f4f0] font-sans text-black antialiased"
+      className="min-h-screen overflow-x-clip bg-paper font-sans text-ink antialiased"
     >
       <Header />
 
@@ -77,9 +77,9 @@ function ArticlesIndexPage() {
         <div className="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
           <p className="eyebrow">Knowledge Base</p>
 
-          <h1 className="mt-3 text-black">Tax guides for Canadian freelancers</h1>
+          <h1 className="mt-3 text-ink">Tax guides for Canadian freelancers</h1>
 
-          <p className="mx-auto mt-4 max-w-xl font-sans text-body text-black/55 sm:text-lead">
+          <p className="mx-auto mt-4 max-w-xl font-sans text-body text-ink-60 sm:text-lead">
             CRA-ready tips on receipts, GST/HST, mileage, and deductions — written for independent
             contractors and self-employed Canadians.
           </p>
@@ -99,7 +99,7 @@ function ArticlesIndexPage() {
 
 function CtaBanner() {
   return (
-    <section className="bg-[#0d0d14] py-6 sm:py-8">
+    <section className="bg-ink py-6 sm:py-8">
       <div className="mx-auto max-w-[1200px] px-4 text-center sm:px-6 lg:px-8">
         <p className="eyebrow text-white/50">Get Started</p>
         <h2 className="mt-2 text-white">Start managing your receipts in minutes</h2>
@@ -110,7 +110,7 @@ function CtaBanner() {
           <Link
             to={"/ca" as any}
             hash="pricing"
-            className="inline-flex items-center gap-2 rounded-pill bg-[#f97316] px-6 py-3 font-sans text-sm font-semibold text-white transition-all duration-200 hover:bg-[#ea6c0a] hover:shadow-[0_8px_24px_rgba(249,115,22,0.35)]"
+            className="inline-flex items-center gap-2 rounded-pill bg-ember px-6 py-3 font-sans text-sm font-semibold text-white transition-all duration-200 hover:bg-ember-hover hover:shadow-[0_8px_24px_rgba(249,115,22,0.35)]"
           >
             See pricing
             <ArrowRight className="size-4" aria-hidden />

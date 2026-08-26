@@ -60,18 +60,18 @@ function ArticleNotFound() {
   return (
     <main
       data-interactive-page
-      className="min-h-screen overflow-x-clip bg-[#f5f4f0] font-sans text-black antialiased"
+      className="min-h-screen overflow-x-clip bg-paper font-sans text-ink antialiased"
     >
       <Header />
       <div className="mx-auto flex min-h-[60vh] max-w-[760px] flex-col items-center justify-center px-4 py-24 text-center sm:px-6">
         <p className="eyebrow">404</p>
-        <h1 className="mt-3 text-black">Article not found</h1>
-        <p className="mt-4 font-sans text-body text-black/55">
+        <h1 className="mt-3 text-ink">Article not found</h1>
+        <p className="mt-4 font-sans text-body text-ink-60">
           The article you're looking for doesn't exist or may have been moved.
         </p>
         <Link
           to={"/articles/" as any}
-          className="mt-8 inline-flex items-center gap-2 rounded-pill border border-black/15 px-5 py-2.5 font-sans text-sm font-semibold text-black transition-all duration-200 hover:border-black hover:bg-black hover:text-white"
+          className="mt-8 inline-flex items-center gap-2 rounded-pill border border-hairline px-5 py-2.5 font-sans text-sm font-semibold text-ink transition-all duration-200 hover:border-ink hover:bg-ink hover:text-white"
         >
           <ArrowLeft className="size-4" aria-hidden />
           Back to all articles
@@ -88,14 +88,14 @@ function renderBlock(block: ContentBlock, index: number) {
   switch (block.type) {
     case "p":
       return (
-        <p key={index} className="mb-5 font-sans text-body text-black/70">
+        <p key={index} className="mb-5 font-sans text-body text-ink-80">
           {block.text}
         </p>
       );
 
     case "h2":
       return (
-        <h2 key={index} className="mb-4 mt-10 text-h3 text-black">
+        <h2 key={index} className="mb-4 mt-10 text-h3 text-ink">
           {block.text}
         </h2>
       );
@@ -105,8 +105,8 @@ function renderBlock(block: ContentBlock, index: number) {
         <ul key={index} className="mb-5 space-y-3">
           {block.items.map((item, i) => (
             <li key={i} className="flex gap-3">
-              <CheckCircle2 className="mt-0.5 size-5 shrink-0 text-[#f97316]" aria-hidden />
-              <span className="font-sans text-body text-black/70">{item}</span>
+              <CheckCircle2 className="mt-0.5 size-5 shrink-0 text-ember" aria-hidden />
+              <span className="font-sans text-body text-ink-80">{item}</span>
             </li>
           ))}
         </ul>
@@ -116,12 +116,12 @@ function renderBlock(block: ContentBlock, index: number) {
       return (
         <div
           key={index}
-          className="mb-5 overflow-hidden rounded-card border border-black/[0.07] bg-[#f5f4f0]"
+          className="mb-5 overflow-hidden rounded-card border border-hairline bg-paper"
         >
           <div className="flex gap-0">
             {/* Orange left stripe */}
-            <div className="w-1 shrink-0 bg-[#f97316]" aria-hidden />
-            <p className="p-6 font-sans text-body text-black/70">{block.text}</p>
+            <div className="w-1 shrink-0 bg-ember" aria-hidden />
+            <p className="p-6 font-sans text-body text-ink-80">{block.text}</p>
           </div>
         </div>
       );
@@ -146,7 +146,7 @@ function RelatedCard({ article }: { article: Article }) {
     <Link
       to={"/articles/$slug" as any}
       params={{ slug: article.slug } as any}
-      className="group flex flex-col overflow-hidden rounded-card border border-black/[0.07] bg-white shadow-[0_2px_12px_rgba(0,0,0,0.06)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_40px_rgba(0,0,0,0.10)]"
+      className="group flex flex-col overflow-hidden rounded-card border border-hairline bg-white shadow-[0_2px_12px_rgba(0,0,0,0.06)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_40px_rgba(0,0,0,0.10)]"
     >
       <div className="overflow-hidden">
         <img
@@ -158,11 +158,11 @@ function RelatedCard({ article }: { article: Article }) {
         />
       </div>
       <div className="flex flex-1 flex-col p-5">
-        <span className="inline-block rounded-pill bg-black/[0.06] px-3 py-1 eyebrow text-black/55">
+        <span className="inline-block rounded-pill bg-ink-05 px-3 py-1 eyebrow text-ink-60">
           {article.category}
         </span>
-        <h3 className="mt-3 text-lead tracking-body text-black">{article.title}</h3>
-        <div className="mt-auto flex items-center gap-3 pt-4 text-label text-black/55">
+        <h3 className="mt-3 text-lead tracking-body text-ink">{article.title}</h3>
+        <div className="mt-auto flex items-center gap-3 pt-4 text-label text-ink-60">
           <span className="flex items-center gap-1">
             <Clock className="size-3" aria-hidden />
             {article.readTime} min
@@ -179,7 +179,7 @@ function RelatedCard({ article }: { article: Article }) {
 
 function CtaBanner() {
   return (
-    <section className="bg-[#0d0d14] py-16 sm:py-20">
+    <section className="bg-ink py-16 sm:py-20">
       <div className="mx-auto max-w-[1200px] px-4 text-center sm:px-6 lg:px-8">
         <p className="eyebrow text-white/50">Get Started</p>
         <h2 className="mt-3 text-white">Start managing your receipts in minutes</h2>
@@ -190,7 +190,7 @@ function CtaBanner() {
           <Link
             to={"/ca" as any}
             hash="pricing"
-            className="inline-flex items-center gap-2 rounded-pill bg-[#f97316] px-6 py-3 font-sans text-sm font-semibold text-white transition-all duration-200 hover:bg-[#ea6c0a] hover:shadow-[0_8px_24px_rgba(249,115,22,0.35)]"
+            className="inline-flex items-center gap-2 rounded-pill bg-ember px-6 py-3 font-sans text-sm font-semibold text-white transition-all duration-200 hover:bg-ember-hover hover:shadow-[0_8px_24px_rgba(249,115,22,0.35)]"
           >
             See pricing
             <ArrowRight className="size-4" aria-hidden />
@@ -222,7 +222,7 @@ function ArticleDetailPage() {
   return (
     <main
       data-interactive-page
-      className="min-h-screen overflow-x-clip bg-[#f5f4f0] font-sans text-black antialiased"
+      className="min-h-screen overflow-x-clip bg-paper font-sans text-ink antialiased"
     >
       <Header />
 
@@ -230,26 +230,26 @@ function ArticleDetailPage() {
       <div className="mx-auto max-w-[1200px] px-4 pt-28 pb-6 sm:px-6 lg:px-8">
         <nav
           aria-label="breadcrumb"
-          className="flex items-center gap-2 font-sans text-sm text-black/55"
+          className="flex items-center gap-2 font-sans text-sm text-ink-60"
         >
           <Link
             to={"/articles/" as any}
-            className="inline-flex items-center gap-1.5 transition-colors duration-150 hover:text-black"
+            className="inline-flex items-center gap-1.5 transition-colors duration-150 hover:text-ink"
           >
             <ArrowLeft className="size-4" aria-hidden />
             All articles
           </Link>
           <span aria-hidden>/</span>
-          <span className="truncate font-medium text-black/70">{article.category}</span>
+          <span className="truncate font-medium text-ink-80">{article.category}</span>
         </nav>
 
         {article.clusterPillar && article.clusterName && (
-          <p className="mt-3 font-sans text-sm text-black/55">
+          <p className="mt-3 font-sans text-sm text-ink-60">
             Part of the{" "}
             <Link
               to={"/articles/$slug" as any}
               params={{ slug: article.clusterPillar } as any}
-              className="font-medium text-black underline underline-offset-2 transition-colors duration-150 hover:text-[#f97316]"
+              className="font-medium text-ink underline underline-offset-2 transition-colors duration-150 hover:text-ember"
             >
               {article.clusterName}
             </Link>{" "}
@@ -275,18 +275,18 @@ function ArticleDetailPage() {
         {/* Article header */}
         <header className="mx-auto max-w-[760px] px-4 pb-8 pt-10 sm:px-6 lg:px-0">
           {/* Category pill */}
-          <span className="inline-block rounded-pill bg-[#f97316]/10 px-3 py-1 eyebrow text-ember">
+          <span className="inline-block rounded-pill bg-ember/10 px-3 py-1 eyebrow text-ember">
             {article.category}
           </span>
 
           {/* Title */}
-          <h1 className="mt-4 text-black">{article.title}</h1>
+          <h1 className="mt-4 text-ink">{article.title}</h1>
 
           {/* Excerpt / lead */}
-          <p className="mt-4 font-sans text-lead text-black/60">{article.excerpt}</p>
+          <p className="mt-4 font-sans text-lead text-ink-60">{article.excerpt}</p>
 
           {/* Author + meta */}
-          <div className="mt-6 flex flex-wrap items-center gap-4 border-t border-black/[0.07] pt-6">
+          <div className="mt-6 flex flex-wrap items-center gap-4 border-t border-hairline pt-6">
             {/* Author initials avatar */}
             <div className="flex size-10 shrink-0 items-center justify-center rounded-pill bg-[#fed7aa] font-display text-sm font-semibold text-[#9a3412]">
               {article.author.name
@@ -295,11 +295,11 @@ function ArticleDetailPage() {
                 .join("")}
             </div>
             <div className="min-w-0">
-              <p className="font-sans text-sm font-semibold text-black">{article.author.name}</p>
-              <p className="font-sans text-label text-black/55">{article.author.role}</p>
+              <p className="font-sans text-sm font-semibold text-ink">{article.author.name}</p>
+              <p className="font-sans text-label text-ink-60">{article.author.role}</p>
             </div>
 
-            <div className="ml-auto flex items-center gap-4 font-sans text-sm text-black/55">
+            <div className="ml-auto flex items-center gap-4 font-sans text-sm text-ink-60">
               <span className="flex items-center gap-1.5">
                 <Clock className="size-4" aria-hidden />
                 {article.readTime} min read
@@ -317,11 +317,11 @@ function ArticleDetailPage() {
 
         {/* Tags */}
         <div className="mx-auto max-w-[760px] px-4 pb-16 sm:px-6 lg:px-0">
-          <div className="flex flex-wrap gap-2 border-t border-black/[0.07] pt-8">
+          <div className="flex flex-wrap gap-2 border-t border-hairline pt-8">
             {article.tags.map((tag) => (
               <span
                 key={tag}
-                className="rounded-pill bg-black/[0.05] px-3 py-1 font-sans text-label font-medium text-black/60"
+                className="rounded-pill bg-ink-05 px-3 py-1 font-sans text-label font-medium text-ink-60"
               >
                 {tag}
               </span>
@@ -334,7 +334,7 @@ function ArticleDetailPage() {
       {related.length > 0 && (
         <section className="bg-white py-16 sm:py-20">
           <div className="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
-            <h2 className="text-h3 text-black">More guides</h2>
+            <h2 className="text-h3 text-ink">More guides</h2>
             <div className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {related.map((rel) => (
                 <RelatedCard key={rel.slug} article={rel} />

@@ -80,7 +80,7 @@ export function Trust({ region = "ca" }: { region?: Region }) {
     region === "us" ? "Built for US tax compliance" : "Built for Canadian tax compliance";
 
   return (
-    <section className="w-full bg-[#0d0d14] px-4 pt-12 pb-6 sm:px-6 sm:pt-16 sm:pb-8 lg:px-8">
+    <section className="w-full bg-ink px-4 pt-12 pb-6 sm:px-6 sm:pt-16 sm:pb-8 lg:px-8">
       <div className="mx-auto w-full max-w-[1200px]">
         {/* Header */}
         <div className="mx-auto mb-14 max-w-2xl text-center">

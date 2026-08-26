@@ -8,18 +8,18 @@ type StoreBadgeVariant = "light" | "dark";
 
 const FILL_STYLES: Record<StorePlatform, Record<StoreBadgeVariant, string>> = {
   apple: {
-    light: "border-black/12 bg-black text-white hover:opacity-80",
+    light: "border-hairline bg-ink text-white hover:opacity-80",
     dark: "border-white/15 bg-white/[0.07] text-white hover:bg-white/[0.13]",
   },
   google: {
-    light: "border-black/12 bg-white text-black shadow-sm hover:opacity-80",
+    light: "border-hairline bg-white text-ink shadow-sm hover:opacity-80",
     dark: "border-white/15 bg-white/[0.07] text-white hover:bg-white/[0.13]",
   },
 };
 
 const MICRO_LABEL_STYLES: Record<StorePlatform, Record<StoreBadgeVariant, string>> = {
   apple: { light: "text-white/60", dark: "text-white/45" },
-  google: { light: "text-black/60", dark: "text-white/45" },
+  google: { light: "text-ink-60", dark: "text-white/45" },
 };
 
 /**

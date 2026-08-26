@@ -31,7 +31,7 @@ function ContactPage() {
   return (
     <main
       data-interactive-page
-      className="min-h-screen overflow-x-clip bg-[#f5f4f0] font-sans text-black antialiased"
+      className="min-h-screen overflow-x-clip bg-paper font-sans text-ink antialiased"
     >
       <Header />
 
@@ -39,8 +39,8 @@ function ContactPage() {
       <section className="pt-24 pb-4 text-center">
         <div className="mx-auto max-w-[760px] px-4 sm:px-6 lg:px-0">
           <p className="eyebrow">Contact</p>
-          <h1 className="mt-3 text-black">Get in touch</h1>
-          <p className="mx-auto mt-3 max-w-lg font-sans text-body text-black/55">
+          <h1 className="mt-3 text-ink">Get in touch</h1>
+          <p className="mx-auto mt-3 max-w-lg font-sans text-body text-ink-60">
             Questions, feedback, or something not working right? We reply within one business day.
           </p>
         </div>

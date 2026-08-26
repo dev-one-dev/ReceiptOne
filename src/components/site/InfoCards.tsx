@@ -96,14 +96,14 @@ export function InfoCards({ region = "ca" }: { region?: "ca" | "us" }) {
                   {/* Text */}
                   <div className="text-center lg:text-left">
                     <p className="eyebrow text-ember">{f.label}</p>
-                    <h3 className="mt-3 text-black">{f.title}</h3>
-                    <p className="mt-4 text-body text-black/70">{f.desc}</p>
+                    <h3 className="mt-3 text-ink">{f.title}</h3>
+                    <p className="mt-4 text-body text-ink-80">{f.desc}</p>
                   </div>
 
                   {/* Phone mockup — order-first on odd rows puts image left */}
                   <div className={`flex justify-center ${!isEven ? "lg:order-first" : ""}`}>
                     <div className="relative">
-                      <div className="absolute inset-0 rounded-[2.5rem] bg-[#f97316]/10 blur-2xl" />
+                      <div className="absolute inset-0 rounded-[2.5rem] bg-ember/10 blur-2xl" />
                       <img
                         src={f.img}
                         alt={f.alt}

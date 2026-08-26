@@ -75,7 +75,7 @@ export function Footer({ region = "ca" }: FooterProps) {
   };
 
   return (
-    <footer className="w-full bg-[#0d0d14] text-white">
+    <footer className="w-full bg-ink text-white">
       <div className="mx-auto max-w-[1200px] px-4 pt-8 pb-4 sm:px-6 lg:px-8 lg:pt-10">
         {/* Main grid */}
         <div className="grid gap-6 lg:grid-cols-4">

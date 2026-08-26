@@ -56,24 +56,24 @@ export function Testimonials({ region = "ca" }: { region?: "ca" | "us" }) {
       <div className="mx-auto w-full max-w-[1200px]">
         <div className="mb-12 text-center">
           <p className="eyebrow">Who it's for</p>
-          <h2 className="mt-2 text-black">{heading}</h2>
+          <h2 className="mt-2 text-ink">{heading}</h2>
         </div>
 
         <div className="grid gap-5 sm:grid-cols-3">
           {personas.map((p) => (
             <figure
               key={p.role}
-              className="flex flex-col gap-4 rounded-card border border-black/[0.07] bg-white p-6 shadow-[0_2px_12px_rgba(0,0,0,0.06)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_8px_32px_rgba(0,0,0,0.10)] sm:p-8"
+              className="flex flex-col gap-4 rounded-card border border-hairline bg-white p-6 shadow-[0_2px_12px_rgba(0,0,0,0.06)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_8px_32px_rgba(0,0,0,0.10)] sm:p-8"
             >
               <div
-                className="flex size-11 shrink-0 items-center justify-center rounded-pill bg-black text-white"
+                className="flex size-11 shrink-0 items-center justify-center rounded-pill bg-ink text-white"
                 aria-hidden
               >
                 <p.icon className="size-5" />
               </div>
               <figcaption>
-                <p className="font-display text-body font-semibold text-black">{p.role}</p>
-                <p className="mt-2 font-sans text-body text-black/70">{p.description}</p>
+                <p className="font-display text-body font-semibold text-ink">{p.role}</p>
+                <p className="mt-2 font-sans text-body text-ink-80">{p.description}</p>
               </figcaption>
             </figure>
           ))}

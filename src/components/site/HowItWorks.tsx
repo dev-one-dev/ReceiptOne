@@ -61,8 +61,8 @@ export function HowItWorks({ region = "ca" }: { region?: Region }) {
       <div className="mx-auto w-full max-w-[1200px]">
         <div className="mx-auto max-w-2xl text-center">
           <p className="eyebrow">How it works</p>
-          <h2 className="mt-2 text-black">{heading}</h2>
-          <p className="mt-3 text-body text-black/55 sm:text-lead">{sub}</p>
+          <h2 className="mt-2 text-ink">{heading}</h2>
+          <p className="mt-3 text-body text-ink-60 sm:text-lead">{sub}</p>
         </div>
 
         <ol className="mt-10 grid gap-5 sm:gap-6 md:grid-cols-3 lg:mt-12">
@@ -71,21 +71,21 @@ export function HowItWorks({ region = "ca" }: { region?: Region }) {
             return (
               <li
                 key={step.title}
-                className="group relative flex flex-col rounded-card border border-black/[0.07] bg-white p-6 shadow-[0_2px_12px_rgba(0,0,0,0.06)] transition-all duration-300 hover:-translate-y-1 hover:border-black/15 hover:shadow-[0_20px_40px_-20px_rgba(0,0,0,0.18)] sm:p-8"
+                className="group relative flex flex-col rounded-card border border-hairline bg-white p-6 shadow-[0_2px_12px_rgba(0,0,0,0.06)] transition-all duration-300 hover:-translate-y-1 hover:border-hairline hover:shadow-[0_20px_40px_-20px_rgba(0,0,0,0.18)] sm:p-8"
               >
                 <div className="flex items-center justify-between">
-                  <div className="inline-flex size-12 items-center justify-center rounded-card bg-black text-white">
+                  <div className="inline-flex size-12 items-center justify-center rounded-card bg-ink text-white">
                     <Icon className="size-6" aria-hidden />
                   </div>
                   <span
-                    className="font-mono text-5xl font-normal leading-none tracking-mono text-black/[0.06] sm:text-6xl"
+                    className="font-mono text-5xl font-normal leading-none tracking-mono text-ink-05 sm:text-6xl"
                     aria-hidden
                   >
                     0{i + 1}
                   </span>
                 </div>
-                <h3 className="mt-6 text-lead tracking-body text-black">{step.title}</h3>
-                <p className="mt-3 text-body text-black/60 sm:text-body">{step.description}</p>
+                <h3 className="mt-6 text-lead tracking-body text-ink">{step.title}</h3>
+                <p className="mt-3 text-body text-ink-60 sm:text-body">{step.description}</p>
               </li>
             );
           })}
