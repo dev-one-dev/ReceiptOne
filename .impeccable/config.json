@@ -1,0 +1,20 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "overused-font",
+        "value": "geist mono",
+        "reason": "Specified by the user in the approved receiptone-tokens.css for the mono/eyebrow role; SIL OFL",
+        "createdAt": "2026-08-26T05:06:21.104Z"
+      },
+      {
+        "rule": "overused-font",
+        "value": "inter",
+        "reason": "Pre-existing brand face; retained only as --default-font-family for dashboard/shadcn surfaces",
+        "createdAt": "2026-08-26T05:06:22.072Z"
+      }
+    ]
+  }
+}

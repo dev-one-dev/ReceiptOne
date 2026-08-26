@@ -8,34 +8,54 @@ colors:
   ember: "#f97316"
   ember-light: "#fed7aa"
   surface: "#ffffff"
+# Source of truth: src/receiptone-tokens.css. Eight steps, ceiling 600.
 typography:
   display:
-    fontFamily: "Inter Tight, Inter, ui-sans-serif, system-ui, sans-serif"
-    fontSize: "clamp(2.4rem, 6vw, 4.5rem)"
-    fontWeight: 700
-    lineHeight: 1.06
-    letterSpacing: "-0.02em"
-  headline:
-    fontFamily: "Inter Tight, Inter, ui-sans-serif, system-ui, sans-serif"
-    fontSize: "clamp(1.875rem, 3vw, 2.75rem)"
+    fontFamily: "Inter Tight, ui-sans-serif, system-ui, sans-serif"
+    fontSize: "clamp(2.75rem, 4vw + 1.2rem, 4.5rem)"
+    fontWeight: 600
+    lineHeight: 1.05
+    letterSpacing: "-0.04em"
+  h2:
+    fontFamily: "Inter Tight, ui-sans-serif, system-ui, sans-serif"
+    fontSize: "clamp(2.25rem, 2vw + 1.5rem, 3rem)"
+    fontWeight: 600
+    lineHeight: 1.05
+    letterSpacing: "-0.04em"
+  h3:
+    fontFamily: "Inter Tight, ui-sans-serif, system-ui, sans-serif"
+    fontSize: "clamp(1.5rem, 1vw + 1.1rem, 1.875rem)"
     fontWeight: 600
     lineHeight: 1.2
-    letterSpacing: "-0.02em"
-  title:
-    fontFamily: "Inter Tight, Inter, ui-sans-serif, system-ui, sans-serif"
-    fontSize: "1rem"
+    letterSpacing: "-0.025em"
+  lead:
+    fontFamily: "Inter Tight, ui-sans-serif, system-ui, sans-serif"
+    fontSize: "1.25rem"
     fontWeight: 600
-    lineHeight: 1.3
+    lineHeight: 1.4
   body:
-    fontFamily: "Inter, ui-sans-serif, system-ui, sans-serif"
+    fontFamily: "Inter Tight, ui-sans-serif, system-ui, sans-serif"
     fontSize: "1rem"
     fontWeight: 400
-    lineHeight: 1.6
-  label:
-    fontFamily: "Inter, ui-sans-serif, system-ui, sans-serif"
+    lineHeight: 1.5
+  sm:
+    fontFamily: "Inter Tight, ui-sans-serif, system-ui, sans-serif"
+    fontSize: "0.875rem"
+    fontWeight: 400
+    lineHeight: 1.43
+  label: # the .eyebrow treatment
+    fontFamily: "Geist Mono, ui-monospace, monospace"
     fontSize: "0.75rem"
-    fontWeight: 600
-    letterSpacing: "0.1em"
+    fontWeight: 400
+    lineHeight: 1.33
+    letterSpacing: "0.025em"
+    textTransform: uppercase
+  nav:
+    fontFamily: "Geist Mono, ui-monospace, monospace"
+    fontSize: "0.625rem"
+    fontWeight: 400
+    lineHeight: 1.5
+    letterSpacing: "0.025em"
 rounded:
   sm: "8px"
   md: "12px"
@@ -123,25 +143,37 @@ Both directions fail WCAG AA. That's known and accepted — brand color consiste
 
 **Not covered by this exception**: the author-initials avatar badge (`articles/$slug.tsx:309`, `us/articles/$slug.tsx:256`) — this one was genuinely readable text on a worse, different background, so it was fixed rather than accepted. `text-[#f97316]` (~2.07:1) was darkened to `text-[#9a3412]` (~5.40:1), a step from the same ember tonal ramp, keeping the background at `#fed7aa`.
 
-**The Alpha Neutral Rule.** There is no gray token scale. Every intermediate tone is `black/{opacity}` on light surfaces or `white/{opacity}` on dark surfaces. Text-carrying alpha values must clear WCAG AA (4.5:1 for normal text, 3:1 for large text) against their actual background — `black/55`+ and `white/50`+ are the verified-passing floor for body copy and eyebrow/label text; `black/35`/`white/30` were the site's original label convention but measured under 2.7:1 and were corrected sitewide. This keeps every section — light or dark — tonally consistent with its own background instead of drifting toward a generic gray, without sacrificing legibility.
+**The Alpha Neutral Rule.** There is no gray token scale. Every intermediate tone on light surfaces is the single ink (`#0d0d14`) at reduced alpha — `text-ink-80` / `text-ink-60` / `text-ink-40`, surfaces `bg-ink-05` / `bg-ink-10` / `bg-ink-20`, and one hairline, `border-hairline`. Dark surfaces still use `white/{opacity}`, which has no token counterpart yet. Text-carrying alpha values must clear WCAG AA (4.5:1 for normal text, 3:1 for large text) against their actual background — `black/55`+ and `white/50`+ are the verified-passing floor for body copy and eyebrow/label text; `black/35`/`white/30` were the site's original label convention but measured under 2.7:1 and were corrected sitewide. This keeps every section — light or dark — tonally consistent with its own background instead of drifting toward a generic gray, without sacrificing legibility.
 
 ## 3. Typography
 
-**Display Font:** Inter Tight (with Inter, ui-sans-serif, system-ui fallback)
-**Body Font:** Inter (with ui-sans-serif, system-ui fallback)
-**Label/Mono Font:** none distinct — labels use Inter at small size with wide tracking
+**Display / Body Font:** Inter Tight (with ui-sans-serif, system-ui fallback). Both `font-display` and `font-sans` resolve to it.
+**Label/Mono Font:** Geist Mono (SIL OFL, with ui-monospace fallback) — eyebrows, pills, nav, figures. Always uppercase, always 400, always +0.025em.
+**Inter** is retained only as the inherited `--default-font-family` for the dashboard, helpdesk and shadcn surfaces, which declare no family of their own. It is not part of the marketing type system.
 
-**Character:** Inter Tight for anything that needs to command attention (hero, section headlines, stat numbers, CTA copy) paired with plain Inter for reading copy. Both are geometric-adjacent sans faces from the same family, so the pairing reads as one confident voice rather than two competing ones — appropriate for a "precise" brand that shouldn't feel like it's mixing metaphors.
+**Character:** Inter Tight carries the whole marketing page — display through body — so the voice is one face at different sizes rather than two competing sans. Geist Mono does the small, structural work: it marks a label as a label, and the family shift does the job that heavy weight and wide tracking used to do.
 
 ### Hierarchy
-- **Display** (700, `clamp(2.4rem, 6vw, 4.5rem)`, leading 1.06, tracking -0.02em): hero H1 only. One per page.
-- **Headline** (600, `clamp(1.875rem, 3vw, 2.75rem)` i.e. `text-3xl sm:text-4xl lg:text-[2.75rem]`, leading tight, tracking -0.02em): section H2s (Pricing, Trust, Faq, etc.).
-- **Title** (600, 1rem–1.5rem depending on context): card titles, trust-item headings, stat values at `text-2xl sm:text-3xl lg:text-[2rem]` (700 weight for stat numbers specifically).
-- **Body** (400, 1rem–1.125rem, leading relaxed, `text-black/55`+ or `text-white/50`+): all reading copy. Cap at ~65–75ch per the project's own house rules.
-- **Label** (600, 0.75rem, tracking-widest, uppercase, `text-black/55`+ or `text-white/50`+): eyebrow copy above section headers, footer column headings, nav "region" text. Must clear 4.5:1 against its background — see the Alpha Neutral Rule.
+
+Eight steps, defined in `src/receiptone-tokens.css`. `h1`/`h2`/`h3` are applied
+automatically by role rules scoped to `[data-interactive-page]` — do not put
+size, weight, family or tracking utilities on a heading.
+
+- **Display** (600, `clamp(2.75rem, 4vw + 1.2rem, 4.5rem)` = 44→72, leading 1.05, tracking -0.04em): hero `h1` only. One per page.
+- **H2** (600, `clamp(2.25rem, 2vw + 1.5rem, 3rem)` = 36→48, leading 1.05, tracking -0.04em): section headings.
+- **H3** (600, `clamp(1.5rem, 1vw + 1.1rem, 1.875rem)` = 24→30, leading 1.2, tracking -0.025em): sub-section headings and standalone block titles.
+- **Lead** (600/400, 1.25rem, leading 1.4, tracking 0): hero subhead, and card titles that repeat in a grid.
+- **Body** (400, 1rem, leading 1.5): all reading copy. Cap at ~65–75ch.
+- **Sm** (400/500/600, 0.875rem, leading 1.43): buttons, secondary text.
+- **Label** (Geist Mono, 400, 0.75rem, +0.025em, uppercase, `text-ink-60` or `text-white/50` on dark): the `.eyebrow` class. Above every section heading, plus pills and footer column headings.
+- **Nav** (Geist Mono, 400, 0.625rem, +0.025em): badges, legal, fine print.
 
 ### Named Rules
-**The Two-Font Ceiling Rule.** Only two working fonts: Inter Tight for display/headline/label, Inter for body. A third "systemwide" font would break the restraint the brand personality calls for.
+**The Two-Font Ceiling Rule.** Two working fonts on the marketing surface: Inter Tight for everything that reads as text, Geist Mono for everything that reads as a label. A third would break the restraint the brand personality calls for.
+
+**The 600 Ceiling Rule.** 600 is the heaviest weight on the page. The vocabulary is 400/500/600 and nothing else. 700 and 800 are no longer fetched, so `font-bold` renders as faux bold — it is a bug, not a style.
+
+**The Size-Bound Metrics Rule.** Line-height and letter-spacing are properties of the step, not of the element. Do not add `leading-*`, and use only `tracking-display` / `tracking-h3` / `tracking-body` / `tracking-mono`.
 
 ## 4. Elevation
 

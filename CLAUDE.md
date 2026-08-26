@@ -2,14 +2,68 @@
 
 ## Design System
 
+All tokens live in `src/receiptone-tokens.css`, imported once from
+`src/styles.css`. Never redeclare a token in a component, and never add a value
+that is not in the scale below.
+
 - **Font display:** Inter Tight (`font-display`)
-- **Font sans:** Inter (`font-sans`)
-- **Page background:** `bg-[#f5f4f0]`
-- **Dark section background:** `bg-[#0d0d14]`
-- **Accent orange:** `#f97316` / amber light `#fed7aa`
+- **Font sans:** Inter Tight (`font-sans`) — both families resolve to Inter Tight
+- **Font mono:** Geist Mono (`font-mono`) — eyebrows, pills, nav, figures. Always uppercase, always 400.
+- **Page background:** `bg-paper` (`#f5f4f0`)
+- **Dark section background:** `bg-ink` (`#0d0d14`)
+- **Accent orange:** `bg-ember` / `text-ember` (`#f97316`), hover `bg-ember-hover` (`#ea6c0a`), amber light `#fed7aa`
 - **Max content width:** `max-w-[1200px]`
-- **Card style:** `rounded-2xl border border-black/[0.07] shadow-[0_2px_12px_rgba(0,0,0,0.06)]`
+- **Card style:** `rounded-card border border-hairline shadow-[0_2px_12px_rgba(0,0,0,0.06)]`
 - **Card hover:** `hover:-translate-y-0.5 hover:shadow-[0_12px_40px_rgba(0,0,0,0.10)]`
+
+### Type scale — eight steps, nothing between
+
+| Token | Size | Role |
+|---|---|---|
+| `text-display` | clamp 44 → 72 | `h1` only. Applied automatically by the role rule. |
+| `text-h2` | clamp 36 → 48 | Section headings. Applied automatically. |
+| `text-h3` | clamp 24 → 30 | Sub-section headings, standalone block titles. |
+| `text-lead` | 20 | Hero subhead, card titles that repeat in a grid. |
+| `text-body` | 16 | Carries the page. |
+| `text-sm` | 14 | Buttons, secondary text. |
+| `text-label` | 12 | Mono eyebrows and pills. |
+| `text-nav` | 10 | Mono nav, legal, badges. |
+
+`h1`, `h2` and `h3` are styled by role rules scoped to `[data-interactive-page]`.
+**Do not put size, weight, family or tracking utilities on a heading** — set the
+attribute on the page shell and let the role apply. Only override when a heading
+genuinely needs a different step (e.g. a card title at `text-lead`).
+
+Tracking is bound to size: `tracking-display` (-0.04em) at 36px and above,
+`tracking-h3` (-0.025em) at 24–30, `tracking-body` (0) at 20 and below,
+`tracking-mono` (0.025em) for all uppercase mono. Line-height comes from the
+step — do not add `leading-*`.
+
+### Eyebrows
+
+Every section label above a heading uses `.eyebrow` — mono, 12px, uppercase,
++0.025em, weight 400, ink at 60%. On dark sections add `text-white/50`. Never
+rebuild the treatment out of utilities.
+
+### Weights — ceiling is 600
+
+`font-normal` (400), `font-medium` (500), `font-semibold` (600). **600 is the
+heaviest weight on the page.** 700 and 800 are not fetched, so `font-bold` would
+render as faux bold.
+
+### Radii — two, nothing between
+
+`rounded-card` (12px) and `rounded-pill`. No other radius.
+
+### Color — one ink at varying alpha
+
+Muted text is ink at reduced alpha, never a separate gray:
+`text-ink-80` / `text-ink-60` / `text-ink-40`, surfaces `bg-ink-05` / `bg-ink-10` /
+`bg-ink-20`. Every hairline border is `border-hairline`. Do not introduce a gray
+hex or a new black-alpha value.
+
+Ember on paper is ~2.9:1 — below the 4.5:1 floor. Use it as a fill or a border
+with ink on top; never as running text on a light background.
 
 ---
 
@@ -137,3 +191,33 @@ The landing page uses **asymmetric padding** to visually group related sections 
 | `gap-5` / `gap-8` / `gap-12` | `gap-3` / `gap-4` / `gap-6` | Cards / nav cols / main grid |
 | `mt-5` / `mt-8` / `mt-16` | `mt-3` / `mt-4` / `mt-6` | Internal and footer margins |
 | `space-y-3` (footer lists) | `space-y-1.5` | Footer nav link lists |
+
+---
+
+## Banned everywhere on the marketing surface
+
+These reintroduce the vocabulary the token migration removed. The eight-step
+scale, the 600 ceiling and the two radii are the point — do not add a ninth
+step, a heavier weight, or a third radius.
+
+| Class | Use instead | Note |
+|---|---|---|
+| `text-xs` / `text-base` / `text-lg` / `text-xl` | `text-label` / `text-body` / `text-lead` | Off-scale aliases |
+| `text-2xl` … `text-6xl` | `text-h3` / `text-h2` / role rule | Headings are role-driven |
+| `text-[13px]` and any arbitrary size | nearest of the eight steps | No new steps |
+| `font-bold` / `font-extrabold` / `font-black` | `font-semibold` | 700+ is not fetched — renders faux bold |
+| `rounded-sm` … `rounded-3xl`, `rounded-full` | `rounded-card` / `rounded-pill` | Two radii only |
+| `rounded-[20px]` and any arbitrary radius | `rounded-card` | |
+| `text-black/55`, `text-black/70`, any gray hex | `text-ink-60` / `text-ink-80` | One ink at alpha |
+| `border-black/10`, `border-black/[0.07]` | `border-hairline` | One hairline |
+| `bg-[#f97316]` / `bg-[#f5f4f0]` / `bg-[#0d0d14]` | `bg-ember` / `bg-paper` / `bg-ink` | Use the token |
+| `leading-*` on token-sized text | nothing | Line-height comes from the step |
+| `tracking-tight` / `tracking-widest` | `tracking-display` / `tracking-h3` / `tracking-body` / `tracking-mono` | Tracking is size-bound |
+| hand-built uppercase labels | `.eyebrow` | One eyebrow treatment |
+
+**Out of scope for these rules:** `src/routes/dashboard*`,
+`src/components/dashboard/**`, `src/components/ui/**`, `src/components/helpdesk/**`,
+`src/routes/helpdesk*`, `/terms`, `/privacy`, `/login`, `/signup`, and
+`SuggestFeatureWidget` (which lives in `components/site` but renders only in the
+dashboard). Those surfaces use shadcn semantic theming and the `--radius-*` ramp
+in `styles.css`; leave them alone.
