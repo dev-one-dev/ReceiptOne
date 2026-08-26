@@ -48,7 +48,7 @@ function FaqPage() {
             Can't find what you're looking for?{" "}
             <Link
               to={"/contact" as any}
-              className="font-medium text-ink underline underline-offset-2 transition-colors duration-150 hover:text-ember"
+              className="font-medium text-ink underline underline-offset-2 transition-[text-underline-offset] duration-150 hover:underline-offset-4"
             >
               Reach out to our team
             </Link>{" "}

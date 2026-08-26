@@ -226,7 +226,7 @@ function USArticleDetailPage() {
             <Link
               to={"/us/articles/$slug" as any}
               params={{ slug: article.clusterPillar } as any}
-              className="font-medium text-ink underline underline-offset-2 transition-colors duration-150 hover:text-ember"
+              className="font-medium text-ink underline underline-offset-2 transition-[text-underline-offset] duration-150 hover:underline-offset-4"
             >
               {article.clusterName}
             </Link>{" "}

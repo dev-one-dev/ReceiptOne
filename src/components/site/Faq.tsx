@@ -300,7 +300,7 @@ export function FaqAccordion({ items }: { items: QA[] }) {
                     <Link
                       to={it.link.to as any}
                       params={it.link.slug ? ({ slug: it.link.slug } as any) : undefined}
-                      className="font-medium text-ink underline underline-offset-2 transition-colors duration-150 hover:text-ember"
+                      className="font-medium text-ink underline underline-offset-2 transition-[text-underline-offset] duration-150 hover:underline-offset-4"
                     >
                       {it.link.label}
                     </Link>
