@@ -24,6 +24,14 @@
   --color-ember: #f97316;
   --color-ember-hover: #ea6c0a; /* already in use, 6× */
 
+  /* Ember is unreadable as a letterform on paper: #f97316 on #f5f4f0 measures
+     2.55:1, well under the 4.5:1 floor. This is the darkened ember for the rare
+     case where the accent genuinely has to BE the text. Measured 4.71:1 on
+     paper and 5.18:1 on a white card — both pass AA. It does NOT pass on the
+     ember/10 tint (4.27:1), so never pair it with an ember wash.
+     Value already in use at helpdesk/index.tsx:113. */
+  --color-ember-text: #c2410c;
+
   --color-ink-80: color-mix(in oklab, var(--color-ink) 80%, transparent);
   --color-ink-60: color-mix(in oklab, var(--color-ink) 60%, transparent);
   --color-ink-40: color-mix(in oklab, var(--color-ink) 40%, transparent);

@@ -71,7 +71,7 @@ function FeaturedCard({ article, basePath }: { article: Article; basePath: strin
         </div>
 
         {/* CTA */}
-        <div className="mt-3 flex items-center gap-1.5 font-sans text-sm font-semibold text-ember">
+        <div className="mt-3 flex items-center gap-1.5 font-sans text-sm font-semibold text-ember-text">
           Read article
           <ArrowRight
             className="size-4 transition-transform duration-200 group-hover:translate-x-1"
