@@ -251,7 +251,7 @@ function USArticleDetailPage() {
 
         {/* Article header */}
         <header className="mx-auto max-w-[760px] px-4 pb-8 pt-10 sm:px-6 lg:px-0">
-          <span className="inline-block rounded-pill bg-ember/10 px-3 py-1 eyebrow text-ember">
+          <span className="inline-block rounded-pill bg-ember px-3 py-1 eyebrow text-ink">
             {article.category}
           </span>
           <h1 className="mt-4 text-ink">{article.title}</h1>

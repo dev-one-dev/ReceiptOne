@@ -24,7 +24,7 @@ function CategoryPill({
   return (
     <span
       className={`inline-block rounded-pill px-3 py-1 eyebrow ${
-        variant === "featured" ? "bg-ember/10 text-ember" : "bg-ink-05 text-ink-60"
+        variant === "featured" ? "bg-ember text-ink" : "bg-ink-05 text-ink-60"
       }`}
     >
       {label}

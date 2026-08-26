@@ -275,7 +275,7 @@ function ArticleDetailPage() {
         {/* Article header */}
         <header className="mx-auto max-w-[760px] px-4 pb-8 pt-10 sm:px-6 lg:px-0">
           {/* Category pill */}
-          <span className="inline-block rounded-pill bg-ember/10 px-3 py-1 eyebrow text-ember">
+          <span className="inline-block rounded-pill bg-ember px-3 py-1 eyebrow text-ink">
             {article.category}
           </span>
 
