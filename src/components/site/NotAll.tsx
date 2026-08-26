@@ -101,16 +101,14 @@ export function NotAll({ region = "ca" }: { region?: "ca" | "us" }) {
               }`}
             >
               {"comingSoon" in f && f.comingSoon && (
-                <span className="absolute top-0 left-1/2 z-20 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap rounded-full bg-[#f97316] px-4 py-1 font-sans text-xs font-semibold text-white shadow-[0_4px_12px_rgba(249,115,22,0.4)]">
+                <span className="absolute top-0 left-1/2 z-20 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap rounded-full bg-[#f97316] px-4 py-1 font-sans text-label font-semibold text-white shadow-[0_4px_12px_rgba(249,115,22,0.4)]">
                   Coming soon
                 </span>
               )}
               <div className="group flex flex-col overflow-hidden rounded-2xl border border-black/[0.07] bg-white shadow-[0_2px_12px_rgba(0,0,0,0.06)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_40px_rgba(0,0,0,0.10)]">
                 <div className="p-6 sm:p-8">
-                  <h3 className="font-display text-xl font-semibold leading-snug text-black sm:text-2xl">
-                    {f.title}
-                  </h3>
-                  <p className="mt-3 text-sm leading-relaxed text-black/55">{f.desc}</p>
+                  <h3 className="text-lead tracking-body text-black">{f.title}</h3>
+                  <p className="mt-3 text-sm text-black/55">{f.desc}</p>
                 </div>
                 <div className="mt-auto flex justify-center px-6 pt-2">
                   <img

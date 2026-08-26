@@ -94,7 +94,7 @@ export function Header() {
   };
 
   const mobileNavBtnClass =
-    "w-full rounded-xl px-4 py-3 text-left font-sans text-base font-medium leading-6 text-black transition-colors hover:bg-black/5";
+    "w-full rounded-xl px-4 py-3 text-left font-sans text-body font-medium text-black transition-colors hover:bg-black/5";
 
   // Rendered twice below (desktop, grouped with the nav; mobile, next to the
   // hamburger) -- each wrapper's responsive visibility is mutually exclusive
@@ -108,7 +108,7 @@ export function Header() {
           setOpen((v) => !v);
           setMobileNavOpen(false);
         }}
-        className="flex items-center gap-1.5 rounded-md px-1 py-1 font-display text-[15px] font-semibold leading-6 text-black sm:text-base sm:leading-7"
+        className="flex items-center gap-1.5 rounded-md px-1 py-1 font-display text-body font-semibold text-black"
         aria-label="Change region"
         aria-haspopup="menu"
         aria-expanded={open}
@@ -145,7 +145,7 @@ export function Header() {
             role="menuitem"
             type="button"
             onClick={() => select("ca")}
-            className="flex w-full items-center gap-2.5 px-4 py-2.5 text-left text-[15px] font-medium leading-6 hover:bg-black/5 sm:text-base sm:leading-7"
+            className="flex w-full items-center gap-2.5 px-4 py-2.5 text-left text-body font-medium hover:bg-black/5"
           >
             <FlagCanada className="size-6 shrink-0 sm:size-7" />
             <span>Canada</span>
@@ -154,7 +154,7 @@ export function Header() {
             role="menuitem"
             type="button"
             onClick={() => select("us")}
-            className="flex w-full items-center gap-2.5 px-4 py-2.5 text-left text-[15px] font-medium leading-6 hover:bg-black/5 sm:text-base sm:leading-7"
+            className="flex w-full items-center gap-2.5 px-4 py-2.5 text-left text-body font-medium hover:bg-black/5"
           >
             <FlagUSA className="size-6 shrink-0 sm:size-7" />
             <span>USA</span>
@@ -191,7 +191,7 @@ export function Header() {
           </Link>
 
           <div className="hidden flex-1 items-center justify-center gap-3 lg:flex">
-            <ul className="flex items-center gap-3 font-sans text-[15px] font-medium leading-6 text-black">
+            <ul className="flex items-center gap-3 font-sans text-body font-medium text-black">
               <li>
                 <button
                   type="button"
@@ -239,13 +239,13 @@ export function Header() {
             <div className="hidden items-center gap-2 sm:gap-3 lg:flex">
               <Link
                 to="/login"
-                className="shrink-0 whitespace-nowrap rounded-full border border-black px-3 py-2 font-display text-[15px] font-semibold leading-6 text-black transition-colors hover:bg-black/5"
+                className="shrink-0 whitespace-nowrap rounded-full border border-black px-3 py-2 font-display text-body font-semibold text-black transition-colors hover:bg-black/5"
               >
                 Log in
               </Link>
               <Link
                 to="/signup"
-                className="shrink-0 whitespace-nowrap rounded-full bg-black px-3 py-2 font-display text-[15px] font-semibold leading-6 text-white transition-opacity hover:opacity-90"
+                className="shrink-0 whitespace-nowrap rounded-full bg-black px-3 py-2 font-display text-body font-semibold text-white transition-opacity hover:opacity-90"
               >
                 Join now
               </Link>
@@ -296,14 +296,14 @@ export function Header() {
               <Link
                 to="/login"
                 onClick={() => setMobileNavOpen(false)}
-                className="block w-full rounded-full border border-black py-3 text-center font-display text-[15px] font-semibold leading-6 text-black transition-colors hover:bg-black/5"
+                className="block w-full rounded-full border border-black py-3 text-center font-display text-body font-semibold text-black transition-colors hover:bg-black/5"
               >
                 Log in
               </Link>
               <Link
                 to="/signup"
                 onClick={() => setMobileNavOpen(false)}
-                className="block w-full rounded-full bg-black py-3 text-center font-display text-[15px] font-semibold leading-6 text-white transition-opacity hover:opacity-90"
+                className="block w-full rounded-full bg-black py-3 text-center font-display text-body font-semibold text-white transition-opacity hover:opacity-90"
               >
                 Join now
               </Link>

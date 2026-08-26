@@ -17,7 +17,7 @@ export function TopBanner({ region = "ca" }: { region?: "ca" | "us" }) {
                 <p className="eyebrow"> with real copy -- deliberately not
                 invented here. */}
             {/* H1 */}
-            <h1 className="font-display text-[clamp(2.4rem,6vw,4.5rem)] font-bold leading-[1.06] tracking-tight text-black">
+            <h1 className="text-black">
               {region === "us" ? (
                 <>
                   Turn receipts into IRS-ready reports — automatically
@@ -33,10 +33,10 @@ export function TopBanner({ region = "ca" }: { region?: "ca" | "us" }) {
 
             {/* Subheadline — both paragraphs same size and color */}
             <div className="mt-5 max-w-[500px] font-sans">
-              <p className="text-lg leading-relaxed text-black/55 sm:text-xl">
+              <p className="text-lead text-black/55 sm:text-lead">
                 Snap receipts &amp; mileage, organize expenses, and export audit-ready reports.
               </p>
-              <p className="mt-2 text-lg leading-relaxed text-black/55 sm:text-xl">
+              <p className="mt-2 text-lead text-black/55 sm:text-lead">
                 {region === "us"
                   ? "Built for US freelancers, contractors, and small businesses."
                   : "Built for Canadian freelancers, contractors, and small businesses."}

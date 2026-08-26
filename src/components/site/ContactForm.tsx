@@ -63,7 +63,7 @@ export function ContactForm({ region }: { region: Region }) {
         <div className="mx-auto flex size-14 items-center justify-center rounded-full bg-black text-white">
           <CheckIcon />
         </div>
-        <p className="mt-5 font-display text-lg font-semibold text-black">Message sent</p>
+        <p className="mt-5 font-display text-lead font-semibold text-black">Message sent</p>
         <p className="mt-2 font-sans text-sm text-black/60">
           Thanks for reaching out — we reply within one business day.
         </p>
@@ -80,7 +80,7 @@ export function ContactForm({ region }: { region: Region }) {
         <div className="space-y-1.5">
           <label
             htmlFor="contact-name"
-            className="block font-sans text-xs font-medium text-black/70"
+            className="block font-sans text-label font-medium text-black/70"
           >
             Name
           </label>
@@ -90,13 +90,13 @@ export function ContactForm({ region }: { region: Region }) {
             value={name}
             onChange={(e) => setName(e.target.value.slice(0, 120))}
             placeholder="Jane Doe"
-            className="block w-full rounded-xl border border-black/10 bg-[#faf9f6] px-4 py-3 text-sm leading-5 text-black outline-none transition-colors placeholder:text-black/55 focus:border-black/40"
+            className="block w-full rounded-xl border border-black/10 bg-[#faf9f6] px-4 py-3 text-sm text-black outline-none transition-colors placeholder:text-black/55 focus:border-black/40"
           />
         </div>
         <div className="space-y-1.5">
           <label
             htmlFor="contact-email"
-            className="block font-sans text-xs font-medium text-black/70"
+            className="block font-sans text-label font-medium text-black/70"
           >
             Email
           </label>
@@ -106,7 +106,7 @@ export function ContactForm({ region }: { region: Region }) {
             value={email}
             onChange={(e) => setEmail(e.target.value.slice(0, 254))}
             placeholder="you@example.com"
-            className="block w-full rounded-xl border border-black/10 bg-[#faf9f6] px-4 py-3 text-sm leading-5 text-black outline-none transition-colors placeholder:text-black/55 focus:border-black/40"
+            className="block w-full rounded-xl border border-black/10 bg-[#faf9f6] px-4 py-3 text-sm text-black outline-none transition-colors placeholder:text-black/55 focus:border-black/40"
           />
         </div>
       </div>
@@ -114,7 +114,7 @@ export function ContactForm({ region }: { region: Region }) {
       <div className="space-y-1.5">
         <label
           htmlFor="contact-subject"
-          className="block font-sans text-xs font-medium text-black/70"
+          className="block font-sans text-label font-medium text-black/70"
         >
           Subject
         </label>
@@ -124,14 +124,14 @@ export function ContactForm({ region }: { region: Region }) {
           value={subject}
           onChange={(e) => setSubject(e.target.value.slice(0, 200))}
           placeholder="What's this about?"
-          className="block w-full rounded-xl border border-black/10 bg-[#faf9f6] px-4 py-3 text-sm leading-5 text-black outline-none transition-colors placeholder:text-black/55 focus:border-black/40"
+          className="block w-full rounded-xl border border-black/10 bg-[#faf9f6] px-4 py-3 text-sm text-black outline-none transition-colors placeholder:text-black/55 focus:border-black/40"
         />
       </div>
 
       <div className="space-y-1.5">
         <label
           htmlFor="contact-message"
-          className="block font-sans text-xs font-medium text-black/70"
+          className="block font-sans text-label font-medium text-black/70"
         >
           Message
         </label>
@@ -141,7 +141,7 @@ export function ContactForm({ region }: { region: Region }) {
           onChange={(e) => setMessage(e.target.value.slice(0, 2000))}
           placeholder="How can we help?"
           rows={5}
-          className="block w-full resize-none rounded-xl border border-black/10 bg-[#faf9f6] px-4 py-3 text-sm leading-5 text-black outline-none transition-colors placeholder:text-black/55 focus:border-black/40"
+          className="block w-full resize-none rounded-xl border border-black/10 bg-[#faf9f6] px-4 py-3 text-sm text-black outline-none transition-colors placeholder:text-black/55 focus:border-black/40"
         />
       </div>
 

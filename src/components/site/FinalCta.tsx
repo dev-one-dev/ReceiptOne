@@ -17,17 +17,17 @@ export function FinalCta() {
           {/* TODO(eyebrow): this section has no label above its heading. Every
               other section carries one. Add <p className="eyebrow text-white/50">
               with real copy -- deliberately not invented here. */}
-          <h2 className="mx-auto max-w-3xl font-display text-3xl font-semibold leading-tight tracking-tight text-white sm:text-4xl lg:text-5xl">
+          <h2 className="mx-auto max-w-3xl text-white">
             Ready for cleaner receipts and easier tax time?
           </h2>
-          <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-white/70 sm:text-lg">
+          <p className="mx-auto mt-5 max-w-2xl text-body text-white/70 sm:text-lead">
             Start your 7-day free trial and keep receipts, mileage, and expense reports organized in
             one place.
           </p>
           <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <Link
               to="/signup"
-              className="group inline-flex w-full items-center justify-center gap-2 rounded-full bg-white px-7 py-3.5 font-display text-base font-semibold text-black transition-transform duration-200 hover:-translate-y-0.5 sm:w-auto"
+              className="group inline-flex w-full items-center justify-center gap-2 rounded-full bg-white px-7 py-3.5 font-display text-body font-semibold text-black transition-transform duration-200 hover:-translate-y-0.5 sm:w-auto"
             >
               Start 7-day free trial
               <ArrowRight
@@ -37,7 +37,7 @@ export function FinalCta() {
             </Link>
             <Link
               to="/login"
-              className="inline-flex w-full items-center justify-center rounded-full border border-white/25 px-7 py-3.5 font-display text-base font-semibold text-white transition-colors hover:bg-white/10 sm:w-auto"
+              className="inline-flex w-full items-center justify-center rounded-full border border-white/25 px-7 py-3.5 text-lead tracking-body text-white transition-colors hover:bg-white/10 sm:w-auto"
             >
               Log in
             </Link>

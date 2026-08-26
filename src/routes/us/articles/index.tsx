@@ -77,10 +77,8 @@ function USArticlesIndexPage() {
       <section className="pt-24 pb-4 text-center">
         <div className="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
           <p className="eyebrow">Knowledge Base</p>
-          <h1 className="mt-3 font-display text-3xl font-semibold leading-tight tracking-tight text-black sm:text-4xl lg:text-[2.75rem]">
-            Tax guides for US freelancers
-          </h1>
-          <p className="mx-auto mt-4 max-w-xl font-sans text-base leading-relaxed text-black/55 sm:text-lg">
+          <h1 className="mt-3 text-black">Tax guides for US freelancers</h1>
+          <p className="mx-auto mt-4 max-w-xl font-sans text-body text-black/55 sm:text-lead">
             IRS-ready tips on receipts, deductions, mileage, and Schedule C — written for 1099
             contractors and self-employed Americans.
           </p>
@@ -106,10 +104,8 @@ function CtaBanner() {
     <section className="bg-[#0d0d14] py-6 sm:py-8">
       <div className="mx-auto max-w-[1200px] px-4 text-center sm:px-6 lg:px-8">
         <p className="eyebrow text-white/50">Get Started</p>
-        <h2 className="mt-2 font-display text-3xl font-semibold leading-tight tracking-tight text-white sm:text-4xl">
-          Start managing your receipts in minutes
-        </h2>
-        <p className="mx-auto mt-2 max-w-md font-sans text-base text-white/55">
+        <h2 className="mt-2 text-white">Start managing your receipts in minutes</h2>
+        <p className="mx-auto mt-2 max-w-md font-sans text-body text-white/55">
           Built for US freelancers who want to stay IRS-ready without the paperwork headache.
         </p>
         <div className="mt-4 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">

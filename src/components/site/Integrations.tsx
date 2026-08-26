@@ -54,10 +54,8 @@ export function Integrations() {
         {/* Header */}
         <div className="mx-auto mb-10 max-w-2xl text-center">
           <p className="eyebrow">Integrations</p>
-          <h2 className="mt-2 font-display text-3xl font-semibold leading-tight tracking-tight text-black sm:text-4xl lg:text-[2.75rem]">
-            Fits into how you already work
-          </h2>
-          <p className="mt-3 max-w-2xl text-base leading-relaxed text-black/55 sm:text-lg">
+          <h2 className="mt-2 text-black">Fits into how you already work</h2>
+          <p className="mt-3 max-w-2xl text-body text-black/55 sm:text-lead">
             Send receipts straight from Telegram today. QuickBooks, bank sync, and email forwarding
             are on the way.
           </p>
@@ -83,16 +81,14 @@ export function Integrations() {
                   </span>
                 )}
                 {integration.comingSoon && (
-                  <span className="shrink-0 rounded-full bg-black/[0.05] px-2.5 py-1 text-[11px] font-medium text-black/55">
+                  <span className="shrink-0 rounded-full bg-black/[0.05] px-2.5 py-1 text-label font-medium text-black/55">
                     Coming soon
                   </span>
                 )}
               </div>
               <div>
                 <p className="font-display text-sm font-semibold text-black">{integration.name}</p>
-                <p className="mt-1 text-xs leading-relaxed text-black/55">
-                  {integration.description}
-                </p>
+                <p className="mt-1 text-label text-black/55">{integration.description}</p>
               </div>
             </div>
           ))}

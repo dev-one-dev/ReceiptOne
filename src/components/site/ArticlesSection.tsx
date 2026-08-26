@@ -56,13 +56,9 @@ function FeaturedCard({ article, basePath }: { article: Article; basePath: strin
       <div className="flex flex-1 flex-col p-4 sm:p-5">
         <CategoryPill label={article.category} variant="featured" />
 
-        <h3 className="mt-2 font-display text-2xl font-semibold leading-tight tracking-tight text-black sm:text-3xl">
-          {article.title}
-        </h3>
+        <h3 className="mt-2 text-h3 text-black">{article.title}</h3>
 
-        <p className="mt-1.5 flex-1 font-sans text-base leading-relaxed text-black/60">
-          {article.excerpt}
-        </p>
+        <p className="mt-1.5 flex-1 font-sans text-body text-black/60">{article.excerpt}</p>
 
         {/* Meta row */}
         <div className="mt-3 flex items-center gap-4 text-sm text-black/55">
@@ -111,12 +107,10 @@ function SmallCard({ article, basePath }: { article: Article; basePath: string }
       <div className="flex flex-1 flex-col p-3">
         <CategoryPill label={article.category} variant="neutral" />
 
-        <h3 className="mt-1.5 font-display text-base font-semibold leading-snug tracking-tight text-black lg:text-lg">
-          {article.title}
-        </h3>
+        <h3 className="mt-1.5 text-lead tracking-body text-black">{article.title}</h3>
 
         {/* Meta row */}
-        <div className="mt-auto pt-2 flex items-center gap-3 text-xs text-black/55">
+        <div className="mt-auto pt-2 flex items-center gap-3 text-label text-black/55">
           <span className="flex items-center gap-1">
             <Clock className="size-3" aria-hidden />
             {article.readTime} min
@@ -162,7 +156,7 @@ export function ArticlesSection({
           <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <p className="eyebrow">Knowledge Base</p>
-              <h2 className="mt-1 font-display text-3xl font-semibold leading-tight tracking-tight text-black sm:text-4xl lg:text-[2.75rem]">
+              <h2 className="mt-1 text-black">
                 {region === "us"
                   ? "Tax guides for US freelancers"
                   : "Tax guides for Canadian freelancers"}

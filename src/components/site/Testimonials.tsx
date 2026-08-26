@@ -56,9 +56,7 @@ export function Testimonials({ region = "ca" }: { region?: "ca" | "us" }) {
       <div className="mx-auto w-full max-w-[1200px]">
         <div className="mb-12 text-center">
           <p className="eyebrow">Who it's for</p>
-          <h2 className="mt-2 font-display text-3xl font-semibold leading-tight tracking-tight text-black sm:text-4xl lg:text-[2.75rem]">
-            {heading}
-          </h2>
+          <h2 className="mt-2 text-black">{heading}</h2>
         </div>
 
         <div className="grid gap-5 sm:grid-cols-3">
@@ -74,10 +72,8 @@ export function Testimonials({ region = "ca" }: { region?: "ca" | "us" }) {
                 <p.icon className="size-5" />
               </div>
               <figcaption>
-                <p className="font-display text-base font-semibold text-black">{p.role}</p>
-                <p className="mt-2 font-sans text-[15px] leading-relaxed text-black/70">
-                  {p.description}
-                </p>
+                <p className="font-display text-body font-semibold text-black">{p.role}</p>
+                <p className="mt-2 font-sans text-body text-black/70">{p.description}</p>
               </figcaption>
             </figure>
           ))}

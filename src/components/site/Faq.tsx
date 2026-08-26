@@ -253,7 +253,7 @@ export function FaqAccordion({ items }: { items: QA[] }) {
               aria-expanded={isOpen}
               className="flex w-full items-center justify-between gap-4 text-left"
             >
-              <span className="font-display text-[15px] font-semibold text-black md:text-[16px]">
+              <span className="font-display text-body font-semibold text-black md:text-body">
                 {it.q}
               </span>
               <span
@@ -292,7 +292,7 @@ export function FaqAccordion({ items }: { items: QA[] }) {
                * -translate-y-1 entrance effect was removed because it caused a
                * vertical micro-bounce during the expand animation.
                */}
-              <p className="overflow-hidden font-display text-[14px] leading-[1.55] text-black/60 md:text-[15px]">
+              <p className="overflow-hidden font-display text-sm text-black/60 md:text-body">
                 {it.a}
                 {it.link && (
                   <>
@@ -340,9 +340,7 @@ export function Faq({
       {/* Header */}
       <div className="mx-auto mb-10 max-w-2xl text-center">
         <p className="eyebrow">FAQ</p>
-        <h2 className="mt-2 font-display text-3xl font-semibold leading-tight tracking-tight text-black sm:text-4xl lg:text-[2.75rem]">
-          Everything you need to know
-        </h2>
+        <h2 className="mt-2 text-black">Everything you need to know</h2>
       </div>
 
       {/* Accordion */}

@@ -85,10 +85,8 @@ export function Trust({ region = "ca" }: { region?: Region }) {
         {/* Header */}
         <div className="mx-auto mb-14 max-w-2xl text-center">
           <p className="eyebrow text-white/50">Security &amp; compliance</p>
-          <h2 className="mt-3 font-display text-3xl font-semibold leading-tight tracking-tight text-white sm:text-4xl lg:text-[2.75rem]">
-            {heading}
-          </h2>
-          <p className="mt-4 text-base leading-relaxed text-white/50 sm:text-lg">
+          <h2 className="mt-3 text-white">{heading}</h2>
+          <p className="mt-4 text-body text-white/50 sm:text-lead">
             {region === "us"
               ? "AES-256 encryption, IRS-ready records, and 10-year cloud backup — built to protect your data and your deductions."
               : "AES-256 encryption, CRA-ready records, and 10-year cloud backup — built to protect your data and your deductions."}
@@ -106,8 +104,8 @@ export function Trust({ region = "ca" }: { region?: Region }) {
                 <item.Icon />
               </div>
               <div>
-                <h3 className="font-display text-base font-semibold text-white">{item.title}</h3>
-                <p className="mt-1.5 text-sm leading-relaxed text-white/50">{item.desc}</p>
+                <h3 className="text-lead tracking-body text-white">{item.title}</h3>
+                <p className="mt-1.5 text-sm text-white/50">{item.desc}</p>
               </div>
             </div>
           ))}

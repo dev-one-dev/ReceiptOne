@@ -96,10 +96,8 @@ export function InfoCards({ region = "ca" }: { region?: "ca" | "us" }) {
                   {/* Text */}
                   <div className="text-center lg:text-left">
                     <p className="eyebrow text-ember">{f.label}</p>
-                    <h3 className="mt-3 font-display text-3xl font-semibold tracking-tight text-black sm:text-4xl">
-                      {f.title}
-                    </h3>
-                    <p className="mt-4 text-base leading-relaxed text-black/70">{f.desc}</p>
+                    <h3 className="mt-3 text-black">{f.title}</h3>
+                    <p className="mt-4 text-body text-black/70">{f.desc}</p>
                   </div>
 
                   {/* Phone mockup — order-first on odd rows puts image left */}

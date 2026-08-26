@@ -39,10 +39,8 @@ function ContactPage() {
       <section className="pt-24 pb-4 text-center">
         <div className="mx-auto max-w-[760px] px-4 sm:px-6 lg:px-0">
           <p className="eyebrow">Contact</p>
-          <h1 className="mt-3 font-display text-3xl font-semibold leading-tight tracking-tight text-black sm:text-4xl lg:text-[2.75rem]">
-            Get in touch
-          </h1>
-          <p className="mx-auto mt-3 max-w-lg font-sans text-base leading-relaxed text-black/55">
+          <h1 className="mt-3 text-black">Get in touch</h1>
+          <p className="mx-auto mt-3 max-w-lg font-sans text-body text-black/55">
             Questions, feedback, or something not working right? We reply within one business day.
           </p>
         </div>

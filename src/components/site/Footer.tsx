@@ -95,7 +95,7 @@ export function Footer({ region = "ca" }: FooterProps) {
               />
             </button>
 
-            <p className="mt-3 text-sm leading-relaxed text-white/45">{tagline}</p>
+            <p className="mt-3 text-sm text-white/45">{tagline}</p>
 
             {/* Social */}
             <div className="mt-4 flex items-center gap-4">

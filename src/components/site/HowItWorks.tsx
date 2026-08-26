@@ -61,10 +61,8 @@ export function HowItWorks({ region = "ca" }: { region?: Region }) {
       <div className="mx-auto w-full max-w-[1200px]">
         <div className="mx-auto max-w-2xl text-center">
           <p className="eyebrow">How it works</p>
-          <h2 className="mt-2 font-display text-3xl font-semibold leading-tight tracking-tight text-black sm:text-4xl lg:text-[2.75rem]">
-            {heading}
-          </h2>
-          <p className="mt-3 text-base leading-relaxed text-black/55 sm:text-lg">{sub}</p>
+          <h2 className="mt-2 text-black">{heading}</h2>
+          <p className="mt-3 text-body text-black/55 sm:text-lead">{sub}</p>
         </div>
 
         <ol className="mt-10 grid gap-5 sm:gap-6 md:grid-cols-3 lg:mt-12">
@@ -86,12 +84,8 @@ export function HowItWorks({ region = "ca" }: { region?: Region }) {
                     0{i + 1}
                   </span>
                 </div>
-                <h3 className="mt-6 font-display text-xl font-semibold leading-snug text-black sm:text-2xl">
-                  {step.title}
-                </h3>
-                <p className="mt-3 text-[15px] leading-relaxed text-black/60 sm:text-base">
-                  {step.description}
-                </p>
+                <h3 className="mt-6 text-lead tracking-body text-black">{step.title}</h3>
+                <p className="mt-3 text-body text-black/60 sm:text-body">{step.description}</p>
               </li>
             );
           })}

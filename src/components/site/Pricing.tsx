@@ -183,10 +183,8 @@ export function Pricing({ region = "ca" }: { region?: Region }) {
         {/* Header */}
         <div className="mx-auto mb-6 max-w-2xl text-center">
           <p className="eyebrow">Pricing</p>
-          <h2 className="mt-3 font-display text-3xl font-semibold leading-tight tracking-tight text-black sm:text-4xl lg:text-[2.75rem]">
-            Simple pricing. Cancel anytime.
-          </h2>
-          <p className="mt-4 text-base leading-relaxed text-black/55 sm:text-lg">
+          <h2 className="mt-3 text-black">Simple pricing. Cancel anytime.</h2>
+          <p className="mt-4 text-body text-black/55 sm:text-lead">
             Try it free for 7 days — no credit card required.
           </p>
         </div>
@@ -216,7 +214,7 @@ export function Pricing({ region = "ca" }: { region?: Region }) {
                   {badgeText && (
                     <span
                       className={cn(
-                        "absolute -top-7 left-1/2 z-10 -translate-x-1/2 whitespace-nowrap rounded-full px-2.5 py-0.5 font-sans text-[10px] font-semibold",
+                        "absolute -top-7 left-1/2 z-10 -translate-x-1/2 whitespace-nowrap rounded-full px-2.5 py-0.5 font-sans text-nav font-semibold",
                         plan.popular
                           ? "bg-[#f97316] text-white shadow-[0_4px_12px_rgba(249,115,22,0.4)]"
                           : "bg-[#fed7aa] text-black shadow-[0_4px_12px_rgba(0,0,0,0.10)]",
@@ -298,10 +296,10 @@ export function Pricing({ region = "ca" }: { region?: Region }) {
                     )}
                   >
                     <div className="flex flex-wrap items-baseline gap-x-1.5 gap-y-0">
-                      <span className="font-display text-4xl font-bold tracking-tight whitespace-nowrap text-black sm:text-5xl">
+                      <span className="font-display text-h2 font-semibold tracking-display whitespace-nowrap text-black">
                         {formatPrice(plan, plan.price)}
                       </span>
-                      <span className="font-sans text-base text-black/55">{plan.period}</span>
+                      <span className="font-sans text-body text-black/55">{plan.period}</span>
                     </div>
 
                     {plan.originalPrice && (
@@ -311,7 +309,7 @@ export function Pricing({ region = "ca" }: { region?: Region }) {
                     )}
 
                     {label && (
-                      <span className="mt-2 inline-block w-fit rounded-full bg-[#fed7aa] px-2.5 py-0.5 font-sans text-xs font-semibold text-black">
+                      <span className="mt-2 inline-block w-fit rounded-full bg-[#fed7aa] px-2.5 py-0.5 font-sans text-label font-semibold text-black">
                         {label}
                       </span>
                     )}
@@ -333,7 +331,7 @@ export function Pricing({ region = "ca" }: { region?: Region }) {
                   >
                     <CheckIcon />
                   </span>
-                  <span className="font-sans text-sm leading-snug text-black/65">{f}</span>
+                  <span className="font-sans text-sm text-black/65">{f}</span>
                 </li>
               ))}
             </ul>

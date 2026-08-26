@@ -67,14 +67,11 @@ export function StoreBadge({
       )}
       <span className="flex flex-col items-start">
         <span
-          className={cn(
-            "text-[9px] font-normal leading-none",
-            MICRO_LABEL_STYLES[platform][variant],
-          )}
+          className={cn("text-nav font-normal leading-none", MICRO_LABEL_STYLES[platform][variant])}
         >
           {microLabel}
         </span>
-        <span className="text-[12px] font-semibold leading-tight">{name}</span>
+        <span className="text-label font-semibold">{name}</span>
       </span>
     </a>
   );
