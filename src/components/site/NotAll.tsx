@@ -101,7 +101,7 @@ export function NotAll({ region = "ca" }: { region?: "ca" | "us" }) {
               }`}
             >
               {"comingSoon" in f && f.comingSoon && (
-                <span className="absolute top-0 left-1/2 z-20 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap rounded-pill bg-ember px-4 py-1 font-sans text-label font-semibold text-paper shadow-[0_4px_12px_rgba(249,115,22,0.4)]">
+                <span className="absolute top-0 left-1/2 z-20 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap rounded-pill bg-ember px-4 py-1 font-sans text-label font-semibold text-ink shadow-[0_4px_12px_rgba(249,115,22,0.4)]">
                   Coming soon
                 </span>
               )}

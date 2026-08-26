@@ -216,7 +216,7 @@ export function Pricing({ region = "ca" }: { region?: Region }) {
                       className={cn(
                         "absolute -top-7 left-1/2 z-10 -translate-x-1/2 whitespace-nowrap rounded-pill px-2.5 py-0.5 font-sans text-nav font-semibold",
                         plan.popular
-                          ? "bg-ember text-paper shadow-[0_4px_12px_rgba(249,115,22,0.4)]"
+                          ? "bg-ember text-ink shadow-[0_4px_12px_rgba(249,115,22,0.4)]"
                           : "bg-[#fed7aa] text-ink shadow-[0_4px_12px_rgba(0,0,0,0.10)]",
                       )}
                     >

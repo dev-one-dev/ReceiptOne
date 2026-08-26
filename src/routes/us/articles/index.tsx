@@ -112,7 +112,7 @@ function CtaBanner() {
           <Link
             to={"/us" as any}
             hash="pricing"
-            className="inline-flex items-center gap-2 rounded-pill bg-ember px-6 py-3 font-sans text-sm font-semibold text-paper transition-all duration-200 hover:bg-ember-hover hover:shadow-[0_8px_24px_rgba(249,115,22,0.35)]"
+            className="inline-flex items-center gap-2 rounded-pill bg-ember px-6 py-3 font-sans text-sm font-semibold text-ink transition-all duration-200 hover:bg-ember-hover hover:shadow-[0_8px_24px_rgba(249,115,22,0.35)]"
           >
             See pricing
             <ArrowRight className="size-4" aria-hidden />
