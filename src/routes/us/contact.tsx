@@ -30,7 +30,10 @@ export const Route = (createFileRoute as any)("/us/contact")({
 
 function USContactPage() {
   return (
-    <main className="min-h-screen overflow-x-clip bg-[#f5f4f0] font-sans text-black antialiased">
+    <main
+      data-interactive-page
+      className="min-h-screen overflow-x-clip bg-[#f5f4f0] font-sans text-black antialiased"
+    >
       <Header />
 
       {/* Hero */}

@@ -1,0 +1,152 @@
+/* ReceiptOne design tokens — Tailwind v4, CSS-first.
+ *
+ * Imported from src/styles.css, above the first rule:
+ *   @import "./receiptone-tokens.css";
+ *
+ * Structure measured from a reference site: eight-step scale, size-bound
+ * tracking, weight ceiling 600, two radii, one ink at varying alpha.
+ * Colors are ReceiptOne's own.
+ *
+ * Deliberate deviations from the measured source, and why:
+ *   - display tops out at 72px, not 96 — the ReceiptOne hero headline is
+ *     longer and wraps to three lines on mobile at 96
+ *   - card radius is 12px, not 8 — radius should scale with box size, and
+ *     these cards are large and image-bearing
+ *   - the hairline token is --color-hairline, NOT --color-border, which is
+ *     already taken by shadcn and load-bearing across the dashboard
+ */
+
+@theme {
+  /* ── Ink, paper, accent ────────────────────────────────────────── */
+
+  --color-ink: #0d0d14; /* existing void, confirmed exact */
+  --color-paper: #f5f4f0;
+  --color-ember: #f97316;
+  --color-ember-hover: #ea6c0a; /* already in use, 6× */
+
+  --color-ink-80: color-mix(in oklab, var(--color-ink) 80%, transparent);
+  --color-ink-60: color-mix(in oklab, var(--color-ink) 60%, transparent);
+  --color-ink-40: color-mix(in oklab, var(--color-ink) 40%, transparent);
+  --color-ink-20: color-mix(in oklab, var(--color-ink) 20%, transparent);
+  --color-ink-10: color-mix(in oklab, var(--color-ink) 10%, transparent);
+  --color-ink-05: color-mix(in oklab, var(--color-ink) 5%, transparent);
+
+  /* Single hairline for the marketing surface. Named to avoid the
+     existing --color-border, which shadcn applies globally. */
+  --color-hairline: var(--color-ink-10);
+
+  /* ── Families ──────────────────────────────────────────────────── */
+
+  --font-sans: "Inter Tight", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Inter Tight", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, monospace;
+
+  /* Tailwind v4 preflight sets html { font-family: var(--default-font-family) }
+     and --default-font-family resolves to --font-sans (tailwindcss/theme.css:494).
+     Repointing --font-sans to Inter Tight would therefore change the inherited
+     body font of the dashboard, helpdesk, and every shadcn primitive — none of
+     which declare a family of their own. Pinning the inherited default to Inter
+     keeps those surfaces exactly as they were, while the font-sans / font-display
+     utilities (which every marketing shell sets explicitly) resolve to Inter
+     Tight. This is what keeps the migration marketing-only. */
+  --default-font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+
+  /* ── Type scale ────────────────────────────────────────────────────
+     Fluid between 390 and ~1320. Eight steps; the gap between display
+     and body is the point — don't fill it in later.                  */
+
+  --text-display: clamp(2.75rem, 4vw + 1.2rem, 4.5rem); /* 44 → 72 */
+  --text-display--line-height: 1.05;
+  --text-h2: clamp(2.25rem, 2vw + 1.5rem, 3rem); /* 36 → 48 */
+  --text-h2--line-height: 1.05;
+  --text-h3: clamp(1.5rem, 1vw + 1.1rem, 1.875rem); /* 24 → 30 */
+  --text-h3--line-height: 1.2;
+  --text-lead: 1.25rem; /* 20 — hero subhead, card titles */
+  --text-lead--line-height: 1.4;
+  --text-body: 1rem; /* 16 — carries the page   */
+  --text-body--line-height: 1.5;
+  --text-sm: 0.875rem; /* 14 — buttons, secondary */
+  --text-sm--line-height: 1.43;
+  --text-label: 0.75rem; /* 12 — mono eyebrows      */
+  --text-label--line-height: 1.33;
+  --text-nav: 0.625rem; /* 10 — mono nav, legal    */
+  --text-nav--line-height: 1.5;
+
+  /* ── Tracking, bound to size ───────────────────────────────────── */
+
+  --tracking-display: -0.04em;
+  --tracking-h3: -0.025em;
+  --tracking-body: 0;
+  --tracking-mono: 0.025em;
+
+  /* ── Weights — ceiling 600 ─────────────────────────────────────── */
+
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+
+  /* ── Spacing — 4px base ────────────────────────────────────────────
+     Working values: 4 8 12 16 20 24 32 40 48 64 80 96              */
+
+  --spacing: 0.25rem;
+
+  /* ── Radii — two, nothing between ──────────────────────────────── */
+
+  --radius-card: 0.75rem; /* 12px */
+  --radius-pill: 9999px;
+
+  /* ── Container ─────────────────────────────────────────────────────
+     Kept at the existing 1200 / 760 rather than the reference's
+     1120 / 768 — no reason to reflow every section for 80px.       */
+
+  --container-page: 75rem; /* 1200 */
+  --container-prose: 47.5rem; /* 760  */
+}
+
+/* ── Roles ────────────────────────────────────────────────────────────
+   Scoped to the marketing surface. The dashboard, helpdesk, and all
+   shadcn primitives (DialogTitle, CardTitle, SheetTitle) render bare
+   h1/h2/h3 and must not inherit a 72px display size.                 */
+
+[data-interactive-page] h1 {
+  font-family: var(--font-display);
+  font-size: var(--text-display);
+  line-height: 1.05;
+  letter-spacing: var(--tracking-display);
+  font-weight: var(--font-weight-semibold);
+}
+
+[data-interactive-page] h2 {
+  font-family: var(--font-display);
+  font-size: var(--text-h2);
+  line-height: 1.05;
+  letter-spacing: var(--tracking-display);
+  font-weight: var(--font-weight-semibold);
+}
+
+[data-interactive-page] h3 {
+  font-family: var(--font-display);
+  font-size: var(--text-h3);
+  line-height: 1.2;
+  letter-spacing: var(--tracking-h3);
+  font-weight: var(--font-weight-semibold);
+}
+
+/* The eyebrow. One class, above every section heading without exception —
+   the consistency is the effect. Replaces the current
+   Inter/600/tracking-widest treatment; tracking drops from 0.1em to
+   0.025em, so these will read noticeably tighter. That is intended. */
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  line-height: 1.33;
+  letter-spacing: var(--tracking-mono);
+  text-transform: uppercase;
+  font-weight: var(--font-weight-normal);
+  color: var(--color-ink-60);
+}
+
+/* ── Accent constraint ──────────────────────────────────────────────
+   Ember on paper is roughly 2.9:1 — under the 4.5:1 floor for body
+   text. Fill and border only; never ember as running text on light. */

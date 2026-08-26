@@ -58,7 +58,10 @@ export const Route = (createFileRoute as any)("/articles/$slug")({
 
 function ArticleNotFound() {
   return (
-    <main className="min-h-screen overflow-x-clip bg-[#f5f4f0] font-sans text-black antialiased">
+    <main
+      data-interactive-page
+      className="min-h-screen overflow-x-clip bg-[#f5f4f0] font-sans text-black antialiased"
+    >
       <Header />
       <div className="mx-auto flex min-h-[60vh] max-w-[760px] flex-col items-center justify-center px-4 py-24 text-center sm:px-6">
         <p className="font-sans text-xs font-semibold uppercase tracking-widest text-black/55">
@@ -225,7 +228,10 @@ function ArticleDetailPage() {
   const related = getRelatedArticles(slug, 3);
 
   return (
-    <main className="min-h-screen overflow-x-clip bg-[#f5f4f0] font-sans text-black antialiased">
+    <main
+      data-interactive-page
+      className="min-h-screen overflow-x-clip bg-[#f5f4f0] font-sans text-black antialiased"
+    >
       <Header />
 
       {/* Back link + breadcrumb */}
