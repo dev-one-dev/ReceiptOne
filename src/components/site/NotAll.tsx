@@ -85,9 +85,7 @@ export function NotAll({ region = "ca" }: { region?: "ca" | "us" }) {
         {/* Header */}
         <div className="mb-10 flex items-center gap-4 sm:mb-12">
           <div className="h-px flex-1 bg-black/10" />
-          <h2 className="font-display text-[15px] font-medium tracking-wide text-black/55">
-            And this is not all
-          </h2>
+          <h2 className="eyebrow">And this is not all</h2>
           <div className="h-px flex-1 bg-black/10" />
         </div>
 

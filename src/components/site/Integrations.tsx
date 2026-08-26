@@ -53,9 +53,7 @@ export function Integrations() {
       <div className="mx-auto w-full max-w-[1200px]">
         {/* Header */}
         <div className="mx-auto mb-10 max-w-2xl text-center">
-          <p className="font-sans text-xs font-semibold uppercase tracking-widest text-black/55">
-            Integrations
-          </p>
+          <p className="eyebrow">Integrations</p>
           <h2 className="mt-2 font-display text-3xl font-semibold leading-tight tracking-tight text-black sm:text-4xl lg:text-[2.75rem]">
             Fits into how you already work
           </h2>

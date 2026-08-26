@@ -60,9 +60,7 @@ export function HowItWorks({ region = "ca" }: { region?: Region }) {
     >
       <div className="mx-auto w-full max-w-[1200px]">
         <div className="mx-auto max-w-2xl text-center">
-          <p className="font-sans text-xs font-semibold uppercase tracking-widest text-black/55">
-            How it works
-          </p>
+          <p className="eyebrow">How it works</p>
           <h2 className="mt-2 font-display text-3xl font-semibold leading-tight tracking-tight text-black sm:text-4xl lg:text-[2.75rem]">
             {heading}
           </h2>
@@ -82,7 +80,7 @@ export function HowItWorks({ region = "ca" }: { region?: Region }) {
                     <Icon className="size-6" aria-hidden />
                   </div>
                   <span
-                    className="font-display text-5xl font-semibold leading-none text-black/[0.06] sm:text-6xl"
+                    className="font-mono text-5xl font-normal leading-none tracking-mono text-black/[0.06] sm:text-6xl"
                     aria-hidden
                   >
                     0{i + 1}

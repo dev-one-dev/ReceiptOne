@@ -95,9 +95,7 @@ export function InfoCards({ region = "ca" }: { region?: "ca" | "us" }) {
                 <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
                   {/* Text */}
                   <div className="text-center lg:text-left">
-                    <p className="font-sans text-xs font-semibold uppercase tracking-widest text-[#f97316]">
-                      {f.label}
-                    </p>
+                    <p className="eyebrow text-ember">{f.label}</p>
                     <h3 className="mt-3 font-display text-3xl font-semibold tracking-tight text-black sm:text-4xl">
                       {f.title}
                     </h3>

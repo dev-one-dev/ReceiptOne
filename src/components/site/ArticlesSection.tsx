@@ -23,7 +23,7 @@ function CategoryPill({
 }) {
   return (
     <span
-      className={`inline-block rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wide ${
+      className={`inline-block rounded-full px-3 py-1 eyebrow ${
         variant === "featured" ? "bg-[#f97316]/10 text-[#f97316]" : "bg-black/[0.06] text-black/55"
       }`}
     >
@@ -161,9 +161,7 @@ export function ArticlesSection({
         {showHeader && (
           <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <p className="font-sans text-xs font-semibold uppercase tracking-widest text-black/55">
-                Knowledge Base
-              </p>
+              <p className="eyebrow">Knowledge Base</p>
               <h2 className="mt-1 font-display text-3xl font-semibold leading-tight tracking-tight text-black sm:text-4xl lg:text-[2.75rem]">
                 {region === "us"
                   ? "Tax guides for US freelancers"

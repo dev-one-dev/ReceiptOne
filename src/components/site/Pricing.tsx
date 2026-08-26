@@ -182,9 +182,7 @@ export function Pricing({ region = "ca" }: { region?: Region }) {
       <div className="mx-auto w-full max-w-[1200px]">
         {/* Header */}
         <div className="mx-auto mb-6 max-w-2xl text-center">
-          <p className="font-sans text-xs font-semibold uppercase tracking-widest text-black/55">
-            Pricing
-          </p>
+          <p className="eyebrow">Pricing</p>
           <h2 className="mt-3 font-display text-3xl font-semibold leading-tight tracking-tight text-black sm:text-4xl lg:text-[2.75rem]">
             Simple pricing. Cancel anytime.
           </h2>
@@ -271,9 +269,7 @@ export function Pricing({ region = "ca" }: { region?: Region }) {
 
           {/* Content layer — z-10 keeps text and CTA above the asset */}
           <div className="relative z-10">
-            <h3 className="font-sans text-sm font-semibold uppercase tracking-widest text-black/55">
-              {selectedPlan.name}
-            </h3>
+            <h3 className="eyebrow">{selectedPlan.name}</h3>
 
             {/*
              * grid + col/row-start-1 stacks all three periods' price blocks in

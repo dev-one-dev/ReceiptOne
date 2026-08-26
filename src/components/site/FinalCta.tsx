@@ -14,6 +14,9 @@ export function FinalCta() {
           }}
         />
         <div className="relative">
+          {/* TODO(eyebrow): this section has no label above its heading. Every
+              other section carries one. Add <p className="eyebrow text-white/50">
+              with real copy -- deliberately not invented here. */}
           <h2 className="mx-auto max-w-3xl font-display text-3xl font-semibold leading-tight tracking-tight text-white sm:text-4xl lg:text-5xl">
             Ready for cleaner receipts and easier tax time?
           </h2>

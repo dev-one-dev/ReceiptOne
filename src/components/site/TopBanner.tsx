@@ -13,6 +13,9 @@ export function TopBanner({ region = "ca" }: { region?: "ca" | "us" }) {
         <div className="grid items-start gap-10 lg:grid-cols-2 lg:gap-12">
           {/* ── LEFT COLUMN ── */}
           <div className="flex flex-col items-center text-center lg:items-start lg:text-left">
+            {/* TODO(eyebrow): the hero has no label above the h1. Add
+                <p className="eyebrow"> with real copy -- deliberately not
+                invented here. */}
             {/* H1 */}
             <h1 className="font-display text-[clamp(2.4rem,6vw,4.5rem)] font-bold leading-[1.06] tracking-tight text-black">
               {region === "us" ? (

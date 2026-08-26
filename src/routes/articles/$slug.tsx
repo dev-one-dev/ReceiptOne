@@ -64,9 +64,7 @@ function ArticleNotFound() {
     >
       <Header />
       <div className="mx-auto flex min-h-[60vh] max-w-[760px] flex-col items-center justify-center px-4 py-24 text-center sm:px-6">
-        <p className="font-sans text-xs font-semibold uppercase tracking-widest text-black/55">
-          404
-        </p>
+        <p className="eyebrow">404</p>
         <h1 className="mt-3 font-display text-3xl font-semibold text-black">Article not found</h1>
         <p className="mt-4 font-sans text-base text-black/55">
           The article you're looking for doesn't exist or may have been moved.
@@ -160,7 +158,7 @@ function RelatedCard({ article }: { article: Article }) {
         />
       </div>
       <div className="flex flex-1 flex-col p-5">
-        <span className="inline-block rounded-full bg-black/[0.06] px-3 py-1 text-xs font-semibold uppercase tracking-wide text-black/55">
+        <span className="inline-block rounded-full bg-black/[0.06] px-3 py-1 eyebrow text-black/55">
           {article.category}
         </span>
         <h3 className="mt-3 font-display text-base font-semibold leading-snug tracking-tight text-black lg:text-lg">
@@ -185,9 +183,7 @@ function CtaBanner() {
   return (
     <section className="bg-[#0d0d14] py-16 sm:py-20">
       <div className="mx-auto max-w-[1200px] px-4 text-center sm:px-6 lg:px-8">
-        <p className="font-sans text-xs font-semibold uppercase tracking-widest text-white/50">
-          Get Started
-        </p>
+        <p className="eyebrow text-white/50">Get Started</p>
         <h2 className="mt-3 font-display text-3xl font-semibold leading-tight tracking-tight text-white sm:text-4xl">
           Start managing your receipts in minutes
         </h2>
@@ -283,7 +279,7 @@ function ArticleDetailPage() {
         {/* Article header */}
         <header className="mx-auto max-w-[760px] px-4 pb-8 pt-10 sm:px-6 lg:px-0">
           {/* Category pill */}
-          <span className="inline-block rounded-full bg-[#f97316]/10 px-3 py-1 font-sans text-xs font-semibold uppercase tracking-wide text-[#f97316]">
+          <span className="inline-block rounded-full bg-[#f97316]/10 px-3 py-1 eyebrow text-ember">
             {article.category}
           </span>
 

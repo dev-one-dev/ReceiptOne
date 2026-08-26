@@ -124,9 +124,7 @@ export function Footer({ region = "ca" }: FooterProps) {
           <div className="grid grid-cols-3 gap-4 lg:col-span-3">
             {/* Product */}
             <div>
-              <p className="font-display text-sm font-semibold uppercase tracking-widest text-white/50">
-                Product
-              </p>
+              <p className="eyebrow text-white/50">Product</p>
               <ul className="mt-2 space-y-1.5">
                 {productLinks(region).map(({ label, href }) => {
                   const isHashLink = href.startsWith("#");
@@ -147,9 +145,7 @@ export function Footer({ region = "ca" }: FooterProps) {
 
             {/* Company */}
             <div>
-              <p className="font-display text-sm font-semibold uppercase tracking-widest text-white/50">
-                Account
-              </p>
+              <p className="eyebrow text-white/50">Account</p>
               <ul className="mt-2 space-y-1.5">
                 {COMPANY_LINKS_CA.map(({ label, href }) => (
                   <li key={label}>
@@ -166,9 +162,7 @@ export function Footer({ region = "ca" }: FooterProps) {
 
             {/* Legal */}
             <div>
-              <p className="font-display text-sm font-semibold uppercase tracking-widest text-white/50">
-                Legal
-              </p>
+              <p className="eyebrow text-white/50">Legal</p>
               <ul className="mt-2 space-y-1.5">
                 {LEGAL_LINKS.map(({ label, href }) => (
                   <li key={label}>

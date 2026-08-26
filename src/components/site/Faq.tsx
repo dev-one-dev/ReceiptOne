@@ -339,9 +339,7 @@ export function Faq({
     >
       {/* Header */}
       <div className="mx-auto mb-10 max-w-2xl text-center">
-        <p className="font-sans text-xs font-semibold uppercase tracking-widest text-black/55">
-          FAQ
-        </p>
+        <p className="eyebrow">FAQ</p>
         <h2 className="mt-2 font-display text-3xl font-semibold leading-tight tracking-tight text-black sm:text-4xl lg:text-[2.75rem]">
           Everything you need to know
         </h2>
