@@ -53,13 +53,9 @@ export function Integrations() {
       <div className="mx-auto w-full max-w-[1200px]">
         {/* Header */}
         <div className="mx-auto mb-10 max-w-2xl text-center">
-          <p className="font-sans text-xs font-semibold uppercase tracking-widest text-black/55">
-            Integrations
-          </p>
-          <h2 className="mt-2 font-display text-3xl font-semibold leading-tight tracking-tight text-black sm:text-4xl lg:text-[2.75rem]">
-            Fits into how you already work
-          </h2>
-          <p className="mt-3 max-w-2xl text-base leading-relaxed text-black/55 sm:text-lg">
+          <p className="eyebrow">Integrations</p>
+          <h2 className="mt-2 text-ink">Fits into how you already work</h2>
+          <p className="mt-3 max-w-2xl text-body text-ink-60 sm:text-lead">
             Send receipts straight from Telegram today. QuickBooks, bank sync, and email forwarding
             are on the way.
           </p>
@@ -70,7 +66,7 @@ export function Integrations() {
           {INTEGRATIONS.map((integration) => (
             <div
               key={integration.name}
-              className="flex flex-col gap-3 rounded-2xl border border-black/[0.07] bg-white p-5 shadow-[0_2px_12px_rgba(0,0,0,0.06)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_40px_rgba(0,0,0,0.10)]"
+              className="flex flex-col gap-3 rounded-card border border-hairline bg-white p-5 shadow-[0_2px_12px_rgba(0,0,0,0.06)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_40px_rgba(0,0,0,0.10)]"
             >
               <div className="flex items-start justify-between gap-2">
                 {integration.brand === "logo" ? (
@@ -80,21 +76,19 @@ export function Integrations() {
                     className={`${integration.logoHeightClassName ?? "h-5"} w-auto object-contain`}
                   />
                 ) : (
-                  <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-black/[0.05] text-black/45">
+                  <span className="flex size-9 shrink-0 items-center justify-center rounded-pill bg-ink-05 text-ink-40">
                     <integration.icon className="size-4" aria-hidden />
                   </span>
                 )}
                 {integration.comingSoon && (
-                  <span className="shrink-0 rounded-full bg-black/[0.05] px-2.5 py-1 text-[11px] font-medium text-black/55">
+                  <span className="shrink-0 rounded-pill bg-ink-05 px-2.5 py-1 text-label font-medium text-ink-60">
                     Coming soon
                   </span>
                 )}
               </div>
               <div>
-                <p className="font-display text-sm font-semibold text-black">{integration.name}</p>
-                <p className="mt-1 text-xs leading-relaxed text-black/55">
-                  {integration.description}
-                </p>
+                <p className="font-display text-sm font-semibold text-ink">{integration.name}</p>
+                <p className="mt-1 text-label text-ink-60">{integration.description}</p>
               </div>
             </div>
           ))}

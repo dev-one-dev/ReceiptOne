@@ -91,23 +91,25 @@ export function InfoCards({ region = "ca" }: { region?: "ca" | "us" }) {
           {FEATURES.map((f, i) => {
             const isEven = i % 2 === 0;
             return (
-              <div key={f.title} className="rounded-3xl bg-white p-8 shadow-sm lg:p-12">
+              <div key={f.title} className="rounded-card bg-white p-8 shadow-sm lg:p-12">
                 <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
                   {/* Text */}
                   <div className="text-center lg:text-left">
-                    <p className="font-sans text-xs font-semibold uppercase tracking-widest text-[#f97316]">
-                      {f.label}
-                    </p>
-                    <h3 className="mt-3 font-display text-3xl font-semibold tracking-tight text-black sm:text-4xl">
-                      {f.title}
-                    </h3>
-                    <p className="mt-4 text-base leading-relaxed text-black/70">{f.desc}</p>
+                    <p className="eyebrow text-ember-text">{f.label}</p>
+                    <h3 className="mt-3 text-ink">{f.title}</h3>
+                    <p className="mt-4 text-body text-ink-80">{f.desc}</p>
                   </div>
 
                   {/* Phone mockup — order-first on odd rows puts image left */}
                   <div className={`flex justify-center ${!isEven ? "lg:order-first" : ""}`}>
                     <div className="relative">
-                      <div className="absolute inset-0 rounded-[2.5rem] bg-[#f97316]/10 blur-2xl" />
+                      {/* rounded-[2.5rem] traces the device body below, not a card.
+                          Deliberately outside the two-radius vocabulary -- do not
+                          collapse to rounded-card. */}
+                      <div className="absolute inset-0 rounded-[2.5rem] bg-ember/10 blur-2xl" />
+                      {/* rounded-[2rem] is the phone's own corner radius, not a card
+                          radius. Deliberately outside the two-radius vocabulary --
+                          collapsing it to 12px makes the mockup read as a bug. */}
                       <img
                         src={f.img}
                         alt={f.alt}

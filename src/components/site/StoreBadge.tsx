@@ -8,18 +8,18 @@ type StoreBadgeVariant = "light" | "dark";
 
 const FILL_STYLES: Record<StorePlatform, Record<StoreBadgeVariant, string>> = {
   apple: {
-    light: "border-black/12 bg-black text-white hover:opacity-80",
-    dark: "border-white/15 bg-white/[0.07] text-white hover:bg-white/[0.13]",
+    light: "border-hairline bg-ink text-paper hover:opacity-80",
+    dark: "border-hairline-void bg-paper-05 text-paper hover:bg-paper-10",
   },
   google: {
-    light: "border-black/12 bg-white text-black shadow-sm hover:opacity-80",
-    dark: "border-white/15 bg-white/[0.07] text-white hover:bg-white/[0.13]",
+    light: "border-hairline bg-white text-ink shadow-sm hover:opacity-80",
+    dark: "border-hairline-void bg-paper-05 text-paper hover:bg-paper-10",
   },
 };
 
 const MICRO_LABEL_STYLES: Record<StorePlatform, Record<StoreBadgeVariant, string>> = {
-  apple: { light: "text-white/60", dark: "text-white/45" },
-  google: { light: "text-black/60", dark: "text-white/45" },
+  apple: { light: "text-paper-60", dark: "text-paper-40" },
+  google: { light: "text-ink-60", dark: "text-paper-40" },
 };
 
 /**
@@ -54,7 +54,7 @@ export function StoreBadge({
       rel="noopener noreferrer"
       aria-label={ariaLabel}
       className={cn(
-        "inline-flex h-11 items-center gap-2 rounded-xl border px-3.5 font-display",
+        "inline-flex h-11 items-center gap-2 rounded-card border px-3.5 font-display",
         transitionClass,
         FILL_STYLES[platform][variant],
         className,
@@ -67,14 +67,11 @@ export function StoreBadge({
       )}
       <span className="flex flex-col items-start">
         <span
-          className={cn(
-            "text-[9px] font-normal leading-none",
-            MICRO_LABEL_STYLES[platform][variant],
-          )}
+          className={cn("text-nav font-normal leading-none", MICRO_LABEL_STYLES[platform][variant])}
         >
           {microLabel}
         </span>
-        <span className="text-[12px] font-semibold leading-tight">{name}</span>
+        <span className="text-label font-semibold">{name}</span>
       </span>
     </a>
   );

@@ -34,23 +34,22 @@ export const Route = (createFileRoute as any)("/us/faq")({
 
 function USFaqPage() {
   return (
-    <main className="min-h-screen overflow-x-clip bg-[#f5f4f0] font-sans text-black antialiased">
+    <main
+      data-interactive-page
+      className="min-h-screen overflow-x-clip bg-paper font-sans text-ink antialiased"
+    >
       <Header />
 
       {/* Hero */}
       <section className="pt-24 pb-4 text-center">
         <div className="mx-auto max-w-[760px] px-4 sm:px-6 lg:px-0">
-          <p className="font-sans text-xs font-semibold uppercase tracking-widest text-black/55">
-            Help Center
-          </p>
-          <h1 className="mt-3 font-display text-3xl font-semibold leading-tight tracking-tight text-black sm:text-4xl lg:text-[2.75rem]">
-            Frequently asked questions
-          </h1>
-          <p className="mx-auto mt-3 max-w-lg font-sans text-base leading-relaxed text-black/55">
+          <p className="eyebrow">Help Center</p>
+          <h1 className="mt-3 text-ink">Frequently asked questions</h1>
+          <p className="mx-auto mt-3 max-w-lg font-sans text-body text-ink-60">
             Can't find what you're looking for?{" "}
             <Link
               to={"/us/contact" as any}
-              className="font-medium text-black underline underline-offset-2 transition-colors duration-150 hover:text-[#f97316]"
+              className="font-medium text-ink underline underline-offset-2 transition-[text-underline-offset] duration-150 hover:underline-offset-4"
             >
               Reach out to our team
             </Link>{" "}
@@ -66,10 +65,10 @@ function USFaqPage() {
             {CATEGORIZED_FAQ_US.map(({ category, items }) => (
               <div key={category}>
                 <div className="mb-4 flex items-center gap-3">
-                  <span className="inline-block rounded-full bg-black px-3 py-1 font-display text-xs font-semibold uppercase tracking-widest text-white">
+                  <span className="inline-block rounded-pill bg-ink px-3 py-1 eyebrow text-paper">
                     {category}
                   </span>
-                  <div className="h-px flex-1 bg-black/[0.07]" aria-hidden />
+                  <div className="h-px flex-1 bg-ink-05" aria-hidden />
                 </div>
                 <FaqAccordion items={items} />
               </div>
@@ -79,29 +78,25 @@ function USFaqPage() {
       </section>
 
       {/* CTA strip */}
-      <section className="bg-[#0d0d14] py-6 sm:py-8">
+      <section data-surface="void" className="bg-ink py-6 sm:py-8">
         <div className="mx-auto max-w-[1200px] px-4 text-center sm:px-6 lg:px-8">
-          <p className="font-sans text-xs font-semibold uppercase tracking-widest text-white/50">
-            Get Started
-          </p>
-          <h2 className="mt-2 font-display text-3xl font-semibold leading-tight tracking-tight text-white sm:text-4xl">
-            Start managing your receipts in minutes
-          </h2>
-          <p className="mx-auto mt-2 max-w-md font-sans text-base text-white/55">
+          <p className="eyebrow">Get Started</p>
+          <h2 className="mt-2 text-paper">Start managing your receipts in minutes</h2>
+          <p className="mx-auto mt-2 max-w-md font-sans text-body text-paper-60">
             Built for US freelancers who want to stay IRS-ready without the paperwork headache.
           </p>
           <div className="mt-4 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
             <Link
               to={"/us" as any}
               hash="pricing"
-              className="inline-flex items-center gap-2 rounded-full bg-[#f97316] px-6 py-3 font-sans text-sm font-semibold text-white transition-all duration-200 hover:bg-[#ea6c0a] hover:shadow-[0_8px_24px_rgba(249,115,22,0.35)]"
+              className="inline-flex items-center gap-2 rounded-pill bg-ember px-6 py-3 font-sans text-sm font-semibold text-ink transition-all duration-200 hover:bg-ember-hover hover:shadow-[0_8px_24px_rgba(249,115,22,0.35)]"
             >
               See pricing
               <ArrowRight className="size-4" aria-hidden />
             </Link>
             <Link
               to={"/us" as any}
-              className="inline-flex items-center gap-2 rounded-full border border-white/15 px-6 py-3 font-sans text-sm font-semibold text-white transition-all duration-200 hover:border-white/40 hover:bg-white/5"
+              className="inline-flex items-center gap-2 rounded-pill border border-hairline-void px-6 py-3 font-sans text-sm font-semibold text-paper transition-all duration-200 hover:border-paper-40 hover:bg-paper-05"
             >
               Learn more
             </Link>

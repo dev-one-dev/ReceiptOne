@@ -55,31 +55,25 @@ export function Testimonials({ region = "ca" }: { region?: "ca" | "us" }) {
     <section className="w-full px-4 pt-4 pb-12 sm:px-6 sm:pt-6 sm:pb-16 lg:px-8">
       <div className="mx-auto w-full max-w-[1200px]">
         <div className="mb-12 text-center">
-          <p className="font-sans text-xs font-semibold uppercase tracking-widest text-black/55">
-            Who it's for
-          </p>
-          <h2 className="mt-2 font-display text-3xl font-semibold leading-tight tracking-tight text-black sm:text-4xl lg:text-[2.75rem]">
-            {heading}
-          </h2>
+          <p className="eyebrow">Who it's for</p>
+          <h2 className="mt-2 text-ink">{heading}</h2>
         </div>
 
         <div className="grid gap-5 sm:grid-cols-3">
           {personas.map((p) => (
             <figure
               key={p.role}
-              className="flex flex-col gap-4 rounded-3xl border border-black/[0.07] bg-white p-6 shadow-[0_2px_12px_rgba(0,0,0,0.06)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_8px_32px_rgba(0,0,0,0.10)] sm:p-8"
+              className="flex flex-col gap-4 rounded-card border border-hairline bg-white p-6 shadow-[0_2px_12px_rgba(0,0,0,0.06)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_8px_32px_rgba(0,0,0,0.10)] sm:p-8"
             >
               <div
-                className="flex size-11 shrink-0 items-center justify-center rounded-full bg-black text-white"
+                className="flex size-11 shrink-0 items-center justify-center rounded-pill bg-ink text-paper"
                 aria-hidden
               >
                 <p.icon className="size-5" />
               </div>
               <figcaption>
-                <p className="font-display text-base font-semibold text-black">{p.role}</p>
-                <p className="mt-2 font-sans text-[15px] leading-relaxed text-black/70">
-                  {p.description}
-                </p>
+                <p className="font-display text-body font-semibold text-ink">{p.role}</p>
+                <p className="mt-2 font-sans text-body text-ink-80">{p.description}</p>
               </figcaption>
             </figure>
           ))}

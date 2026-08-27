@@ -30,19 +30,18 @@ export const Route = (createFileRoute as any)("/us/contact")({
 
 function USContactPage() {
   return (
-    <main className="min-h-screen overflow-x-clip bg-[#f5f4f0] font-sans text-black antialiased">
+    <main
+      data-interactive-page
+      className="min-h-screen overflow-x-clip bg-paper font-sans text-ink antialiased"
+    >
       <Header />
 
       {/* Hero */}
       <section className="pt-24 pb-4 text-center">
         <div className="mx-auto max-w-[760px] px-4 sm:px-6 lg:px-0">
-          <p className="font-sans text-xs font-semibold uppercase tracking-widest text-black/55">
-            Contact
-          </p>
-          <h1 className="mt-3 font-display text-3xl font-semibold leading-tight tracking-tight text-black sm:text-4xl lg:text-[2.75rem]">
-            Get in touch
-          </h1>
-          <p className="mx-auto mt-3 max-w-lg font-sans text-base leading-relaxed text-black/55">
+          <p className="eyebrow">Contact</p>
+          <h1 className="mt-3 text-ink">Get in touch</h1>
+          <p className="mx-auto mt-3 max-w-lg font-sans text-body text-ink-60">
             Questions, feedback, or something not working right? We reply within one business day.
           </p>
         </div>

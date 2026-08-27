@@ -2,40 +2,60 @@
 name: ReceiptOne
 description: Tax-ready expense tracking marketing site — warm ledger paper, precise near-black ink, one orange accent used sparingly.
 colors:
-  ink: "#000000"
+  ink: "#0d0d14"
   paper: "#f5f4f0"
   void: "#0d0d14"
   ember: "#f97316"
   ember-light: "#fed7aa"
   surface: "#ffffff"
+# Source of truth: src/receiptone-tokens.css. Eight steps, ceiling 600.
 typography:
   display:
-    fontFamily: "Inter Tight, Inter, ui-sans-serif, system-ui, sans-serif"
-    fontSize: "clamp(2.4rem, 6vw, 4.5rem)"
-    fontWeight: 700
-    lineHeight: 1.06
-    letterSpacing: "-0.02em"
-  headline:
-    fontFamily: "Inter Tight, Inter, ui-sans-serif, system-ui, sans-serif"
-    fontSize: "clamp(1.875rem, 3vw, 2.75rem)"
+    fontFamily: "Inter Tight, ui-sans-serif, system-ui, sans-serif"
+    fontSize: "clamp(2.75rem, 4vw + 1.2rem, 4.5rem)"
+    fontWeight: 600
+    lineHeight: 1.05
+    letterSpacing: "-0.04em"
+  h2:
+    fontFamily: "Inter Tight, ui-sans-serif, system-ui, sans-serif"
+    fontSize: "clamp(2.25rem, 2vw + 1.5rem, 3rem)"
+    fontWeight: 600
+    lineHeight: 1.05
+    letterSpacing: "-0.04em"
+  h3:
+    fontFamily: "Inter Tight, ui-sans-serif, system-ui, sans-serif"
+    fontSize: "clamp(1.5rem, 1vw + 1.1rem, 1.875rem)"
     fontWeight: 600
     lineHeight: 1.2
-    letterSpacing: "-0.02em"
-  title:
-    fontFamily: "Inter Tight, Inter, ui-sans-serif, system-ui, sans-serif"
-    fontSize: "1rem"
+    letterSpacing: "-0.025em"
+  lead:
+    fontFamily: "Inter Tight, ui-sans-serif, system-ui, sans-serif"
+    fontSize: "1.25rem"
     fontWeight: 600
-    lineHeight: 1.3
+    lineHeight: 1.4
   body:
-    fontFamily: "Inter, ui-sans-serif, system-ui, sans-serif"
+    fontFamily: "Inter Tight, ui-sans-serif, system-ui, sans-serif"
     fontSize: "1rem"
     fontWeight: 400
-    lineHeight: 1.6
-  label:
-    fontFamily: "Inter, ui-sans-serif, system-ui, sans-serif"
+    lineHeight: 1.5
+  sm:
+    fontFamily: "Inter Tight, ui-sans-serif, system-ui, sans-serif"
+    fontSize: "0.875rem"
+    fontWeight: 400
+    lineHeight: 1.43
+  label: # the .eyebrow treatment
+    fontFamily: "Geist Mono, ui-monospace, monospace"
     fontSize: "0.75rem"
-    fontWeight: 600
-    letterSpacing: "0.1em"
+    fontWeight: 400
+    lineHeight: 1.33
+    letterSpacing: "0.025em"
+    textTransform: uppercase
+  nav:
+    fontFamily: "Geist Mono, ui-monospace, monospace"
+    fontSize: "0.625rem"
+    fontWeight: 400
+    lineHeight: 1.5
+    letterSpacing: "0.025em"
 rounded:
   sm: "8px"
   md: "12px"
@@ -73,7 +93,7 @@ components:
     padding: "28px"
   badge-accent:
     backgroundColor: "{colors.ember}"
-    textColor: "{colors.surface}"
+    textColor: "{colors.ink}"
     rounded: "{rounded.full}"
     padding: "4px 16px"
 ---
@@ -103,10 +123,10 @@ Two token layers coexist in the codebase and should not be confused. The **marke
 The palette is almost monochrome by design: paper, ink, void, and one ember accent. Depth and hierarchy come from opacity on black or white, not from additional hues.
 
 ### Primary
-- **Ember** (`#f97316`): the single accent. Used for the trailing punctuation mark in hero headlines, star ratings, the "Most Popular" pricing badge, radial glow behind the hero mascot, and small uppercase labels/CTA text (InfoCards feature labels, article category pills, "Read article" links). Never used for full body copy or large fills.
+- **Ember** (`#f97316`): the single accent. Used for the trailing punctuation mark in hero headlines, star ratings, the "Most Popular" pricing badge, radial glow behind the hero mascot, and as the FILL behind CTAs, pills and badges (always with ink on top). It is no longer used as a letterform on paper -- see the Ember Surface Rule. Never used for full body copy.
 
 ### Secondary
-- **Ember Light** (`#fed7aa`): the "Best Deal" badge background, paired with black text — confirmed passing (~15.5:1), unlike the deliberate white-on-`#f97316` tradeoff elsewhere. A quieter second-tier use of the accent hue — reserved for badges, not CTAs.
+- **Ember Light** (`#fed7aa`): the "Best Deal" badge background, paired with black text — confirmed passing (~15.5:1). A quieter second-tier use of the accent hue — reserved for badges, not CTAs.
 
 ### Neutral
 - **Ink** (`#000000`): primary text color and the fill for high-contrast surfaces (popular pricing card, primary buttons, "Join now" CTA). Applied at full opacity for text, then diluted via alpha for everything else — `text-black/55`+ for body copy and eyebrow labels, `text-black/[0.07]` for hairline borders.
@@ -115,33 +135,65 @@ The palette is almost monochrome by design: paper, ink, void, and one ember acce
 - **Surface** (`#ffffff`): card and control backgrounds on light sections; also the ink color on dark sections, diluted the same way (`text-white/50`, `border-white/[0.07]`, `bg-white/[0.04]`).
 
 ### Named Rules
-**The One Accent Rule.** Ember (`#f97316`) is the only saturated color in the system, used exactly as-is everywhere — no darker or lighter substitutes. If a second saturated hue is tempting, the answer is alpha-black or alpha-white instead, not a new color. Two confirmed, deliberate contrast tradeoffs, both accepted knowingly and neither meant to be "fixed" in a future pass:
-1. **White text on `#f97316`** — badges ("Most Popular", "Coming soon"), the Advantages "Export" panel. Measures ~2.8:1.
-2. **`#f97316` text/icons on white/near-white** — `InfoCards.tsx`'s feature labels, `ArticlesSection.tsx`'s `CategoryPill` (featured variant) and "Read article" CTA, the article-detail category pill, a decorative icon at `articles/$slug.tsx:116`, and the hero H1's orange-period accent. Also ~2.8:1 (the icon isn't subject to text-contrast rules at all, but shares the color choice).
+**The One Accent Rule.** Ember (`#f97316`) is the only saturated hue in the system. If a second saturated color is tempting, the answer is ink-alpha or paper-alpha, not a new hue.
 
-Both directions fail WCAG AA. That's known and accepted — brand color consistency wins over contrast here. Don't darken the fill (e.g. to a `c2410c` step), don't switch the text color, and don't flag this pairing again in a future audit or critique pass.
+> **Superseded, 2026-08-26.** This rule previously accepted two failing pairings —
+> white-on-ember and ember-on-white — and instructed future passes not to darken
+> the fill "to a `c2410c` step", not to switch the text color, and not to flag the
+> pairing again. That guidance was reversed deliberately. Both directions were
+> fixed. Do not restore the old exception.
 
-**Not covered by this exception**: the author-initials avatar badge (`articles/$slug.tsx:309`, `us/articles/$slug.tsx:256`) — this one was genuinely readable text on a worse, different background, so it was fixed rather than accepted. `text-[#f97316]` (~2.07:1) was darkened to `text-[#9a3412]` (~5.40:1), a step from the same ember tonal ramp, keeping the background at `#fed7aa`.
+**The Ember Surface Rule.** Ember's legality depends entirely on what is behind it. Measured against the actual tokens:
 
-**The Alpha Neutral Rule.** There is no gray token scale. Every intermediate tone is `black/{opacity}` on light surfaces or `white/{opacity}` on dark surfaces. Text-carrying alpha values must clear WCAG AA (4.5:1 for normal text, 3:1 for large text) against their actual background — `black/55`+ and `white/50`+ are the verified-passing floor for body copy and eyebrow/label text; `black/35`/`white/30` were the site's original label convention but measured under 2.7:1 and were corrected sitewide. This keeps every section — light or dark — tonally consistent with its own background instead of drifting toward a generic gray, without sacrificing legibility.
+| Pairing | Ratio | Verdict |
+|---|---|---|
+| Ember text on the void `#0d0d14` | **6.91:1** | **Legal.** Ember may be a letterform on dark. |
+| Ink `#0d0d14` on an ember fill | **6.91:1** | **Legal.** This is how ember carries a CTA. |
+| Ember text on paper `#f5f4f0` | **2.55:1** | **Illegal.** Never a letterform on light. |
+| Paper on an ember fill | **2.55:1** | **Illegal.** Was the old badge/CTA convention. |
+| Ember text on an `ember/10` wash | **2.31:1** | **Illegal.** Worse than bare paper — the tint lifts the background toward the text. |
+
+**On paper, ember is a fill or a border — never a letterform.** On the void it may be text.
+
+Where the accent genuinely has to *be* the text on a light surface, use `--color-ember-text` (`#c2410c`): **4.71:1** on paper, **5.18:1** on a white card. It does **not** clear AA on an ember wash (4.27:1), so never pair it with one. Two call sites only — `ArticlesSection.tsx`'s "Read more" and `InfoCards.tsx`'s feature label.
+
+Interactive states must not trade contrast for color. Inline links signal hover with `hover:underline-offset-4`, not a hue change; the old `hover:text-ember` dropped them from 14.9:1 to 2.55:1 precisely while being pointed at.
+
+Genuinely exempt, because neither is a letterform: the decorative full stop closing the hero `h1`, and the `aria-hidden` `CheckCircle2` icons. Both keep plain `text-ember`.
+
+`#fed7aa` (ember-light) with ink text and `#9a3412` on `#fed7aa` (~5.40:1) are unaffected and still correct.
+
+**The Alpha Neutral Rule.** There is no gray token scale. Every intermediate tone on light surfaces is the single ink (`#0d0d14`) at reduced alpha — `text-ink-80` / `text-ink-60` / `text-ink-40`, surfaces `bg-ink-05` / `bg-ink-10` / `bg-ink-20`, and one hairline, `border-hairline`. Dark surfaces still use `white/{opacity}`, which has no token counterpart yet. Text-carrying alpha values must clear WCAG AA (4.5:1 for normal text, 3:1 for large text) against their actual background — `black/55`+ and `white/50`+ are the verified-passing floor for body copy and eyebrow/label text; `black/35`/`white/30` were the site's original label convention but measured under 2.7:1 and were corrected sitewide. This keeps every section — light or dark — tonally consistent with its own background instead of drifting toward a generic gray, without sacrificing legibility.
 
 ## 3. Typography
 
-**Display Font:** Inter Tight (with Inter, ui-sans-serif, system-ui fallback)
-**Body Font:** Inter (with ui-sans-serif, system-ui fallback)
-**Label/Mono Font:** none distinct — labels use Inter at small size with wide tracking
+**Display / Body Font:** Inter Tight (with ui-sans-serif, system-ui fallback). Both `font-display` and `font-sans` resolve to it.
+**Label/Mono Font:** Geist Mono (SIL OFL, with ui-monospace fallback) — eyebrows, pills, nav, figures. Always uppercase, always 400, always +0.025em.
+**Inter** is retained only as the inherited `--default-font-family` for the dashboard, helpdesk and shadcn surfaces, which declare no family of their own. It is not part of the marketing type system.
 
-**Character:** Inter Tight for anything that needs to command attention (hero, section headlines, stat numbers, CTA copy) paired with plain Inter for reading copy. Both are geometric-adjacent sans faces from the same family, so the pairing reads as one confident voice rather than two competing ones — appropriate for a "precise" brand that shouldn't feel like it's mixing metaphors.
+**Character:** Inter Tight carries the whole marketing page — display through body — so the voice is one face at different sizes rather than two competing sans. Geist Mono does the small, structural work: it marks a label as a label, and the family shift does the job that heavy weight and wide tracking used to do.
 
 ### Hierarchy
-- **Display** (700, `clamp(2.4rem, 6vw, 4.5rem)`, leading 1.06, tracking -0.02em): hero H1 only. One per page.
-- **Headline** (600, `clamp(1.875rem, 3vw, 2.75rem)` i.e. `text-3xl sm:text-4xl lg:text-[2.75rem]`, leading tight, tracking -0.02em): section H2s (Pricing, Trust, Faq, etc.).
-- **Title** (600, 1rem–1.5rem depending on context): card titles, trust-item headings, stat values at `text-2xl sm:text-3xl lg:text-[2rem]` (700 weight for stat numbers specifically).
-- **Body** (400, 1rem–1.125rem, leading relaxed, `text-black/55`+ or `text-white/50`+): all reading copy. Cap at ~65–75ch per the project's own house rules.
-- **Label** (600, 0.75rem, tracking-widest, uppercase, `text-black/55`+ or `text-white/50`+): eyebrow copy above section headers, footer column headings, nav "region" text. Must clear 4.5:1 against its background — see the Alpha Neutral Rule.
+
+Eight steps, defined in `src/receiptone-tokens.css`. `h1`/`h2`/`h3` are applied
+automatically by role rules scoped to `[data-interactive-page]` — do not put
+size, weight, family or tracking utilities on a heading.
+
+- **Display** (600, `clamp(2.75rem, 4vw + 1.2rem, 4.5rem)` = 44→72, leading 1.05, tracking -0.04em): hero `h1` only. One per page.
+- **H2** (600, `clamp(2.25rem, 2vw + 1.5rem, 3rem)` = 36→48, leading 1.05, tracking -0.04em): section headings.
+- **H3** (600, `clamp(1.5rem, 1vw + 1.1rem, 1.875rem)` = 24→30, leading 1.2, tracking -0.025em): sub-section headings and standalone block titles.
+- **Lead** (600/400, 1.25rem, leading 1.4, tracking 0): hero subhead, and card titles that repeat in a grid.
+- **Body** (400, 1rem, leading 1.5): all reading copy. Cap at ~65–75ch.
+- **Sm** (400/500/600, 0.875rem, leading 1.43): buttons, secondary text.
+- **Label** (Geist Mono, 400, 0.75rem, +0.025em, uppercase, `text-ink-60` or `text-white/50` on dark): the `.eyebrow` class. Above every section heading, plus pills and footer column headings.
+- **Nav** (Geist Mono, 400, 0.625rem, +0.025em): badges, legal, fine print.
 
 ### Named Rules
-**The Two-Font Ceiling Rule.** Only two working fonts: Inter Tight for display/headline/label, Inter for body. A third "systemwide" font would break the restraint the brand personality calls for.
+**The Two-Font Ceiling Rule.** Two working fonts on the marketing surface: Inter Tight for everything that reads as text, Geist Mono for everything that reads as a label. A third would break the restraint the brand personality calls for.
+
+**The 600 Ceiling Rule.** 600 is the heaviest weight on the page. The vocabulary is 400/500/600 and nothing else. 700 and 800 are no longer fetched, so `font-bold` renders as faux bold — it is a bug, not a style.
+
+**The Size-Bound Metrics Rule.** Line-height and letter-spacing are properties of the step, not of the element. Do not add `leading-*`, and use only `tracking-display` / `tracking-h3` / `tracking-body` / `tracking-mono`.
 
 ## 4. Elevation
 
@@ -184,8 +236,8 @@ Buttons, cards, and inputs are precise and understated: pill shapes, thin border
 - Fixed pill nav (`rounded-[20px]`, `max-w-[760px]`), `backdrop-blur-xl` with `bg-white/40` at rest, tightening to `bg-white/70` + border + shadow once scrolled past 8px. Nav links use `hover:opacity-70` rather than a color or underline change. Mobile collapses into a `rounded-2xl` dropdown drawer beneath the pill, not a full-screen takeover.
 
 ### Badges
-- **Accent badge** ("Most Popular", "Coming soon"): `bg-[#f97316] text-white`, full pill, paired with Badge glow shadow — the single place the accent carries elevation. Contrast here is intentionally below WCAG AA; see the One Accent Rule.
-- **Secondary badge** ("Best Deal"): `bg-[#fed7aa] text-black`, full pill, standard soft shadow (not the accent glow) — a deliberate step down from the primary badge. Confirmed and settled: black text here passes WCAG AA comfortably (~15.5:1); this is not paired with the white-on-`#f97316` exception and should stay black text.
+- **Accent badge** ("Most Popular", "Coming soon"): `bg-ember text-ink`, full pill, paired with Badge glow shadow — the single place the accent carries elevation. Ink on ember measures 6.91:1; see the Ember Surface Rule.
+- **Secondary badge** ("Best Deal"): `bg-[#fed7aa] text-black`, full pill, standard soft shadow (not the accent glow) — a deliberate step down from the primary badge. Confirmed and settled: black text here passes WCAG AA comfortably (~15.5:1); unaffected by the Ember Surface Rule and should stay ink text.
 
 ## 6. Do's and Don'ts
 

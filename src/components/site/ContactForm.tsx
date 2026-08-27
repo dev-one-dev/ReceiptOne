@@ -59,12 +59,12 @@ export function ContactForm({ region }: { region: Region }) {
 
   if (submitted) {
     return (
-      <div className="rounded-2xl border border-black/[0.07] bg-white p-8 text-center shadow-[0_2px_12px_rgba(0,0,0,0.06)] sm:p-10">
-        <div className="mx-auto flex size-14 items-center justify-center rounded-full bg-black text-white">
+      <div className="rounded-card border border-hairline bg-white p-8 text-center shadow-[0_2px_12px_rgba(0,0,0,0.06)] sm:p-10">
+        <div className="mx-auto flex size-14 items-center justify-center rounded-pill bg-ink text-paper">
           <CheckIcon />
         </div>
-        <p className="mt-5 font-display text-lg font-semibold text-black">Message sent</p>
-        <p className="mt-2 font-sans text-sm text-black/60">
+        <p className="mt-5 font-display text-lead font-semibold text-ink">Message sent</p>
+        <p className="mt-2 font-sans text-sm text-ink-60">
           Thanks for reaching out — we reply within one business day.
         </p>
       </div>
@@ -74,13 +74,13 @@ export function ContactForm({ region }: { region: Region }) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="space-y-4 rounded-2xl border border-black/[0.07] bg-white p-6 shadow-[0_2px_12px_rgba(0,0,0,0.06)] sm:p-8"
+      className="space-y-4 rounded-card border border-hairline bg-white p-6 shadow-[0_2px_12px_rgba(0,0,0,0.06)] sm:p-8"
     >
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <div className="space-y-1.5">
           <label
             htmlFor="contact-name"
-            className="block font-sans text-xs font-medium text-black/70"
+            className="block font-sans text-label font-medium text-ink-80"
           >
             Name
           </label>
@@ -90,13 +90,13 @@ export function ContactForm({ region }: { region: Region }) {
             value={name}
             onChange={(e) => setName(e.target.value.slice(0, 120))}
             placeholder="Jane Doe"
-            className="block w-full rounded-xl border border-black/10 bg-[#faf9f6] px-4 py-3 text-sm leading-5 text-black outline-none transition-colors placeholder:text-black/55 focus:border-black/40"
+            className="block w-full rounded-card border border-hairline bg-paper px-4 py-3 text-sm text-ink outline-none transition-colors placeholder:text-ink-60 focus:border-ink-40"
           />
         </div>
         <div className="space-y-1.5">
           <label
             htmlFor="contact-email"
-            className="block font-sans text-xs font-medium text-black/70"
+            className="block font-sans text-label font-medium text-ink-80"
           >
             Email
           </label>
@@ -106,7 +106,7 @@ export function ContactForm({ region }: { region: Region }) {
             value={email}
             onChange={(e) => setEmail(e.target.value.slice(0, 254))}
             placeholder="you@example.com"
-            className="block w-full rounded-xl border border-black/10 bg-[#faf9f6] px-4 py-3 text-sm leading-5 text-black outline-none transition-colors placeholder:text-black/55 focus:border-black/40"
+            className="block w-full rounded-card border border-hairline bg-paper px-4 py-3 text-sm text-ink outline-none transition-colors placeholder:text-ink-60 focus:border-ink-40"
           />
         </div>
       </div>
@@ -114,7 +114,7 @@ export function ContactForm({ region }: { region: Region }) {
       <div className="space-y-1.5">
         <label
           htmlFor="contact-subject"
-          className="block font-sans text-xs font-medium text-black/70"
+          className="block font-sans text-label font-medium text-ink-80"
         >
           Subject
         </label>
@@ -124,14 +124,14 @@ export function ContactForm({ region }: { region: Region }) {
           value={subject}
           onChange={(e) => setSubject(e.target.value.slice(0, 200))}
           placeholder="What's this about?"
-          className="block w-full rounded-xl border border-black/10 bg-[#faf9f6] px-4 py-3 text-sm leading-5 text-black outline-none transition-colors placeholder:text-black/55 focus:border-black/40"
+          className="block w-full rounded-card border border-hairline bg-paper px-4 py-3 text-sm text-ink outline-none transition-colors placeholder:text-ink-60 focus:border-ink-40"
         />
       </div>
 
       <div className="space-y-1.5">
         <label
           htmlFor="contact-message"
-          className="block font-sans text-xs font-medium text-black/70"
+          className="block font-sans text-label font-medium text-ink-80"
         >
           Message
         </label>
@@ -141,14 +141,14 @@ export function ContactForm({ region }: { region: Region }) {
           onChange={(e) => setMessage(e.target.value.slice(0, 2000))}
           placeholder="How can we help?"
           rows={5}
-          className="block w-full resize-none rounded-xl border border-black/10 bg-[#faf9f6] px-4 py-3 text-sm leading-5 text-black outline-none transition-colors placeholder:text-black/55 focus:border-black/40"
+          className="block w-full resize-none rounded-card border border-hairline bg-paper px-4 py-3 text-sm text-ink outline-none transition-colors placeholder:text-ink-60 focus:border-ink-40"
         />
       </div>
 
       <button
         type="submit"
         disabled={loading}
-        className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-black px-5 py-3 font-display text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40"
+        className="inline-flex w-full items-center justify-center gap-2 rounded-pill bg-ink px-5 py-3 font-display text-sm font-semibold text-paper transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40"
       >
         {loading ? "Sending…" : "Send message"}
       </button>

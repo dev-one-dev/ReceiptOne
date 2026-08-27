@@ -182,13 +182,9 @@ export function Pricing({ region = "ca" }: { region?: Region }) {
       <div className="mx-auto w-full max-w-[1200px]">
         {/* Header */}
         <div className="mx-auto mb-6 max-w-2xl text-center">
-          <p className="font-sans text-xs font-semibold uppercase tracking-widest text-black/55">
-            Pricing
-          </p>
-          <h2 className="mt-3 font-display text-3xl font-semibold leading-tight tracking-tight text-black sm:text-4xl lg:text-[2.75rem]">
-            Simple pricing. Cancel anytime.
-          </h2>
-          <p className="mt-4 text-base leading-relaxed text-black/55 sm:text-lg">
+          <p className="eyebrow">Pricing</p>
+          <h2 className="mt-3 text-ink">Simple pricing. Cancel anytime.</h2>
+          <p className="mt-4 text-body text-ink-60 sm:text-lead">
             Try it free for 7 days — no credit card required.
           </p>
         </div>
@@ -206,7 +202,7 @@ export function Pricing({ region = "ca" }: { region?: Region }) {
         >
           <TabsPrimitive.List
             aria-label="Billing period"
-            className="flex items-center gap-1 rounded-full border border-black/[0.07] bg-white p-1.5 shadow-[0_2px_12px_rgba(0,0,0,0.06)]"
+            className="flex items-center gap-1 rounded-pill border border-hairline bg-white p-1.5 shadow-[0_2px_12px_rgba(0,0,0,0.06)]"
           >
             {plans.map((plan) => {
               const badgeText = plan.popular ? "Most Popular" : plan.badge;
@@ -218,10 +214,10 @@ export function Pricing({ region = "ca" }: { region?: Region }) {
                   {badgeText && (
                     <span
                       className={cn(
-                        "absolute -top-7 left-1/2 z-10 -translate-x-1/2 whitespace-nowrap rounded-full px-2.5 py-0.5 font-sans text-[10px] font-semibold",
+                        "absolute -top-7 left-1/2 z-10 -translate-x-1/2 whitespace-nowrap rounded-pill px-2.5 py-0.5 font-sans text-nav font-semibold",
                         plan.popular
-                          ? "bg-[#f97316] text-white shadow-[0_4px_12px_rgba(249,115,22,0.4)]"
-                          : "bg-[#fed7aa] text-black shadow-[0_4px_12px_rgba(0,0,0,0.10)]",
+                          ? "bg-ember text-ink shadow-[0_4px_12px_rgba(249,115,22,0.4)]"
+                          : "bg-[#fed7aa] text-ink shadow-[0_4px_12px_rgba(0,0,0,0.10)]",
                       )}
                     >
                       {badgeText}
@@ -230,10 +226,8 @@ export function Pricing({ region = "ca" }: { region?: Region }) {
                   <TabsPrimitive.Trigger
                     value={plan.id}
                     className={cn(
-                      "block rounded-full px-5 py-2.5 font-sans text-sm font-semibold outline-none transition-colors sm:px-6",
-                      plan.id === selectedId
-                        ? "bg-black text-white"
-                        : "text-black/55 hover:text-black",
+                      "block rounded-pill px-5 py-2.5 font-sans text-sm font-semibold outline-none transition-colors sm:px-6",
+                      plan.id === selectedId ? "bg-ink text-paper" : "text-ink-60 hover:text-ink",
                     )}
                   >
                     {plan.name}
@@ -245,7 +239,7 @@ export function Pricing({ region = "ca" }: { region?: Region }) {
         </TabsPrimitive.Root>
 
         {/* Card */}
-        <div className="relative mx-auto mt-8 w-full max-w-xl overflow-hidden rounded-2xl border border-black/[0.07] bg-white p-7 shadow-[0_2px_12px_rgba(0,0,0,0.06)] sm:p-9">
+        <div className="relative mx-auto mt-8 w-full max-w-xl overflow-hidden rounded-card border border-hairline bg-white p-7 shadow-[0_2px_12px_rgba(0,0,0,0.06)] sm:p-9">
           {/*
            * Peek-a-boo asset — z-0, sits behind the z-10 content layer.
            * Anchored to bottom-right; overflow-hidden on the card crops it.
@@ -271,9 +265,7 @@ export function Pricing({ region = "ca" }: { region?: Region }) {
 
           {/* Content layer — z-10 keeps text and CTA above the asset */}
           <div className="relative z-10">
-            <h3 className="font-sans text-sm font-semibold uppercase tracking-widest text-black/55">
-              {selectedPlan.name}
-            </h3>
+            <h3 className="eyebrow">{selectedPlan.name}</h3>
 
             {/*
              * grid + col/row-start-1 stacks all three periods' price blocks in
@@ -302,20 +294,20 @@ export function Pricing({ region = "ca" }: { region?: Region }) {
                     )}
                   >
                     <div className="flex flex-wrap items-baseline gap-x-1.5 gap-y-0">
-                      <span className="font-display text-4xl font-bold tracking-tight whitespace-nowrap text-black sm:text-5xl">
+                      <span className="font-display text-h2 font-semibold tracking-display whitespace-nowrap text-ink">
                         {formatPrice(plan, plan.price)}
                       </span>
-                      <span className="font-sans text-base text-black/55">{plan.period}</span>
+                      <span className="font-sans text-body text-ink-60">{plan.period}</span>
                     </div>
 
                     {plan.originalPrice && (
-                      <p className="mt-1 font-sans text-sm text-black/55 line-through">
+                      <p className="mt-1 font-sans text-sm text-ink-60 line-through">
                         {formatPrice(plan, plan.originalPrice)} {plan.period}
                       </p>
                     )}
 
                     {label && (
-                      <span className="mt-2 inline-block w-fit rounded-full bg-[#fed7aa] px-2.5 py-0.5 font-sans text-xs font-semibold text-black">
+                      <span className="mt-2 inline-block w-fit rounded-pill bg-[#fed7aa] px-2.5 py-0.5 font-sans text-label font-semibold text-ink">
                         {label}
                       </span>
                     )}
@@ -325,19 +317,19 @@ export function Pricing({ region = "ca" }: { region?: Region }) {
             </div>
 
             {/* Divider — max-w-[60%] keeps it in the text column, away from the peeking animal image */}
-            <div className="my-6 h-px max-w-[60%] bg-black/[0.07]" />
+            <div className="my-6 h-px max-w-[60%] bg-ink-05" />
 
             {/* Features — identical regardless of the selected period */}
             <ul className="flex max-w-[60%] flex-col gap-2.5">
               {features.map((f) => (
                 <li key={f} className="flex items-start gap-2.5">
                   <span
-                    className="mt-0.5 flex size-4 shrink-0 items-center justify-center rounded-full bg-black/[0.06]"
+                    className="mt-0.5 flex size-4 shrink-0 items-center justify-center rounded-pill bg-ink-05"
                     aria-hidden
                   >
                     <CheckIcon />
                   </span>
-                  <span className="font-sans text-sm leading-snug text-black/65">{f}</span>
+                  <span className="font-sans text-sm text-ink-80">{f}</span>
                 </li>
               ))}
             </ul>
@@ -348,7 +340,7 @@ export function Pricing({ region = "ca" }: { region?: Region }) {
           </div>
         </div>
 
-        <p className="mt-4 text-center font-sans text-sm text-black/55">
+        <p className="mt-4 text-center font-sans text-sm text-ink-60">
           All plans include a 7-day free trial · Cancel anytime · Prices in {plans[0].currency}
         </p>
       </div>

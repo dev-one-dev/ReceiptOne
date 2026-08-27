@@ -14,7 +14,10 @@ export function NotFoundComponent() {
   const region = isUS ? "us" : "ca";
 
   return (
-    <main className="min-h-screen overflow-x-clip bg-[#f5f4f0] font-sans text-black antialiased">
+    <main
+      data-interactive-page
+      className="min-h-screen overflow-x-clip bg-paper font-sans text-ink antialiased"
+    >
       <Header />
 
       <section className="px-4 pb-10 pt-24 sm:px-6 lg:px-8">
@@ -51,7 +54,13 @@ export const Route = createRootRoute({
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Inter+Tight:wght@500;600;700;800&display=swap",
+        // Weight ceiling is 600 — 700/800 are deliberately not fetched.
+        // Inter is retained only as the inherited --default-font-family for the
+        // dashboard/helpdesk/shadcn surfaces, which declare no family of their
+        // own; the marketing shells set font-sans/font-display explicitly and
+        // render Inter Tight. Inter Tight 400 is new and required: marketing
+        // body copy is 400 and would otherwise synthesize.
+        href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Inter+Tight:wght@400;500;600&family=Geist+Mono:wght@400&display=swap",
       },
     ],
     scripts: [

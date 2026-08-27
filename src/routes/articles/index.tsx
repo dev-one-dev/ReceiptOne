@@ -66,21 +66,20 @@ export const Route = (createFileRoute as any)("/articles/")({
 
 function ArticlesIndexPage() {
   return (
-    <main className="min-h-screen overflow-x-clip bg-[#f5f4f0] font-sans text-black antialiased">
+    <main
+      data-interactive-page
+      className="min-h-screen overflow-x-clip bg-paper font-sans text-ink antialiased"
+    >
       <Header />
 
       {/* Page hero */}
       <section className="pt-24 pb-4 text-center">
         <div className="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
-          <p className="font-sans text-xs font-semibold uppercase tracking-widest text-black/55">
-            Knowledge Base
-          </p>
+          <p className="eyebrow">Knowledge Base</p>
 
-          <h1 className="mt-3 font-display text-3xl font-semibold leading-tight tracking-tight text-black sm:text-4xl lg:text-[2.75rem]">
-            Tax guides for Canadian freelancers
-          </h1>
+          <h1 className="mt-3 text-ink">Tax guides for Canadian freelancers</h1>
 
-          <p className="mx-auto mt-4 max-w-xl font-sans text-base leading-relaxed text-black/55 sm:text-lg">
+          <p className="mx-auto mt-4 max-w-xl font-sans text-body text-ink-60 sm:text-lead">
             CRA-ready tips on receipts, GST/HST, mileage, and deductions — written for independent
             contractors and self-employed Canadians.
           </p>
@@ -100,29 +99,25 @@ function ArticlesIndexPage() {
 
 function CtaBanner() {
   return (
-    <section className="bg-[#0d0d14] py-6 sm:py-8">
+    <section data-surface="void" className="bg-ink py-6 sm:py-8">
       <div className="mx-auto max-w-[1200px] px-4 text-center sm:px-6 lg:px-8">
-        <p className="font-sans text-xs font-semibold uppercase tracking-widest text-white/50">
-          Get Started
-        </p>
-        <h2 className="mt-2 font-display text-3xl font-semibold leading-tight tracking-tight text-white sm:text-4xl">
-          Start managing your receipts in minutes
-        </h2>
-        <p className="mx-auto mt-2 max-w-md font-sans text-base text-white/55">
+        <p className="eyebrow">Get Started</p>
+        <h2 className="mt-2 text-paper">Start managing your receipts in minutes</h2>
+        <p className="mx-auto mt-2 max-w-md font-sans text-body text-paper-60">
           Built for Canadian freelancers who want to stay CRA-ready without the paperwork headache.
         </p>
         <div className="mt-4 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
           <Link
             to={"/ca" as any}
             hash="pricing"
-            className="inline-flex items-center gap-2 rounded-full bg-[#f97316] px-6 py-3 font-sans text-sm font-semibold text-white transition-all duration-200 hover:bg-[#ea6c0a] hover:shadow-[0_8px_24px_rgba(249,115,22,0.35)]"
+            className="inline-flex items-center gap-2 rounded-pill bg-ember px-6 py-3 font-sans text-sm font-semibold text-ink transition-all duration-200 hover:bg-ember-hover hover:shadow-[0_8px_24px_rgba(249,115,22,0.35)]"
           >
             See pricing
             <ArrowRight className="size-4" aria-hidden />
           </Link>
           <Link
             to={"/ca" as any}
-            className="inline-flex items-center gap-2 rounded-full border border-white/15 px-6 py-3 font-sans text-sm font-semibold text-white transition-all duration-200 hover:border-white/40 hover:bg-white/5"
+            className="inline-flex items-center gap-2 rounded-pill border border-hairline-void px-6 py-3 font-sans text-sm font-semibold text-paper transition-all duration-200 hover:border-paper-40 hover:bg-paper-05"
           >
             Learn more
           </Link>

@@ -94,7 +94,7 @@ export function Header() {
   };
 
   const mobileNavBtnClass =
-    "w-full rounded-xl px-4 py-3 text-left font-sans text-base font-medium leading-6 text-black transition-colors hover:bg-black/5";
+    "w-full rounded-card px-4 py-3 text-left font-sans text-body font-medium text-ink transition-colors hover:bg-ink-05";
 
   // Rendered twice below (desktop, grouped with the nav; mobile, next to the
   // hamburger) -- each wrapper's responsive visibility is mutually exclusive
@@ -108,7 +108,7 @@ export function Header() {
           setOpen((v) => !v);
           setMobileNavOpen(false);
         }}
-        className="flex items-center gap-1.5 rounded-md px-1 py-1 font-display text-[15px] font-semibold leading-6 text-black sm:text-base sm:leading-7"
+        className="flex items-center gap-1.5 rounded-card px-1 py-1 font-display text-body font-semibold text-ink"
         aria-label="Change region"
         aria-haspopup="menu"
         aria-expanded={open}
@@ -139,13 +139,13 @@ export function Header() {
       {open && (
         <div
           role="menu"
-          className="absolute right-0 top-full z-50 mt-2 min-w-[11rem] overflow-hidden rounded-xl border border-black/10 bg-white py-1 shadow-lg sm:min-w-[12.5rem]"
+          className="absolute right-0 top-full z-50 mt-2 min-w-[11rem] overflow-hidden rounded-card border border-hairline bg-white py-1 shadow-lg sm:min-w-[12.5rem]"
         >
           <button
             role="menuitem"
             type="button"
             onClick={() => select("ca")}
-            className="flex w-full items-center gap-2.5 px-4 py-2.5 text-left text-[15px] font-medium leading-6 hover:bg-black/5 sm:text-base sm:leading-7"
+            className="flex w-full items-center gap-2.5 px-4 py-2.5 text-left text-body font-medium hover:bg-ink-05"
           >
             <FlagCanada className="size-6 shrink-0 sm:size-7" />
             <span>Canada</span>
@@ -154,7 +154,7 @@ export function Header() {
             role="menuitem"
             type="button"
             onClick={() => select("us")}
-            className="flex w-full items-center gap-2.5 px-4 py-2.5 text-left text-[15px] font-medium leading-6 hover:bg-black/5 sm:text-base sm:leading-7"
+            className="flex w-full items-center gap-2.5 px-4 py-2.5 text-left text-body font-medium hover:bg-ink-05"
           >
             <FlagUSA className="size-6 shrink-0 sm:size-7" />
             <span>USA</span>
@@ -168,9 +168,9 @@ export function Header() {
     <header className="fixed inset-x-0 top-0 z-50 flex w-full justify-center px-4 pt-3 sm:px-6 sm:pt-4 lg:px-8">
       <div ref={rootRef} className="relative w-full max-w-[1200px]">
         <nav
-          className={`flex w-full items-center justify-between gap-2 rounded-[20px] border p-3 backdrop-blur-xl backdrop-saturate-150 transition-all duration-300 sm:gap-3 sm:p-3.5 md:p-4 ${
+          className={`flex w-full items-center justify-between gap-2 rounded-card border p-3 backdrop-blur-xl backdrop-saturate-150 transition-all duration-300 sm:gap-3 sm:p-3.5 md:p-4 ${
             scrolled
-              ? "border-black/[0.08] bg-white/70 shadow-[0_8px_32px_rgba(0,0,0,0.08)]"
+              ? "border-hairline bg-white/70 shadow-[0_8px_32px_rgba(0,0,0,0.08)]"
               : "border-transparent bg-white/40"
           }`}
           aria-label="Primary"
@@ -191,12 +191,12 @@ export function Header() {
           </Link>
 
           <div className="hidden flex-1 items-center justify-center gap-3 lg:flex">
-            <ul className="flex items-center gap-3 font-sans text-[15px] font-medium leading-6 text-black">
+            <ul className="flex items-center gap-3 font-sans text-body font-medium text-ink">
               <li>
                 <button
                   type="button"
                   onClick={scrollTo("how-it-works")}
-                  className="rounded-md px-0.5 py-1 transition-opacity hover:opacity-70 whitespace-nowrap"
+                  className="rounded-card px-0.5 py-1 transition-opacity hover:opacity-70 whitespace-nowrap"
                 >
                   How It Works
                 </button>
@@ -205,7 +205,7 @@ export function Header() {
                 <button
                   type="button"
                   onClick={scrollTo("benefits")}
-                  className="rounded-md px-0.5 py-1 transition-opacity hover:opacity-70"
+                  className="rounded-card px-0.5 py-1 transition-opacity hover:opacity-70"
                 >
                   Benefits
                 </button>
@@ -214,7 +214,7 @@ export function Header() {
                 <button
                   type="button"
                   onClick={scrollTo("pricing")}
-                  className="rounded-md px-0.5 py-1 transition-opacity hover:opacity-70"
+                  className="rounded-card px-0.5 py-1 transition-opacity hover:opacity-70"
                 >
                   Pricing
                 </button>
@@ -223,7 +223,7 @@ export function Header() {
                 <button
                   type="button"
                   onClick={scrollTo("faq")}
-                  className="rounded-md px-0.5 py-1 transition-opacity hover:opacity-70"
+                  className="rounded-card px-0.5 py-1 transition-opacity hover:opacity-70"
                 >
                   FAQ
                 </button>
@@ -239,13 +239,13 @@ export function Header() {
             <div className="hidden items-center gap-2 sm:gap-3 lg:flex">
               <Link
                 to="/login"
-                className="shrink-0 whitespace-nowrap rounded-full border border-black px-3 py-2 font-display text-[15px] font-semibold leading-6 text-black transition-colors hover:bg-black/5"
+                className="shrink-0 whitespace-nowrap rounded-pill border border-ink px-3 py-2 font-display text-body font-semibold text-ink transition-colors hover:bg-ink-05"
               >
                 Log in
               </Link>
               <Link
                 to="/signup"
-                className="shrink-0 whitespace-nowrap rounded-full bg-black px-3 py-2 font-display text-[15px] font-semibold leading-6 text-white transition-opacity hover:opacity-90"
+                className="shrink-0 whitespace-nowrap rounded-pill bg-ink px-3 py-2 font-display text-body font-semibold text-paper transition-opacity hover:opacity-90"
               >
                 Join now
               </Link>
@@ -253,7 +253,7 @@ export function Header() {
 
             <button
               type="button"
-              className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-black/10 bg-white/80 text-black transition-colors hover:bg-black/5 lg:hidden"
+              className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-card border border-hairline bg-white/80 text-ink transition-colors hover:bg-ink-05 lg:hidden"
               aria-label={mobileNavOpen ? "Close menu" : "Open menu"}
               aria-expanded={mobileNavOpen}
               aria-controls="site-mobile-nav"
@@ -272,9 +272,9 @@ export function Header() {
             id="site-mobile-nav"
             role="navigation"
             aria-label="Site sections"
-            className="absolute left-0 right-0 top-full z-40 mt-2 rounded-2xl border border-black/10 bg-white/95 p-3 shadow-[0_16px_48px_rgba(0,0,0,0.12)] backdrop-blur-xl lg:hidden"
+            className="absolute left-0 right-0 top-full z-40 mt-2 rounded-card border border-hairline bg-white/95 p-3 shadow-[0_16px_48px_rgba(0,0,0,0.12)] backdrop-blur-xl lg:hidden"
           >
-            <div className="flex flex-col gap-0.5 border-b border-black/5 pb-2">
+            <div className="flex flex-col gap-0.5 border-b border-hairline pb-2">
               <button
                 type="button"
                 className={mobileNavBtnClass}
@@ -296,14 +296,14 @@ export function Header() {
               <Link
                 to="/login"
                 onClick={() => setMobileNavOpen(false)}
-                className="block w-full rounded-full border border-black py-3 text-center font-display text-[15px] font-semibold leading-6 text-black transition-colors hover:bg-black/5"
+                className="block w-full rounded-pill border border-ink py-3 text-center font-display text-body font-semibold text-ink transition-colors hover:bg-ink-05"
               >
                 Log in
               </Link>
               <Link
                 to="/signup"
                 onClick={() => setMobileNavOpen(false)}
-                className="block w-full rounded-full bg-black py-3 text-center font-display text-[15px] font-semibold leading-6 text-white transition-opacity hover:opacity-90"
+                className="block w-full rounded-pill bg-ink py-3 text-center font-display text-body font-semibold text-paper transition-opacity hover:opacity-90"
               >
                 Join now
               </Link>

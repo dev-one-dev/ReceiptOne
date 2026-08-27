@@ -75,7 +75,7 @@ export function Footer({ region = "ca" }: FooterProps) {
   };
 
   return (
-    <footer className="w-full bg-[#0d0d14] text-white">
+    <footer data-surface="void" className="w-full bg-ink text-paper">
       <div className="mx-auto max-w-[1200px] px-4 pt-8 pb-4 sm:px-6 lg:px-8 lg:pt-10">
         {/* Main grid */}
         <div className="grid gap-6 lg:grid-cols-4">
@@ -95,7 +95,7 @@ export function Footer({ region = "ca" }: FooterProps) {
               />
             </button>
 
-            <p className="mt-3 text-sm leading-relaxed text-white/45">{tagline}</p>
+            <p className="mt-3 text-sm text-paper-40">{tagline}</p>
 
             {/* Social */}
             <div className="mt-4 flex items-center gap-4">
@@ -106,7 +106,7 @@ export function Footer({ region = "ca" }: FooterProps) {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={label}
-                  className="flex size-9 items-center justify-center rounded-full border border-white/10 text-white/40 transition-colors hover:border-white/25 hover:text-white"
+                  className="flex size-9 items-center justify-center rounded-pill border border-hairline-void text-paper-40 transition-colors hover:border-paper-40 hover:text-paper"
                 >
                   <Icon className="size-4" />
                 </a>
@@ -124,9 +124,7 @@ export function Footer({ region = "ca" }: FooterProps) {
           <div className="grid grid-cols-3 gap-4 lg:col-span-3">
             {/* Product */}
             <div>
-              <p className="font-display text-sm font-semibold uppercase tracking-widest text-white/50">
-                Product
-              </p>
+              <p className="eyebrow">Product</p>
               <ul className="mt-2 space-y-1.5">
                 {productLinks(region).map(({ label, href }) => {
                   const isHashLink = href.startsWith("#");
@@ -135,7 +133,7 @@ export function Footer({ region = "ca" }: FooterProps) {
                       <a
                         href={href}
                         onClick={isHashLink ? scrollToSection(href.slice(1)) : undefined}
-                        className="font-sans text-sm text-white/55 transition-colors hover:text-white"
+                        className="font-sans text-sm text-paper-60 transition-colors hover:text-paper"
                       >
                         {label}
                       </a>
@@ -147,15 +145,13 @@ export function Footer({ region = "ca" }: FooterProps) {
 
             {/* Company */}
             <div>
-              <p className="font-display text-sm font-semibold uppercase tracking-widest text-white/50">
-                Account
-              </p>
+              <p className="eyebrow">Account</p>
               <ul className="mt-2 space-y-1.5">
                 {COMPANY_LINKS_CA.map(({ label, href }) => (
                   <li key={label}>
                     <Link
                       to={href as (typeof ROUTES)[keyof typeof ROUTES]}
-                      className="font-sans text-sm text-white/55 transition-colors hover:text-white"
+                      className="font-sans text-sm text-paper-60 transition-colors hover:text-paper"
                     >
                       {label}
                     </Link>
@@ -166,15 +162,13 @@ export function Footer({ region = "ca" }: FooterProps) {
 
             {/* Legal */}
             <div>
-              <p className="font-display text-sm font-semibold uppercase tracking-widest text-white/50">
-                Legal
-              </p>
+              <p className="eyebrow">Legal</p>
               <ul className="mt-2 space-y-1.5">
                 {LEGAL_LINKS.map(({ label, href }) => (
                   <li key={label}>
                     <Link
                       to={href as (typeof ROUTES)[keyof typeof ROUTES]}
-                      className="font-sans text-sm text-white/55 transition-colors hover:text-white"
+                      className="font-sans text-sm text-paper-60 transition-colors hover:text-paper"
                     >
                       {label}
                     </Link>
@@ -186,8 +180,8 @@ export function Footer({ region = "ca" }: FooterProps) {
         </div>
 
         {/* Bottom bar */}
-        <div className="mt-6 flex flex-col items-center justify-between gap-2 border-t border-white/[0.07] pt-4 sm:flex-row">
-          <p className="font-sans text-sm text-white/50">
+        <div className="mt-6 flex flex-col items-center justify-between gap-2 border-t border-hairline-void pt-4 sm:flex-row">
+          <p className="font-sans text-sm text-paper-40">
             &copy; {new Date().getFullYear()} ReceiptOne. All rights reserved.
           </p>
           <div className="flex items-center gap-4">
@@ -195,7 +189,7 @@ export function Footer({ region = "ca" }: FooterProps) {
               <Link
                 key={label}
                 to={href as (typeof ROUTES)[keyof typeof ROUTES]}
-                className="font-sans text-sm text-white/50 transition-colors hover:text-white/80"
+                className="font-sans text-sm text-paper-40 transition-colors hover:text-paper-80"
               >
                 {label}
               </Link>
