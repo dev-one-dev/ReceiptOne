@@ -2,6 +2,7 @@ import { Link, useLocation, useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import logoMark from "@/assets/figma/logo-mark.svg";
 import logoWordmark from "@/assets/figma/logo-wordmark.svg";
+import { ROUTES } from "@/lib/routes";
 
 /**
  * Header — pixel-mapped from Figma node 29:26473
@@ -237,18 +238,18 @@ export function Header() {
             <div className="lg:hidden">{regionSwitcher}</div>
 
             <div className="hidden items-center gap-2 sm:gap-3 lg:flex">
-              <Link
-                to="/login"
+              <a
+                href={ROUTES.login}
                 className="shrink-0 whitespace-nowrap rounded-pill border border-ink px-3 py-2 font-display text-body font-semibold text-ink transition-colors hover:bg-ink-05"
               >
                 Log in
-              </Link>
-              <Link
-                to="/signup"
+              </a>
+              <a
+                href={ROUTES.signup}
                 className="shrink-0 whitespace-nowrap rounded-pill bg-ink px-3 py-2 font-display text-body font-semibold text-paper transition-opacity hover:opacity-90"
               >
                 Join now
-              </Link>
+              </a>
             </div>
 
             <button
@@ -293,20 +294,20 @@ export function Header() {
               </button>
             </div>
             <div className="mt-3 flex flex-col gap-2">
-              <Link
-                to="/login"
+              <a
+                href={ROUTES.login}
                 onClick={() => setMobileNavOpen(false)}
                 className="block w-full rounded-pill border border-ink py-3 text-center font-display text-body font-semibold text-ink transition-colors hover:bg-ink-05"
               >
                 Log in
-              </Link>
-              <Link
-                to="/signup"
+              </a>
+              <a
+                href={ROUTES.signup}
                 onClick={() => setMobileNavOpen(false)}
                 className="block w-full rounded-pill bg-ink py-3 text-center font-display text-body font-semibold text-paper transition-opacity hover:opacity-90"
               >
                 Join now
-              </Link>
+              </a>
             </div>
           </div>
         )}

@@ -2,7 +2,7 @@ import { Link, useNavigate } from "@tanstack/react-router";
 import { Facebook, Linkedin } from "lucide-react";
 import logoMark from "@/assets/figma/logo-mark.svg";
 import logoWordmark from "@/assets/figma/logo-wordmark.svg";
-import { ROUTES } from "@/lib/routes";
+import { ROUTES, type AppRoute } from "@/lib/routes";
 import { StoreBadge } from "@/components/site/StoreBadge";
 
 type FooterProps = {
@@ -21,14 +21,15 @@ function productLinks(region: "ca" | "us") {
   ];
 }
 
-const COMPANY_LINKS_CA = [
-  { label: "Log in", href: ROUTES.login, internal: true },
-  { label: "Sign up", href: ROUTES.signup, internal: true },
+// Cross-origin: the web app owns auth. Plain anchors, same tab.
+const ACCOUNT_LINKS = [
+  { label: "Log in", href: ROUTES.login },
+  { label: "Sign up", href: ROUTES.signup },
 ];
 
-const LEGAL_LINKS = [
-  { label: "Terms of Use", href: ROUTES.terms, internal: true },
-  { label: "Privacy Policy", href: ROUTES.privacy, internal: true },
+const LEGAL_LINKS: { label: string; href: AppRoute }[] = [
+  { label: "Terms of Use", href: ROUTES.terms },
+  { label: "Privacy Policy", href: ROUTES.privacy },
 ];
 
 const SOCIAL = [
@@ -147,14 +148,14 @@ export function Footer({ region = "ca" }: FooterProps) {
             <div>
               <p className="eyebrow">Account</p>
               <ul className="mt-2 space-y-1.5">
-                {COMPANY_LINKS_CA.map(({ label, href }) => (
+                {ACCOUNT_LINKS.map(({ label, href }) => (
                   <li key={label}>
-                    <Link
-                      to={href as (typeof ROUTES)[keyof typeof ROUTES]}
+                    <a
+                      href={href}
                       className="font-sans text-sm text-paper-60 transition-colors hover:text-paper"
                     >
                       {label}
-                    </Link>
+                    </a>
                   </li>
                 ))}
               </ul>
@@ -167,7 +168,7 @@ export function Footer({ region = "ca" }: FooterProps) {
                 {LEGAL_LINKS.map(({ label, href }) => (
                   <li key={label}>
                     <Link
-                      to={href as (typeof ROUTES)[keyof typeof ROUTES]}
+                      to={href}
                       className="font-sans text-sm text-paper-60 transition-colors hover:text-paper"
                     >
                       {label}
@@ -188,7 +189,7 @@ export function Footer({ region = "ca" }: FooterProps) {
             {LEGAL_LINKS.map(({ label, href }) => (
               <Link
                 key={label}
-                to={href as (typeof ROUTES)[keyof typeof ROUTES]}
+                to={href}
                 className="font-sans text-sm text-paper-40 transition-colors hover:text-paper-80"
               >
                 {label}

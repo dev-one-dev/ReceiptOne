@@ -12,11 +12,7 @@
  * outside of Vite (there `import.meta.env` is undefined).
  */
 
-type EnvKey =
-  | "VITE_APP_URL"
-  | "VITE_SITE_URL"
-  | "VITE_APP_STORE_URL"
-  | "VITE_PLAY_STORE_URL";
+type EnvKey = "VITE_APP_URL" | "VITE_SITE_URL" | "VITE_APP_STORE_URL" | "VITE_PLAY_STORE_URL";
 
 function readEnv(key: EnvKey): string | undefined {
   const viteEnv = import.meta.env as Record<string, string | undefined> | undefined;
