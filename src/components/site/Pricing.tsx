@@ -194,53 +194,47 @@ export function Pricing({ region = "ca" }: { region?: Region }) {
         </div>
 
         {/*
-         * Period toggle. Two grid rows: the chips, then the pill. The pill is
-         * a subgrid, so its three tabs define the column widths and the chip
-         * cells above inherit exactly those columns -- each chip is centred
-         * over its own option by construction, with no absolute positioning
-         * and no measured offsets. gap-y-2 is the clear gap between chip and
-         * pill; gap-x-1 doubles as the pill's own gap between tabs. The edge
-         * chip cells mirror the pill's p-1.5 so columns 1 and 3 centre on the
-         * tab, not on the tab plus the pill's padding.
+         * Period toggle. Chips sit ON the pill's top edge exactly the way
+         * "Coming soon" sits on its card in NotAll.tsx: a relative wrapper
+         * per option, and the chip absolute top-0 / -translate-y-1/2,
+         * left-1/2 / -translate-x-1/2. The pill's vertical padding lives on
+         * the wrappers (px stays on the pill), so each wrapper's top edge IS
+         * the pill's top border and its horizontal centre IS the option's.
+         * pt-4 on the Root clears the 12px the chip protrudes above the pill.
          */}
         <TabsPrimitive.Root
           value={selectedId}
           onValueChange={setSelectedId}
-          className="grid grid-cols-[repeat(3,auto)] justify-center gap-x-1 gap-y-2"
+          className="flex flex-col items-center pt-4"
         >
-          {plans.map((plan, i) => {
-            const badgeText = plan.popular ? "Most Popular" : plan.badge;
-            return (
-              <div
-                key={plan.id}
-                className={cn(
-                  "flex justify-center",
-                  i === 0 && "pl-1.5",
-                  i === plans.length - 1 && "pr-1.5",
-                )}
-              >
-                {badgeText && (
-                  <Chip tone={plan.popular ? "ember" : "green"}>{badgeText}</Chip>
-                )}
-              </div>
-            );
-          })}
           <TabsPrimitive.List
             aria-label="Billing period"
-            className="col-span-3 grid grid-cols-subgrid items-center rounded-pill border border-hairline bg-white p-1.5 shadow-[0_2px_12px_rgba(0,0,0,0.06)]"
+            className="relative flex items-center gap-1 rounded-pill border border-hairline bg-white px-1.5 shadow-[0_2px_12px_rgba(0,0,0,0.06)]"
           >
-            {plans.map((plan) => (
-              <TabsPrimitive.Trigger
-                key={plan.id}
-                value={plan.id}
-                className={cn(
-                  "block rounded-pill px-5 py-2.5 font-sans text-sm font-semibold outline-none transition-colors sm:px-6",
-                  plan.id === selectedId ? "bg-ink text-paper" : "text-ink-60 hover:text-ink",
-                )}
-              >
-                {plan.name}
-              </TabsPrimitive.Trigger>
-            ))}
+            {plans.map((plan) => {
+              const badgeText = plan.popular ? "Most Popular" : plan.badge;
+              return (
+                <div key={plan.id} className="relative py-1.5">
+                  {badgeText && (
+                    <Chip
+                      tone={plan.popular ? "ember" : "ember-text"}
+                      className="absolute top-0 left-1/2 z-20 -translate-x-1/2 -translate-y-1/2"
+                    >
+                      {badgeText}
+                    </Chip>
+                  )}
+                  <TabsPrimitive.Trigger
+                    value={plan.id}
+                    className={cn(
+                      "block rounded-pill px-5 py-2.5 font-sans text-sm font-semibold outline-none transition-colors sm:px-6",
+                      plan.id === selectedId ? "bg-ink text-paper" : "text-ink-60 hover:text-ink",
+                    )}
+                  >
+                    {plan.name}
+                  </TabsPrimitive.Trigger>
+                </div>
+              );
+            })}
           </TabsPrimitive.List>
         </TabsPrimitive.Root>
 
@@ -313,7 +307,7 @@ export function Pricing({ region = "ca" }: { region?: Region }) {
                     )}
 
                     {label && (
-                      <span className="mt-2 inline-block w-fit rounded-pill bg-[#fed7aa] px-2.5 py-0.5 font-sans text-label font-semibold text-ink">
+                      <span className="mt-2 inline-block w-fit rounded-pill bg-ember/30 px-2.5 py-0.5 font-sans text-label font-semibold text-ink">
                         {label}
                       </span>
                     )}
