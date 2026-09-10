@@ -23,6 +23,8 @@ import {
 import { errorMessage, timeAgo } from "@/lib/utils";
 
 export const Route = createFileRoute("/helpdesk/support")({
+  // Internal admin tool: never indexed.
+  head: () => ({ meta: [{ name: "robots", content: "noindex,nofollow" }] }),
   component: HelpdeskSupportPage,
 });
 

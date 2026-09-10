@@ -1,7 +1,7 @@
 User-agent: *
 Allow: /
-Disallow: /login
-Disallow: /signup
+Disallow: /helpdesk
+Disallow: /r
 Disallow: /api/
 
 Sitemap: https://receipt-one.com/sitemap.xml

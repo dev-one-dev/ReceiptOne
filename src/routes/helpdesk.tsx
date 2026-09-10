@@ -6,6 +6,8 @@ import { HelpdeskLoginForm } from "@/components/helpdesk/HelpdeskLoginForm";
 import { HelpdeskAuthProvider, useHelpdeskAuth } from "@/components/helpdesk/HelpdeskAuthContext";
 
 export const Route = createFileRoute("/helpdesk")({
+  // Internal admin tool: never indexed.
+  head: () => ({ meta: [{ name: "robots", content: "noindex,nofollow" }] }),
   component: HelpdeskRoute,
 });
 
