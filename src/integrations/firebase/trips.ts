@@ -13,8 +13,7 @@ import {
   where,
 } from "firebase/firestore";
 import { db } from "@/integrations/firebase/client";
-import type { DistanceUnit } from "@/components/dashboard/DashboardContext";
-import { kmToMi, miToKm } from "@/lib/dashboard-format";
+import { kmToMi, miToKm, type DistanceUnit } from "@/lib/dashboard-format";
 
 export type RouteLocation = {
   address: string;

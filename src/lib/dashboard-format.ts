@@ -1,4 +1,6 @@
-import type { DateFormat, DistanceUnit } from "@/components/dashboard/DashboardContext";
+/** Distance unit a user records trips in. Previously lived in the (removed) dashboard context; kept here because the Firebase trips module depends on it. */
+export type DistanceUnit = "km" | "mi";
+export type DateFormat = "MM/DD/YYYY" | "DD/MM/YYYY" | "YYYY-MM-DD";
 
 const KM_PER_MILE = 1.60934;
 

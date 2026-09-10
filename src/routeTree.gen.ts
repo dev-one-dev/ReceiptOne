@@ -11,31 +11,19 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as UsRouteImport } from './routes/us'
 import { Route as TermsRouteImport } from './routes/terms'
-import { Route as SignupRouteImport } from './routes/signup'
 import { Route as PrivacyRouteImport } from './routes/privacy'
-import { Route as LoginRouteImport } from './routes/login'
 import { Route as HelpdeskRouteImport } from './routes/helpdesk'
 import { Route as FaqRouteImport } from './routes/faq'
-import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CaRouteImport } from './routes/ca'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as UsIndexRouteImport } from './routes/us/index'
 import { Route as HelpdeskIndexRouteImport } from './routes/helpdesk/index'
-import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
 import { Route as ArticlesIndexRouteImport } from './routes/articles/index'
 import { Route as UsFaqRouteImport } from './routes/us/faq'
 import { Route as UsContactRouteImport } from './routes/us/contact'
 import { Route as HelpdeskSupportRouteImport } from './routes/helpdesk/support'
 import { Route as HelpdeskIdeasRouteImport } from './routes/helpdesk/ideas'
-import { Route as DashboardSettingsRouteImport } from './routes/dashboard/settings'
-import { Route as DashboardRoadmapRouteImport } from './routes/dashboard/roadmap'
-import { Route as DashboardReportsRouteImport } from './routes/dashboard/reports'
-import { Route as DashboardReceiptsRouteImport } from './routes/dashboard/receipts'
-import { Route as DashboardMileageRouteImport } from './routes/dashboard/mileage'
-import { Route as DashboardHomeOfficeRouteImport } from './routes/dashboard/home-office'
-import { Route as DashboardFileManagerRouteImport } from './routes/dashboard/file-manager'
-import { Route as DashboardBillingRouteImport } from './routes/dashboard/billing'
 import { Route as ArticlesSlugRouteImport } from './routes/articles/$slug'
 import { Route as UsArticlesIndexRouteImport } from './routes/us/articles/index'
 import { Route as UsArticlesSlugRouteImport } from './routes/us/articles/$slug'
@@ -50,19 +38,9 @@ const TermsRoute = TermsRouteImport.update({
   path: '/terms',
   getParentRoute: () => rootRouteImport,
 } as any)
-const SignupRoute = SignupRouteImport.update({
-  id: '/signup',
-  path: '/signup',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const PrivacyRoute = PrivacyRouteImport.update({
   id: '/privacy',
   path: '/privacy',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LoginRoute = LoginRouteImport.update({
-  id: '/login',
-  path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
 const HelpdeskRoute = HelpdeskRouteImport.update({
@@ -73,11 +51,6 @@ const HelpdeskRoute = HelpdeskRouteImport.update({
 const FaqRoute = FaqRouteImport.update({
   id: '/faq',
   path: '/faq',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DashboardRoute = DashboardRouteImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContactRoute = ContactRouteImport.update({
@@ -105,11 +78,6 @@ const HelpdeskIndexRoute = HelpdeskIndexRouteImport.update({
   path: '/',
   getParentRoute: () => HelpdeskRoute,
 } as any)
-const DashboardIndexRoute = DashboardIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => DashboardRoute,
-} as any)
 const ArticlesIndexRoute = ArticlesIndexRouteImport.update({
   id: '/articles/',
   path: '/articles/',
@@ -135,46 +103,6 @@ const HelpdeskIdeasRoute = HelpdeskIdeasRouteImport.update({
   path: '/ideas',
   getParentRoute: () => HelpdeskRoute,
 } as any)
-const DashboardSettingsRoute = DashboardSettingsRouteImport.update({
-  id: '/settings',
-  path: '/settings',
-  getParentRoute: () => DashboardRoute,
-} as any)
-const DashboardRoadmapRoute = DashboardRoadmapRouteImport.update({
-  id: '/roadmap',
-  path: '/roadmap',
-  getParentRoute: () => DashboardRoute,
-} as any)
-const DashboardReportsRoute = DashboardReportsRouteImport.update({
-  id: '/reports',
-  path: '/reports',
-  getParentRoute: () => DashboardRoute,
-} as any)
-const DashboardReceiptsRoute = DashboardReceiptsRouteImport.update({
-  id: '/receipts',
-  path: '/receipts',
-  getParentRoute: () => DashboardRoute,
-} as any)
-const DashboardMileageRoute = DashboardMileageRouteImport.update({
-  id: '/mileage',
-  path: '/mileage',
-  getParentRoute: () => DashboardRoute,
-} as any)
-const DashboardHomeOfficeRoute = DashboardHomeOfficeRouteImport.update({
-  id: '/home-office',
-  path: '/home-office',
-  getParentRoute: () => DashboardRoute,
-} as any)
-const DashboardFileManagerRoute = DashboardFileManagerRouteImport.update({
-  id: '/file-manager',
-  path: '/file-manager',
-  getParentRoute: () => DashboardRoute,
-} as any)
-const DashboardBillingRoute = DashboardBillingRouteImport.update({
-  id: '/billing',
-  path: '/billing',
-  getParentRoute: () => DashboardRoute,
-} as any)
 const ArticlesSlugRoute = ArticlesSlugRouteImport.update({
   id: '/articles/$slug',
   path: '/articles/$slug',
@@ -195,29 +123,17 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/ca': typeof CaRoute
   '/contact': typeof ContactRoute
-  '/dashboard': typeof DashboardRouteWithChildren
   '/faq': typeof FaqRoute
   '/helpdesk': typeof HelpdeskRouteWithChildren
-  '/login': typeof LoginRoute
   '/privacy': typeof PrivacyRoute
-  '/signup': typeof SignupRoute
   '/terms': typeof TermsRoute
   '/us': typeof UsRouteWithChildren
   '/articles/$slug': typeof ArticlesSlugRoute
-  '/dashboard/billing': typeof DashboardBillingRoute
-  '/dashboard/file-manager': typeof DashboardFileManagerRoute
-  '/dashboard/home-office': typeof DashboardHomeOfficeRoute
-  '/dashboard/mileage': typeof DashboardMileageRoute
-  '/dashboard/receipts': typeof DashboardReceiptsRoute
-  '/dashboard/reports': typeof DashboardReportsRoute
-  '/dashboard/roadmap': typeof DashboardRoadmapRoute
-  '/dashboard/settings': typeof DashboardSettingsRoute
   '/helpdesk/ideas': typeof HelpdeskIdeasRoute
   '/helpdesk/support': typeof HelpdeskSupportRoute
   '/us/contact': typeof UsContactRoute
   '/us/faq': typeof UsFaqRoute
   '/articles/': typeof ArticlesIndexRoute
-  '/dashboard/': typeof DashboardIndexRoute
   '/helpdesk/': typeof HelpdeskIndexRoute
   '/us/': typeof UsIndexRoute
   '/us/articles/$slug': typeof UsArticlesSlugRoute
@@ -228,25 +144,14 @@ export interface FileRoutesByTo {
   '/ca': typeof CaRoute
   '/contact': typeof ContactRoute
   '/faq': typeof FaqRoute
-  '/login': typeof LoginRoute
   '/privacy': typeof PrivacyRoute
-  '/signup': typeof SignupRoute
   '/terms': typeof TermsRoute
   '/articles/$slug': typeof ArticlesSlugRoute
-  '/dashboard/billing': typeof DashboardBillingRoute
-  '/dashboard/file-manager': typeof DashboardFileManagerRoute
-  '/dashboard/home-office': typeof DashboardHomeOfficeRoute
-  '/dashboard/mileage': typeof DashboardMileageRoute
-  '/dashboard/receipts': typeof DashboardReceiptsRoute
-  '/dashboard/reports': typeof DashboardReportsRoute
-  '/dashboard/roadmap': typeof DashboardRoadmapRoute
-  '/dashboard/settings': typeof DashboardSettingsRoute
   '/helpdesk/ideas': typeof HelpdeskIdeasRoute
   '/helpdesk/support': typeof HelpdeskSupportRoute
   '/us/contact': typeof UsContactRoute
   '/us/faq': typeof UsFaqRoute
   '/articles': typeof ArticlesIndexRoute
-  '/dashboard': typeof DashboardIndexRoute
   '/helpdesk': typeof HelpdeskIndexRoute
   '/us': typeof UsIndexRoute
   '/us/articles/$slug': typeof UsArticlesSlugRoute
@@ -257,29 +162,17 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/ca': typeof CaRoute
   '/contact': typeof ContactRoute
-  '/dashboard': typeof DashboardRouteWithChildren
   '/faq': typeof FaqRoute
   '/helpdesk': typeof HelpdeskRouteWithChildren
-  '/login': typeof LoginRoute
   '/privacy': typeof PrivacyRoute
-  '/signup': typeof SignupRoute
   '/terms': typeof TermsRoute
   '/us': typeof UsRouteWithChildren
   '/articles/$slug': typeof ArticlesSlugRoute
-  '/dashboard/billing': typeof DashboardBillingRoute
-  '/dashboard/file-manager': typeof DashboardFileManagerRoute
-  '/dashboard/home-office': typeof DashboardHomeOfficeRoute
-  '/dashboard/mileage': typeof DashboardMileageRoute
-  '/dashboard/receipts': typeof DashboardReceiptsRoute
-  '/dashboard/reports': typeof DashboardReportsRoute
-  '/dashboard/roadmap': typeof DashboardRoadmapRoute
-  '/dashboard/settings': typeof DashboardSettingsRoute
   '/helpdesk/ideas': typeof HelpdeskIdeasRoute
   '/helpdesk/support': typeof HelpdeskSupportRoute
   '/us/contact': typeof UsContactRoute
   '/us/faq': typeof UsFaqRoute
   '/articles/': typeof ArticlesIndexRoute
-  '/dashboard/': typeof DashboardIndexRoute
   '/helpdesk/': typeof HelpdeskIndexRoute
   '/us/': typeof UsIndexRoute
   '/us/articles/$slug': typeof UsArticlesSlugRoute
@@ -291,29 +184,17 @@ export interface FileRouteTypes {
     | '/'
     | '/ca'
     | '/contact'
-    | '/dashboard'
     | '/faq'
     | '/helpdesk'
-    | '/login'
     | '/privacy'
-    | '/signup'
     | '/terms'
     | '/us'
     | '/articles/$slug'
-    | '/dashboard/billing'
-    | '/dashboard/file-manager'
-    | '/dashboard/home-office'
-    | '/dashboard/mileage'
-    | '/dashboard/receipts'
-    | '/dashboard/reports'
-    | '/dashboard/roadmap'
-    | '/dashboard/settings'
     | '/helpdesk/ideas'
     | '/helpdesk/support'
     | '/us/contact'
     | '/us/faq'
     | '/articles/'
-    | '/dashboard/'
     | '/helpdesk/'
     | '/us/'
     | '/us/articles/$slug'
@@ -324,25 +205,14 @@ export interface FileRouteTypes {
     | '/ca'
     | '/contact'
     | '/faq'
-    | '/login'
     | '/privacy'
-    | '/signup'
     | '/terms'
     | '/articles/$slug'
-    | '/dashboard/billing'
-    | '/dashboard/file-manager'
-    | '/dashboard/home-office'
-    | '/dashboard/mileage'
-    | '/dashboard/receipts'
-    | '/dashboard/reports'
-    | '/dashboard/roadmap'
-    | '/dashboard/settings'
     | '/helpdesk/ideas'
     | '/helpdesk/support'
     | '/us/contact'
     | '/us/faq'
     | '/articles'
-    | '/dashboard'
     | '/helpdesk'
     | '/us'
     | '/us/articles/$slug'
@@ -352,29 +222,17 @@ export interface FileRouteTypes {
     | '/'
     | '/ca'
     | '/contact'
-    | '/dashboard'
     | '/faq'
     | '/helpdesk'
-    | '/login'
     | '/privacy'
-    | '/signup'
     | '/terms'
     | '/us'
     | '/articles/$slug'
-    | '/dashboard/billing'
-    | '/dashboard/file-manager'
-    | '/dashboard/home-office'
-    | '/dashboard/mileage'
-    | '/dashboard/receipts'
-    | '/dashboard/reports'
-    | '/dashboard/roadmap'
-    | '/dashboard/settings'
     | '/helpdesk/ideas'
     | '/helpdesk/support'
     | '/us/contact'
     | '/us/faq'
     | '/articles/'
-    | '/dashboard/'
     | '/helpdesk/'
     | '/us/'
     | '/us/articles/$slug'
@@ -385,12 +243,9 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CaRoute: typeof CaRoute
   ContactRoute: typeof ContactRoute
-  DashboardRoute: typeof DashboardRouteWithChildren
   FaqRoute: typeof FaqRoute
   HelpdeskRoute: typeof HelpdeskRouteWithChildren
-  LoginRoute: typeof LoginRoute
   PrivacyRoute: typeof PrivacyRoute
-  SignupRoute: typeof SignupRoute
   TermsRoute: typeof TermsRoute
   UsRoute: typeof UsRouteWithChildren
   ArticlesSlugRoute: typeof ArticlesSlugRoute
@@ -413,25 +268,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TermsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/signup': {
-      id: '/signup'
-      path: '/signup'
-      fullPath: '/signup'
-      preLoaderRoute: typeof SignupRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/privacy': {
       id: '/privacy'
       path: '/privacy'
       fullPath: '/privacy'
       preLoaderRoute: typeof PrivacyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/login': {
-      id: '/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/helpdesk': {
@@ -446,13 +287,6 @@ declare module '@tanstack/react-router' {
       path: '/faq'
       fullPath: '/faq'
       preLoaderRoute: typeof FaqRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/dashboard': {
-      id: '/dashboard'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof DashboardRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contact': {
@@ -490,13 +324,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof HelpdeskIndexRouteImport
       parentRoute: typeof HelpdeskRoute
     }
-    '/dashboard/': {
-      id: '/dashboard/'
-      path: '/'
-      fullPath: '/dashboard/'
-      preLoaderRoute: typeof DashboardIndexRouteImport
-      parentRoute: typeof DashboardRoute
-    }
     '/articles/': {
       id: '/articles/'
       path: '/articles'
@@ -532,62 +359,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof HelpdeskIdeasRouteImport
       parentRoute: typeof HelpdeskRoute
     }
-    '/dashboard/settings': {
-      id: '/dashboard/settings'
-      path: '/settings'
-      fullPath: '/dashboard/settings'
-      preLoaderRoute: typeof DashboardSettingsRouteImport
-      parentRoute: typeof DashboardRoute
-    }
-    '/dashboard/roadmap': {
-      id: '/dashboard/roadmap'
-      path: '/roadmap'
-      fullPath: '/dashboard/roadmap'
-      preLoaderRoute: typeof DashboardRoadmapRouteImport
-      parentRoute: typeof DashboardRoute
-    }
-    '/dashboard/reports': {
-      id: '/dashboard/reports'
-      path: '/reports'
-      fullPath: '/dashboard/reports'
-      preLoaderRoute: typeof DashboardReportsRouteImport
-      parentRoute: typeof DashboardRoute
-    }
-    '/dashboard/receipts': {
-      id: '/dashboard/receipts'
-      path: '/receipts'
-      fullPath: '/dashboard/receipts'
-      preLoaderRoute: typeof DashboardReceiptsRouteImport
-      parentRoute: typeof DashboardRoute
-    }
-    '/dashboard/mileage': {
-      id: '/dashboard/mileage'
-      path: '/mileage'
-      fullPath: '/dashboard/mileage'
-      preLoaderRoute: typeof DashboardMileageRouteImport
-      parentRoute: typeof DashboardRoute
-    }
-    '/dashboard/home-office': {
-      id: '/dashboard/home-office'
-      path: '/home-office'
-      fullPath: '/dashboard/home-office'
-      preLoaderRoute: typeof DashboardHomeOfficeRouteImport
-      parentRoute: typeof DashboardRoute
-    }
-    '/dashboard/file-manager': {
-      id: '/dashboard/file-manager'
-      path: '/file-manager'
-      fullPath: '/dashboard/file-manager'
-      preLoaderRoute: typeof DashboardFileManagerRouteImport
-      parentRoute: typeof DashboardRoute
-    }
-    '/dashboard/billing': {
-      id: '/dashboard/billing'
-      path: '/billing'
-      fullPath: '/dashboard/billing'
-      preLoaderRoute: typeof DashboardBillingRouteImport
-      parentRoute: typeof DashboardRoute
-    }
     '/articles/$slug': {
       id: '/articles/$slug'
       path: '/articles/$slug'
@@ -611,34 +382,6 @@ declare module '@tanstack/react-router' {
     }
   }
 }
-
-interface DashboardRouteChildren {
-  DashboardBillingRoute: typeof DashboardBillingRoute
-  DashboardFileManagerRoute: typeof DashboardFileManagerRoute
-  DashboardHomeOfficeRoute: typeof DashboardHomeOfficeRoute
-  DashboardMileageRoute: typeof DashboardMileageRoute
-  DashboardReceiptsRoute: typeof DashboardReceiptsRoute
-  DashboardReportsRoute: typeof DashboardReportsRoute
-  DashboardRoadmapRoute: typeof DashboardRoadmapRoute
-  DashboardSettingsRoute: typeof DashboardSettingsRoute
-  DashboardIndexRoute: typeof DashboardIndexRoute
-}
-
-const DashboardRouteChildren: DashboardRouteChildren = {
-  DashboardBillingRoute: DashboardBillingRoute,
-  DashboardFileManagerRoute: DashboardFileManagerRoute,
-  DashboardHomeOfficeRoute: DashboardHomeOfficeRoute,
-  DashboardMileageRoute: DashboardMileageRoute,
-  DashboardReceiptsRoute: DashboardReceiptsRoute,
-  DashboardReportsRoute: DashboardReportsRoute,
-  DashboardRoadmapRoute: DashboardRoadmapRoute,
-  DashboardSettingsRoute: DashboardSettingsRoute,
-  DashboardIndexRoute: DashboardIndexRoute,
-}
-
-const DashboardRouteWithChildren = DashboardRoute._addFileChildren(
-  DashboardRouteChildren,
-)
 
 interface HelpdeskRouteChildren {
   HelpdeskIdeasRoute: typeof HelpdeskIdeasRoute
@@ -678,12 +421,9 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CaRoute: CaRoute,
   ContactRoute: ContactRoute,
-  DashboardRoute: DashboardRouteWithChildren,
   FaqRoute: FaqRoute,
   HelpdeskRoute: HelpdeskRouteWithChildren,
-  LoginRoute: LoginRoute,
   PrivacyRoute: PrivacyRoute,
-  SignupRoute: SignupRoute,
   TermsRoute: TermsRoute,
   UsRoute: UsRouteWithChildren,
   ArticlesSlugRoute: ArticlesSlugRoute,
