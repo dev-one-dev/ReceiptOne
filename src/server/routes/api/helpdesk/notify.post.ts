@@ -2,6 +2,7 @@ import { createHash, timingSafeEqual } from "node:crypto";
 import { defineHandler } from "nitro";
 import { createResendClient, sanitizeEmailHeaderValue } from "@/integrations/resend/client.server";
 import { escapeHtml } from "@/lib/html-escape";
+import { siteUrl } from "@/lib/external";
 
 /**
  * Supabase Database Webhook target for INSERT on public.support_requests --
@@ -18,7 +19,7 @@ import { escapeHtml } from "@/lib/html-escape";
  * interpolated into the notification email.
  */
 
-const NOTIFY_URL = "https://www.receipt-one.com/helpdesk/support";
+const NOTIFY_URL = siteUrl("/helpdesk/support");
 const FROM_ADDRESS = "ReceiptOne Helpdesk <helpdesk@receipt-one.com>";
 
 /** Fixed-length digest comparison so a wrong secret's length is never leaked via timing, on top of being constant-time itself. */

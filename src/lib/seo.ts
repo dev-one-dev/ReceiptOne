@@ -4,10 +4,13 @@
  * Centralized site URL + meta/JSON-LD builders so every route stays in sync
  * (canonicals, hreflang, OG, structured data).
  */
-export const SITE_URL = "https://receipt-one.com";
+import { SITE_URL as EXTERNAL_SITE_URL, siteUrl } from "@/lib/external";
+
+export const SITE_URL = EXTERNAL_SITE_URL;
 export const SITE_NAME = "ReceiptOne";
-export const DEFAULT_OG_IMAGE =
-  "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/d249a5d8-b985-4b4b-88cd-bf66621406c2/id-preview-60809a27--c3daaa9c-4a2a-4c75-b06b-6b4389cc6e87.lovable.app-1776985820292.png";
+// Placeholder card from scripts/generate-og-image.mjs. Replace
+// public/og-image.png with a designed 1200x630 asset when one exists.
+export const DEFAULT_OG_IMAGE = siteUrl("/og-image.png");
 
 export const url = (path: string) => `${SITE_URL}${path.startsWith("/") ? path : `/${path}`}`;
 
