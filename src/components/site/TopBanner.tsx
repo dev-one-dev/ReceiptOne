@@ -48,7 +48,10 @@ export function TopBanner({ region = "ca" }: { region?: "ca" | "us" }) {
             {/* Web CTA + store badges — one 44px row on desktop (12px gaps),
                 stacked with the button first on mobile. PrimaryCta and
                 StoreBadge share the same height and radius on purpose. */}
-            <div className="mt-6 flex w-full flex-col items-stretch gap-3 sm:w-auto sm:flex-row sm:flex-wrap sm:items-center">
+            {/* relative z-10: the mascot video below is 190% wide and later in
+                DOM order, so without a stacking context it sat on top of the
+                Google Play badge at desktop widths and swallowed its clicks. */}
+            <div className="relative z-10 mt-6 flex w-full flex-col items-stretch gap-3 sm:w-auto sm:flex-row sm:flex-wrap sm:items-center">
               <PrimaryCta href={ROUTES.signup}>Start 7-day free trial</PrimaryCta>
               <div className="flex flex-wrap items-center justify-center gap-3 lg:justify-start">
                 {/* Kept for screen readers; visually the badges speak for
@@ -61,7 +64,9 @@ export function TopBanner({ region = "ca" }: { region?: "ca" | "us" }) {
           </div>
 
           {/* ── RIGHT COLUMN — Mascot ── */}
-          <div className="relative flex items-center justify-center overflow-visible">
+          {/* pointer-events-none: purely decorative, and its oversized video
+              overlaps the left column's CTA row on desktop. */}
+          <div className="pointer-events-none relative flex items-center justify-center overflow-visible">
             {/* Radial glow */}
             <div
               className="pointer-events-none absolute inset-0 scale-110 rounded-pill bg-ember/[0.08] blur-[80px]"
@@ -75,7 +80,7 @@ export function TopBanner({ region = "ca" }: { region?: "ca" | "us" }) {
             {/* Mascot — dominates right side */}
             <video
               style={{ filter: "brightness(1.15) contrast(1.08)" }}
-              className="relative w-[190%] max-w-none object-contain mix-blend-multiply"
+              className="pointer-events-none relative w-[190%] max-w-none object-contain mix-blend-multiply"
               autoPlay
               loop
               muted
