@@ -1,5 +1,5 @@
 import { ROUTES } from "@/lib/routes";
-import { ArrowRight } from "lucide-react";
+import { PrimaryCta } from "@/components/site/PrimaryCta";
 
 export function FinalCta() {
   return (
@@ -28,16 +28,9 @@ export function FinalCta() {
             one place.
           </p>
           <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <a
-              href={ROUTES.signup}
-              className="group inline-flex w-full items-center justify-center gap-2 rounded-pill bg-paper px-7 py-3.5 font-display text-body font-semibold text-ink transition-transform duration-200 hover:-translate-y-0.5 sm:w-auto"
-            >
+            <PrimaryCta href={ROUTES.signup} surface="void">
               Start 7-day free trial
-              <ArrowRight
-                className="size-4 transition-transform duration-200 group-hover:translate-x-0.5"
-                aria-hidden
-              />
-            </a>
+            </PrimaryCta>
             <a
               href={ROUTES.login}
               className="inline-flex w-full items-center justify-center rounded-pill border border-hairline-void px-7 py-3.5 text-lead tracking-body text-paper transition-colors hover:bg-paper-10 sm:w-auto"

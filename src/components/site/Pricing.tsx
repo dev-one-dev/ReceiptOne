@@ -7,6 +7,8 @@ import usWeeklyImg from "@/assets/figma/mileage-auto/US/2.webp";
 import usMonthlyImg from "@/assets/figma/mileage-auto/US/3-removebg-preview.webp";
 import usAnnualImg from "@/assets/figma/mileage-auto/US/1.webp";
 import { StoreBadge } from "@/components/site/StoreBadge";
+import { PrimaryCta } from "@/components/site/PrimaryCta";
+import { ROUTES } from "@/lib/routes";
 import { cn } from "@/lib/utils";
 
 type Platform = "ios" | "android" | "desktop";
@@ -153,13 +155,13 @@ function monthlySavingsPct(weekly: Plan, monthly: Plan): number {
 function StoreCTA() {
   const platform = usePlatform();
 
-  if (platform === "ios") return <StoreBadge platform="apple" />;
-  if (platform === "android") return <StoreBadge platform="google" />;
-
   return (
-    <div className="flex flex-wrap items-center gap-3">
-      <StoreBadge platform="apple" />
-      <StoreBadge platform="google" />
+    <div className="flex flex-col items-start gap-3">
+      <PrimaryCta href={ROUTES.signup}>Start 7-day free trial</PrimaryCta>
+      <div className="flex flex-wrap items-center gap-3">
+        {platform !== "android" && <StoreBadge platform="apple" />}
+        {platform !== "ios" && <StoreBadge platform="google" />}
+      </div>
     </div>
   );
 }

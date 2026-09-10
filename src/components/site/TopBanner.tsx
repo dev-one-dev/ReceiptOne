@@ -3,6 +3,8 @@ import beaverHeroPoster from "@/assets/figma/hero-beaver-poster.png";
 import eagleHeroVideo from "@/assets/figma/hero-eagle-hq.mp4";
 import eagleHeroPoster from "@/assets/figma/hero-eagle-poster.png";
 import { StoreBadge } from "@/components/site/StoreBadge";
+import { PrimaryCta } from "@/components/site/PrimaryCta";
+import { ROUTES } from "@/lib/routes";
 
 export function TopBanner({ region = "ca" }: { region?: "ca" | "us" }) {
   const heroVideo = region === "us" ? eagleHeroVideo : beaverHeroVideo;
@@ -43,8 +45,13 @@ export function TopBanner({ region = "ca" }: { region?: "ca" | "us" }) {
               </p>
             </div>
 
+            {/* Web CTA — the trial starts in the web app */}
+            <div className="mt-6 w-full sm:w-auto">
+              <PrimaryCta href={ROUTES.signup}>Start 7-day free trial</PrimaryCta>
+            </div>
+
             {/* Store badges — single horizontal line */}
-            <div className="mt-6 flex flex-wrap items-center gap-3">
+            <div className="mt-4 flex flex-wrap items-center gap-3">
               <span className="font-sans text-sm text-ink-60">Available on:</span>
               <StoreBadge platform="apple" />
               <StoreBadge platform="google" />
