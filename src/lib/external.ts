@@ -41,7 +41,7 @@ export const APP_STORE_URL =
 
 export const PLAY_STORE_URL =
   readEnv("VITE_PLAY_STORE_URL") ||
-  "https://play.google.com/store/apps/details?id=com.appfyl.checkapp&pli=1";
+  "https://play.google.com/store/apps/details?id=com.appfyl.checkapp";
 
 function join(base: string, path: string): string {
   if (!path) return base;

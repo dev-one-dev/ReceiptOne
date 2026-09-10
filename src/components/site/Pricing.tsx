@@ -193,15 +193,15 @@ export function Pricing({ region = "ca" }: { region?: Region }) {
         </div>
 
         {/*
-         * Period toggle — pt-9 on the outer wrapper reserves clearance above
-         * the pill for the 28px chips to float in (chip top sits 34px above
-         * the list's outer edge: 40px offset minus the list's 6px padding),
-         * well clear of the tabs below them.
+         * Period toggle. The chips straddle the pill's top edge the way the
+         * "Coming soon" chip straddles its card in NotAll.tsx: a 28px chip
+         * centred on the edge protrudes 14px, so pt-4 on the wrapper keeps it
+         * from clipping against the header above.
          */}
         <TabsPrimitive.Root
           value={selectedId}
           onValueChange={setSelectedId}
-          className="flex flex-col items-center pt-9"
+          className="flex flex-col items-center pt-4"
         >
           <TabsPrimitive.List
             aria-label="Billing period"
@@ -211,16 +211,21 @@ export function Pricing({ region = "ca" }: { region?: Region }) {
               const badgeText = plan.popular ? "Most Popular" : plan.badge;
               return (
                 <div key={plan.id} className="relative">
-                  {/* 28px pill chip, centered above its own toggle option and
-                      floating clear of the list so it never fuses with the
-                      tab's background. Ink text on a tint, never an ember
-                      fill: ember/10 for the primary, ink/5 for the secondary. */}
+                  {/* Same chip as "Coming soon" in NotAll.tsx (ember, ink text,
+                      ember shadow) for Most Popular; Best Deal is the active
+                      toggle's own ink/paper treatment. -top-5 = 14px (half the
+                      28px chip) + the list's 6px inner padding, so the chip is
+                      vertically centred on the pill's outer top edge and
+                      horizontally centred over its own option. */}
+                  {/* Template string, not cn(): tailwind-merge doesn't know
+                      text-label is a size and drops it against text-ink. */}
                   {badgeText && (
                     <span
-                      className={cn(
-                        "absolute -top-10 left-1/2 z-10 inline-flex h-7 -translate-x-1/2 items-center whitespace-nowrap rounded-pill px-3 font-sans text-sm font-medium text-ink",
-                        plan.popular ? "bg-ember/10" : "bg-ink-05",
-                      )}
+                      className={`absolute -top-5 left-1/2 z-10 inline-flex h-7 -translate-x-1/2 items-center whitespace-nowrap rounded-pill px-4 font-sans text-label font-semibold ${
+                        plan.popular
+                          ? "bg-ember text-ink shadow-[0_4px_12px_rgba(249,115,22,0.4)]"
+                          : "bg-ink text-paper"
+                      }`}
                     >
                       {badgeText}
                     </span>
