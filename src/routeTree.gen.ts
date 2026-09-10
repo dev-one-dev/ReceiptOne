@@ -22,6 +22,7 @@ import { Route as HelpdeskIndexRouteImport } from './routes/helpdesk/index'
 import { Route as ArticlesIndexRouteImport } from './routes/articles/index'
 import { Route as UsFaqRouteImport } from './routes/us/faq'
 import { Route as UsContactRouteImport } from './routes/us/contact'
+import { Route as RCodeRouteImport } from './routes/r/$code'
 import { Route as HelpdeskSupportRouteImport } from './routes/helpdesk/support'
 import { Route as HelpdeskIdeasRouteImport } from './routes/helpdesk/ideas'
 import { Route as ArticlesSlugRouteImport } from './routes/articles/$slug'
@@ -93,6 +94,11 @@ const UsContactRoute = UsContactRouteImport.update({
   path: '/contact',
   getParentRoute: () => UsRoute,
 } as any)
+const RCodeRoute = RCodeRouteImport.update({
+  id: '/r/$code',
+  path: '/r/$code',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const HelpdeskSupportRoute = HelpdeskSupportRouteImport.update({
   id: '/support',
   path: '/support',
@@ -131,6 +137,7 @@ export interface FileRoutesByFullPath {
   '/articles/$slug': typeof ArticlesSlugRoute
   '/helpdesk/ideas': typeof HelpdeskIdeasRoute
   '/helpdesk/support': typeof HelpdeskSupportRoute
+  '/r/$code': typeof RCodeRoute
   '/us/contact': typeof UsContactRoute
   '/us/faq': typeof UsFaqRoute
   '/articles/': typeof ArticlesIndexRoute
@@ -149,6 +156,7 @@ export interface FileRoutesByTo {
   '/articles/$slug': typeof ArticlesSlugRoute
   '/helpdesk/ideas': typeof HelpdeskIdeasRoute
   '/helpdesk/support': typeof HelpdeskSupportRoute
+  '/r/$code': typeof RCodeRoute
   '/us/contact': typeof UsContactRoute
   '/us/faq': typeof UsFaqRoute
   '/articles': typeof ArticlesIndexRoute
@@ -170,6 +178,7 @@ export interface FileRoutesById {
   '/articles/$slug': typeof ArticlesSlugRoute
   '/helpdesk/ideas': typeof HelpdeskIdeasRoute
   '/helpdesk/support': typeof HelpdeskSupportRoute
+  '/r/$code': typeof RCodeRoute
   '/us/contact': typeof UsContactRoute
   '/us/faq': typeof UsFaqRoute
   '/articles/': typeof ArticlesIndexRoute
@@ -192,6 +201,7 @@ export interface FileRouteTypes {
     | '/articles/$slug'
     | '/helpdesk/ideas'
     | '/helpdesk/support'
+    | '/r/$code'
     | '/us/contact'
     | '/us/faq'
     | '/articles/'
@@ -210,6 +220,7 @@ export interface FileRouteTypes {
     | '/articles/$slug'
     | '/helpdesk/ideas'
     | '/helpdesk/support'
+    | '/r/$code'
     | '/us/contact'
     | '/us/faq'
     | '/articles'
@@ -230,6 +241,7 @@ export interface FileRouteTypes {
     | '/articles/$slug'
     | '/helpdesk/ideas'
     | '/helpdesk/support'
+    | '/r/$code'
     | '/us/contact'
     | '/us/faq'
     | '/articles/'
@@ -249,6 +261,7 @@ export interface RootRouteChildren {
   TermsRoute: typeof TermsRoute
   UsRoute: typeof UsRouteWithChildren
   ArticlesSlugRoute: typeof ArticlesSlugRoute
+  RCodeRoute: typeof RCodeRoute
   ArticlesIndexRoute: typeof ArticlesIndexRoute
 }
 
@@ -345,6 +358,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UsContactRouteImport
       parentRoute: typeof UsRoute
     }
+    '/r/$code': {
+      id: '/r/$code'
+      path: '/r/$code'
+      fullPath: '/r/$code'
+      preLoaderRoute: typeof RCodeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/helpdesk/support': {
       id: '/helpdesk/support'
       path: '/support'
@@ -427,6 +447,7 @@ const rootRouteChildren: RootRouteChildren = {
   TermsRoute: TermsRoute,
   UsRoute: UsRouteWithChildren,
   ArticlesSlugRoute: ArticlesSlugRoute,
+  RCodeRoute: RCodeRoute,
   ArticlesIndexRoute: ArticlesIndexRoute,
 }
 export const routeTree = rootRouteImport
