@@ -1,7 +1,5 @@
 import { cn } from "@/lib/utils";
-
-const APP_STORE_URL = "https://apps.apple.com/us/app/receiptone-expense-tracker/id6755740822";
-const GOOGLE_PLAY_URL = "https://play.google.com/store/apps/details?id=com.appfyl.checkapp&pli=1";
+import { APP_STORE_URL, PLAY_STORE_URL } from "@/lib/external";
 
 type StorePlatform = "apple" | "google";
 type StoreBadgeVariant = "light" | "dark";
@@ -39,7 +37,7 @@ export function StoreBadge({
   className?: string;
 }) {
   const isApple = platform === "apple";
-  const href = isApple ? APP_STORE_URL : GOOGLE_PLAY_URL;
+  const href = isApple ? APP_STORE_URL : PLAY_STORE_URL;
   const microLabel = isApple ? "Download on the" : "GET IT ON";
   const name = isApple ? "App Store" : "Google Play";
   const ariaLabel = isApple
