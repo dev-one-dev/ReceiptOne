@@ -155,8 +155,9 @@ function monthlySavingsPct(weekly: Plan, monthly: Plan): number {
 function StoreCTA() {
   const platform = usePlatform();
 
+  // One 44px row on desktop (12px gaps); stacked, button first, on mobile.
   return (
-    <div className="flex flex-col items-start gap-3">
+    <div className="flex flex-col items-stretch gap-3 sm:flex-row sm:flex-wrap sm:items-center">
       <PrimaryCta href={ROUTES.signup}>Start 7-day free trial</PrimaryCta>
       <div className="flex flex-wrap items-center gap-3">
         {platform !== "android" && <StoreBadge platform="apple" />}
@@ -192,15 +193,15 @@ export function Pricing({ region = "ca" }: { region?: Region }) {
         </div>
 
         {/*
-         * Period toggle — pt-8 on the outer wrapper reserves clearance above
-         * the pill for badges to float in, well clear of the tabs below them
-         * (fixes the earlier bug where -top-0 + a too-small padding let the
-         * badge's own height overlap the tab underneath it).
+         * Period toggle — pt-9 on the outer wrapper reserves clearance above
+         * the pill for the 28px chips to float in (chip top sits 34px above
+         * the list's outer edge: 40px offset minus the list's 6px padding),
+         * well clear of the tabs below them.
          */}
         <TabsPrimitive.Root
           value={selectedId}
           onValueChange={setSelectedId}
-          className="flex flex-col items-center pt-8"
+          className="flex flex-col items-center pt-9"
         >
           <TabsPrimitive.List
             aria-label="Billing period"
@@ -210,16 +211,15 @@ export function Pricing({ region = "ca" }: { region?: Region }) {
               const badgeText = plan.popular ? "Most Popular" : plan.badge;
               return (
                 <div key={plan.id} className="relative">
-                  {/* Floats well above the pill (not just above the tab) so it
-                      never touches — let alone visually fuses with — the tab's
-                      own background in either active or inactive state. */}
+                  {/* 28px pill chip, centered above its own toggle option and
+                      floating clear of the list so it never fuses with the
+                      tab's background. Ink text on a tint, never an ember
+                      fill: ember/10 for the primary, ink/5 for the secondary. */}
                   {badgeText && (
                     <span
                       className={cn(
-                        "absolute -top-7 left-1/2 z-10 -translate-x-1/2 whitespace-nowrap rounded-pill px-2.5 py-0.5 font-sans text-nav font-semibold",
-                        plan.popular
-                          ? "bg-ember text-ink shadow-[0_4px_12px_rgba(249,115,22,0.4)]"
-                          : "bg-[#fed7aa] text-ink shadow-[0_4px_12px_rgba(0,0,0,0.10)]",
+                        "absolute -top-10 left-1/2 z-10 inline-flex h-7 -translate-x-1/2 items-center whitespace-nowrap rounded-pill px-3 font-sans text-sm font-medium text-ink",
+                        plan.popular ? "bg-ember/10" : "bg-ink-05",
                       )}
                     >
                       {badgeText}

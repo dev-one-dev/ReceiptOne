@@ -114,11 +114,6 @@ export function Footer({ region = "ca" }: FooterProps) {
               ))}
             </div>
 
-            {/* Store badges */}
-            <div className="mt-4 flex flex-wrap items-center gap-2">
-              <StoreBadge platform="apple" variant="dark" />
-              <StoreBadge platform="google" variant="dark" />
-            </div>
           </div>
 
           {/* Nav columns */}
@@ -180,8 +175,14 @@ export function Footer({ region = "ca" }: FooterProps) {
           </div>
         </div>
 
+        {/* Store badges — one row, left-aligned, directly above the copyright line */}
+        <div className="mt-6 flex items-center gap-2">
+          <StoreBadge platform="apple" variant="dark" size="sm" />
+          <StoreBadge platform="google" variant="dark" size="sm" />
+        </div>
+
         {/* Bottom bar */}
-        <div className="mt-6 flex flex-col items-center justify-between gap-2 border-t border-hairline-void pt-4 sm:flex-row">
+        <div className="mt-4 flex flex-col items-center justify-between gap-2 border-t border-hairline-void pt-4 sm:flex-row">
           <p className="font-sans text-sm text-paper-40">
             &copy; {new Date().getFullYear()} ReceiptOne. All rights reserved.
           </p>

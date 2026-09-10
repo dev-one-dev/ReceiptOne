@@ -3,6 +3,13 @@ import { APP_STORE_URL, PLAY_STORE_URL } from "@/lib/external";
 
 type StorePlatform = "apple" | "google";
 type StoreBadgeVariant = "light" | "dark";
+type StoreBadgeSize = "md" | "sm";
+
+/** md = 44px, matches PrimaryCta's h-11; sm = 36px, footer only. */
+const SIZE_STYLES: Record<StoreBadgeSize, { box: string; icon: string }> = {
+  md: { box: "h-11 px-3.5", icon: "h-[18px] w-[18px]" },
+  sm: { box: "h-9 px-3", icon: "h-4 w-4" },
+};
 
 const FILL_STYLES: Record<StorePlatform, Record<StoreBadgeVariant, string>> = {
   apple: {
@@ -30,10 +37,12 @@ const MICRO_LABEL_STYLES: Record<StorePlatform, Record<StoreBadgeVariant, string
 export function StoreBadge({
   platform,
   variant = "light",
+  size = "md",
   className,
 }: {
   platform: StorePlatform;
   variant?: StoreBadgeVariant;
+  size?: StoreBadgeSize;
   className?: string;
 }) {
   const isApple = platform === "apple";
@@ -52,20 +61,24 @@ export function StoreBadge({
       rel="noopener noreferrer"
       aria-label={ariaLabel}
       className={cn(
-        "inline-flex h-11 items-center gap-2 rounded-card border px-3.5 font-display",
+        "inline-flex items-center gap-2 rounded-card border font-display",
+        SIZE_STYLES[size].box,
         transitionClass,
         FILL_STYLES[platform][variant],
         className,
       )}
     >
       {isApple ? (
-        <AppleGlyph className="h-[18px] w-[18px] shrink-0" />
+        <AppleGlyph className={cn("shrink-0", SIZE_STYLES[size].icon)} />
       ) : (
-        <GooglePlayMark className="h-[18px] w-[18px] shrink-0" />
+        <GooglePlayMark className={cn("shrink-0", SIZE_STYLES[size].icon)} />
       )}
       <span className="flex flex-col items-start">
+        {/* Plain template, not cn(): tailwind-merge doesn't know text-nav is a
+            size and drops it as a "conflicting" text colour, which rendered
+            this label at 16px and bloated the Apple badge by ~45px. */}
         <span
-          className={cn("text-nav font-normal leading-none", MICRO_LABEL_STYLES[platform][variant])}
+          className={`text-nav font-normal leading-none ${MICRO_LABEL_STYLES[platform][variant]}`}
         >
           {microLabel}
         </span>

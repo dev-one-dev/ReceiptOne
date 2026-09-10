@@ -45,16 +45,18 @@ export function TopBanner({ region = "ca" }: { region?: "ca" | "us" }) {
               </p>
             </div>
 
-            {/* Web CTA — the trial starts in the web app */}
-            <div className="mt-6 w-full sm:w-auto">
+            {/* Web CTA + store badges — one 44px row on desktop (12px gaps),
+                stacked with the button first on mobile. PrimaryCta and
+                StoreBadge share the same height and radius on purpose. */}
+            <div className="mt-6 flex w-full flex-col items-stretch gap-3 sm:w-auto sm:flex-row sm:flex-wrap sm:items-center">
               <PrimaryCta href={ROUTES.signup}>Start 7-day free trial</PrimaryCta>
-            </div>
-
-            {/* Store badges — single horizontal line */}
-            <div className="mt-4 flex flex-wrap items-center gap-3">
-              <span className="font-sans text-sm text-ink-60">Available on:</span>
-              <StoreBadge platform="apple" />
-              <StoreBadge platform="google" />
+              <div className="flex flex-wrap items-center justify-center gap-3 lg:justify-start">
+                {/* Kept for screen readers; visually the badges speak for
+                    themselves, and the label pushed the row past the column. */}
+                <span className="sr-only">Available on:</span>
+                <StoreBadge platform="apple" />
+                <StoreBadge platform="google" />
+              </div>
             </div>
           </div>
 
