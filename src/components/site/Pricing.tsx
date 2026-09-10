@@ -6,7 +6,6 @@ import caAnnualImg from "@/assets/figma/mileage-auto/Graphic-Small3.webp";
 import usWeeklyImg from "@/assets/figma/mileage-auto/US/2.webp";
 import usMonthlyImg from "@/assets/figma/mileage-auto/US/3-removebg-preview.webp";
 import usAnnualImg from "@/assets/figma/mileage-auto/US/1.webp";
-import { Chip } from "@/components/site/Chip";
 import { StoreBadge } from "@/components/site/StoreBadge";
 import { PrimaryCta } from "@/components/site/PrimaryCta";
 import { ROUTES } from "@/lib/routes";
@@ -35,9 +34,7 @@ interface Plan {
   originalPrice?: string;
   period: string;
   currency: string;
-  badge?: string;
   discountLabel?: string;
-  popular?: boolean;
 }
 
 /**
@@ -83,7 +80,6 @@ const CA_PLANS: Plan[] = [
     originalPrice: "15.99",
     period: "/ month",
     currency: "CAD",
-    popular: true,
   },
   {
     id: "year",
@@ -92,7 +88,6 @@ const CA_PLANS: Plan[] = [
     originalPrice: "149.99",
     period: "/ year",
     currency: "CAD",
-    badge: "Best Deal",
     discountLabel: "Save 13%",
   },
 ];
@@ -113,7 +108,6 @@ const US_PLANS: Plan[] = [
     originalPrice: "12.99",
     period: "/ month",
     currency: "USD",
-    popular: true,
   },
   {
     id: "year",
@@ -122,7 +116,6 @@ const US_PLANS: Plan[] = [
     originalPrice: "129.99",
     period: "/ year",
     currency: "USD",
-    badge: "Best Deal",
     discountLabel: "Save 17%",
   },
 ];
@@ -153,6 +146,11 @@ function monthlySavingsPct(weekly: Plan, monthly: Plan): number {
   return Math.round((1 - parseFloat(monthly.price) / weeklyAsMonthly) * 100);
 }
 
+/** % saved by paying Yearly instead of twelve Monthly payments -- same live-from-prices rule. */
+function yearlySavingsPct(monthly: Plan, yearly: Plan): number {
+  return Math.round((1 - parseFloat(yearly.price) / (parseFloat(monthly.price) * 12)) * 100);
+}
+
 function StoreCTA() {
   const platform = usePlatform();
 
@@ -177,6 +175,8 @@ export function Pricing({ region = "ca" }: { region?: Region }) {
   const selectedPlan = plans.find((p) => p.id === selectedId) ?? plans[0];
   const weekly = plans.find((p) => p.id === "week")!;
   const monthly = plans.find((p) => p.id === "month")!;
+  const yearly = plans.find((p) => p.id === "year")!;
+  const yearlySaving = yearlySavingsPct(monthly, yearly);
 
   return (
     <section
@@ -193,46 +193,40 @@ export function Pricing({ region = "ca" }: { region?: Region }) {
           </p>
         </div>
 
-        {/*
-         * Period toggle. Chips sit ON the pill's top edge exactly the way
-         * "Coming soon" sits on its card in NotAll.tsx: a relative wrapper
-         * per option, and the chip absolute top-0 / -translate-y-1/2,
-         * left-1/2 / -translate-x-1/2. The pill's vertical padding lives on
-         * the wrappers (px stays on the pill), so each wrapper's top edge IS
-         * the pill's top border and its horizontal centre IS the option's.
-         * pt-4 on the Root clears the 12px the chip protrudes above the pill.
-         */}
+        {/* Period toggle */}
         <TabsPrimitive.Root
           value={selectedId}
           onValueChange={setSelectedId}
-          className="flex flex-col items-center pt-4"
+          className="flex flex-col items-center"
         >
           <TabsPrimitive.List
             aria-label="Billing period"
-            className="relative flex items-center gap-1 rounded-pill border border-hairline bg-white px-1.5 shadow-[0_2px_12px_rgba(0,0,0,0.06)]"
+            className="flex items-center gap-1 rounded-pill border border-hairline bg-white p-1.5 shadow-[0_2px_12px_rgba(0,0,0,0.06)]"
           >
             {plans.map((plan) => {
-              const badgeText = plan.popular ? "Most Popular" : plan.badge;
+              const isActive = plan.id === selectedId;
               return (
-                <div key={plan.id} className="relative py-1.5">
-                  {badgeText && (
-                    <Chip
-                      tone={plan.popular ? "ember" : "ember-text"}
-                      className="absolute top-0 left-1/2 z-20 -translate-x-1/2 -translate-y-1/2"
-                    >
-                      {badgeText}
-                    </Chip>
+                <TabsPrimitive.Trigger
+                  key={plan.id}
+                  value={plan.id}
+                  className={cn(
+                    "block rounded-pill px-5 py-2.5 font-sans text-sm font-semibold outline-none transition-colors sm:px-6",
+                    isActive ? "bg-ink text-paper" : "text-ink-60 hover:text-ink",
                   )}
-                  <TabsPrimitive.Trigger
-                    value={plan.id}
-                    className={cn(
-                      "block rounded-pill px-5 py-2.5 font-sans text-sm font-semibold outline-none transition-colors sm:px-6",
-                      plan.id === selectedId ? "bg-ink text-paper" : "text-ink-60 hover:text-ink",
-                    )}
-                  >
-                    {plan.name}
-                  </TabsPrimitive.Trigger>
-                </div>
+                >
+                  {plan.name}
+                  {/* Inline saving, Yearly only. Its 16px line box sits inside
+                      the tab's 20px line, so the pill height is unchanged.
+                      Template string, not cn(): tailwind-merge would drop
+                      text-label as a "conflicting" colour. */}
+                  {plan.id === "year" && (
+                    <span
+                      className={`ml-1.5 text-label font-medium ${isActive ? "text-paper-60" : "text-ember-text"}`}
+                    >
+                      &minus;{yearlySaving}%
+                    </span>
+                  )}
+                </TabsPrimitive.Trigger>
               );
             })}
           </TabsPrimitive.List>
