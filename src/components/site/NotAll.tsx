@@ -90,32 +90,42 @@ export function NotAll({ region = "ca" }: { region?: "ca" | "us" }) {
           <div className="h-px flex-1 bg-ink-10" />
         </div>
 
-        {/* Cards — flex-wrap instead of grid so an incomplete last row (e.g.
-            5 cards over 3 columns) centers itself instead of left-aligning
-            with a dangling gap; a full row still fills edge-to-edge either way. */}
-        <div className="flex flex-wrap justify-center gap-4">
-          {FEATURES.map((f) => (
+        {/* Cards. A grid with auto-rows-fr so EVERY row takes the tallest
+            card's height -- the second row (two cards) is exactly as tall as
+            the first, which flex-wrap could not guarantee (each flex line
+            sizes itself). Columns are doubled (4 on sm, 6 on lg) with each
+            card spanning two, so the incomplete last row can still centre
+            itself: card 4 starts at column 2 on lg, card 5 at column 2 on sm. */}
+        <div className="grid grid-cols-1 auto-rows-fr items-stretch gap-4 sm:grid-cols-4 lg:grid-cols-6">
+          {FEATURES.map((f, i) => (
             <div
               key={f.title}
-              className={`w-full sm:w-[calc((100%-1rem)/2)] lg:w-[calc((100%-2rem)/3)] ${
-                "comingSoon" in f && f.comingSoon ? "relative" : ""
-              }`}
+              className={[
+                "relative col-span-1 sm:col-span-2",
+                i === 3 && "lg:col-start-2",
+                i === 4 && "sm:col-start-2 lg:col-start-auto",
+              ]
+                .filter(Boolean)
+                .join(" ")}
             >
               {"comingSoon" in f && f.comingSoon && (
                 <Chip className="absolute top-0 left-1/2 z-20 -translate-x-1/2 -translate-y-1/2">
                   Coming soon
                 </Chip>
               )}
-              <div className="group flex flex-col overflow-hidden rounded-card border border-hairline bg-white shadow-[0_2px_12px_rgba(0,0,0,0.06)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_40px_rgba(0,0,0,0.10)]">
+              <div className="group flex h-full flex-col overflow-hidden rounded-card border border-hairline bg-white shadow-[0_2px_12px_rgba(0,0,0,0.06)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_40px_rgba(0,0,0,0.10)]">
                 <div className="p-6 sm:p-8">
                   <h3 className="text-lead tracking-body text-ink">{f.title}</h3>
                   <p className="mt-3 text-sm text-ink-60">{f.desc}</p>
                 </div>
-                <div className="mt-auto flex justify-center px-6 pt-2">
+                {/* Fixed-height mascot box, identical on all five cards; the
+                    image fills it bottom-aligned so shorter artwork never
+                    shortens the card. */}
+                <div className="mt-auto flex h-48 items-end justify-center px-6 pt-2 sm:h-52">
                   <img
                     src={f.img}
                     alt={f.alt}
-                    className="h-48 w-auto object-contain object-bottom transition-transform duration-300 group-hover:scale-[1.04] sm:h-52"
+                    className="h-full w-auto max-w-full object-contain object-bottom transition-transform duration-300 group-hover:scale-[1.04]"
                     loading="lazy"
                     draggable={false}
                   />
