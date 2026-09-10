@@ -1,3 +1,4 @@
+import { Chip } from "@/components/site/Chip";
 import naBeaverPeace from "@/assets/figma/na-beaver-peace.webp";
 import naBeaverWheel from "@/assets/figma/na-beaver-wheel.webp";
 import naBeaverLaptop from "@/assets/figma/na-beaver-laptop.webp";
@@ -101,9 +102,9 @@ export function NotAll({ region = "ca" }: { region?: "ca" | "us" }) {
               }`}
             >
               {"comingSoon" in f && f.comingSoon && (
-                <span className="absolute top-0 left-1/2 z-20 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap rounded-pill bg-ember px-4 py-1 font-sans text-label font-semibold text-ink shadow-[0_4px_12px_rgba(249,115,22,0.4)]">
+                <Chip className="absolute top-0 left-1/2 z-20 -translate-x-1/2 -translate-y-1/2">
                   Coming soon
-                </span>
+                </Chip>
               )}
               <div className="group flex flex-col overflow-hidden rounded-card border border-hairline bg-white shadow-[0_2px_12px_rgba(0,0,0,0.06)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_40px_rgba(0,0,0,0.10)]">
                 <div className="p-6 sm:p-8">

@@ -1,5 +1,8 @@
 import { cn } from "@/lib/utils";
-import { APP_STORE_URL, PLAY_STORE_URL } from "@/lib/external";
+
+// Store listings are fixed per app, not per deployment -- hardcoded on purpose.
+const APP_STORE_URL = "https://apps.apple.com/us/app/receiptone-expense-tracker/id6755740822";
+const PLAY_STORE_URL = "https://play.google.com/store/apps/details?id=com.appfyl.checkapp";
 
 type StorePlatform = "apple" | "google";
 type StoreBadgeVariant = "light" | "dark";

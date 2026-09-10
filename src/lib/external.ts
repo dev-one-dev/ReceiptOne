@@ -12,7 +12,7 @@
  * outside of Vite (there `import.meta.env` is undefined).
  */
 
-type EnvKey = "VITE_APP_URL" | "VITE_SITE_URL" | "VITE_APP_STORE_URL" | "VITE_PLAY_STORE_URL";
+type EnvKey = "VITE_APP_URL" | "VITE_SITE_URL";
 
 function readEnv(key: EnvKey): string | undefined {
   const viteEnv = import.meta.env as Record<string, string | undefined> | undefined;
@@ -34,14 +34,6 @@ export const APP_URL = origin(readEnv("VITE_APP_URL") || "https://app.receipt-on
 
 /** This marketing site's canonical origin. */
 export const SITE_URL = origin(readEnv("VITE_SITE_URL") || "https://receipt-one.com");
-
-export const APP_STORE_URL =
-  readEnv("VITE_APP_STORE_URL") ||
-  "https://apps.apple.com/us/app/receiptone-expense-tracker/id6755740822";
-
-export const PLAY_STORE_URL =
-  readEnv("VITE_PLAY_STORE_URL") ||
-  "https://play.google.com/store/apps/details?id=com.appfyl.checkapp";
 
 function join(base: string, path: string): string {
   if (!path) return base;

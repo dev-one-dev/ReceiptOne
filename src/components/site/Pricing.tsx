@@ -6,6 +6,7 @@ import caAnnualImg from "@/assets/figma/mileage-auto/Graphic-Small3.webp";
 import usWeeklyImg from "@/assets/figma/mileage-auto/US/2.webp";
 import usMonthlyImg from "@/assets/figma/mileage-auto/US/3-removebg-preview.webp";
 import usAnnualImg from "@/assets/figma/mileage-auto/US/1.webp";
+import { Chip } from "@/components/site/Chip";
 import { StoreBadge } from "@/components/site/StoreBadge";
 import { PrimaryCta } from "@/components/site/PrimaryCta";
 import { ROUTES } from "@/lib/routes";
@@ -193,55 +194,53 @@ export function Pricing({ region = "ca" }: { region?: Region }) {
         </div>
 
         {/*
-         * Period toggle. The chips straddle the pill's top edge the way the
-         * "Coming soon" chip straddles its card in NotAll.tsx: a 28px chip
-         * centred on the edge protrudes 14px, so pt-4 on the wrapper keeps it
-         * from clipping against the header above.
+         * Period toggle. Two grid rows: the chips, then the pill. The pill is
+         * a subgrid, so its three tabs define the column widths and the chip
+         * cells above inherit exactly those columns -- each chip is centred
+         * over its own option by construction, with no absolute positioning
+         * and no measured offsets. gap-y-2 is the clear gap between chip and
+         * pill; gap-x-1 doubles as the pill's own gap between tabs. The edge
+         * chip cells mirror the pill's p-1.5 so columns 1 and 3 centre on the
+         * tab, not on the tab plus the pill's padding.
          */}
         <TabsPrimitive.Root
           value={selectedId}
           onValueChange={setSelectedId}
-          className="flex flex-col items-center pt-4"
+          className="grid grid-cols-[repeat(3,auto)] justify-center gap-x-1 gap-y-2"
         >
+          {plans.map((plan, i) => {
+            const badgeText = plan.popular ? "Most Popular" : plan.badge;
+            return (
+              <div
+                key={plan.id}
+                className={cn(
+                  "flex justify-center",
+                  i === 0 && "pl-1.5",
+                  i === plans.length - 1 && "pr-1.5",
+                )}
+              >
+                {badgeText && (
+                  <Chip tone={plan.popular ? "ember" : "green"}>{badgeText}</Chip>
+                )}
+              </div>
+            );
+          })}
           <TabsPrimitive.List
             aria-label="Billing period"
-            className="flex items-center gap-1 rounded-pill border border-hairline bg-white p-1.5 shadow-[0_2px_12px_rgba(0,0,0,0.06)]"
+            className="col-span-3 grid grid-cols-subgrid items-center rounded-pill border border-hairline bg-white p-1.5 shadow-[0_2px_12px_rgba(0,0,0,0.06)]"
           >
-            {plans.map((plan) => {
-              const badgeText = plan.popular ? "Most Popular" : plan.badge;
-              return (
-                <div key={plan.id} className="relative">
-                  {/* Same chip as "Coming soon" in NotAll.tsx (ember, ink text,
-                      ember shadow) for Most Popular; Best Deal is the active
-                      toggle's own ink/paper treatment. -top-5 = 14px (half the
-                      28px chip) + the list's 6px inner padding, so the chip is
-                      vertically centred on the pill's outer top edge and
-                      horizontally centred over its own option. */}
-                  {/* Template string, not cn(): tailwind-merge doesn't know
-                      text-label is a size and drops it against text-ink. */}
-                  {badgeText && (
-                    <span
-                      className={`absolute -top-5 left-1/2 z-10 inline-flex h-7 -translate-x-1/2 items-center whitespace-nowrap rounded-pill px-4 font-sans text-label font-semibold ${
-                        plan.popular
-                          ? "bg-ember text-ink shadow-[0_4px_12px_rgba(249,115,22,0.4)]"
-                          : "bg-ink text-paper"
-                      }`}
-                    >
-                      {badgeText}
-                    </span>
-                  )}
-                  <TabsPrimitive.Trigger
-                    value={plan.id}
-                    className={cn(
-                      "block rounded-pill px-5 py-2.5 font-sans text-sm font-semibold outline-none transition-colors sm:px-6",
-                      plan.id === selectedId ? "bg-ink text-paper" : "text-ink-60 hover:text-ink",
-                    )}
-                  >
-                    {plan.name}
-                  </TabsPrimitive.Trigger>
-                </div>
-              );
-            })}
+            {plans.map((plan) => (
+              <TabsPrimitive.Trigger
+                key={plan.id}
+                value={plan.id}
+                className={cn(
+                  "block rounded-pill px-5 py-2.5 font-sans text-sm font-semibold outline-none transition-colors sm:px-6",
+                  plan.id === selectedId ? "bg-ink text-paper" : "text-ink-60 hover:text-ink",
+                )}
+              >
+                {plan.name}
+              </TabsPrimitive.Trigger>
+            ))}
           </TabsPrimitive.List>
         </TabsPrimitive.Root>
 
