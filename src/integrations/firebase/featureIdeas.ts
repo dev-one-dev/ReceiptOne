@@ -10,14 +10,23 @@
 import { httpsCallable } from "firebase/functions";
 import { functions } from "@/integrations/firebase/client";
 
+// Lifecycle: pending_review (hidden) → open (approved: public, votable) →
+// planned / in_progress / done (on the roadmap: public, voting closed), or
+// rejected (hidden). Mirrors IDEA_STATUSES in the portal's functions/src/ideas/types.ts.
 export const FEATURE_IDEA_STATUSES = [
   "pending_review",
+  "open",
   "planned",
   "in_progress",
   "done",
   "rejected",
 ] as const;
 export type FeatureIdeaStatus = (typeof FEATURE_IDEA_STATUSES)[number];
+
+/** Statuses voteFeatureIdea accepts votes on. */
+export function isVotableFeatureIdeaStatus(status: FeatureIdeaStatus): boolean {
+  return status === "open";
+}
 
 /** Wire shape returned by listPublicFeatureIdeas (`ApiIdea` server-side). */
 export interface FeatureIdea {
@@ -63,6 +72,8 @@ interface SubmitPayload {
   source: "website";
   locale: string | null;
   region: string | null;
+  /** Keys the author's automatic vote (hashed server-side, like voting). */
+  anonId: string | null;
 }
 interface VotePayload {
   ideaId: string;
@@ -89,7 +100,7 @@ export interface CommunityIdeas {
   votedIdeaIds: Set<string>;
 }
 
-/** Every publicly-visible idea (planned / in_progress / done), most-voted first. */
+/** Every publicly-visible idea (open / planned / in_progress / done), most-voted first. */
 export async function fetchCommunityIdeas(): Promise<CommunityIdeas> {
   const { data } = await listPublicFeatureIdeas({ anonId: getAnonId() });
   return {
@@ -100,8 +111,9 @@ export async function fetchCommunityIdeas(): Promise<CommunityIdeas> {
 
 /**
  * Submits a new idea. Lands as `pending_review` and stays out of
- * fetchCommunityIdeas until staff change the status -- so it cannot be voted
- * for (including by its author) until then.
+ * fetchCommunityIdeas until staff open it for voting. The author's own vote
+ * is counted server-side at creation (keyed by this browser's anonId), so
+ * the idea starts at 1 vote and this browser cannot vote for it again.
  */
 export async function submitCommunityIdea(params: {
   title: string;
@@ -115,6 +127,7 @@ export async function submitCommunityIdea(params: {
     source: "website",
     locale: params.locale,
     region: params.region,
+    anonId: getAnonId(),
   });
   return data.id;
 }

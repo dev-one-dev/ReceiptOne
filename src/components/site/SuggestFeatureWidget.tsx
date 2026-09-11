@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import {
   IDEA_LIMITS,
   fetchCommunityIdeas,
+  isVotableFeatureIdeaStatus,
   submitCommunityIdea,
   voteForIdea,
   type FeatureIdea,
@@ -25,10 +26,12 @@ const QUICK_OPTIONS = [
   "Accountant dashboard",
 ];
 
-// Full server enum. The public list only ever contains planned /
+// Full server enum. The public list only ever contains open / planned /
 // in_progress / done; the other two are here so the type stays exhaustive.
+// Only `open` ideas take votes.
 const STATUS_LABEL: Record<FeatureIdeaStatus, string> = {
   pending_review: "Pending review",
+  open: "Open for voting",
   planned: "Planned",
   in_progress: "In progress",
   done: "Done",
@@ -114,6 +117,8 @@ export function SuggestFeatureWidget({ region }: { region: Region }) {
 
   const voteOnIdea = async (ideaId: string) => {
     if (votedIds.has(ideaId)) return;
+    const target = ideas.find((idea) => idea.id === ideaId);
+    if (!target || !isVotableFeatureIdeaStatus(target.status)) return;
     setVotingId(ideaId);
     try {
       // Idempotent server-side: a repeat vote comes back as alreadyVoted with
@@ -151,8 +156,8 @@ export function SuggestFeatureWidget({ region }: { region: Region }) {
     setLoading(true);
     try {
       // New ideas land as pending_review and are hidden from the public list
-      // (and closed to voting, including by the author) until staff triage
-      // them -- so unlike the old Supabase flow there is no auto-vote here.
+      // until staff open them for voting. The author's own vote is counted
+      // server-side at creation (keyed by this browser's anonId).
       await submitCommunityIdea({
         title: t,
         description: d,
@@ -258,6 +263,10 @@ export function SuggestFeatureWidget({ region }: { region: Region }) {
                   <ul className="space-y-2">
                     {ideas.map((idea) => {
                       const voted = votedIds.has(idea.id);
+                      // Voting is only open while the idea is `open`; ideas
+                      // already on the roadmap keep their count (and a muted
+                      // "Voted" trace) but no button.
+                      const votable = isVotableFeatureIdeaStatus(idea.status);
                       return (
                         <li
                           key={idea.id}
@@ -275,18 +284,24 @@ export function SuggestFeatureWidget({ region }: { region: Region }) {
                                 {STATUS_LABEL[idea.status]} · {idea.votes_count} votes
                               </p>
                             </div>
-                            <button
-                              type="button"
-                              onClick={() => voteOnIdea(idea.id)}
-                              disabled={voted || votingId === idea.id}
-                              className={`shrink-0 rounded-full border px-3 py-1.5 font-display text-xs font-semibold transition-colors disabled:cursor-not-allowed ${
-                                voted
-                                  ? "border-black/15 bg-black/[0.04] text-black/50"
-                                  : "border-black bg-white text-black hover:bg-black hover:text-white disabled:opacity-40"
-                              }`}
-                            >
-                              {voted ? "✓ Voted" : "▲ Vote"}
-                            </button>
+                            {votable ? (
+                              <button
+                                type="button"
+                                onClick={() => voteOnIdea(idea.id)}
+                                disabled={voted || votingId === idea.id}
+                                className={`shrink-0 rounded-full border px-3 py-1.5 font-display text-xs font-semibold transition-colors disabled:cursor-not-allowed ${
+                                  voted
+                                    ? "border-black/15 bg-black/[0.04] text-black/50"
+                                    : "border-black bg-white text-black hover:bg-black hover:text-white disabled:opacity-40"
+                                }`}
+                              >
+                                {voted ? "✓ Voted" : "▲ Vote"}
+                              </button>
+                            ) : voted ? (
+                              <span className="shrink-0 px-1 py-1.5 font-display text-xs font-semibold text-black/50">
+                                ✓ Voted
+                              </span>
+                            ) : null}
                           </div>
                         </li>
                       );
@@ -373,8 +388,8 @@ export function SuggestFeatureWidget({ region }: { region: Region }) {
                 </div>
                 <p className="font-display text-lg font-semibold text-black">{successMsg}</p>
                 <p className="font-sans text-sm text-black/60">
-                  We review every suggestion. Status will update to Planned or In progress when we
-                  pick it up.
+                  We review every suggestion. Once approved it opens for voting, and your own vote
+                  is already counted.
                 </p>
                 <div className="flex flex-col gap-2 sm:flex-row">
                   <button
