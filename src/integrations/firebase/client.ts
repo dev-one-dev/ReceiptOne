@@ -84,7 +84,7 @@ if (typeof window !== "undefined") {
     });
   } else {
     console.warn(
-      "Missing VITE_FIREBASE_APP_CHECK_SITE_KEY -- App Check not initialized; AI Logic (Gemini) calls will fail until this is set.",
+      "Missing VITE_FIREBASE_APP_CHECK_SITE_KEY -- App Check not initialized; the contact form and feature-idea callables (which enforce App Check) will be rejected until this is set.",
     );
   }
 }

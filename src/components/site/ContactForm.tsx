@@ -1,9 +1,13 @@
 import { useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
-import { errorMessage } from "@/lib/utils";
+import { CONTACT_LIMITS, submitContactRequest } from "@/integrations/firebase/support";
+import { callableErrorMessage, isRateLimited } from "@/integrations/firebase/callable-error";
 import { toast } from "sonner";
 
 type Region = "ca" | "us";
+
+// Sent as the request's `locale` so support can see which storefront the
+// visitor wrote from. The form is English-only on both, hence en-*.
+const REGION_LOCALE: Record<Region, string> = { ca: "en-CA", us: "en-US" };
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -41,17 +45,29 @@ export function ContactForm({ region }: { region: Region }) {
 
     setLoading(true);
     try {
-      const { error } = await supabase.from("support_requests").insert({
-        name: n.slice(0, 120),
-        email: em.slice(0, 254),
-        subject: subj.slice(0, 200),
-        message: msg.slice(0, 2000),
-        region,
+      // Callable in the portal's Firebase project; the App Check token is
+      // attached automatically (see integrations/firebase/client.ts). The
+      // function creates a `supportRequests` doc the portal's Support screens read.
+      await submitContactRequest({
+        name: n.slice(0, CONTACT_LIMITS.name),
+        email: em.slice(0, CONTACT_LIMITS.email),
+        subject: subj.slice(0, CONTACT_LIMITS.subject),
+        message: msg.slice(0, CONTACT_LIMITS.message),
+        locale: REGION_LOCALE[region],
+        userAgent:
+          typeof navigator !== "undefined"
+            ? navigator.userAgent.slice(0, CONTACT_LIMITS.userAgent)
+            : null,
       });
-      if (error) throw error;
       setSubmitted(true);
     } catch (err) {
-      toast.error(errorMessage(err, "Failed to send your message"));
+      if (isRateLimited(err)) {
+        toast.error(
+          "You've sent a few messages recently. Please wait an hour before sending another.",
+        );
+      } else {
+        toast.error(callableErrorMessage(err, "Failed to send your message. Please try again."));
+      }
     } finally {
       setLoading(false);
     }
