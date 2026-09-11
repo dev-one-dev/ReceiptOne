@@ -1,7 +1,5 @@
 .env
 
-# Supabase CLI local link state (project ref, pooler URL, etc.)
-supabase/.temp/
 
 # Logs
 logs

@@ -1,7 +1,15 @@
 import { APP_URL, appUrl } from "./src/lib/external";
 
 export const config = {
-  matcher: ["/", "/login", "/signup", "/dashboard", "/dashboard/:path*"],
+  matcher: [
+    "/",
+    "/login",
+    "/signup",
+    "/dashboard",
+    "/dashboard/:path*",
+    "/helpdesk",
+    "/helpdesk/:path*",
+  ],
 };
 
 export default function middleware(request: Request) {
@@ -17,6 +25,11 @@ export default function middleware(request: Request) {
   }
   if (pathname === "/dashboard" || pathname.startsWith("/dashboard/")) {
     return Response.redirect(APP_URL, 301);
+  }
+  // The staff helpdesk (support tickets + idea moderation) now lives in the
+  // web portal; support requests and ideas are stored in Firestore there.
+  if (pathname === "/helpdesk" || pathname.startsWith("/helpdesk/")) {
+    return Response.redirect(appUrl("/support"), 301);
   }
 
   // Geo redirect for the bare root: US visitors to /us, everyone else to /ca.

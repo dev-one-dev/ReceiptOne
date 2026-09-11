@@ -56,7 +56,7 @@ export const Route = createRootRoute({
         rel: "stylesheet",
         // Weight ceiling is 600 — 700/800 are deliberately not fetched.
         // Inter is retained only as the inherited --default-font-family for the
-        // dashboard/helpdesk/shadcn surfaces, which declare no family of their
+        // shadcn surfaces, which declare no family of their
         // own; the marketing shells set font-sans/font-display explicitly and
         // render Inter Tight. Inter Tight 400 is new and required: marketing
         // body copy is 400 and would otherwise synthesize.

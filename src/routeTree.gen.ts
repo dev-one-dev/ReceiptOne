@@ -12,19 +12,15 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as UsRouteImport } from './routes/us'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as PrivacyRouteImport } from './routes/privacy'
-import { Route as HelpdeskRouteImport } from './routes/helpdesk'
 import { Route as FaqRouteImport } from './routes/faq'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CaRouteImport } from './routes/ca'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as UsIndexRouteImport } from './routes/us/index'
-import { Route as HelpdeskIndexRouteImport } from './routes/helpdesk/index'
 import { Route as ArticlesIndexRouteImport } from './routes/articles/index'
 import { Route as UsFaqRouteImport } from './routes/us/faq'
 import { Route as UsContactRouteImport } from './routes/us/contact'
 import { Route as RCodeRouteImport } from './routes/r/$code'
-import { Route as HelpdeskSupportRouteImport } from './routes/helpdesk/support'
-import { Route as HelpdeskIdeasRouteImport } from './routes/helpdesk/ideas'
 import { Route as ArticlesSlugRouteImport } from './routes/articles/$slug'
 import { Route as UsArticlesIndexRouteImport } from './routes/us/articles/index'
 import { Route as UsArticlesSlugRouteImport } from './routes/us/articles/$slug'
@@ -42,11 +38,6 @@ const TermsRoute = TermsRouteImport.update({
 const PrivacyRoute = PrivacyRouteImport.update({
   id: '/privacy',
   path: '/privacy',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const HelpdeskRoute = HelpdeskRouteImport.update({
-  id: '/helpdesk',
-  path: '/helpdesk',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FaqRoute = FaqRouteImport.update({
@@ -74,11 +65,6 @@ const UsIndexRoute = UsIndexRouteImport.update({
   path: '/',
   getParentRoute: () => UsRoute,
 } as any)
-const HelpdeskIndexRoute = HelpdeskIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => HelpdeskRoute,
-} as any)
 const ArticlesIndexRoute = ArticlesIndexRouteImport.update({
   id: '/articles/',
   path: '/articles/',
@@ -98,16 +84,6 @@ const RCodeRoute = RCodeRouteImport.update({
   id: '/r/$code',
   path: '/r/$code',
   getParentRoute: () => rootRouteImport,
-} as any)
-const HelpdeskSupportRoute = HelpdeskSupportRouteImport.update({
-  id: '/support',
-  path: '/support',
-  getParentRoute: () => HelpdeskRoute,
-} as any)
-const HelpdeskIdeasRoute = HelpdeskIdeasRouteImport.update({
-  id: '/ideas',
-  path: '/ideas',
-  getParentRoute: () => HelpdeskRoute,
 } as any)
 const ArticlesSlugRoute = ArticlesSlugRouteImport.update({
   id: '/articles/$slug',
@@ -130,18 +106,14 @@ export interface FileRoutesByFullPath {
   '/ca': typeof CaRoute
   '/contact': typeof ContactRoute
   '/faq': typeof FaqRoute
-  '/helpdesk': typeof HelpdeskRouteWithChildren
   '/privacy': typeof PrivacyRoute
   '/terms': typeof TermsRoute
   '/us': typeof UsRouteWithChildren
   '/articles/$slug': typeof ArticlesSlugRoute
-  '/helpdesk/ideas': typeof HelpdeskIdeasRoute
-  '/helpdesk/support': typeof HelpdeskSupportRoute
   '/r/$code': typeof RCodeRoute
   '/us/contact': typeof UsContactRoute
   '/us/faq': typeof UsFaqRoute
   '/articles/': typeof ArticlesIndexRoute
-  '/helpdesk/': typeof HelpdeskIndexRoute
   '/us/': typeof UsIndexRoute
   '/us/articles/$slug': typeof UsArticlesSlugRoute
   '/us/articles/': typeof UsArticlesIndexRoute
@@ -154,13 +126,10 @@ export interface FileRoutesByTo {
   '/privacy': typeof PrivacyRoute
   '/terms': typeof TermsRoute
   '/articles/$slug': typeof ArticlesSlugRoute
-  '/helpdesk/ideas': typeof HelpdeskIdeasRoute
-  '/helpdesk/support': typeof HelpdeskSupportRoute
   '/r/$code': typeof RCodeRoute
   '/us/contact': typeof UsContactRoute
   '/us/faq': typeof UsFaqRoute
   '/articles': typeof ArticlesIndexRoute
-  '/helpdesk': typeof HelpdeskIndexRoute
   '/us': typeof UsIndexRoute
   '/us/articles/$slug': typeof UsArticlesSlugRoute
   '/us/articles': typeof UsArticlesIndexRoute
@@ -171,18 +140,14 @@ export interface FileRoutesById {
   '/ca': typeof CaRoute
   '/contact': typeof ContactRoute
   '/faq': typeof FaqRoute
-  '/helpdesk': typeof HelpdeskRouteWithChildren
   '/privacy': typeof PrivacyRoute
   '/terms': typeof TermsRoute
   '/us': typeof UsRouteWithChildren
   '/articles/$slug': typeof ArticlesSlugRoute
-  '/helpdesk/ideas': typeof HelpdeskIdeasRoute
-  '/helpdesk/support': typeof HelpdeskSupportRoute
   '/r/$code': typeof RCodeRoute
   '/us/contact': typeof UsContactRoute
   '/us/faq': typeof UsFaqRoute
   '/articles/': typeof ArticlesIndexRoute
-  '/helpdesk/': typeof HelpdeskIndexRoute
   '/us/': typeof UsIndexRoute
   '/us/articles/$slug': typeof UsArticlesSlugRoute
   '/us/articles/': typeof UsArticlesIndexRoute
@@ -194,18 +159,14 @@ export interface FileRouteTypes {
     | '/ca'
     | '/contact'
     | '/faq'
-    | '/helpdesk'
     | '/privacy'
     | '/terms'
     | '/us'
     | '/articles/$slug'
-    | '/helpdesk/ideas'
-    | '/helpdesk/support'
     | '/r/$code'
     | '/us/contact'
     | '/us/faq'
     | '/articles/'
-    | '/helpdesk/'
     | '/us/'
     | '/us/articles/$slug'
     | '/us/articles/'
@@ -218,13 +179,10 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/terms'
     | '/articles/$slug'
-    | '/helpdesk/ideas'
-    | '/helpdesk/support'
     | '/r/$code'
     | '/us/contact'
     | '/us/faq'
     | '/articles'
-    | '/helpdesk'
     | '/us'
     | '/us/articles/$slug'
     | '/us/articles'
@@ -234,18 +192,14 @@ export interface FileRouteTypes {
     | '/ca'
     | '/contact'
     | '/faq'
-    | '/helpdesk'
     | '/privacy'
     | '/terms'
     | '/us'
     | '/articles/$slug'
-    | '/helpdesk/ideas'
-    | '/helpdesk/support'
     | '/r/$code'
     | '/us/contact'
     | '/us/faq'
     | '/articles/'
-    | '/helpdesk/'
     | '/us/'
     | '/us/articles/$slug'
     | '/us/articles/'
@@ -256,7 +210,6 @@ export interface RootRouteChildren {
   CaRoute: typeof CaRoute
   ContactRoute: typeof ContactRoute
   FaqRoute: typeof FaqRoute
-  HelpdeskRoute: typeof HelpdeskRouteWithChildren
   PrivacyRoute: typeof PrivacyRoute
   TermsRoute: typeof TermsRoute
   UsRoute: typeof UsRouteWithChildren
@@ -286,13 +239,6 @@ declare module '@tanstack/react-router' {
       path: '/privacy'
       fullPath: '/privacy'
       preLoaderRoute: typeof PrivacyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/helpdesk': {
-      id: '/helpdesk'
-      path: '/helpdesk'
-      fullPath: '/helpdesk'
-      preLoaderRoute: typeof HelpdeskRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/faq': {
@@ -330,13 +276,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UsIndexRouteImport
       parentRoute: typeof UsRoute
     }
-    '/helpdesk/': {
-      id: '/helpdesk/'
-      path: '/'
-      fullPath: '/helpdesk/'
-      preLoaderRoute: typeof HelpdeskIndexRouteImport
-      parentRoute: typeof HelpdeskRoute
-    }
     '/articles/': {
       id: '/articles/'
       path: '/articles'
@@ -365,20 +304,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RCodeRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/helpdesk/support': {
-      id: '/helpdesk/support'
-      path: '/support'
-      fullPath: '/helpdesk/support'
-      preLoaderRoute: typeof HelpdeskSupportRouteImport
-      parentRoute: typeof HelpdeskRoute
-    }
-    '/helpdesk/ideas': {
-      id: '/helpdesk/ideas'
-      path: '/ideas'
-      fullPath: '/helpdesk/ideas'
-      preLoaderRoute: typeof HelpdeskIdeasRouteImport
-      parentRoute: typeof HelpdeskRoute
-    }
     '/articles/$slug': {
       id: '/articles/$slug'
       path: '/articles/$slug'
@@ -403,22 +328,6 @@ declare module '@tanstack/react-router' {
   }
 }
 
-interface HelpdeskRouteChildren {
-  HelpdeskIdeasRoute: typeof HelpdeskIdeasRoute
-  HelpdeskSupportRoute: typeof HelpdeskSupportRoute
-  HelpdeskIndexRoute: typeof HelpdeskIndexRoute
-}
-
-const HelpdeskRouteChildren: HelpdeskRouteChildren = {
-  HelpdeskIdeasRoute: HelpdeskIdeasRoute,
-  HelpdeskSupportRoute: HelpdeskSupportRoute,
-  HelpdeskIndexRoute: HelpdeskIndexRoute,
-}
-
-const HelpdeskRouteWithChildren = HelpdeskRoute._addFileChildren(
-  HelpdeskRouteChildren,
-)
-
 interface UsRouteChildren {
   UsContactRoute: typeof UsContactRoute
   UsFaqRoute: typeof UsFaqRoute
@@ -442,7 +351,6 @@ const rootRouteChildren: RootRouteChildren = {
   CaRoute: CaRoute,
   ContactRoute: ContactRoute,
   FaqRoute: FaqRoute,
-  HelpdeskRoute: HelpdeskRouteWithChildren,
   PrivacyRoute: PrivacyRoute,
   TermsRoute: TermsRoute,
   UsRoute: UsRouteWithChildren,

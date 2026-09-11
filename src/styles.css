@@ -28,7 +28,7 @@ html {
    * --font-sans / --font-display / --font-mono now live in
    * ./receiptone-tokens.css and must NOT be redeclared here -- this block is
    * later in the cascade and would silently win. The inherited body font for
-   * the dashboard/helpdesk/shadcn surfaces is pinned there via
+   * the shadcn surfaces is pinned there via
    * --default-font-family, which is what keeps them on Inter.
    *
    * The --radius-* ramp below is deliberately retained: the dashboard and

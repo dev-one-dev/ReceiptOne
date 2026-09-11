@@ -100,7 +100,7 @@ Exact plan pricing is managed in the Figma design assets and updated per region.
 
 ## Tech Behind the Product
 
-The marketing site and community feature-voting system are built with TanStack Start (React 19) and Supabase. See [README.md](../README.md) for the full technical stack.
+The marketing site is built with TanStack Start (React 19); the contact form and community feature-voting widget call the web portal's Firebase Cloud Functions (Firestore-backed). See [README.md](../README.md) for the full technical stack.
 
 The mobile app itself is a separate codebase (not in this repository).
 

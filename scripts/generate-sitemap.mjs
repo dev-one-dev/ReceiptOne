@@ -28,7 +28,7 @@ const PRIORITY = {
 const EXCLUDE = new Set(["/"]);
 
 /** Prefix-excluded routes: internal tools and redirect-only surfaces, never indexed. */
-const EXCLUDE_PREFIXES = ["/helpdesk", "/r", "/dashboard"];
+const EXCLUDE_PREFIXES = ["/r", "/dashboard"];
 
 /** Dynamic routes we know how to expand: route path -> article region. */
 const ARTICLE_ROUTES = {

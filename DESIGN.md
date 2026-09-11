@@ -169,7 +169,7 @@ Genuinely exempt, because neither is a letterform: the decorative full stop clos
 
 **Display / Body Font:** Inter Tight (with ui-sans-serif, system-ui fallback). Both `font-display` and `font-sans` resolve to it.
 **Label/Mono Font:** Geist Mono (SIL OFL, with ui-monospace fallback) — eyebrows, pills, nav, figures. Always uppercase, always 400, always +0.025em.
-**Inter** is retained only as the inherited `--default-font-family` for the dashboard, helpdesk and shadcn surfaces, which declare no family of their own. It is not part of the marketing type system.
+**Inter** is retained only as the inherited `--default-font-family` for the shadcn surfaces, which declare no family of their own. It is not part of the marketing type system.
 
 **Character:** Inter Tight carries the whole marketing page — display through body — so the voice is one face at different sizes rather than two competing sans. Geist Mono does the small, structural work: it marks a label as a label, and the family shift does the job that heavy weight and wide tracking used to do.
 

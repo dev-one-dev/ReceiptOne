@@ -29,7 +29,7 @@
      case where the accent genuinely has to BE the text. Measured 4.71:1 on
      paper and 5.18:1 on a white card — both pass AA. It does NOT pass on the
      ember/10 tint (4.27:1), so never pair it with an ember wash.
-     Value already in use at helpdesk/index.tsx:113. */
+     Originally introduced for the retired helpdesk; kept for future use. */
   --color-ember-text: #c2410c;
 
   --color-ink-80: color-mix(in oklab, var(--color-ink) 80%, transparent);
@@ -64,7 +64,7 @@
   /* Tailwind v4 preflight sets html { font-family: var(--default-font-family) }
      and --default-font-family resolves to --font-sans (tailwindcss/theme.css:494).
      Repointing --font-sans to Inter Tight would therefore change the inherited
-     body font of the dashboard, helpdesk, and every shadcn primitive — none of
+     body font of every shadcn primitive — none of
      which declare a family of their own. Pinning the inherited default to Inter
      keeps those surfaces exactly as they were, while the font-sans / font-display
      utilities (which every marketing shell sets explicitly) resolve to Inter
@@ -124,7 +124,7 @@
 }
 
 /* ── Roles ────────────────────────────────────────────────────────────
-   Scoped to the marketing surface. The dashboard, helpdesk, and all
+   Scoped to the marketing surface. All
    shadcn primitives (DialogTitle, CardTitle, SheetTitle) render bare
    h1/h2/h3 and must not inherit a 72px display size.                 */
 

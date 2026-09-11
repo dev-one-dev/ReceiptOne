@@ -215,9 +215,21 @@ step, a heavier weight, or a third radius.
 | `tracking-tight` / `tracking-widest` | `tracking-display` / `tracking-h3` / `tracking-body` / `tracking-mono` | Tracking is size-bound |
 | hand-built uppercase labels | `.eyebrow` | One eyebrow treatment |
 
-**Out of scope for these rules:** `src/routes/dashboard*`,
-`src/components/dashboard/**`, `src/components/ui/**`, `src/components/helpdesk/**`,
-`src/routes/helpdesk*`, `/terms`, `/privacy`, `/login`, `/signup`, and
-`SuggestFeatureWidget` (which lives in `components/site` but renders only in the
-dashboard). Those surfaces use shadcn semantic theming and the `--radius-*` ramp
-in `styles.css`; leave them alone.
+**Out of scope for these rules:** `src/components/ui/**`, `/terms`, `/privacy`,
+and `SuggestFeatureWidget` (which lives in `components/site` but is not part of
+the marketing shell and is not currently mounted). Those surfaces use shadcn
+semantic theming and the `--radius-*` ramp in `styles.css`; leave them alone.
+
+## Backend
+
+There is no server code in this repo. The contact form
+(`components/site/ContactForm.tsx`) and the feature-idea widget call the web
+portal's Firebase Cloud Functions (`submitContactRequest`,
+`listPublicFeatureIdeas`, `submitFeatureIdea`, `voteFeatureIdea`; region
+us-central1, project check-app-a93a2) through the wrappers in
+`src/integrations/firebase/`. App Check (reCAPTCHA v3) is initialised in
+`integrations/firebase/client.ts` before `getFunctions`, so every call carries
+an App Check token. The function contracts live in the
+`ReceiptOne-Web-Portal` repo (`functions/src/support`, `functions/src/ideas`,
+`docs/SUPPORT_AND_IDEAS.md`). The old Supabase helpdesk (`/helpdesk*`) was
+removed; `middleware.ts` 301s it to the portal's `/support`.
