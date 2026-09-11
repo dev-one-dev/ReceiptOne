@@ -31,10 +31,8 @@ interface Plan {
   id: string;
   name: string;
   price: string;
-  originalPrice?: string;
   period: string;
   currency: string;
-  discountLabel?: string;
 }
 
 /**
@@ -69,7 +67,6 @@ const CA_PLANS: Plan[] = [
     id: "week",
     name: "Weekly",
     price: "4.99",
-    originalPrice: "6.49",
     period: "/ week",
     currency: "CAD",
   },
@@ -77,7 +74,6 @@ const CA_PLANS: Plan[] = [
     id: "month",
     name: "Monthly",
     price: "12.99",
-    originalPrice: "15.99",
     period: "/ month",
     currency: "CAD",
   },
@@ -85,10 +81,8 @@ const CA_PLANS: Plan[] = [
     id: "year",
     name: "Yearly",
     price: "129.99",
-    originalPrice: "149.99",
     period: "/ year",
     currency: "CAD",
-    discountLabel: "Save 13%",
   },
 ];
 
@@ -97,7 +91,6 @@ const US_PLANS: Plan[] = [
     id: "week",
     name: "Weekly",
     price: "3.99",
-    originalPrice: "5.19",
     period: "/ week",
     currency: "USD",
   },
@@ -105,7 +98,6 @@ const US_PLANS: Plan[] = [
     id: "month",
     name: "Monthly",
     price: "9.99",
-    originalPrice: "12.99",
     period: "/ month",
     currency: "USD",
   },
@@ -113,10 +105,8 @@ const US_PLANS: Plan[] = [
     id: "year",
     name: "Yearly",
     price: "99.99",
-    originalPrice: "129.99",
     period: "/ year",
     currency: "USD",
-    discountLabel: "Save 17%",
   },
 ];
 
@@ -136,19 +126,32 @@ function formatPrice(plan: Plan, price: string) {
   return plan.currency === "CAD" ? `CAD ${price}` : `$${price}`;
 }
 
+/** A month's worth of the Weekly price (52 weeks / 12 months). */
+function weeklyBasisPerMonth(weekly: Plan): number {
+  return parseFloat(weekly.price) * (52 / 12);
+}
+
+/** A year's worth of the Monthly price. */
+function monthlyBasisPerYear(monthly: Plan): number {
+  return parseFloat(monthly.price) * 12;
+}
+
 /**
  * % saved by choosing Monthly over paying Weekly for the same stretch of
  * days, computed live from the real listed prices (not hardcoded) so it
  * can't drift if either price changes.
  */
-function monthlySavingsPct(weekly: Plan, monthly: Plan): number {
-  const weeklyAsMonthly = parseFloat(weekly.price) * (52 / 12);
-  return Math.round((1 - parseFloat(monthly.price) / weeklyAsMonthly) * 100);
+function monthlySavingPercent(weekly: Plan, monthly: Plan): number {
+  return Math.round((1 - parseFloat(monthly.price) / weeklyBasisPerMonth(weekly)) * 100);
 }
 
-/** % saved by paying Yearly instead of twelve Monthly payments -- same live-from-prices rule. */
-function yearlySavingsPct(monthly: Plan, yearly: Plan): number {
-  return Math.round((1 - parseFloat(yearly.price) / (parseFloat(monthly.price) * 12)) * 100);
+/**
+ * % saved by paying Yearly instead of 12x the Monthly price, rounded.
+ * The ONE basis for every yearly saving figure on the page (toggle and
+ * card both read this) so the two can never disagree.
+ */
+function yearlySavingPercent(monthly: Plan, yearly: Plan): number {
+  return Math.round((1 - parseFloat(yearly.price) / monthlyBasisPerYear(monthly)) * 100);
 }
 
 function StoreCTA() {
@@ -176,7 +179,7 @@ export function Pricing({ region = "ca" }: { region?: Region }) {
   const weekly = plans.find((p) => p.id === "week")!;
   const monthly = plans.find((p) => p.id === "month")!;
   const yearly = plans.find((p) => p.id === "year")!;
-  const yearlySaving = yearlySavingsPct(monthly, yearly);
+  const yearlySaving = yearlySavingPercent(monthly, yearly);
 
   return (
     <section
@@ -272,11 +275,22 @@ export function Pricing({ region = "ca" }: { region?: Region }) {
             <div className="mt-3 grid">
               {plans.map((plan) => {
                 const isActive = plan.id === selectedId;
-                const label =
+                // One muted line under the price, same basis as the toggle:
+                // what the same stretch would cost on the next-shorter period.
+                // Weekly is the shortest period, so it has no comparison.
+                const saving =
                   plan.id === "month"
-                    ? `Save ${monthlySavingsPct(weekly, monthly)}% vs Weekly`
+                    ? {
+                        basis: weeklyBasisPerMonth(weekly),
+                        unit: "weekly",
+                        percent: monthlySavingPercent(weekly, monthly),
+                      }
                     : plan.id === "year"
-                      ? plan.discountLabel
+                      ? {
+                          basis: monthlyBasisPerYear(monthly),
+                          unit: "monthly",
+                          percent: yearlySaving,
+                        }
                       : undefined;
                 return (
                   <div
@@ -294,16 +308,10 @@ export function Pricing({ region = "ca" }: { region?: Region }) {
                       <span className="font-sans text-body text-ink-60">{plan.period}</span>
                     </div>
 
-                    {plan.originalPrice && (
-                      <p className="mt-1 font-sans text-sm text-ink-60 line-through">
-                        {formatPrice(plan, plan.originalPrice)} {plan.period}
+                    {saving && (
+                      <p className="mt-1 font-sans text-sm text-ink-60">
+                        {`${formatPrice(plan, saving.basis.toFixed(2))} billed ${saving.unit} · save ${saving.percent}%`}
                       </p>
-                    )}
-
-                    {label && (
-                      <span className="mt-2 inline-block w-fit rounded-pill bg-ember/30 px-2.5 py-0.5 font-sans text-label font-semibold text-ink">
-                        {label}
-                      </span>
                     )}
                   </div>
                 );
