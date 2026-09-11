@@ -1,21 +1,22 @@
-import { useEffect, useMemo, useRef, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
-import { errorMessage } from "@/lib/utils";
+import { useEffect, useRef, useState } from "react";
+import {
+  IDEA_LIMITS,
+  fetchCommunityIdeas,
+  submitCommunityIdea,
+  voteForIdea,
+  type FeatureIdea,
+  type FeatureIdeaStatus,
+} from "@/integrations/firebase/featureIdeas";
+import { callableErrorMessage, isRateLimited } from "@/integrations/firebase/callable-error";
 import { toast } from "sonner";
 
 type Region = "ca" | "us";
-// Matches the full DB enum, including pending_review -- RLS filters rows,
-// not the column's type, so Postgrest's return type genuinely includes it
-// even though a pending_review row should never actually reach this query.
-type Status = "pending_review" | "under_review" | "planned" | "coming_soon" | "published";
 
-interface Idea {
-  id: string;
-  title: string;
-  description: string;
-  votes_count: number;
-  status: Status;
-}
+// Data goes through the portal's Cloud Functions (App Check-only path, no
+// account): listPublicFeatureIdeas / submitFeatureIdea / voteFeatureIdea.
+// The anonymous voter key (`ro_anon_id` in localStorage) is generated in
+// integrations/firebase/featureIdeas.ts and hashed server-side.
+type Idea = FeatureIdea;
 
 const QUICK_OPTIONS = [
   "QuickBooks sync",
@@ -24,52 +25,17 @@ const QUICK_OPTIONS = [
   "Accountant dashboard",
 ];
 
-const STATUS_LABEL: Record<Status, string> = {
+// Full server enum. The public list only ever contains planned /
+// in_progress / done; the other two are here so the type stays exhaustive.
+const STATUS_LABEL: Record<FeatureIdeaStatus, string> = {
   pending_review: "Pending review",
-  under_review: "Under review",
   planned: "Planned",
-  coming_soon: "Coming soon",
-  published: "Published",
+  in_progress: "In progress",
+  done: "Done",
+  rejected: "Not planned",
 };
 
-function getDeviceId(): string {
-  if (typeof window === "undefined") return "ssr";
-  const KEY = "ro_device_id";
-  let id = localStorage.getItem(KEY);
-  if (!id) {
-    id = crypto.randomUUID();
-    localStorage.setItem(KEY, id);
-  }
-  return id;
-}
-
-function getVotedSet(): Set<string> {
-  if (typeof window === "undefined") return new Set();
-  try {
-    const raw = localStorage.getItem("ro_voted_ideas");
-    return raw ? new Set(JSON.parse(raw) as string[]) : new Set();
-  } catch {
-    return new Set();
-  }
-}
-
-function persistVotedSet(set: Set<string>) {
-  localStorage.setItem("ro_voted_ideas", JSON.stringify(Array.from(set)));
-}
-
-/** Top 20 ideas by vote count, every publicly-visible status -- the
- * widget's default view. RLS already excludes pending_review from this
- * query entirely; the filter below is a belt-and-suspenders backstop,
- * not the real enforcement. */
-async function fetchIdeas(): Promise<Idea[]> {
-  const { data, error } = await supabase
-    .from("feature_ideas")
-    .select("id, title, description, votes_count, status")
-    .order("votes_count", { ascending: false })
-    .limit(20);
-  if (error) throw error;
-  return (data ?? []).filter((idea) => idea.status !== "pending_review");
-}
+const REGION_LOCALE: Record<Region, string> = { ca: "en-CA", us: "en-US" };
 
 type Step = "list" | "input" | "success";
 
@@ -84,9 +50,10 @@ export function SuggestFeatureWidget({ region }: { region: Region }) {
   const [ideas, setIdeas] = useState<Idea[]>([]);
   const [ideasLoading, setIdeasLoading] = useState(false);
   const [votingId, setVotingId] = useState<string | null>(null);
-  const [votedIds, setVotedIds] = useState<Set<string>>(() => getVotedSet());
+  // Seeded from the server on every load (keyed by this browser's anonId),
+  // then updated optimistically after a successful vote.
+  const [votedIds, setVotedIds] = useState<Set<string>>(() => new Set());
   const panelRef = useRef<HTMLDivElement>(null);
-  const deviceId = useMemo(getDeviceId, []);
 
   useEffect(() => {
     function onClick(e: MouseEvent) {
@@ -113,11 +80,11 @@ export function SuggestFeatureWidget({ region }: { region: Region }) {
   const loadIdeas = async () => {
     setIdeasLoading(true);
     try {
-      const data = await fetchIdeas();
-      setIdeas(data);
+      const { ideas: list, votedIdeaIds } = await fetchCommunityIdeas();
+      setIdeas(list);
+      setVotedIds(votedIdeaIds);
     } catch (e) {
-      const msg = errorMessage(e, "Failed to load ideas");
-      toast.error(msg);
+      toast.error(callableErrorMessage(e, "Failed to load ideas. Please try again."));
     } finally {
       setIdeasLoading(false);
     }
@@ -149,23 +116,20 @@ export function SuggestFeatureWidget({ region }: { region: Region }) {
     if (votedIds.has(ideaId)) return;
     setVotingId(ideaId);
     try {
-      const { error } = await supabase
-        .from("feature_votes")
-        .insert({ idea_id: ideaId, device_id: deviceId });
-      if (error && !`${error.message}`.toLowerCase().includes("duplicate")) throw error;
-      const next = new Set(votedIds);
-      next.add(ideaId);
-      setVotedIds(next);
-      persistVotedSet(next);
+      // Idempotent server-side: a repeat vote comes back as alreadyVoted with
+      // the unchanged count rather than an error.
+      const { votes, alreadyVoted } = await voteForIdea(ideaId);
+      setVotedIds((prev) => new Set(prev).add(ideaId));
       setIdeas((prev) =>
-        prev.map((idea) =>
-          idea.id === ideaId ? { ...idea, votes_count: idea.votes_count + 1 } : idea,
-        ),
+        prev.map((idea) => (idea.id === ideaId ? { ...idea, votes_count: votes } : idea)),
       );
-      toast.success("Vote added");
+      if (!alreadyVoted) toast.success("Vote added");
     } catch (e) {
-      const msg = errorMessage(e, "Failed to vote");
-      toast.error(msg);
+      toast.error(
+        isRateLimited(e)
+          ? "Too many votes from your connection right now. Please try again in an hour."
+          : callableErrorMessage(e, "Failed to vote. Please try again."),
+      );
     } finally {
       setVotingId(null);
     }
@@ -174,46 +138,35 @@ export function SuggestFeatureWidget({ region }: { region: Region }) {
   const submitNew = async () => {
     const t = title.trim();
     const d = description.trim();
-    if (t.length < 3) {
-      toast.error("Give your idea a short title (at least 3 characters).");
+    if (t.length < IDEA_LIMITS.min) {
+      toast.error(`Give your idea a short title (at least ${IDEA_LIMITS.min} characters).`);
       return;
     }
-    if (d.length < 3) {
-      toast.error("Add a bit more detail in the description (at least 3 characters).");
+    if (d.length < IDEA_LIMITS.min) {
+      toast.error(
+        `Add a bit more detail in the description (at least ${IDEA_LIMITS.min} characters).`,
+      );
       return;
     }
     setLoading(true);
     try {
-      // Generated client-side and inserted explicitly rather than read back
-      // via .select().single(): new rows land as pending_review, which the
-      // SELECT policy now hides from anon/public -- Postgres requires a
-      // RETURNING row to also pass the table's SELECT policy, so asking for
-      // the row back here would fail RLS even though the INSERT itself is
-      // allowed. Knowing the id up front avoids ever needing to read it back.
-      const newIdeaId = crypto.randomUUID();
-      const { error } = await supabase.from("feature_ideas").insert({
-        id: newIdeaId,
-        title: t.slice(0, 120),
-        description: d.slice(0, 500),
-        device_id: deviceId,
+      // New ideas land as pending_review and are hidden from the public list
+      // (and closed to voting, including by the author) until staff triage
+      // them -- so unlike the old Supabase flow there is no auto-vote here.
+      await submitCommunityIdea({
+        title: t,
+        description: d,
         region,
+        locale: REGION_LOCALE[region],
       });
-      if (error) throw error;
-      // Auto-vote is best-effort — a failure must not mask the successful idea creation
-      const { error: voteError } = await supabase
-        .from("feature_votes")
-        .insert({ idea_id: newIdeaId, device_id: deviceId });
-      if (!voteError) {
-        const voted = getVotedSet();
-        voted.add(newIdeaId);
-        persistVotedSet(voted);
-        setVotedIds(voted);
-      }
       setSuccessMsg("Your idea was submitted");
       setStep("success");
     } catch (e) {
-      const msg = errorMessage(e, "Failed to submit");
-      toast.error(msg);
+      toast.error(
+        isRateLimited(e)
+          ? "You've submitted a few ideas recently. Please wait an hour before sending another."
+          : callableErrorMessage(e, "Failed to submit. Please try again."),
+      );
     } finally {
       setLoading(false);
     }
@@ -420,7 +373,7 @@ export function SuggestFeatureWidget({ region }: { region: Region }) {
                 </div>
                 <p className="font-display text-lg font-semibold text-black">{successMsg}</p>
                 <p className="font-sans text-sm text-black/60">
-                  We review every suggestion. Status will update to Planned or Coming soon when we
+                  We review every suggestion. Status will update to Planned or In progress when we
                   pick it up.
                 </p>
                 <div className="flex flex-col gap-2 sm:flex-row">
