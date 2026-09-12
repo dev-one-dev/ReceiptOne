@@ -126,29 +126,14 @@ function formatPrice(plan: Plan, price: string) {
   return plan.currency === "CAD" ? `CAD ${price}` : `$${price}`;
 }
 
-/** A month's worth of the Weekly price (52 weeks / 12 months). */
-function weeklyBasisPerMonth(weekly: Plan): number {
-  return parseFloat(weekly.price) * (52 / 12);
-}
-
 /** A year's worth of the Monthly price. */
 function monthlyBasisPerYear(monthly: Plan): number {
   return parseFloat(monthly.price) * 12;
 }
 
 /**
- * % saved by choosing Monthly over paying Weekly for the same stretch of
- * days, computed live from the real listed prices (not hardcoded) so it
- * can't drift if either price changes.
- */
-function monthlySavingPercent(weekly: Plan, monthly: Plan): number {
-  return Math.round((1 - parseFloat(monthly.price) / weeklyBasisPerMonth(weekly)) * 100);
-}
-
-/**
  * % saved by paying Yearly instead of 12x the Monthly price, rounded.
- * The ONE basis for every yearly saving figure on the page (toggle and
- * card both read this) so the two can never disagree.
+ * Shown inline in the Yearly toggle.
  */
 function yearlySavingPercent(monthly: Plan, yearly: Plan): number {
   return Math.round((1 - parseFloat(yearly.price) / monthlyBasisPerYear(monthly)) * 100);
@@ -176,7 +161,6 @@ export function Pricing({ region = "ca" }: { region?: Region }) {
 
   const [selectedId, setSelectedId] = useState<string>("month");
   const selectedPlan = plans.find((p) => p.id === selectedId) ?? plans[0];
-  const weekly = plans.find((p) => p.id === "week")!;
   const monthly = plans.find((p) => p.id === "month")!;
   const yearly = plans.find((p) => p.id === "year")!;
   const yearlySaving = yearlySavingPercent(monthly, yearly);
@@ -275,26 +259,6 @@ export function Pricing({ region = "ca" }: { region?: Region }) {
             <div className="mt-3 grid">
               {plans.map((plan) => {
                 const isActive = plan.id === selectedId;
-                // One muted line under the price, same basis as the toggle:
-                // what the same stretch would cost on the next-shorter period.
-                // Weekly is the shortest period, so it has no comparison, and
-                // a period that costs MORE than its basis shows nothing rather
-                // than a negative saving.
-                const comparison =
-                  plan.id === "month"
-                    ? {
-                        basis: weeklyBasisPerMonth(weekly),
-                        unit: "weekly",
-                        percent: monthlySavingPercent(weekly, monthly),
-                      }
-                    : plan.id === "year"
-                      ? {
-                          basis: monthlyBasisPerYear(monthly),
-                          unit: "monthly",
-                          percent: yearlySaving,
-                        }
-                      : undefined;
-                const saving = comparison && comparison.percent > 0 ? comparison : undefined;
                 return (
                   <div
                     key={plan.id}
@@ -310,12 +274,6 @@ export function Pricing({ region = "ca" }: { region?: Region }) {
                       </span>
                       <span className="font-sans text-body text-ink-60">{plan.period}</span>
                     </div>
-
-                    {saving && (
-                      <p className="mt-1 font-sans text-sm text-ink-60">
-                        {`${formatPrice(plan, saving.basis.toFixed(2))} billed ${saving.unit} · save ${saving.percent}%`}
-                      </p>
-                    )}
                   </div>
                 );
               })}
