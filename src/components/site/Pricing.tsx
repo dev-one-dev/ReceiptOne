@@ -73,7 +73,7 @@ const CA_PLANS: Plan[] = [
   {
     id: "month",
     name: "Monthly",
-    price: "12.99",
+    price: "9.99",
     period: "/ month",
     currency: "CAD",
   },
@@ -222,7 +222,7 @@ export function Pricing({ region = "ca" }: { region?: Region }) {
                       the tab's 20px line, so the pill height is unchanged.
                       Template string, not cn(): tailwind-merge would drop
                       text-label as a "conflicting" colour. */}
-                  {plan.id === "year" && (
+                  {plan.id === "year" && yearlySaving > 0 && (
                     <span
                       className={`ml-1.5 text-label font-medium ${isActive ? "text-paper-60" : "text-ember-text"}`}
                     >
@@ -277,8 +277,10 @@ export function Pricing({ region = "ca" }: { region?: Region }) {
                 const isActive = plan.id === selectedId;
                 // One muted line under the price, same basis as the toggle:
                 // what the same stretch would cost on the next-shorter period.
-                // Weekly is the shortest period, so it has no comparison.
-                const saving =
+                // Weekly is the shortest period, so it has no comparison, and
+                // a period that costs MORE than its basis shows nothing rather
+                // than a negative saving.
+                const comparison =
                   plan.id === "month"
                     ? {
                         basis: weeklyBasisPerMonth(weekly),
@@ -292,6 +294,7 @@ export function Pricing({ region = "ca" }: { region?: Region }) {
                           percent: yearlySaving,
                         }
                       : undefined;
+                const saving = comparison && comparison.percent > 0 ? comparison : undefined;
                 return (
                   <div
                     key={plan.id}
