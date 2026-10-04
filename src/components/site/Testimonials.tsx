@@ -43,7 +43,7 @@ const US_PERSONAS: Persona[] = [
   {
     role: "Freelance Consultant",
     description:
-      "Gear, mileage, client meals — all sorted, so filing your Schedule C takes an hour, not a weekend.",
+      "Gear, mileage, client meals — all sorted in one place, so filing your Schedule C isn't a scramble.",
     icon: Briefcase,
   },
 ];
