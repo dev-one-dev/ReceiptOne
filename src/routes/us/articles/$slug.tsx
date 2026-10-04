@@ -3,7 +3,7 @@ import { ArrowLeft, ArrowRight, CheckCircle2, Clock } from "lucide-react";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { pageSEO, breadcrumbJsonLd, HREFLANG_US_CA } from "@/lib/seo";
-import { articleJsonLd, type ContentBlock, type Article } from "@/lib/articles";
+import { ARTICLE_BYLINE, articleJsonLd, type ContentBlock, type Article } from "@/lib/articles";
 import { getHelpCenterArticle, getHelpCenterRelated } from "@/lib/help-center";
 import { US_ARTICLES } from "@/lib/articles.us";
 
@@ -34,14 +34,18 @@ export const Route = (createFileRoute as any)("/us/articles/$slug")({
       meta: [
         ...seo.meta,
         { property: "article:published_time", content: article.publishedAt },
-        { property: "article:author", content: article.author.name },
+        { property: "article:modified_time", content: article.updatedAt },
+        { property: "article:author", content: ARTICLE_BYLINE },
         { property: "article:section", content: article.category },
         ...article.tags.map((tag) => ({ property: "article:tag", content: tag })),
       ],
       links: seo.links,
       scripts: [
         { type: "application/ld+json", children: JSON.stringify(breadcrumb) },
-        { type: "application/ld+json", children: JSON.stringify(articleJsonLd(article)) },
+        {
+          type: "application/ld+json",
+          children: JSON.stringify(articleJsonLd(article, `/us/articles/${article.slug}`)),
+        },
       ],
     };
   },
@@ -258,14 +262,10 @@ function USArticleDetailPage() {
           <p className="mt-4 font-sans text-lead text-ink-60">{article.excerpt}</p>
           <div className="mt-6 flex flex-wrap items-center gap-4 border-t border-hairline pt-6">
             <div className="flex size-10 shrink-0 items-center justify-center rounded-pill bg-[#fed7aa] font-display text-sm font-semibold text-[#9a3412]">
-              {article.author.name
-                .split(" ")
-                .map((n) => n[0])
-                .join("")}
+              R
             </div>
             <div className="min-w-0">
-              <p className="font-sans text-sm font-semibold text-ink">{article.author.name}</p>
-              <p className="font-sans text-label text-ink-60">{article.author.role}</p>
+              <p className="font-sans text-sm font-semibold text-ink">{ARTICLE_BYLINE}</p>
             </div>
             <div className="ml-auto flex items-center gap-4 font-sans text-sm text-ink-60">
               <span className="flex items-center gap-1.5">

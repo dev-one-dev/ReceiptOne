@@ -7,6 +7,7 @@ import {
   getArticle,
   getRelatedArticles,
   articleJsonLd,
+  ARTICLE_BYLINE,
   type ContentBlock,
   type Article,
 } from "@/lib/articles";
@@ -40,7 +41,8 @@ export const Route = (createFileRoute as any)("/articles/$slug")({
       meta: [
         ...seo.meta,
         { property: "article:published_time", content: article.publishedAt },
-        { property: "article:author", content: article.author.name },
+        { property: "article:modified_time", content: article.updatedAt },
+        { property: "article:author", content: ARTICLE_BYLINE },
         { property: "article:section", content: article.category },
         ...article.tags.map((tag) => ({ property: "article:tag", content: tag })),
       ],
@@ -287,16 +289,12 @@ function ArticleDetailPage() {
 
           {/* Author + meta */}
           <div className="mt-6 flex flex-wrap items-center gap-4 border-t border-hairline pt-6">
-            {/* Author initials avatar */}
+            {/* Byline avatar */}
             <div className="flex size-10 shrink-0 items-center justify-center rounded-pill bg-[#fed7aa] font-display text-sm font-semibold text-[#9a3412]">
-              {article.author.name
-                .split(" ")
-                .map((n) => n[0])
-                .join("")}
+              R
             </div>
             <div className="min-w-0">
-              <p className="font-sans text-sm font-semibold text-ink">{article.author.name}</p>
-              <p className="font-sans text-label text-ink-60">{article.author.role}</p>
+              <p className="font-sans text-sm font-semibold text-ink">{ARTICLE_BYLINE}</p>
             </div>
 
             <div className="ml-auto flex items-center gap-4 font-sans text-sm text-ink-60">

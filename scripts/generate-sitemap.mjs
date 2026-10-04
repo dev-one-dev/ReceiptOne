@@ -4,7 +4,8 @@
  * indexed without manual edits. Runs in `prebuild`.
  *
  * Dynamic article routes (/articles/$slug, /us/articles/$slug) are expanded
- * from the article data in src/lib; any other dynamic segment is excluded.
+ * from the article data in src/lib (lastmod = the article's updatedAt); any
+ * other dynamic segment is excluded.
  */
 import { readdirSync, statSync, writeFileSync, mkdirSync } from "node:fs";
 import { join, resolve } from "node:path";
@@ -80,8 +81,8 @@ async function loadArticleSlugs() {
       contents: `
         import { ARTICLES } from "@/lib/articles";
         import { US_ARTICLES } from "@/lib/articles.us";
-        export const ca = ARTICLES.map((a) => a.slug);
-        export const us = US_ARTICLES.map((a) => a.slug);
+        export const ca = ARTICLES.map((a) => [a.slug, a.updatedAt]);
+        export const us = US_ARTICLES.map((a) => [a.slug, a.updatedAt]);
       `,
       resolveDir: process.cwd(),
       loader: "ts",
@@ -102,23 +103,29 @@ const slugs = await loadArticleSlugs();
 const routes = [...new Set(collect(ROUTES_DIR))];
 
 const paths = [];
+/** Article URLs carry their own last-modified date; every other page uses the build date. */
+const articleLastmod = new Map();
 for (const route of routes) {
   if (isExcluded(route)) continue;
   const region = ARTICLE_ROUTES[route];
   if (region) {
-    for (const slug of slugs[region]) paths.push(route.replace("$slug", slug));
+    for (const [slug, updatedAt] of slugs[region]) {
+      const path = route.replace("$slug", slug);
+      paths.push(path);
+      articleLastmod.set(path, updatedAt);
+    }
     continue;
   }
   if (isDynamic(route)) continue;
   paths.push(route);
 }
 
-const lastmod = new Date().toISOString().split("T")[0];
+const buildDate = new Date().toISOString().split("T")[0];
 const urls = [...new Set(paths)]
   .sort()
   .map((path) => {
     const meta = PRIORITY[path] ?? { p: "0.6", c: "monthly" };
-    return `  <url><loc>${ORIGIN}${path}</loc><lastmod>${lastmod}</lastmod><changefreq>${meta.c}</changefreq><priority>${meta.p}</priority></url>`;
+    return `  <url><loc>${ORIGIN}${path}</loc><lastmod>${articleLastmod.get(path) ?? buildDate}</lastmod><changefreq>${meta.c}</changefreq><priority>${meta.p}</priority></url>`;
   })
   .join("\n");
 
