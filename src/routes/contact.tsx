@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { ContactForm } from "@/components/site/ContactForm";
-import { pageSEO, breadcrumbJsonLd } from "@/lib/seo";
+import { pageSEO, breadcrumbJsonLd, regionHreflang } from "@/lib/seo";
 
 export const Route = createFileRoute("/contact")({
   head: () => {
@@ -11,6 +11,7 @@ export const Route = createFileRoute("/contact")({
       title: "Contact Us | ReceiptOne",
       description:
         "Get in touch with the ReceiptOne team — questions, feedback, or support requests for Canadian freelancers and small businesses.",
+      hreflang: regionHreflang("/contact", "/us/contact"),
     });
 
     const breadcrumb = breadcrumbJsonLd([

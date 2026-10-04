@@ -3,7 +3,7 @@ import { ArrowRight } from "lucide-react";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { ArticlesSection } from "@/components/site/ArticlesSection";
-import { pageSEO, breadcrumbJsonLd, SITE_URL, HREFLANG_US_CA } from "@/lib/seo";
+import { pageSEO, breadcrumbJsonLd, SITE_URL, regionHreflang } from "@/lib/seo";
 import { US_ARTICLES } from "@/lib/articles.us";
 
 export const Route = (createFileRoute as any)("/us/articles/")({
@@ -16,7 +16,7 @@ export const Route = (createFileRoute as any)("/us/articles/")({
       ogTitle: "US Freelancer Tax Guides | ReceiptOne",
       ogDescription:
         "Expert guides on IRS compliance, Schedule C, mileage tracking, and top deductions for self-employed Americans.",
-      hreflang: HREFLANG_US_CA,
+      hreflang: regionHreflang("/articles", "/us/articles"),
     });
 
     const breadcrumb = breadcrumbJsonLd([

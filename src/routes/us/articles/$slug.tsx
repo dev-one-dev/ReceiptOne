@@ -2,9 +2,9 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight, CheckCircle2, Clock } from "lucide-react";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
-import { pageSEO, breadcrumbJsonLd, HREFLANG_US_CA } from "@/lib/seo";
+import { pageSEO, breadcrumbJsonLd } from "@/lib/seo";
 import { ARTICLE_BYLINE, articleJsonLd, type ContentBlock, type Article } from "@/lib/articles";
-import { getHelpCenterArticle, getHelpCenterRelated } from "@/lib/help-center";
+import { articleHreflang, getHelpCenterArticle, getHelpCenterRelated } from "@/lib/help-center";
 import { US_ARTICLES } from "@/lib/articles.us";
 
 export const Route = (createFileRoute as any)("/us/articles/$slug")({
@@ -21,7 +21,7 @@ export const Route = (createFileRoute as any)("/us/articles/$slug")({
       description: article.excerpt,
       ogType: "article",
       ogImage: article.imageUrl,
-      hreflang: HREFLANG_US_CA,
+      hreflang: articleHreflang(article.slug),
     });
 
     const breadcrumb = breadcrumbJsonLd([

@@ -3,6 +3,7 @@ import { ArrowLeft, ArrowRight, CheckCircle2, Clock } from "lucide-react";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { pageSEO, breadcrumbJsonLd } from "@/lib/seo";
+import { articleHreflang } from "@/lib/help-center";
 import {
   getArticle,
   getRelatedArticles,
@@ -29,6 +30,7 @@ export const Route = (createFileRoute as any)("/articles/$slug")({
       description: article.excerpt,
       ogType: "article",
       ogImage: article.imageUrl,
+      hreflang: articleHreflang(article.slug),
     });
 
     const breadcrumb = breadcrumbJsonLd([

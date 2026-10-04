@@ -12,7 +12,7 @@ import { Faq, faqItems } from "@/components/site/Faq";
 import { Footer } from "@/components/site/Footer";
 import {
   pageSEO,
-  HREFLANG_US_CA,
+  regionHreflang,
   softwareApplicationJsonLd,
   breadcrumbJsonLd,
   faqJsonLd,
@@ -28,7 +28,7 @@ export const Route = createFileRoute("/ca")({
       ogTitle: "ReceiptOne Canada | Receipt, Expense & Mileage Tracker",
       ogDescription:
         "Turn receipts into CRA-ready expense reports automatically. Built for Canadian freelancers, contractors, and small businesses.",
-      hreflang: HREFLANG_US_CA,
+      hreflang: regionHreflang("/ca", "/us"),
     });
     return {
       meta: seo.meta,

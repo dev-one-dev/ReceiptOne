@@ -5,6 +5,7 @@
 import type { Article, Region } from "@/lib/articles";
 import { ARTICLES, getArticlesByRegion } from "@/lib/articles";
 import { US_ARTICLES } from "@/lib/articles.us";
+import { regionHreflang } from "@/lib/seo";
 import type { QA } from "@/components/site/Faq";
 import { faqItems, faqItemsUS, CATEGORIZED_FAQ, CATEGORIZED_FAQ_US } from "@/components/site/Faq";
 
@@ -105,6 +106,16 @@ export function getHelpCenterRelated(slug: string, allArticles: Article[], count
   });
   scored.sort((x, y) => y.score - x.score);
   return scored.slice(0, count).map((s) => s.article);
+}
+
+/**
+ * hreflang for an article slug: only when the same slug is published in both
+ * regions (/articles/$slug and /us/articles/$slug); otherwise none.
+ */
+export function articleHreflang(slug: string) {
+  const inCa = ARTICLES.some((a) => a.slug === slug);
+  const inUs = US_ARTICLES.some((a) => a.slug === slug);
+  return inCa && inUs ? regionHreflang(`/articles/${slug}`, `/us/articles/${slug}`) : undefined;
 }
 
 export function getHelpCenter(region: Region): HelpCenterConfig {

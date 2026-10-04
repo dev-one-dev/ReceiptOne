@@ -12,7 +12,7 @@ import { Faq, faqItemsUS } from "@/components/site/Faq";
 import { Footer } from "@/components/site/Footer";
 import {
   pageSEO,
-  HREFLANG_US_CA,
+  regionHreflang,
   softwareApplicationJsonLd,
   breadcrumbJsonLd,
   faqJsonLd,
@@ -28,7 +28,7 @@ export const Route = (createFileRoute as any)("/us/")({
       ogTitle: "ReceiptOne US | Receipt, Expense & Mileage Tracker",
       ogDescription:
         "Track receipts, expenses, mileage, and export tax-ready reports for US freelancers, contractors, and small businesses.",
-      hreflang: HREFLANG_US_CA,
+      hreflang: regionHreflang("/ca", "/us"),
     });
     return {
       meta: seo.meta,

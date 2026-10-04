@@ -3,7 +3,7 @@ import { ArrowRight } from "lucide-react";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { FaqAccordion, CATEGORIZED_FAQ, faqItems } from "@/components/site/Faq";
-import { pageSEO, breadcrumbJsonLd, faqJsonLd } from "@/lib/seo";
+import { pageSEO, breadcrumbJsonLd, faqJsonLd, regionHreflang } from "@/lib/seo";
 
 export const Route = (createFileRoute as any)("/faq")({
   head: () => {
@@ -12,6 +12,7 @@ export const Route = (createFileRoute as any)("/faq")({
       title: "Help Center — Frequently Asked Questions | ReceiptOne",
       description:
         "Answers to common questions about ReceiptOne — receipt scanning, GST/HST tracking, mileage, exports, pricing, and CRA compliance.",
+      hreflang: regionHreflang("/faq", "/us/faq"),
     });
 
     const breadcrumb = breadcrumbJsonLd([

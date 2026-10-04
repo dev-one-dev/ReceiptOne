@@ -3,7 +3,7 @@ import { ArrowRight } from "lucide-react";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { ArticlesSection } from "@/components/site/ArticlesSection";
-import { pageSEO, breadcrumbJsonLd, SITE_URL } from "@/lib/seo";
+import { pageSEO, breadcrumbJsonLd, SITE_URL, regionHreflang } from "@/lib/seo";
 import { ARTICLES } from "@/lib/articles";
 
 export const Route = (createFileRoute as any)("/articles/")({
@@ -16,6 +16,7 @@ export const Route = (createFileRoute as any)("/articles/")({
       ogTitle: "Canadian Freelancer Tax Guides | ReceiptOne",
       ogDescription:
         "Expert guides on CRA compliance, GST/HST, mileage tracking, and top deductions for self-employed Canadians.",
+      hreflang: regionHreflang("/articles", "/us/articles"),
     });
 
     const breadcrumb = breadcrumbJsonLd([

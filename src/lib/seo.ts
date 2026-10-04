@@ -122,8 +122,16 @@ export function faqJsonLd(items: { q: string; a: string }[]) {
   };
 }
 
-export const HREFLANG_US_CA = [
-  { hrefLang: "en-US", href: url("/us") },
-  { hrefLang: "en-CA", href: url("/ca") },
-  { hrefLang: "x-default", href: url("/us") },
-];
+/**
+ * hreflang set for a page that exists in both regions. Both pages of a pair
+ * must emit the identical set (each one includes itself). The CA version is
+ * canonical, so it is also x-default. Only pass genuine equivalents: a US
+ * page with no CA counterpart gets no hreflang at all.
+ */
+export function regionHreflang(caPath: string, usPath: string) {
+  return [
+    { hrefLang: "en-CA", href: url(caPath) },
+    { hrefLang: "en-US", href: url(usPath) },
+    { hrefLang: "x-default", href: url(caPath) },
+  ];
+}
