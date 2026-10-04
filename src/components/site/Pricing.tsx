@@ -10,6 +10,7 @@ import { StoreBadge } from "@/components/site/StoreBadge";
 import { PrimaryCta } from "@/components/site/PrimaryCta";
 import { ROUTES } from "@/lib/routes";
 import { cn } from "@/lib/utils";
+import { formatPrice, getPlans, TRIAL_DAYS, type Plan } from "@/lib/pricing";
 
 type Platform = "ios" | "android" | "desktop";
 type Region = "ca" | "us";
@@ -25,14 +26,6 @@ function usePlatform(): Platform {
     else if (/Android/i.test(ua)) setPlatform("android");
   }, []);
   return platform;
-}
-
-interface Plan {
-  id: string;
-  name: string;
-  price: string;
-  period: string;
-  currency: string;
 }
 
 /**
@@ -62,54 +55,6 @@ const US_FEATURES = [
   "iOS & Android apps",
 ];
 
-const CA_PLANS: Plan[] = [
-  {
-    id: "week",
-    name: "Weekly",
-    price: "4.99",
-    period: "/ week",
-    currency: "CAD",
-  },
-  {
-    id: "month",
-    name: "Monthly",
-    price: "9.99",
-    period: "/ month",
-    currency: "CAD",
-  },
-  {
-    id: "year",
-    name: "Yearly",
-    price: "129.99",
-    period: "/ year",
-    currency: "CAD",
-  },
-];
-
-const US_PLANS: Plan[] = [
-  {
-    id: "week",
-    name: "Weekly",
-    price: "3.99",
-    period: "/ week",
-    currency: "USD",
-  },
-  {
-    id: "month",
-    name: "Monthly",
-    price: "9.99",
-    period: "/ month",
-    currency: "USD",
-  },
-  {
-    id: "year",
-    name: "Yearly",
-    price: "99.99",
-    period: "/ year",
-    currency: "USD",
-  },
-];
-
 const CA_PLAN_IMAGES: Record<string, string> = {
   week: caWeeklyImg,
   month: caMonthlyImg,
@@ -121,10 +66,6 @@ const US_PLAN_IMAGES: Record<string, string> = {
   month: usMonthlyImg,
   year: usAnnualImg,
 };
-
-function formatPrice(plan: Plan, price: string) {
-  return plan.currency === "CAD" ? `CAD ${price}` : `$${price}`;
-}
 
 /** A year's worth of the Monthly price. */
 function monthlyBasisPerYear(monthly: Plan): number {
@@ -145,7 +86,7 @@ function StoreCTA({ region }: { region: Region }) {
   // One 44px row on desktop (12px gaps); stacked, button first, on mobile.
   return (
     <div className="flex flex-col items-stretch gap-3 sm:flex-row sm:flex-wrap sm:items-center">
-      <PrimaryCta href={ROUTES.signup}>Start 7-day free trial</PrimaryCta>
+      <PrimaryCta href={ROUTES.signup}>Start {TRIAL_DAYS}-day free trial</PrimaryCta>
       <div className="flex flex-wrap items-center gap-3">
         {platform !== "android" && <StoreBadge platform="apple" region={region} />}
         {platform !== "ios" && <StoreBadge platform="google" region={region} />}
@@ -155,7 +96,7 @@ function StoreCTA({ region }: { region: Region }) {
 }
 
 export function Pricing({ region = "ca" }: { region?: Region }) {
-  const plans = region === "us" ? US_PLANS : CA_PLANS;
+  const plans = getPlans(region);
   const features = region === "us" ? US_FEATURES : CA_FEATURES;
   const planImages = region === "us" ? US_PLAN_IMAGES : CA_PLAN_IMAGES;
 
@@ -176,7 +117,7 @@ export function Pricing({ region = "ca" }: { region?: Region }) {
           <p className="eyebrow">Pricing</p>
           <h2 className="mt-3 text-ink">Simple pricing. Cancel anytime.</h2>
           <p className="mt-4 text-body text-ink-60 sm:text-lead">
-            Try it free for 7 days — no credit card required.
+            Try it free for {TRIAL_DAYS} days — no credit card required.
           </p>
         </div>
 
@@ -304,7 +245,7 @@ export function Pricing({ region = "ca" }: { region?: Region }) {
         </div>
 
         <p className="mt-4 text-center font-sans text-sm text-ink-60">
-          All plans include a 7-day free trial · Cancel anytime · Prices in {plans[0].currency}
+          All plans include a {TRIAL_DAYS}-day free trial · Cancel anytime · Prices in {plans[0].currency}
         </p>
       </div>
     </section>

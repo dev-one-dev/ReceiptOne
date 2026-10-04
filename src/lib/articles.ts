@@ -2,7 +2,7 @@
  * Articles data + helpers for the ReceiptOne knowledge base.
  * No React imports — pure TypeScript data layer.
  */
-import { SITE_URL } from "@/lib/seo";
+import { LOGO_URL, SITE_URL } from "@/lib/seo";
 
 export type ContentBlock =
   | { type: "p"; text: string }
@@ -2496,7 +2496,7 @@ export function articleJsonLd(article: Article, path = `/articles/${article.slug
       name: "ReceiptOne",
       logo: {
         "@type": "ImageObject",
-        url: `${SITE_URL}/favicon.ico`,
+        url: LOGO_URL,
       },
     },
     mainEntityOfPage: {

@@ -5,6 +5,8 @@
  * (canonicals, hreflang, OG, structured data).
  */
 import { SITE_URL as EXTERNAL_SITE_URL, siteUrl } from "@/lib/external";
+import { getPlans, type Plan } from "@/lib/pricing";
+import { APP_STORE_URL, PLAY_STORE_URL } from "@/lib/stores";
 
 export const SITE_URL = EXTERNAL_SITE_URL;
 export const SITE_NAME = "ReceiptOne";
@@ -67,12 +69,33 @@ export function pageSEO(input: PageSEOInput): {
 
 /* ------------------------------ JSON-LD --------------------------------- */
 
+/** 512x512 PNG of the logo mark (scripts/generate-logo.mjs). */
+export const LOGO_URL = siteUrl("/logo-512.png");
+
+const ORGANIZATION_ID = `${SITE_URL}/#organization`;
+
+/**
+ * Profiles that are linked from the site and verified to be ours. The
+ * LinkedIn page links back to receipt-one.com. The footer's X and Facebook
+ * handles could not be confirmed, so they stay out until they are.
+ */
+const SOCIAL_PROFILES = ["https://linkedin.com/company/receiptone"];
+
 export const organizationJsonLd = {
   "@context": "https://schema.org",
   "@type": "Organization",
+  "@id": ORGANIZATION_ID,
   name: SITE_NAME,
   url: SITE_URL,
-  logo: `${SITE_URL}/favicon.ico`,
+  logo: {
+    "@type": "ImageObject",
+    url: LOGO_URL,
+    width: 512,
+    height: 512,
+  },
+  // One App Store entry: both storefronts are the same listing (id6755740822),
+  // so the CA one stands in, matching the CA-canonical site.
+  sameAs: [APP_STORE_URL.ca, PLAY_STORE_URL, ...SOCIAL_PROFILES],
 };
 
 export const websiteJsonLd = {
@@ -82,18 +105,44 @@ export const websiteJsonLd = {
   url: SITE_URL,
 };
 
+/** UN/CEFACT codes for a subscription's billing period. */
+const BILLING_UNIT: Record<Plan["id"], string> = { week: "WEE", month: "MON", year: "ANN" };
+
 export function softwareApplicationJsonLd(region: "us" | "ca") {
+  const pageUrl = url(region === "us" ? "/us" : "/ca");
+  const country = region === "us" ? "US" : "CA";
   return {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
     name: SITE_NAME,
     applicationCategory: "FinanceApplication",
-    operatingSystem: "Web, iOS, Android",
+    operatingSystem: "iOS, Android, Web",
     description:
       region === "us"
         ? "ReceiptOne helps US freelancers, contractors, and small businesses organize receipts, track expenses and mileage, and export tax-ready reports."
         : "ReceiptOne helps Canadian freelancers, contractors, and small businesses organize receipts, track GST/HST, mileage, and export accountant-ready reports.",
-    url: url(region === "us" ? "/us" : "/ca"),
+    url: pageUrl,
+    publisher: { "@id": ORGANIZATION_ID },
+    // areaServed sits on each Offer: schema.org defines it for Offer, not
+    // for SoftwareApplication, so validators would reject it one level up.
+    offers: getPlans(region).map((plan) => ({
+      "@type": "Offer",
+      name: plan.name,
+      price: plan.price,
+      priceCurrency: plan.currency,
+      areaServed: country,
+      url: `${pageUrl}#pricing`,
+      priceSpecification: {
+        "@type": "UnitPriceSpecification",
+        price: plan.price,
+        priceCurrency: plan.currency,
+        referenceQuantity: {
+          "@type": "QuantitativeValue",
+          value: 1,
+          unitCode: BILLING_UNIT[plan.id],
+        },
+      },
+    })),
   };
 }
 
