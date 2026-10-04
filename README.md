@@ -116,6 +116,9 @@ figma-craft-39/
 ├── scripts/
 │   ├── check-routes.mjs            # Fails the build if routeTree.gen.ts is stale
 │   ├── generate-sitemap.mjs        # Writes public/sitemap.xml from src/routes
+│   ├── generate-llms.mjs           # Writes public/llms.txt from src/lib/pricing.ts + stores.ts
+│   ├── generate-logo.mjs           # Renders public/logo-512.png (JSON-LD logo) from the logo mark
+│   ├── lib/load-ts.mjs             # Bundles src/ data modules for build scripts
 │   ├── generate-og-image.mjs       # Renders public/og-image.png with Playwright
 │   ├── og/og-template.html         # 1200×630 OG card template
 │   └── regen-route-tree.mjs        # Regenerates routeTree.gen.ts without vite dev
@@ -195,7 +198,10 @@ A floating action button that opens directly to a browsable, votable list of exi
 ### SEO assets
 
 - `public/og-image.png` is a designed 1200×630 card rendered by `npm run og`: the script boots the Vite dev server, screenshots the first Pricing card on `/ca` at 2x, injects it into `scripts/og/og-template.html` and renders the page with Playwright Chromium. Set `OG_BASE_URL` to render against an already-running server instead
-- `public/sitemap.xml` is generated in `prebuild` from `src/routes`, expanding article slugs and skipping `/` and other dynamic segments
+- `public/sitemap.xml` is generated in `prebuild` from `src/routes`, expanding article slugs and skipping `/` and other dynamic segments. Article `lastmod` is the article's `updatedAt`; every other page's is the newest git commit date among the files it imports (in a shallow clone the committed dates are reused)
+- `public/llms.txt` is generated in `prebuild` by `scripts/generate-llms.mjs`; prices, plan features and store URLs come from `src/lib/pricing.ts` and `src/lib/stores.ts`
+- `public/logo-512.png` is the Organization logo in JSON-LD; regenerate with `node scripts/generate-logo.mjs`
+- hreflang: pages that exist in both regions call `regionHreflang(caPath, usPath)` (x-default = CA); articles use `articleHreflang(slug)`, which only pairs a slug published in both regions
 - `scripts/check-routes.mjs` runs in `prebuild` and fails the build if `routeTree.gen.ts` is out of date
 
 ### Scroll Reveal Animations
@@ -288,7 +294,7 @@ Removed in September 2026 and no longer read anywhere: `SUPABASE_*`, `VITE_SUPAB
 | Script | Description |
 |---|---|
 | `npm run dev` | Start development server |
-| `npm run build` | Production build (Vercel/Nitro output). `prebuild` runs `check:routes` and `sitemap` first |
+| `npm run build` | Production build (Vercel/Nitro output). `prebuild` runs `check:routes`, `sitemap` and `llms` first |
 | `npm run build:dev` | Development build |
 | `npm run preview` | Preview production build locally |
 | `npm run typecheck` | `tsc --noEmit` |
@@ -296,6 +302,7 @@ Removed in September 2026 and no longer read anywhere: `SUPABASE_*`, `VITE_SUPAB
 | `npm run format` | Run Prettier |
 | `npm run check:routes` | Verify `routeTree.gen.ts` matches `src/routes` |
 | `npm run sitemap` | Regenerate `public/sitemap.xml` (`SITE_ORIGIN` overrides the origin) |
+| `npm run llms` | Regenerate `public/llms.txt` |
 | `npm run og` | Regenerate `public/og-image.png` with Playwright |
 | `node scripts/regen-route-tree.mjs` | Regenerate `routeTree.gen.ts` without starting `vite dev` |
 

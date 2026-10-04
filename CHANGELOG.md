@@ -2,6 +2,28 @@
 
 All notable changes to the ReceiptOne landing site. Dates are ISO (YYYY-MM-DD).
 
+## 2026-10
+
+### Added
+
+- `public/llms.txt`, generated in `prebuild` by `scripts/generate-llms.mjs` from `src/lib/pricing.ts` and `src/lib/stores.ts` (2026-10-04).
+- `public/logo-512.png` (from the logo mark, `scripts/generate-logo.mjs`) as the Organization logo (2026-10-04).
+- `src/lib/pricing.ts`: single source for plans, plan features and trial length, read by the Pricing section, JSON-LD offers, `/ca` and `/us` meta descriptions, and `llms.txt` (2026-10-04).
+
+### Changed
+
+- `/ca` and `/us` titles and meta descriptions; the price line is read from `pricing.ts` (2026-10-04).
+- JSON-LD: Organization has a 512×512 PNG logo, `@id` and `sameAs` (App Store, Google Play, LinkedIn). SoftwareApplication has `operatingSystem` "iOS, Android, Web" and one Offer per plan with `areaServed` (2026-10-04).
+- hreflang: x-default is now the CA page. Pairs are `/ca`–`/us`, `/faq`–`/us/faq`, `/contact`–`/us/contact` and `/articles`–`/us/articles`. Articles pair only when the same slug exists in both regions (none today) (2026-10-04).
+- `/` redirects with 301 (was 302): to `/us` for US visitors, `/ca` for everyone else (2026-10-04).
+- Sitemap `lastmod` for non-article pages comes from git history of the files each page imports instead of the build date (2026-10-04).
+
+### Fixed
+
+- CA pages linked the App Store badge to the US storefront; `StoreBadge` now takes a required `region` (2026-10-04).
+- US sub-pages declared the `/us`/`/ca` homepages as their hreflang alternates (2026-10-04).
+- Organization and Article publisher logos pointed at `/favicon.ico`, which does not exist (2026-10-04).
+
 ## 2026-09
 
 ### Added
