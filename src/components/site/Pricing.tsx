@@ -139,7 +139,7 @@ function yearlySavingPercent(monthly: Plan, yearly: Plan): number {
   return Math.round((1 - parseFloat(yearly.price) / monthlyBasisPerYear(monthly)) * 100);
 }
 
-function StoreCTA() {
+function StoreCTA({ region }: { region: Region }) {
   const platform = usePlatform();
 
   // One 44px row on desktop (12px gaps); stacked, button first, on mobile.
@@ -147,8 +147,8 @@ function StoreCTA() {
     <div className="flex flex-col items-stretch gap-3 sm:flex-row sm:flex-wrap sm:items-center">
       <PrimaryCta href={ROUTES.signup}>Start 7-day free trial</PrimaryCta>
       <div className="flex flex-wrap items-center gap-3">
-        {platform !== "android" && <StoreBadge platform="apple" />}
-        {platform !== "ios" && <StoreBadge platform="google" />}
+        {platform !== "android" && <StoreBadge platform="apple" region={region} />}
+        {platform !== "ios" && <StoreBadge platform="google" region={region} />}
       </div>
     </div>
   );
@@ -298,7 +298,7 @@ export function Pricing({ region = "ca" }: { region?: Region }) {
             </ul>
 
             <div className="mt-6">
-              <StoreCTA />
+              <StoreCTA region={region} />
             </div>
           </div>
         </div>

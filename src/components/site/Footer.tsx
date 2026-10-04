@@ -177,8 +177,8 @@ export function Footer({ region = "ca" }: FooterProps) {
 
         {/* Store badges — one row, left-aligned, directly above the copyright line */}
         <div className="mt-6 flex items-center gap-2">
-          <StoreBadge platform="apple" variant="dark" size="sm" />
-          <StoreBadge platform="google" variant="dark" size="sm" />
+          <StoreBadge platform="apple" region={region} variant="dark" size="sm" />
+          <StoreBadge platform="google" region={region} variant="dark" size="sm" />
         </div>
 
         {/* Bottom bar */}

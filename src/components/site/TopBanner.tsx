@@ -57,8 +57,8 @@ export function TopBanner({ region = "ca" }: { region?: "ca" | "us" }) {
                 {/* Kept for screen readers; visually the badges speak for
                     themselves, and the label pushed the row past the column. */}
                 <span className="sr-only">Available on:</span>
-                <StoreBadge platform="apple" />
-                <StoreBadge platform="google" />
+                <StoreBadge platform="apple" region={region} />
+                <StoreBadge platform="google" region={region} />
               </div>
             </div>
           </div>

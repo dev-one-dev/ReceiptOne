@@ -1,8 +1,5 @@
 import { cn } from "@/lib/utils";
-
-// Store listings are fixed per app, not per deployment -- hardcoded on purpose.
-const APP_STORE_URL = "https://apps.apple.com/us/app/receiptone-expense-tracker/id6755740822";
-const PLAY_STORE_URL = "https://play.google.com/store/apps/details?id=com.appfyl.checkapp";
+import { APP_STORE_URL, PLAY_STORE_URL, type StoreRegion } from "@/lib/stores";
 
 type StorePlatform = "apple" | "google";
 type StoreBadgeVariant = "light" | "dark";
@@ -39,17 +36,20 @@ const MICRO_LABEL_STYLES: Record<StorePlatform, Record<StoreBadgeVariant, string
  */
 export function StoreBadge({
   platform,
+  region,
   variant = "light",
   size = "md",
   className,
 }: {
   platform: StorePlatform;
+  /** Picks the App Store storefront. Required so no badge silently defaults. */
+  region: StoreRegion;
   variant?: StoreBadgeVariant;
   size?: StoreBadgeSize;
   className?: string;
 }) {
   const isApple = platform === "apple";
-  const href = isApple ? APP_STORE_URL : PLAY_STORE_URL;
+  const href = isApple ? APP_STORE_URL[region] : PLAY_STORE_URL;
   const microLabel = isApple ? "Download on the" : "GET IT ON";
   const name = isApple ? "App Store" : "Google Play";
   const ariaLabel = isApple
