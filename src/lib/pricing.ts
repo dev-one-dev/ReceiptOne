@@ -43,3 +43,34 @@ export function getPlan(region: PricingRegion, id: Plan["id"]): Plan {
 export function formatPrice(plan: Plan, price: string = plan.price): string {
   return plan.currency === "CAD" ? `CAD ${price}` : `$${price}`;
 }
+
+/**
+ * All billing durations grant the same single "premium" RevenueCat
+ * entitlement (see src/integrations/entitlement.ts) — Weekly, Monthly,
+ * and Yearly are identical in features. Only price, period, and discount
+ * differ, so the feature list is shared and shown once regardless of the
+ * selected period.
+ */
+export const CA_FEATURES = [
+  "Unlimited receipt scanning",
+  "Expense & mileage tracking",
+  "GST / HST / PST tracking",
+  "CRA-ready expense reports",
+  "Multi-device sync",
+  "In-app support",
+  "iOS & Android apps",
+];
+
+export const US_FEATURES = [
+  "Unlimited receipt scanning",
+  "Expense & mileage tracking",
+  "Sales tax tracking",
+  "IRS-ready expense reports",
+  "Multi-device sync",
+  "In-app support",
+  "iOS & Android apps",
+];
+
+export function getPlanFeatures(region: PricingRegion): string[] {
+  return region === "us" ? US_FEATURES : CA_FEATURES;
+}

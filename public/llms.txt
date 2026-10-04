@@ -1,0 +1,32 @@
+# ReceiptOne
+
+> ReceiptOne is a receipt, expense and mileage tracker for freelancers, contractors and small businesses in Canada and the United States. Scan a receipt and it reads the merchant, date, total and tax amounts; log trips for mileage; and export PDF or CSV expense reports for your accountant or your own filing.
+
+ReceiptOne organizes records; it is not a tax filing service and does not calculate tax refunds. Subscriptions can be cancelled in the app at any time.
+
+## Canada
+
+- [Landing page](https://receipt-one.com/ca): GST/HST/PST tracking and CRA-ready expense reports.
+- Prices: Weekly CAD 4.99 per week; Monthly CAD 9.99 per month; Yearly CAD 129.99 per year. All plans include a 7-day free trial and the same features.
+- Included: Unlimited receipt scanning, Expense & mileage tracking, GST / HST / PST tracking, CRA-ready expense reports, Multi-device sync, In-app support, iOS & Android apps.
+
+## United States
+
+- [Landing page](https://receipt-one.com/us): sales tax tracking and IRS-ready expense reports.
+- Prices: Weekly USD 3.99 per week; Monthly USD 9.99 per month; Yearly USD 99.99 per year. All plans include a 7-day free trial and the same features.
+- Included: Unlimited receipt scanning, Expense & mileage tracking, Sales tax tracking, IRS-ready expense reports, Multi-device sync, In-app support, iOS & Android apps.
+
+## Apps
+
+- [App Store (Canada)](https://apps.apple.com/ca/app/receiptone-expense-tracker/id6755740822)
+- [App Store (United States)](https://apps.apple.com/us/app/receiptone-expense-tracker/id6755740822)
+- [Google Play](https://play.google.com/store/apps/details?id=com.appfyl.checkapp)
+
+## Docs
+
+- [Tax guides for Canadian freelancers](https://receipt-one.com/articles): CRA receipt rules, GST/HST, mileage and deductions
+- [Tax guides for US freelancers](https://receipt-one.com/us/articles): IRS expense rules, Schedule C, mileage and deductions
+- [Help Center (Canada)](https://receipt-one.com/faq): frequently asked questions
+- [Help Center (US)](https://receipt-one.com/us/faq): frequently asked questions
+- [Contact (Canada)](https://receipt-one.com/contact)
+- [Contact (US)](https://receipt-one.com/us/contact)

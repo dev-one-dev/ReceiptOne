@@ -10,7 +10,7 @@ import { StoreBadge } from "@/components/site/StoreBadge";
 import { PrimaryCta } from "@/components/site/PrimaryCta";
 import { ROUTES } from "@/lib/routes";
 import { cn } from "@/lib/utils";
-import { formatPrice, getPlans, TRIAL_DAYS, type Plan } from "@/lib/pricing";
+import { formatPrice, getPlanFeatures, getPlans, TRIAL_DAYS, type Plan } from "@/lib/pricing";
 
 type Platform = "ios" | "android" | "desktop";
 type Region = "ca" | "us";
@@ -27,33 +27,6 @@ function usePlatform(): Platform {
   }, []);
   return platform;
 }
-
-/**
- * All billing durations grant the same single "premium" RevenueCat
- * entitlement (see src/integrations/entitlement.ts) — Weekly, Monthly,
- * and Yearly are identical in features. Only price, period, and discount
- * differ, so the feature list is shared and shown once regardless of the
- * selected period.
- */
-const CA_FEATURES = [
-  "Unlimited receipt scanning",
-  "Expense & mileage tracking",
-  "GST / HST / PST tracking",
-  "CRA-ready expense reports",
-  "Multi-device sync",
-  "In-app support",
-  "iOS & Android apps",
-];
-
-const US_FEATURES = [
-  "Unlimited receipt scanning",
-  "Expense & mileage tracking",
-  "Sales tax tracking",
-  "IRS-ready expense reports",
-  "Multi-device sync",
-  "In-app support",
-  "iOS & Android apps",
-];
 
 const CA_PLAN_IMAGES: Record<string, string> = {
   week: caWeeklyImg,
@@ -97,7 +70,7 @@ function StoreCTA({ region }: { region: Region }) {
 
 export function Pricing({ region = "ca" }: { region?: Region }) {
   const plans = getPlans(region);
-  const features = region === "us" ? US_FEATURES : CA_FEATURES;
+  const features = getPlanFeatures(region);
   const planImages = region === "us" ? US_PLAN_IMAGES : CA_PLAN_IMAGES;
 
   const [selectedId, setSelectedId] = useState<string>("month");
