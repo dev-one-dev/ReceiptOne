@@ -24,7 +24,7 @@ const PRIORITY = {
 
 /**
  * Routes excluded from the sitemap.
- * "/" is a geo redirect (302 to /ca or /us), never a canonical page.
+ * "/" is a geo redirect (301 to /ca or /us), never a canonical page.
  */
 const EXCLUDE = new Set(["/"]);
 

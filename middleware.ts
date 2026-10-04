@@ -32,8 +32,10 @@ export default function middleware(request: Request) {
     return Response.redirect(appUrl("/support"), 301);
   }
 
-  // Geo redirect for the bare root: US visitors to /us, everyone else to /ca.
+  // The bare root is never a page of its own. /ca is the canonical version
+  // (and the hreflang x-default); US visitors go to /us. Both are permanent
+  // so "/" consolidates onto the regional pages rather than being indexed.
   const country = request.headers.get("x-vercel-ip-country");
   url.pathname = country === "US" ? "/us" : "/ca";
-  return Response.redirect(url.toString(), 302);
+  return Response.redirect(url.toString(), 301);
 }

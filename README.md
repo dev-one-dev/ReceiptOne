@@ -132,7 +132,7 @@ figma-craft-39/
 
 | Route | Description |
 |---|---|
-| `/` | Geo redirect (302): US visitors to `/us`, everyone else to `/ca` |
+| `/` | Geo redirect (301): US visitors to `/us`, everyone else to `/ca` (canonical) |
 | `/ca`, `/us` | Regional landing pages |
 | `/articles`, `/articles/:slug`, `/us/articles/...` | Articles |
 | `/faq`, `/us/faq` | FAQ pages |
