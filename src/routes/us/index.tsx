@@ -17,14 +17,14 @@ import {
   breadcrumbJsonLd,
   faqJsonLd,
 } from "@/lib/seo";
+import { priceSummary } from "@/lib/pricing";
 
 export const Route = (createFileRoute as any)("/us/")({
   head: () => {
     const seo = pageSEO({
       path: "/us",
-      title: "ReceiptOne US | Receipt, Expense & Mileage Tracker for Freelancers",
-      description:
-        "Track receipts, expenses, mileage, and export tax-ready reports for freelancers, contractors, and small businesses in the United States.",
+      title: "IRS-Ready Receipt & Mileage Tracker for Americans | ReceiptOne",
+      description: `Snap receipts, track mileage and sales tax, and export IRS-ready reports for your Schedule C. For US freelancers and contractors. ${priceSummary("us")}`,
       ogTitle: "ReceiptOne US | Receipt, Expense & Mileage Tracker",
       ogDescription:
         "Track receipts, expenses, mileage, and export tax-ready reports for US freelancers, contractors, and small businesses.",

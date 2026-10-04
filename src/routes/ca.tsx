@@ -17,14 +17,14 @@ import {
   breadcrumbJsonLd,
   faqJsonLd,
 } from "@/lib/seo";
+import { priceSummary } from "@/lib/pricing";
 
 export const Route = createFileRoute("/ca")({
   head: () => {
     const seo = pageSEO({
       path: "/ca",
-      title: "ReceiptOne Canada — CRA-Ready Receipt & Expense Tracker for Freelancers",
-      description:
-        "Snap receipts, track mileage, and export CRA-ready expense reports. Built for Canadian freelancers, contractors, and small businesses. Start free for 7 days.",
+      title: "CRA-Ready Receipt & Mileage Tracker for Canadians | ReceiptOne",
+      description: `Snap receipts, track mileage and GST/HST, and export CRA-ready reports for your T2125. For Canadian freelancers and contractors. ${priceSummary("ca")}`,
       ogTitle: "ReceiptOne Canada | Receipt, Expense & Mileage Tracker",
       ogDescription:
         "Turn receipts into CRA-ready expense reports automatically. Built for Canadian freelancers, contractors, and small businesses.",

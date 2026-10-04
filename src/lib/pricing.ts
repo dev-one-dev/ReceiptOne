@@ -74,3 +74,8 @@ export const US_FEATURES = [
 export function getPlanFeatures(region: PricingRegion): string[] {
   return region === "us" ? US_FEATURES : CA_FEATURES;
 }
+
+/** "CAD 9.99/month, 7 days free." -- the short price line in meta descriptions. */
+export function priceSummary(region: PricingRegion): string {
+  return `${formatPrice(getPlan(region, "month"))}/month, ${TRIAL_DAYS} days free.`;
+}
