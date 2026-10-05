@@ -2127,7 +2127,7 @@ export const ARTICLES: Article[] = [
       "QuickBooks and ReceiptOne solve different problems. Here's an honest look at when each tool makes sense for self-employed Canadians.",
     category: "Tools & Apps",
     publishedAt: "2026-05-10",
-    updatedAt: "2026-05-11",
+    updatedAt: "2026-10-05",
     imageUrl: "https://picsum.photos/seed/quickbooks-vs-receiptone-canada/600/400",
     imageAlt: "Canadian freelancer comparing accounting software options on laptop",
     tags: ["QuickBooks", "ReceiptOne", "accounting software", "freelancer", "Canada"],
@@ -2139,7 +2139,7 @@ export const ARTICLES: Article[] = [
     body: [
       {
         type: "p",
-        text: "QuickBooks Self-Employed and ReceiptOne are both used by Canadian freelancers for expense tracking — but they're optimized for different use cases. QuickBooks is a full accounting platform; ReceiptOne is a focused receipt and expense capture tool. The best choice depends on your business complexity and what you actually need day-to-day.",
+        text: "QuickBooks and ReceiptOne are both used by Canadian freelancers for expense tracking — but they're optimized for different use cases. Intuit says QuickBooks Self-Employed is still supported in Canada, but its newest plan for the self-employed is QuickBooks Lite, launched in July 2026. QuickBooks is a full accounting platform; ReceiptOne is a focused receipt and expense capture tool. The best choice depends on your business complexity and what you actually need day-to-day.",
       },
       {
         type: "h2",
@@ -2162,14 +2162,14 @@ export const ARTICLES: Article[] = [
         type: "ul",
         items: [
           "Sole proprietors who primarily need receipt capture and CRA-ready expense reports",
-          "Canadian freelancers who want automatic GST/HST/PST extraction built for Canadian tax rules",
+          "Canadian freelancers who want each receipt's GST, HST, PST or QST read and labelled separately, with the option to correct it",
           "Users who want mileage tracking and receipt scanning in one place",
           "Freelancers with simpler finances who find full accounting software overkill",
         ],
       },
       {
         type: "callout",
-        text: "Many freelancers use both: ReceiptOne for day-to-day receipt capture and mileage logging, with an annual CSV export that their accountant imports into their preferred accounting system at year-end. This gives you the best capture experience without paying for accounting features you don't need.",
+        text: "You can also use both: ReceiptOne for day-to-day receipt capture and mileage logging, with an annual CSV export that their accountant imports into their preferred accounting system at year-end. This gives you the best capture experience without paying for accounting features you don't need.",
       },
     ],
   },
