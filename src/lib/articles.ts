@@ -855,7 +855,7 @@ export const ARTICLES: Article[] = [
       "Comparing the real after-tax cost of a home office deduction versus a co-working membership for Canadian freelancers — the math might surprise you.",
     category: "Expense Tracking",
     publishedAt: "2026-05-10",
-    updatedAt: "2026-05-20",
+    updatedAt: "2026-10-05",
     imageUrl: "https://picsum.photos/seed/home-office-vs-coworking-expense-canada/600/400",
     imageAlt: "Freelancer working in a co-working space compared to home office",
     tags: ["home office", "co-working", "deductions", "freelancer", "workspace expenses"],
@@ -877,7 +877,7 @@ export const ARTICLES: Article[] = [
       },
       {
         type: "p",
-        text: "If your office is 10% of your home's square footage, you can deduct 10% of rent, utilities, insurance, and property taxes. For a freelancer paying $2,400/month rent with $200/month in utilities, that's roughly $312/year in deductions — before you factor in internet and any workspace-specific costs. The deduction scales with home cost, so owners with mortgages, high property taxes, and large homes benefit most.",
+        text: "If your workspace qualifies and is 10% of your home's area, you deduct 10% of costs such as rent, utilities, insurance and property taxes. Hypothetical example: rent of $2,400 a month and utilities of $200 a month come to $31,200 a year, so the business share is $3,120 — before internet and any workspace-specific costs. The deduction can't create or increase a business loss; any excess carries forward. The deduction scales with home cost, so owners with mortgages, high property taxes, and large homes benefit most.",
       },
       {
         type: "h2",
@@ -885,11 +885,11 @@ export const ARTICLES: Article[] = [
       },
       {
         type: "p",
-        text: "A co-working membership at $300–$600/month is fully deductible as rent on your T2125. That's $3,600–$7,200/year in deductions — far larger than most home office calculations. The trade-off is that you're paying for the co-working space on top of your home costs, so the net cost is higher even accounting for the tax savings.",
+        text: "Hypothetically, a co-working membership at $300–$600 a month is $3,600–$7,200 a year, deductible as a business expense on your T2125 — which can be more or less than a home office claim, depending on your housing costs. The trade-off is that you're paying for the co-working space on top of your home costs, so the net cost is higher even accounting for the tax savings.",
       },
       {
         type: "callout",
-        text: "The home office deduction is not an either/or choice with co-working. If you use both — working from home most days and the co-working space occasionally — you can potentially claim both, proportionally to actual usage. Document which days you use each location.",
+        text: "Using a co-working space doesn't automatically rule out a home office claim, but the home workspace still has to meet one of the CRA's two conditions: it is your principal place of business, or you use it only for the business and regularly meet clients there. Co-working fees are a separate business expense. Keep a record of where you actually work.",
       },
     ],
   },
