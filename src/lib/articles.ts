@@ -1167,7 +1167,7 @@ export const ARTICLES: Article[] = [
       "The $30,000 threshold, what counts toward it, when the clock starts, and why some freelancers should register voluntarily even before they're required to.",
     category: "GST / HST",
     publishedAt: "2026-05-10",
-    updatedAt: "2026-05-11",
+    updatedAt: "2026-10-05",
     imageUrl: "https://picsum.photos/seed/gst-hst-registration-threshold-canada/600/400",
     imageAlt: "Canadian freelancer registering for GST/HST with CRA My Business Account",
     tags: ["GST registration", "HST", "small supplier", "self-employed", "$30,000 threshold"],
@@ -1206,7 +1206,7 @@ export const ARTICLES: Article[] = [
       },
       {
         type: "callout",
-        text: "Register through CRA My Business Account online — you'll typically receive your GST/HST registration number within minutes for online applications, or a few days by mail. You cannot charge GST/HST or claim ITCs until you have your registration number.",
+        text: "Register through CRA My Business Account online — you'll typically receive your GST/HST registration number within minutes for online applications, or a few days by mail. If you have to register because you went over the threshold, you must charge GST/HST from your effective date of registration, even if you have not registered yet. RC4022's example: a sale that took one quarter over $30,000 on September 23 had to include GST/HST, and registration was due by October 22.",
       },
     ],
   },
