@@ -1160,12 +1160,12 @@ export const ARTICLES: Article[] = [
 
   {
     slug: "mileage-deduction-canada-freelancers",
-    title: "The Complete Mileage Deduction Guide for Canadian Freelancers (2025)",
+    title: "Mileage Deduction for Canadian Freelancers: The 2026 Tax-Year Guide",
     excerpt:
-      "Everything self-employed Canadians need to know about deducting vehicle expenses — from the logbook requirement to the maximum deductible costs, with 2025 CRA limits.",
+      "How self-employed Canadians deduct vehicle costs for 2026: the business-use percentage, CRA logbook rules, the 2026 limits, and T2125 lines 9281, 9936 and 9943.",
     category: "Mileage & Auto",
-    publishedAt: "2026-05-10",
-    updatedAt: "2026-08-06",
+    publishedAt: "2026-10-04",
+    updatedAt: "2026-10-04",
     imageUrl: "https://picsum.photos/seed/mileage-deduction-canada-freelancers/600/400",
     imageAlt: "Canadian freelancer tracking business mileage for CRA deduction",
     tags: [
@@ -1186,124 +1186,176 @@ export const ARTICLES: Article[] = [
     body: [
       {
         type: "p",
-        text: "Vehicle expenses are one of the largest available deductions for Canadian freelancers who drive for work — and one of the most closely scrutinized by the CRA. Done correctly, you can deduct a proportional share of all vehicle operating costs based on the percentage of kilometres driven for business. This guide covers everything: logbook requirements, eligible expenses, 2025 CRA limits, the simplified logbook method, mileage claims for employees, partnership filing specifics, and what happens if you're audited.",
+        text: "If you are self-employed in Canada and use your own vehicle for work, you deduct the business share of what the vehicle actually costs you to run: business kilometres divided by total kilometres, multiplied by your eligible expenses, claimed on Form T2125. The per-kilometre figure you may have heard quoted (73 cents for the first 5,000 km in 2026) is not that deduction. It is the CRA's limit on tax-free allowances that employers pay employees, and it only becomes relevant to you if someone, such as your own corporation, is paying you an allowance.",
+      },
+      {
+        type: "p",
+        text: "This guide covers the 2026 tax year, which self-employed individuals file in 2027. Every figure below comes from canada.ca. Where a 2026 figure had not been published when this was written, we say so and give the latest published one.",
       },
       {
         type: "h2",
-        text: "Business vs. Personal Driving: What Qualifies",
+        text: "The 2026 Rates and Limits",
+      },
+      {
+        type: "p",
+        text: "The Department of Finance announced the 2026 automobile limits on January 14, 2026. They apply to vehicles bought, leased or financed on or after January 1, 2026:",
       },
       {
         type: "ul",
         items: [
-          "Travel to client sites, job locations, and meetings",
-          "Driving to pick up supplies or equipment for your business",
-          "Trips to networking events, conferences, and professional development",
-          "Visits to your accountant, lawyer, or bank for business purposes",
-          "NOT deductible: commuting from home to a regular fixed workplace",
-          "Exception: if your home is your principal place of business, trips from home to client sites count as business travel",
+          "Per-kilometre allowance limit, provinces: 73¢ for the first 5,000 km and 67¢ for each additional kilometre (2025: 72¢ and 66¢)",
+          "Per-kilometre allowance limit, territories: 77¢ for the first 5,000 km and 71¢ for each additional kilometre (2025: 76¢ and 70¢)",
+          "Capital cost ceiling for Class 10.1 passenger vehicles: $39,000 before tax (up from $38,000 in 2025)",
+          "Capital cost ceiling for Class 54 zero-emission passenger vehicles: $61,000 before tax (unchanged)",
+          "Deductible leasing costs: $1,100 per month before tax for new leases (unchanged)",
+          "Deductible interest on a vehicle loan: $350 per month for new loans (unchanged)",
         ],
       },
       {
+        type: "p",
+        text: 'The leasing, interest and capital cost ceilings apply to "passenger vehicles" as the Income Tax Act defines them. They are prorated by days, not applied as flat annual amounts. The CRA\'s own interest example works it out as $350 ÷ 30 × 365 days = $4,258 for a full year, and you deduct the lesser of that and the interest you actually paid. Leases use the same pattern in Chart C of Form T2125.',
+      },
+      {
         type: "h2",
-        text: "The Logbook Requirement — Non-Negotiable",
+        text: "Two Methods: Actual Expenses vs. the Per-Kilometre Allowance",
       },
       {
         type: "p",
-        text: "The CRA requires a contemporaneous mileage logbook. Each entry must record: date, starting location, destination, business purpose, and kilometres driven. At year-end, you calculate total business kilometres ÷ total kilometres driven to get your business-use percentage. That percentage applies to all eligible vehicle expenses.",
+        text: "Actual expenses is the method the CRA's T2125 guidance describes for sole proprietors, and it is the only vehicle method on that form. You total what you spent on the vehicle in the year, then claim the business-use share. Eligible costs listed by the CRA are licence and registration fees, fuel and oil, electricity for zero-emission vehicles, insurance, interest on money borrowed to buy the vehicle, maintenance and repairs, and leasing costs. Capital cost allowance (CCA) on a vehicle you own is claimed separately, at the same business-use percentage.",
+      },
+      {
+        type: "p",
+        text: "The per-kilometre allowance is an employment rule. An employer can pay an employee a set amount per business kilometre, and the CRA treats it as non-taxable when it is based only on business kilometres and the rate is reasonable. The prescribed rates above are what the CRA considers reasonable, because they are the maximum the employer can deduct. If you have incorporated and your company pays you an allowance for driving your own car, this is the method that applies. If you are a sole proprietor filing a T2125, it is not.",
       },
       {
         type: "h2",
-        text: "Eligible Vehicle Expenses (2025)",
+        text: "Worked Example in CAD",
+      },
+      {
+        type: "p",
+        text: "The figures below are hypothetical, chosen to show the arithmetic. Suppose a sole proprietor with a December 31 year-end drives 20,000 km in 2026, of which 8,000 km are business trips recorded in a logbook. Business use is 8,000 ÷ 20,000 = 40%. The year's vehicle costs are:",
       },
       {
         type: "ul",
         items: [
-          "Fuel and oil",
-          "Insurance premiums",
-          "Repairs and maintenance",
-          "License and registration fees",
-          "Lease payments — 2025 limit: $1,100/month before tax",
-          "Auto loan interest — 2025 limit: $10/day",
-          "CCA on vehicle cost — 2025 maximum: $37,000 for Class 10.1 vehicles",
-          "Parking fees at business destinations (not parking tickets)",
+          "Fuel: $2,600",
+          "Insurance: $1,800",
+          "Maintenance and repairs: $900",
+          "Licence and registration: $150",
+          "Loan interest: $1,500, below the full-year limit of $4,258, so all of it counts",
+          "Total: $6,950 × 40% = $2,780",
+          "Business parking: $240, deducted in full rather than at 40%",
+          "Amount on line 9281: $3,020",
         ],
       },
       {
+        type: "p",
+        text: "CCA on the vehicle goes on line 9936, also reduced to 40%. Now compare the allowance method. If an employer paid an allowance for the same 8,000 business kilometres at the 2026 provincial rates, the most that could be treated as reasonable is 5,000 × $0.73 + 3,000 × $0.67 = $3,650 + $2,010 = $5,660. That money would be a tax-free payment from an employer, not a deduction on your own T2125. It is useful to know the number if you are deciding whether your corporation should reimburse you, but a sole proprietor cannot choose it.",
+      },
+      {
         type: "h2",
-        text: "The Simplified Logbook Method",
+        text: "What Records the CRA Expects",
       },
       {
         type: "p",
-        text: "After keeping a complete, contemporaneous logbook for one full year — your base year — the CRA allows you to simplify record-keeping in later years. Instead of logging every trip indefinitely, you keep a full logbook for just a 3-month sample period each year and use it to project your annual business-use percentage. The catch is that the projection has to hold up mathematically against your base year, and if it drifts too far, you lose the right to use the shortcut for that year.",
+        text: 'The CRA calls an accurate logbook kept for the entire year "the best evidence" of business use. For each business trip, record:',
+      },
+      {
+        type: "ul",
+        items: ["Date", "Destination", "Purpose", "Number of kilometres driven"],
       },
       {
         type: "p",
-        text: "The CRA's formula for the projected annual business-use percentage is: (sample-period business-use % ÷ base-year business-use % for that same period) × base-year annual business-use % = calculated annual business-use %.",
+        text: "Also record the odometer reading at the start and end of your fiscal period. If you buy, sell or trade a vehicle during the year, note the date and the odometer reading at that point. If you use more than one vehicle for business, keep a separate record for each one and calculate each vehicle's expenses separately. Keep the receipts too: the CRA allows motor vehicle expenses only when they are reasonable and supported by receipts.",
       },
       {
         type: "p",
-        text: "Here's how it works with real numbers. Say your base year showed 40% business use for the full year, broken down by quarter like this:",
+        text: "You do not have to log every trip forever. The CRA's simplified logbook rule works like this:",
       },
       {
         type: "ul",
         items: [
-          "Q1: 33% business use",
-          "Q2: 45% business use",
-          "Q3: 47% business use",
-          "Q4: 35% business use",
+          "Keep a full logbook for one complete 12-month period. This is your base year.",
+          "In later years, keep a logbook for a three-month sample period instead.",
+          "Calculate annual business use as (sample period % ÷ base-year % for the same months) × base-year annual %.",
+          "The sample stands in for the year only if the result is within 10 percentage points of the base year. The CRA's example has a 49% base year, so 39% to 59% is acceptable.",
+          "If the result moves by more than 10 points, the sample covers only its own three months. For the rest of the year you need an actual record of travel, and the CRA suggests starting a new 12-month base year.",
         ],
       },
       {
         type: "p",
-        text: "In year two, you only track a 3-month sample period — say Q1 again — and it comes out to 50% business use. Plug that into the formula: (50% ÷ 33%) × 40% = 61% calculated annual business-use for year two. That's 21 percentage points above your 40% base-year figure, well outside the CRA's ±10-point tolerance, so you can't rely on the simplified sample for year two. You're required to fall back to a full, contemporaneous logbook for the rest of that year. Nothing is lost, though — you can simply treat year two, now fully logged, as your new base year and resume the 3-month sample method starting in year three.",
+        text: "The CRA's own example: a base year with 49% annual business use, and 46% for April to June. A later year's April-to-June sample shows 51%. Calculated use is (51% ÷ 46%) × 49% = 54%. That is within the 39% to 59% band, so the CRA would accept 54% in the absence of contradictory evidence. Because the base year keeps doing work in later years, its logbook must be kept for six years from the end of the last tax year it is used to support. All other records follow the usual rule of six years from the end of the tax year they relate to.",
+      },
+      {
+        type: "h2",
+        text: "How to Calculate Your Business-Use Percentage",
       },
       {
         type: "p",
-        text: "Contrast that with a year where the math holds up: if your Q1 sample had come in at 36% instead of 50%, the calculation would be (36% ÷ 33%) × 40% = 44% — only 4 points above the 40% base, comfortably inside the ±10-point tolerance. In that case, the 3-month sample stands in for the whole year and you never have to pick up a full logbook again until your business-use pattern shifts.",
+        text: "The formula is business kilometres ÷ total kilometres. Your total kilometres come from the two odometer readings, and your business kilometres come from adding up the logbook. The CRA's published example: 27,000 business kilometres out of 30,000 total, with $5,400 of expenses, gives 27,000 ÷ 30,000 × $5,400 = $4,860.",
+      },
+      {
+        type: "p",
+        text: "The judgment call is which trips count as business. The CRA's longstanding position, set out in the archived Interpretation Bulletin IT-521R, is that driving between your home and your place of business is personal unless your home is the base of your business operations. If you have an office or other fixed workplace elsewhere, your home normally does not qualify. If you run the business from home and drive out to clients or job sites, those trips can be business travel. Travel between different locations of the same business is deductible.",
       },
       {
         type: "callout",
-        text: "CRA audit reality: vehicle expense claims are one of the most common audit triggers. A logbook that was clearly prepared all at once — same handwriting, same pen, suspiciously round numbers — rather than contemporaneously is a major red flag, and auditors are trained to spot it.",
+        text: "The arithmetic is easy. The hard part is having a trip-by-trip record of business kilometres when you need it. ReceiptOne's Log Trip feature records each trip's date and route distance from the start and end addresses you enter, which builds the business-kilometre side of the calculation as the year goes. You still need your odometer readings for total kilometres.",
       },
       {
         type: "h2",
-        text: "Employee Mileage Claims: The T2200 Requirement",
-      },
-      {
-        type: "p",
-        text: "Employees who use a personal vehicle for work can claim a portion of their vehicle expenses too — but the rules are stricter than for the self-employed. Before you can claim anything, your employer must complete and sign Form T2200, Declaration of Conditions of Employment, confirming that your job requires you to use your own vehicle and cover the associated costs yourself. Without a signed T2200 on file, the CRA will deny the claim outright — a verbal understanding or a line in your offer letter isn't enough.",
+        text: "Which T2125 Lines Are Involved",
       },
       {
         type: "ul",
         items: [
-          "Travelling salespeople who are ordinarily required to work away from their employer's place of business",
-          "Employees required under their contract of employment to travel regularly to different locations, away from their employer's usual place of business",
-          "Anyone whose employment contract requires them to pay their own vehicle expenses, with no reimbursement from the employer",
+          "Chart A, Motor vehicle expenses: where you list the year's costs and apply the business-use percentage",
+          "Chart B, Available interest expense for passenger vehicles: caps loan interest at the $350-per-month limit, prorated by days",
+          "Chart C, Eligible leasing cost for passenger vehicles: caps lease payments at the $1,100-per-month limit",
+          "Line 9281, Motor vehicle expenses (not including CCA): the result of Chart A, plus full business parking and supplementary business insurance",
+          "Line 9936, Capital cost allowance: CCA on the vehicle (Class 10 or 10.1 at 30%, or Class 54 for a zero-emission passenger vehicle), reduced to the business-use share",
+          "Line 9943, Other amounts deductible from your share of the net partnership income (loss): partners who use their personal vehicle for partnership business claim those costs here",
         ],
       },
       {
         type: "p",
-        text: "The rule that trips up the most employees: if your employer reimburses your vehicle expenses — in whole or in part, whether through a per-kilometre allowance or a flat monthly stipend — you generally can't also deduct those same expenses on your return. The T2200 exists specifically to establish that you're covering these costs yourself, not being made whole by your employer. Once you have a signed T2200, you calculate and claim the deduction on Form T777, Statement of Employment Expenses, rather than the T2125 self-employed workers use — but the underlying math is identical: a contemporaneous logbook, a business-use percentage, and that percentage applied to your actual costs, including CCA on the vehicle if you own it. The same 2025 dollar limits apply either way — $1,100/month before tax on leased vehicles, $10/day on loan interest, and the $37,000 CCA ceiling for Class 10.1 vehicles — there's no separate, more generous limit just because you're on a T4 instead of self-employed.",
+        text: "A passenger vehicle that costs more than the ceiling for its year goes into its own Class 10.1, with a separate class for each vehicle. That means $38,000 before tax for vehicles acquired in 2025 and $39,000 for those acquired on or after January 1, 2026. The capital cost is capped at the ceiling plus GST/HST or PST on it. Recapture and terminal loss rules do not apply to Class 10.1 vehicles.",
       },
       {
         type: "h2",
-        text: "Partnership Filing: Where Mileage Goes on the Return",
+        text: "Deadlines for the 2026 Tax Year",
       },
       {
         type: "p",
-        text: "If you operate through a partnership rather than as a sole proprietor, vehicle expenses are handled a little differently on your return. Each partner reports their share of the partnership's income or loss on their own T1, but vehicle expenses you personally paid out of pocket — and weren't reimbursed for by the partnership — are claimed separately as a deduction against your share of that income.",
+        text: "The CRA's filing deadline is June 15 for self-employed individuals and their spouses or common-law partners, but any balance owing is due by April 30. For 2025 returns those dates were April 30 and June 15, 2026. At the time of writing, the CRA had not yet published its dated calendar for 2026 returns. The same rules put them at April 30, 2027 for payment and June 15, 2027 for filing. Confirm against the CRA's due-dates page before you file.",
+      },
+      {
+        type: "h2",
+        text: "Frequently Asked Questions",
       },
       {
         type: "p",
-        text: "This deduction goes on Line 9943, \"Other amounts deductible from your share of net partnership income,\" in Part 6 of Form T2125, Statement of Business or Professional Activities. As with any other mileage claim, you still need a contemporaneous logbook supporting the business-use percentage applied to your vehicle costs — filing as a partner doesn't relax the CRA's documentation requirements, it just changes which line the deduction lands on.",
+        text: "Can I just claim the 73-cents-per-kilometre rate on my T2125? No. That rate is the limit on tax-free allowances employers pay employees. A sole proprietor claims the business share of actual vehicle costs through Chart A and line 9281, plus CCA on line 9936.",
       },
       {
         type: "p",
-        text: "For example, say you're a 50% partner in a two-person consulting partnership and you personally drove 8,000 of your own vehicle's 20,000 total kilometres for partnership business — a 40% business-use rate. You'd apply that 40% to your own out-of-pocket vehicle costs for the year and report the resulting deduction on Line 9943, entirely separate from the 50% share of partnership profit that flows through elsewhere on your return. If a partner's vehicle costs were paid directly by the partnership instead of out of pocket, they're deducted at the partnership level rather than on Line 9943 — so keep track of who actually paid for what.",
+        text: "Is driving from home to a client's office deductible? It depends where your business is based. If your home is the base of your business operations and you have no office elsewhere, trips out to clients can count as business travel. If you have an office or other fixed workplace, travel between home and that workplace is personal.",
       },
       {
-        type: "callout",
-        text: "Ditch the manual logbook math. ReceiptOne's Mileage feature lets you Log Trip by address in seconds — enter your start and end points and it calculates the route and distance automatically, then applies the current CRA rate to give you a dollar value per trip in real time. At year-end, or every quarter if you're running the simplified method, export a CRA-ready PDF report with your trips already mapped to the correct T2125 line — no spreadsheet reconstruction required.",
+        type: "p",
+        text: "Do I have to keep a logbook every year? You need one full 12-month logbook to set a base year. After that, a three-month sample logbook each year is enough, as long as the calculated annual business use stays within 10 percentage points of the base year.",
+      },
+      {
+        type: "p",
+        text: "Are parking costs reduced by my business-use percentage? No. The CRA lets you deduct the full amount of parking fees related to your business, and supplementary business insurance, without prorating them.",
+      },
+      {
+        type: "p",
+        text: "I bought a car in 2026 for $45,000. What can I claim? If it is a passenger vehicle, it goes into Class 10.1 and its capital cost is capped at $39,000 plus GST/HST or PST on that amount. CCA is claimed at 30% on the capped amount (subject to the first-year rules in Guide T4002), reduced to your business-use share. A zero-emission passenger vehicle goes into Class 54 instead, with a $61,000 ceiling.",
+      },
+      {
+        type: "p",
+        text: "I'm an employee, not self-employed. Do these rules apply? Partly. Employees claim on line 22900 using Form T777, and only if all of the CRA's conditions are met. You must normally be required to work away from your employer's place of business or in different places, and have to pay your own vehicle expenses under your employment contract. You must also not receive a non-taxable vehicle allowance, and must keep a Form T2200 signed by your employer. The logbook and business-use rules are the same.",
       },
     ],
   },
