@@ -1883,7 +1883,7 @@ export const ARTICLES: Article[] = [
       "The home office deduction is widely misunderstood — many freelancers claim too little, and some claim expenses they're not entitled to. Here's the accurate 2025 breakdown.",
     category: "Tax Deductions",
     publishedAt: "2026-05-10",
-    updatedAt: "2026-05-11",
+    updatedAt: "2026-10-05",
     imageUrl: "https://picsum.photos/seed/home-office-deduction-canadian-freelancers/600/400",
     imageAlt: "Modern home office setup with computer and organized workspace",
     tags: ["home office", "deductions", "workspace", "freelancer", "CRA"],
@@ -1897,7 +1897,7 @@ export const ARTICLES: Article[] = [
     body: [
       {
         type: "p",
-        text: "The home office deduction (technically called 'workspace in the home expenses' on Form T2125) allows self-employed Canadians to deduct a proportional share of their home costs when they use part of their home exclusively for their business. Unlike employees who briefly used a flat-rate method during the pandemic, self-employed individuals have always used the detailed method — and it's more generous than most people realize.",
+        text: "The home office deduction (technically called 'workspace in the home expenses' on Form T2125) allows self-employed Canadians to deduct a proportional share of their home costs when part of their home is their principal place of business, or is used only for the business and regularly to meet clients. Unlike employees who briefly used a flat-rate method during the pandemic, self-employed individuals have always used the detailed method — and it's more generous than most people realize.",
       },
       {
         type: "h2",
@@ -1905,7 +1905,7 @@ export const ARTICLES: Article[] = [
       },
       {
         type: "p",
-        text: "To claim home office expenses as a self-employed individual, your home workspace must meet at least one of two conditions: it must be where you principally perform your work (more than 50% of your working hours), OR it must be used exclusively on a regular and continuous basis to meet clients, customers, or patients. Meeting either condition qualifies you — you don't need to meet both.",
+        text: "To claim home office expenses as a self-employed individual, your home workspace must meet at least one of two conditions: it is your principal place of business, OR you use the space only to earn your business income and on a regular and ongoing basis to meet clients, customers, or patients. The CRA doesn't set an hours test for 'principal'; its folio on business-use-of-home expenses says the word is generally understood to mean your chief or main place of business, and that a workspace that meets this condition doesn't have to be used only for the business. Meeting either condition qualifies you — you don't need to meet both.",
       },
       {
         type: "h2",
