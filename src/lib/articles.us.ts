@@ -12,7 +12,7 @@ export const ARTICLES_US_ONLY: Article[] = [
   {
     slug: "irs-business-expense-deduction-rules",
     regions: ["us"],
-    title: "IRS Business Expense Deduction Rules: The Complete Guide for Freelancers",
+    title: "IRS Business Expense Deduction Rules for Freelancers",
     excerpt:
       "Everything the IRS requires to deduct a business expense — the ordinary-and-necessary test, documentation standards, record retention rules, and how to build a system that survives an audit.",
     category: "Tax Compliance",
@@ -106,7 +106,7 @@ export const ARTICLES_US_ONLY: Article[] = [
   {
     slug: "irs-receipt-documentation-requirements",
     regions: ["us"],
-    title: "IRS Receipt Documentation Requirements for Self-Employed Workers",
+    title: "IRS Receipt Requirements for Self-Employed Workers",
     excerpt:
       "Exactly what the IRS wants to see on your business receipts, how long to keep them, and whether digital copies are acceptable for audit purposes.",
     category: "Tax Compliance",
@@ -179,7 +179,7 @@ export const ARTICLES_US_ONLY: Article[] = [
   {
     slug: "schedule-c-deductions-guide-us-freelancers",
     regions: ["us"],
-    title: "Schedule C Deductions: The Complete Guide for US Freelancers",
+    title: "Schedule C Deductions Guide for US Freelancers",
     excerpt:
       "Every deduction available on IRS Schedule C explained — from home office and vehicle expenses to the qualified business income deduction that can cut your tax bill by 20%.",
     category: "Tax Deductions",
@@ -245,15 +245,15 @@ export const ARTICLES_US_ONLY: Article[] = [
   {
     slug: "self-employed-tax-deductions-us-2025",
     regions: ["us"],
-    title: "Top Tax Deductions for Self-Employed Workers in the US (2025)",
+    title: "Top Self-Employed Tax Deductions in the US (2026)",
     excerpt:
-      "The most valuable deductions available to US freelancers and 1099 contractors in 2025 — including the ones most people miss.",
+      "The most valuable deductions available to US freelancers and 1099 contractors in 2026 — including the ones most people miss.",
     category: "Tax Deductions",
     publishedAt: "2026-05-20",
     updatedAt: "2026-10-05",
     imageUrl: "https://picsum.photos/seed/self-employed-deductions-us-2025/600/400",
     imageAlt: "US freelancer reviewing tax deductions on laptop",
-    tags: ["deductions", "freelancer", "1099", "IRS", "self-employed", "2025", "tax savings"],
+    tags: ["deductions", "freelancer", "1099", "IRS", "self-employed", "2026", "tax savings"],
     clusterName: "Schedule C & Deductions",
     relatedSlugs: [
       "schedule-c-deductions-guide-us-freelancers",
@@ -263,7 +263,7 @@ export const ARTICLES_US_ONLY: Article[] = [
     body: [
       {
         type: "p",
-        text: "The IRS gives self-employed workers significant deductions that employees can't access. Used correctly, these deductions can reduce your effective tax rate substantially — but only if you track your expenses throughout the year. Here are the most valuable deductions for 2025.",
+        text: "The IRS gives self-employed workers significant deductions that employees can't access. Used correctly, these deductions can reduce your effective tax rate substantially — but only if you track your expenses throughout the year. Here are the most valuable deductions for 2026.",
       },
       {
         type: "h2",
@@ -279,7 +279,7 @@ export const ARTICLES_US_ONLY: Article[] = [
       },
       {
         type: "p",
-        text: "The 2025 IRS standard mileage rate is 70 cents per mile for business travel. Alternatively, you can deduct actual vehicle costs proportional to business use. Keep a mileage log — the IRS requires contemporaneous records.",
+        text: "For 2026, the IRS standard mileage rate for business travel is 72.5 cents per mile from January to June and 76 cents from July 1. Alternatively, you can deduct actual vehicle costs proportional to business use. Keep a mileage log — the IRS requires contemporaneous records.",
       },
       {
         type: "h2",
@@ -296,9 +296,9 @@ export const ARTICLES_US_ONLY: Article[] = [
       {
         type: "ul",
         items: [
-          "SEP-IRA: up to 25% of compensation, max $70,000 for 2025 ($72,000 for 2026). For your own account, compensation is net earnings from self-employment after deducting half your self-employment tax and the contribution itself, so the effective rate is about 20%; Publication 560 has the worksheet",
-          "Solo 401(k): employee contribution up to $23,500 for 2025, plus an employer contribution worked out on the same reduced self-employed basis as a SEP",
-          "SIMPLE IRA: up to $16,500 employee contribution",
+          "SEP-IRA: up to 25% of compensation, max $72,000 for 2026. For your own account, compensation is net earnings from self-employment after deducting half your self-employment tax and the contribution itself, so the effective rate is about 20%; Publication 560 has the worksheet",
+          "Solo 401(k): employee contribution up to $24,500 for 2026, plus an employer contribution worked out on the same reduced self-employed basis as a SEP",
+          "SIMPLE IRA: up to $17,000 employee contribution for 2026",
           "Contributions reduce AGI dollar-for-dollar — one of the most powerful deductions available",
         ],
       },
@@ -358,7 +358,7 @@ export const ARTICLES_US_ONLY: Article[] = [
       },
       {
         type: "p",
-        text: "Self-employment tax is 15.3% on the first $176,100 of net earnings (2025), plus 2.9% Medicare on amounts above that. It covers Social Security and Medicare — taxes that employees split with their employer. As a contractor, you pay the full amount. However, you can deduct 50% of SE tax from your gross income.",
+        text: "Self-employment tax is 15.3% on the first $184,500 of net earnings (2026), plus 2.9% Medicare on amounts above that. It covers Social Security and Medicare — taxes that employees split with their employer. As a contractor, you pay the full amount. However, you can deduct 50% of SE tax from your gross income.",
       },
       {
         type: "h2",
@@ -398,7 +398,7 @@ export const ARTICLES_US_ONLY: Article[] = [
   {
     slug: "quarterly-estimated-taxes-us-freelancers",
     regions: ["us"],
-    title: "Quarterly Estimated Taxes for Freelancers: How to Calculate and Pay",
+    title: "How to Calculate and Pay Quarterly Estimated Taxes",
     excerpt:
       "The IRS requires freelancers to pay taxes four times a year. Here's exactly how to calculate what you owe, when to pay, and how to avoid underpayment penalties.",
     category: "Tax Fundamentals",
@@ -483,7 +483,7 @@ export const ARTICLES_US_ONLY: Article[] = [
   {
     slug: "irs-mileage-rate-2025-self-employed",
     regions: ["us"],
-    title: "IRS Standard Mileage Rates for 2026: How to Claim Vehicle Deductions",
+    title: "IRS Mileage Rates 2026: How to Claim Vehicle Deductions",
     excerpt:
       "The 2026 IRS business mileage rate is 72.5 cents per mile for January to June and 76 cents from July 1. Here's how to track qualifying trips, keep a mileage log the IRS accepts, and choose between the standard rate and actual expenses.",
     category: "Mileage & Auto",
@@ -558,7 +558,7 @@ export const ARTICLES_US_ONLY: Article[] = [
   {
     slug: "home-office-deduction-form-8829-us",
     regions: ["us"],
-    title: "Home Office Deduction for US Freelancers: Form 8829 Explained",
+    title: "Home Office Deduction for Freelancers: Form 8829 Explained",
     excerpt:
       "How to claim the home office deduction using Form 8829 or the simplified method — including the exclusive-use rule, what expenses qualify, and how to calculate the deduction correctly.",
     category: "Tax Deductions",
@@ -630,7 +630,7 @@ export const ARTICLES_US_ONLY: Article[] = [
   {
     slug: "sales-tax-business-expenses-us",
     regions: ["us"],
-    title: "Sales Tax on Business Expenses: What US Freelancers Need to Know",
+    title: "Sales Tax on Business Expenses: A Guide for US Freelancers",
     excerpt:
       "How sales tax works on your business purchases, whether it's separately deductible, when you might need to collect it from clients, and why tracking it matters for your records.",
     category: "Tax Fundamentals",

@@ -43,7 +43,7 @@ export const ARTICLES: Article[] = [
 
   {
     slug: "cra-receipt-rules-canada",
-    title: "CRA Receipt Rules in Canada: What to Keep and for How Long (2026 Guide)",
+    title: "CRA Receipt Rules: What to Keep and for How Long (2026)",
     excerpt:
       "What the CRA requires on a business receipt for 2026, when scanned copies can replace paper, the six-year retention rule, and the $100 and $500 GST/HST ITC tiers.",
     category: "Tax Compliance",
@@ -225,7 +225,7 @@ export const ARTICLES: Article[] = [
 
   {
     slug: "digital-receipts-canada-are-they-valid",
-    title: "Are Digital Receipts Valid for the CRA? Photos, Scans and E-Receipts (2026)",
+    title: "Are Digital Receipts Valid for the CRA? (2026 Guide)",
     excerpt:
       "When the CRA accepts photos, scans and emailed receipts, when you must still keep the paper, and how to store, back up and hand over electronic records.",
     category: "Tax Compliance",
@@ -397,7 +397,7 @@ export const ARTICLES: Article[] = [
 
   {
     slug: "cra-audit-proof-expenses",
-    title: "How to Document Business Expenses So They Hold Up in a CRA Review (2026)",
+    title: "How to Document Expenses for a CRA Review (2026)",
     excerpt:
       "How to support self-employed expense claims in a 2026 CRA review: the general tests, the rules for meals, home office, vehicle and family wages, and missing receipts.",
     category: "Tax Compliance",
@@ -551,7 +551,7 @@ export const ARTICLES: Article[] = [
 
   {
     slug: "expense-tracking-canada-freelancers",
-    title: "Expense Tracking for Canadian Freelancers: The Complete System",
+    title: "Expense Tracking System for Canadian Freelancers",
     excerpt:
       "A practical, end-to-end expense tracking system for Canadian freelancers and contractors — from capturing receipts daily to producing CRA-ready reports at filing time.",
     category: "Expense Tracking",
@@ -631,7 +631,7 @@ export const ARTICLES: Article[] = [
 
   {
     slug: "business-expense-categories-canada",
-    title: "Business Expense Categories for Canadian Self-Employed Workers",
+    title: "Business Expense Categories for Self-Employed Canadians",
     excerpt:
       "A complete guide to the CRA's business expense categories on Form T2125 — what each line includes, what's excluded, and how to categorize common freelancer expenses correctly.",
     category: "Expense Tracking",
@@ -726,7 +726,7 @@ export const ARTICLES: Article[] = [
       {
         type: "ul",
         items: [
-          "Top level: one folder per tax year (e.g., '2025 Business Receipts')",
+          "Top level: one folder per tax year (e.g., '2026 Business Receipts')",
           "Subfolders by month: 01-January through 12-December",
           "Or subfolders by category: matching your T2125 expense lines",
           "Naming convention: YYYY-MM-DD_Vendor_Amount.pdf (sortable, searchable)",
@@ -850,7 +850,7 @@ export const ARTICLES: Article[] = [
   {
     slug: "home-office-vs-coworking-expense-canada",
     regions: ["all"],
-    title: "Home Office vs. Co-working Space: Which Expense Wins at Tax Time?",
+    title: "Home Office vs. Co-working: Which Wins at Tax Time?",
     excerpt:
       "Comparing the real after-tax cost of a home office deduction versus a co-working membership for Canadian freelancers — the math might surprise you.",
     category: "Expense Tracking",
@@ -901,7 +901,7 @@ export const ARTICLES: Article[] = [
 
   {
     slug: "gst-hst-expense-tracking-canada",
-    title: "GST/HST for Canadian Freelancers: The Expense Tracking Guide (2026)",
+    title: "GST/HST Expense Tracking for Canadian Freelancers (2026)",
     excerpt:
       "GST/HST for self-employed Canadians in 2026: when registration starts, current rates by province, the $100 and $500 ITC receipt tiers, and choosing a filing period.",
     category: "GST / HST",
@@ -1162,7 +1162,7 @@ export const ARTICLES: Article[] = [
 
   {
     slug: "gst-hst-registration-threshold-canada",
-    title: "GST/HST Registration in Canada: When Freelancers Must Register",
+    title: "When Must Freelancers Register for GST/HST in Canada?",
     excerpt:
       "The $30,000 threshold, what counts toward it, when the clock starts, and why some freelancers should register voluntarily even before they're required to.",
     category: "GST / HST",
@@ -1213,7 +1213,7 @@ export const ARTICLES: Article[] = [
 
   {
     slug: "pst-qst-freelancers-canada",
-    title: "PST and QST for Canadian Freelancers: What You Can and Can't Claim",
+    title: "PST and QST for Canadian Freelancers: What You Can Claim",
     excerpt:
       "Provincial sales taxes in BC, Manitoba, Saskatchewan, and Quebec are often confused with GST/HST — but they follow entirely different rules for self-employed workers.",
     category: "GST / HST",
@@ -1269,7 +1269,7 @@ export const ARTICLES: Article[] = [
 
   {
     slug: "mileage-deduction-canada-freelancers",
-    title: "Mileage Deduction for Canadian Freelancers: The 2026 Tax-Year Guide",
+    title: "Mileage Deduction for Canadian Freelancers (2026 Guide)",
     excerpt:
       "How self-employed Canadians deduct vehicle costs for 2026: the business-use percentage, CRA logbook rules, the 2026 limits, and T2125 lines 9281, 9936 and 9943.",
     category: "Mileage & Auto",
@@ -1471,7 +1471,7 @@ export const ARTICLES: Article[] = [
 
   {
     slug: "mileage-tracking-self-employed-2025-guide",
-    title: "Mileage Tracking for Self-Employed Workers: The Complete 2025 Guide",
+    title: "Mileage Tracking for Self-Employed Canadians (2026 Guide)",
     excerpt:
       "The practical, day-to-day discipline of mileage tracking for self-employed Canadians — what to log in the moment, GPS vs. manual logging, and the habits that keep a logbook audit-ready all year.",
     category: "Mileage & Auto",
@@ -1548,7 +1548,7 @@ export const ARTICLES: Article[] = [
 
   {
     slug: "cra-mileage-logbook-requirements",
-    title: "CRA Mileage Logbook Requirements: What You Must Record for Every Trip",
+    title: "CRA Mileage Logbook Requirements: What Every Trip Needs",
     excerpt:
       "What the CRA says a mileage logbook should record for each business trip, the odometer readings you need, and how the year-end business-use percentage is worked out.",
     category: "Mileage & Auto",
@@ -1613,7 +1613,7 @@ export const ARTICLES: Article[] = [
 
   {
     slug: "vehicle-expense-deductions-canada",
-    title: "Vehicle Expense Deductions for Self-Employed Canadians: What to Claim",
+    title: "Vehicle Expense Deductions for Self-Employed Canadians",
     excerpt:
       "A detailed look at every vehicle expense category available to Canadian freelancers and contractors — with the 2026 CRA limits and the documentation needed for each.",
     category: "Mileage & Auto",
@@ -1669,7 +1669,7 @@ export const ARTICLES: Article[] = [
 
   {
     slug: "mileage-tracking-apps-canada",
-    title: "Best Mileage Tracking Apps for Canadian Freelancers in 2025",
+    title: "Best Mileage Tracking Apps for Canadian Freelancers (2026)",
     excerpt:
       "What the CRA expects a mileage logbook to show, what to look for in a mileage tracking app, and how to choose the right one for your situation.",
     category: "Mileage & Auto",
@@ -1726,7 +1726,7 @@ export const ARTICLES: Article[] = [
 
   {
     slug: "freelancer-taxes-canada-guide",
-    title: "Canadian Freelancer Taxes: The Complete Guide to Filing as Self-Employed",
+    title: "Canadian Freelancer Taxes: How to File as Self-Employed",
     excerpt:
       "A comprehensive walkthrough of how Canadian freelancers and contractors file taxes — from reporting income correctly to claiming every deduction you're entitled to.",
     category: "Tax Fundamentals",
@@ -1802,7 +1802,7 @@ export const ARTICLES: Article[] = [
 
   {
     slug: "top-tax-deductions-canadian-self-employed-2025",
-    title: "Top Tax Deductions for Canadian Self-Employed Workers in 2025",
+    title: "Top Tax Deductions for Self-Employed Canadians (2026)",
     excerpt:
       "Self-employed Canadians can deduct a wide range of legitimate business expenses. Knowing which ones apply to you — and how to claim them correctly — can dramatically reduce your tax bill.",
     category: "Tax Deductions",
@@ -1810,7 +1810,7 @@ export const ARTICLES: Article[] = [
     updatedAt: "2026-10-05",
     imageUrl: "https://picsum.photos/seed/top-tax-deductions-canadian-self-employed-2025/600/400",
     imageAlt: "Person working on a laptop with financial documents visible",
-    tags: ["deductions", "self-employed", "freelancer", "tax savings", "2025"],
+    tags: ["deductions", "self-employed", "freelancer", "tax savings", "2026"],
     clusterPillar: "freelancer-taxes-canada-guide",
     clusterName: "Freelancer Tax Fundamentals",
     relatedSlugs: [
@@ -1821,7 +1821,7 @@ export const ARTICLES: Article[] = [
     body: [
       {
         type: "p",
-        text: "When you work for yourself in Canada, you report your business income and expenses on Form T2125 (Statement of Business or Professional Activities). The CRA allows you to deduct any expense that was incurred to earn business income — as long as it's reasonable in amount and supported by documentation. Here are the most valuable deductions for Canadian freelancers in 2025.",
+        text: "When you work for yourself in Canada, you report your business income and expenses on Form T2125 (Statement of Business or Professional Activities). The CRA allows you to deduct any expense that was incurred to earn business income — as long as it's reasonable in amount and supported by documentation. Here are the most valuable deductions for Canadian freelancers in 2026.",
       },
       {
         type: "h2",
@@ -1858,7 +1858,7 @@ export const ARTICLES: Article[] = [
       },
       {
         type: "callout",
-        text: "For 2025, the federal basic personal amount is $16,129 if your net income is $177,882 or less. It is a non-refundable credit that applies to everyone; your business expenses are deducted separately, in calculating your net business income on Form T2125.",
+        text: "For 2026, the federal basic personal amount is $16,452 if your net income is $181,440 or less. It is a non-refundable credit that applies to everyone; your business expenses are deducted separately, in calculating your net business income on Form T2125.",
       },
       {
         type: "h2",
@@ -1878,9 +1878,9 @@ export const ARTICLES: Article[] = [
 
   {
     slug: "home-office-deduction-canadian-freelancers",
-    title: "The Home Office Deduction: What Canadian Freelancers Can Actually Claim",
+    title: "Home Office Deduction: What Canadian Freelancers Can Claim",
     excerpt:
-      "The home office deduction is widely misunderstood — many freelancers claim too little, and some claim expenses they're not entitled to. Here's the accurate 2025 breakdown.",
+      "The home office deduction is widely misunderstood — many freelancers claim too little, and some claim expenses they're not entitled to. Here's the accurate 2026 breakdown.",
     category: "Tax Deductions",
     publishedAt: "2026-05-10",
     updatedAt: "2026-10-05",
@@ -1951,7 +1951,7 @@ export const ARTICLES: Article[] = [
 
   {
     slug: "t2125-form-guide-canada",
-    title: "Form T2125 Explained: A Step-by-Step Guide for Canadian Freelancers",
+    title: "Form T2125 Explained: Line-by-Line Guide (2026)",
     excerpt:
       "Form T2125 is how self-employed Canadians report business income and expenses to the CRA. Here's a line-by-line walkthrough so you don't miss a deduction.",
     category: "Tax Fundamentals",
@@ -2018,7 +2018,7 @@ export const ARTICLES: Article[] = [
 
   {
     slug: "tax-instalment-payments-canada-self-employed",
-    title: "Tax Instalment Payments for Self-Employed Canadians: How They Work",
+    title: "Tax Instalments for Self-Employed Canadians: How They Work",
     excerpt:
       "If your net tax owing is over $3,000 this year and in either of the two previous years, the CRA requires quarterly instalments. Here's how the rule and the payment options work.",
     category: "Tax Fundamentals",
@@ -2072,7 +2072,7 @@ export const ARTICLES: Article[] = [
 
   {
     slug: "receipt-scanner-apps-canada-comparison",
-    title: "Best Receipt Scanner Apps for Canadians in 2025: Complete Comparison",
+    title: "Best Receipt Scanner Apps in Canada (2026): Prices Compared",
     excerpt:
       "A practical comparison of the top receipt scanning apps available to Canadian freelancers and small business owners — including GST/HST extraction and CRA compliance features.",
     category: "Tools & Apps",
@@ -2122,7 +2122,7 @@ export const ARTICLES: Article[] = [
 
   {
     slug: "quickbooks-vs-receiptone-canada",
-    title: "QuickBooks vs. ReceiptOne for Canadian Freelancers: Which Is Right for You?",
+    title: "QuickBooks vs ReceiptOne for Canadian Freelancers (2026)",
     excerpt:
       "QuickBooks and ReceiptOne solve different problems. Here's an honest look at when each tool makes sense for self-employed Canadians.",
     category: "Tools & Apps",
@@ -2177,7 +2177,7 @@ export const ARTICLES: Article[] = [
   {
     slug: "manual-vs-automated-expense-tracking-canada",
     regions: ["all"],
-    title: "Manual vs. Automated Expense Tracking for Canadian Freelancers",
+    title: "Manual vs. Automated Expense Tracking in Canada",
     excerpt:
       "Spreadsheets are free. Automated apps cost money. Here's when the manual approach is good enough — and when automation pays for itself.",
     category: "Tools & Apps",
@@ -2232,7 +2232,7 @@ export const ARTICLES: Article[] = [
   {
     slug: "excel-vs-expense-app-canada",
     regions: ["all"],
-    title: "Excel vs. Expense Tracking App: Which Should Canadian Freelancers Use?",
+    title: "Excel vs. Expense Tracking App for Canadian Freelancers",
     excerpt:
       "Excel is powerful and free. Expense apps are convenient and automated. For Canadian freelancers filing T2125, here's the honest comparison.",
     category: "Tools & Apps",
@@ -2353,7 +2353,7 @@ export const ARTICLES: Article[] = [
 
   {
     slug: "freelancer-tax-mistakes-canada",
-    title: "7 Common Tax Mistakes Canadian Freelancers Make (and How to Avoid Them)",
+    title: "7 Common Tax Mistakes Canadian Freelancers Make",
     excerpt:
       "These seven mistakes cost Canadian freelancers real money every year — through missed deductions, CRA interest charges, and denied claims. Here's how to avoid each one.",
     category: "Tax Strategy",
@@ -2414,7 +2414,7 @@ export const ARTICLES: Article[] = [
 
   {
     slug: "tax-season-stress-freelancers-canada",
-    title: "Stress-Free Tax Season for Canadian Freelancers: A Year-End Checklist",
+    title: "Stress-Free Tax Season: A Canadian Year-End Checklist",
     excerpt:
       "A practical year-end checklist that gets Canadian freelancers ready to file — covering receipts, income summaries, GST/HST, CPP, and what to hand off to your accountant.",
     category: "Tax Strategy",
@@ -2482,7 +2482,7 @@ export const ARTICLES: Article[] = [
 
   {
     slug: "cra-audit-guide-self-employed-canada",
-    title: "When the CRA Contacts You: Reviews, Audits and Your Rights (2026 Guide)",
+    title: "CRA Reviews and Audits for the Self-Employed (2026 Guide)",
     excerpt:
       "What to do when the CRA reviews or audits your return: checking the contact is genuine, how reviews and audits work, representatives, your rights and objections.",
     category: "Tax Strategy",

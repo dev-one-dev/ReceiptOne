@@ -23,7 +23,7 @@ export const Route = (createFileRoute as any)("/us/articles/$slug")({
 
     const seo = pageSEO({
       path: `/us/articles/${article.slug}`,
-      title: `${article.title} | ReceiptOne`,
+      title: article.title,
       description: article.excerpt,
       ogType: "article",
       ogImage: article.imageUrl,
