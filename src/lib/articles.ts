@@ -2183,7 +2183,7 @@ export const ARTICLES: Article[] = [
       "Spreadsheets are free. Automated apps cost money. Here's when the manual approach is good enough — and when automation pays for itself.",
     category: "Tools & Apps",
     publishedAt: "2026-05-10",
-    updatedAt: "2026-05-20",
+    updatedAt: "2026-10-05",
     imageUrl: "https://picsum.photos/seed/manual-vs-automated-expense-tracking-canada/600/400",
     imageAlt: "Canadian freelancer comparing manual spreadsheet vs automated expense tracking",
     tags: ["expense tracking", "automation", "spreadsheet", "freelancer", "bookkeeping"],
@@ -2218,7 +2218,7 @@ export const ARTICLES: Article[] = [
         type: "ul",
         items: [
           "30+ receipts per month — OCR extraction saves 2–4 minutes per receipt",
-          "Significant mileage claims — automatic logbooks eliminate the risk of a CRA-rejected paper logbook",
+          "Significant mileage claims — the CRA accepts any accurate logbook, paper or electronic, but an app makes it easier to record every trip as it happens",
           "Multiple projects or clients requiring separate expense tracking",
           "You've ever lost a receipt or missed a deduction because of poor organization",
         ],
