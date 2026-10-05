@@ -397,12 +397,12 @@ export const ARTICLES: Article[] = [
 
   {
     slug: "cra-audit-proof-expenses",
-    title: "How to Audit-Proof Your Business Expenses in Canada",
+    title: "How to Document Business Expenses So They Hold Up in a CRA Review (2026)",
     excerpt:
-      "A CRA audit doesn't have to be frightening if your records are solid. Here's the documentation system that makes freelancers and contractors untouchable at audit time.",
+      "How to support self-employed expense claims in a 2026 CRA review: the general tests, the rules for meals, home office, vehicle and family wages, and missing receipts.",
     category: "Tax Compliance",
-    publishedAt: "2026-05-10",
-    updatedAt: "2026-05-11",
+    publishedAt: "2026-10-04",
+    updatedAt: "2026-10-04",
     imageUrl: "https://picsum.photos/seed/cra-audit-proof-expenses/600/400",
     imageAlt: "Organized financial folders and tax documents for CRA audit preparation",
     tags: ["CRA audit", "expense documentation", "self-employed", "record keeping", "compliance"],
@@ -412,38 +412,134 @@ export const ARTICLES: Article[] = [
     body: [
       {
         type: "p",
-        text: "Being audit-proofed doesn't mean hiding expenses — it means having documentation so complete and organized that a CRA auditor can verify every claim without ambiguity. Self-employed Canadians are audited at higher rates than employees, making a systematic records approach essential rather than optional.",
+        text: "An expense holds up when you can show three things: you incurred it to earn business income, the amount is reasonable, and a document supports it. No expense is audit-proof in the sense of being beyond question. The CRA can review any claim, and what decides the outcome is whether your records answer its questions.",
+      },
+      {
+        type: "p",
+        text: "This guide covers the 2026 tax year and looks at the expense side of a self-employed return. It explains what the CRA examines, the general tests every expense must pass, the categories with their own documentation rules, and what to do when something is missing. What a receipt must show and how long to keep it are covered in our CRA receipt rules guide. Everything here comes from canada.ca and CRA publications.",
       },
       {
         type: "h2",
-        text: "The Four Elements of an Audit-Proof Expense",
+        text: "How the CRA Checks Expense Claims",
+      },
+      {
+        type: "p",
+        text: 'Most contact starts as a review. The CRA runs several review programs, some before your notice of assessment is issued and some after, that check deductions and credits "to make sure that amounts are reported correctly and that they are properly supported". It first tries to verify a claim from information it already has. If it needs more, it contacts you or your representative and asks for receipts or other documents by a set deadline.',
+      },
+      {
+        type: "p",
+        text: "An audit goes further. The CRA chooses files for audit based on a risk assessment, considering factors such as the likelihood of errors and indications of non-compliance. It may also compare your file with similar ones. According to the CRA's guide to audits (RC4188), an auditor can examine:",
       },
       {
         type: "ul",
         items: [
-          "Receipt or invoice that meets CRA requirements (date, vendor, total, GST/HST number for $30+ claims)",
-          "Business purpose notation — a single line explaining why the expense was incurred for business",
-          "Payment method record — bank statement or credit card record that corroborates the receipt",
-          "Category tag — linking the expense to the correct line on your T2125 form",
+          "Information the CRA already has, such as filed returns, credit history and property details",
+          "Business records: ledgers, journals, invoices, receipts, contracts and bank statements",
+          "Personal records: bank statements, mortgage documents and credit card statements",
+          "Records of related people and entities, such as a spouse or common-law partner, family members, corporations, partnerships or trusts",
+          "Adjustments your bookkeeper or accountant made for tax purposes",
         ],
       },
       {
+        type: "p",
+        text: "If the auditor proposes changes, you get a proposal letter and 30 days to agree or disagree. If you disagree, you can explain why and provide more documents, and if the issue is not resolved you can contact the auditor's team leader. Good records shorten an audit; missing records are one of the delays the CRA names.",
+      },
+      {
         type: "h2",
-        text: "The Biggest Audit Red Flags for Self-Employed Canadians",
+        text: "The Tests Every Expense Must Pass",
+      },
+      {
+        type: "p",
+        text: "Guide T4002 sets the baseline. As a rule, you can deduct any reasonable current expense you incur to earn income. Four consequences follow for your records:",
       },
       {
         type: "ul",
         items: [
-          "Unusually high meals and entertainment claims relative to business income",
-          "Vehicle expenses that imply near-100% business use of a personal vehicle",
-          "Large home office claims without a clear workspace proportion calculation",
-          "Round-number estimates instead of actual tracked expenses",
-          "Expenses that don't match the nature of your declared business",
+          "Business part only. You cannot deduct personal expenses, so where something is used both ways you enter only the business part. Your records need to show how you worked out that share.",
+          "Current, not capital. You cannot deduct the cost of capital property as an expense; it goes through capital cost allowance. A cost that gives a lasting benefit, or improves property beyond its original condition, is generally capital. One that restores it or recurs after a short period is generally current. Keep a record of property you buy and sell: who sold it, the cost and the date.",
+          "Net of tax credits. If you claim an input tax credit for the GST/HST on an expense, reduce the expense by that credit. Subtract any rebate, grant or assistance in the same way.",
+          "Right year. On the cash method you deduct only what you paid in the year, and you cannot deduct a prepaid amount (other than for inventory) that relates to a tax year two or more years after the year you paid it. On the accrual method, you deduct a prepaid expense in the year or years you get the benefit.",
         ],
+      },
+      {
+        type: "p",
+        text: "In practice, a defensible expense file pairs the receipt or invoice with proof of payment and a note of what the expense was for. The proof of payment is usually a bank or card statement, both on the CRA's list of records. The note is our suggestion rather than a CRA rule, but T4002 does tell you to write a description on any receipt that lacks one, such as a cash register tape.",
       },
       {
         type: "callout",
-        text: "If the CRA selects you for a review, you typically have 30 days to respond with supporting documentation. A cloud-based receipt system means you can produce a complete, organized expense report within hours — not weeks of frantic searching.",
+        text: "ReceiptOne lets you mark each receipt as business or personal and add a comment to it. The comment is a natural place for a one-line business purpose, written when you still remember it.",
+      },
+      {
+        type: "h2",
+        text: "Expenses With Their Own Documentation Rules",
+      },
+      {
+        type: "p",
+        text: "Meals and entertainment (line 8523). The most you can claim is 50% of the lesser of what you spent and an amount that is reasonable in the circumstances. The same limits apply to meals while travelling or at a convention. The limit does not apply in some listed cases, including when you bill the client for the meal and show it on the bill. Keep the receipt, and for the 50% exceptions keep whatever shows the exception applies, such as the invoice to the client.",
+      },
+      {
+        type: "p",
+        text: "Business use of home (line 9945, Part 7 of Form T2125). You qualify only if the workspace is your principal place of business, or you use it only to earn business income and regularly meet clients, customers or patients there. You deduct part of costs such as heating, electricity, insurance, maintenance, property taxes and mortgage interest, or rent if you rent. The share has to be on a reasonable basis, such as workspace area divided by total area. For a room also used personally, multiply that area share by the hours of business use divided by 24. The deduction cannot create or increase a business loss; the excess carries forward. Keep the bills, your measurements and your calculation.",
+      },
+      {
+        type: "p",
+        text: "Hypothetical example: a consultant's office is 15 m² of a 120 m² rented apartment, used only for the business, and it is their principal place of business. That is 12.5%. If the year's rent, utilities and tenant insurance total $27,300, the business share is $3,412.50, deductible up to the business's net income before this deduction.",
+      },
+      {
+        type: "p",
+        text: "Motor vehicle (line 9281). If you use a vehicle for business and personal trips, you must keep accurate records showing the business share of the kilometres you drove. In practice that means a logbook. Our mileage deduction guide covers the logbook rules and the 2026 limits in detail.",
+      },
+      {
+        type: "p",
+        text: "Salary to your child, spouse or common-law partner. You can deduct it if the work is necessary to earn the business income and the pay is reasonable, meaning what you would pay someone else (for a child, also considering their age). Keep documents to support it: a cancelled cheque if you pay by cheque, or a receipt signed by the person if you pay cash. Report the salary on a T4 slip as for any other employee.",
+      },
+      {
+        type: "h2",
+        text: "When a Record Is Missing",
+      },
+      {
+        type: "p",
+        text: "If you no longer have a record, the CRA's guidance is to try to get a copy from whoever created it, such as your bank or the supplier. If you can't, you can discuss it with the auditor or the auditor's team leader, who will work with you on other ways to confirm the amounts on your return. In a review, if receipts are unavailable, include a written explanation or call the number on the CRA's letter.",
+      },
+      {
+        type: "p",
+        text: "The consequences of inadequate records are set out in T4002. The CRA may determine your income by other methods and may disallow expenses you cannot support. There are penalties for not keeping adequate records, for not giving the CRA access to them, and for not giving information when asked. If the CRA finds your books inadequate, IC05-1R1 says it will ordinarily ask for a written agreement to keep them as required, and follow up within a reasonable time.",
+      },
+      {
+        type: "h2",
+        text: "If You Disagree With the Result",
+      },
+      {
+        type: "p",
+        text: "You have the right to object to a reassessment. For individuals, the deadline is the later of one year after the filing deadline for the return and 90 days after the date of the notice of assessment. If you miss it, you can apply for an extension no later than one year after the objection deadline. While any objection or appeal is open, keep the related records until it is resolved and the time for any further appeal has passed, even if that is longer than six years.",
+      },
+      {
+        type: "h2",
+        text: "Frequently Asked Questions",
+      },
+      {
+        type: "p",
+        text: "How long do I have to respond during an audit? If the auditor sends a proposal letter, you have 30 days to agree or disagree. For a review letter, reply within the time frame the letter gives, and call the number on it if you need more time.",
+      },
+      {
+        type: "p",
+        text: "Can the CRA look at my personal bank account? Yes. RC4188 lists your personal records, including bank and credit card statements, among the records an auditor can examine, along with records of family members and related entities.",
+      },
+      {
+        type: "p",
+        text: "Is a bank statement enough to support an expense? It is a record, and it proves payment, but it does not show what you bought. Keep the receipt or invoice with it; for GST/HST input tax credits, the CRA's documentary requirements apply on top.",
+      },
+      {
+        type: "p",
+        text: "Can I deduct the full cost of a client lunch? Generally no: the claim is limited to 50% of the lesser of the cost and a reasonable amount. One exception is when you bill the client for the meal and show it on the bill.",
+      },
+      {
+        type: "p",
+        text: "Can I claim my home office if I also work at a client's site? Only if you meet one of the two conditions: the home workspace is your principal place of business, or you use it only for the business and regularly meet clients there.",
+      },
+      {
+        type: "p",
+        text: "What happens if I can't find a receipt the CRA asks for? Ask the supplier or your bank for a copy. If that fails, explain in writing (in a review) or discuss alternatives with the auditor (in an audit). If an expense cannot be supported, the CRA may disallow it.",
       },
     ],
   },
