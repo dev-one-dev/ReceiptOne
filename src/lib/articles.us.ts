@@ -144,7 +144,7 @@ export const ARTICLES_US_ONLY: Article[] = [
       },
       {
         type: "callout",
-        text: "ReceiptOne captures receipts via camera, email forwarding, or PDF upload and keeps them in the cloud for 10+ years — your documentation is there when the IRS asks.",
+        text: "ReceiptOne captures receipts with your phone camera or by uploading an image or PDF, and keeps them in the cloud until you delete them or close your account.",
       },
       {
         type: "h2",
