@@ -692,10 +692,10 @@ export const ARTICLES: Article[] = [
     slug: "receipt-organization-tips-canada",
     title: "How to Organize Receipts for Tax Season in Canada",
     excerpt:
-      "Simple, CRA-compliant receipt organization systems that take 5 minutes per week and make tax season a review — not a recovery mission.",
+      "Simple receipt organization systems that keep your records in order all year and make tax season a review — not a recovery mission.",
     category: "Expense Tracking",
     publishedAt: "2026-05-10",
-    updatedAt: "2026-05-11",
+    updatedAt: "2026-10-05",
     imageUrl: "https://picsum.photos/seed/receipt-organization-tips-canada/600/400",
     imageAlt: "Organized filing system for business receipts and tax documents",
     tags: ["receipt organization", "tax season", "record keeping", "freelancer", "CRA"],
@@ -735,7 +735,7 @@ export const ARTICLES: Article[] = [
       },
       {
         type: "callout",
-        text: "Apps like ReceiptOne eliminate manual folder management entirely: scan, extract, categorize automatically, and export a CRA-ready report at any time. The manual folder approach works fine for lower volumes (under ~30 receipts/month); above that, an app saves significant time.",
+        text: "Apps like ReceiptOne eliminate manual folder management entirely: scan, extract, categorize automatically, and export a CRA-ready report at any time. A manual folder system can work well when you have only a few receipts; the more you collect, the more an app saves you from naming and filing each one by hand.",
       },
     ],
   },
