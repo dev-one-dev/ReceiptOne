@@ -12,6 +12,7 @@ export const config = {
     "/articles/how-long-keep-receipts-canada",
     "/articles/cra-receipt-rules-canadian-freelancer",
     "/articles/cra-acceptable-receipt-requirements",
+    "/articles/what-receipts-do-i-need-for-taxes-canada",
   ],
 };
 
@@ -20,6 +21,7 @@ const MERGED_ARTICLES: Record<string, string> = {
   "/articles/how-long-keep-receipts-canada": "/articles/cra-receipt-rules-canada",
   "/articles/cra-receipt-rules-canadian-freelancer": "/articles/cra-receipt-rules-canada",
   "/articles/cra-acceptable-receipt-requirements": "/articles/cra-receipt-rules-canada",
+  "/articles/what-receipts-do-i-need-for-taxes-canada": "/articles/cra-receipt-rules-canada",
 };
 
 export default function middleware(request: Request) {

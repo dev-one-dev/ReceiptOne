@@ -224,60 +224,6 @@ export const ARTICLES: Article[] = [
   },
 
   {
-    slug: "what-receipts-do-i-need-for-taxes-canada",
-    title: "What Receipts Do You Need for Taxes in Canada?",
-    excerpt:
-      "Not every piece of paper qualifies as a valid CRA receipt. Here's exactly what documentation Canadian freelancers and contractors need to support their business expense claims.",
-    category: "Tax Compliance",
-    publishedAt: "2026-05-10",
-    updatedAt: "2026-05-11",
-    imageUrl: "https://picsum.photos/seed/what-receipts-do-i-need-for-taxes-canada/600/400",
-    imageAlt: "Stack of receipts organized for Canadian tax filing",
-    tags: ["CRA", "receipts", "taxes", "freelancer", "documentation"],
-    clusterPillar: "cra-receipt-rules-canada",
-    clusterName: "CRA Receipt Rules",
-    relatedSlugs: ["cra-receipt-rules-canada"],
-    body: [
-      {
-        type: "p",
-        text: "Canadian tax law doesn't define a single document type called 'a receipt' — it requires supporting documentation that proves a business expense was incurred. In practice, that means different things for different purchases. A $4 coffee requires far less paperwork than a $2,000 laptop claim.",
-      },
-      {
-        type: "h2",
-        text: "Receipts by Purchase Type",
-      },
-      {
-        type: "ul",
-        items: [
-          "Under $30: vendor name, date, and total are sufficient — no GST number required",
-          "$30–$149.99: add the vendor's GST/HST registration number",
-          "$150 and over: also include the buyer's name or business name",
-          "Cash purchases: same requirements — a handwritten receipt from the vendor still qualifies",
-          "Online purchases: email order confirmations and invoices are valid if they include all required fields",
-          "Subscriptions: monthly invoices or annual receipts from the software/service provider",
-        ],
-      },
-      {
-        type: "h2",
-        text: "What Does NOT Count as a Receipt",
-      },
-      {
-        type: "ul",
-        items: [
-          "Bank or credit card statements — they confirm payment but not what was purchased",
-          "Quotes or estimates — these show a potential expense, not an actual one",
-          "Partial screenshots that cut off the vendor name, total, or tax details",
-          "Receipts in a currency other than CAD without a conversion record",
-        ],
-      },
-      {
-        type: "callout",
-        text: "If you have a receipt that's missing a required field (like the GST number), try contacting the vendor to request a corrected copy. Many vendors will re-issue a proper receipt if asked promptly.",
-      },
-    ],
-  },
-
-  {
     slug: "digital-receipts-canada-are-they-valid",
     title: "Are Digital Receipts Valid for the CRA? Email and Photo Receipts Explained",
     excerpt:
