@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowRight, Clock } from "lucide-react";
-import { ARTICLES, type Article } from "@/lib/articles";
+import { ARTICLES, readingMinutes, type Article } from "@/lib/articles";
 
 /* ----------------------------- Shared helpers ----------------------------- */
 
@@ -64,7 +64,7 @@ function FeaturedCard({ article, basePath }: { article: Article; basePath: strin
         <div className="mt-3 flex items-center gap-4 text-sm text-ink-60">
           <span className="flex items-center gap-1.5">
             <Clock className="size-3.5" aria-hidden />
-            {article.readTime} min read
+            {readingMinutes(article)} min read
           </span>
           <span>·</span>
           <time dateTime={article.publishedAt}>{formatDate(article.publishedAt)}</time>
@@ -113,7 +113,7 @@ function SmallCard({ article, basePath }: { article: Article; basePath: string }
         <div className="mt-auto pt-2 flex items-center gap-3 text-label text-ink-60">
           <span className="flex items-center gap-1">
             <Clock className="size-3" aria-hidden />
-            {article.readTime} min
+            {readingMinutes(article)} min read
           </span>
           <span>·</span>
           <time dateTime={article.publishedAt}>{formatDate(article.publishedAt)}</time>

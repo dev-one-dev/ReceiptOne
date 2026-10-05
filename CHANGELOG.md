@@ -20,6 +20,7 @@ All notable changes to the ReceiptOne landing site. Dates are ISO (YYYY-MM-DD).
 
 ### Fixed
 
+- Article reading time was hardcoded (4–12 min) and overstated; it is now computed from the body word count at 200 wpm, rounded up, minimum 1 (`readingMinutes` in `src/lib/articles.ts`), and every card shows "N min read" (2026-10-04).
 - CA pages linked the App Store badge to the US storefront; `StoreBadge` now takes a required `region` (2026-10-04).
 - US sub-pages declared the `/us`/`/ca` homepages as their hreflang alternates (2026-10-04).
 - Organization and Article publisher logos pointed at `/favicon.ico`, which does not exist (2026-10-04).

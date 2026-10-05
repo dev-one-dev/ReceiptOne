@@ -19,7 +19,6 @@ export interface Article {
   title: string;
   excerpt: string;
   category: string;
-  readTime: number;
   /** Date the article was first committed to this repo (YYYY-MM-DD). */
   publishedAt: string;
   /** Date of the article's last content change in this repo (YYYY-MM-DD). */
@@ -48,7 +47,6 @@ export const ARTICLES: Article[] = [
     excerpt:
       "Everything the Canada Revenue Agency requires for business receipts — what information must appear, how long to keep records, digital vs. paper rules, and how to build a system that survives an audit.",
     category: "Tax Compliance",
-    readTime: 10,
     publishedAt: "2026-05-10",
     updatedAt: "2026-05-11",
     imageUrl: "https://picsum.photos/seed/cra-receipt-rules-canada/600/400",
@@ -125,7 +123,6 @@ export const ARTICLES: Article[] = [
     excerpt:
       "The CRA has specific requirements for which receipts you must keep and what information they need to include. Getting this wrong can cost you deductions — or worse, trigger a reassessment.",
     category: "Tax Compliance",
-    readTime: 7,
     publishedAt: "2026-05-10",
     updatedAt: "2026-05-11",
     imageUrl: "https://picsum.photos/seed/cra-receipt-rules-canadian-freelancer/600/400",
@@ -197,7 +194,6 @@ export const ARTICLES: Article[] = [
     excerpt:
       "Not every piece of paper qualifies as a valid CRA receipt. Here's exactly what documentation Canadian freelancers and contractors need to support their business expense claims.",
     category: "Tax Compliance",
-    readTime: 5,
     publishedAt: "2026-05-10",
     updatedAt: "2026-05-11",
     imageUrl: "https://picsum.photos/seed/what-receipts-do-i-need-for-taxes-canada/600/400",
@@ -256,7 +252,6 @@ export const ARTICLES: Article[] = [
     excerpt:
       "Wondering whether an email receipt or a phone photo of a paper receipt will hold up with the CRA? The answer is yes — with a few important conditions.",
     category: "Tax Compliance",
-    readTime: 4,
     publishedAt: "2026-05-10",
     updatedAt: "2026-05-11",
     imageUrl: "https://picsum.photos/seed/digital-receipts-canada-are-they-valid/600/400",
@@ -309,7 +304,6 @@ export const ARTICLES: Article[] = [
     excerpt:
       "A CRA audit doesn't have to be frightening if your records are solid. Here's the documentation system that makes freelancers and contractors untouchable at audit time.",
     category: "Tax Compliance",
-    readTime: 6,
     publishedAt: "2026-05-10",
     updatedAt: "2026-05-11",
     imageUrl: "https://picsum.photos/seed/cra-audit-proof-expenses/600/400",
@@ -367,7 +361,6 @@ export const ARTICLES: Article[] = [
     excerpt:
       "A detailed breakdown of the CRA's tiered receipt requirements — what's mandatory at each purchase level, and what information you cannot afford to be missing.",
     category: "Tax Compliance",
-    readTime: 4,
     publishedAt: "2026-05-10",
     updatedAt: "2026-05-11",
     imageUrl: "https://picsum.photos/seed/cra-acceptable-receipt-requirements/600/400",
@@ -433,7 +426,6 @@ export const ARTICLES: Article[] = [
     excerpt:
       "Knowing exactly how long to keep receipts and tax records protects you during CRA audits while letting you safely dispose of documents you no longer need. The rules are more nuanced than you might think.",
     category: "Record Keeping",
-    readTime: 5,
     publishedAt: "2026-05-10",
     updatedAt: "2026-05-11",
     imageUrl: "https://picsum.photos/seed/how-long-keep-receipts-canada/600/400",
@@ -508,7 +500,6 @@ export const ARTICLES: Article[] = [
     excerpt:
       "A practical, end-to-end expense tracking system for Canadian freelancers and contractors — from capturing receipts daily to producing CRA-ready reports at filing time.",
     category: "Expense Tracking",
-    readTime: 9,
     publishedAt: "2026-05-10",
     updatedAt: "2026-05-11",
     imageUrl: "https://picsum.photos/seed/expense-tracking-canada-freelancers/600/400",
@@ -589,7 +580,6 @@ export const ARTICLES: Article[] = [
     excerpt:
       "A complete guide to the CRA's business expense categories on Form T2125 — what each line includes, what's excluded, and how to categorize common freelancer expenses correctly.",
     category: "Expense Tracking",
-    readTime: 7,
     publishedAt: "2026-05-10",
     updatedAt: "2026-05-11",
     imageUrl: "https://picsum.photos/seed/business-expense-categories-canada/600/400",
@@ -649,7 +639,6 @@ export const ARTICLES: Article[] = [
     excerpt:
       "Simple, CRA-compliant receipt organization systems that take 5 minutes per week and make tax season a review — not a recovery mission.",
     category: "Expense Tracking",
-    readTime: 5,
     publishedAt: "2026-05-10",
     updatedAt: "2026-05-11",
     imageUrl: "https://picsum.photos/seed/receipt-organization-tips-canada/600/400",
@@ -702,7 +691,6 @@ export const ARTICLES: Article[] = [
     excerpt:
       "A step-by-step guide to creating expense reports for your accountant, clients, and CRA — what to include, how to format it, and how to automate the process.",
     category: "Expense Tracking",
-    readTime: 5,
     publishedAt: "2026-05-10",
     updatedAt: "2026-05-11",
     imageUrl: "https://picsum.photos/seed/self-employed-expense-report-template-canada/600/400",
@@ -757,7 +745,6 @@ export const ARTICLES: Article[] = [
     excerpt:
       "When clients owe you money for out-of-pocket expenses, your tracking system determines how fast you get paid — and whether the amount is correct.",
     category: "Expense Tracking",
-    readTime: 4,
     publishedAt: "2026-05-10",
     updatedAt: "2026-05-11",
     imageUrl: "https://picsum.photos/seed/reimbursable-expenses-canada-freelancers/600/400",
@@ -812,7 +799,6 @@ export const ARTICLES: Article[] = [
     excerpt:
       "Comparing the real after-tax cost of a home office deduction versus a co-working membership for Canadian freelancers — the math might surprise you.",
     category: "Expense Tracking",
-    readTime: 5,
     publishedAt: "2026-05-10",
     updatedAt: "2026-05-20",
     imageUrl: "https://picsum.photos/seed/home-office-vs-coworking-expense-canada/600/400",
@@ -864,7 +850,6 @@ export const ARTICLES: Article[] = [
     excerpt:
       "Everything self-employed Canadians need to know about tracking GST/HST on expenses — from input tax credits to filing periods to the provincial rules that trip people up.",
     category: "GST / HST",
-    readTime: 10,
     publishedAt: "2026-05-10",
     updatedAt: "2026-05-11",
     imageUrl: "https://picsum.photos/seed/gst-hst-expense-tracking-canada/600/400",
@@ -945,7 +930,6 @@ export const ARTICLES: Article[] = [
     excerpt:
       "Claiming input tax credits (ITCs) is one of the most valuable tax advantages for self-employed Canadians. Here's how to track GST/HST correctly so you never leave money on the table.",
     category: "GST / HST",
-    readTime: 6,
     publishedAt: "2026-05-10",
     updatedAt: "2026-05-11",
     imageUrl: "https://picsum.photos/seed/track-gst-hst-business-expenses/600/400",
@@ -1014,7 +998,6 @@ export const ARTICLES: Article[] = [
     excerpt:
       "Input tax credits let GST/HST-registered freelancers recover the sales tax they pay on business expenses. Here's how ITCs work, what qualifies, and how to maximize your claims.",
     category: "GST / HST",
-    readTime: 6,
     publishedAt: "2026-05-10",
     updatedAt: "2026-05-11",
     imageUrl: "https://picsum.photos/seed/input-tax-credits-canada-guide/600/400",
@@ -1073,7 +1056,6 @@ export const ARTICLES: Article[] = [
     excerpt:
       "The $30,000 threshold, what counts toward it, when the clock starts, and why some freelancers should register voluntarily even before they're required to.",
     category: "GST / HST",
-    readTime: 5,
     publishedAt: "2026-05-10",
     updatedAt: "2026-05-11",
     imageUrl: "https://picsum.photos/seed/gst-hst-registration-threshold-canada/600/400",
@@ -1125,7 +1107,6 @@ export const ARTICLES: Article[] = [
     excerpt:
       "Provincial sales taxes in BC, Manitoba, Saskatchewan, and Quebec are often confused with GST/HST — but they follow entirely different rules for self-employed workers.",
     category: "GST / HST",
-    readTime: 5,
     publishedAt: "2026-05-10",
     updatedAt: "2026-05-11",
     imageUrl: "https://picsum.photos/seed/pst-qst-freelancers-canada/600/400",
@@ -1183,7 +1164,6 @@ export const ARTICLES: Article[] = [
     excerpt:
       "Everything self-employed Canadians need to know about deducting vehicle expenses — from the logbook requirement to the maximum deductible costs, with 2025 CRA limits.",
     category: "Mileage & Auto",
-    readTime: 7,
     publishedAt: "2026-05-10",
     updatedAt: "2026-08-06",
     imageUrl: "https://picsum.photos/seed/mileage-deduction-canada-freelancers/600/400",
@@ -1334,7 +1314,6 @@ export const ARTICLES: Article[] = [
     excerpt:
       "The practical, day-to-day discipline of mileage tracking for self-employed Canadians — what to log in the moment, GPS vs. manual logging, and the habits that keep a logbook audit-ready all year.",
     category: "Mileage & Auto",
-    readTime: 4,
     publishedAt: "2026-05-10",
     updatedAt: "2026-08-06",
     imageUrl: "https://picsum.photos/seed/mileage-tracking-self-employed-2025-guide/600/400",
@@ -1412,7 +1391,6 @@ export const ARTICLES: Article[] = [
     excerpt:
       "The CRA is specific about what a valid mileage logbook must contain. Missing even one required field can invalidate an entire year's vehicle deduction claim.",
     category: "Mileage & Auto",
-    readTime: 5,
     publishedAt: "2026-05-10",
     updatedAt: "2026-05-11",
     imageUrl: "https://picsum.photos/seed/cra-mileage-logbook-requirements/600/400",
@@ -1479,7 +1457,6 @@ export const ARTICLES: Article[] = [
     excerpt:
       "A detailed look at every vehicle expense category available to Canadian freelancers and contractors — with 2025 CRA limits and the documentation needed for each.",
     category: "Mileage & Auto",
-    readTime: 6,
     publishedAt: "2026-05-10",
     updatedAt: "2026-05-11",
     imageUrl: "https://picsum.photos/seed/vehicle-expense-deductions-canada/600/400",
@@ -1536,7 +1513,6 @@ export const ARTICLES: Article[] = [
     excerpt:
       "Manual mileage logbooks are a CRA compliance risk. Here's what to look for in a mileage tracking app — and how to choose the right one for your situation.",
     category: "Mileage & Auto",
-    readTime: 5,
     publishedAt: "2026-05-10",
     updatedAt: "2026-05-11",
     imageUrl: "https://picsum.photos/seed/mileage-tracking-apps-canada/600/400",
@@ -1594,7 +1570,6 @@ export const ARTICLES: Article[] = [
     excerpt:
       "A comprehensive walkthrough of how Canadian freelancers and contractors file taxes — from reporting income correctly to claiming every deduction you're entitled to.",
     category: "Tax Fundamentals",
-    readTime: 12,
     publishedAt: "2026-05-10",
     updatedAt: "2026-05-11",
     imageUrl: "https://picsum.photos/seed/freelancer-taxes-canada-guide/600/400",
@@ -1671,7 +1646,6 @@ export const ARTICLES: Article[] = [
     excerpt:
       "Self-employed Canadians can deduct a wide range of legitimate business expenses. Knowing which ones apply to you — and how to claim them correctly — can dramatically reduce your tax bill.",
     category: "Tax Deductions",
-    readTime: 8,
     publishedAt: "2026-05-10",
     updatedAt: "2026-05-11",
     imageUrl: "https://picsum.photos/seed/top-tax-deductions-canadian-self-employed-2025/600/400",
@@ -1748,7 +1722,6 @@ export const ARTICLES: Article[] = [
     excerpt:
       "The home office deduction is widely misunderstood — many freelancers claim too little, and some claim expenses they're not entitled to. Here's the accurate 2025 breakdown.",
     category: "Tax Deductions",
-    readTime: 6,
     publishedAt: "2026-05-10",
     updatedAt: "2026-05-11",
     imageUrl: "https://picsum.photos/seed/home-office-deduction-canadian-freelancers/600/400",
@@ -1822,7 +1795,6 @@ export const ARTICLES: Article[] = [
     excerpt:
       "Form T2125 is how self-employed Canadians report business income and expenses to the CRA. Here's a line-by-line walkthrough so you don't miss a deduction.",
     category: "Tax Fundamentals",
-    readTime: 8,
     publishedAt: "2026-05-10",
     updatedAt: "2026-05-11",
     imageUrl: "https://picsum.photos/seed/t2125-form-guide-canada/600/400",
@@ -1890,7 +1862,6 @@ export const ARTICLES: Article[] = [
     excerpt:
       "If you owe more than $3,000 in taxes, the CRA requires you to pay in quarterly instalments. Here's how to calculate the right amount and avoid interest charges.",
     category: "Tax Fundamentals",
-    readTime: 5,
     publishedAt: "2026-05-10",
     updatedAt: "2026-05-11",
     imageUrl: "https://picsum.photos/seed/tax-instalment-payments-canada-self-employed/600/400",
@@ -1945,7 +1916,6 @@ export const ARTICLES: Article[] = [
     excerpt:
       "A practical comparison of the top receipt scanning apps available to Canadian freelancers and small business owners — including GST/HST extraction and CRA compliance features.",
     category: "Tools & Apps",
-    readTime: 7,
     publishedAt: "2026-05-10",
     updatedAt: "2026-05-11",
     imageUrl: "https://picsum.photos/seed/receipt-scanner-apps-canada-comparison/600/400",
@@ -1996,7 +1966,6 @@ export const ARTICLES: Article[] = [
     excerpt:
       "QuickBooks and ReceiptOne solve different problems. Here's an honest look at when each tool makes sense for self-employed Canadians.",
     category: "Tools & Apps",
-    readTime: 5,
     publishedAt: "2026-05-10",
     updatedAt: "2026-05-11",
     imageUrl: "https://picsum.photos/seed/quickbooks-vs-receiptone-canada/600/400",
@@ -2052,7 +2021,6 @@ export const ARTICLES: Article[] = [
     excerpt:
       "Spreadsheets are free. Automated apps cost money. Here's when the manual approach is good enough — and when automation pays for itself.",
     category: "Tools & Apps",
-    readTime: 5,
     publishedAt: "2026-05-10",
     updatedAt: "2026-05-20",
     imageUrl: "https://picsum.photos/seed/manual-vs-automated-expense-tracking-canada/600/400",
@@ -2108,7 +2076,6 @@ export const ARTICLES: Article[] = [
     excerpt:
       "Excel is powerful and free. Expense apps are convenient and automated. For Canadian freelancers filing T2125, here's the honest comparison.",
     category: "Tools & Apps",
-    readTime: 4,
     publishedAt: "2026-05-10",
     updatedAt: "2026-05-20",
     imageUrl: "https://picsum.photos/seed/excel-vs-expense-app-canada/600/400",
@@ -2164,7 +2131,6 @@ export const ARTICLES: Article[] = [
     excerpt:
       "Tax season isn't a season — it's a year-round habit. Here's the monthly system that keeps Canadian freelancers CRA-ready without the April panic.",
     category: "Tax Strategy",
-    readTime: 6,
     publishedAt: "2026-05-10",
     updatedAt: "2026-05-11",
     imageUrl: "https://picsum.photos/seed/year-round-tax-prep-canada/600/400",
@@ -2231,7 +2197,6 @@ export const ARTICLES: Article[] = [
     excerpt:
       "These seven mistakes cost Canadian freelancers real money every year — through missed deductions, CRA interest charges, and denied claims. Here's how to avoid each one.",
     category: "Tax Strategy",
-    readTime: 7,
     publishedAt: "2026-05-10",
     updatedAt: "2026-05-11",
     imageUrl: "https://picsum.photos/seed/freelancer-tax-mistakes-canada/600/400",
@@ -2293,7 +2258,6 @@ export const ARTICLES: Article[] = [
     excerpt:
       "A practical year-end checklist that gets Canadian freelancers ready to file — covering receipts, income summaries, GST/HST, CPP, and what to hand off to your accountant.",
     category: "Tax Strategy",
-    readTime: 5,
     publishedAt: "2026-05-10",
     updatedAt: "2026-05-11",
     imageUrl: "https://picsum.photos/seed/tax-season-stress-freelancers-canada/600/400",
@@ -2362,7 +2326,6 @@ export const ARTICLES: Article[] = [
     excerpt:
       "A CRA audit of a self-employed return doesn't have to be catastrophic. Here's what actually happens, what they look for, and how strong documentation protects you.",
     category: "Tax Strategy",
-    readTime: 7,
     publishedAt: "2026-05-10",
     updatedAt: "2026-05-20",
     imageUrl: "https://picsum.photos/seed/cra-audit-guide-self-employed-canada/600/400",
@@ -2424,6 +2387,23 @@ export const ARTICLES: Article[] = [
 ];
 
 /* ----------------------------- Helpers ------------------------------------ */
+
+const WORDS_PER_MINUTE = 200;
+
+/** Words in the article body: paragraphs, headings, list items and callouts. */
+export function articleWordCount(article: Article): number {
+  let words = 0;
+  for (const block of article.body) {
+    const texts = block.type === "ul" ? block.items : [block.text];
+    for (const text of texts) words += text.split(/\s+/).filter(Boolean).length;
+  }
+  return words;
+}
+
+/** Reading time in whole minutes: body words / 200 wpm, rounded up, minimum 1. */
+export function readingMinutes(article: Article): number {
+  return Math.max(1, Math.ceil(articleWordCount(article) / WORDS_PER_MINUTE));
+}
 
 export function getArticle(slug: string): Article | undefined {
   return ARTICLES.find((a) => a.slug === slug);

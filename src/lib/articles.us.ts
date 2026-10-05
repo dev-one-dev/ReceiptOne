@@ -16,7 +16,6 @@ export const ARTICLES_US_ONLY: Article[] = [
     excerpt:
       "Everything the IRS requires to deduct a business expense — the ordinary-and-necessary test, documentation standards, record retention rules, and how to build a system that survives an audit.",
     category: "Tax Compliance",
-    readTime: 10,
     publishedAt: "2026-05-20",
     updatedAt: "2026-05-20",
     imageUrl: "https://picsum.photos/seed/irs-business-expense-rules/600/400",
@@ -111,7 +110,6 @@ export const ARTICLES_US_ONLY: Article[] = [
     excerpt:
       "Exactly what the IRS wants to see on your business receipts, how long to keep them, and whether digital copies are acceptable for audit purposes.",
     category: "Tax Compliance",
-    readTime: 6,
     publishedAt: "2026-05-20",
     updatedAt: "2026-05-20",
     imageUrl: "https://picsum.photos/seed/irs-receipt-documentation/600/400",
@@ -184,7 +182,6 @@ export const ARTICLES_US_ONLY: Article[] = [
     excerpt:
       "Every deduction available on IRS Schedule C explained — from home office and vehicle expenses to the qualified business income deduction that can cut your tax bill by 20%.",
     category: "Tax Deductions",
-    readTime: 12,
     publishedAt: "2026-05-20",
     updatedAt: "2026-05-20",
     imageUrl: "https://picsum.photos/seed/schedule-c-deductions-us/600/400",
@@ -251,7 +248,6 @@ export const ARTICLES_US_ONLY: Article[] = [
     excerpt:
       "The most valuable deductions available to US freelancers and 1099 contractors in 2025 — including the ones most people miss.",
     category: "Tax Deductions",
-    readTime: 9,
     publishedAt: "2026-05-20",
     updatedAt: "2026-05-20",
     imageUrl: "https://picsum.photos/seed/self-employed-deductions-us-2025/600/400",
@@ -339,7 +335,6 @@ export const ARTICLES_US_ONLY: Article[] = [
     excerpt:
       "Everything independent contractors need to know about 1099-NEC income, self-employment tax, quarterly payments, and keeping enough cash aside to avoid surprises in April.",
     category: "Tax Fundamentals",
-    readTime: 8,
     publishedAt: "2026-05-20",
     updatedAt: "2026-05-20",
     imageUrl: "https://picsum.photos/seed/1099-contractor-tax-guide/600/400",
@@ -407,7 +402,6 @@ export const ARTICLES_US_ONLY: Article[] = [
     excerpt:
       "The IRS requires freelancers to pay taxes four times a year. Here's exactly how to calculate what you owe, when to pay, and how to avoid underpayment penalties.",
     category: "Tax Fundamentals",
-    readTime: 7,
     publishedAt: "2026-05-20",
     updatedAt: "2026-05-20",
     imageUrl: "https://picsum.photos/seed/quarterly-taxes-us-freelancers/600/400",
@@ -493,7 +487,6 @@ export const ARTICLES_US_ONLY: Article[] = [
     excerpt:
       "The 2025 IRS standard mileage rate is 70 cents per mile. Here's how to track qualifying trips, maintain a compliant mileage log, and decide whether the standard rate or actual expenses is better for you.",
     category: "Mileage & Auto",
-    readTime: 6,
     publishedAt: "2026-05-20",
     updatedAt: "2026-05-20",
     imageUrl: "https://picsum.photos/seed/irs-mileage-rate-2025/600/400",
@@ -565,7 +558,6 @@ export const ARTICLES_US_ONLY: Article[] = [
     excerpt:
       "How to claim the home office deduction using Form 8829 or the simplified method — including the exclusive-use rule, what expenses qualify, and how to calculate the deduction correctly.",
     category: "Tax Deductions",
-    readTime: 7,
     publishedAt: "2026-05-20",
     updatedAt: "2026-05-20",
     imageUrl: "https://picsum.photos/seed/home-office-deduction-us/600/400",
@@ -638,7 +630,6 @@ export const ARTICLES_US_ONLY: Article[] = [
     excerpt:
       "How sales tax works on your business purchases, whether it's separately deductible, when you might need to collect it from clients, and why tracking it matters for your records.",
     category: "Tax Fundamentals",
-    readTime: 5,
     publishedAt: "2026-05-20",
     updatedAt: "2026-05-20",
     imageUrl: "https://picsum.photos/seed/sales-tax-business-expenses-us/600/400",

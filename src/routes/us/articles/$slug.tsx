@@ -3,7 +3,13 @@ import { ArrowLeft, ArrowRight, CheckCircle2, Clock } from "lucide-react";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { pageSEO, breadcrumbJsonLd } from "@/lib/seo";
-import { ARTICLE_BYLINE, articleJsonLd, type ContentBlock, type Article } from "@/lib/articles";
+import {
+  ARTICLE_BYLINE,
+  articleJsonLd,
+  readingMinutes,
+  type ContentBlock,
+  type Article,
+} from "@/lib/articles";
 import { articleHreflang, getHelpCenterArticle, getHelpCenterRelated } from "@/lib/help-center";
 import { US_ARTICLES } from "@/lib/articles.us";
 
@@ -152,7 +158,7 @@ function RelatedCard({ article }: { article: Article }) {
         <div className="mt-auto flex items-center gap-3 pt-4 text-label text-ink-60">
           <span className="flex items-center gap-1">
             <Clock className="size-3" aria-hidden />
-            {article.readTime} min
+            {readingMinutes(article)} min read
           </span>
           <span>·</span>
           <time dateTime={article.publishedAt}>{formatDate(article.publishedAt)}</time>
@@ -270,7 +276,7 @@ function USArticleDetailPage() {
             <div className="ml-auto flex items-center gap-4 font-sans text-sm text-ink-60">
               <span className="flex items-center gap-1.5">
                 <Clock className="size-4" aria-hidden />
-                {article.readTime} min read
+                {readingMinutes(article)} min read
               </span>
               <span>·</span>
               <time dateTime={article.publishedAt}>{formatDate(article.publishedAt)}</time>
