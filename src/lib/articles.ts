@@ -1733,7 +1733,7 @@ export const ARTICLES: Article[] = [
       "A comprehensive walkthrough of how Canadian freelancers and contractors file taxes — from reporting income correctly to claiming every deduction you're entitled to.",
     category: "Tax Fundamentals",
     publishedAt: "2026-05-10",
-    updatedAt: "2026-05-11",
+    updatedAt: "2026-10-05",
     imageUrl: "https://picsum.photos/seed/freelancer-taxes-canada-guide/600/400",
     imageAlt: "Canadian freelancer filing self-employed taxes with CRA forms",
     tags: ["freelancer taxes", "self-employed", "T2125", "CRA", "tax filing", "deductions"],
@@ -1763,7 +1763,7 @@ export const ARTICLES: Article[] = [
       },
       {
         type: "p",
-        text: "As a self-employed Canadian, you pay both the employee and employer portions of CPP on your net self-employment income. For 2025, the combined CPP1 rate is 11.9% (up to the maximum pensionable earnings of $71,300), and CPP2 contributions apply on earnings between $71,300 and $81,900. This is a significant cost — roughly $6,000–$7,000 for a freelancer at maximum earnings — but the full employee-portion is claimed as a tax deduction, and the employer portion is eligible for a federal tax credit.",
+        text: "As a self-employed Canadian, you pay both the employee and employer portions of CPP on your net self-employment income. For 2026, that is 11.9% of earnings between the $3,500 basic exemption and the maximum pensionable earnings of $74,600 (a maximum of $8,460.90), plus second additional contributions (CPP2) of 8% on earnings between $74,600 and $85,000 (a maximum of $832). For 2025 the ceilings were $71,300 and $81,200. Half of your base contributions earns a non-refundable tax credit; the other half, plus the first and second additional contributions, is deducted from income.",
       },
       {
         type: "h2",
@@ -1771,7 +1771,7 @@ export const ARTICLES: Article[] = [
       },
       {
         type: "p",
-        text: "If your net tax owing exceeds $3,000 (or $1,800 in Quebec) in either the current or previous tax year, the CRA requires quarterly tax instalment payments: March 15, June 15, September 15, and December 15. Missing instalments triggers interest charges at the prescribed rate. The easiest method: pay one-quarter of your prior year's net tax owing each quarter.",
+        text: "You have to pay quarterly instalments if your net tax owing is more than $3,000 ($1,800 in Quebec) in the current year and in either of the two previous years. They are due March 15, June 15, September 15, and December 15. Missing instalments triggers interest charges at the prescribed rate. The easiest method: pay one-quarter of your prior year's net tax owing each quarter.",
       },
       {
         type: "h2",
@@ -1783,8 +1783,8 @@ export const ARTICLES: Article[] = [
           "April 30: balance owing due (even though filing deadline is June 15)",
           "June 15: T1 filing deadline for self-employed individuals and their spouses",
           "March 15, June 15, Sept 15, Dec 15: quarterly instalment due dates",
-          "April 30 or 3 months after year-end: GST/HST annual return due",
-          "February 28 (next year): T4A slips due from clients who paid you $500+ for services",
+          "June 15 / April 30: GST/HST return and payment for annual filers who are sole proprietors with a calendar fiscal year",
+          "End of February (next year): T4A slips from businesses that paid you more than $500 for services in the calendar year (box 048)",
         ],
       },
       {
@@ -1793,11 +1793,11 @@ export const ARTICLES: Article[] = [
       },
       {
         type: "p",
-        text: "Despite the extra complexity, self-employed Canadians have access to a broader range of deductions than employees. Home office, vehicle expenses, professional development, business meals, equipment, software, and more — all reduce your taxable income dollar for dollar. A freelancer earning $80,000 with $20,000 in legitimate deductions pays tax on $60,000, not $80,000. Building a solid expense-tracking system is the single highest-ROI financial habit a freelancer can develop.",
+        text: "Despite the extra complexity, self-employed Canadians have access to a broader range of deductions than employees. Home office, vehicle expenses, professional development, business meals, equipment, software, and more — all reduce your taxable income dollar for dollar. Hypothetical example: a freelancer with $80,000 of business income and $20,000 of legitimate expenses has net business income of $60,000, not $80,000. Building a solid expense-tracking system is the single highest-ROI financial habit a freelancer can develop.",
       },
       {
         type: "callout",
-        text: "The RRSP advantage: self-employed Canadians have no workplace pension, but 18% of net income (up to the annual limit — $31,560 for 2024) can be contributed to an RRSP and deducted from income. Maxing your RRSP is often the largest single deduction available to a high-earning freelancer.",
+        text: "The RRSP advantage: self-employed Canadians have no workplace pension, but RRSP deduction room grows each year by the lesser of 18% of your previous year's earned income and the annual RRSP dollar limit ($33,810 for 2026), less any pension adjustment. Maxing your RRSP is often the largest single deduction available to a high-earning freelancer.",
       },
     ],
   },
