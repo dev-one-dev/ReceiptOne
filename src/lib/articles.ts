@@ -2484,65 +2484,183 @@ export const ARTICLES: Article[] = [
 
   {
     slug: "cra-audit-guide-self-employed-canada",
-    title: "CRA Audit Guide for Self-Employed Canadians: What to Expect and How to Prepare",
+    title: "When the CRA Contacts You: Reviews, Audits and Your Rights (2026 Guide)",
     excerpt:
-      "A CRA audit of a self-employed return doesn't have to be catastrophic. Here's what actually happens, what they look for, and how strong documentation protects you.",
+      "What to do when the CRA reviews or audits your return: checking the contact is genuine, how reviews and audits work, representatives, your rights and objections.",
     category: "Tax Strategy",
-    publishedAt: "2026-05-10",
-    updatedAt: "2026-05-20",
+    publishedAt: "2026-10-05",
+    updatedAt: "2026-10-05",
     imageUrl: "https://picsum.photos/seed/cra-audit-guide-self-employed-canada/600/400",
     imageAlt: "Canadian freelancer preparing documentation for CRA audit review",
     tags: ["CRA audit", "self-employed", "review", "reassessment", "record keeping", "compliance"],
-    relatedSlugs: [
-      "cra-audit-proof-expenses",
-      "cra-receipt-rules-canada",
-      "freelancer-tax-mistakes-canada",
-    ],
+    relatedSlugs: ["cra-audit-proof-expenses", "cra-receipt-rules-canada"],
     body: [
       {
         type: "p",
-        text: "Self-employed Canadians are audited at roughly twice the rate of employees. Most 'audits' are actually desk reviews — a CRA officer asks for documentation on specific claims. Full field audits (where an officer visits your business) are less common and typically reserved for higher-income businesses or multiple years of inconsistency.",
-      },
-      {
-        type: "h2",
-        text: "What Triggers a CRA Review",
-      },
-      {
-        type: "ul",
-        items: [
-          "Expense-to-income ratios that differ significantly from industry norms",
-          "Large year-over-year swings in income or expense categories",
-          "Vehicle expense claims implying near-100% business use",
-          "Home office claims in excess of 20% of home costs (attracts scrutiny, not automatically wrong)",
-          "Repeated net business losses — the CRA may question whether it's a genuine business",
-          "Third-party information (T4A slips from clients) that doesn't match your reported income",
-        ],
-      },
-      {
-        type: "h2",
-        text: "What the CRA Actually Asks For",
+        text: "When the CRA contacts you about a return, first confirm it is really the CRA. Then find out whether it is a review, which asks you to support specific claims, or an audit, which examines your books and records more broadly, and respond by the deadline it gives you.",
       },
       {
         type: "p",
-        text: "A typical desk review requests: bank statements for the year, credit card statements showing business purchases, receipts for specific expense claims (often the largest ones or entire categories), mileage logbooks, and home office calculations. You typically have 30 days to respond.",
+        text: "This guide covers the process from first contact to a final decision for the 2026 tax year: the CRA's review programs, the stages of an audit, getting a representative, your rights, and what to do if you disagree or find a mistake yourself. For how to document expenses so they hold up, see our companion guide. Everything here comes from canada.ca and CRA publications, including RC4188, What You Should Know About Audits.",
       },
       {
         type: "h2",
-        text: "How to Respond Effectively",
+        text: "First, Check That It Is Really the CRA",
+      },
+      {
+        type: "p",
+        text: "The CRA may contact you by letter or phone when it is reviewing your return. If your correspondence preference is electronic, it emails you to say a letter is waiting in your CRA account. If a caller says they are from the CRA and you are unsure, the CRA's advice is to:",
       },
       {
         type: "ul",
         items: [
-          "Respond by the deadline — extensions are available but must be requested proactively",
-          "Provide exactly what was requested, organized and clearly labelled",
-          "Don't volunteer information beyond what's requested",
-          "If a specific receipt is missing, provide the best available substitute: bank record + vendor confirmation",
-          "Consider engaging a tax professional for any audit involving more than $10,000 in disputed deductions",
+          "Tell the caller you want to verify their identity first, and note their name, phone number and office location",
+          "End the call and contact the CRA yourself before giving any information: 1-800-959-8281 for individuals in the provinces, 1-866-426-1527 in the territories, or 1-800-959-5525 for businesses",
+          "Call the employee back only once you have confirmed who they are",
         ],
       },
       {
-        type: "callout",
-        text: "The best audit preparation happens 12 months before any contact arrives. A digital archive of all receipts, a proper mileage logbook, and a reconciled expense report means a 30-day response deadline is manageable — not a crisis.",
+        type: "p",
+        text: "The CRA lists red flags for a scam. The caller gives no proof of working for the CRA. They pressure you to act now, use aggressive language or threaten arrest. They ask for payment by prepaid credit card, gift card or cryptocurrency, or for information you would not put on your return, such as a credit card number. For a letter, you can sign in to your CRA account to check whether it was issued.",
+      },
+      {
+        type: "h2",
+        text: "Review or Audit: Which One Is This?",
+      },
+      {
+        type: "p",
+        text: 'Most contact about an individual return comes from a review program. These check income amounts, deductions and credits "to make sure that amounts are reported correctly and that they are properly supported". Among them:',
+      },
+      {
+        type: "ul",
+        items: [
+          "Pre-assessment Review Program: before your notice of assessment is issued",
+          "Processing Review Program: similar, but after the notice of assessment",
+          "Request Verification Program: reviews a change you asked for, before a notice of reassessment",
+          "Matching Program: compares your return with information from third parties such as employers or financial institutions",
+          "Supplementary Examination Program: income, losses and deductions that need a more detailed look, before or after assessment",
+        ],
+      },
+      {
+        type: "p",
+        text: "An audit is a closer examination of your books and records to confirm you are meeting your obligations. The CRA chooses files for audit based on a risk assessment. It looks at factors such as the likelihood of errors or signs of non-compliance, and may compare your file with similar ones or use information from other audits.",
+      },
+      {
+        type: "h2",
+        text: "Responding to a Review Letter",
+      },
+      {
+        type: "p",
+        text: "The CRA first tries to verify your claim from information it already has, and contacts you only if it needs more. When it does:",
+      },
+      {
+        type: "ul",
+        items: [
+          "Reply within the time frame in the letter, to the address in the letter",
+          "Include the reference number from the upper right corner of the letter",
+          "Send all the receipts and documents requested that apply to you; scanned copies can be uploaded through My Account or Represent a Client",
+          "If a document is not available, include a written explanation or call the number at the bottom of the letter",
+          "If you need more time, call that same number",
+        ],
+      },
+      {
+        type: "p",
+        text: "If your claim is changed after a review and you later find more supporting documents, the CRA says it will accept new submissions and review the claim again.",
+      },
+      {
+        type: "h2",
+        text: "What Happens in an Audit",
+      },
+      {
+        type: "p",
+        text: "An auditor contacts you by mail, phone or both to set the date, time and place. On-site audits normally take place at your home, your place of business or your representative's office, and the auditor shows a valid identification card on arrival. Otherwise the audit is done at a CRA office, possibly by an auditor in another region, who will ask you to bring or send the documents.",
+      },
+      {
+        type: "p",
+        text: "The auditor may copy your electronic records or borrow documents, giving you a detailed receipt for anything borrowed. Auditors are not allowed to receive records by email; they will explain the CRA's secure options. You must make all relevant records available, paper and electronic, and the CRA notes that failing to provide required records is an offence.",
+      },
+      {
+        type: "p",
+        text: "At the end, one of three things happens. If your assessment is correct, you get a completion letter. If changes are needed, you get a proposal letter explaining them and have 30 days to agree or disagree. If you disagree, contact the auditor with your reasons and any further documents. If that doesn't resolve it, you can contact the auditor's team leader, whose details are in the auditor's letters. A final letter then confirms no change, more tax owing or a refund. If you will owe more, the auditor can estimate the amount before the reassessment so you can pay early and limit interest.",
+      },
+      {
+        type: "p",
+        text: "How long an audit takes depends on factors such as the state of your records, the scope of the audit, delays from missing records, and consultation with other CRA specialists. The CRA says good records and co-operation shorten it, and missing records cause delays. If you no longer have a record, try to get a copy from whoever created it, such as your bank or a supplier. If you can't, the auditor or team leader will work with you on other ways to confirm the amount.",
+      },
+      {
+        type: "h2",
+        text: "Getting Help: Authorizing a Representative",
+      },
+      {
+        type: "p",
+        text: 'You have the right to be represented by a person of your choice. A representative only gets access once you authorize them. The fastest way is through My Account, by adding them under "Authorized representative(s)" in your profile. A representative with a RepID can also send a request through Represent a Client for you to confirm in My Account. The slowest way is Form AUT-01, which gives offline access only, by phone, mail, fax and in person, with a separate signed form for each representative.',
+      },
+      {
+        type: "h2",
+        text: "Your Rights During a Review or Audit",
+      },
+      {
+        type: "p",
+        text: "The Taxpayer Bill of Rights sets out 16 rights in your dealings with the CRA, plus a Commitment to Small Business. Several matter most when your return is being examined:",
+      },
+      {
+        type: "ul",
+        items: [
+          "The right to pay no more and no less than what is required by law",
+          "The right to a formal review and a subsequent appeal",
+          "The right, unless otherwise provided by law, not to pay income tax amounts in dispute before you have had an impartial review",
+          "The right to relief from penalties and interest because of extraordinary circumstances",
+          "The right to be represented by a person of your choice",
+          "The right to lodge a service complaint, and to request a formal review, without fear of reprisal",
+        ],
+      },
+      {
+        type: "h2",
+        text: "If You Disagree With the Outcome",
+      },
+      {
+        type: "p",
+        text: "You can object to a reassessment. For individuals (other than trusts), the deadline is the later of one year after the filing deadline for the return and 90 days after the date of the notice of assessment. If you miss it, you can apply for an extension, as soon as possible and no later than one year after the objection deadline. After the CRA decides your objection, an appeal to the Tax Court of Canada must be received within 90 days of the date the CRA sends its decision.",
+      },
+      {
+        type: "p",
+        text: "Separately, if events beyond your control kept you from meeting your obligations, you can ask the CRA to cancel or waive penalties and interest. At the time of writing, the CRA's page put the average processing time for these requests at about 16 months.",
+      },
+      {
+        type: "h2",
+        text: "If You Find a Mistake Before the CRA Does",
+      },
+      {
+        type: "p",
+        text: "The Voluntary Disclosures Program lets you correct past errors or omissions. Since October 1, 2025, unprompted applications normally receive general relief of 75% of the applicable interest and 100% of penalties. Applications prompted by a CRA communication, such as an education letter, are now eligible too, normally for partial relief of 25% of interest and up to 100% of penalties. Eligibility remains restricted for anyone already under audit or investigation.",
+      },
+      {
+        type: "h2",
+        text: "Frequently Asked Questions",
+      },
+      {
+        type: "p",
+        text: "How do I know a CRA call is genuine? Take the caller's name, number and office location, hang up, and confirm through the CRA's own enquiry lines before sharing anything. Demands for gift cards or cryptocurrency, or threats of arrest, are scam red flags.",
+      },
+      {
+        type: "p",
+        text: "What is the difference between a review and an audit? A review checks that specific amounts on your return are supported, usually by asking for documents. An audit examines your books and records more broadly, may happen on-site, and ends with a proposal letter if changes are needed.",
+      },
+      {
+        type: "p",
+        text: "How long do I have to respond? For a review, the time frame is in the letter, and you can call the number on it to ask for more time. For an audit proposal letter, you have 30 days to agree or disagree.",
+      },
+      {
+        type: "p",
+        text: "Can my accountant deal with the CRA for me? Yes, once you authorize them, most quickly through My Account. Authorizing a representative does not remove your own responsibility for your records.",
+      },
+      {
+        type: "p",
+        text: "Do I have to pay a reassessment I am objecting to? The Taxpayer Bill of Rights says you have the right not to pay income tax amounts in dispute before an impartial review, unless the law provides otherwise.",
+      },
+      {
+        type: "p",
+        text: "Can I still use the Voluntary Disclosures Program if the CRA has written to me? Since October 1, 2025, applications prompted by a CRA communication can be accepted, normally with partial relief. It is restricted once you are under audit or investigation.",
       },
     ],
   },
