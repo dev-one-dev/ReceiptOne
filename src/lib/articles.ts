@@ -801,7 +801,7 @@ export const ARTICLES: Article[] = [
       "When clients owe you money for out-of-pocket expenses, your tracking system determines how fast you get paid — and whether the amount is correct.",
     category: "Expense Tracking",
     publishedAt: "2026-05-10",
-    updatedAt: "2026-05-11",
+    updatedAt: "2026-10-05",
     imageUrl: "https://picsum.photos/seed/reimbursable-expenses-canada-freelancers/600/400",
     imageAlt: "Freelancer submitting a client expense reimbursement report",
     tags: [
@@ -838,10 +838,10 @@ export const ARTICLES: Article[] = [
       {
         type: "ul",
         items: [
-          "If you're GST/HST-registered and the expense is reimbursed, you may need to charge GST/HST on the reimbursement as part of your supply",
-          "Whether reimbursements attract GST/HST depends on whether the expense is considered a 'disbursement' (passthrough) or a 'supply' (your service)",
-          "True disbursements — where you act purely as a payment agent — generally don't attract additional GST/HST",
-          "Consult a tax professional if your reimbursements are significant — the rules are fact-specific",
+          "The CRA's answer turns on whether you incurred the expense as your client's agent (GST/HST Info Sheet GI-197, Out-of-Pocket Expenses)",
+          "Not incurred as agent: if you're GST/HST-registered and bill the client for the cost, the amount is additional consideration for your service, and GST/HST applies to it in the same way and at the same rate as it applies to your service",
+          "Incurred as agent: the client is treated as the recipient of the supply, so the amount you pass on is not additional consideration for your service and you don't charge GST/HST on it",
+          "Whether you acted as agent depends on the facts; the CRA's policy statement P-182R, Agency, sets out the tests. Get advice if your reimbursements are significant",
         ],
       },
     ],
