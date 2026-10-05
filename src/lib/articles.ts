@@ -981,12 +981,12 @@ export const ARTICLES: Article[] = [
 
   {
     slug: "track-gst-hst-business-expenses",
-    title: "How to Track GST/HST on Your Business Expenses",
+    title: "How to Track GST/HST on Your Business Expenses (2026)",
     excerpt:
-      "Claiming input tax credits (ITCs) is one of the most valuable tax advantages for self-employed Canadians. Here's how to track GST/HST correctly so you never leave money on the table.",
+      "When you must register for GST/HST, the 2026 rates by province, what a receipt needs for an input tax credit at each tier, and how to file as a sole proprietor.",
     category: "GST / HST",
-    publishedAt: "2026-05-10",
-    updatedAt: "2026-05-11",
+    publishedAt: "2026-10-05",
+    updatedAt: "2026-10-05",
     imageUrl: "https://picsum.photos/seed/track-gst-hst-business-expenses/600/400",
     imageAlt: "Person reviewing financial spreadsheets and tax documents",
     tags: ["GST", "HST", "input tax credits", "ITC", "self-employed"],
@@ -1000,48 +1000,101 @@ export const ARTICLES: Article[] = [
     body: [
       {
         type: "p",
-        text: "If you're registered for GST/HST (which is mandatory once your revenue exceeds $30,000 in any 12-month period), you're entitled to claim input tax credits (ITCs) for the GST/HST you paid on business expenses. This effectively means the government refunds you the sales tax on legitimate business purchases — a significant benefit worth hundreds or thousands of dollars annually.",
+        text: "Once you are registered for GST/HST, you can recover the GST/HST you pay on business purchases by claiming input tax credits (ITCs) on your return. To do that, you need to track the tax on every eligible expense and keep a receipt that meets the CRA's documentation tier for its amount. This guide covers when registration becomes mandatory, the rates you will see on receipts, what each receipt must show, and how often you file. Every rule and figure comes from canada.ca and Guide RC4022, General Information for GST/HST Registrants.",
       },
       {
         type: "h2",
-        text: "Understanding GST vs. HST by Province",
+        text: "When Registration Becomes Mandatory",
+      },
+      {
+        type: "p",
+        text: "You don't have to register while you are a small supplier. RC4022 defines that as revenue from worldwide taxable supplies, together with your associates', of $30,000 or less in a single calendar quarter and over the last four consecutive calendar quarters. The calculation leaves out sales of goodwill, financial services and sales of capital property. You stop being a small supplier, and must register, once you go over $30,000 in either test. The two tests have different effective dates:",
       },
       {
         type: "ul",
         items: [
-          "Ontario, New Brunswick, Nova Scotia, PEI, Newfoundland & Labrador: 15% HST",
-          "British Columbia, Manitoba, Saskatchewan: 5% GST + provincial sales tax (PST) — PST is NOT recoverable as an ITC",
-          "Alberta, Yukon, NWT, Nunavut: 5% GST only — no provincial sales tax",
-          "Quebec: 5% GST + 9.975% QST — QST is claimed separately through Revenu Québec",
+          "Over $30,000 in a single calendar quarter: you are a registrant immediately. Your effective date of registration is the day of the sale that took you over the threshold, you must collect GST/HST on that sale, and you must register within 29 days of that day.",
+          "Over $30,000 across four consecutive calendar quarters, but not in any one quarter: you are still a small supplier for those quarters and for the month after them. Your effective date is the day of your first sale after you stop being a small supplier, and you have 29 days from that day to register.",
+        ],
+      },
+      {
+        type: "p",
+        text: "RC4022's own examples show the difference. In the first, a sale on September 23 pushed one quarter's revenue past $30,000, so tax applied to that sale and registration was due by October 22. In the second, four quarters ending March 31, 2025 totalled $32,000 with no single quarter over the threshold. The business stopped being a small supplier at the end of April 2025 and had to start collecting GST/HST in May 2025.",
+      },
+      {
+        type: "h2",
+        text: "GST/HST Rates by Province",
+      },
+      {
+        type: "p",
+        text: "The rate on a receipt depends on where the supply is made. Current rates, from the CRA's GST/HST rates page:",
+      },
+      {
+        type: "ul",
+        items: [
+          "13% HST: Ontario",
+          "14% HST: Nova Scotia (down from 15% on April 1, 2025)",
+          "15% HST: New Brunswick, Newfoundland and Labrador, Prince Edward Island",
+          "5% GST: Alberta, British Columbia, Manitoba, Saskatchewan, Quebec, Northwest Territories, Nunavut, Yukon",
+          "Provincial sales tax charged separately: British Columbia 7% PST, Manitoba 7% RST, Saskatchewan 6% PST, Quebec 9.975% QST",
+        ],
+      },
+      {
+        type: "p",
+        text: "Only GST and HST are recovered through ITCs on your GST/HST return. Keep PST and RST separate in your records; they are not part of the GST/HST you can claim back. Quebec's QST is administered by Revenu Québec under its own rules.",
+      },
+      {
+        type: "h2",
+        text: "What a Receipt Needs for an ITC",
+      },
+      {
+        type: "p",
+        text: "You must have sufficient documentary evidence before you claim an ITC, and what counts depends on the total of the sale:",
+      },
+      {
+        type: "ul",
+        items: [
+          "Under $100: the supplier's (or intermediary's) business or trading name, the invoice date (or the date GST/HST was paid or payable), and the total amount paid or payable.",
+          "$100 to $499.99: all of the above, plus the GST/HST charged (or a statement that the price includes it at the applicable rate), the status of each supply if taxable and exempt items are mixed, and the supplier's or intermediary's GST/HST registration number.",
+          "$500 or more: all of the above, plus your name or trading name (or your authorized agent's), a brief description of the goods or services, and the terms of payment.",
+        ],
+      },
+      {
+        type: "p",
+        text: "These tiers replaced the earlier $30 and $150 thresholds as of April 20, 2021. Hypothetical example: a $240 printer from an Ontario retailer qualifies only if the receipt shows the HST (or says it is included) and the retailer's registration number. You can confirm a number with the CRA's free GST/HST Registry before you claim.",
+      },
+      {
+        type: "callout",
+        text: "Meals and entertainment follow the income tax limit. Where the deduction is limited to 50% of the cost, RC4022 says you can claim 50% of the GST/HST you paid on those expenses as ITCs.",
+      },
+      {
+        type: "h2",
+        text: "Reporting Periods and Due Dates",
+      },
+      {
+        type: "p",
+        text: "The CRA assigns your reporting period from your revenue from taxable supplies. If it is $1,500,000 or less you have an annual period. More than $1,500,000 up to $6,000,000 means quarterly, and more than $6,000,000 means monthly. You can elect to file more often than assigned.",
+      },
+      {
+        type: "ul",
+        items: [
+          "Annual filers usually file and pay within three months after the end of the fiscal year.",
+          "A sole proprietor with an annual reporting period and a calendar fiscal year generally files by June 15 of the following year, but must pay by April 30.",
+          "Annual filers whose net tax was $3,000 or more in both the previous and current fiscal year must pay quarterly GST/HST instalments.",
+          "ITCs not claimed in the period you incurred them can usually be claimed later. For most registrants the deadline is the due date of the return for the last reporting period ending within four years after the period in which the ITC could first have been claimed.",
         ],
       },
       {
         type: "h2",
-        text: "What You Need on a Receipt to Claim an ITC",
-      },
-      {
-        type: "p",
-        text: "The CRA has tiered documentation requirements based on the purchase amount. For purchases under $30, a simplified receipt showing the vendor name, date, and total is sufficient. For purchases between $30 and $149.99, the vendor's GST/HST registration number must also be present. For purchases of $150 or more, you also need the buyer's name or trade name, and a description of the goods or services.",
-      },
-      {
-        type: "callout",
-        text: "Important: PST paid in BC, Manitoba, or Saskatchewan cannot be claimed as an input tax credit — only the federal GST portion is recoverable. Quebec's QST must be claimed separately on your QST return with Revenu Québec.",
-      },
-      {
-        type: "h2",
-        text: "Filing Period: Annual vs. Quarterly vs. Monthly",
-      },
-      {
-        type: "p",
-        text: "When you register for GST/HST, the CRA assigns you a reporting period based on your revenue. Businesses with under $1.5 million in taxable supplies generally file annually. Between $1.5 million and $6 million, quarterly filing applies. Over $6 million requires monthly filing. You can elect to file more frequently if it helps your cash flow — particularly useful if you often receive large refunds.",
+        text: "A Tracking Routine That Supports Your Claims",
       },
       {
         type: "ul",
         items: [
-          "Annual filers: return due June 15 (for calendar-year reporters), payment due April 30",
-          "Quarterly filers: return and payment due one month after each quarter ends",
-          "Keep all GST/HST-eligible receipts in a dedicated folder or app category",
-          "Reconcile your ITC claims against your expense records before each filing",
+          "Record GST/HST, PST and QST as separate amounts on every expense, not one combined tax figure",
+          "Check receipts of $100 or more for the supplier's registration number when you file them, while you can still ask for a corrected receipt",
+          "Keep receipts for at least six years after the end of the last year they relate to",
+          "Before each return, reconcile the ITCs you are claiming against the receipts behind them",
         ],
       },
     ],
