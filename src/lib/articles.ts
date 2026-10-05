@@ -2293,7 +2293,7 @@ export const ARTICLES: Article[] = [
       "Tax season isn't a season — it's a year-round habit. Here's the monthly system that keeps Canadian freelancers CRA-ready without the April panic.",
     category: "Tax Strategy",
     publishedAt: "2026-05-10",
-    updatedAt: "2026-05-11",
+    updatedAt: "2026-10-05",
     imageUrl: "https://picsum.photos/seed/year-round-tax-prep-canada/600/400",
     imageAlt: "Canadian freelancer maintaining year-round tax preparation system",
     tags: ["tax preparation", "year-round", "freelancer", "CRA", "tax season", "organization"],
@@ -2347,7 +2347,7 @@ export const ARTICLES: Article[] = [
       },
       {
         type: "callout",
-        text: "The year-end benefit: freelancers who follow a monthly system typically spend 2–3 hours preparing their tax filing information, versus 15–20 hours for those who do it all in April. That's a 12-hour time saving — worth far more than any accountant's fee for last-minute rescue work.",
+        text: "The year-end benefit: when receipts, mileage and reconciliations are kept up month by month, preparing your filing information is a review of records you already have, not a reconstruction from bank statements and memory.",
       },
     ],
   },
