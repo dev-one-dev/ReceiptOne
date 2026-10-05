@@ -337,7 +337,7 @@ export const ARTICLES_US_ONLY: Article[] = [
       "Everything independent contractors need to know about 1099-NEC income, self-employment tax, quarterly payments, and keeping enough cash aside to avoid surprises in April.",
     category: "Tax Fundamentals",
     publishedAt: "2026-05-20",
-    updatedAt: "2026-05-20",
+    updatedAt: "2026-10-05",
     imageUrl: "https://picsum.photos/seed/1099-contractor-tax-guide/600/400",
     imageAlt: "Independent contractor reviewing 1099-NEC tax form",
     tags: ["1099", "contractor", "self-employment tax", "quarterly taxes", "freelancer", "IRS"],
@@ -350,7 +350,7 @@ export const ARTICLES_US_ONLY: Article[] = [
     body: [
       {
         type: "p",
-        text: "When you work as an independent contractor, clients who pay you $600 or more in a year issue a Form 1099-NEC (Non-Employee Compensation). Unlike W-2 employees, no taxes are withheld from your payments — you owe both income tax and self-employment tax, and you're responsible for paying them yourself throughout the year.",
+        text: "When you work as an independent contractor, a business that pays you for services generally issues a Form 1099-NEC once its payments to you reach the reporting threshold: $600 for payments made through 2025, and $2,000 for payments made after December 31, 2025. Unlike W-2 employees, no taxes are withheld from your payments — you owe both income tax and self-employment tax, and you're responsible for paying them yourself throughout the year.",
       },
       {
         type: "h2",
