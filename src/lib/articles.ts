@@ -2204,7 +2204,7 @@ export const ARTICLES: Article[] = [
       {
         type: "ul",
         items: [
-          "Under 20 business expenses per month — manual entry takes under 30 minutes",
+          "A small number of business expenses each month, so entering them by hand stays manageable",
           "Expenses that are highly regular and predictable (same vendors, same amounts)",
           "A single bank account with no mixed personal/business spending",
           "Your accountant already does the categorization at year-end",
@@ -2217,7 +2217,7 @@ export const ARTICLES: Article[] = [
       {
         type: "ul",
         items: [
-          "30+ receipts per month — OCR extraction saves 2–4 minutes per receipt",
+          "A high volume of receipts — scanning reads the merchant, date, amount and tax for you instead of you typing each one",
           "Significant mileage claims — the CRA accepts any accurate logbook, paper or electronic, but an app makes it easier to record every trip as it happens",
           "Multiple projects or clients requiring separate expense tracking",
           "You've ever lost a receipt or missed a deduction because of poor organization",
@@ -2225,7 +2225,7 @@ export const ARTICLES: Article[] = [
       },
       {
         type: "callout",
-        text: "The hidden cost of manual tracking isn't the time — it's the missed deductions. A freelancer with $50,000 in revenue who misses $5,000 in deductions due to poor record-keeping pays roughly $1,500–$2,000 extra in tax. Most expense apps cost under $200/year.",
+        text: "The hidden cost of manual tracking isn't the time — it's the missed deductions. Income you could have offset with a deduction is taxed at your marginal rate instead. As an illustration only: at a combined federal and provincial marginal rate of 30%, $5,000 of unclaimed expenses would mean about $1,500 more income tax, before any extra CPP contributions on the higher net income. Your own rate depends on your income and province.",
       },
     ],
   },
