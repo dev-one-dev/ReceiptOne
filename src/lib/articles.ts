@@ -2360,7 +2360,7 @@ export const ARTICLES: Article[] = [
       "These seven mistakes cost Canadian freelancers real money every year — through missed deductions, CRA interest charges, and denied claims. Here's how to avoid each one.",
     category: "Tax Strategy",
     publishedAt: "2026-05-10",
-    updatedAt: "2026-05-11",
+    updatedAt: "2026-10-05",
     imageUrl: "https://picsum.photos/seed/freelancer-tax-mistakes-canada/600/400",
     imageAlt: "Canadian freelancer reviewing tax mistakes and corrections",
     tags: ["tax mistakes", "freelancer", "CRA", "deductions", "self-employed", "common errors"],
@@ -2372,7 +2372,7 @@ export const ARTICLES: Article[] = [
     body: [
       {
         type: "p",
-        text: "The CRA reassesses hundreds of thousands of self-employed returns every year. Most adjustments are not the result of fraud — they're the result of common, avoidable mistakes. Here are the seven that show up most frequently in audits and reviews.",
+        text: "Most of the mistakes below have nothing to do with fraud. They come from misreading a rule or not keeping the record that proves a claim. Here are seven that cost self-employed Canadians money, with the CRA rule behind each one.",
       },
       {
         type: "h2",
@@ -2380,7 +2380,7 @@ export const ARTICLES: Article[] = [
       },
       {
         type: "p",
-        text: "Only 50% of meals and entertainment expenses are deductible under the Income Tax Act — even when the meal is 100% business-related. This is one of the most common audit adjustments. The CRA routinely reduces 100% claims to 50%.",
+        text: "The deduction for food, beverages and entertainment is generally limited to 50% of the lesser of what you spent and an amount that is reasonable in the circumstances, even when the meal was entirely for business. Guide T4002 lists exceptions, such as meals you bill to a client and show on the invoice.",
       },
       {
         type: "h2",
@@ -2388,7 +2388,7 @@ export const ARTICLES: Article[] = [
       },
       {
         type: "p",
-        text: "Reconstructing a mileage logbook from memory or calendar entries at year-end is not a contemporaneous record. The CRA can reject reconstructed logbooks and disallow the entire vehicle expense claim. Track mileage in real time — an app that timestamps each trip automatically is the safest approach.",
+        text: "Reconstructing a mileage logbook from memory or calendar entries at year-end is not a contemporaneous record. The CRA calls an accurate logbook kept for the entire year the best evidence of business use, and it can disallow expenses you cannot support. Record each trip as you make it.",
       },
       {
         type: "h2",
@@ -2396,7 +2396,7 @@ export const ARTICLES: Article[] = [
       },
       {
         type: "p",
-        text: "If your net tax owing exceeds $3,000, quarterly instalments are required. Missing them triggers daily interest at the prescribed rate — currently 9% annually. The CRA sends instalment reminders, but you're responsible for paying whether or not the reminder arrives.",
+        text: "If your net tax owing is more than $3,000 ($1,800 in Quebec) this year and in either of the two previous years, quarterly instalments are required. Late or missed instalments are charged interest at the prescribed rate, which is set every quarter; for October 1 to December 31, 2026 it is 7%. The CRA sends instalment reminders, but you're responsible for paying whether or not the reminder arrives.",
       },
       {
         type: "h2",
@@ -2406,9 +2406,9 @@ export const ARTICLES: Article[] = [
         type: "ul",
         items: [
           "Claiming personal expenses as business (e.g., gym membership without a demonstrable business necessity)",
-          "Forgetting to include GST/HST collected as income — it's not yours to keep",
+          "Counting the GST/HST you collected as business income: on Form T2125 you include it in gross sales at amount 3A, then subtract it at amount 3B (the Quick Method works differently)",
           "Claiming home office expenses that exceed net business income (not allowed — they carry forward)",
-          "Missing the GST/HST ITC registration: not registering when revenue hits $30,000 means you owe back-taxes and penalties",
+          "Missing the GST/HST registration point: once your taxable revenue goes over $30,000 in one calendar quarter or over four consecutive quarters, you must charge GST/HST from your effective date of registration, even before you have registered",
         ],
       },
     ],
