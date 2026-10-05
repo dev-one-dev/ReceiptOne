@@ -635,7 +635,7 @@ export const ARTICLES_US_ONLY: Article[] = [
       "How sales tax works on your business purchases, whether it's separately deductible, when you might need to collect it from clients, and why tracking it matters for your records.",
     category: "Tax Fundamentals",
     publishedAt: "2026-05-20",
-    updatedAt: "2026-05-20",
+    updatedAt: "2026-10-05",
     imageUrl: "https://picsum.photos/seed/sales-tax-business-expenses-us/600/400",
     imageAlt: "Business receipt showing sales tax amount for deduction tracking",
     tags: ["sales tax", "business expenses", "deductions", "IRS", "freelancer", "receipts"],
@@ -655,7 +655,7 @@ export const ARTICLES_US_ONLY: Article[] = [
       },
       {
         type: "p",
-        text: "When you buy a $200 software license and pay $18 in sales tax, your deductible expense is $218 — the full amount. The IRS doesn't require you to separate the sales tax from the purchase price on Schedule C; the total cost is the deduction.",
+        text: "For example, using illustrative figures: if you buy a $200 software license and pay $18 in sales tax, your deductible expense is $218 — the full amount. The IRS doesn't require you to separate the sales tax from the purchase price on Schedule C; the total cost is the deduction.",
       },
       {
         type: "h2",
@@ -663,7 +663,7 @@ export const ARTICLES_US_ONLY: Article[] = [
       },
       {
         type: "p",
-        text: "On Schedule A (if you itemize), you can deduct either state income taxes or state and local sales taxes — not both. For freelancers in no-income-tax states like Texas, Florida, or Washington, tracking cumulative sales tax paid throughout the year can yield a meaningful itemized deduction.",
+        text: "On Schedule A (if you itemize), you can deduct either state income taxes or state and local general sales taxes — not both. Sales tax already deducted as a business expense on Schedule C can't be claimed again here. For freelancers in no-income-tax states like Texas, Florida, or Washington, tracking the sales tax you pay on personal purchases can add to your itemized deductions. The total state and local tax (SALT) deduction is capped: for 2025, $40,000 ($20,000 if married filing separately), reduced when modified AGI is over $500,000 ($250,000 if married filing separately) but not below $10,000 ($5,000). Check the Schedule A instructions for the year you file, and itemize only if your total beats the standard deduction.",
       },
       {
         type: "h2",
@@ -675,7 +675,7 @@ export const ARTICLES_US_ONLY: Article[] = [
       },
       {
         type: "callout",
-        text: "ReceiptOne records the sales tax on every receipt automatically — clean records for Schedule C and a running total for state tax deduction purposes.",
+        text: "ReceiptOne reads the sales tax line from each receipt you scan and keeps it with the receipt, so the amounts are there when you prepare Schedule C or Schedule A.",
       },
       {
         type: "h2",
@@ -683,7 +683,7 @@ export const ARTICLES_US_ONLY: Article[] = [
       },
       {
         type: "p",
-        text: "After the 2018 South Dakota v. Wayfair Supreme Court decision, states can require out-of-state sellers to collect sales tax once they meet economic nexus thresholds — typically $100,000 in sales or 200 transactions per year. If you sell products online to customers in multiple states, this affects you regardless of your physical location.",
+        text: "After the 2018 South Dakota v. Wayfair Supreme Court decision, states can require out-of-state sellers to collect sales tax once they meet an economic nexus threshold set by each state. The South Dakota law in that case used $100,000 in sales or 200 separate transactions, but South Dakota dropped the transaction test from July 1, 2023 and now uses more than $100,000 in gross sales only. Other states set their own tests, so check each state where you have customers. If you sell taxable products online to customers in multiple states, this can apply to you regardless of your physical location.",
       },
     ],
   },
