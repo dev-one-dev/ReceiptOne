@@ -186,6 +186,10 @@ export const ARTICLES: Article[] = [
       },
       {
         type: "p",
+        text: "A registration number on a receipt is worth checking. The CRA's free GST/HST Registry confirms whether the business charging you GST/HST is registered. You enter the first nine digits of the number (no letters), the supplier's name as shown on the receipt, and the transaction date, then print the Search Details screen for your records. If a supplier won't give you its number, the CRA's business enquiries line (1-800-959-5525) can confirm whether it is registered.",
+      },
+      {
+        type: "p",
         text: "Timing matters too. For most registrants, an ITC must be claimed by the due date of the return for the last reporting period ending within four years after the period in which it could first have been claimed. The documents must be in hand before you claim.",
       },
       {
@@ -232,7 +236,7 @@ export const ARTICLES: Article[] = [
     tags: ["CRA", "receipts", "taxes", "freelancer", "documentation"],
     clusterPillar: "cra-receipt-rules-canada",
     clusterName: "CRA Receipt Rules",
-    relatedSlugs: ["cra-receipt-rules-canada", "cra-acceptable-receipt-requirements"],
+    relatedSlugs: ["cra-receipt-rules-canada"],
     body: [
       {
         type: "p",
@@ -370,71 +374,6 @@ export const ARTICLES: Article[] = [
       {
         type: "callout",
         text: "If the CRA selects you for a review, you typically have 30 days to respond with supporting documentation. A cloud-based receipt system means you can produce a complete, organized expense report within hours — not weeks of frantic searching.",
-      },
-    ],
-  },
-
-  {
-    slug: "cra-acceptable-receipt-requirements",
-    title: "CRA-Acceptable Receipt Requirements: What Every Field Must Show",
-    excerpt:
-      "A detailed breakdown of the CRA's tiered receipt requirements — what's mandatory at each purchase level, and what information you cannot afford to be missing.",
-    category: "Tax Compliance",
-    publishedAt: "2026-05-10",
-    updatedAt: "2026-05-11",
-    imageUrl: "https://picsum.photos/seed/cra-acceptable-receipt-requirements/600/400",
-    imageAlt: "Receipt with GST number highlighted for CRA compliance",
-    tags: ["CRA", "receipt requirements", "GST number", "ITC", "documentation"],
-    clusterPillar: "cra-receipt-rules-canada",
-    clusterName: "CRA Receipt Rules",
-    relatedSlugs: [
-      "cra-receipt-rules-canada",
-      "what-receipts-do-i-need-for-taxes-canada",
-      "track-gst-hst-business-expenses",
-    ],
-    body: [
-      {
-        type: "p",
-        text: "The CRA uses a three-tier documentation system based on purchase amount. Understanding which tier applies to each expense is the difference between a successful ITC claim and a denied one at audit time.",
-      },
-      {
-        type: "h2",
-        text: "Tier 1: Purchases Under $30",
-      },
-      {
-        type: "p",
-        text: "For business purchases under $30, a simplified receipt is acceptable. Required fields: the supplier's name, the date, and the total amount paid (including tax). You do not need the vendor's GST/HST number to claim an input tax credit on purchases under $30, though you still need the expense to be a legitimate business cost.",
-      },
-      {
-        type: "h2",
-        text: "Tier 2: Purchases $30 to $149.99",
-      },
-      {
-        type: "ul",
-        items: [
-          "Supplier name",
-          "Date of the transaction",
-          "Total paid including taxes",
-          "GST/HST registration number (RT number — 9-digit BN followed by RT0001 or similar)",
-          "Either the total tax charged, or a notation that the amount includes HST/GST",
-        ],
-      },
-      {
-        type: "h2",
-        text: "Tier 3: Purchases $150 and Over",
-      },
-      {
-        type: "ul",
-        items: [
-          "All Tier 2 fields",
-          "Buyer's name or trading name (your business name or your own name)",
-          "Terms of payment (cash, credit, etc.)",
-          "Quantity and description sufficient to identify the goods or services",
-        ],
-      },
-      {
-        type: "callout",
-        text: "GST/HST registration numbers follow the format: 9-digit Business Number + 'RT' + 4-digit account number (e.g., 123456789 RT 0001). If a receipt shows a number that doesn't match this format, verify with the vendor — an invalid number means you can't claim the ITC.",
       },
     ],
   },
@@ -958,7 +897,7 @@ export const ARTICLES: Article[] = [
     relatedSlugs: [
       "gst-hst-expense-tracking-canada",
       "track-gst-hst-business-expenses",
-      "cra-acceptable-receipt-requirements",
+      "cra-receipt-rules-canada",
     ],
     body: [
       {

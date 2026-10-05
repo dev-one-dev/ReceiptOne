@@ -11,6 +11,7 @@ export const config = {
     "/helpdesk/:path*",
     "/articles/how-long-keep-receipts-canada",
     "/articles/cra-receipt-rules-canadian-freelancer",
+    "/articles/cra-acceptable-receipt-requirements",
   ],
 };
 
@@ -18,6 +19,7 @@ export const config = {
 const MERGED_ARTICLES: Record<string, string> = {
   "/articles/how-long-keep-receipts-canada": "/articles/cra-receipt-rules-canada",
   "/articles/cra-receipt-rules-canadian-freelancer": "/articles/cra-receipt-rules-canada",
+  "/articles/cra-acceptable-receipt-requirements": "/articles/cra-receipt-rules-canada",
 };
 
 export default function middleware(request: Request) {
