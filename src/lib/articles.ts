@@ -2078,7 +2078,7 @@ export const ARTICLES: Article[] = [
       "A practical comparison of the top receipt scanning apps available to Canadian freelancers and small business owners — including GST/HST extraction and CRA compliance features.",
     category: "Tools & Apps",
     publishedAt: "2026-05-10",
-    updatedAt: "2026-05-11",
+    updatedAt: "2026-10-05",
     imageUrl: "https://picsum.photos/seed/receipt-scanner-apps-canada-comparison/600/400",
     imageAlt: "Comparison of receipt scanning apps on smartphone for Canadian freelancers",
     tags: ["receipt scanner", "app comparison", "GST/HST", "expense tracking", "Canada"],
@@ -2090,7 +2090,7 @@ export const ARTICLES: Article[] = [
     body: [
       {
         type: "p",
-        text: "The right receipt scanning app can save a Canadian freelancer 5–10 hours per year in bookkeeping time and prevent CRA-audit-triggering gaps in documentation. The wrong one creates a false sense of security while failing to capture the information you actually need. Here's what to look for.",
+        text: "The right receipt scanning app can cut bookkeeping time and help close gaps in your documentation. The wrong one creates a false sense of security while failing to capture the information you actually need. Here's what to look for.",
       },
       {
         type: "h2",
