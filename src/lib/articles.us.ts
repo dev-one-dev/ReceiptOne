@@ -17,7 +17,7 @@ export const ARTICLES_US_ONLY: Article[] = [
       "Everything the IRS requires to deduct a business expense — the ordinary-and-necessary test, documentation standards, record retention rules, and how to build a system that survives an audit.",
     category: "Tax Compliance",
     publishedAt: "2026-05-20",
-    updatedAt: "2026-05-20",
+    updatedAt: "2026-10-05",
     imageUrl: "https://picsum.photos/seed/irs-business-expense-rules/600/400",
     imageAlt: "US freelancer organizing business receipts and tax documents",
     tags: ["IRS", "business expenses", "deductions", "self-employed", "audit", "record keeping"],
@@ -60,7 +60,7 @@ export const ARTICLES_US_ONLY: Article[] = [
           "Vendor name and address",
           "Amount paid (including any sales tax)",
           "Business purpose of the purchase",
-          "For meals and entertainment: names of attendees and business relationship",
+          "For business meals: who attended and their business relationship (entertainment is no longer deductible)",
         ],
       },
       {
