@@ -1809,7 +1809,7 @@ export const ARTICLES: Article[] = [
       "Self-employed Canadians can deduct a wide range of legitimate business expenses. Knowing which ones apply to you — and how to claim them correctly — can dramatically reduce your tax bill.",
     category: "Tax Deductions",
     publishedAt: "2026-05-10",
-    updatedAt: "2026-05-11",
+    updatedAt: "2026-10-05",
     imageUrl: "https://picsum.photos/seed/top-tax-deductions-canadian-self-employed-2025/600/400",
     imageAlt: "Person working on a laptop with financial documents visible",
     tags: ["deductions", "self-employed", "freelancer", "tax savings", "2025"],
@@ -1848,7 +1848,7 @@ export const ARTICLES: Article[] = [
       },
       {
         type: "p",
-        text: "If you work from home regularly and your home workspace is your principal place of business (or you use it exclusively to meet clients), you can deduct a proportional share of home expenses. The calculation is based on the percentage of your home used for business — typically square footage of the workspace divided by total square footage. Eligible expenses include rent or mortgage interest, utilities, internet, property taxes, and maintenance costs.",
+        text: "If you work from home regularly and your home workspace is your principal place of business (or you use it only for the business and regularly meet clients there), you can deduct a proportional share of home expenses. The calculation is based on the percentage of your home used for business — typically square footage of the workspace divided by total square footage. Eligible expenses include rent or mortgage interest, utilities, internet, property taxes, and maintenance costs.",
       },
       {
         type: "h2",
@@ -1856,11 +1856,11 @@ export const ARTICLES: Article[] = [
       },
       {
         type: "p",
-        text: "Computers, phones, cameras, and other equipment used for business can be deducted, but generally through the Capital Cost Allowance (CCA) system rather than as a full immediate deduction. Most computer equipment falls under Class 10 (30% declining balance) or Class 50 (55% declining balance for general-purpose computing equipment). The Immediate Expensing Incentive allows eligible small businesses to fully deduct up to $1.5 million in capital purchases per year — check with your accountant for eligibility.",
+        text: "Computers, phones, cameras, and other equipment used for business can be deducted, but generally through the Capital Cost Allowance (CCA) system rather than as a full immediate deduction. Most computer equipment falls under Class 10 (30% declining balance) or Class 50 (55% declining balance for general-purpose computing equipment). The temporary immediate expensing incentive (up to $1.5 million a year) applied to unincorporated businesses only for eligible property acquired after 2021 that became available for use before 2025, so it does not cover equipment you put into use in 2025 or later.",
       },
       {
         type: "callout",
-        text: "For 2025, the federal basic personal amount is $16,129. Combined with the self-employment deductions above, many freelancers earning under $60,000 pay significantly less tax than employees at the same income level once all legitimate deductions are applied.",
+        text: "For 2025, the federal basic personal amount is $16,129 if your net income is $177,882 or less. It is a non-refundable credit that applies to everyone; your business expenses are deducted separately, in calculating your net business income on Form T2125.",
       },
       {
         type: "h2",
@@ -1872,7 +1872,7 @@ export const ARTICLES: Article[] = [
           "Claim the business-use percentage of your phone bill (e.g., 70% if used mostly for work)",
           "Home internet can be partially deducted if used for business",
           "A dedicated business phone line is 100% deductible",
-          "Keep your phone bills for 6 years — the CRA frequently reviews these claims",
+          "Keep your phone bills for six years from the end of the tax year they relate to, so you can show how you worked out the business share",
         ],
       },
     ],
