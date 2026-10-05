@@ -483,15 +483,15 @@ export const ARTICLES_US_ONLY: Article[] = [
   {
     slug: "irs-mileage-rate-2025-self-employed",
     regions: ["us"],
-    title: "IRS Standard Mileage Rate 2025: How to Claim Vehicle Deductions",
+    title: "IRS Standard Mileage Rates for 2026: How to Claim Vehicle Deductions",
     excerpt:
-      "The 2025 IRS standard mileage rate is 70 cents per mile. Here's how to track qualifying trips, maintain a compliant mileage log, and decide whether the standard rate or actual expenses is better for you.",
+      "The 2026 IRS business mileage rate is 72.5 cents per mile for January to June and 76 cents from July 1. Here's how to track qualifying trips, keep a mileage log the IRS accepts, and choose between the standard rate and actual expenses.",
     category: "Mileage & Auto",
     publishedAt: "2026-05-20",
-    updatedAt: "2026-05-20",
+    updatedAt: "2026-10-05",
     imageUrl: "https://picsum.photos/seed/irs-mileage-rate-2025/600/400",
     imageAlt: "Self-employed worker tracking business mileage for IRS deduction",
-    tags: ["mileage", "IRS", "vehicle deduction", "standard mileage rate", "self-employed", "2025"],
+    tags: ["mileage", "IRS", "vehicle deduction", "standard mileage rate", "self-employed", "2026"],
     relatedSlugs: [
       "self-employed-tax-deductions-us-2025",
       "schedule-c-deductions-guide-us-freelancers",
@@ -504,14 +504,18 @@ export const ARTICLES_US_ONLY: Article[] = [
       },
       {
         type: "h2",
-        text: "2025 Standard Mileage Rates",
+        text: "2026 Standard Mileage Rates",
+      },
+      {
+        type: "p",
+        text: "The IRS raised its 2026 rates in mid-year because of higher fuel prices, so 2026 has two sets. Use the rate for the period in which you drove.",
       },
       {
         type: "ul",
         items: [
-          "Business miles: 70 cents per mile",
-          "Medical or moving miles: 21 cents per mile",
-          "Charitable miles: 14 cents per mile",
+          "January 1 – June 30, 2026: business 72.5 cents per mile, medical and military moving 20.5 cents, charitable 14 cents",
+          "July 1 – December 31, 2026: business 76 cents per mile, medical and military moving 23.5 cents, charitable 14 cents",
+          "For 2025 returns: business 70 cents per mile, medical and military moving 21 cents, charitable 14 cents",
         ],
       },
       {
@@ -534,11 +538,11 @@ export const ARTICLES_US_ONLY: Article[] = [
       },
       {
         type: "p",
-        text: "The IRS requires a contemporaneous mileage log — meaning you record each trip at or near the time it happens. A log created months later from memory is not acceptable. Required entries: date of trip, starting location, destination, business purpose, and miles driven.",
+        text: "Publication 463 lists what to record for car use: the mileage for each business use and your total miles for the year, the date of each use, your business destination, and the business purpose. You should record these at or near the time of the trip. A log kept weekly that covers that week's use counts as timely kept, and a timely kept record has more value than a statement prepared later, when accurate recall is usually lacking.",
       },
       {
         type: "callout",
-        text: "ReceiptOne's mileage tracker logs trips automatically and applies the current IRS rate — your log stays current without manual entry.",
+        text: "In ReceiptOne you log a trip by entering its start and end addresses; the app works out the distance and multiplies it by the per-mile rate saved in your settings. Check that rate matches the IRS rate for the period you drove, since it changed on July 1, 2026.",
       },
       {
         type: "h2",
