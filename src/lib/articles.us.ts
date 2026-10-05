@@ -184,7 +184,7 @@ export const ARTICLES_US_ONLY: Article[] = [
       "Every deduction available on IRS Schedule C explained — from home office and vehicle expenses to the qualified business income deduction that can cut your tax bill by 20%.",
     category: "Tax Deductions",
     publishedAt: "2026-05-20",
-    updatedAt: "2026-05-20",
+    updatedAt: "2026-10-05",
     imageUrl: "https://picsum.photos/seed/schedule-c-deductions-us/600/400",
     imageAlt: "US freelancer completing IRS Schedule C tax form",
     tags: ["Schedule C", "deductions", "freelancer", "IRS", "self-employed", "1099"],
@@ -208,7 +208,7 @@ export const ARTICLES_US_ONLY: Article[] = [
         items: [
           "Line 8 — Advertising: paid ads, website hosting, business cards, promotional materials",
           "Line 9 — Car and truck: either standard mileage rate or actual expenses",
-          "Line 11 — Contract labor: amounts paid to subcontractors (issue Form 1099-NEC if over $600)",
+          "Line 11 — Contract labor: amounts paid to subcontractors (Form 1099-NEC is generally required for payments of $2,000 or more made after 2025; $600 before)",
           "Line 13 — Depreciation: deduct large equipment costs over time or use Section 179 to expense upfront",
           "Line 14 — Employee benefit programs: health insurance, retirement plans for employees",
           "Line 15 — Insurance: liability, professional, business property (not health insurance for self)",
