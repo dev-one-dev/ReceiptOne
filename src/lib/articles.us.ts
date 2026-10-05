@@ -73,7 +73,7 @@ export const ARTICLES_US_ONLY: Article[] = [
       },
       {
         type: "callout",
-        text: "ReceiptOne stores receipts for 10+ years and automatically captures merchant name, date, amount, and sales tax — everything the IRS requires, ready when you need it.",
+        text: "ReceiptOne keeps your receipts until you delete them or close your account, and reads the merchant name, date, amount and sales tax from each one you scan. Add the business purpose yourself, since the receipt alone won't show it.",
       },
       {
         type: "h2",
