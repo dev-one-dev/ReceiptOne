@@ -28,13 +28,13 @@ const US_STEPS = [
     icon: ScanLine,
     title: "Snap your receipts",
     description:
-      "Photograph any receipt, forward an email receipt, or upload a PDF. Paper, digital, and email receipts all captured automatically.",
+      "Photograph any receipt or upload an image or PDF. Paper and digital receipts are captured in one place.",
   },
   {
     icon: Layers,
     title: "Organized automatically",
     description:
-      "ReceiptOne reads merchant, amount, date, and sales tax — then categorizes every expense into Schedule C-friendly categories. Zero manual entry.",
+      "ReceiptOne reads merchant, amount, date, and sales tax — then categorizes every expense into Schedule C-friendly categories. Check the details and edit anything it read wrongly.",
   },
   {
     icon: FileDown,
@@ -50,7 +50,7 @@ export function HowItWorks({ region = "ca" }: { region?: Region }) {
     region === "us" ? "Three steps to tax-ready reports" : "Three steps to tax peace of mind";
   const sub =
     region === "us"
-      ? "Point your camera, forward that email, upload that PDF. ReceiptOne reads, sorts, and reports — no manual entry, no spreadsheets, no tax-season scramble."
+      ? "Point your camera or upload that PDF. ReceiptOne reads, sorts, and reports — no spreadsheets, no tax-season scramble."
       : "Point your camera, forward that email, upload that PDF. ReceiptOne reads, sorts, and reports — no manual entry, no spreadsheets, no year-end scramble.";
 
   return (

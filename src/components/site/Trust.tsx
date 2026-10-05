@@ -91,7 +91,7 @@ export function Trust({ region = "ca" }: { region?: Region }) {
           <h2 className="mt-3 text-paper">{heading}</h2>
           <p className="mt-4 text-body text-paper-40 sm:text-lead">
             {region === "us"
-              ? "AES-256 encryption, IRS-ready records, and 10-year cloud backup — built to protect your data and your deductions."
+              ? "AES-256 encryption, IRS-ready records, and cloud backup that keeps your receipts until you delete them — built to protect your data and your deductions."
               : "AES-256 encryption, CRA-ready records, and 10-year cloud backup — built to protect your data and your deductions."}
           </p>
         </div>

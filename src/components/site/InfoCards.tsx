@@ -49,7 +49,11 @@ const CA_FEATURES = [
 
 const US_FEATURES = CA_FEATURES.map((f) => {
   if (f.label === "Receipts")
-    return { ...f, alt: "ReceiptOne app showing receipts list with USD amounts" };
+    return {
+      ...f,
+      alt: "ReceiptOne app showing receipts list with USD amounts",
+      desc: "Every purchase captured, categorized, and organized. Snap a photo or upload an image or PDF, and ReceiptOne reads the details for you to check — no lost paper trails.",
+    };
   if (f.label === "Export")
     return { ...f, img: usExport, alt: "ReceiptOne app showing CSV export screen" };
   if (f.label === "Mileage")
@@ -57,7 +61,7 @@ const US_FEATURES = CA_FEATURES.map((f) => {
       ...f,
       img: usMileage,
       alt: "ReceiptOne app showing mileage map tracking",
-      desc: "Log every business trip and apply the IRS per-mile rate in one tap. Every trip is recorded automatically, even if you forget to check the odometer.",
+      desc: "Log a trip by entering its start and end addresses. ReceiptOne calculates the distance and separates business from personal miles, so your mileage log stays organized.",
     };
   if (f.label === "Home office")
     return {
