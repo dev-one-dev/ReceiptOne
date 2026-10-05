@@ -2022,10 +2022,10 @@ export const ARTICLES: Article[] = [
     slug: "tax-instalment-payments-canada-self-employed",
     title: "Tax Instalment Payments for Self-Employed Canadians: How They Work",
     excerpt:
-      "If you owe more than $3,000 in taxes, the CRA requires you to pay in quarterly instalments. Here's how to calculate the right amount and avoid interest charges.",
+      "If your net tax owing is over $3,000 this year and in either of the two previous years, the CRA requires quarterly instalments. Here's how the rule and the payment options work.",
     category: "Tax Fundamentals",
     publishedAt: "2026-05-10",
-    updatedAt: "2026-05-11",
+    updatedAt: "2026-10-05",
     imageUrl: "https://picsum.photos/seed/tax-instalment-payments-canada-self-employed/600/400",
     imageAlt: "Calendar showing Canadian tax instalment due dates for self-employed workers",
     tags: ["tax instalments", "quarterly payments", "self-employed", "CRA", "cash flow"],
@@ -2047,7 +2047,7 @@ export const ARTICLES: Article[] = [
       },
       {
         type: "p",
-        text: "The CRA requires quarterly instalment payments if your net tax owing (federal + provincial, after credits) exceeds $3,000 in either the current year OR either of the two preceding years. In Quebec, the threshold is $1,800. The due dates are: March 15, June 15, September 15, and December 15.",
+        text: "The CRA requires quarterly instalment payments if your net tax owing (federal + provincial, after credits) is more than $3,000 in the current year AND was also more than $3,000 in either of the two preceding years. If this year's net tax owing will be $3,000 or less, you don't have to pay instalments, even if the CRA sends you reminders. In Quebec, the threshold is $1,800. The due dates are: March 15, June 15, September 15, and December 15.",
       },
       {
         type: "h2",
@@ -2058,12 +2058,12 @@ export const ARTICLES: Article[] = [
         items: [
           "Prior-year method: pay one-quarter of your previous year's net tax owing each quarter — simplest, avoids interest if income stays similar",
           "Current-year method: estimate this year's taxes, pay one-quarter each quarter — risky if you underestimate",
-          "No-calculation method: use the instalment amounts the CRA sends you in their instalment reminders — based on two years prior, not current income",
+          "No-calculation method: pay the amounts on the instalment reminders the CRA sends you, which it works out from your latest assessed return",
         ],
       },
       {
         type: "callout",
-        text: "If you have a strong quarter, pay more than your minimum instalment. The CRA calculates interest on the shortfall daily — overpaying early costs nothing, while underpaying costs you the prescribed rate (currently 9% annually) on the shortfall.",
+        text: "If you have a strong quarter, pay more than your minimum instalment. The CRA calculates interest on the shortfall daily — overpaying early costs nothing, while underpaying costs you the prescribed rate on the shortfall. The rate is set every quarter; for October 1 to December 31, 2026 it is 7% on overdue taxes.",
       },
     ],
   },
