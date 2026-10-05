@@ -14,7 +14,7 @@ export const ARTICLES_US_ONLY: Article[] = [
     regions: ["us"],
     title: "IRS Business Expense Deduction Rules for Freelancers",
     excerpt:
-      "Everything the IRS requires to deduct a business expense — the ordinary-and-necessary test, documentation standards, record retention rules, and how to build a system that survives an audit.",
+      "What the IRS requires to deduct a business expense: the ordinary-and-necessary test, documentation, record retention, and a system that survives an audit.",
     category: "Tax Compliance",
     publishedAt: "2026-05-20",
     updatedAt: "2026-10-05",
@@ -181,7 +181,7 @@ export const ARTICLES_US_ONLY: Article[] = [
     regions: ["us"],
     title: "Schedule C Deductions Guide for US Freelancers",
     excerpt:
-      "Every deduction available on IRS Schedule C explained — from home office and vehicle expenses to the qualified business income deduction that can cut your tax bill by 20%.",
+      "Every deduction on IRS Schedule C explained, from home office and vehicle expenses to the QBI deduction of up to 20% of qualified business income.",
     category: "Tax Deductions",
     publishedAt: "2026-05-20",
     updatedAt: "2026-10-05",
@@ -334,7 +334,7 @@ export const ARTICLES_US_ONLY: Article[] = [
     regions: ["us"],
     title: "1099 Contractor Tax Guide: What You Owe and How to Pay It",
     excerpt:
-      "Everything independent contractors need to know about 1099-NEC income, self-employment tax, quarterly payments, and keeping enough cash aside to avoid surprises in April.",
+      "What independent contractors need to know about 1099-NEC income, self-employment tax, quarterly payments, and setting cash aside to avoid April surprises.",
     category: "Tax Fundamentals",
     publishedAt: "2026-05-20",
     updatedAt: "2026-10-05",
@@ -400,7 +400,7 @@ export const ARTICLES_US_ONLY: Article[] = [
     regions: ["us"],
     title: "How to Calculate and Pay Quarterly Estimated Taxes",
     excerpt:
-      "The IRS requires freelancers to pay taxes four times a year. Here's exactly how to calculate what you owe, when to pay, and how to avoid underpayment penalties.",
+      "Freelancers who expect to owe $1,000 or more pay estimated tax four times a year. How to calculate it, when to pay, and how to avoid the penalty.",
     category: "Tax Fundamentals",
     publishedAt: "2026-05-20",
     updatedAt: "2026-10-05",
@@ -485,7 +485,7 @@ export const ARTICLES_US_ONLY: Article[] = [
     regions: ["us"],
     title: "IRS Mileage Rates 2026: How to Claim Vehicle Deductions",
     excerpt:
-      "The 2026 IRS business mileage rate is 72.5 cents per mile for January to June and 76 cents from July 1. Here's how to track qualifying trips, keep a mileage log the IRS accepts, and choose between the standard rate and actual expenses.",
+      "The 2026 IRS business mileage rate is 72.5 cents per mile to June 30 and 76 cents from July 1. How to log trips and choose standard rate or actual costs.",
     category: "Mileage & Auto",
     publishedAt: "2026-05-20",
     updatedAt: "2026-10-05",
@@ -560,7 +560,7 @@ export const ARTICLES_US_ONLY: Article[] = [
     regions: ["us"],
     title: "Home Office Deduction for Freelancers: Form 8829 Explained",
     excerpt:
-      "How to claim the home office deduction using Form 8829 or the simplified method — including the exclusive-use rule, what expenses qualify, and how to calculate the deduction correctly.",
+      "How to claim the home office deduction with Form 8829 or the simplified method: the exclusive-use rule, which expenses qualify, and how to calculate it.",
     category: "Tax Deductions",
     publishedAt: "2026-05-20",
     updatedAt: "2026-05-20",
@@ -632,7 +632,7 @@ export const ARTICLES_US_ONLY: Article[] = [
     regions: ["us"],
     title: "Sales Tax on Business Expenses: A Guide for US Freelancers",
     excerpt:
-      "How sales tax works on your business purchases, whether it's separately deductible, when you might need to collect it from clients, and why tracking it matters for your records.",
+      "How sales tax works on business purchases, whether it's separately deductible, when you may need to collect it, and why tracking it matters.",
     category: "Tax Fundamentals",
     publishedAt: "2026-05-20",
     updatedAt: "2026-10-05",

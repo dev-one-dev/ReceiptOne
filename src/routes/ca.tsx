@@ -24,7 +24,7 @@ export const Route = createFileRoute("/ca")({
     const seo = pageSEO({
       path: "/ca",
       title: "CRA-Ready Receipt & Mileage Tracker for Canadians | ReceiptOne",
-      description: `Snap receipts, track mileage and GST/HST, and export CRA-ready reports for your T2125. For Canadian freelancers and contractors. ${priceSummary("ca")}`,
+      description: `Snap receipts, track mileage and GST/HST, and export CRA-ready reports for your T2125. Built for Canadian freelancers. ${priceSummary("ca")}`,
       ogTitle: "ReceiptOne Canada | Receipt, Expense & Mileage Tracker",
       ogDescription:
         "Turn receipts into CRA-ready expense reports automatically. Built for Canadian freelancers, contractors, and small businesses.",

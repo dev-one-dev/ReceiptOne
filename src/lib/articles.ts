@@ -45,7 +45,7 @@ export const ARTICLES: Article[] = [
     slug: "cra-receipt-rules-canada",
     title: "CRA Receipt Rules: What to Keep and for How Long (2026)",
     excerpt:
-      "What the CRA requires on a business receipt for 2026, when scanned copies can replace paper, the six-year retention rule, and the $100 and $500 GST/HST ITC tiers.",
+      "What the CRA requires on a business receipt for 2026, when scans can replace paper, the six-year retention rule, and the $100 and $500 GST/HST ITC tiers.",
     category: "Tax Compliance",
     publishedAt: "2026-10-04",
     updatedAt: "2026-10-04",
@@ -399,7 +399,7 @@ export const ARTICLES: Article[] = [
     slug: "cra-audit-proof-expenses",
     title: "How to Document Expenses for a CRA Review (2026)",
     excerpt:
-      "How to support self-employed expense claims in a 2026 CRA review: the general tests, the rules for meals, home office, vehicle and family wages, and missing receipts.",
+      "How to support expense claims in a 2026 CRA review: the general tests, rules for meals, home office, vehicle and family wages, and missing receipts.",
     category: "Tax Compliance",
     publishedAt: "2026-10-04",
     updatedAt: "2026-10-04",
@@ -553,7 +553,7 @@ export const ARTICLES: Article[] = [
     slug: "expense-tracking-canada-freelancers",
     title: "Expense Tracking System for Canadian Freelancers",
     excerpt:
-      "A practical, end-to-end expense tracking system for Canadian freelancers and contractors — from capturing receipts daily to producing CRA-ready reports at filing time.",
+      "An end-to-end expense tracking system for Canadian freelancers and contractors, from capturing receipts daily to CRA-ready reports at filing time.",
     category: "Expense Tracking",
     publishedAt: "2026-05-10",
     updatedAt: "2026-05-11",
@@ -633,7 +633,7 @@ export const ARTICLES: Article[] = [
     slug: "business-expense-categories-canada",
     title: "Business Expense Categories for Self-Employed Canadians",
     excerpt:
-      "A complete guide to the CRA's business expense categories on Form T2125 — what each line includes, what's excluded, and how to categorize common freelancer expenses correctly.",
+      "The CRA's business expense categories on Form T2125: what each line includes, what's excluded, and how to categorize common freelancer expenses.",
     category: "Expense Tracking",
     publishedAt: "2026-05-10",
     updatedAt: "2026-10-05",
@@ -744,7 +744,7 @@ export const ARTICLES: Article[] = [
     slug: "self-employed-expense-report-template-canada",
     title: "How to Create an Expense Report as a Self-Employed Canadian",
     excerpt:
-      "A step-by-step guide to creating expense reports for your accountant, clients, and CRA — what to include, how to format it, and how to automate the process.",
+      "A step-by-step guide to expense reports for your accountant, clients and the CRA: what to include, how to format it, and how to automate it.",
     category: "Expense Tracking",
     publishedAt: "2026-05-10",
     updatedAt: "2026-05-11",
@@ -903,7 +903,7 @@ export const ARTICLES: Article[] = [
     slug: "gst-hst-expense-tracking-canada",
     title: "GST/HST Expense Tracking for Canadian Freelancers (2026)",
     excerpt:
-      "GST/HST for self-employed Canadians in 2026: when registration starts, current rates by province, the $100 and $500 ITC receipt tiers, and choosing a filing period.",
+      "GST/HST for self-employed Canadians in 2026: when to register, rates by province, the $100 and $500 ITC receipt tiers, and choosing a filing period.",
     category: "GST / HST",
     publishedAt: "2026-10-05",
     updatedAt: "2026-10-05",
@@ -985,7 +985,7 @@ export const ARTICLES: Article[] = [
     slug: "track-gst-hst-business-expenses",
     title: "How to Track GST/HST on Your Business Expenses (2026)",
     excerpt:
-      "When you must register for GST/HST, the 2026 rates by province, what a receipt needs for an input tax credit at each tier, and how to file as a sole proprietor.",
+      "When to register for GST/HST, 2026 rates by province, what a receipt needs for an input tax credit at each tier, and how to file as a sole proprietor.",
     category: "GST / HST",
     publishedAt: "2026-10-05",
     updatedAt: "2026-10-05",
@@ -1106,7 +1106,7 @@ export const ARTICLES: Article[] = [
     slug: "input-tax-credits-canada-guide",
     title: "Input Tax Credits (ITCs) in Canada: A Freelancer's Guide",
     excerpt:
-      "Input tax credits let GST/HST-registered freelancers recover the sales tax they pay on business expenses. Here's how ITCs work, what qualifies, and how to maximize your claims.",
+      "Input tax credits let GST/HST registrants recover the sales tax they pay on business expenses. How ITCs work, what qualifies, and how to claim them.",
     category: "GST / HST",
     publishedAt: "2026-05-10",
     updatedAt: "2026-10-05",
@@ -1215,7 +1215,7 @@ export const ARTICLES: Article[] = [
     slug: "pst-qst-freelancers-canada",
     title: "PST and QST for Canadian Freelancers: What You Can Claim",
     excerpt:
-      "Provincial sales taxes in BC, Manitoba, Saskatchewan, and Quebec are often confused with GST/HST — but they follow entirely different rules for self-employed workers.",
+      "PST in BC, Manitoba and Saskatchewan and QST in Quebec are often confused with GST/HST, but they follow different rules for self-employed workers.",
     category: "GST / HST",
     publishedAt: "2026-05-10",
     updatedAt: "2026-10-05",
@@ -1271,7 +1271,7 @@ export const ARTICLES: Article[] = [
     slug: "mileage-deduction-canada-freelancers",
     title: "Mileage Deduction for Canadian Freelancers (2026 Guide)",
     excerpt:
-      "How self-employed Canadians deduct vehicle costs for 2026: the business-use percentage, CRA logbook rules, the 2026 limits, and T2125 lines 9281, 9936 and 9943.",
+      "How self-employed Canadians deduct vehicle costs for 2026: business-use percentage, CRA logbook rules, 2026 limits, and T2125 lines 9281, 9936 and 9943.",
     category: "Mileage & Auto",
     publishedAt: "2026-10-04",
     updatedAt: "2026-10-04",
@@ -1473,7 +1473,7 @@ export const ARTICLES: Article[] = [
     slug: "mileage-tracking-self-employed-2025-guide",
     title: "Mileage Tracking for Self-Employed Canadians (2026 Guide)",
     excerpt:
-      "The practical, day-to-day discipline of mileage tracking for self-employed Canadians — what to log in the moment, GPS vs. manual logging, and the habits that keep a logbook audit-ready all year.",
+      "The day-to-day habit of mileage tracking for self-employed Canadians: what to log in the moment, GPS vs. manual logging, and keeping a logbook audit-ready.",
     category: "Mileage & Auto",
     publishedAt: "2026-05-10",
     updatedAt: "2026-10-05",
@@ -1550,7 +1550,7 @@ export const ARTICLES: Article[] = [
     slug: "cra-mileage-logbook-requirements",
     title: "CRA Mileage Logbook Requirements: What Every Trip Needs",
     excerpt:
-      "What the CRA says a mileage logbook should record for each business trip, the odometer readings you need, and how the year-end business-use percentage is worked out.",
+      "What a CRA mileage logbook should record for each business trip, the odometer readings you need, and how to work out your business-use percentage.",
     category: "Mileage & Auto",
     publishedAt: "2026-05-10",
     updatedAt: "2026-10-05",
@@ -1615,7 +1615,7 @@ export const ARTICLES: Article[] = [
     slug: "vehicle-expense-deductions-canada",
     title: "Vehicle Expense Deductions for Self-Employed Canadians",
     excerpt:
-      "A detailed look at every vehicle expense category available to Canadian freelancers and contractors — with the 2026 CRA limits and the documentation needed for each.",
+      "Every vehicle expense category open to Canadian freelancers and contractors, with the 2026 CRA limits and the documentation each one needs.",
     category: "Mileage & Auto",
     publishedAt: "2026-05-10",
     updatedAt: "2026-10-05",
@@ -1728,7 +1728,7 @@ export const ARTICLES: Article[] = [
     slug: "freelancer-taxes-canada-guide",
     title: "Canadian Freelancer Taxes: How to File as Self-Employed",
     excerpt:
-      "A comprehensive walkthrough of how Canadian freelancers and contractors file taxes — from reporting income correctly to claiming every deduction you're entitled to.",
+      "How Canadian freelancers and contractors file taxes, from reporting income correctly to claiming every deduction you're entitled to.",
     category: "Tax Fundamentals",
     publishedAt: "2026-05-10",
     updatedAt: "2026-10-05",
@@ -1804,7 +1804,7 @@ export const ARTICLES: Article[] = [
     slug: "top-tax-deductions-canadian-self-employed-2025",
     title: "Top Tax Deductions for Self-Employed Canadians (2026)",
     excerpt:
-      "Self-employed Canadians can deduct a wide range of legitimate business expenses. Knowing which ones apply to you — and how to claim them correctly — can dramatically reduce your tax bill.",
+      "The business expenses self-employed Canadians can deduct in 2026, which ones apply to you, and how to claim them correctly to lower your tax bill.",
     category: "Tax Deductions",
     publishedAt: "2026-05-10",
     updatedAt: "2026-10-05",
@@ -1880,7 +1880,7 @@ export const ARTICLES: Article[] = [
     slug: "home-office-deduction-canadian-freelancers",
     title: "Home Office Deduction: What Canadian Freelancers Can Claim",
     excerpt:
-      "The home office deduction is widely misunderstood — many freelancers claim too little, and some claim expenses they're not entitled to. Here's the accurate 2026 breakdown.",
+      "The home office deduction is widely misunderstood: some freelancers claim too little, others claim what they can't. Here's the accurate 2026 breakdown.",
     category: "Tax Deductions",
     publishedAt: "2026-05-10",
     updatedAt: "2026-10-05",
@@ -2020,7 +2020,7 @@ export const ARTICLES: Article[] = [
     slug: "tax-instalment-payments-canada-self-employed",
     title: "Tax Instalments for Self-Employed Canadians: How They Work",
     excerpt:
-      "If your net tax owing is over $3,000 this year and in either of the two previous years, the CRA requires quarterly instalments. Here's how the rule and the payment options work.",
+      "If your net tax owing is over $3,000 this year and in either of the two previous years, the CRA requires quarterly instalments. Here's how they work.",
     category: "Tax Fundamentals",
     publishedAt: "2026-05-10",
     updatedAt: "2026-10-05",
@@ -2074,7 +2074,7 @@ export const ARTICLES: Article[] = [
     slug: "receipt-scanner-apps-canada-comparison",
     title: "Best Receipt Scanner Apps in Canada (2026): Prices Compared",
     excerpt:
-      "A practical comparison of the top receipt scanning apps available to Canadian freelancers and small business owners — including GST/HST extraction and CRA compliance features.",
+      "A comparison of receipt scanning apps for Canadian freelancers and small businesses, including GST/HST extraction and CRA compliance features.",
     category: "Tools & Apps",
     publishedAt: "2026-05-10",
     updatedAt: "2026-10-05",
@@ -2355,7 +2355,7 @@ export const ARTICLES: Article[] = [
     slug: "freelancer-tax-mistakes-canada",
     title: "7 Common Tax Mistakes Canadian Freelancers Make",
     excerpt:
-      "These seven mistakes cost Canadian freelancers real money every year — through missed deductions, CRA interest charges, and denied claims. Here's how to avoid each one.",
+      "Seven mistakes that cost Canadian freelancers money through missed deductions, CRA interest charges and denied claims, and how to avoid each one.",
     category: "Tax Strategy",
     publishedAt: "2026-05-10",
     updatedAt: "2026-10-05",
@@ -2416,7 +2416,7 @@ export const ARTICLES: Article[] = [
     slug: "tax-season-stress-freelancers-canada",
     title: "Stress-Free Tax Season: A Canadian Year-End Checklist",
     excerpt:
-      "A practical year-end checklist that gets Canadian freelancers ready to file — covering receipts, income summaries, GST/HST, CPP, and what to hand off to your accountant.",
+      "A year-end checklist that gets Canadian freelancers ready to file: receipts, income summaries, GST/HST, CPP, and what to hand off to your accountant.",
     category: "Tax Strategy",
     publishedAt: "2026-05-10",
     updatedAt: "2026-10-05",
@@ -2484,7 +2484,7 @@ export const ARTICLES: Article[] = [
     slug: "cra-audit-guide-self-employed-canada",
     title: "CRA Reviews and Audits for the Self-Employed (2026 Guide)",
     excerpt:
-      "What to do when the CRA reviews or audits your return: checking the contact is genuine, how reviews and audits work, representatives, your rights and objections.",
+      "What to do when the CRA reviews or audits your return: verifying the contact, how reviews and audits work, representatives, your rights and objections.",
     category: "Tax Strategy",
     publishedAt: "2026-10-05",
     updatedAt: "2026-10-05",

@@ -12,7 +12,7 @@ export const Route = (createFileRoute as any)("/us/articles/")({
       path: "/us/articles",
       title: "Tax Guides for US Freelancers | ReceiptOne Knowledge Base",
       description:
-        "IRS expense rules, Schedule C deductions, mileage tracking, and more. Free tax guides written for US freelancers, 1099 contractors, and self-employed workers.",
+        "IRS expense rules, Schedule C deductions, mileage tracking, and more. Free tax guides for US freelancers, 1099 contractors and the self-employed.",
       ogTitle: "US Freelancer Tax Guides | ReceiptOne",
       ogDescription:
         "Expert guides on IRS compliance, Schedule C, mileage tracking, and top deductions for self-employed Americans.",

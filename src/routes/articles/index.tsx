@@ -12,7 +12,7 @@ export const Route = (createFileRoute as any)("/articles/")({
       path: "/articles",
       title: "Tax Guides for Canadian Freelancers | ReceiptOne Knowledge Base",
       description:
-        "CRA receipt rules, GST/HST tracking, mileage deductions, and more. Free tax guides written for Canadian freelancers, contractors, and self-employed workers.",
+        "CRA receipt rules, GST/HST tracking, mileage deductions, and more. Free tax guides for Canadian freelancers, contractors and the self-employed.",
       ogTitle: "Canadian Freelancer Tax Guides | ReceiptOne",
       ogDescription:
         "Expert guides on CRA compliance, GST/HST, mileage tracking, and top deductions for self-employed Canadians.",
