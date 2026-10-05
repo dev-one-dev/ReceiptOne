@@ -1477,7 +1477,7 @@ export const ARTICLES: Article[] = [
       "The practical, day-to-day discipline of mileage tracking for self-employed Canadians — what to log in the moment, GPS vs. manual logging, and the habits that keep a logbook audit-ready all year.",
     category: "Mileage & Auto",
     publishedAt: "2026-05-10",
-    updatedAt: "2026-08-06",
+    updatedAt: "2026-10-05",
     imageUrl: "https://picsum.photos/seed/mileage-tracking-self-employed-2025-guide/600/400",
     imageAlt: "CRA mileage tracking for Canadian self-employed drivers",
     tags: ["mileage", "automobile", "logbook", "CRA", "vehicle expenses"],
@@ -1491,7 +1491,7 @@ export const ARTICLES: Article[] = [
     body: [
       {
         type: "p",
-        text: "Knowing that mileage is deductible is the easy part — the deduction actually falls apart at the tracking stage. Most self-employed drivers who lose a vehicle-expense claim don't lose it because the trip wasn't legitimate business driving; they lose it because the logbook wasn't kept the way the CRA expects. This guide is about the day-to-day habit of tracking, not the deduction rules themselves — for what's deductible, the 2025 expense limits, and the simplified logbook method's math, see our complete mileage deduction guide.",
+        text: "Knowing that mileage is deductible is the easy part — the deduction actually falls apart at the tracking stage. Most self-employed drivers who lose a vehicle-expense claim don't lose it because the trip wasn't legitimate business driving; they lose it because the logbook wasn't kept the way the CRA expects. This guide is about the day-to-day habit of tracking, not the deduction rules themselves — for what's deductible, the current expense limits, and the simplified logbook method's math, see our complete mileage deduction guide.",
       },
       {
         type: "h2",
@@ -1511,11 +1511,11 @@ export const ARTICLES: Article[] = [
       },
       {
         type: "p",
-        text: "Manual logging works if you're disciplined about it, but it fails in a predictable way: short trips get skipped in the moment and \"added later from memory,\" which is precisely the kind of reconstruction the CRA doesn't accept as contemporaneous. A paper or spreadsheet logbook also can't prove when an entry was actually written, which matters if your claim is ever questioned.",
+        text: "Manual logging works if you're disciplined about it, but it fails in a predictable way: short trips get skipped in the moment and \"added later from memory,\" which is a weaker record than one kept as you go. The CRA calls an accurate logbook of business travel maintained for the entire year the best evidence of business use. A paper or spreadsheet logbook also can't prove when an entry was actually written, which matters if your claim is ever questioned.",
       },
       {
         type: "p",
-        text: "GPS or address-based tracking removes both problems. The app timestamps the entry automatically, calculates the distance for you instead of relying on an odometer estimate, and creates a record that's inherently contemporaneous because it's generated at the time of the trip. The tradeoff is that you still have to categorize each trip as business or personal — automation handles the distance and the timestamp, not your judgment about why you made the trip.",
+        text: "GPS or address-based tracking removes both problems. The app timestamps the entry automatically, calculates the distance for you instead of relying on an odometer estimate, and creates a record at the time of the trip. The tradeoff is that you still have to categorize each trip as business or personal — automation handles the distance and the timestamp, not your judgment about why you made the trip.",
       },
       {
         type: "h2",
@@ -1542,7 +1542,7 @@ export const ARTICLES: Article[] = [
       },
       {
         type: "callout",
-        text: "ReceiptOne's Mileage tool is built around that low-friction habit. Log Trip lets you enter a start and end address and it works out the route and distance for you — no odometer math, no estimating. Every trip is timestamped the moment you save it, and your business-use percentage updates automatically as you go, so there's no year-end scramble to total up a spreadsheet.",
+        text: "ReceiptOne's Mileage tool is built around that low-friction habit. Log Trip lets you enter a start and end address and it works out the route and distance for you — no odometer math, no estimating. Each trip is saved with its date, and your logged business kilometres add up as you go. Once you enter your odometer total for the year, ReceiptOne divides your business kilometres by it to give your business-use percentage.",
       },
     ],
   },
