@@ -1551,10 +1551,10 @@ export const ARTICLES: Article[] = [
     slug: "cra-mileage-logbook-requirements",
     title: "CRA Mileage Logbook Requirements: What You Must Record for Every Trip",
     excerpt:
-      "The CRA is specific about what a valid mileage logbook must contain. Missing even one required field can invalidate an entire year's vehicle deduction claim.",
+      "What the CRA says a mileage logbook should record for each business trip, the odometer readings you need, and how the year-end business-use percentage is worked out.",
     category: "Mileage & Auto",
     publishedAt: "2026-05-10",
-    updatedAt: "2026-05-11",
+    updatedAt: "2026-10-05",
     imageUrl: "https://picsum.photos/seed/cra-mileage-logbook-requirements/600/400",
     imageAlt: "Mileage logbook with CRA-required fields for Canadian freelancers",
     tags: ["mileage logbook", "CRA requirements", "vehicle deduction", "logbook", "self-employed"],
@@ -1568,7 +1568,7 @@ export const ARTICLES: Article[] = [
     body: [
       {
         type: "p",
-        text: "A mileage logbook is your primary evidence for vehicle expense claims. The CRA specifies exactly what it must contain — and 'approximately correct' doesn't pass an audit. Here's what every logbook entry needs.",
+        text: "A mileage logbook is your primary evidence for vehicle expense claims. The CRA lists what to record for each business trip: the date, destination, purpose and number of kilometres driven. Here's what every logbook entry needs.",
       },
       {
         type: "h2",
@@ -1578,8 +1578,7 @@ export const ARTICLES: Article[] = [
         type: "ul",
         items: [
           "Date of the trip",
-          "Starting location (city or address)",
-          "Destination (city or address)",
+          "Destination (city or address) — recording where you started is not on the CRA's list, but it makes each entry easier to verify",
           "Purpose of the trip — specific enough to verify it's a business trip",
           "Kilometres driven for that trip",
           "Odometer reading at the start and end of the year (to determine total kilometres driven)",
