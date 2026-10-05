@@ -41,7 +41,7 @@ const CA_FEATURES = [
   {
     label: "Home office",
     title: "Track your home office expenses",
-    desc: "Calculate your home office deduction in minutes. ReceiptOne tracks utilities, internet, and workspace costs, then applies the CRA deduction formula automatically.",
+    desc: "Enter your home expenses and the size of your workspace and your home. ReceiptOne works out the workspace percentage and applies it to your home costs, ready for your T2125.",
     img: icPhoneHomeOffice,
     alt: "ReceiptOne app showing home office deduction results",
   },
@@ -68,7 +68,7 @@ const US_FEATURES = CA_FEATURES.map((f) => {
       ...f,
       img: usHomeOffice,
       alt: "ReceiptOne app showing home office deduction results",
-      desc: "Calculate your home office deduction in minutes. ReceiptOne tracks utilities, internet, and workspace costs, then applies the IRS deduction formula automatically.",
+      desc: "Enter your home expenses and your office and home square footage. ReceiptOne works out your office percentage of home costs (the regular method) and, on the web app, the simplified method at $5 per sq ft up to 300 sq ft, so you can compare them.",
     };
   return f;
 });

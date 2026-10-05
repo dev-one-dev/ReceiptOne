@@ -2304,23 +2304,23 @@ export const ARTICLES: Article[] = [
     body: [
       {
         type: "p",
-        text: "The freelancers who dread tax season are the ones who treat it as a once-a-year event. Those who approach it as a continuous 15-minute-per-week habit find filing almost stress-free. Here's the system.",
+        text: "The freelancers who dread tax season are the ones who treat it as a once-a-year event. Those who keep their records up as they go have far less to do at filing time. Here's a simple weekly, monthly and quarterly routine.",
       },
       {
         type: "h2",
-        text: "Weekly (5 minutes)",
+        text: "Weekly",
       },
       {
         type: "ul",
         items: [
           "Photograph any paper receipts from the week — they go into your expense app or designated folder immediately",
           "Forward any email receipts to your designated expense email or save as PDF",
-          "Log any business mileage you forgot to track automatically",
+          "Log any business trips from the week that you haven't recorded yet",
         ],
       },
       {
         type: "h2",
-        text: "Monthly (20 minutes)",
+        text: "Monthly",
       },
       {
         type: "ul",
@@ -2333,7 +2333,7 @@ export const ARTICLES: Article[] = [
       },
       {
         type: "h2",
-        text: "Quarterly (1 hour)",
+        text: "Quarterly",
       },
       {
         type: "ul",
