@@ -1218,7 +1218,7 @@ export const ARTICLES: Article[] = [
       "Provincial sales taxes in BC, Manitoba, Saskatchewan, and Quebec are often confused with GST/HST — but they follow entirely different rules for self-employed workers.",
     category: "GST / HST",
     publishedAt: "2026-05-10",
-    updatedAt: "2026-05-11",
+    updatedAt: "2026-10-05",
     imageUrl: "https://picsum.photos/seed/pst-qst-freelancers-canada/600/400",
     imageAlt: "Map of Canadian provinces with PST and QST tax rules for freelancers",
     tags: ["PST", "QST", "provincial sales tax", "Quebec", "British Columbia", "self-employed"],
@@ -1250,10 +1250,9 @@ export const ARTICLES: Article[] = [
         type: "ul",
         items: [
           "Quebec collects QST (9.975%) separately from federal GST (5%) — total 14.975%",
-          "If your QST-taxable supplies in Quebec exceed $30,000, you must also register for QST with Revenu Québec",
-          "QST ITCs are claimed on your Quebec QST return, not your federal GST return",
-          "Quebec freelancers effectively file two separate sales tax returns: one with CRA (GST) and one with Revenu Québec (QST)",
-          "QST-registered businesses can recover the QST they paid on inputs through the QST ITC system",
+          "QST registration is a Quebec rule, administered by Revenu Québec rather than the CRA. Revenu Québec treats you as a small supplier while your worldwide taxable supplies, with your associates', are $30,000 or less in a calendar quarter and over the four preceding quarters; above that, if you carry on business in Québec, you must register for both the GST/HST and the QST",
+          "For most businesses based in Québec, Revenu Québec administers the GST as well as the QST, so you can file a combined GST/HST-QST return",
+          "QST-registered businesses recover the QST they paid on inputs by claiming input tax refunds (ITRs), alongside ITCs for the GST",
         ],
       },
       {
