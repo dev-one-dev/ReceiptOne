@@ -296,8 +296,8 @@ export const ARTICLES_US_ONLY: Article[] = [
       {
         type: "ul",
         items: [
-          "SEP-IRA: up to 25% of net self-employment income, max $70,000 for 2025 ($72,000 for 2026)",
-          "Solo 401(k): employee contribution up to $23,500 + employer contribution up to 25% of compensation",
+          "SEP-IRA: up to 25% of compensation, max $70,000 for 2025 ($72,000 for 2026). For your own account, compensation is net earnings from self-employment after deducting half your self-employment tax and the contribution itself, so the effective rate is about 20%; Publication 560 has the worksheet",
+          "Solo 401(k): employee contribution up to $23,500 for 2025, plus an employer contribution worked out on the same reduced self-employed basis as a SEP",
           "SIMPLE IRA: up to $16,500 employee contribution",
           "Contributions reduce AGI dollar-for-dollar — one of the most powerful deductions available",
         ],
