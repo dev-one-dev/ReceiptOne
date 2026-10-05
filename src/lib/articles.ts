@@ -225,12 +225,12 @@ export const ARTICLES: Article[] = [
 
   {
     slug: "digital-receipts-canada-are-they-valid",
-    title: "Are Digital Receipts Valid for the CRA? Email and Photo Receipts Explained",
+    title: "Are Digital Receipts Valid for the CRA? Photos, Scans and E-Receipts (2026)",
     excerpt:
-      "Wondering whether an email receipt or a phone photo of a paper receipt will hold up with the CRA? The answer is yes — with a few important conditions.",
+      "When the CRA accepts photos, scans and emailed receipts, when you must still keep the paper, and how to store, back up and hand over electronic records.",
     category: "Tax Compliance",
-    publishedAt: "2026-05-10",
-    updatedAt: "2026-05-11",
+    publishedAt: "2026-10-04",
+    updatedAt: "2026-10-04",
     imageUrl: "https://picsum.photos/seed/digital-receipts-canada-are-they-valid/600/400",
     imageAlt: "Person photographing a paper receipt with a smartphone",
     tags: ["digital receipts", "CRA", "email receipts", "photo receipts", "compliance"],
@@ -240,33 +240,157 @@ export const ARTICLES: Article[] = [
     body: [
       {
         type: "p",
-        text: "The CRA officially accepts digital images of receipts as valid business records. This policy has been in place since 2007 and applies to smartphone photos, scanned PDFs, and email receipts from vendors. You are not required to keep paper originals once you have a clear digital copy — but the digital copy must meet specific standards.",
+        text: "Yes: the CRA accepts electronic records, and a receipt that reached you electronically is a valid record in its own right. A photo of a paper receipt is a different case. The CRA's general rule is that you keep the paper original, and you may destroy it only if your imaging meets the national standard the CRA points to.",
+      },
+      {
+        type: "p",
+        text: "This guide covers what that means in practice for the 2026 tax year. It treats three kinds of digital receipt separately, sets out what makes an image acceptable, and explains how to store, back up and hand over electronic records. For what a receipt must show and how long to keep it, see our CRA receipt rules guide. Everything below comes from canada.ca and CRA publications, chiefly Information Circular IC05-1R1, Electronic Record Keeping.",
       },
       {
         type: "h2",
-        text: "Requirements for a Valid Digital Receipt",
+        text: "Three Kinds of Digital Receipt, Three Sets of Rules",
       },
       {
         type: "ul",
         items: [
-          "Must be a complete, unaltered image — no cropping that removes any required field",
-          "All required information must be legible: vendor name, date, total, GST/HST number",
-          "Must be in a stable format — PDF or JPEG are preferred over editable formats like .docx",
-          "Stored in at least two locations (e.g., cloud backup + local drive) for durability",
-          "Metadata should ideally reflect when the image was captured (most phone cameras preserve this automatically)",
+          "Born-digital receipts: emailed receipts, PDF invoices, online order confirmations. These were created or received electronically, so the CRA requires you to keep them electronically. A printout does not replace the file.",
+          "Paper receipts you photograph or scan: the image is a copy. The paper is still the record unless your imaging meets the national standard, CAN/CGSB 72.34, Electronic Records as Documentary Evidence.",
+          "Receipts held by an app, bookkeeper or other service: you remain responsible for keeping them, keeping them readable and producing them, wherever the provider stores them.",
         ],
       },
       {
-        type: "callout",
-        text: "The CRA's guidance (Information Circular IC05-1R1) states that electronic records must be 'accessible, readable and printable' on request. If you store receipts in an app, make sure you can export them in a standard format.",
-      },
-      {
         type: "h2",
-        text: "Email Receipts from Vendors",
+        text: "Emailed and Online Receipts",
       },
       {
         type: "p",
-        text: "Email receipts directly from vendors are fully valid CRA documents — provided they include all required information. Save them as PDF files rather than leaving them in an email inbox. Email services change, accounts get deleted, and corporate email is sometimes wiped on departure. A downloaded PDF in cloud storage is far more durable than an email in a live inbox.",
+        text: 'IC05-1R1 lists the source documents a business must keep, including purchase invoices, cash register receipts, credit card receipts and bank statements. Where relevant, emails and other correspondence count too. It adds that where any of these documents are "initially created, transmitted or received electronically", they "must also be retained electronically". The Income Tax Act says the same thing about records kept electronically: they must be kept in an electronically readable format for the full retention period, even when a paper copy exists.',
+      },
+      {
+        type: "p",
+        text: "For online purchases, the circular notes that emails used as part of the transaction, such as invoices and confirmations, can be an important part of the audit trail. In practice, save the receipt itself as a file you control, rather than relying on an inbox you might lose access to, and keep it in a format that opens without the vendor's account.",
+      },
+      {
+        type: "h2",
+        text: "Photos and Scans of Paper Receipts",
+      },
+      {
+        type: "p",
+        text: 'The CRA\'s keeping-records pages say: "Generally, you must keep originals of your paper documents. However, you can produce electronic images of these documents, known as imaging." For any image to stand in for the paper, it must:',
+      },
+      {
+        type: "ul",
+        items: [
+          "Be an accurate reproduction made with the intention of taking the place of the paper document",
+          "Give the same information as the paper document",
+          "Not have significant details obscured by limits of resolution, tone or hue",
+        ],
+      },
+      {
+        type: "p",
+        text: 'Destroying the paper is where the standard comes in. If you have imaged your paper records and supporting documents according to the CGSB standard, "the images become the permanent records" and you can destroy the paper. If you cannot meet the standard, the CRA says you have to keep the originals, and it advises getting legal advice if you are in any doubt. Businesses using commercial software for small-scale scanning are expected to check that their scans follow the same standard.',
+      },
+      {
+        type: "p",
+        text: "IC05-1R1 describes what an acceptable imaging program involves:",
+      },
+      {
+        type: "ul",
+        items: [
+          "A person in authority confirms in writing that imaging is part of the business's usual and ordinary activity",
+          "The systems and procedures are established and documented",
+          "A logbook records the date of imaging, who authorized and performed it, a description of the records imaged, and whether and when each source document was destroyed",
+          "The software keeps an index so any record can be found immediately, and records the imaging date and the person who did it",
+          "Images are of commercial quality, legible on screen and on paper",
+          "Inspection and quality control keep the above in place, and equipment is available to view or print the images",
+        ],
+      },
+      {
+        type: "p",
+        text: "Hypothetical example: a freelance designer photographs every receipt on the day of purchase, files the images by month, and drops the paper into one envelope per year. That approach keeps the originals, so the photos can be used day to day without having to meet the imaging standard. If the designer later wants to shred the paper, the bar is the documented program above, not simply having a clear photo.",
+      },
+      {
+        type: "h2",
+        text: "Formats, Conversions and Backups",
+      },
+      {
+        type: "p",
+        text: 'The CRA\'s test for an electronic record is whether it can produce an accessible and usable copy. That means a copy in an electronically readable format that CRA auditors can process and analyse with CRA software, in a "non-proprietary, commonly used data interchange format". Files kept in an encrypted or proprietary backup format must be restorable later to an accessible, usable state. If you convert records from one format to another, the conversion must not lose, destroy or alter information relevant to your taxes.',
+      },
+      {
+        type: "p",
+        text: "On backups, the CRA encourages keeping a backup at a site other than your business location and recommends that it be in Canada. IC05-1R1 also sets out good backup practice:",
+      },
+      {
+        type: "ul",
+        items: [
+          "Make sure backed-up files can be restored in a format the CRA can access and use",
+          "Check that the intended data is actually being written to the backup",
+          "Don't let a backup overwrite earlier periods' backups",
+          "Label each backup and keep a log of what it holds and how long it must be kept",
+          "Note the software name and version used to create the records",
+          "Test periodically that backups can be restored",
+        ],
+      },
+      {
+        type: "p",
+        text: "If electronic records you are required to keep are lost, destroyed or damaged, you must report it to the CRA and recreate the files within a reasonable time. The CRA's number for this is 1-800-959-5525. Before you change systems, make sure you will still be able to access and retrieve your existing records.",
+      },
+      {
+        type: "h2",
+        text: "Apps, Bookkeepers and Cloud Storage",
+      },
+      {
+        type: "p",
+        text: "Using a third party does not shift the responsibility. IC05-1R1 is explicit that contracting out record keeping to a bookkeeper, accountant, application service provider or similar does not relieve you of record keeping, readability, retention or access duties. The CRA suggests, as good practice, having the provider give you an acceptable copy of the information in an electronically readable format. You must keep meeting the requirements through software changes, a provider's bankruptcy, or a move to or from a provider.",
+      },
+      {
+        type: "p",
+        text: 'Location matters as well. Records must be kept at your place of business or residence in Canada unless the CRA gives written permission otherwise. "Records kept outside Canada and accessed electronically from Canada are not considered to be records in Canada." Where records are held electronically outside Canada, the CRA may accept a copy made available in Canada in a readable, usable format with enough detail to support your returns.',
+      },
+      {
+        type: "callout",
+        text: "These rules apply to a receipt app like any other provider. ReceiptOne can export your records as PDF or CSV, which gives you a copy you hold yourself. Our privacy policy explains that its data may be stored outside Canada, so keep that exported copy in Canada.",
+      },
+      {
+        type: "h2",
+        text: "Handing Electronic Records to the CRA",
+      },
+      {
+        type: "p",
+        text: "If the CRA reviews your return and asks for documents, you can send scanned copies through My Account or Represent a Client. The service lets you keep your original receipts. Accepted formats include .pdf, .jpg, .jpeg, .tif, .tiff, .doc, .docx, .xls, .xlsx, .rtf, .txt and .xps. A submission can be up to 150 MB and up to 10 files per session, each file needs a unique name, and the CRA suggests including the return line number in the file name. If documents are unavailable, include a written explanation or call the number on the CRA's letter.",
+      },
+      {
+        type: "p",
+        text: "In an audit, the CRA says you must make all relevant records available, paper and electronic, and that failing to provide required books and records is an offence. Auditors may copy your electronic records. They are not allowed to receive records by email, because it may not be secure, so your auditor will explain the CRA's secure options. If you keep your accounting records on a computer, you must keep them in an electronically readable format even if you also keep paper.",
+      },
+      {
+        type: "h2",
+        text: "Frequently Asked Questions",
+      },
+      {
+        type: "p",
+        text: "Is a photo of a receipt as good as the original? It can be used as a copy, and it must be an accurate, legible reproduction. Whether you can discard the paper depends on meeting the CAN/CGSB 72.34 imaging standard; if you don't, the CRA says to keep the original.",
+      },
+      {
+        type: "p",
+        text: "Can I just print my email receipts and delete the emails? No. A record received electronically has to be kept electronically, even if you also have a paper copy.",
+      },
+      {
+        type: "p",
+        text: "Does my receipt app keep my records for me? It can hold copies, but the responsibility to keep, produce and keep readable your records stays with you. Exporting a copy you control, and keeping it in Canada, covers the most common gaps.",
+      },
+      {
+        type: "p",
+        text: "What file format should I save receipts in? The CRA asks for records in a non-proprietary, commonly used format that its software can read. For sending documents in a review, it lists .pdf and .jpg among the accepted formats.",
+      },
+      {
+        type: "p",
+        text: "My laptop died and took my receipts with it. What now? Report the loss to the CRA and recreate the records within a reasonable time, for example by asking suppliers and your bank for copies. A tested backup kept off-site in Canada is what the CRA recommends to avoid this.",
+      },
+      {
+        type: "p",
+        text: "Can I email my receipts to a CRA auditor? No. Auditors are not allowed to receive records by email; they will tell you how to send documents through the CRA's secure services.",
       },
     ],
   },
