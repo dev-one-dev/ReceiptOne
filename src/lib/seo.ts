@@ -74,12 +74,12 @@ export const LOGO_URL = siteUrl("/logo-512.png");
 
 const ORGANIZATION_ID = `${SITE_URL}/#organization`;
 
-/**
- * Profiles that are linked from the site and verified to be ours. The
- * LinkedIn page links back to receipt-one.com. The footer's X and Facebook
- * handles could not be confirmed, so they stay out until they are.
- */
-const SOCIAL_PROFILES = ["https://linkedin.com/company/receiptone"];
+/** Social profiles linked from the site footer — keep the URLs identical. */
+const SOCIAL_PROFILES = [
+  "https://x.com/receiptone",
+  "https://linkedin.com/company/receiptone",
+  "https://facebook.com/receiptone",
+];
 
 export const organizationJsonLd = {
   "@context": "https://schema.org",

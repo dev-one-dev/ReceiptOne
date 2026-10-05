@@ -13,7 +13,7 @@ All notable changes to the ReceiptOne landing site. Dates are ISO (YYYY-MM-DD).
 ### Changed
 
 - `/ca` and `/us` titles and meta descriptions; the price line is read from `pricing.ts` (2026-10-04).
-- JSON-LD: Organization has a 512×512 PNG logo, `@id` and `sameAs` (App Store, Google Play, LinkedIn). SoftwareApplication has `operatingSystem` "iOS, Android, Web" and one Offer per plan with `areaServed` (2026-10-04).
+- JSON-LD: Organization has a 512×512 PNG logo, `@id` and `sameAs` (App Store, Google Play, LinkedIn, X, Facebook — the footer URLs). SoftwareApplication has `operatingSystem` "iOS, Android, Web" and one Offer per plan with `areaServed` (2026-10-04).
 - hreflang: x-default is now the CA page. Pairs are `/ca`–`/us`, `/faq`–`/us/faq`, `/contact`–`/us/contact` and `/articles`–`/us/articles`. Articles pair only when the same slug exists in both regions (none today) (2026-10-04).
 - `/` redirects with 301 (was 302): to `/us` for US visitors, `/ca` for everyone else (2026-10-04).
 - Sitemap `lastmod` for non-article pages comes from git history of the files each page imports instead of the build date (2026-10-04).
