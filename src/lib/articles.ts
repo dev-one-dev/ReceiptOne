@@ -53,11 +53,7 @@ export const ARTICLES: Article[] = [
     imageAlt: "Canadian freelancer organizing receipts and tax documents",
     tags: ["CRA", "receipts", "compliance", "self-employed", "audit", "record keeping"],
     clusterName: "CRA Receipt Rules",
-    relatedSlugs: [
-      "cra-receipt-rules-canadian-freelancer",
-      "digital-receipts-canada-are-they-valid",
-      "cra-audit-proof-expenses",
-    ],
+    relatedSlugs: ["digital-receipts-canada-are-they-valid", "cra-audit-proof-expenses"],
     body: [
       {
         type: "p",
@@ -219,73 +215,6 @@ export const ARTICLES: Article[] = [
       {
         type: "p",
         text: "What if my receipts were lost in a fire or flood? For lost or damaged electronic records, the CRA asks you to report them missing at 1-800-959-5525 and recreate them within a reasonable time. For disasters, it points to its page on support for those affected.",
-      },
-    ],
-  },
-
-  {
-    slug: "cra-receipt-rules-canadian-freelancer",
-    title: "CRA Receipt Rules: What Every Canadian Freelancer Needs to Know",
-    excerpt:
-      "The CRA has specific requirements for which receipts you must keep and what information they need to include. Getting this wrong can cost you deductions — or worse, trigger a reassessment.",
-    category: "Tax Compliance",
-    publishedAt: "2026-05-10",
-    updatedAt: "2026-05-11",
-    imageUrl: "https://picsum.photos/seed/cra-receipt-rules-canadian-freelancer/600/400",
-    imageAlt: "Freelancer reviewing receipts and financial documents at a desk",
-    tags: ["CRA", "receipts", "compliance", "freelancer", "tax rules"],
-    clusterPillar: "cra-receipt-rules-canada",
-    clusterName: "CRA Receipt Rules",
-    relatedSlugs: ["cra-receipt-rules-canada", "digital-receipts-canada-are-they-valid"],
-    body: [
-      {
-        type: "p",
-        text: "Every self-employed Canadian knows they need to keep receipts — but far fewer understand exactly what the Canada Revenue Agency (CRA) actually requires. A receipt rejected during an audit can mean a denied deduction, interest charges, and penalties. Getting this right from the start is far less painful than fixing it later.",
-      },
-      {
-        type: "h2",
-        text: "What Information Must a Valid Receipt Include?",
-      },
-      {
-        type: "p",
-        text: "The CRA requires that a business expense receipt contain enough information to clearly identify the nature of the expense, the amount paid, the date of the transaction, and the name of the vendor. For expenses over $30 that include GST/HST, the receipt must also show the vendor's GST/HST registration number.",
-      },
-      {
-        type: "ul",
-        items: [
-          "Vendor name and address",
-          "Date of transaction",
-          "Description of goods or services purchased",
-          "Total amount paid, including taxes",
-          "GST/HST number (required for claims over $30)",
-          "Amount of GST/HST charged (for input tax credit claims)",
-        ],
-      },
-      {
-        type: "h2",
-        text: "Digital Receipts Are Fully Accepted by the CRA",
-      },
-      {
-        type: "p",
-        text: "Good news for modern freelancers: the CRA has accepted digital images of receipts since 2007, and e-receipts directly from vendors are treated identically to paper originals. The key requirement is that the digital copy must be a true, unaltered copy — no cropping, brightening, or editing that could obscure any required information. Apps like ReceiptOne capture receipts in a compliant format automatically.",
-      },
-      {
-        type: "callout",
-        text: "CRA tip: If you receive both a paper receipt and an email confirmation for the same purchase, you only need to keep one — but keep whichever shows all the required fields, including the GST/HST number.",
-      },
-      {
-        type: "h2",
-        text: "Common Receipt Mistakes That Trigger CRA Scrutiny",
-      },
-      {
-        type: "ul",
-        items: [
-          "Keeping credit card statements alone — these do not describe what was purchased",
-          "Missing GST/HST registration numbers on business purchase receipts",
-          "Blurry or cropped photos where the total amount or vendor name is unclear",
-          "No records for cash purchases (the CRA expects some form of documentation)",
-          "Mixing personal and business purchases on the same receipt without clear notation",
-        ],
       },
     ],
   },
