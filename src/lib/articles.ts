@@ -901,12 +901,12 @@ export const ARTICLES: Article[] = [
 
   {
     slug: "gst-hst-expense-tracking-canada",
-    title: "GST/HST for Canadian Freelancers: The Complete Expense Tracking Guide",
+    title: "GST/HST for Canadian Freelancers: The Expense Tracking Guide (2026)",
     excerpt:
-      "Everything self-employed Canadians need to know about tracking GST/HST on expenses — from input tax credits to filing periods to the provincial rules that trip people up.",
+      "GST/HST for self-employed Canadians in 2026: when registration starts, current rates by province, the $100 and $500 ITC receipt tiers, and choosing a filing period.",
     category: "GST / HST",
-    publishedAt: "2026-05-10",
-    updatedAt: "2026-05-11",
+    publishedAt: "2026-10-05",
+    updatedAt: "2026-10-05",
     imageUrl: "https://picsum.photos/seed/gst-hst-expense-tracking-canada/600/400",
     imageAlt: "Canadian freelancer tracking GST/HST on business expense receipts",
     tags: ["GST", "HST", "input tax credits", "ITC", "self-employed", "CRA", "PST"],
@@ -920,7 +920,7 @@ export const ARTICLES: Article[] = [
     body: [
       {
         type: "p",
-        text: "GST/HST is one of the most valuable — and most misunderstood — aspects of running a self-employed business in Canada. Get it right and you recover hundreds or thousands in input tax credits each year. Get it wrong and you either leave money on the table or face reassessment. This guide covers the complete picture: registration thresholds, ITC claims, provincial variations, and filing mechanics.",
+        text: "GST/HST touches a self-employed business in two directions: you charge it on your sales once you are registered, and you recover the GST/HST you pay on business expenses through input tax credits (ITCs). Getting it right comes down to knowing when registration starts, tracking the tax on every purchase, and keeping receipts that meet the CRA's documentation rules. This guide gives the overview; the figures come from canada.ca and Guide RC4022.",
       },
       {
         type: "h2",
@@ -928,7 +928,7 @@ export const ARTICLES: Article[] = [
       },
       {
         type: "p",
-        text: "GST/HST registration becomes mandatory once your taxable supplies exceed $30,000 in any single calendar quarter, or in the last four consecutive quarters. This threshold is per individual, not per client. Once crossed, you must register within 29 days of the quarter-end in which you exceeded the threshold.",
+        text: "You are a small supplier, and don't have to register, while your revenue from worldwide taxable supplies (with your associates') is $30,000 or less in a single calendar quarter and over the last four consecutive calendar quarters. If you go over $30,000 in a single quarter, you are a registrant from the day of the sale that put you over and must register within 29 days of that day. If you go over across four quarters but not in any one, you stay a small supplier for those quarters and the following month. Registration then takes effect on your first sale after that, with 29 days from that day to register.",
       },
       {
         type: "h2",
@@ -936,20 +936,21 @@ export const ARTICLES: Article[] = [
       },
       {
         type: "p",
-        text: "Once registered, you claim back the GST/HST you paid on business expenses as input tax credits (ITCs). These credits offset the GST/HST you collect from clients. If your ITCs exceed the tax you collect (common for new businesses with high startup costs), the CRA issues a refund. This is why some freelancers choose to register voluntarily before hitting the $30,000 threshold — particularly those with significant startup expenses.",
+        text: "Once registered, you claim back the GST/HST you paid on business expenses as input tax credits. These credits offset the GST/HST you collect from clients. If your ITCs exceed the tax you collect, the CRA refunds the difference. A small supplier can also choose to register voluntarily. The effective date is then usually the date you applied, though the CRA will accept an earlier date within 30 days of receiving the application.",
       },
       {
         type: "h2",
-        text: "Provincial GST/HST Rates (2025)",
+        text: "GST/HST Rates by Province",
       },
       {
         type: "ul",
         items: [
-          "5% GST only: Alberta, British Columbia, Manitoba, Saskatchewan, Northwest Territories, Nunavut, Yukon",
+          "5% GST only: Alberta, Northwest Territories, Nunavut, Yukon",
+          "5% GST plus provincial sales tax: British Columbia (7% PST), Manitoba (7% RST), Saskatchewan (6% PST), Quebec (9.975% QST)",
           "13% HST: Ontario",
-          "15% HST: New Brunswick, Newfoundland & Labrador, Nova Scotia, Prince Edward Island",
-          "5% GST + 9.975% QST: Quebec (QST is claimed separately through Revenu Québec)",
-          "Note: BC, Manitoba, and Saskatchewan also charge PST (7–8%), which is NOT recoverable as an ITC",
+          "14% HST: Nova Scotia (since April 1, 2025; previously 15%)",
+          "15% HST: New Brunswick, Newfoundland and Labrador, Prince Edward Island",
+          "PST and RST are not recovered through ITCs on your GST/HST return; QST is administered by Revenu Québec",
         ],
       },
       {
@@ -959,14 +960,15 @@ export const ARTICLES: Article[] = [
       {
         type: "ul",
         items: [
-          "Under $30: vendor name, date, total — no GST number required",
-          "$30–$149.99: add vendor's GST/HST registration number and total tax",
-          "$150+: add buyer's name or trade name",
+          "Under $100: supplier's business or trading name, the invoice date (or date the tax was paid or payable), and the total amount",
+          "$100 to $499.99: add the GST/HST charged (or that the price includes it), the status of each supply if taxable and exempt items are mixed, and the supplier's GST/HST registration number",
+          "$500 or more: add the buyer's name or trading name, a brief description of the goods or services, and the terms of payment",
+          "These tiers replaced the earlier $30 and $150 thresholds as of April 20, 2021",
         ],
       },
       {
         type: "callout",
-        text: "The Quick Method of accounting for GST/HST lets eligible small businesses remit a flat percentage of sales instead of tracking every ITC individually. It simplifies filing but often results in paying more net GST/HST than the detailed method. Run the numbers with your accountant before electing it.",
+        text: "The Quick Method of accounting lets eligible small businesses remit a set percentage of their GST/HST-included sales instead of claiming ITCs on most operating expenses. Whether it costs or saves you money depends on your mix of sales and expenses, so compare both methods before electing it.",
       },
       {
         type: "h2",
@@ -974,7 +976,7 @@ export const ARTICLES: Article[] = [
       },
       {
         type: "p",
-        text: "Annual filers (under $1.5M in taxable supplies) file once per year. Quarterly or monthly filing is also available by election and can help cash flow if you regularly receive large ITC refunds. The downside is more frequent filing. Most sole proprietors earning under $500,000 per year do well on annual filing unless they have seasonal expense spikes that would otherwise create cash flow gaps.",
+        text: "Your assigned reporting period follows your revenue from taxable supplies. $1,500,000 or less is annual, more than $1,500,000 up to $6,000,000 is quarterly, and more than $6,000,000 is monthly. You can elect to file more often, which can help cash flow if you regularly receive refunds, at the cost of more frequent returns. A sole proprietor with an annual period and a calendar fiscal year generally files by June 15 and pays any balance by April 30.",
       },
     ],
   },
