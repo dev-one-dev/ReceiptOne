@@ -250,7 +250,7 @@ export const ARTICLES_US_ONLY: Article[] = [
       "The most valuable deductions available to US freelancers and 1099 contractors in 2025 — including the ones most people miss.",
     category: "Tax Deductions",
     publishedAt: "2026-05-20",
-    updatedAt: "2026-05-20",
+    updatedAt: "2026-10-05",
     imageUrl: "https://picsum.photos/seed/self-employed-deductions-us-2025/600/400",
     imageAlt: "US freelancer reviewing tax deductions on laptop",
     tags: ["deductions", "freelancer", "1099", "IRS", "self-employed", "2025", "tax savings"],
@@ -296,7 +296,7 @@ export const ARTICLES_US_ONLY: Article[] = [
       {
         type: "ul",
         items: [
-          "SEP-IRA: up to 25% of net self-employment income, max $69,000 (2025)",
+          "SEP-IRA: up to 25% of net self-employment income, max $70,000 for 2025 ($72,000 for 2026)",
           "Solo 401(k): employee contribution up to $23,500 + employer contribution up to 25% of compensation",
           "SIMPLE IRA: up to $16,500 employee contribution",
           "Contributions reduce AGI dollar-for-dollar — one of the most powerful deductions available",
