@@ -43,12 +43,12 @@ export const ARTICLES: Article[] = [
 
   {
     slug: "cra-receipt-rules-canada",
-    title: "CRA Receipt Rules in Canada: The Complete Guide for Self-Employed Workers",
+    title: "CRA Receipt Rules in Canada: What to Keep and for How Long (2026 Guide)",
     excerpt:
-      "Everything the Canada Revenue Agency requires for business receipts — what information must appear, how long to keep records, digital vs. paper rules, and how to build a system that survives an audit.",
+      "What the CRA requires on a business receipt for 2026, when scanned copies can replace paper, the six-year retention rule, and the $100 and $500 GST/HST ITC tiers.",
     category: "Tax Compliance",
-    publishedAt: "2026-05-10",
-    updatedAt: "2026-05-11",
+    publishedAt: "2026-10-04",
+    updatedAt: "2026-10-04",
     imageUrl: "https://picsum.photos/seed/cra-receipt-rules-canada/600/400",
     imageAlt: "Canadian freelancer organizing receipts and tax documents",
     tags: ["CRA", "receipts", "compliance", "self-employed", "audit", "record keeping"],
@@ -56,63 +56,169 @@ export const ARTICLES: Article[] = [
     relatedSlugs: [
       "cra-receipt-rules-canadian-freelancer",
       "digital-receipts-canada-are-they-valid",
-      "how-long-keep-receipts-canada",
       "cra-audit-proof-expenses",
     ],
     body: [
       {
         type: "p",
-        text: "If you're self-employed in Canada, your receipts are your financial foundation. The Canada Revenue Agency (CRA) requires specific information on every business receipt — and if an auditor asks for documentation you can't produce, the result is a denied deduction and potential penalties. This guide covers what must appear on a receipt, how long to keep records, digital-receipt rules, and how to build a system that survives an audit.",
+        text: "If you are self-employed in Canada, the CRA expects a receipt or other document behind every business expense you claim, and you generally have to keep it for six years from the end of the last tax year it relates to. For your 2026 tax year, that means the receipts stay with you until at least the end of 2032, longer in the cases covered below.",
+      },
+      {
+        type: "p",
+        text: "This guide covers the 2026 tax year. Every requirement and dollar figure comes from canada.ca. Examples are hypothetical and are labelled that way.",
       },
       {
         type: "h2",
-        text: "What the CRA Requires on Every Business Receipt",
+        text: "What the CRA Accepts as a Receipt",
+      },
+      {
+        type: "p",
+        text: "The law requires you to keep records of all your transactions so you can support your income and expense claims. Guide T4002 says to always get a receipt or other voucher when you buy something for your business, and that the receipt has to show:",
       },
       {
         type: "ul",
         items: [
-          "Vendor name and address (or clear vendor identification)",
-          "Date of the transaction",
-          "Description of goods or services purchased",
-          "Total amount paid including all taxes",
-          "GST/HST registration number (mandatory for ITC claims over $30)",
-          "GST/HST amount charged separately (for purchases $30–$149.99)",
-          "Buyer's name or trade name (for purchases $150 and over)",
+          "The date of the purchase",
+          "The name and address of the seller or supplier",
+          "The name and address of the buyer",
+          "A full description of the goods or services",
+          "The vendor's business number, if they are a GST/HST registrant and the purchase price is $100 or more before tax",
         ],
       },
       {
-        type: "h2",
-        text: "Digital and Email Receipts: What the CRA Accepts",
+        type: "p",
+        text: '"Record" is defined broadly. The CRA\'s list of records includes sales invoices, purchase receipts, vouchers, contracts, bank deposit slips, bank statements, cancelled cheques, cash register slips, credit card receipts, logbooks and emails. All records must be reliable and complete, supported by documents, and kept in English, French or both.',
       },
       {
         type: "p",
-        text: "The CRA has accepted digital images of paper receipts since 2007, and email receipts are treated identically to paper originals. A phone photo is valid — provided it is a complete, unaltered copy. Cropping or editing a photo in any way that obscures the vendor name, total, or GST number can invalidate it. Capture the entire receipt in one frame without editing, and store it in a format that preserves the original.",
-      },
-      {
-        type: "h2",
-        text: "The Six-Year Retention Rule",
+        text: "Where a receipt falls short, fix it at the time. If there is no description, as with a cash register tape, T4002 says to write what the item was on the receipt or in your expense records. If a supplier won't give you a receipt, T4002 warns that transactions may be denied without proper documentation.",
       },
       {
         type: "p",
-        text: "The Income Tax Act requires self-employed Canadians to keep all business records for six years from the end of the tax year to which they relate. A receipt from a January 2025 purchase must be kept until at least December 31, 2031. Capital asset records (equipment, vehicles, property) must be kept for six years after disposal — potentially much longer.",
+        text: "What does not work: a scanned image where resolution, tone or colour hides significant details, and records kept outside Canada, unless the CRA has given written permission. Records stored outside Canada and accessed electronically from Canada are not considered kept in Canada.",
+      },
+      {
+        type: "h2",
+        text: "Scanned and Electronic Copies: Do You Need the Original?",
+      },
+      {
+        type: "p",
+        text: "The CRA accepts records kept on paper and later converted to an accessible, readable electronic format, as well as records that were electronic from the start. The rules differ for each:",
+      },
+      {
+        type: "ul",
+        items: [
+          'Paper originals: "Generally, you must keep originals of your paper documents." You can keep electronic images instead, but you may destroy the paper only if the imaging follows the national standard, CAN/CGSB 72.34, Electronic Records as Documentary Evidence. Then the images become the permanent record.',
+          "If your imaging does not meet that standard, the CRA says you have to keep the original documents. If you are in any doubt about destroying paper, it advises getting legal advice first.",
+          "Electronic originals, such as emailed invoices and PDF receipts, must be kept in an electronic readable format even if you also print them.",
+          "Any image must be an accurate reproduction intended to take the place of the paper, give the same information, and keep significant details legible.",
+        ],
+      },
+      {
+        type: "p",
+        text: "Electronic records must stay accessible to CRA officials and readable by CRA software, including after you change systems. Keep backup copies, preferably at a site in Canada other than your business location. If electronic records are lost, destroyed or damaged, the CRA asks you to report them missing at 1-800-959-5525 and recreate them within a reasonable time.",
       },
       {
         type: "callout",
-        text: "Most CRA audits of self-employed individuals are triggered by unusually high expense-to-income ratios. The best audit defence is a systematic capture habit — photograph every receipt the day you get it, tag it with the business purpose, and store it in a searchable cloud system.",
+        text: "ReceiptOne keeps a photo of each receipt, reads the merchant, date, total and sales-tax amounts from it, and exports your records as PDF or CSV. It does not check a supplier's GST/HST registration number, so look for one yourself on purchases of $100 or more. Our privacy policy explains that data may be stored outside Canada, so keep your exported copy in Canada.",
       },
       {
         type: "h2",
-        text: "Common Receipt Mistakes That Cost You Deductions",
+        text: "The Six-Year Rule and When It Starts",
+      },
+      {
+        type: "p",
+        text: "The general rule is six years from the end of the last tax year the records relate to. For individuals, the tax year is the calendar year, so the clock starts on December 31, not on the date printed on the receipt. The same retention rules apply under the Excise Tax Act, so your GST/HST records follow them too. Several situations change the period:",
       },
       {
         type: "ul",
         items: [
-          "Relying on bank or credit card statements alone — they show amounts but not what was purchased",
-          "Blurry or partial photos where the GST number or total is unreadable",
-          "No documentation for cash purchases — the CRA still expects a record",
-          "Missing GST/HST registration numbers on supplier receipts for ITC claims",
-          "Mixing personal and business purchases on the same receipt without a clear notation",
+          "Late-filed return: keep the records for six years from the date you file that return.",
+          "Objection or appeal: keep the records until the latest of these: the objection or appeal is resolved, the time for any further appeal has passed, or the six-year period has passed.",
+          "Long-term acquisitions and disposals of property, and other history that would affect a sale or wind-up of the business: keep them indefinitely.",
+          "Business that ends: an unincorporated business keeps its records for six years from the end of the tax year in which it ended.",
+          "If the CRA wants you to keep records longer, an official will tell you in person or by registered mail.",
         ],
+      },
+      {
+        type: "p",
+        text: "Hypothetical example: a receipt dated March 10, 2026 for a business purchase relates to your 2026 tax year. Filed on time, it must be kept until at least December 31, 2032. If the same 2026 return were filed late, on a date in 2027, the six years would run from that filing date instead. Some records relate to more than one year, such as the receipt for equipment you claim capital cost allowance on over several years. For those, the clock runs from the last year they support.",
+      },
+      {
+        type: "p",
+        text: "To destroy records before the period ends, you need written permission from the CRA, using Form T137, Request for Destruction of Records, or a letter to your tax services office. The CRA states that destroying paper or electronic records without its permission can lead to prosecution.",
+      },
+      {
+        type: "h2",
+        text: "What Happens at an Audit When Records Are Missing",
+      },
+      {
+        type: "p",
+        text: "You must make your records available to the CRA when it asks, and let officials copy what they need. Guide T4002 sets out the consequences of not keeping adequate records:",
+      },
+      {
+        type: "ul",
+        items: [
+          "If you do not have the necessary information and no other proof, the CRA may determine your income using other methods.",
+          "The CRA may disallow expenses you deducted if you cannot support them.",
+          "There are penalties for not keeping adequate records, for not giving the CRA access to your records, and for not giving information to CRA officials when asked.",
+        ],
+      },
+      {
+        type: "p",
+        text: "The CRA's record-keeping pages make the same point. If auditors cannot determine your income or taxable revenues from your records, they have to use other methods, which costs you time. If your records do not support your claims, those claims could be disallowed. If your records were destroyed by a disaster, the CRA has a separate support page for affected taxpayers.",
+      },
+      {
+        type: "h2",
+        text: "GST/HST Input Tax Credits: Documents and Dollar Tiers",
+      },
+      {
+        type: "p",
+        text: 'If you are a GST/HST registrant, the receipt does a second job: it supports the input tax credit (ITC) you claim on line 106 of your return. The CRA\'s eligibility conditions include obtaining "sufficient documentary evidence to substantiate the ITC prior to making the claim". You keep the documents rather than filing them, and what they must show depends on the total of the sale:',
+      },
+      {
+        type: "ul",
+        items: [
+          "Under $100: the supplier's (or intermediary's) business or trading name, the invoice date (or the date the GST/HST was paid or payable if there is no invoice), and the total amount paid or payable.",
+          "$100 to $499.99: all of the above, plus the GST/HST charged (or an indication that the price includes it at the applicable rate), the status of each supply if taxable and exempt items are mixed, and the supplier's or intermediary's GST/HST registration number.",
+          "$500 or more: all of the above, plus the buyer's name or trading name (or their authorized agent's), a brief description of the property or services, and the terms of payment.",
+        ],
+      },
+      {
+        type: "p",
+        text: "These $100 and $500 tiers replaced the earlier $30 and $150 thresholds as of April 20, 2021. Guide RC4022 (Rev. 25) shows them as current. Hypothetical example: a $60 purchase of office supplies needs only the vendor's name, the date and the total. A $240 order needs the GST/HST amount and the vendor's registration number as well. A $1,130 laptop invoice must also show your name or trading name, describe the laptop, and state the payment terms.",
+      },
+      {
+        type: "p",
+        text: "Timing matters too. For most registrants, an ITC must be claimed by the due date of the return for the last reporting period ending within four years after the period in which it could first have been claimed. The documents must be in hand before you claim.",
+      },
+      {
+        type: "h2",
+        text: "Frequently Asked Questions",
+      },
+      {
+        type: "p",
+        text: "Is a credit card or bank statement enough on its own? Bank statements and statements of account are on the CRA's list of records, but a statement does not show what you bought, who the buyer was or how much GST/HST was charged. T4002 asks for those details on receipts, and the ITC chart requires them from $100 upward. Keep the receipt or invoice as well.",
+      },
+      {
+        type: "p",
+        text: "Can I throw away paper receipts once I've photographed them? Only if your imaging meets the CAN/CGSB 72.34 standard. Then the images become the permanent records. If it doesn't, the CRA says to keep the paper originals, and to get legal advice if you're unsure.",
+      },
+      {
+        type: "p",
+        text: "When can I shred my 2020 business receipts? Six years from the end of 2020 is December 31, 2026. After that, you can generally dispose of them if your 2020 return was filed on time, is not under objection or appeal, and the receipts don't support a later year, as with capital property.",
+      },
+      {
+        type: "p",
+        text: "Do I send receipts with my tax return? No. T4002 says not to send your records with your income tax return, but to keep them in case the CRA asks to see them. GST/HST registrants likewise don't submit ITC documents with their return.",
+      },
+      {
+        type: "p",
+        text: "Can I keep my records in a cloud service? The CRA requires records to be kept at your place of business or residence in Canada unless it gives written permission otherwise. Records kept outside Canada and accessed electronically from Canada are not considered kept in Canada. Find out where your provider stores data, and keep a copy in Canada.",
+      },
+      {
+        type: "p",
+        text: "What if my receipts were lost in a fire or flood? For lost or damaged electronic records, the CRA asks you to report them missing at 1-800-959-5525 and recreate them within a reasonable time. For disasters, it points to its page on support for those affected.",
       },
     ],
   },
@@ -130,11 +236,7 @@ export const ARTICLES: Article[] = [
     tags: ["CRA", "receipts", "compliance", "freelancer", "tax rules"],
     clusterPillar: "cra-receipt-rules-canada",
     clusterName: "CRA Receipt Rules",
-    relatedSlugs: [
-      "cra-receipt-rules-canada",
-      "digital-receipts-canada-are-they-valid",
-      "how-long-keep-receipts-canada",
-    ],
+    relatedSlugs: ["cra-receipt-rules-canada", "digital-receipts-canada-are-they-valid"],
     body: [
       {
         type: "p",
@@ -201,11 +303,7 @@ export const ARTICLES: Article[] = [
     tags: ["CRA", "receipts", "taxes", "freelancer", "documentation"],
     clusterPillar: "cra-receipt-rules-canada",
     clusterName: "CRA Receipt Rules",
-    relatedSlugs: [
-      "cra-receipt-rules-canada",
-      "cra-acceptable-receipt-requirements",
-      "how-long-keep-receipts-canada",
-    ],
+    relatedSlugs: ["cra-receipt-rules-canada", "cra-acceptable-receipt-requirements"],
     body: [
       {
         type: "p",
@@ -259,11 +357,7 @@ export const ARTICLES: Article[] = [
     tags: ["digital receipts", "CRA", "email receipts", "photo receipts", "compliance"],
     clusterPillar: "cra-receipt-rules-canada",
     clusterName: "CRA Receipt Rules",
-    relatedSlugs: [
-      "cra-receipt-rules-canada",
-      "how-long-keep-receipts-canada",
-      "cra-audit-proof-expenses",
-    ],
+    relatedSlugs: ["cra-receipt-rules-canada", "cra-audit-proof-expenses"],
     body: [
       {
         type: "p",
@@ -311,11 +405,7 @@ export const ARTICLES: Article[] = [
     tags: ["CRA audit", "expense documentation", "self-employed", "record keeping", "compliance"],
     clusterPillar: "cra-receipt-rules-canada",
     clusterName: "CRA Receipt Rules",
-    relatedSlugs: [
-      "cra-receipt-rules-canada",
-      "how-long-keep-receipts-canada",
-      "digital-receipts-canada-are-they-valid",
-    ],
+    relatedSlugs: ["cra-receipt-rules-canada", "digital-receipts-canada-are-they-valid"],
     body: [
       {
         type: "p",
@@ -416,75 +506,6 @@ export const ARTICLES: Article[] = [
       {
         type: "callout",
         text: "GST/HST registration numbers follow the format: 9-digit Business Number + 'RT' + 4-digit account number (e.g., 123456789 RT 0001). If a receipt shows a number that doesn't match this format, verify with the vendor — an invalid number means you can't claim the ITC.",
-      },
-    ],
-  },
-
-  {
-    slug: "how-long-keep-receipts-canada",
-    title: "How Long Do You Need to Keep Receipts in Canada?",
-    excerpt:
-      "Knowing exactly how long to keep receipts and tax records protects you during CRA audits while letting you safely dispose of documents you no longer need. The rules are more nuanced than you might think.",
-    category: "Record Keeping",
-    publishedAt: "2026-05-10",
-    updatedAt: "2026-05-11",
-    imageUrl: "https://picsum.photos/seed/how-long-keep-receipts-canada/600/400",
-    imageAlt: "File folders and organised documents for CRA record keeping",
-    tags: ["record keeping", "CRA", "receipts", "6 years", "audit"],
-    clusterPillar: "cra-receipt-rules-canada",
-    clusterName: "CRA Receipt Rules",
-    relatedSlugs: [
-      "cra-receipt-rules-canada",
-      "cra-audit-proof-expenses",
-      "digital-receipts-canada-are-they-valid",
-    ],
-    body: [
-      {
-        type: "p",
-        text: "The standard rule under the Income Tax Act is that self-employed Canadians must keep all records and supporting documents for six years from the end of the last tax year to which they relate. This means receipts from your 2024 business expenses must be kept until at least December 31, 2030. But there are important exceptions and nuances that every freelancer should understand.",
-      },
-      {
-        type: "h2",
-        text: "The Six-Year Rule — What It Actually Means",
-      },
-      {
-        type: "p",
-        text: "The six-year clock starts from the end of the tax year to which the document relates — not the date of the transaction. For most freelancers who file on a calendar year, a receipt dated March 15, 2024 relates to the 2024 tax year, so it must be kept until December 31, 2030. Records related to your GST/HST filing periods follow the same six-year rule from the end of the reporting period.",
-      },
-      {
-        type: "callout",
-        text: "Exception: If you file a return late, the six-year retention period starts from the date you actually filed — not the deadline. If you filed your 2022 return in September 2023, keep those records until September 2029.",
-      },
-      {
-        type: "h2",
-        text: "Records You Must Keep Longer Than Six Years",
-      },
-      {
-        type: "ul",
-        items: [
-          "Capital assets (property, equipment): keep records for as long as you own the asset, plus 6 years after disposal",
-          "Vehicle logbooks: keep for 6 years from the end of the year in which the vehicle was sold",
-          "Corporate records for incorporated businesses: permanently (minutes, share registry, etc.)",
-          "Records related to a loss carryforward: keep until the loss is fully applied plus 6 years",
-          "Real property records: keep for 6 years after the property is disposed of",
-        ],
-      },
-      {
-        type: "h2",
-        text: "What Happens If the CRA Wants Records You've Destroyed?",
-      },
-      {
-        type: "p",
-        text: "If you're audited and can't produce required records, the CRA may deny your deductions and reassess your taxes, potentially adding interest and penalties. The burden of proof in a tax dispute lies with the taxpayer — not the CRA. This is why digitizing your receipts with a reliable app is so important. A searchable digital archive is far more audit-proof than a shoebox of faded paper receipts.",
-      },
-      {
-        type: "ul",
-        items: [
-          "Store digital records in a format that cannot be altered (PDF preferred)",
-          "Ensure your backup includes the date the image was captured",
-          "Keep digital records in at least two locations (e.g., cloud + local backup)",
-          "Export an organized record at the end of each tax year before filing",
-        ],
       },
     ],
   },
@@ -649,7 +670,7 @@ export const ARTICLES: Article[] = [
     relatedSlugs: [
       "expense-tracking-canada-freelancers",
       "digital-receipts-canada-are-they-valid",
-      "how-long-keep-receipts-canada",
+      "cra-receipt-rules-canada",
     ],
     body: [
       {
@@ -2385,7 +2406,7 @@ export const ARTICLES: Article[] = [
     tags: ["CRA audit", "self-employed", "review", "reassessment", "record keeping", "compliance"],
     relatedSlugs: [
       "cra-audit-proof-expenses",
-      "how-long-keep-receipts-canada",
+      "cra-receipt-rules-canada",
       "freelancer-tax-mistakes-canada",
     ],
     body: [

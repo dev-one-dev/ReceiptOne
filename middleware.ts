@@ -9,7 +9,13 @@ export const config = {
     "/dashboard/:path*",
     "/helpdesk",
     "/helpdesk/:path*",
+    "/articles/how-long-keep-receipts-canada",
   ],
+};
+
+/** Retired article slugs, merged into another article: old path -> new path. */
+const MERGED_ARTICLES: Record<string, string> = {
+  "/articles/how-long-keep-receipts-canada": "/articles/cra-receipt-rules-canada",
 };
 
 export default function middleware(request: Request) {
@@ -30,6 +36,13 @@ export default function middleware(request: Request) {
   // web portal; support requests and ideas are stored in Firestore there.
   if (pathname === "/helpdesk" || pathname.startsWith("/helpdesk/")) {
     return Response.redirect(appUrl("/support"), 301);
+  }
+  // A retired article's content now lives in another guide; send links and
+  // indexed URLs there permanently instead of to the not-found page.
+  const mergedInto = MERGED_ARTICLES[pathname];
+  if (mergedInto) {
+    url.pathname = mergedInto;
+    return Response.redirect(url.toString(), 301);
   }
 
   // The bare root is never a page of its own. /ca is the canonical version
