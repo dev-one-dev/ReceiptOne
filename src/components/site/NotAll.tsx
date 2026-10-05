@@ -52,7 +52,7 @@ const US_FEATURES = [
     alt: "Eagle building expense reports",
   },
   {
-    title: "Log Every Kilometer You Drive",
+    title: "Log Every Mile You Drive",
     desc: "Quickly log trips and set custom mileage rates for accurate claims — no spreadsheets needed.",
     img: usGraphic2,
     alt: "Eagle tracking mileage",
