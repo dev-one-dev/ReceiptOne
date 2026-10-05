@@ -370,16 +370,15 @@ export const ARTICLES_US_ONLY: Article[] = [
           "Self-employment tax (15.3%): on your net profit after deductions",
           "Federal income tax: marginal rates from 10% to 37% based on taxable income",
           "State income tax: varies by state — nine states have no income tax",
-          "Combined effective rate for a typical freelancer: 25–35% of net profit",
         ],
       },
       {
         type: "h2",
-        text: "The Set-Aside Rule",
+        text: "Setting Money Aside",
       },
       {
         type: "p",
-        text: "A practical guideline: set aside 25–30% of every client payment for taxes. For higher earners or those in high-tax states, 35% is safer. Open a separate savings account specifically for this purpose — the money isn't yours until you've filed your return.",
+        text: "There is no single right percentage to set aside: it depends on your profit, filing status, deductions and state. A better guide is your own estimate. Work through the Form 1040-ES worksheet, or start from last year's total tax, and move each quarter's share into a separate savings account as client payments come in.",
       },
       {
         type: "callout",
@@ -391,7 +390,7 @@ export const ARTICLES_US_ONLY: Article[] = [
       },
       {
         type: "p",
-        text: "If you expect to owe $1,000 or more in taxes for the year, the IRS requires quarterly estimated payments. Missing or underpaying these triggers an underpayment penalty — typically small but avoidable. Pay by April 15, June 16, September 15, and January 15.",
+        text: "If you expect to owe $1,000 or more in taxes for the year, the IRS requires quarterly estimated payments. Missing or underpaying these triggers an underpayment penalty — typically small but avoidable. For 2026, the payments are due April 15, June 15 and September 15, 2026, and January 15, 2027.",
       },
     ],
   },
