@@ -2116,7 +2116,7 @@ export const ARTICLES: Article[] = [
       },
       {
         type: "callout",
-        text: "ReceiptOne is built specifically for the Canadian market. It automatically distinguishes GST, HST, PST, and QST on every receipt — so your ITC totals are accurate without any manual correction.",
+        text: "ReceiptOne is built for the Canadian market. When you scan a receipt, it reads each tax line and labels it GST, HST, PST or QST; where a receipt shows no breakdown, it splits the tax using your province's rates. Check the breakdown when you save a receipt, since you can edit it if a line was read wrongly.",
       },
     ],
   },
