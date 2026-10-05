@@ -1586,11 +1586,11 @@ export const ARTICLES: Article[] = [
       },
       {
         type: "h2",
-        text: "What 'Contemporaneous' Means — and Why It Matters",
+        text: "Keep It for the Whole Year",
       },
       {
         type: "p",
-        text: "The CRA requires logbooks to be maintained contemporaneously — meaning entries are recorded at or near the time of the trip, not reconstructed later from memory. A logbook filled in at year-end all at once is not considered contemporaneous and will be rejected in an audit. App-based tracking that timestamps entries automatically solves this completely.",
+        text: "The CRA says the best evidence to support the use of a vehicle is an accurate logbook of business travel maintained for the entire year. It doesn't prescribe a format, but a log kept as you go is easier to show is accurate than one rebuilt at year-end from memory. After one full year of logbook records, you can keep a three-month sample logbook in later years, as long as business use stays within 10% of that base year.",
       },
       {
         type: "h2",
@@ -1607,7 +1607,7 @@ export const ARTICLES: Article[] = [
       },
       {
         type: "callout",
-        text: "ReceiptOne's mileage tracker automatically records start/end locations, timestamps each trip, and calculates your business-use percentage in real time — eliminating the end-of-year scramble to reconstruct your logbook.",
+        text: "In ReceiptOne you log a trip by entering its start and end addresses; the app works out the distance and saves the trip with its date and your note on the purpose. Once you enter your odometer total for the year, it divides your business kilometres by that total to give your business-use percentage.",
       },
     ],
   },
