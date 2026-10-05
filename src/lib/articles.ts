@@ -1672,10 +1672,10 @@ export const ARTICLES: Article[] = [
     slug: "mileage-tracking-apps-canada",
     title: "Best Mileage Tracking Apps for Canadian Freelancers in 2025",
     excerpt:
-      "Manual mileage logbooks are a CRA compliance risk. Here's what to look for in a mileage tracking app — and how to choose the right one for your situation.",
+      "What the CRA expects a mileage logbook to show, what to look for in a mileage tracking app, and how to choose the right one for your situation.",
     category: "Mileage & Auto",
     publishedAt: "2026-05-10",
-    updatedAt: "2026-05-11",
+    updatedAt: "2026-10-05",
     imageUrl: "https://picsum.photos/seed/mileage-tracking-apps-canada/600/400",
     imageAlt: "Mileage tracking app on smartphone for Canadian freelancer CRA compliance",
     tags: ["mileage tracking app", "logbook app", "CRA", "freelancer", "vehicle deduction"],
@@ -1689,7 +1689,7 @@ export const ARTICLES: Article[] = [
     body: [
       {
         type: "p",
-        text: "The CRA requires mileage logbooks to be contemporaneous — recorded at the time of each trip, not reconstructed later. This single requirement makes a dedicated mileage tracking app vastly superior to a paper logbook or spreadsheet: every entry is automatically timestamped, location data is GPS-verified, and there's no temptation to 'fill it in later.'",
+        text: "The CRA doesn't prescribe a logbook format, but it calls an accurate logbook of business travel maintained for the entire year the best evidence of business use. For each business trip it lists the date, destination, purpose and kilometres driven, plus odometer readings at the start and end of the year. A paper logbook or spreadsheet can meet that standard; an app's advantage is that it makes recording each trip at the time easier, so there's less to fill in later.",
       },
       {
         type: "h2",
@@ -1700,7 +1700,7 @@ export const ARTICLES: Article[] = [
         items: [
           "Record date, start location, end location, and distance for every trip",
           "Allow you to add a business purpose for each trip",
-          "Automatically record odometer readings or calculate total kilometres accurately",
+          "Record your odometer readings at the start and end of the year, so total kilometres can be worked out",
           "Export a complete logbook report in PDF or CSV format",
           "Timestamp entries so it's clear they were recorded at trip time, not reconstructed",
         ],
