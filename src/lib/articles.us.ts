@@ -403,7 +403,7 @@ export const ARTICLES_US_ONLY: Article[] = [
       "The IRS requires freelancers to pay taxes four times a year. Here's exactly how to calculate what you owe, when to pay, and how to avoid underpayment penalties.",
     category: "Tax Fundamentals",
     publishedAt: "2026-05-20",
-    updatedAt: "2026-05-20",
+    updatedAt: "2026-10-05",
     imageUrl: "https://picsum.photos/seed/quarterly-taxes-us-freelancers/600/400",
     imageAlt: "Freelancer calculating quarterly estimated tax payments",
     tags: [
@@ -427,15 +427,15 @@ export const ARTICLES_US_ONLY: Article[] = [
       },
       {
         type: "h2",
-        text: "2025 Payment Deadlines",
+        text: "2026 Payment Deadlines",
       },
       {
         type: "ul",
         items: [
-          "Q1 (Jan 1 – Mar 31): due April 15, 2025",
-          "Q2 (Apr 1 – May 31): due June 16, 2025",
-          "Q3 (Jun 1 – Aug 31): due September 15, 2025",
-          "Q4 (Sep 1 – Dec 31): due January 15, 2026",
+          "Q1 (Jan 1 – Mar 31): due April 15, 2026",
+          "Q2 (Apr 1 – May 31): due June 15, 2026",
+          "Q3 (Jun 1 – Aug 31): due September 15, 2026",
+          "Q4 (Sep 1 – Dec 31): due January 15, 2027 — or skip it if you file your 2026 return by February 1, 2027 and pay the full balance with it",
         ],
       },
       {
@@ -444,7 +444,7 @@ export const ARTICLES_US_ONLY: Article[] = [
       },
       {
         type: "p",
-        text: "You avoid the underpayment penalty if you pay at least 100% of last year's total tax liability (110% if your AGI exceeded $150,000). This is the 'safe harbor' approach — you don't need to estimate this year's income precisely. Pay what you paid last year and you're protected.",
+        text: "You generally avoid the underpayment penalty if your payments cover at least 90% of this year's tax or 100% of last year's total tax (110% if last year's AGI was more than $150,000, or $75,000 if married filing separately). This is the 'safe harbor' approach — you don't need to estimate this year's income precisely. Pay what you paid last year and you're protected.",
       },
       {
         type: "h2",
