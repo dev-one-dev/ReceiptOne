@@ -19,7 +19,7 @@ const CA_FEATURES = [
   },
   {
     title: "Log Every Kilometer You Drive",
-    desc: "Quickly log trips and set custom mileage rates for accurate claims — no spreadsheets needed.",
+    desc: "Quickly log trips and separate business from personal kilometres to get your business-use percentage — no spreadsheets needed.",
     img: naBeaverWheel,
     alt: "Beaver at the steering wheel",
   },

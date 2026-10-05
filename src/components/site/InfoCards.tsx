@@ -34,7 +34,7 @@ const CA_FEATURES = [
   {
     label: "Mileage",
     title: "Mileage tracking, right on your phone",
-    desc: "Log every business trip and apply the CRA per-kilometre rate in one tap. Every trip is recorded automatically, even if you forget to check the odometer.",
+    desc: "Log every business trip in one tap. ReceiptOne separates business from personal kilometres and calculates the business-use percentage that apportions your vehicle expenses.",
     img: abScreenMileage,
     alt: "ReceiptOne app showing mileage map tracking",
   },

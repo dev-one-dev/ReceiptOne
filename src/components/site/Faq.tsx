@@ -48,7 +48,7 @@ export const faqItems: QA[] = [
   },
   {
     q: "How does mileage tracking work?",
-    a: "Log a trip by entering your start and end addresses — ReceiptOne calculates the route and distance automatically via Google Maps, then applies the current CRA rate. No manual odometer math needed.",
+    a: "Log a trip by entering your start and end addresses — ReceiptOne calculates the route and distance via Google Maps and adds it to your logbook. Add your odometer total for the year, and ReceiptOne separates business from personal kilometres and calculates the business-use percentage you apply to your vehicle expenses.",
   },
   {
     q: "What counts as CRA-acceptable mileage documentation?",
