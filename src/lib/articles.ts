@@ -2421,7 +2421,7 @@ export const ARTICLES: Article[] = [
       "A practical year-end checklist that gets Canadian freelancers ready to file — covering receipts, income summaries, GST/HST, CPP, and what to hand off to your accountant.",
     category: "Tax Strategy",
     publishedAt: "2026-05-10",
-    updatedAt: "2026-05-11",
+    updatedAt: "2026-10-05",
     imageUrl: "https://picsum.photos/seed/tax-season-stress-freelancers-canada/600/400",
     imageAlt: "Canadian freelancer completing year-end tax checklist at desk",
     tags: ["tax season", "checklist", "year-end", "freelancer", "CRA", "filing"],
@@ -2443,7 +2443,7 @@ export const ARTICLES: Article[] = [
         type: "ul",
         items: [
           "All client invoices issued in the tax year — gross amounts, not net of expenses",
-          "T4A slips received from clients who paid you $500+ (check against your invoices)",
+          "T4A slips from businesses that paid you more than $500 for services in the year (box 048) — check them against your invoices",
           "Any other income: interest, dividends, rental income (goes on different T1 schedules)",
           "Foreign income converted to CAD at the Bank of Canada exchange rate for the date received",
         ],
@@ -2472,7 +2472,7 @@ export const ARTICLES: Article[] = [
           "Total GST/HST collected from clients during the year",
           "Total ITCs claimed on business expenses",
           "Net amount owing or refund expected",
-          "Confirm your GST/HST return is filed (due April 30 for annual filers, or quarterly)",
+          "Confirm your GST/HST return is filed: annual filers who are sole proprietors with a calendar fiscal year generally file by June 15 and pay by April 30; quarterly filers file one month after each quarter",
         ],
       },
       {
