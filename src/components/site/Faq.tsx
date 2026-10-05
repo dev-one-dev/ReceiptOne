@@ -52,7 +52,7 @@ export const faqItems: QA[] = [
   },
   {
     q: "What counts as CRA-acceptable mileage documentation?",
-    a: "The CRA requires a contemporaneous logbook — each trip needs the date, starting location, destination, business purpose, and kilometres driven. ReceiptOne's Log Trip feature captures all of this automatically as you go.",
+    a: "The CRA calls an accurate logbook kept for the whole year the best evidence of business use. For each business trip it lists the date, destination, purpose and kilometres driven, plus odometer readings at the start and end of the year. In ReceiptOne's Log Trip you enter the start and end addresses and a note on the purpose; the app works out the distance and saves the trip with its date.",
     link: {
       to: "/articles/$slug",
       slug: "mileage-deduction-canada-freelancers",
