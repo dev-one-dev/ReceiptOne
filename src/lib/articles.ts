@@ -636,7 +636,7 @@ export const ARTICLES: Article[] = [
       "A complete guide to the CRA's business expense categories on Form T2125 — what each line includes, what's excluded, and how to categorize common freelancer expenses correctly.",
     category: "Expense Tracking",
     publishedAt: "2026-05-10",
-    updatedAt: "2026-05-11",
+    updatedAt: "2026-10-05",
     imageUrl: "https://picsum.photos/seed/business-expense-categories-canada/600/400",
     imageAlt: "Expense category spreadsheet for Canadian self-employed tax filing",
     tags: ["expense categories", "T2125", "deductions", "self-employed", "CRA"],
@@ -650,7 +650,7 @@ export const ARTICLES: Article[] = [
     body: [
       {
         type: "p",
-        text: "CRA Form T2125 has 22 expense lines. Using the right one for each expense isn't just about organization — wrong categorization can trigger questions during a review. Here's how to correctly classify the most common freelancer expenses.",
+        text: "Form T2125 has a separate line for each main type of business expense. Using the right one for each expense isn't just about organization — wrong categorization can trigger questions during a review. Here's how to correctly classify the most common freelancer expenses.",
       },
       {
         type: "h2",
@@ -676,7 +676,7 @@ export const ARTICLES: Article[] = [
         type: "ul",
         items: [
           "Putting software subscriptions under 'Office expenses' instead of 'Other expenses' — both work, but be consistent",
-          "Deducting 100% of meals when only 50% is allowable (the most common CRA adjustment)",
+          "Deducting 100% of meals when the claim is generally limited to 50% of the lesser of the cost and a reasonable amount",
           "Mixing equipment purchases (which belong in Capital Cost Allowance) with operating expenses",
           "Claiming personal travel as business travel without documentation of the business purpose",
         ],
