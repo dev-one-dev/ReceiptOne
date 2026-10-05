@@ -111,7 +111,7 @@ export const ARTICLES_US_ONLY: Article[] = [
       "Exactly what the IRS wants to see on your business receipts, how long to keep them, and whether digital copies are acceptable for audit purposes.",
     category: "Tax Compliance",
     publishedAt: "2026-05-20",
-    updatedAt: "2026-05-20",
+    updatedAt: "2026-10-05",
     imageUrl: "https://picsum.photos/seed/irs-receipt-documentation/600/400",
     imageAlt: "Freelancer scanning business receipts for IRS documentation",
     tags: ["IRS", "receipts", "documentation", "audit", "self-employed", "record keeping"],
@@ -124,7 +124,7 @@ export const ARTICLES_US_ONLY: Article[] = [
     body: [
       {
         type: "p",
-        text: "The IRS doesn't require receipts for every single expense — but for any expense over $75, and for all travel and entertainment costs regardless of amount, proper documentation is mandatory. Without it, the deduction is at risk.",
+        text: "The IRS expects you to support business expenses with records and, generally, documentary evidence such as receipts, canceled checks or bills. For travel, gift and car expenses, Publication 463 sets out when a receipt is not needed — and that is where the often-quoted $75 figure comes from.",
       },
       {
         type: "h2",
@@ -132,7 +132,7 @@ export const ARTICLES_US_ONLY: Article[] = [
       },
       {
         type: "p",
-        text: "For most business expenses under $75, a bank or credit card statement showing the amount, vendor, and date is sufficient. For expenses $75 and over, you need a receipt showing the specific items purchased and amounts. Travel and entertainment expenses require receipts regardless of amount.",
+        text: "Under Publication 463 (Travel, Gift, and Car Expenses), documentary evidence isn't needed if the expense, other than lodging, is less than $75, or if it is a transportation expense for which a receipt isn't readily available. Lodging always needs documentary evidence. You still have to record the elements of each expense, such as amount, date, place and business purpose. Evidence is ordinarily adequate if it shows the amount, date, place and essential character of the expense.",
       },
       {
         type: "h2",
@@ -140,7 +140,7 @@ export const ARTICLES_US_ONLY: Article[] = [
       },
       {
         type: "p",
-        text: "Yes — the IRS accepts digital records under Revenue Procedure 98-25. A photo of a paper receipt taken with your phone qualifies as long as it is legible and shows all required information. Email receipts and PDF invoices are also fully acceptable.",
+        text: "Yes, with conditions. Publication 583 says the requirements for paper records also apply to electronic storage systems, including electronic imaging. You may destroy the paper originals once your electronic storage system has been tested to show it reproduces them in line with IRS requirements; the details are in Revenue Procedure 97-22. Revenue Procedure 98-25 covers records kept in computerized form.",
       },
       {
         type: "callout",
@@ -148,7 +148,7 @@ export const ARTICLES_US_ONLY: Article[] = [
       },
       {
         type: "h2",
-        text: "Meal and Entertainment Documentation",
+        text: "Business Meal Documentation",
       },
       {
         type: "ul",
@@ -158,6 +158,7 @@ export const ARTICLES_US_ONLY: Article[] = [
           "Name and location of the restaurant",
           "Business purpose of the meeting",
           "Names and business relationship of all attendees",
+          "Entertainment itself (such as tickets to events) is no longer deductible; business meals generally remain 50% deductible",
         ],
       },
       {
@@ -166,7 +167,7 @@ export const ARTICLES_US_ONLY: Article[] = [
       },
       {
         type: "p",
-        text: "If you deduct vehicle expenses using the standard mileage rate, you must keep a contemporaneous mileage log — recorded at or near the time of each trip. It should include the date, destination, business purpose, and miles driven. Reconstructed logs created at year-end are frequently disallowed.",
+        text: "If you deduct vehicle expenses using the standard mileage rate, you must keep a contemporaneous mileage log — recorded at or near the time of each trip. It should include the date, destination, business purpose, and miles driven. Publication 463 notes that a timely kept record has more value than a statement prepared later, when accurate recall is usually lacking.",
       },
     ],
   },
