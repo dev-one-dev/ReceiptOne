@@ -2735,6 +2735,28 @@ export function getRelatedArticles(slug: string, count = 3): Article[] {
   return scored.slice(0, count).map((s) => s.article);
 }
 
+const FAQ_HEADING = "Frequently Asked Questions";
+
+/**
+ * Q&A pairs from an article's FAQ section: the paragraphs after the
+ * "Frequently Asked Questions" h2, up to the next h2. Each paragraph is
+ * rendered as "Question? Answer", so it is split at the first "?". Empty when
+ * the article has no FAQ section.
+ */
+export function articleFaq(article: Article): { q: string; a: string }[] {
+  const start = article.body.findIndex((b) => b.type === "h2" && b.text === FAQ_HEADING);
+  if (start === -1) return [];
+  const items: { q: string; a: string }[] = [];
+  for (const block of article.body.slice(start + 1)) {
+    if (block.type === "h2") break;
+    if (block.type !== "p") continue;
+    const end = block.text.indexOf("?");
+    if (end === -1) continue;
+    items.push({ q: block.text.slice(0, end + 1), a: block.text.slice(end + 1).trim() });
+  }
+  return items;
+}
+
 export function articleJsonLd(article: Article, path = `/articles/${article.slug}`): object {
   return {
     "@context": "https://schema.org",

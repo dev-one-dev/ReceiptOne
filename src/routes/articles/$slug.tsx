@@ -2,12 +2,13 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight, CheckCircle2, Clock } from "lucide-react";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
-import { pageSEO, breadcrumbJsonLd } from "@/lib/seo";
+import { pageSEO, breadcrumbJsonLd, faqJsonLd } from "@/lib/seo";
 import { articleHreflang } from "@/lib/help-center";
 import {
   getArticle,
   getRelatedArticles,
   articleJsonLd,
+  articleFaq,
   ARTICLE_BYLINE,
   readingMinutes,
   type ContentBlock,
@@ -40,6 +41,8 @@ export const Route = (createFileRoute as any)("/articles/$slug")({
       { name: article.title, path: `/articles/${article.slug}` },
     ]);
 
+    const faq = articleFaq(article);
+
     return {
       meta: [
         ...seo.meta,
@@ -53,6 +56,9 @@ export const Route = (createFileRoute as any)("/articles/$slug")({
       scripts: [
         { type: "application/ld+json", children: JSON.stringify(breadcrumb) },
         { type: "application/ld+json", children: JSON.stringify(articleJsonLd(article)) },
+        ...(faq.length > 0
+          ? [{ type: "application/ld+json", children: JSON.stringify(faqJsonLd(faq)) }]
+          : []),
       ],
     };
   },
