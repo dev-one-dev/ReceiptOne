@@ -1617,10 +1617,10 @@ export const ARTICLES: Article[] = [
     slug: "vehicle-expense-deductions-canada",
     title: "Vehicle Expense Deductions for Self-Employed Canadians: What to Claim",
     excerpt:
-      "A detailed look at every vehicle expense category available to Canadian freelancers and contractors — with 2025 CRA limits and the documentation needed for each.",
+      "A detailed look at every vehicle expense category available to Canadian freelancers and contractors — with the 2026 CRA limits and the documentation needed for each.",
     category: "Mileage & Auto",
     publishedAt: "2026-05-10",
-    updatedAt: "2026-05-11",
+    updatedAt: "2026-10-05",
     imageUrl: "https://picsum.photos/seed/vehicle-expense-deductions-canada/600/400",
     imageAlt: "Self-employed Canadian calculating vehicle deduction expenses for CRA",
     tags: ["vehicle expenses", "automobile deduction", "CCA", "lease", "self-employed"],
@@ -1657,14 +1657,14 @@ export const ARTICLES: Article[] = [
       {
         type: "ul",
         items: [
-          "Lease payments: 2025 deduction limit = $1,100/month (before tax). If your lease payment exceeds this, the excess is not deductible.",
-          "Auto loan interest: 2025 limit = $10/day. Interest beyond this daily cap is non-deductible.",
-          "Capital Cost Allowance (CCA): for purchased vehicles, claim CCA using Class 10 (30% declining balance) or Class 10.1 (30%) for vehicles over $37,000. The 2025 prescribed cost limit for Class 10.1 is $37,000 before taxes.",
+          "Lease payments: deductible leasing costs for a passenger vehicle are capped at $1,100 a month before tax for new leases entered into in 2025 or 2026, worked out in Chart C of Form T2125.",
+          "Auto loan interest: for a passenger vehicle, deductible interest is capped at $350 a month for loans entered into in 2025 or 2026, prorated by days ($350 ÷ 30 × days) in Chart B of Form T2125. Interest above the cap is not deductible.",
+          "Capital Cost Allowance (CCA): a purchased vehicle goes in Class 10 (30%), or in its own Class 10.1 (30%) if it is a passenger vehicle costing more than the ceiling for its year: $38,000 before tax for vehicles acquired in 2025 and $39,000 for those acquired on or after January 1, 2026. Claim it on line 9936, reduced to your business-use share.",
         ],
       },
       {
         type: "callout",
-        text: "Zero-emission vehicles: electric and plug-in hybrid vehicles placed in service after March 18, 2019 may qualify for Class 54 (100% CCA in year one on a net cost of up to $61,000) or Class 55 — check the CRA's current guidance, as these rules are subject to annual updates.",
+        text: "Zero-emission vehicles go in Class 54 (30%) or Class 55 (40%). The enhanced first-year CCA has been reinstated for zero-emission vehicles acquired and available for use on or after January 1, 2025: 100% before 2030, 75% in 2030 and 2031, and 55% in 2032 and 2033. The capital cost of a Class 54 zero-emission passenger vehicle is capped at $61,000 before tax.",
       },
     ],
   },
