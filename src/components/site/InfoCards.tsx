@@ -13,7 +13,7 @@ const CA_FEATURES = [
   {
     label: "Receipts",
     title: "All your receipts, captured and organized",
-    desc: "Every purchase captured, categorized, and organized automatically. Snap a photo, forward an email, or upload a PDF — no manual entry, no lost paper trails.",
+    desc: "Every purchase captured, categorized, and organized. Snap a photo or upload an image or PDF, and ReceiptOne reads the details for you to check — no lost paper trails.",
     img: abScreenReceipts,
     alt: "ReceiptOne app showing receipts list with CAD amounts",
   },

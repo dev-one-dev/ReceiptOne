@@ -8,7 +8,7 @@ export type QA = { q: string; a: string; link?: { to: string; slug?: string; lab
 export const faqItems: QA[] = [
   {
     q: "How does receipt scanning work?",
-    a: "Open the app, point your camera at any receipt, and tap. ReceiptOne reads the merchant name, date, total, and tax amounts automatically — no typing required. Paper receipts, email receipts, and PDF invoices all work.",
+    a: "Open the app, point your camera at any receipt, and tap. ReceiptOne reads the merchant name, date, total, and GST/HST/PST amounts automatically, and you can edit anything it reads wrongly. Paper receipts, photos, and PDF invoices all work.",
   },
   {
     q: "Does ReceiptOne calculate my tax refund?",

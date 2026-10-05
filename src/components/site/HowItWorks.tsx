@@ -7,13 +7,13 @@ const CA_STEPS = [
     icon: ScanLine,
     title: "Snap your receipts",
     description:
-      "Photograph any receipt, forward an email receipt, or upload a PDF. Paper, digital, and email receipts all captured automatically.",
+      "Photograph any receipt or upload an image or PDF. Paper and digital receipts are captured in one place.",
   },
   {
     icon: Layers,
     title: "Organized automatically",
     description:
-      "ReceiptOne reads merchant, amount, date, and tax — then categorizes every expense. GST, HST, and PST tracked per province. Zero manual entry.",
+      "ReceiptOne reads merchant, amount, date, and tax — then categorizes every expense. GST, HST, and PST tracked per province. Check the details and edit anything it read wrongly.",
   },
   {
     icon: FileDown,
@@ -51,7 +51,7 @@ export function HowItWorks({ region = "ca" }: { region?: Region }) {
   const sub =
     region === "us"
       ? "Point your camera or upload that PDF. ReceiptOne reads, sorts, and reports — no spreadsheets, no tax-season scramble."
-      : "Point your camera, forward that email, upload that PDF. ReceiptOne reads, sorts, and reports — no manual entry, no spreadsheets, no year-end scramble.";
+      : "Point your camera or upload that PDF. ReceiptOne reads, sorts, and reports — no spreadsheets, no year-end scramble.";
 
   return (
     <section

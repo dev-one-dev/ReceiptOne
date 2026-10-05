@@ -16,7 +16,7 @@ const CA_PERSONAS: Persona[] = [
   {
     role: "Independent IT Contractor",
     description:
-      "GST/HST on every purchase is tracked automatically, so you know exactly what you can claim back before you even talk to your accountant.",
+      "GST/HST is read from each receipt you scan, so you can see what you may be able to claim back before you even talk to your accountant.",
     icon: Laptop2,
   },
   {
