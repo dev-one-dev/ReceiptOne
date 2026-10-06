@@ -2499,13 +2499,22 @@ export const ARTICLES: Article[] = [
     slug: "quickbooks-vs-receiptone-canada",
     title: "QuickBooks vs ReceiptOne for Canadian Freelancers (2026)",
     excerpt:
-      "QuickBooks and ReceiptOne solve different problems. Here's an honest look at when each tool makes sense for self-employed Canadians.",
+      "QuickBooks Lite vs ReceiptOne for self-employed Canadians in 2026: prices in CAD, invoicing, bank sync, mileage, GST/HST/PST and exports.",
     category: "Tools & Apps",
-    publishedAt: "2026-05-10",
+    publishedAt: "2026-10-05",
     updatedAt: "2026-10-05",
     imageUrl: "https://picsum.photos/seed/quickbooks-vs-receiptone-canada/600/400",
     imageAlt: "Canadian freelancer comparing accounting software options on laptop",
-    tags: ["QuickBooks", "ReceiptOne", "accounting software", "freelancer", "Canada"],
+    tags: [
+      "QuickBooks",
+      "QuickBooks Lite",
+      "ReceiptOne",
+      "accounting software",
+      "GST/HST",
+      "mileage",
+      "freelancer",
+      "Canada",
+    ],
     relatedSlugs: [
       "receipt-scanner-apps-canada-comparison",
       "expense-tracking-canada-freelancers",
@@ -2514,37 +2523,171 @@ export const ARTICLES: Article[] = [
     body: [
       {
         type: "p",
-        text: "QuickBooks and ReceiptOne are both used by Canadian freelancers for expense tracking — but they're optimized for different use cases. Intuit says QuickBooks Self-Employed is still supported in Canada, but its newest plan for the self-employed is QuickBooks Lite, launched in July 2026. QuickBooks is a full accounting platform; ReceiptOne is a focused receipt and expense capture tool. The best choice depends on your business complexity and what you actually need day-to-day.",
+        text: "The short answer: QuickBooks Lite is bookkeeping software. It sends invoices, pulls in your bank transactions, and tracks income and expenses together, so it suits a freelancer who bills clients and wants one set of books. ReceiptOne is a receipt and expense app. It captures receipts, separates the sales tax on each one, keeps a mileage log, and exports the totals, so it suits a sole proprietor whose main job at tax time is getting expenses in order for Form T2125 or for an accountant. They overlap on receipts and mileage, and they differ on almost everything else.",
+      },
+      {
+        type: "p",
+        text: "We make ReceiptOne, so treat this page with that in mind. Every QuickBooks price and feature below comes from Intuit's own Canadian pages, read on October 5, 2026. Where Intuit does not say something, we write \"not stated\" rather than guess. That does not mean QuickBooks lacks the feature, only that we could not confirm it from Intuit. Prices change often, so check Intuit's page before you buy.",
       },
       {
         type: "h2",
-        text: "QuickBooks: Better For",
+        text: "Which QuickBooks Plan This Compares",
+      },
+      {
+        type: "p",
+        text: "Intuit says QuickBooks Lite launched in Canada in July 2026 for freelancers, contractors and solopreneurs, and calls it its newest option for a business of one. It is built on QuickBooks Online. Intuit also says QuickBooks Self-Employed is still supported, but its pages do not say whether new customers can still sign up for it, so this comparison uses Lite.",
+      },
+      {
+        type: "p",
+        text: "On price: Intuit's Canadian pricing page shows Lite at $20 a month, struck through, with $2 a month beside it. No currency is printed next to either figure; because it is Intuit's Canadian site, we read them as Canadian dollars, but Intuit does not say so on the page. The $2 figure is a promotion. The same page carries a banner for \"90% off QuickBooks + Payroll for 6 months\" with an asterisk, and $2 is 90% off $20, but the terms behind the asterisk sit in a pop-up we could not read, so we cannot confirm that Lite's discount lasts six months. Intuit also says its larger discounts apply only if you choose Buy Now, not the free trial. Budget for $20 a month, before sales tax.",
+      },
+      {
+        type: "h2",
+        text: "The Comparison at a Glance",
+      },
+      {
+        type: "table",
+        caption:
+          "QuickBooks Lite as published on Intuit's Canadian pages on October 5, 2026; ReceiptOne from our own pricing and help pages. Prices are before sales tax. Intuit prints no currency label; we read its figures as CAD.",
+        headers: ["", "QuickBooks Lite", "ReceiptOne"],
+        rows: [
+          [
+            "Price",
+            "$20/mo regular; promotional $2/mo (no currency shown; promo length not confirmed). 30-day free trial, but the promo price requires skipping the trial",
+            "CA$4.99/wk, CA$9.99/mo or CA$129.99/yr. 7-day free trial. No free plan",
+          ],
+          [
+            "What it does",
+            "Bookkeeping for one person: income, expenses, invoices, bank transactions, reconciliation, balance sheet",
+            "Expense records only: receipts, sales tax per receipt, mileage, home office",
+          ],
+          [
+            "Users",
+            "1 user, no accountant access",
+            "One account; you share exports with your accountant",
+          ],
+          [
+            "Invoicing",
+            "Yes: unlimited invoices and estimates; card and bank-transfer payments",
+            "No",
+          ],
+          [
+            "Bank sync",
+            "Yes: up to 2 bank connections with automatic transaction import",
+            "No",
+          ],
+          [
+            "Mileage",
+            "Automatic kilometre tracking with trip categories",
+            "Manual: enter start and end addresses and the distance is calculated; no automatic trip detection",
+          ],
+          [
+            "Sales tax",
+            "GST, HST and PST calculated and tracked on sales; tax centre",
+            "GST, HST, PST or QST labelled on each expense receipt and editable; tax you collect is not tracked",
+          ],
+          [
+            "Receipts",
+            "Photo upload, matched to bank transactions",
+            "Camera, photo or PDF upload, or our Telegram bot; unlimited. Email forwarding not available yet",
+          ],
+          [
+            "Reports and exports",
+            "5 report templates: profit and loss, tax summary, tax details, mileage log, receipts summary. T2125 export not stated",
+            "PDF and CSV reports, including a T2125 report you or your accountant use when filling the form",
+          ],
+          [
+            "Platforms",
+            "Web; iOS and Android apps",
+            "iOS, Android and web",
+          ],
+        ],
+      },
+      {
+        type: "p",
+        text: "Neither product files your return. QuickBooks' pages do not say it produces a T2125, and ReceiptOne's T2125 report is a summary of your expenses by category that you or your accountant copy into the form; it does not prepare or file it.",
+      },
+      {
+        type: "h2",
+        text: "What QuickBooks Does That ReceiptOne Does Not",
+      },
+      {
+        type: "p",
+        text: "Most of the difference is that QuickBooks keeps books and ReceiptOne keeps expense records. Specifically:",
       },
       {
         type: "ul",
         items: [
-          "Freelancers who invoice clients directly and need AR tracking",
-          "Businesses with employees and payroll requirements",
-          "Situations requiring double-entry bookkeeping for incorporation or audit purposes",
-          "Clients or accountants who require QuickBooks files specifically",
+          "An accounting ledger. Lite gives you a preset chart of accounts, account reconciliation and a balance sheet. ReceiptOne has categories for expenses but no ledger, no reconciliation and no balance sheet.",
+          "Invoicing. Lite sends unlimited invoices and estimates and lets clients pay by card or bank transfer. ReceiptOne does not invoice.",
+          "Bank feeds. Lite connects up to two bank accounts, imports transactions and matches receipt photos to them. ReceiptOne has no bank connection, so it will not catch a card charge you forgot to photograph.",
+          "Income tracking. Lite records what you earn alongside what you spend, so its profit and loss report shows your net business income. ReceiptOne tracks expenses only: no income, and no GST/HST you collect from clients.",
+          "Sales tax on what you sell. Lite calculates GST, HST and PST on your invoices and tracks it in a tax centre. If you are registered for GST/HST, you need a record of the tax you collect as well as the tax you paid, and ReceiptOne only covers the second half.",
+          "Automatic mileage. Lite says it tracks kilometres automatically. In ReceiptOne you add each trip yourself.",
         ],
       },
       {
+        type: "p",
+        text: "If you invoice clients, file GST/HST returns, or want your income and expenses to reconcile against your bank, those features are the reason to pick bookkeeping software. ReceiptOne does not replace it.",
+      },
+      {
         type: "h2",
-        text: "ReceiptOne: Better For",
+        text: "What ReceiptOne Does More Simply",
+      },
+      {
+        type: "p",
+        text: "ReceiptOne does less, and that is the point of it. If your books are simple, or someone else keeps them, the expense side is often the part that slips, and that is the part ReceiptOne covers.",
       },
       {
         type: "ul",
         items: [
-          "Sole proprietors who primarily need receipt capture and CRA-ready expense reports",
-          "Canadian freelancers who want each receipt's GST, HST, PST or QST read and labelled separately, with the option to correct it",
-          "Users who want mileage tracking and receipt scanning in one place",
-          "Freelancers with simpler finances who find full accounting software overkill",
+          "Receipt capture. Photograph a receipt or upload a photo or PDF, and ReceiptOne reads the merchant, date, total and tax lines. Scanning is unlimited on every plan. You do not need a bank connection for a receipt to be recorded.",
+          "GST/HST/PST per receipt. Each tax line on a receipt is labelled GST, HST, PST or QST, and when a receipt shows only a total, ReceiptOne splits the tax using your province's rates. You can correct anything it reads wrongly. Lite's pages describe sales tax tracking but do not say whether it reads the tax lines from a receipt photo.",
+          "Mileage logbook. You enter a trip's start and end addresses and ReceiptOne works out the distance, building a log with dates, distances and purposes. It takes a minute per trip, which some people prefer to reviewing trips an automatic tracker recorded, and others will find tedious.",
+          "Expense export. A PDF or CSV of your expenses by category, plus mileage and home office, ready to hand to an accountant or to use when you fill T2125. There is no ledger to learn first.",
         ],
+      },
+      {
+        type: "p",
+        text: "What ReceiptOne will not do: it has no bank sync, no automatic trip detection, no income tracking, no invoicing, and no free plan, only a 7-day trial. Email forwarding of receipts has not shipped yet.",
+      },
+      {
+        type: "h2",
+        text: "How to Choose",
+      },
+      {
+        type: "p",
+        text: "Start from what you do with your money each month, not from the feature list.",
+      },
+      {
+        type: "ul",
+        items: [
+          "You invoice clients and want income, expenses and bank in one place: QuickBooks Lite. Remember Lite has no accountant access, so if someone else does your books, check whether you need a higher QuickBooks plan.",
+          "You are registered for GST/HST and file returns yourself: you need a record of the tax you collect. QuickBooks tracks it; ReceiptOne does not.",
+          "You mostly need receipts, sales tax on purchases and a mileage log for T2125 or for your accountant: ReceiptOne asks less of you and has no ledger to maintain.",
+          "You drive a lot and do not want to log trips: Lite's automatic tracking saves the habit ReceiptOne needs.",
+          "Your clients pay you through a platform that already gives you an income summary: an expense app may be all you are missing.",
+        ],
+      },
+      {
+        type: "h2",
+        text: "The Case for Using Both",
+      },
+      {
+        type: "p",
+        text: "Some people use both: QuickBooks for invoicing, income and bank reconciliation, and ReceiptOne for capturing receipts and logging trips through the year. That costs more than either alone, so it only makes sense if ReceiptOne's receipt capture or per-receipt tax labels save you real time. If you go that way, decide which tool is the record for expenses, so the same receipt is not entered twice, and export ReceiptOne's CSV for your bookkeeper or accountant to bring across.",
+      },
+      {
+        type: "p",
+        text: "A hypothetical example: a web designer in Nova Scotia invoices a handful of clients each month and is registered for HST. They need to bill clients and track the HST they charge, so bookkeeping software such as QuickBooks Lite covers the core of their business. A second hypothetical: a delivery driver in Alberta who is paid through an app that reports their earnings, has no invoices to send, and buys fuel and phone plans. Their gap is receipts and a mileage log for T2125, which an expense app covers without a ledger.",
+      },
+      {
+        type: "p",
+        text: "Whichever you choose, keep your receipt images and a copy of your year-end export somewhere you control. The CRA generally expects you to keep records for six years.",
       },
       {
         type: "callout",
-        text: "You can also use both: ReceiptOne for day-to-day receipt capture and mileage logging, with an annual CSV export that their accountant imports into their preferred accounting system at year-end. This gives you the best capture experience without paying for accounting features you don't need.",
+        text: "Sources: Intuit pages read on October 5, 2026 — quickbooks.intuit.com/ca/pricing, quickbooks.intuit.com/ca/online/lite, and quickbooks.intuit.com/ca/resources/running-a-business/quickbooks-plans-for-self-employed. Not stated by Intuit: the currency of its prices, how long the $2 promotion lasts, whether Lite produces a T2125, and whether it reads tax lines from receipt photos. ReceiptOne details are from our own pricing and help pages. Tell us if something has changed and we'll update this page.",
       },
     ],
   },
