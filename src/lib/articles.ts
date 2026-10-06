@@ -1672,50 +1672,260 @@ export const ARTICLES: Article[] = [
     slug: "mileage-tracking-apps-canada",
     title: "Best Mileage Tracking Apps for Canadian Freelancers (2026)",
     excerpt:
-      "What the CRA expects a mileage logbook to show, what to look for in a mileage tracking app, and how to choose the right one for your situation.",
+      "What a self-employed Canadian needs from a mileage app, then five 2026 options compared: prices, free tiers, auto-tracking, and why 73¢/km isn't your deduction.",
     category: "Mileage & Auto",
-    publishedAt: "2026-05-10",
+    publishedAt: "2026-10-05",
     updatedAt: "2026-10-05",
     imageUrl: "https://picsum.photos/seed/mileage-tracking-apps-canada/600/400",
     imageAlt: "Mileage tracking app on smartphone for Canadian freelancer CRA compliance",
-    tags: ["mileage tracking app", "logbook app", "CRA", "freelancer", "vehicle deduction"],
+    tags: [
+      "mileage tracking app",
+      "app comparison",
+      "logbook",
+      "business-use percentage",
+      "T2125",
+      "CRA",
+      "self-employed",
+    ],
     clusterPillar: "mileage-deduction-canada-freelancers",
     clusterName: "Mileage & Vehicle Deductions",
     relatedSlugs: [
       "mileage-deduction-canada-freelancers",
       "cra-mileage-logbook-requirements",
-      "mileage-tracking-self-employed-2025-guide",
+      "receipt-scanner-apps-canada-comparison",
     ],
     body: [
       {
         type: "p",
-        text: "The CRA doesn't prescribe a logbook format, but it calls an accurate logbook of business travel maintained for the entire year the best evidence of business use. For each business trip it lists the date, destination, purpose and kilometres driven, plus odometer readings at the start and end of the year. A paper logbook or spreadsheet can meet that standard; an app's advantage is that it makes recording each trip at the time easier, so there's less to fill in later.",
+        text: "If you are self-employed in Canada and drive for work, a mileage app has one job at tax time: give you a logbook that holds up if the CRA asks, and from it, the share of your driving that was for business. That share, your business-use percentage, is what you apply to your actual vehicle costs on Form T2125. This guide sets out what a Canadian sole proprietor actually needs from a mileage app, then measures five apps that sell to Canadians against those needs.",
+      },
+      {
+        type: "p",
+        text: "We make ReceiptOne, and it is not part of this comparison. Every price and feature below comes from each vendor's own pages, read on October 5, 2026. Where a vendor does not publish something, or its help centre would not load for us, the table says \"not stated\". That does not mean the feature is missing, only that we could not confirm it. Check the vendor's page before you buy.",
       },
       {
         type: "h2",
-        text: "What a CRA-Compliant Mileage App Must Do",
+        text: "What a Mileage App Can and Cannot Give You",
+      },
+      {
+        type: "p",
+        text: "For a sole proprietor there is no per-kilometre deduction. The CRA's motor vehicle expenses page gives one method: business kilometres divided by total kilometres, multiplied by your total vehicle expenses. You work it out in Chart A of Form T2125 and the result goes on line 9281. The expenses are what the vehicle actually cost you: fuel, insurance, registration, repairs, and interest or leasing within the CRA limits. Capital cost allowance is calculated separately, and the business-use percentage applies to it too.",
+      },
+      {
+        type: "p",
+        text: "The per-kilometre figures quoted everywhere, 73 cents for the first 5,000 km and 67 cents after that in the provinces for 2026, are something else. The Department of Finance announcement of January 14, 2026 calls them \"the limit on the deduction of tax-exempt allowances paid by employers to employees who use their personal vehicle for business purposes.\" They cap what an employer can pay an employee tax-free. They are not a deduction method for someone filing a T2125.",
+      },
+      {
+        type: "callout",
+        text: "If an app tells a self-employed Canadian to multiply business kilometres by the CRA rate and claim the result, it is describing the employee allowance, not your deduction. What a mileage app gives you is a logbook and a business-use percentage. The deduction comes from your receipts.",
+      },
+      {
+        type: "p",
+        text: "The Canadian guides from MileIQ, Driversnote, Everlance and TripLog all say this correctly. The risk is in the reports: some apps put a dollar value on each trip using a per-kilometre rate, and Driversnote's homepage demo shows a rate multiplied by distance. That figure is not your line 9281 amount. TripLog's Canadian guide also lists 72 and 66 cents as the 2026 rates; those are the 2025 figures.",
+      },
+      {
+        type: "h2",
+        text: "What You Need From a Mileage App",
+      },
+      {
+        type: "p",
+        text: "Three things decide whether an app is useful to a sole proprietor at tax time. Features beyond them, such as maps, team dashboards or reimbursement workflows, are built for employers and mostly do not matter to you.",
+      },
+      {
+        type: "h2",
+        text: "1. The Logbook Fields the CRA Asks For",
+      },
+      {
+        type: "p",
+        text: "The CRA's motor vehicle records page asks for each business trip's date, destination, purpose and kilometres, plus each vehicle's odometer reading at the start and end of the fiscal period. After one full year of logbook (the base year), you can keep a three-month sample logbook in later years if the result stays within 10% of the base year.",
+      },
+      {
+        type: "p",
+        text: "Most apps capture date, addresses and distance on their own. Purpose is the field that goes missing: an app can tell where you drove, not why, so check that it lets you add a purpose to each trip and that the purpose appears in the report. \"Client meeting, Smith renovation\" is a purpose; \"business\" is only a category. Then check where the odometer readings live. If the app has no place for them, write them down on the first and last day of your fiscal period and keep them with your logbook.",
+      },
+      {
+        type: "h2",
+        text: "2. A Real Business and Personal Split",
+      },
+      {
+        type: "p",
+        text: "The odometer readings give you total kilometres, the bottom half of the fraction. An app only knows the trips it recorded. Unless it records every personal drive too, a percentage built from logged trips alone will come out too high.",
+      },
+      {
+        type: "p",
+        text: "Apps that detect drives automatically record personal trips as a by-product, which helps, but only while the phone is with you and tracking is on. A drive taken by your partner, or one where your battery died, is in the odometer but not the app. Treat the app's own percentage as a check, and calculate the figure you file from business kilometres in the app over total kilometres from the odometer.",
+      },
+      {
+        type: "h2",
+        text: "3. An Export That Supports Chart A",
+      },
+      {
+        type: "p",
+        text: "Chart A of Form T2125 needs two numbers from your logbook: kilometres driven for business during the fiscal period and total kilometres driven. Everything else in the chart comes from your receipts. A useful export gives you a full-year trip list with every logbook field, a business kilometre total, and ideally the odometer readings, in a format you or your accountant can open: PDF to keep, CSV or Excel to check the totals.",
+      },
+      {
+        type: "p",
+        text: "What a Chart A export should not do is hand you a dollar figure built from a per-kilometre rate. If the report shows one, ignore that column and take only the kilometres.",
+      },
+      {
+        type: "h2",
+        text: "Five Apps at a Glance",
+      },
+      {
+        type: "table",
+        caption:
+          "As published by each vendor on October 5, 2026, before sales tax. CA$ means the vendor lists Canadian dollars; \"currency not stated\" means a dollar sign with no currency and no CAD price we could find.",
+        headers: [
+          "App",
+          "Price",
+          "Free tier",
+          "Automatic trip detection",
+          "CRA logbook fields",
+          "Export",
+          "Platforms",
+        ],
+        rows: [
+          [
+            "MileIQ",
+            "Unlimited $13.99/mo, or $11.66/mo billed yearly (currency not stated)",
+            "40 drives a month",
+            "Yes",
+            "Business or personal by swipe; other fields not stated on pages we could read",
+            "Not stated on pages we could read",
+            "iOS, Android",
+          ],
+          [
+            "Everlance",
+            "Starter $8.99/mo or $69.99/yr; Professional $99.99/yr (currency not stated)",
+            "30 automatic trips a month, unlimited manual",
+            "Yes",
+            "Not stated on pages we could read",
+            "CSV, PDF",
+            "iOS, Android, web",
+          ],
+          [
+            "Driversnote",
+            "Pro CA$16/mo (billing period not stated)",
+            "15 trips a month",
+            "Yes: phone motion sensors; optional iBeacon",
+            "Claims \"CRA-compliant vehicle logs\"; demo shows date, addresses, distance, category. Purpose, odometer not stated",
+            "PDF, Excel",
+            "iOS, Android, web",
+          ],
+          [
+            "TripLog",
+            "Premium $4.99/mo, billed yearly as $59.99; CAD option offered, amount not confirmed",
+            "Yes, with automatic GPS tracking; annual report is Premium",
+            "Yes: GPS; optional Drive and Beacon devices",
+            "Not stated",
+            "Not stated",
+            "iOS, Android; web on Premium",
+          ],
+          [
+            "QuickBooks Lite",
+            "From $2/mo promo on Intuit's Canadian site; regular price not shown on the Lite page",
+            "No; 30-day trial",
+            "Yes: GPS, or manual",
+            "Category, business purpose, vehicle; odometer not stated",
+            "Mileage log report; tax summary PDF",
+            "iOS, Android, web",
+          ],
+        ],
+      },
+      {
+        type: "p",
+        text: "The CRA does not certify mileage apps. \"CRA-compliant\" is a vendor's own description. What makes a log stand up is that it was kept through the year, covers every business trip with the four details above, and is backed by odometer readings.",
+      },
+      {
+        type: "h2",
+        text: "MileIQ",
+      },
+      {
+        type: "p",
+        text: "MileIQ detects drives automatically and lets you swipe each one to business or personal. Its Canadian rates guide says it \"tracks every kilometre automatically\" and states that the per-kilometre rates do not apply to the self-employed. Suits: someone with many short drives who wants no tapping. Falls short: no currency on the pricing page, and its Canadian report help article was blocked when we tried to read it, so report fields and formats are unconfirmed.",
+      },
+      {
+        type: "h2",
+        text: "Everlance",
+      },
+      {
+        type: "p",
+        text: "Everlance's free plan detects up to 30 trips a month, with unlimited manual trips, and every plan exports CSV and PDF. Its CRA guide tells self-employed readers they \"cannot multiply your kilometers by $0.73/km\". Suits: a light driver who wants a usable free tier. Falls short: no currency or CAD price on the pricing page, which measures in miles, and its Canadian help article would not load for us.",
+      },
+      {
+        type: "h2",
+        text: "Driversnote",
+      },
+      {
+        type: "p",
+        text: "Driversnote has a Canadian site priced in CAD, PDF and Excel reports, and automatic detection by the phone's motion sensors or an optional iBeacon in the car. Its CRA guide correctly points the self-employed to actual expenses. Suits: someone who wants CAD pricing and automatic tracking without hardware. Falls short: 15 free trips a month, no billing period shown for CA$16, and a demo that prices each trip at a per-distance rate.",
+      },
+      {
+        type: "h2",
+        text: "TripLog",
+      },
+      {
+        type: "p",
+        text: "TripLog's free plan includes unlimited automatic GPS tracking, which is generous; downloading an annual report needs Premium. Suits: a heavy driver who wants automatic detection without paying during the year. Falls short: its Canadian guide quotes last year's rates as 2026's, and the pages we read did not state logbook fields or export format.",
+      },
+      {
+        type: "h2",
+        text: "QuickBooks Lite",
+      },
+      {
+        type: "p",
+        text: "In QuickBooks, mileage is part of the accounting software. Intuit's Canadian Lite page lists automatic kilometre tracking and a mileage log report, and its help article covers adding a business purpose and vehicle to each trip. Suits: a freelancer who also wants invoicing and bank feeds. Falls short: one user, no accountant access, and the Lite page shows only a promotional price.",
+      },
+      {
+        type: "h2",
+        text: "How to Choose",
       },
       {
         type: "ul",
         items: [
-          "Record date, start location, end location, and distance for every trip",
-          "Allow you to add a business purpose for each trip",
-          "Record your odometer readings at the start and end of the year, so total kilometres can be worked out",
-          "Export a complete logbook report in PDF or CSV format",
-          "Timestamp entries so it's clear they were recorded at trip time, not reconstructed",
+          "You forget to log trips: pick automatic detection. All five apps here state it.",
+          "You want to pay nothing during the year: TripLog's free plan tracks automatically without a cap; Everlance and MileIQ cap free automatic trips at 30 and 40 a month.",
+          "You want CAD pricing: Driversnote publishes it, TripLog offers a CAD option, QuickBooks prices on its Canadian site. MileIQ and Everlance show no currency.",
+          "You keep your books in QuickBooks: its built-in tracker saves a second app.",
+          "Before you pay: use the free tier or trial for a few weeks, then export a report and check it shows a purpose for each trip and a business kilometre total you can carry to Chart A.",
+          "Whatever you choose: record your odometer on the first and last day of your fiscal period and keep your vehicle receipts.",
         ],
       },
       {
+        type: "p",
+        text: "A hypothetical example: a self-employed electrician in Manitoba drives 18,000 km in 2026, 7,200 of them for business. Business use is 40%. Fuel, insurance, registration and repairs total $8,500, so $3,400 goes on line 9281, before capital cost allowance. An app pricing 7,200 km at 73 and 67 cents would show about $5,124, which is the employee allowance cap, not a deduction. Claiming it would overstate their expenses by more than $1,700.",
+      },
+      {
         type: "h2",
-        text: "Manual vs. Automatic Trip Detection",
+        text: "Frequently Asked Questions",
       },
       {
         type: "p",
-        text: "Apps with automatic trip detection (via GPS and accelerometer) start and stop tracking without you touching your phone. This is the most accurate method and eliminates missed trips. The trade-off is battery usage and occasional false positives (e.g., a long walk). Semi-automatic apps prompt you when they detect you're in a vehicle. Manual apps require you to tap 'Start trip' — lowest battery impact, highest risk of forgetting.",
+        text: "Can I deduct 73 cents a kilometre as a self-employed Canadian? No. That rate caps tax-free allowances employers pay employees. A sole proprietor deducts actual vehicle expenses multiplied by business-use percentage, using Chart A of Form T2125, on line 9281.",
+      },
+      {
+        type: "p",
+        text: "Do I need a mileage app to claim vehicle expenses? No. A paper logbook or spreadsheet with each business trip's date, destination, purpose and kilometres, plus start and end odometer readings, meets the CRA's description. An app makes it easier to record trips as they happen.",
+      },
+      {
+        type: "p",
+        text: "Does the CRA certify mileage apps? No. \"CRA-compliant\" is the vendor's own description. What counts is a complete log backed by odometer readings.",
+      },
+      {
+        type: "p",
+        text: "Do I have to keep a full logbook every year? No. After one full base year, the CRA accepts a three-month sample logbook in later years, as long as business use stays within 10% of the base year.",
+      },
+      {
+        type: "p",
+        text: "Why does my business-use percentage need odometer readings? The percentage is business kilometres over total kilometres, and the odometer is the reliable record of the total. An app that logged only business trips does not know it.",
+      },
+      {
+        type: "p",
+        text: "Is automatic trip detection worth paying for? If you make many short business drives, usually yes, because missed trips are the usual gap in a logbook. You still classify each trip and add its purpose. A few client visits a week can be entered by hand.",
       },
       {
         type: "callout",
-        text: "ReceiptOne includes mileage tracking built into the same app as your receipt scanning — so your vehicle logbook and expense receipts are in one place when you prepare your T2125.",
+        text: "Sources, read on October 5, 2026: canada.ca motor vehicle expenses (canada.ca/en/revenue-agency/services/tax/businesses/small-businesses-self-employed-income/business-income-tax-reporting/business-expenses/motor-vehicle-expenses.html), motor vehicle records (canada.ca/en/revenue-agency/services/tax/businesses/topics/sole-proprietorships-partnerships/business-expenses/motor-vehicle-expenses/motor-vehicle-records.html), Guide T4002 chapter 3 (canada.ca/en/revenue-agency/services/forms-publications/publications/t4002/t4002-5.html), Department of Finance 2026 rates (canada.ca/en/department-finance/news/2026/01/government-announces-the-2026-automobile-deduction-limits-and-expense-benefit-rates-for-businesses.html). Vendors: mileiq.com/pricing, mileiq.com/mileage-guide/current-mileage-rates-for-canada-2026, everlance.com/pricing, everlance.com/business-mileage-hub/cra-mileage-rate, driversnote.ca, driversnote.ca/pricing, driversnote.ca/cra-mileage-guide, triplog.net/pricing, triplog.net/blog/how-to-claim-cra-approved-vehicle-expenses-in-canada, quickbooks.intuit.com/ca/online/lite, quickbooks.intuit.com/ca/mileage-tracker, and Intuit's Canadian help article on automatic mileage tracking. Tell us if a vendor has changed something and we'll update this page.",
       },
     ],
   },
