@@ -2643,7 +2643,7 @@ export const ARTICLES: Article[] = [
       },
       {
         type: "callout",
-        text: "ReceiptOne's year-end export produces a single PDF or CSV covering all of the above: categorized expenses, GST/HST totals by type, and mileage summary. This is what you hand to your accountant — the T2125 prep is essentially done.",
+        text: "ReceiptOne's year-end export gives you a PDF or CSV of your organized records: expenses grouped by category, GST/HST totals by type, and a mileage summary. It covers the expense side of this checklist, not your income or the GST/HST you collected. You or your accountant use it when filling in T2125; ReceiptOne does not prepare or file the form for you.",
       },
     ],
   },

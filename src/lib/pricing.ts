@@ -58,7 +58,7 @@ export const CA_FEATURES = [
   "CRA-ready expense reports",
   "Multi-device sync",
   "In-app support",
-  "iOS & Android apps",
+  "iOS, Android and web apps",
 ];
 
 export const US_FEATURES = [
@@ -68,7 +68,7 @@ export const US_FEATURES = [
   "IRS-ready expense reports",
   "Multi-device sync",
   "In-app support",
-  "iOS & Android apps",
+  "iOS, Android and web apps",
 ];
 
 export function getPlanFeatures(region: PricingRegion): string[] {

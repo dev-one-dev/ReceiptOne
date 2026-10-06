@@ -8,13 +8,13 @@ ReceiptOne organizes records; it is not a tax filing service and does not calcul
 
 - [Landing page](https://receipt-one.com/ca): GST/HST/PST tracking and CRA-ready expense reports.
 - Prices: Weekly CAD 4.99 per week; Monthly CAD 9.99 per month; Yearly CAD 129.99 per year. All plans include a 7-day free trial and the same features.
-- Included: Unlimited receipt scanning, Expense & mileage tracking, GST / HST / PST tracking, CRA-ready expense reports, Multi-device sync, In-app support, iOS & Android apps.
+- Included: Unlimited receipt scanning, Expense & mileage tracking, GST / HST / PST tracking, CRA-ready expense reports, Multi-device sync, In-app support, iOS, Android and web apps.
 
 ## United States
 
 - [Landing page](https://receipt-one.com/us): sales tax tracking and IRS-ready expense reports.
 - Prices: Weekly USD 3.99 per week; Monthly USD 9.99 per month; Yearly USD 99.99 per year. All plans include a 7-day free trial and the same features.
-- Included: Unlimited receipt scanning, Expense & mileage tracking, Sales tax tracking, IRS-ready expense reports, Multi-device sync, In-app support, iOS & Android apps.
+- Included: Unlimited receipt scanning, Expense & mileage tracking, Sales tax tracking, IRS-ready expense reports, Multi-device sync, In-app support, iOS, Android and web apps.
 
 ## Apps
 
