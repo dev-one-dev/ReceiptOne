@@ -137,6 +137,51 @@ function renderBlock(block: ContentBlock, index: number) {
         </div>
       );
 
+    case "table":
+      return (
+        <figure key={index} className="mb-5">
+          <div className="overflow-x-auto rounded-card border border-hairline bg-white">
+            <table className="w-full min-w-[720px] border-collapse text-left font-sans text-sm">
+              <thead className="bg-ink-05">
+                <tr>
+                  {block.headers.map((h, i) => (
+                    <th
+                      key={i}
+                      scope="col"
+                      className="border-b border-hairline px-3 py-2.5 align-bottom font-semibold text-ink"
+                    >
+                      {h}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {block.rows.map((row, r) => (
+                  <tr key={r} className="border-b border-hairline last:border-b-0">
+                    {row.map((cell, c) =>
+                      c === 0 ? (
+                        <th
+                          key={c}
+                          scope="row"
+                          className="px-3 py-2.5 align-top font-semibold text-ink"
+                        >
+                          {cell}
+                        </th>
+                      ) : (
+                        <td key={c} className="px-3 py-2.5 align-top text-ink-80">
+                          {cell}
+                        </td>
+                      ),
+                    )}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <figcaption className="mt-2 font-sans text-sm text-ink-60">{block.caption}</figcaption>
+        </figure>
+      );
+
     default:
       return null;
   }

@@ -8,7 +8,8 @@ export type ContentBlock =
   | { type: "p"; text: string }
   | { type: "h2"; text: string }
   | { type: "ul"; items: string[] }
-  | { type: "callout"; text: string };
+  | { type: "callout"; text: string }
+  | { type: "table"; caption: string; headers: string[]; rows: string[][] };
 
 export type Region = "ca" | "us";
 
@@ -2074,48 +2075,215 @@ export const ARTICLES: Article[] = [
     slug: "receipt-scanner-apps-canada-comparison",
     title: "Best Receipt Scanner Apps in Canada (2026): Prices Compared",
     excerpt:
-      "A comparison of receipt scanning apps for Canadian freelancers and small businesses, including GST/HST extraction and CRA compliance features.",
+      "Six receipt apps compared for self-employed Canadians in 2026: prices, free tiers, GST/HST/PST capture, mileage and CRA-ready exports.",
     category: "Tools & Apps",
-    publishedAt: "2026-05-10",
+    publishedAt: "2026-10-05",
     updatedAt: "2026-10-05",
     imageUrl: "https://picsum.photos/seed/receipt-scanner-apps-canada-comparison/600/400",
     imageAlt: "Comparison of receipt scanning apps on smartphone for Canadian freelancers",
-    tags: ["receipt scanner", "app comparison", "GST/HST", "expense tracking", "Canada"],
+    tags: [
+      "receipt scanner",
+      "app comparison",
+      "GST/HST",
+      "mileage",
+      "T2125",
+      "expense tracking",
+      "Canada",
+    ],
     relatedSlugs: [
+      "quickbooks-vs-receiptone-canada",
       "expense-tracking-canada-freelancers",
-      "manual-vs-automated-expense-tracking-canada",
       "excel-vs-expense-app-canada",
     ],
     body: [
       {
         type: "p",
-        text: "The right receipt scanning app can cut bookkeeping time and help close gaps in your documentation. The wrong one creates a false sense of security while failing to capture the information you actually need. Here's what to look for.",
+        text: "If you are self-employed in Canada, a receipt app has three jobs: keep a readable copy of every receipt for the CRA, pull out the sales tax so you can claim GST/HST input tax credits, and give you totals you can carry to Form T2125 at tax time. A mileage log and a way to get records to your accountant are close behind. This comparison looks at six apps that sell to Canadians against those jobs.",
+      },
+      {
+        type: "p",
+        text: "We make ReceiptOne, which is one of the six. To keep this fair, every price and feature below comes from each vendor's own pricing or feature pages, read on October 5, 2026. Where a vendor does not publish something, the table says \"not stated\" rather than guessing. That does not mean the app lacks the feature, only that we could not confirm it from the vendor. Prices change often, so check the vendor's page before you buy.",
       },
       {
         type: "h2",
-        text: "Must-Have Features for Canadian Freelancers",
+        text: "The Comparison at a Glance",
+      },
+      {
+        type: "table",
+        caption:
+          "Prices and features as published by each vendor on October 5, 2026, before sales tax. CA$ means the vendor lists the price in Canadian dollars; US$ means it lists US dollars.",
+        headers: [
+          "App",
+          "Price",
+          "Free tier",
+          "GST/HST/PST capture",
+          "Mileage",
+          "T2125 or CRA-ready export",
+          "Platforms",
+        ],
+        rows: [
+          [
+            "SparkReceipt",
+            "Pro CA$9.90/mo or CA$99/yr (50 documents a month); Elite CA$17.90/mo or CA$179/yr",
+            "No; 7-day free trial",
+            "Yes: extracts GST, HST and PST from each receipt",
+            "Yes: GPS or manual trips",
+            "Says tax amounts are kept in reports \"ready for Input Tax Credit claims or your T2125\"; PDF, Excel, CSV exports",
+            "iOS, Android, web",
+          ],
+          [
+            "Foreceipt",
+            "Individual US$6.25/mo, or US$5/mo billed yearly (200 receipts a month); Business US$15/mo, or US$12/mo billed yearly",
+            "Yes: up to 100 receipts, kept 12 months, 10 reports",
+            "Yes: GST, PST, QST and HST tracked separately once enabled in settings",
+            "Not stated",
+            "Canadian expense categories for the year-end summary; Excel and PDF reports",
+            "iOS, Android, web",
+          ],
+          [
+            "Expensify",
+            "Free for individuals; Collect plan $5 per member per month (no currency shown; CAD price not stated)",
+            "Yes, for individuals; monthly scan limit not stated on the pages we read",
+            "Not stated",
+            "Yes: distance tracking (method not stated)",
+            "Not stated",
+            "iOS, Android, web",
+          ],
+          [
+            "QuickBooks Lite",
+            "$20/mo on Intuit's Canadian site, with a promo from $2/mo (promo length not stated)",
+            "No; 30-day free trial",
+            "Yes: tracks GST, HST and PST",
+            "Yes: automatic kilometre tracking",
+            "Tax summary, tax detail, mileage log and receipt summary reports; T2125 export not stated",
+            "Web and mobile app",
+          ],
+          [
+            "Wave",
+            "Starter free; Receipts CA$11/mo or CA$96/yr; Pro CA$25/mo or CA$250/yr with unlimited receipts",
+            "Starter is free, but receipt capture is a paid add-on",
+            "Not stated for receipts",
+            "Not stated",
+            "Not stated",
+            "iOS, Android, web",
+          ],
+          [
+            "ReceiptOne",
+            "CA$4.99/wk, CA$9.99/mo or CA$129.99/yr; unlimited receipts",
+            "No; 7-day free trial",
+            "Yes: labels each tax line GST, HST, PST or QST; editable",
+            "Manual: enter start and end addresses, distance calculated; no automatic trip detection",
+            "PDF and CSV reports, including a T2125 report",
+            "iOS, Android, web",
+          ],
+        ],
+      },
+      {
+        type: "p",
+        text: "Two things the table cannot show. First, \"GST/HST/PST capture\" means the vendor says it records the tax lines separately; none of these apps can tell you whether a purchase qualifies for an input tax credit, and none checks the supplier's GST/HST registration number for you. Second, the CRA does not certify receipt apps. \"CRA-ready\" is a vendor's description of its reports, not an approval.",
+      },
+      {
+        type: "h2",
+        text: "SparkReceipt",
+      },
+      {
+        type: "p",
+        text: "SparkReceipt publishes a Canadian pricing page in Canadian dollars and states that it extracts GST, HST and PST from receipts, keeping the amounts in reports for input tax credits and T2125. Both plans also include automatic import from a connected email inbox, a live bank feed, bank statement matching, and a mileage tracker that records trips by GPS or by hand.",
+      },
+      {
+        type: "p",
+        text: "Who it suits: a sole proprietor who gets many receipts by email and wants them pulled in without forwarding each one. Where it falls short: the Pro plan caps you at 50 documents a month, receipts and invoices together, so a busy month pushes you to Elite at CA$179 a year. There is no free tier, only a 7-day trial, and the Schedule C export on its US page is a US tax form, not a Canadian one.",
+      },
+      {
+        type: "h2",
+        text: "Foreceipt",
+      },
+      {
+        type: "p",
+        text: "Foreceipt has a free plan for receipt scanning: up to 100 receipts, kept for 12 months. Its FAQ says Canadian users can track GST, PST, QST and HST separately on each receipt after turning on sub-taxes in settings, and its expense categories are set up for both Canada and the US. Receipts can come in by phone, by a personal forwarding email address, or through the web portal, and bank transactions can be imported from CSV or PDF statements.",
+      },
+      {
+        type: "p",
+        text: "Who it suits: someone with a modest number of receipts who wants to try a Canadian-aware app before paying. Where it falls short: prices are in US dollars, so what you pay moves with the exchange rate. The free plan only keeps receipts for 12 months, far short of the six years the CRA generally expects, so it is a trial rather than a long-term record. Its pages do not mention mileage tracking.",
+      },
+      {
+        type: "h2",
+        text: "Expensify",
+      },
+      {
+        type: "p",
+        text: "Expensify is built around teams: approvals, reimbursements, company cards and accounting sync. For a solo user, its self-employed page says it is free for individuals and freelancers, with SmartScan receipt scanning, distance tracking and expense reports. You can snap a receipt in the app or email it to receipts@expensify.com.",
+      },
+      {
+        type: "p",
+        text: "Who it suits: a freelancer who already uses Expensify with a client, or who expects to hire and wants room to grow. Where it falls short for Canadians: the pages we read say nothing about GST/HST/PST capture or a T2125 export, the self-employed page cites IRS rules, and text-message receipt capture is limited to US numbers. Its plan price appears with a dollar sign but no currency, and we could not find a published CAD price.",
+      },
+      {
+        type: "h2",
+        text: "QuickBooks Lite",
+      },
+      {
+        type: "p",
+        text: "QuickBooks Lite is a one-user plan on Intuit's Canadian site. Its page lists automatic GST, HST and PST tracking, automatic kilometre tracking, receipt photos matched to bank transactions, up to two bank connections, invoicing, and five report templates, among them a tax summary, a mileage log and a receipt summary. It also has a built-in tax centre with workpapers you can share.",
+      },
+      {
+        type: "p",
+        text: "Who it suits: a freelancer who invoices clients and wants bank feeds, automatic mileage and sales tax in one bookkeeping tool. Where it falls short: Lite is limited to one user with no accountant access, which matters if someone else does your books. The pricing page shows $20 a month with a $2 promotional price, but we could not see how long the promotion lasts, so budget for the regular price. It is accounting software first, so it asks more of you than a scan-and-file app.",
+      },
+      {
+        type: "h2",
+        text: "Wave",
+      },
+      {
+        type: "p",
+        text: "Wave's Starter plan is free and covers invoicing, estimates and bookkeeping records. Receipt capture is not part of it: Wave sells receipts as an add-on at CA$11 a month or CA$96 a year, or includes unlimited receipts in its Pro plan at CA$25 a month or CA$250 a year, which also adds automatic bank import and categorization. You can scan with the iOS or Android app or forward receipts to your Wave email address.",
+      },
+      {
+        type: "p",
+        text: "Who it suits: a freelancer who already invoices through Wave and wants receipts in the same books. Where it falls short: its receipts page does not say whether it separates GST/HST from PST on a scanned receipt, and we found no mileage tracking or T2125 report on the pages we read. If receipts are all you need, the add-on costs more per month than several dedicated apps.",
+      },
+      {
+        type: "h2",
+        text: "ReceiptOne",
+      },
+      {
+        type: "p",
+        text: "ReceiptOne reads the merchant, date, total and tax lines from a receipt photo or PDF, labels each tax line GST, HST, PST or QST, and splits the tax by your province's rates when a receipt shows only a total. You can correct anything it reads wrongly. Mileage, home office and receipts sit in one app, and exports come as PDF or CSV, including a T2125 report. Receipt scanning is unlimited on every plan.",
+      },
+      {
+        type: "p",
+        text: "Who it suits: a sole proprietor who mainly needs receipts, sales tax and a mileage log in shape for T2125 and for their accountant. Where it falls short, and this matters: there is no automatic trip detection, so you log each trip by entering its start and end addresses. There is no bank sync, so it will not match receipts to card transactions. Email forwarding is not available yet; receipts come in by camera, photo upload, or our Telegram bot. There is no free plan, only a 7-day trial.",
+      },
+      {
+        type: "h2",
+        text: "How to Choose",
+      },
+      {
+        type: "p",
+        text: "Start from where your receipts come from and what you hand over at tax time, not from the feature list.",
       },
       {
         type: "ul",
         items: [
-          "GST/HST extraction: automatically identifies and separates GST and HST amounts for ITC tracking",
-          "PST handling: correctly categorizes PST as a non-recoverable expense in applicable provinces",
-          "CRA-compliant export: produces a report that maps to T2125 expense categories",
-          "Cloud backup: receipts stored securely for the full 6-year CRA retention period",
-          "Mileage tracking: ideally built into the same app so vehicle logs and expense receipts are in one place",
+          "Mostly paper receipts and you file T2125 yourself or through an accountant: a dedicated scanner that separates GST/HST from PST and exports a report is enough. SparkReceipt, Foreceipt and ReceiptOne all state Canadian tax capture.",
+          "Most receipts arrive by email: pick an app that imports from your inbox or gives you a forwarding address. SparkReceipt connects an inbox; Foreceipt, Expensify and Wave publish forwarding addresses. ReceiptOne does not offer this yet.",
+          "You drive a lot for work: automatic tracking saves you remembering to log each trip. SparkReceipt (GPS) and QuickBooks Lite (automatic) say they record trips for you; ReceiptOne needs each trip entered.",
+          "You invoice clients and want bank feeds: QuickBooks Lite or Wave Pro do bookkeeping as well as receipts, at a higher price and with more to learn.",
+          "You want to try before paying: Foreceipt and Expensify have free plans, and Wave's free plan works for invoicing. Check how long a free plan keeps your receipts against the CRA's six-year rule.",
+          "You pay in Canadian dollars: SparkReceipt, Wave, QuickBooks and ReceiptOne publish Canadian prices; Foreceipt prices in US dollars.",
         ],
       },
       {
-        type: "h2",
-        text: "What Most Generic Apps Miss",
+        type: "p",
+        text: "A hypothetical example: a photographer in Ontario with a few dozen paper receipts a month and regular drives to shoots. Their must-haves are HST capture and a mileage log. If they would rather not log trips by hand, SparkReceipt or QuickBooks Lite fits better than ReceiptOne. If they mostly want receipts and HST organised for their accountant, with a short weekly habit of entering trips, a dedicated scanner such as ReceiptOne or Foreceipt costs less and asks less of them.",
       },
       {
         type: "p",
-        text: "Most global expense apps treat tax as a single field — 'tax amount.' For Canadian freelancers, this is inadequate. You need GST/HST separated from PST, because only GST/HST generates input tax credits. An app that lumps all taxes together makes it impossible to calculate your ITC entitlement accurately without manually re-entering amounts.",
+        text: "Whichever app you choose, three checks apply. Make sure you can export your receipt images and data, because the records are yours and the CRA can ask for them for six years. Check the tax amounts the app reads against the receipt, especially on receipts of $100 or more where the supplier's GST/HST number matters for your input tax credit. And keep a copy of your year-end export somewhere you control.",
       },
       {
         type: "callout",
-        text: "ReceiptOne is built for the Canadian market. When you scan a receipt, it reads each tax line and labels it GST, HST, PST or QST; where a receipt shows no breakdown, it splits the tax using your province's rates. Check the breakdown when you save a receipt, since you can edit it if a line was read wrongly.",
+        text: "Sources: vendor pages read on October 5, 2026 — sparkreceipt.com/en-ca/pricing, foreceipt.com/pricing and foreceipt.com/faq, use.expensify.com/self-employed-expense-tracking, quickbooks.intuit.com/ca/pricing and quickbooks.intuit.com/ca/online/lite, waveapps.com/pricing and waveapps.com/receipts. ReceiptOne details are from our own pricing and help pages. Tell us if a vendor has changed something and we'll update this page.",
       },
     ],
   },
@@ -2668,11 +2836,16 @@ export const ARTICLES: Article[] = [
 
 const WORDS_PER_MINUTE = 200;
 
-/** Words in the article body: paragraphs, headings, list items and callouts. */
+/** Words in the article body: paragraphs, headings, list items, callouts and table cells. */
 export function articleWordCount(article: Article): number {
   let words = 0;
   for (const block of article.body) {
-    const texts = block.type === "ul" ? block.items : [block.text];
+    const texts =
+      block.type === "ul"
+        ? block.items
+        : block.type === "table"
+          ? [block.caption, ...block.headers, ...block.rows.flat()]
+          : [block.text];
     for (const text of texts) words += text.split(/\s+/).filter(Boolean).length;
   }
   return words;
