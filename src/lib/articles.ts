@@ -1672,7 +1672,7 @@ export const ARTICLES: Article[] = [
     slug: "mileage-tracking-apps-canada",
     title: "Best Mileage Tracking Apps for Canadian Freelancers (2026)",
     excerpt:
-      "What a self-employed Canadian needs from a mileage app, then five 2026 options compared: prices, free tiers, auto-tracking, and why 73¢/km isn't your deduction.",
+      "What self-employed Canadians need from a mileage app, five 2026 options compared: prices, free tiers, auto-tracking, and why 73¢/km isn't your deduction.",
     category: "Mileage & Auto",
     publishedAt: "2026-10-05",
     updatedAt: "2026-10-05",
