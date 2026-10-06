@@ -1542,7 +1542,7 @@ export const ARTICLES: Article[] = [
       },
       {
         type: "callout",
-        text: "ReceiptOne's Mileage tool is built around that low-friction habit. Log Trip lets you enter a start and end address and it works out the route and distance for you — no odometer math, no estimating. Each trip is saved with its date, and your logged business kilometres add up as you go. Once you enter your odometer total for the year, ReceiptOne divides your business kilometres by it to give your business-use percentage.",
+        text: "ReceiptOne's Mileage tool is built around that low-friction habit. Log Trip lets you enter a start and end address and it works out the route and distance for you — no odometer math, no estimating. Each trip is saved with its date, and your logged business kilometres add up as you go. Tag each trip business or personal, and your T2125 report shows your business-use percentage: business kilometres divided by all the kilometres you've logged in the app. It doesn't use your odometer readings, so the percentage is only accurate if you log your personal trips too.",
       },
     ],
   },
@@ -1607,7 +1607,7 @@ export const ARTICLES: Article[] = [
       },
       {
         type: "callout",
-        text: "In ReceiptOne you log a trip by entering its start and end addresses; the app works out the distance and saves the trip with its date and your note on the purpose. Once you enter your odometer total for the year, it divides your business kilometres by that total to give your business-use percentage.",
+        text: "In ReceiptOne you log a trip by entering its start and end addresses; the app works out the distance and saves the trip with its date and your note on the purpose. Tag each trip business or personal, and your T2125 report shows your business-use percentage: business kilometres divided by all the kilometres you've logged in the app. It doesn't use your odometer readings, so the percentage is only accurate if you log your personal trips too.",
       },
     ],
   },
