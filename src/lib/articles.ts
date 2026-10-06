@@ -1954,9 +1954,9 @@ export const ARTICLES: Article[] = [
     slug: "t2125-form-guide-canada",
     title: "Form T2125 Explained: Line-by-Line Guide (2026)",
     excerpt:
-      "Form T2125 is how self-employed Canadians report business income and expenses to the CRA. Here's a line-by-line walkthrough so you don't miss a deduction.",
+      "A line-by-line guide to CRA Form T2125 for 2026: income, cost of goods sold, each expense line, business-use-of-home, CCA and the vehicle charts.",
     category: "Tax Fundamentals",
-    publishedAt: "2026-05-10",
+    publishedAt: "2026-10-05",
     updatedAt: "2026-10-05",
     imageUrl: "https://picsum.photos/seed/t2125-form-guide-canada/600/400",
     imageAlt: "Canadian freelancer completing Form T2125 for CRA tax filing",
@@ -1971,48 +1971,255 @@ export const ARTICLES: Article[] = [
     body: [
       {
         type: "p",
-        text: "Form T2125 (Statement of Business or Professional Activities) is the core CRA form for self-employed income. It's where you report gross revenue, subtract business expenses, and arrive at net business income — the number that flows onto your T1 personal tax return and determines your tax and CPP owing.",
-      },
-      {
-        type: "h2",
-        text: "Part 1: Identification and Business Info",
+        text: "Form T2125, Statement of Business or Professional Activities, is the CRA form where you work out your self-employment business, professional or commission income and the expenses you deduct from it. You file it with your income tax return if you are a sole proprietor or a partner in a business or professional partnership, and you use a separate T2125 for each business.",
       },
       {
         type: "p",
-        text: "Enter your name, SIN, and business details: the name of your business (or your own name if you're a sole proprietor without a trade name), the main product or service you provide, your industry code (found in the T4002 guide), your fiscal year-end (usually December 31 for individuals), and your business address.",
+        text: "Farmers use Form T2042 and fishers use Form T2121 instead. Corporations and trusts use none of them. Line numbers, rules and dollar figures below come from canada.ca: Guide T4002, the form itself and Finance Canada's 2026 automobile limits. The sources are listed at the end. Examples are hypothetical.",
+      },
+      {
+        type: "callout",
+        text: "As of October 5, 2026, the newest T2125 and Guide T4002 on canada.ca are the 2025 editions. The 2026 versions are not published yet, so every line number below is from the 2025 form. Check the 2026 form before you file.",
       },
       {
         type: "h2",
-        text: "Part 3: Income",
+        text: "Part 1: Identification",
+      },
+      {
+        type: "p",
+        text: "Part 1 asks for your name and SIN, plus your business name, number and address. It also asks for your fiscal period, whether this was your last year of business, and your main product or service. Most self-employed individuals must use a December 31 year-end. If you are eligible for a different year-end, you also file Form T1139.",
       },
       {
         type: "ul",
         items: [
-          "Line 8000: adjusted gross sales (or adjusted professional fees) — gross sales including GST/HST at amount 3A, less the GST/HST, PST, returns, allowances and discounts included in them at amount 3B",
-          "Line 8230: Other income — income from other sources related to the business",
-          "Line 8290: Reserves deducted last year, added back to this year's income",
-          "Line 8299 is your gross business or professional income: line 8000 plus lines 8290 and 8230",
+          "Industry code: the six-digit NAICS Canada 2022 code for your main activity. If you file electronically, use the codes in your tax software.",
+          "Accounting method: on the form this applies to commission income only. T4002 lets farmers, fishers and self-employed commission agents use the cash method. All other self-employment income must use the accrual method, which reports income when it is earned and expenses when they are incurred.",
+          "Partners: enter your partnership percentage and the partnership's business number.",
+        ],
+      },
+      {
+        type: "p",
+        text: "Part 2 asks how many web pages and websites you earn income from, including third-party platforms, and what share of your gross income they produce.",
+      },
+      {
+        type: "h2",
+        text: "Part 3: Income (Lines 8000, 8290, 8230, 8299)",
+      },
+      {
+        type: "p",
+        text: "Use Part 3A for business income, which includes commission income, and Part 3B for professional income. If you have both, fill in a separate form for each. Amount 3A is gross sales, including GST/HST collected or collectible. Amount 3B takes out the GST/HST, PST, returns, allowances and discounts. Quick-method GST/HST filers adjust the total at amounts 3D to 3F. In Part 3B, professionals also include work in progress in their fees.",
+      },
+      {
+        type: "ul",
+        items: [
+          "Line 8000 – Adjusted gross sales (amount 3G) or adjusted professional fees (amount 3N).",
+          "Line 8290 – Reserves deducted last year, added back to this year's income.",
+          "Line 8230 – Other income, such as recovered bad debts, prizes earned through the business, and grants you cannot apply against a specific expense or asset. Quick-method filers report the 1% credit (maximum $300) here.",
+          "Line 8299 – Gross income: line 8000 plus lines 8290 and 8230. It goes on line 13499, 13699 or 13899 of your return.",
         ],
       },
       {
         type: "h2",
-        text: "Part 4: Expenses and Net Income Before Adjustments",
+        text: "Part 3D: Cost of Goods Sold and Gross Profit",
       },
       {
         type: "p",
-        text: "Part 4 lists the expense lines. Ones freelancers often use: advertising (8521), meals and entertainment (8523), office expenses (8810), professional fees (8860), travel (9200), utilities (9220) and other expenses (9270). Motor vehicle expenses are worked out in Chart A and entered on line 9281, based on your business-use percentage. Part 7 is the separate calculation of business-use-of-home expenses for line 9945.",
-      },
-      {
-        type: "callout",
-        text: "Meals and entertainment: enter only the allowable amount on line 8523. Guide T4002 says you have to calculate the allowable part yourself, which is generally 50% of the lesser of what you spent and an amount that is reasonable in the circumstances.",
+        text: "On the form, cost of goods sold is Part 3D, not Part 4. Fill it in only if you buy goods to resell or make goods to sell. Enter opening inventory on line 8300, which must equal last year's closing inventory. Purchases go on line 8320, net of discounts and including freight, minus anything you took for personal use. Then come direct wage costs (8340), subcontracts (8360) and other costs (8450). Closing inventory goes on line 8500. Value it either all at fair market value or at the lower of cost and fair market value, and use the same method every year. Line 8518 is cost of goods sold and line 8519 is gross profit.",
       },
       {
         type: "h2",
-        text: "Capital Cost Allowance (Area A, Line 9936)",
+        text: "Part 4: Expenses, Line by Line",
       },
       {
         type: "p",
-        text: "Capital purchases (computers, equipment, vehicles) are not deducted all at once. You calculate capital cost allowance in Area A of the form, including only the business part, and claim the total on line 9936. Common classes: Class 10 for most vehicles (30%), Class 10.1 for passenger vehicles costing more than the year's ceiling (30%), Class 50 for computer equipment (55%), Class 8 for other equipment (20%). You claim CCA against your Class UCC (undepreciated capital cost) at year-end.",
+        text: "Part 4 starts from line 8299, or from line 8519 if you sell goods. Three rules apply to every line. Enter only the business part. Don't deduct capital purchases here, because they go through capital cost allowance (CCA). If you claim input tax credits, leave out the GST/HST you recover.",
+      },
+      {
+        type: "p",
+        text: "Line 8521 – Advertising: ads in Canadian media, plus finder's fees. Canadian content or ownership rules apply, but not to ads on foreign websites. An ad in a periodical aimed at Canadians is fully deductible if at least 80% of the issue's non-advertising content is original editorial, and 50% deductible otherwise.",
+      },
+      {
+        type: "p",
+        text: "Line 8523 – Meals and entertainment: you can claim at most 50% of the lesser of the amount you spent and a reasonable amount, and you enter only that allowable part. The limit does not apply to meals you bill to a client and show on the invoice, or to up to six all-employee events a year. Long-haul truck drivers can deduct 80% of food and drink during eligible travel.",
+      },
+      {
+        type: "callout",
+        text: "Hypothetical example: you spend $800 on reasonable client meals during 2026 and don't bill them back. You enter $400 on line 8523.",
+      },
+      {
+        type: "p",
+        text: "Line 8690 – Insurance: commercial premiums on business buildings, machinery and equipment. Vehicle insurance goes in Chart A and home insurance goes in Part 7. Life insurance premiums are generally not deductible.",
+      },
+      {
+        type: "p",
+        text: "Line 8710 – Interest and bank charges: interest on money borrowed for the business. Fees to get a loan to buy or improve business property are deducted at 20% a year over five years. Vehicle loan interest goes in Chart A, and mortgage interest on a home workspace goes in Part 7.",
+      },
+      {
+        type: "p",
+        text: "Line 8760 – Business taxes, licences and memberships: annual licence fees, some business taxes, trade association dues and subscriptions to publications. Dues for clubs whose main purpose is dining, recreation or sport are not deductible.",
+      },
+      {
+        type: "p",
+        text: "Line 8810 – Office expenses: small items such as pens, stationery and stamps. A desk, chair or filing cabinet is a capital item and goes through CCA. Supplies you use to deliver your service go on line 8811.",
+      },
+      {
+        type: "p",
+        text: "Line 8860 – Professional fees: outside advice, accounting and legal fees, and the cost of preparing your income tax and GST/HST returns. Legal fees for buying capital property are added to its cost.",
+      },
+      {
+        type: "p",
+        text: "Line 9060 – Salaries, wages and benefits: employees' pay and your employer share of CPP or QPP contributions, EI premiums and workers' compensation. A salary to your child or spouse is deductible if the work is necessary, the pay is reasonable and you actually pay it. Your own drawings are not deductible.",
+      },
+      {
+        type: "p",
+        text: "Line 9180 – Property taxes: for land and buildings where the business is located. Tax on a home workspace goes in Part 7.",
+      },
+      {
+        type: "p",
+        text: "Line 9200 – Travel expenses: transportation fares, hotels and meals on business travel. The 50% meal limit generally still applies.",
+      },
+      {
+        type: "p",
+        text: "Line 9220 – Utilities: telephone, gas, electricity, water and cable used to earn income, plus the business share of cellphone airtime. You can't deduct the basic monthly rate of your home phone, but you can deduct business long-distance calls or a separate business line. Home utilities go in Part 7.",
+      },
+      {
+        type: "p",
+        text: "Line 9224 – Fuel costs (except for motor vehicles): fuel and lubricants for business equipment. Vehicle fuel goes in Chart A.",
+      },
+      {
+        type: "p",
+        text: "Line 9281 – Motor vehicle expenses: amount 16 from Chart A. Line 9936 – CCA: amount ii from Area A, minus personal use and any CCA you claim in Part 7.",
+      },
+      {
+        type: "p",
+        text: "Line 9270 – Other expenses: anything not covered by an earlier line, listed on the form. Examples include leases on business property, up to two conventions a year and disability-related building modifications. If a convention fee includes meals that aren't broken out, treat $50 a day as a meal, so the 50% limit applies to it.",
+      },
+      {
+        type: "p",
+        text: "Part 4 also has lines for bad debts (8590), management fees (8871), rent (8910), repairs (8960) and delivery (9275). Line 9368 totals the expenses, and line 9369 is net income before adjustments.",
+      },
+      {
+        type: "callout",
+        text: "ReceiptOne's year-end export gives you a PDF or CSV of your organized records: expenses grouped by category, GST/HST totals by type, and a mileage summary. You or your accountant use it to fill in Part 4. It does not cover your income, and ReceiptOne does not prepare or file T2125.",
+      },
+      {
+        type: "h2",
+        text: "Part 5: Net Income, Including Line 9945",
+      },
+      {
+        type: "p",
+        text: "Line 9945 is not a Part 4 expense line. Part 5 starts from your share of line 9369 (amount 5A). Partners may add amount 5B and line 9974 and subtract their own deductible amounts on line 9943. The result is net income after adjustments (amount 5D). Business-use-of-home from Part 7 comes off on line 9945. The result is line 9946, your net income, which goes on line 13500, 13700 or 13900 of your return.",
+      },
+      {
+        type: "h2",
+        text: "Part 7: Business-Use-of-Home, Loss Rule and Carry-Forward",
+      },
+      {
+        type: "p",
+        text: "You can claim a home workspace if it is your principal place of business. You can also claim it if you use it only for the business and regularly meet clients there. Split the costs on a reasonable basis, usually floor area. If you also live in the room, adjust for the hours it is used for business. Renters claim part of their rent. Owners can claim part of their mortgage interest (not principal), property taxes and CCA. T4002 warns that claiming CCA on your home brings the capital gains and recapture rules into play when you sell.",
+      },
+      {
+        type: "p",
+        text: "Amounts 7A to 7G list heat, electricity, insurance, maintenance, mortgage interest, property taxes and other costs. Amount 7I removes the personal part, 7K adds business CCA and 7L brings in last year's carry-forward. Amount 7N is your net income after adjustments, or 0 if it is negative. The claim (7P) is the lesser of 7M and 7N, so home costs cannot create or increase a business loss. The unused amount (7O) carries forward to next year.",
+      },
+      {
+        type: "table",
+        caption: "Hypothetical example: a workspace covering 12.5% of the home, in a low-income year.",
+        headers: ["Amount", "What it holds", "Value"],
+        rows: [
+          ["7A–7G", "Total home costs", "$16,800"],
+          ["7I", "Personal part (87.5%)", "$14,700"],
+          ["7M", "Business part plus carry-forward ($0)", "$2,100"],
+          ["7N", "Net income after adjustments", "$1,500"],
+          ["7P", "Claim on line 9945 (lesser of 7M and 7N)", "$1,500"],
+          ["7O", "Carried forward to 2027", "$600"],
+        ],
+      },
+      {
+        type: "h2",
+        text: "Areas A–C: Capital Cost Allowance",
+      },
+      {
+        type: "p",
+        text: "Use Area B for equipment (including vehicles) and Area C for buildings you bought or improved in the year. Their totals feed column 3 of Area A, where you calculate CCA by class. Areas D and E record disposals and Area F records land, which gets no CCA. Fill in the areas even if you don't claim CCA.",
+      },
+      {
+        type: "ul",
+        items: [
+          "Half-year rule: in the year you add property, CCA is generally limited to half the net addition. Most small tools in Class 12 are exempt.",
+          "Classes: Class 8 (20%) for furniture and equipment, Class 10 (30%) for vehicles, Class 10.1 (30%) for passenger vehicles over the cost ceiling, Class 12 (100%) for tools under $500, and Class 50 (55%) for computers.",
+          "Under proposed changes, Class 50 property bought after April 15, 2024 and available for use before 2027 gets a 100% first-year deduction.",
+          "Immediate expensing for individuals covered property available for use before 2025, so it does not apply in 2026.",
+          "You can claim any amount from zero up to the maximum. Prorate the claim if your fiscal period is shorter than 365 days.",
+        ],
+      },
+      {
+        type: "h2",
+        text: "Charts A–C: Motor Vehicle Expenses",
+      },
+      {
+        type: "p",
+        text: "In Chart A, enter business and total kilometres and the year's fuel, interest, insurance, licence, repairs, leasing and EV electricity costs. Multiply the total by business kilometres divided by total kilometres. Then add business parking and supplementary business insurance in full, and the result goes on line 9281. CCA on the vehicle goes through Areas B and A instead.",
+      },
+      {
+        type: "callout",
+        text: "Hypothetical example: 8,000 business km out of 20,000 total is 40%. Of $6,000 in operating costs, 40% is $2,400. Add $150 of business parking, and line 9281 is $2,550.",
+      },
+      {
+        type: "p",
+        text: "Chart B caps passenger-vehicle loan interest at $350 a month for vehicles bought after 2023. Chart C caps lease costs. For 2026, Finance Canada raised the Class 10.1 ceiling to $39,000 before tax for vehicles bought on or after January 1, 2026. The zero-emission passenger vehicle ceiling stays at $61,000, leasing at $1,100 a month and interest at $350 a month. Keep a logbook with each trip's date, destination, purpose and kilometres, plus odometer readings at the start and end of the year.",
+      },
+      {
+        type: "h2",
+        text: "Common Mistakes",
+      },
+      {
+        type: "ul",
+        items: [
+          "Putting home rent, utilities or property tax on lines 8910, 9220 or 9180 instead of Part 7.",
+          "Entering the full cost of meals instead of the 50% allowable part.",
+          "Expensing a computer or desk on line 8810 instead of claiming CCA.",
+          "Leaving GST/HST in expenses after claiming it back as input tax credits.",
+          "Using home costs to create a loss, or forgetting to carry amount 7O forward.",
+          "Deducting your own drawings on line 9060.",
+          "Claiming vehicle costs without a logbook.",
+        ],
+      },
+      {
+        type: "h2",
+        text: "Frequently Asked Questions",
+      },
+      {
+        type: "p",
+        text: "Is the 2026 Form T2125 available yet? Not as of October 5, 2026. The newest form and Guide T4002 on canada.ca are the 2025 editions.",
+      },
+      {
+        type: "p",
+        text: "When is my 2026 T2125 due? It goes in with your return. For 2025 returns, T4002 sets a June 15, 2026 filing date for self-employed people, with any balance owing due April 30. The same rule points to June 15, 2027 for 2026 returns, but confirm it in the 2026 guide.",
+      },
+      {
+        type: "p",
+        text: "Do I need a separate T2125 for each business? Yes. You also need separate forms if you have both business and professional income.",
+      },
+      {
+        type: "p",
+        text: "Can I ever deduct 100% of a meal? Yes, in some cases, such as meals you bill to a client and show on the invoice, or up to six all-employee events a year.",
+      },
+      {
+        type: "p",
+        text: "What happens to home office costs I can't deduct this year? They carry forward as amount 7O. You can claim them in a later year when your business income is high enough, as long as you still meet one of the workspace conditions.",
+      },
+      {
+        type: "p",
+        text: "Where does depreciation on my car go? Add the car in Area B, calculate CCA in Area A and claim it on line 9936. Chart A covers operating costs only.",
+      },
+      {
+        type: "h2",
+        text: "Sources",
+      },
+      {
+        type: "p",
+        text: "Read on October 5, 2026: Guide T4002, 2025 edition (canada.ca/en/revenue-agency/services/forms-publications/publications/t4002.html); Form T2125, 2025 (canada.ca/en/revenue-agency/services/forms-publications/forms/t2125.html); Finance Canada, 2026 automobile deduction limits, January 14, 2026 (canada.ca/en/department-finance/news/2026/01/government-announces-the-2026-automobile-deduction-limits-and-expense-benefit-rates-for-businesses.html). This is general information, not tax advice.",
       },
     ],
   },
