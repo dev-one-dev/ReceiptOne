@@ -48,7 +48,7 @@ export const faqItems: QA[] = [
   },
   {
     q: "How does mileage tracking work?",
-    a: "Log a trip by entering your start and end addresses — ReceiptOne calculates the route and distance via Google Maps and adds it to your logbook. Add your odometer total for the year, and ReceiptOne separates business from personal kilometres and calculates the business-use percentage you apply to your vehicle expenses.",
+    a: "Log a trip by entering your start and end addresses — ReceiptOne calculates the route and distance via Google Maps and adds it to your logbook. Tag each trip business or personal, and your T2125 report shows your business-use percentage: business kilometres divided by all the kilometres you've logged in the app. It doesn't use your odometer readings, so the percentage is only accurate if you log your personal trips too.",
   },
   {
     q: "What counts as CRA-acceptable mileage documentation?",

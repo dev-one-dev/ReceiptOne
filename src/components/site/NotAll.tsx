@@ -19,7 +19,7 @@ const CA_FEATURES = [
   },
   {
     title: "Log Every Kilometer You Drive",
-    desc: "Quickly log trips and separate business from personal kilometres to get your business-use percentage — no spreadsheets needed.",
+    desc: "Quickly log trips, tag each one business or personal, and see your business-use percentage. Log personal trips too, so the percentage is accurate.",
     img: naBeaverWheel,
     alt: "Beaver at the steering wheel",
   },

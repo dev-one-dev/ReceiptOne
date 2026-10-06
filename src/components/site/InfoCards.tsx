@@ -34,7 +34,7 @@ const CA_FEATURES = [
   {
     label: "Mileage",
     title: "Mileage tracking, right on your phone",
-    desc: "Log every business trip in one tap. ReceiptOne separates business from personal kilometres and calculates the business-use percentage that apportions your vehicle expenses.",
+    desc: "Log each trip by entering its start and end addresses and tag it business or personal. Your T2125 report shows the business-use percentage from the trips you log, so log personal trips too.",
     img: abScreenMileage,
     alt: "ReceiptOne app showing mileage map tracking",
   },
