@@ -9,7 +9,9 @@ export type ContentBlock =
   | { type: "h2"; text: string }
   | { type: "ul"; items: string[] }
   | { type: "callout"; text: string }
-  | { type: "table"; caption: string; headers: string[]; rows: string[][] };
+  | { type: "table"; caption: string; headers: string[]; rows: string[][] }
+  /** Linked sources under a table: one link per vendor, then a checked-on line. */
+  | { type: "sources"; links: { label: string; href: string }[]; checked: string };
 
 export type Region = "ca" | "us";
 
@@ -1675,7 +1677,7 @@ export const ARTICLES: Article[] = [
       "What self-employed Canadians need from a mileage app, five 2026 options compared: prices, free tiers, auto-tracking, and why 73¢/km isn't your deduction.",
     category: "Mileage & Auto",
     publishedAt: "2026-10-05",
-    updatedAt: "2026-10-05",
+    updatedAt: "2026-10-06",
     imageUrl: "https://picsum.photos/seed/mileage-tracking-apps-canada/600/400",
     imageAlt: "Mileage tracking app on smartphone for Canadian freelancer CRA compliance",
     tags: [
@@ -1831,6 +1833,17 @@ export const ARTICLES: Article[] = [
             "iOS, Android, web",
           ],
         ],
+      },
+      {
+        type: "sources",
+        links: [
+          { label: "MileIQ pricing", href: "https://mileiq.com/pricing" },
+          { label: "Everlance pricing", href: "https://www.everlance.com/pricing" },
+          { label: "Driversnote pricing", href: "https://www.driversnote.ca/pricing" },
+          { label: "TripLog pricing", href: "https://triplog.net/pricing" },
+          { label: "QuickBooks Lite", href: "https://quickbooks.intuit.com/ca/online/lite" },
+        ],
+        checked: "Prices checked October 2026",
       },
       {
         type: "p",
@@ -2495,7 +2508,7 @@ export const ARTICLES: Article[] = [
       "Six receipt apps compared for self-employed Canadians in 2026: prices, free tiers, GST/HST/PST capture, mileage and CRA-ready exports.",
     category: "Tools & Apps",
     publishedAt: "2026-10-05",
-    updatedAt: "2026-10-05",
+    updatedAt: "2026-10-06",
     imageUrl: "https://picsum.photos/seed/receipt-scanner-apps-canada-comparison/600/400",
     imageAlt: "Comparison of receipt scanning apps on smartphone for Canadian freelancers",
     tags: [
@@ -2541,8 +2554,8 @@ export const ARTICLES: Article[] = [
         rows: [
           [
             "SparkReceipt",
-            "Pro CA$9.90/mo or CA$99/yr (50 documents a month); Elite CA$17.90/mo or CA$179/yr",
-            "No; 7-day free trial",
+            "Pro CA$9.90/mo or CA$99/yr (50 documents a month); Elite CA$17.90/mo or CA$179/yr (unlimited documents, fair use); Founder pack CA$729 first year (CA$550 one-time setup plus Elite at CA$179/yr; yearly only)",
+            "No; 7-day free trial on Pro and Elite, none on the Founder pack",
             "Yes: extracts GST, HST and PST from each receipt",
             "Yes: GPS or manual trips",
             "Says tax amounts are kept in reports \"ready for Input Tax Credit claims or your T2125\"; PDF, Excel, CSV exports",
@@ -2596,6 +2609,18 @@ export const ARTICLES: Article[] = [
         ],
       },
       {
+        type: "sources",
+        links: [
+          { label: "SparkReceipt pricing", href: "https://sparkreceipt.com/en-ca/pricing" },
+          { label: "Foreceipt pricing", href: "https://foreceipt.com/pricing" },
+          { label: "Expensify pricing", href: "https://www.expensify.com/pricing" },
+          { label: "QuickBooks Canada pricing", href: "https://quickbooks.intuit.com/ca/pricing" },
+          { label: "Wave pricing", href: "https://www.waveapps.com/pricing" },
+          { label: "ReceiptOne pricing", href: "/ca#pricing" },
+        ],
+        checked: "Prices checked October 2026",
+      },
+      {
         type: "p",
         text: "Two things the table cannot show. First, \"GST/HST/PST capture\" means the vendor says it records the tax lines separately; none of these apps can tell you whether a purchase qualifies for an input tax credit, and none checks the supplier's GST/HST registration number for you. Second, the CRA does not certify receipt apps. \"CRA-ready\" is a vendor's description of its reports, not an approval.",
       },
@@ -2605,7 +2630,7 @@ export const ARTICLES: Article[] = [
       },
       {
         type: "p",
-        text: "SparkReceipt publishes a Canadian pricing page in Canadian dollars and states that it extracts GST, HST and PST from receipts, keeping the amounts in reports for input tax credits and T2125. Both plans also include automatic import from a connected email inbox, a live bank feed, bank statement matching, and a mileage tracker that records trips by GPS or by hand.",
+        text: "SparkReceipt publishes a Canadian pricing page in Canadian dollars with three tiers: Pro, Elite, and a Founder pack, which is Elite plus a one-time CA$550 hands-on setup, billed yearly with no trial. Its US page lists Pro and Elite in US dollars instead (US$6.90 and US$12.90 a month, billed monthly), so a SparkReceipt price quoted elsewhere may not be the Canadian one. It states that it extracts GST, HST and PST from receipts, keeping the amounts in reports for input tax credits and T2125. Pro and Elite also include automatic import from a connected email inbox, a live bank feed, bank statement matching, and a mileage tracker that records trips by GPS or by hand.",
       },
       {
         type: "p",
@@ -2712,7 +2737,7 @@ export const ARTICLES: Article[] = [
       "QuickBooks Lite vs ReceiptOne for self-employed Canadians in 2026: prices in CAD, invoicing, bank sync, mileage, GST/HST/PST and exports.",
     category: "Tools & Apps",
     publishedAt: "2026-10-05",
-    updatedAt: "2026-10-05",
+    updatedAt: "2026-10-06",
     imageUrl: "https://picsum.photos/seed/quickbooks-vs-receiptone-canada/600/400",
     imageAlt: "Canadian freelancer comparing accounting software options on laptop",
     tags: [
@@ -2812,6 +2837,14 @@ export const ARTICLES: Article[] = [
             "iOS, Android and web",
           ],
         ],
+      },
+      {
+        type: "sources",
+        links: [
+          { label: "QuickBooks Canada pricing", href: "https://quickbooks.intuit.com/ca/pricing" },
+          { label: "ReceiptOne pricing", href: "/ca#pricing" },
+        ],
+        checked: "Prices checked October 2026",
       },
       {
         type: "p",
@@ -3405,7 +3438,9 @@ export function articleWordCount(article: Article): number {
         ? block.items
         : block.type === "table"
           ? [block.caption, ...block.headers, ...block.rows.flat()]
-          : [block.text];
+          : block.type === "sources"
+            ? [...block.links.map((l) => l.label), block.checked]
+            : [block.text];
     for (const text of texts) words += text.split(/\s+/).filter(Boolean).length;
   }
   return words;

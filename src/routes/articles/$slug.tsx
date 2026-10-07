@@ -182,6 +182,30 @@ function renderBlock(block: ContentBlock, index: number) {
         </figure>
       );
 
+    case "sources":
+      return (
+        <div key={index} className="mb-5 font-sans text-sm text-ink-60">
+          <p>
+            Sources:{" "}
+            {block.links.map((link, i) => (
+              <span key={link.href}>
+                {i > 0 && " · "}
+                <a
+                  href={link.href}
+                  {...(link.href.startsWith("http")
+                    ? { target: "_blank", rel: "noopener noreferrer" }
+                    : {})}
+                  className="text-ink-80 underline underline-offset-2 hover:text-ink"
+                >
+                  {link.label}
+                </a>
+              </span>
+            ))}
+          </p>
+          <p className="mt-1">{block.checked}</p>
+        </div>
+      );
+
     default:
       return null;
   }
