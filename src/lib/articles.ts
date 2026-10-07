@@ -837,53 +837,6 @@ export const ARTICLES: Article[] = [
     ],
   },
 
-  {
-    slug: "home-office-vs-coworking-expense-canada",
-    regions: ["all"],
-    title: "Home Office vs. Co-working: Which Wins at Tax Time?",
-    excerpt:
-      "Comparing the real after-tax cost of a home office deduction versus a co-working membership for Canadian freelancers — the math might surprise you.",
-    category: "Expense Tracking",
-    publishedAt: "2026-05-10",
-    updatedAt: "2026-10-05",
-    imageUrl: "https://picsum.photos/seed/home-office-vs-coworking-expense-canada/600/400",
-    imageAlt: "Freelancer working in a co-working space compared to home office",
-    tags: ["home office", "co-working", "deductions", "freelancer", "workspace expenses"],
-    clusterPillar: "expense-tracking-canada-freelancers",
-    clusterName: "Expense Tracking",
-    relatedSlugs: [
-      "home-office-deduction-canadian-freelancers",
-      "expense-tracking-canada-freelancers",
-      "self-employed-tax-deductions-canada",
-    ],
-    body: [
-      {
-        type: "p",
-        text: "A co-working membership is 100% deductible as a business expense. A home office deduction gives you a percentage of your home costs based on your workspace proportion. The question is: which produces a larger actual deduction — and which one reflects your real working situation?",
-      },
-      {
-        type: "h2",
-        text: "Home Office: The Math",
-      },
-      {
-        type: "p",
-        text: "If your workspace qualifies and is 10% of your home's area, you deduct 10% of costs such as rent, utilities, insurance and property taxes. Hypothetical example: rent of $2,400 a month and utilities of $200 a month come to $31,200 a year, so the business share is $3,120 — before internet and any workspace-specific costs. The deduction can't create or increase a business loss; any excess carries forward. The deduction scales with home cost, so owners with mortgages, high property taxes, and large homes benefit most.",
-      },
-      {
-        type: "h2",
-        text: "Co-working Space: The Math",
-      },
-      {
-        type: "p",
-        text: "Hypothetically, a co-working membership at $300–$600 a month is $3,600–$7,200 a year, deductible as a business expense on your T2125 — which can be more or less than a home office claim, depending on your housing costs. The trade-off is that you're paying for the co-working space on top of your home costs, so the net cost is higher even accounting for the tax savings.",
-      },
-      {
-        type: "callout",
-        text: "Using a co-working space doesn't automatically rule out a home office claim, but the home workspace still has to meet one of the CRA's two conditions: it is your principal place of business, or you use it only for the business and regularly meet clients there. Co-working fees are a separate business expense. Keep a record of where you actually work.",
-      },
-    ],
-  },
-
   /* ═══════════════════════════════════════════════════════════════
      CLUSTER 3 — GST/HST TRACKING
      Pillar: track-gst-hst-business-expenses
@@ -2335,71 +2288,241 @@ export const ARTICLES: Article[] = [
     slug: "home-office-deduction-canadian-freelancers",
     title: "Home Office Deduction: What Canadian Freelancers Can Claim",
     excerpt:
-      "The home office deduction is widely misunderstood: some freelancers claim too little, others claim what they can't. Here's the accurate 2026 breakdown.",
+      "The CRA's two conditions for a home workspace, the area and hours split, owner vs renter costs, the loss limit and Part 7, plus what co-working changes.",
     category: "Tax Deductions",
     publishedAt: "2026-05-10",
-    updatedAt: "2026-10-05",
+    updatedAt: "2026-10-06",
     imageUrl: "https://picsum.photos/seed/home-office-deduction-canadian-freelancers/600/400",
     imageAlt: "Modern home office setup with computer and organized workspace",
-    tags: ["home office", "deductions", "workspace", "freelancer", "CRA"],
+    tags: [
+      "home office",
+      "business-use-of-home",
+      "co-working",
+      "deductions",
+      "workspace",
+      "self-employed",
+      "CRA",
+    ],
     clusterPillar: "freelancer-taxes-canada-guide",
     clusterName: "Freelancer Tax Fundamentals",
     relatedSlugs: [
-      "freelancer-taxes-canada-guide",
-      "home-office-vs-coworking-expense-canada",
+      "t2125-form-guide-canada",
       "self-employed-tax-deductions-canada",
+      "freelancer-taxes-canada-guide",
     ],
     body: [
       {
         type: "p",
-        text: "The home office deduction (technically called 'workspace in the home expenses' on Form T2125) allows self-employed Canadians to deduct a proportional share of their home costs when part of their home is their principal place of business, or is used only for the business and regularly to meet clients. Unlike employees who briefly used a flat-rate method during the pandemic, self-employed individuals have always used the detailed method — and it's more generous than most people realize.",
-      },
-      {
-        type: "h2",
-        text: "Eligibility: When Can You Claim?",
+        text: "If part of your home is where your business is run, the CRA lets you deduct a share of what it costs to keep that home. On Form T2125 these are business-use-of-home expenses, calculated in Part 7 and claimed on line 9945. The rules are short but strict: the space has to meet one of two conditions, the share has to be worked out on a reasonable basis, and the claim can never create or increase a business loss.",
       },
       {
         type: "p",
-        text: "To claim home office expenses as a self-employed individual, your home workspace must meet at least one of two conditions: it is your principal place of business, OR you use the space only to earn your business income and on a regular and ongoing basis to meet clients, customers, or patients. The CRA doesn't set an hours test for 'principal'; its folio on business-use-of-home expenses says the word is generally understood to mean your chief or main place of business, and that a workspace that meets this condition doesn't have to be used only for the business. Meeting either condition qualifies you — you don't need to meet both.",
+        text: "This guide is for self-employed people filing for the 2026 tax year. Employees who work from home claim under different rules, which are not covered here. Every rule below comes from canada.ca: the CRA's business-use-of-home page, Guide T4002 and Income Tax Folio S4-F2-C2 (sources at the end). Examples are hypothetical. For the Part 7 amounts line by line, see our T2125 guide.",
       },
       {
         type: "h2",
-        text: "How to Calculate the Business-Use Percentage",
+        text: "The Two Conditions",
+      },
+      {
+        type: "p",
+        text: "Subsection 18(12) of the Income Tax Act lets you deduct expenses for a workspace in your home only if it meets one of two conditions. You need one, not both:",
       },
       {
         type: "ul",
         items: [
-          "Measure the square footage of your dedicated workspace",
-          "Divide by the total finished square footage of your home",
-          "Multiply the result by 100 to get your business-use percentage",
-          "Example: 120 sq ft office in a 1,200 sq ft home = 10% business use",
-          "If you use common areas part-time, the CRA accepts a reasonable estimate based on hours of use",
+          "It is your principal place of business.",
+          "You use the space only to earn your business income, and you use it on a regular and ongoing basis to meet your clients, customers or patients.",
         ],
       },
       {
-        type: "h2",
-        text: "What Expenses Can You Deduct?",
+        type: "p",
+        text: "The Act does not define principal. Folio S4-F2-C2 says that in this context the word is generally understood to mean your chief or main place of business. There is no set number of hours or days. A workspace that meets this first condition does not have to be used only for the business, so part of a room can qualify if that is where the business is mainly carried on.",
       },
       {
         type: "p",
-        text: "Apply your business-use percentage to the following home expenses to calculate your deductible amount. For renters, the full rent is the base; for homeowners, mortgage interest, not the principal repayment, is deductible.",
+        text: "The second condition is for people whose main place of business is elsewhere, and it is stricter about use. The folio says the space must be used exclusively to earn business income and on a regular and continuous basis for meeting clients, customers or patients. A treatment room where a therapist sees clients every week can qualify even though the therapist also works at a clinic. A room where clients come only now and then is unlikely to meet the regular and continuous test.",
+      },
+      {
+        type: "h2",
+        text: "Working Out the Business Share",
+      },
+      {
+        type: "p",
+        text: "The CRA asks for a reasonable basis, and the one it names is area: the area of the workspace divided by the total area of your home. The folio refers to the total finished area of the home.",
+      },
+      {
+        type: "p",
+        text: "Hypothetical example: a translator rents a 1,000-square-foot apartment and works in a 120-square-foot second bedroom used only for the business. The business share is 120 ÷ 1,000, or 12%. With rent of $24,000, utilities of $1,800 and tenant insurance of $360 for the year, the business part is 12% of $26,160, or $3,139.20.",
+      },
+      {
+        type: "p",
+        text: "Measure once, write the figures down and keep a simple floor sketch with your records. If you move or rearrange the space during the year, work out the share for each period.",
+      },
+      {
+        type: "h2",
+        text: "Shared Space: Adjusting for Hours of Use",
+      },
+      {
+        type: "p",
+        text: "If the room is also living space, area alone overstates the business share. The CRA's business-use-of-home page says to work out how many hours in the day you use the room for the business, divide by 24, and apply that to the area share. The folio also accepts the number of hours a day a room is used for business as a reasonable basis. If the business runs only on some days of the week, adjust for that too; T4002's own example does this for a business that operates five days a week.",
+      },
+      {
+        type: "p",
+        text: "Hypothetical example: a bookkeeper's principal place of business is the dining room, which is 15% of the home's area. It is used for the business 8 hours a day, 5 days a week, and for family meals the rest of the time. With household costs of $12,000 for the year, the claim is 15% × 8/24 × 5/7 × $12,000, or $428.57. Because the dining room is the principal place of business, it qualifies even though it is not used only for the business.",
+      },
+      {
+        type: "p",
+        text: "Keep a note of the hours you work there, such as a calendar or timesheet. The hours adjustment rests on that figure.",
+      },
+      {
+        type: "h2",
+        text: "What Owners and Renters Can Claim",
+      },
+      {
+        type: "p",
+        text: "The costs you apply the business share to depend on whether you own or rent. The CRA lists maintenance costs such as heating, home insurance, electricity and cleaning materials and, for owners, property taxes, mortgage interest and capital cost allowance (CCA). Renters claim the business share of rent and of any expenses they pay that relate to the workspace.",
+      },
+      {
+        type: "table",
+        caption: "Which home costs the business share applies to (CRA business-use-of-home page, Guide T4002)",
+        headers: ["Cost", "Owner", "Renter"],
+        rows: [
+          ["Rent", "—", "Yes, the business share"],
+          ["Mortgage interest", "Yes, the interest only, not principal repaid", "—"],
+          ["Property taxes", "Yes", "—"],
+          ["Home or tenant insurance", "Yes", "Yes, if you pay it"],
+          ["Heat, electricity and water", "Yes", "Yes, if you pay them"],
+          ["Cleaning materials, maintenance and minor repairs", "Yes", "Yes, if you pay them"],
+          ["CCA on the home", "Optional; see the warning below", "—"],
+        ],
+      },
+      {
+        type: "p",
+        text: "A dash means the cost does not normally fall on that household: a landlord carries the mortgage and property taxes, and an owner pays no rent. Two things are never part of the claim: the principal portion of mortgage payments, and a notional rent on a home you own. The folio says no deduction can be made for the rental value of the work space area in a home owned by an individual.",
+      },
+      {
+        type: "p",
+        text: "CCA on the home is allowed but rarely simple. T4002 warns that if you deduct CCA on the business-use part of your home and later sell it, the capital gain and recapture rules apply, and claiming it can affect how much of the gain the principal residence exemption covers. Get advice before you include it.",
+      },
+      {
+        type: "p",
+        text: "Phone and internet are not part of this calculation. Claim them at their own business share, as our self-employed deductions guide explains, and do not put them through the area calculation as well.",
+      },
+      {
+        type: "h2",
+        text: "The Loss Restriction and Carry-Forward",
+      },
+      {
+        type: "p",
+        text: "Business-use-of-home expenses cannot be more than your net income from the business before you deduct them. In the CRA's words, you cannot use these expenses to increase or create a business loss. Whatever you cannot deduct this year carries forward, and is treated as a workspace expense of the next year, under the same conditions and the same limit.",
+      },
+      {
+        type: "p",
+        text: "Hypothetical example: a photographer in a first year of business has $4,000 of net business income before home costs, and a business share of home costs of $5,500. The claim on line 9945 is $4,000, net business income becomes zero, and $1,500 carries forward. The next year it is added to that year's home costs, and the income limit applies again.",
+      },
+      {
+        type: "p",
+        text: "Other expenses, such as advertising or software, are not limited this way. If they put the business into a loss, the loss still counts; only the home costs stop at zero.",
+      },
+      {
+        type: "h2",
+        text: "Where It Goes on Form T2125",
+      },
+      {
+        type: "p",
+        text: "You calculate the claim in Part 7 of Form T2125 and enter the result on line 9945, where it comes off your net income in Part 5. Home costs go only through Part 7, never on the rent, utilities or property tax lines meant for business premises: T4002 says rent for the business use of your home has to be claimed on line 9945. Our T2125 guide walks through the Part 7 amounts with a worked example.",
+      },
+      {
+        type: "h2",
+        text: "Renting Desk Space Instead: Co-working",
+      },
+      {
+        type: "p",
+        text: "A co-working membership or a rented office changes the picture in three ways.",
       },
       {
         type: "ul",
         items: [
-          "Rent (if renting) — applies full business-use percentage",
-          "Mortgage interest (not principal) — applies business-use percentage",
-          "Home insurance premiums",
-          "Property taxes",
-          "Utilities: heat, electricity, water",
-          "Internet service (business-use portion — often claimed separately)",
-          "Maintenance and minor repairs attributable to the workspace",
-          "Capital Cost Allowance on the home portion (use with caution — can affect principal residence exemption)",
+          "It is an ordinary business expense. T4002 lets you deduct rent incurred for property used in your business on line 8910. A dedicated desk or private office fits there; if your plan is billed as a bundle of services, describe it and use the same line every year. There is no area or hours calculation, because the space is used only for the business.",
+          "The home loss rule does not apply. The restriction in subsection 18(12) covers a workspace in your home. A co-working fee is limited only by the general rules, such as reasonableness, so it can contribute to a business loss.",
+          "It can end the home claim. If the co-working space becomes where you mainly work, your home is no longer your chief or main place of business. A home workspace would then qualify only under the second condition: used only for the business and regularly used to meet clients.",
         ],
+      },
+      {
+        type: "p",
+        text: "You can claim both when both qualify: for example, a home office that is still your main place of business plus a desk you book a few days a month for client meetings. What you cannot do is claim a home office as your principal place of business while most of your work happens somewhere else.",
+      },
+      {
+        type: "table",
+        caption: "Home workspace and co-working space compared",
+        headers: ["", "Home workspace", "Co-working or rented office"],
+        rows: [
+          ["Where it goes", "Part 7, then line 9945", "Line 8910, Rent"],
+          ["What you deduct", "Business share of household costs", "The fee you pay"],
+          ["Qualifying test", "Principal place of business, or exclusive use plus regular client meetings", "Used to earn business income"],
+          ["Loss limit", "Cannot create or increase a loss; the excess carries forward", "No special limit"],
+          ["Records", "Measurements, hours of use, household bills", "Invoices or receipts from the provider"],
+        ],
+      },
+      {
+        type: "p",
+        text: "Hypothetical example: a developer pays $2,400 a month in rent and $150 a month for utilities, and the home office is 10% of the apartment, so the home claim is $3,060 a year. A $400-a-month co-working desk would be a $4,800 deduction, but the rent does not go away, and if the desk becomes the main place of work the home claim may stop. A deduction lowers taxable income, not the bill: the desk costs $4,800 in cash and saves only the tax on that amount at the developer's marginal rate. Choose the space for how you work; the tax treatment follows.",
       },
       {
         type: "callout",
-        text: "Important limitation: Your home office deduction cannot create or increase a business loss. If your business expenses excluding home office already exceed your income, you cannot use home office expenses to deepen the loss — the excess carries forward to a future year when you have sufficient business income.",
+        text: "Records to keep: a dated note of the workspace and home measurements, your hours if the space is shared, and the bills behind every cost you apply the share to. Keep them for six years from the end of the tax year they relate to. Our CRA receipt rules guide covers what each receipt must show.",
+      },
+      {
+        type: "h2",
+        text: "Frequently Asked Questions",
+      },
+      {
+        type: "faq",
+        q: "Can I claim a home office if I also rent a co-working desk?",
+        a: "Yes, if the home workspace still meets one of the two conditions. If most of your work happens at the co-working space, your home is probably no longer your principal place of business, and it would then qualify only if you use it only for the business and regularly meet clients there.",
+      },
+      {
+        type: "faq",
+        q: "Does the workspace have to be a separate room?",
+        a: "No. Under the first condition, a workspace that is your principal place of business does not have to be used only for the business, so part of a room can qualify. If the area is also living space, reduce the claim for the hours it is used personally.",
+      },
+      {
+        type: "faq",
+        q: "Do I have to claim CCA on my home?",
+        a: "No. CCA is optional, and T4002 warns that claiming it on the business part of your home brings in the capital gain and recapture rules when you sell. Get advice before claiming it.",
+      },
+      {
+        type: "faq",
+        q: "What happens to home costs I could not deduct this year?",
+        a: "They carry forward to the next year and are treated as workspace expenses of that year, subject to the same conditions and the same income limit.",
+      },
+      {
+        type: "faq",
+        q: "Can a renter claim the whole rent?",
+        a: "No. A renter claims only the business share of rent, worked out on a reasonable basis such as area, and adjusted for hours of use if the space is also lived in.",
+      },
+      {
+        type: "sources",
+        links: [
+          {
+            label: "Business-use-of-home expenses",
+            href: "https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/sole-proprietorships-partnerships/report-business-income-expenses/completing-form-t2125/business-use-home-expenses.html",
+          },
+          {
+            label: "T4002, Chapter 3: business expenses (lines 8910 and 9945)",
+            href: "https://www.canada.ca/en/revenue-agency/services/forms-publications/publications/t4002/t4002-5.html",
+          },
+          {
+            label: "Income Tax Folio S4-F2-C2, Business Use of Home Expenses",
+            href: "https://www.canada.ca/en/revenue-agency/services/tax/technical-information/income-tax/income-tax-folios-index/series-4-businesses/series-4-businesses-folio-2-deducting-business-expenses/income-tax-folio-s4-f2-c2-business-use-home-expenses.html",
+          },
+          {
+            label: "How long to keep your records",
+            href: "https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/keeping-records/where-keep-your-records-long-request-permission-destroy-them-early.html",
+          },
+        ],
+        checked:
+          "canada.ca pages all read on October 6, 2026. Guide T4002 is the 2025 edition, the newest published. This is general information, not tax advice.",
       },
     ],
   },

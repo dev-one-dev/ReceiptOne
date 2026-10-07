@@ -28,6 +28,7 @@ export const config = {
     "/articles/business-expense-categories-canada",
     "/articles/reimbursable-expenses-canada-freelancers",
     "/articles/freelancer-tax-mistakes-canada",
+    "/articles/home-office-vs-coworking-expense-canada",
   ],
 };
 
@@ -52,6 +53,7 @@ const MERGED_ARTICLES: Record<string, string> = {
   "/articles/business-expense-categories-canada": "/articles/self-employed-tax-deductions-canada",
   "/articles/reimbursable-expenses-canada-freelancers": "/articles/self-employed-tax-deductions-canada",
   "/articles/freelancer-tax-mistakes-canada": "/articles/self-employed-tax-deductions-canada",
+  "/articles/home-office-vs-coworking-expense-canada": "/articles/home-office-deduction-canadian-freelancers",
 };
 
 export default function middleware(request: Request) {
