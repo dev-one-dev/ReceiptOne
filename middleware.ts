@@ -24,6 +24,10 @@ export const config = {
     "/articles/input-tax-credits-canada-guide",
     "/articles/gst-hst-registration-threshold-canada",
     "/articles/pst-qst-freelancers-canada",
+    "/articles/top-tax-deductions-canadian-self-employed-2025",
+    "/articles/business-expense-categories-canada",
+    "/articles/reimbursable-expenses-canada-freelancers",
+    "/articles/freelancer-tax-mistakes-canada",
   ],
 };
 
@@ -44,6 +48,10 @@ const MERGED_ARTICLES: Record<string, string> = {
   "/articles/input-tax-credits-canada-guide": "/articles/track-gst-hst-business-expenses",
   "/articles/gst-hst-registration-threshold-canada": "/articles/track-gst-hst-business-expenses",
   "/articles/pst-qst-freelancers-canada": "/articles/track-gst-hst-business-expenses",
+  "/articles/top-tax-deductions-canadian-self-employed-2025": "/articles/self-employed-tax-deductions-canada",
+  "/articles/business-expense-categories-canada": "/articles/self-employed-tax-deductions-canada",
+  "/articles/reimbursable-expenses-canada-freelancers": "/articles/self-employed-tax-deductions-canada",
+  "/articles/freelancer-tax-mistakes-canada": "/articles/self-employed-tax-deductions-canada",
 };
 
 export default function middleware(request: Request) {

@@ -595,9 +595,8 @@ export const ARTICLES: Article[] = [
     clusterName: "Expense Tracking",
     relatedSlugs: [
       "cra-receipt-rules-canada",
-      "business-expense-categories-canada",
+      "self-employed-tax-deductions-canada",
       "t2125-form-guide-canada",
-      "reimbursable-expenses-canada-freelancers",
     ],
     body: [
       {
@@ -839,119 +838,6 @@ export const ARTICLES: Article[] = [
   },
 
   {
-    slug: "business-expense-categories-canada",
-    title: "Business Expense Categories for Self-Employed Canadians",
-    excerpt:
-      "The CRA's business expense categories on Form T2125: what each line includes, what's excluded, and how to categorize common freelancer expenses.",
-    category: "Expense Tracking",
-    publishedAt: "2026-05-10",
-    updatedAt: "2026-10-05",
-    imageUrl: "https://picsum.photos/seed/business-expense-categories-canada/600/400",
-    imageAlt: "Expense category spreadsheet for Canadian self-employed tax filing",
-    tags: ["expense categories", "T2125", "deductions", "self-employed", "CRA"],
-    clusterPillar: "expense-tracking-canada-freelancers",
-    clusterName: "Expense Tracking",
-    relatedSlugs: [
-      "expense-tracking-canada-freelancers",
-      "top-tax-deductions-canadian-self-employed-2025",
-      "t2125-form-guide-canada",
-    ],
-    body: [
-      {
-        type: "p",
-        text: "Form T2125 has a separate line for each main type of business expense. Using the right one for each expense isn't just about organization — wrong categorization can trigger questions during a review. Here's how to correctly classify the most common freelancer expenses.",
-      },
-      {
-        type: "h2",
-        text: "Key T2125 Expense Lines Explained",
-      },
-      {
-        type: "ul",
-        items: [
-          "Advertising: website ads, social media campaigns, business cards, print advertising",
-          "Meals and entertainment: 50% of client meals, networking events — must note business purpose",
-          "Office expenses: stationery, printer ink, postage, small office supplies (not furniture)",
-          "Professional fees: accountant, lawyer, consultant fees directly related to your business",
-          "Telephone and utilities: business-use portion of your phone and internet bills",
-          "Travel: flights, hotels, ground transport for business trips (not commuting)",
-          "Other expenses: software subscriptions, cloud storage, professional development, dues",
-        ],
-      },
-      {
-        type: "h2",
-        text: "Common Categorization Mistakes",
-      },
-      {
-        type: "ul",
-        items: [
-          "Putting software subscriptions under 'Office expenses' instead of 'Other expenses' — both work, but be consistent",
-          "Deducting 100% of meals when the claim is generally limited to 50% of the lesser of the cost and a reasonable amount",
-          "Mixing equipment purchases (which belong in Capital Cost Allowance) with operating expenses",
-          "Claiming personal travel as business travel without documentation of the business purpose",
-        ],
-      },
-      {
-        type: "callout",
-        text: "The CRA publishes the T2125 guide (T4002) each tax year with updated descriptions of what belongs in each line. When in doubt, read the guide or ask your accountant — consistency year over year matters more than minor categorization variations.",
-      },
-    ],
-  },
-
-  {
-    slug: "reimbursable-expenses-canada-freelancers",
-    regions: ["all"],
-    title: "Tracking Reimbursable Expenses as a Canadian Freelancer",
-    excerpt:
-      "When clients owe you money for out-of-pocket expenses, your tracking system determines how fast you get paid — and whether the amount is correct.",
-    category: "Expense Tracking",
-    publishedAt: "2026-05-10",
-    updatedAt: "2026-10-05",
-    imageUrl: "https://picsum.photos/seed/reimbursable-expenses-canada-freelancers/600/400",
-    imageAlt: "Freelancer submitting a client expense reimbursement report",
-    tags: [
-      "reimbursable expenses",
-      "client billing",
-      "freelancer",
-      "invoicing",
-      "expense tracking",
-    ],
-    clusterPillar: "expense-tracking-canada-freelancers",
-    clusterName: "Expense Tracking",
-    relatedSlugs: [
-      "expense-tracking-canada-freelancers",
-      "business-expense-categories-canada",
-      "cra-receipt-rules-canada",
-    ],
-    body: [
-      {
-        type: "p",
-        text: "Reimbursable expenses are costs you pay on a client's behalf that the client has agreed to cover. The tax treatment differs from pure business expenses: if a client reimburses you exactly, the reimbursement and expense cancel out — no net deduction, but also no net income. If you're reimbursed less than you spent, the shortfall is your business expense.",
-      },
-      {
-        type: "h2",
-        text: "The Key Rule: Tag Reimbursables at the Point of Purchase",
-      },
-      {
-        type: "p",
-        text: "Mark every reimbursable expense as such the moment you capture the receipt. Trying to identify reimbursables from memory at billing time means some will be missed — which is money lost. The expense note should include: the client name, the project, and whether the full amount or a percentage is reimbursable.",
-      },
-      {
-        type: "h2",
-        text: "GST/HST on Reimbursable Expenses",
-      },
-      {
-        type: "ul",
-        items: [
-          "The CRA's answer turns on whether you incurred the expense as your client's agent (GST/HST Info Sheet GI-197, Out-of-Pocket Expenses)",
-          "Not incurred as agent: if you're GST/HST-registered and bill the client for the cost, the amount is additional consideration for your service, and GST/HST applies to it in the same way and at the same rate as it applies to your service",
-          "Incurred as agent: the client is treated as the recipient of the supply, so the amount you pass on is not additional consideration for your service and you don't charge GST/HST on it",
-          "Whether you acted as agent depends on the facts; the CRA's policy statement P-182R, Agency, sets out the tests. Get advice if your reimbursements are significant",
-        ],
-      },
-    ],
-  },
-
-  {
     slug: "home-office-vs-coworking-expense-canada",
     regions: ["all"],
     title: "Home Office vs. Co-working: Which Wins at Tax Time?",
@@ -968,7 +854,7 @@ export const ARTICLES: Article[] = [
     relatedSlugs: [
       "home-office-deduction-canadian-freelancers",
       "expense-tracking-canada-freelancers",
-      "top-tax-deductions-canadian-self-employed-2025",
+      "self-employed-tax-deductions-canada",
     ],
     body: [
       {
@@ -1029,7 +915,7 @@ export const ARTICLES: Article[] = [
       "cra-receipt-rules-canada",
       "t2125-form-guide-canada",
       "freelancer-taxes-canada-guide",
-      "business-expense-categories-canada",
+      "self-employed-tax-deductions-canada",
     ],
     body: [
       {
@@ -1402,7 +1288,7 @@ export const ARTICLES: Article[] = [
       "mileage-tracking-apps-canada",
       "t2125-form-guide-canada",
       "expense-tracking-canada-freelancers",
-      "business-expense-categories-canada",
+      "self-employed-tax-deductions-canada",
     ],
     body: [
       {
@@ -2059,7 +1945,7 @@ export const ARTICLES: Article[] = [
     tags: ["freelancer taxes", "self-employed", "T2125", "CRA", "tax filing", "deductions"],
     clusterName: "Freelancer Tax Fundamentals",
     relatedSlugs: [
-      "top-tax-deductions-canadian-self-employed-2025",
+      "self-employed-tax-deductions-canada",
       "home-office-deduction-canadian-freelancers",
       "t2125-form-guide-canada",
       "tax-instalment-payments-canada-self-employed",
@@ -2123,77 +2009,324 @@ export const ARTICLES: Article[] = [
   },
 
   {
-    slug: "top-tax-deductions-canadian-self-employed-2025",
-    title: "Top Tax Deductions for Self-Employed Canadians (2026)",
+    slug: "self-employed-tax-deductions-canada",
+    title: "Self-Employed Tax Deductions in Canada (2026 Guide)",
     excerpt:
-      "The business expenses self-employed Canadians can deduct in 2026, which ones apply to you, and how to claim them correctly to lower your tax bill.",
+      "What a sole proprietor can deduct in 2026: the reasonableness and business-part tests, T2125 expense lines, the 50% meals limit and client reimbursements.",
     category: "Tax Deductions",
-    publishedAt: "2026-05-10",
-    updatedAt: "2026-10-05",
-    imageUrl: "https://picsum.photos/seed/top-tax-deductions-canadian-self-employed-2025/600/400",
+    publishedAt: "2026-10-06",
+    updatedAt: "2026-10-06",
+    imageUrl: "https://picsum.photos/seed/self-employed-tax-deductions-canada/600/400",
     imageAlt: "Person working on a laptop with financial documents visible",
-    tags: ["deductions", "self-employed", "freelancer", "tax savings", "2026"],
+    tags: [
+      "deductions",
+      "business expenses",
+      "T2125",
+      "expense categories",
+      "meals and entertainment",
+      "reimbursable expenses",
+      "tax mistakes",
+      "self-employed",
+      "CRA",
+    ],
     clusterPillar: "freelancer-taxes-canada-guide",
     clusterName: "Freelancer Tax Fundamentals",
     relatedSlugs: [
-      "freelancer-taxes-canada-guide",
-      "home-office-deduction-canadian-freelancers",
       "t2125-form-guide-canada",
+      "home-office-deduction-canadian-freelancers",
+      "mileage-deduction-canada-freelancers",
+      "track-gst-hst-business-expenses",
+      "cra-receipt-rules-canada",
     ],
     body: [
       {
         type: "p",
-        text: "When you work for yourself in Canada, you report your business income and expenses on Form T2125 (Statement of Business or Professional Activities). The CRA allows you to deduct any expense that was incurred to earn business income — as long as it's reasonable in amount and supported by documentation. Here are the most valuable deductions for Canadian freelancers in 2026.",
+        text: "As a sole proprietor, you report your business income and expenses on Form T2125, Statement of Business or Professional Activities, and file it with your T1 return. Every dollar of deductible expense lowers the net business income your income tax is calculated on. The CRA's starting point is short: you can deduct any reasonable current expense you incur to earn income. Most problems come from the words in that sentence, so this guide takes them one at a time.",
+      },
+      {
+        type: "p",
+        text: "It covers the 2026 tax year: what you can deduct, the reasonableness and business-part tests, where the main expenses go on Form T2125, the 50% limit on meals and entertainment, what you cannot deduct, how to handle expenses a client pays you back for, and the mistakes that most often cost self-employed people money. Every rule comes from canada.ca, mainly Guide T4002, and from the Income Tax Act (sources at the end). The newest Guide T4002 is the 2025 edition. Examples are hypothetical. For a walk through every line of the form, see our T2125 guide.",
       },
       {
         type: "h2",
-        text: "Core Business Expense Deductions",
+        text: "What a Sole Proprietor Can Deduct",
+      },
+      {
+        type: "p",
+        text: "The general rule in Guide T4002 is that you can deduct any reasonable current expense you incur to earn income, as long as it is not a personal expense. Read as a checklist, an expense has to pass four tests before it goes on Form T2125:",
       },
       {
         type: "ul",
         items: [
-          "Software subscriptions (project management, accounting, design tools)",
-          "Professional development — courses, conferences, industry books",
-          "Professional dues and memberships (associations, unions, licensing fees)",
-          "Advertising and marketing — social media ads, website hosting, SEO tools",
-          "Business insurance premiums",
-          "Bank charges and merchant fees for business accounts",
-          "Legal and accounting fees related to your business",
-          "Office supplies and postage",
+          "Purpose: you incurred it to earn business income, not for personal use.",
+          "Amount: it is reasonable in the circumstances.",
+          "Timing: it is a current expense, not a capital one. Capital property is deducted over several years through capital cost allowance (CCA).",
+          "Share: for anything you also use personally, you enter only the business part.",
+        ],
+      },
+      {
+        type: "p",
+        text: "GST/HST follows the same logic. The expenses you can deduct include the GST/HST you paid on them, minus any input tax credit (ITC) you claim. If you are not registered, the tax is simply part of the cost. If you are, claim the ITC on your GST/HST return and deduct the cost before tax on Form T2125.",
+      },
+      {
+        type: "p",
+        text: "Every claim also needs a record behind it. Keep the receipt or invoice for six years from the end of the tax year it relates to; our CRA receipt rules guide covers what a receipt must show.",
+      },
+      {
+        type: "h2",
+        text: "The Reasonableness Test",
+      },
+      {
+        type: "p",
+        text: "Section 67 of the Income Tax Act sets the limit: no deduction is allowed for an outlay or expense except to the extent that it was reasonable in the circumstances. It applies on top of every other rule. An expense that is fully for business can still be cut back if the amount is out of proportion to what the business needed.",
+      },
+      {
+        type: "p",
+        text: "In practice the question is what a business like yours would normally pay. The rule matters most where you set the price yourself. Guide T4002 says you can deduct a salary paid to your child or spouse only if the work was necessary to earn business income, the salary is reasonable for the work done, and you keep documents that show the payments. The meals rule writes the test into its own wording: the 50% applies to the lesser of what you spent and an amount that is reasonable in the circumstances.",
+      },
+      {
+        type: "h2",
+        text: "The Business-Part Test",
+      },
+      {
+        type: "p",
+        text: "Many of a freelancer's costs are shared between the business and personal life: a phone, home internet, a car, the home itself. Guide T4002 tells you to enter only the business part of these expenses, and to be able to show how you worked it out.",
+      },
+      {
+        type: "ul",
+        items: [
+          "Phone and internet: deduct the business share. You cannot deduct the basic monthly rate of your home telephone unless the line is only for the business.",
+          "Motor vehicle: you can deduct only the part of the expenses you paid to earn income, based on business kilometres as a share of total kilometres, supported by a logbook.",
+          "Home office: you can deduct a share of household costs only if the space is your principal place of business, or you use it only to earn business income and regularly meet clients there. The share must be worked out on a reasonable basis, such as the workspace's area as a share of the home.",
+        ],
+      },
+      {
+        type: "p",
+        text: "Hypothetical example: a designer's phone plan costs $900 for the year. Three representative monthly bills show that about two thirds of the use is for clients, so the designer claims $600 on line 9220 and keeps the bills that support the split. The vehicle and home office calculations have their own guides: see our mileage deduction guide and our home office deduction guide.",
+      },
+      {
+        type: "h2",
+        text: "Where Expenses Go on Form T2125",
+      },
+      {
+        type: "p",
+        text: "Form T2125 groups expenses by line. Putting an expense on the wrong line does not change your tax, but a consistent, accurate classification makes your return easier to support if the CRA asks. These are the lines a freelancer or consultant uses most; our T2125 guide covers the rest of the form.",
+      },
+      {
+        type: "table",
+        caption: "Common T2125 expense lines and what belongs on each (Guide T4002, 2025 edition)",
+        headers: ["Line", "What goes there", "Keep off this line"],
+        rows: [
+          ["8521 Advertising", "Advertising and promotion costs", "Ads in foreign periodicals beyond the limits in T4002"],
+          ["8523 Meals and entertainment", "Business meals and entertainment, at the allowable part only", "The non-deductible 50%"],
+          ["8690 Insurance", "Commercial insurance on business buildings, machinery and equipment", "Most life insurance premiums"],
+          ["8710 Interest and bank charges", "Interest on money borrowed for the business, business account fees", "Interest on personal loans"],
+          ["8760 Business taxes, licences and memberships", "Annual licence fees, some business taxes, membership dues", "Dues for clubs whose main purpose is dining, recreation or sport"],
+          ["8810 Office expenses", "Small items such as pens, paper, stationery and stamps", "Calculators, filing cabinets and other capital items"],
+          ["8811 Office stationery and supplies", "Supplies the business uses to provide its goods or services", "Office items covered by line 8810"],
+          ["8860 Professional fees", "Accounting, legal and other outside professional and consulting fees", "Fees for acquiring capital property"],
+          ["8910 Rent", "Rent for property used in the business", "Rent for your home, which goes to business-use-of-home"],
+          ["8960 Repairs and maintenance", "Labour and materials for minor repairs to business property", "Improvements, and the value of your own labour"],
+          ["9200 Travel", "Fares, hotels and meals on business trips", "The non-deductible 50% of travel meals"],
+          ["9220 Telephone and utilities", "Business share of phone and internet", "The basic monthly rate of a home phone line"],
+          ["9270 Other expenses", "Deductible costs no other line covers; describe each", "Anything with a line of its own"],
+          ["9281 Motor vehicle expenses", "Business share of vehicle costs, from Chart A", "CCA on the vehicle, which goes to line 9936"],
+          ["9936 Capital cost allowance", "CCA on equipment, computers, furniture and vehicles", "The full cost of capital property in the year you buy it"],
+          ["9945 Business-use-of-home", "Allowable share of household costs", "Any amount that would create or increase a business loss"],
+        ],
+      },
+      {
+        type: "p",
+        text: "Equipment you will use for more than a year, such as a computer, camera or desk, is capital property. You cannot deduct its cost in full in the year you buy it; you claim CCA instead. Computer hardware and systems software generally go in Class 50, at 55%, and in the year you acquire property you can usually claim CCA on only half the net addition. The temporary immediate expensing rules for individuals covered property acquired after 2021 that became available for use before 2025, so they do not apply to equipment you start using in 2026.",
+      },
+      {
+        type: "h2",
+        text: "Meals and Entertainment: The 50% Limit",
+      },
+      {
+        type: "p",
+        text: "The maximum you can claim for food, beverages and entertainment is 50% of the lesser of the amount you incurred and an amount that is reasonable in the circumstances. It applies even when the meal was entirely for business, and it also applies to meals while you travel and at conventions. The limit does not apply when:",
+      },
+      {
+        type: "ul",
+        items: [
+          "Your business regularly provides food, beverages or entertainment to customers for compensation, as a restaurant or hotel does.",
+          "You bill your client or customer for the meal and entertainment costs, and you show these costs on the bill.",
+          "The expenses are for an office party or similar event to which you invite all your employees from a particular location, up to six such events a year.",
+          "The expenses are for a fundraising event that benefits a registered charity.",
+          "The meals fall under the rules for employees at remote locations or temporary work camps.",
+        ],
+      },
+      {
+        type: "p",
+        text: "Long-haul truck drivers have their own rate: food and beverages consumed during an eligible travel period are deductible at 80%.",
+      },
+      {
+        type: "p",
+        text: "Hypothetical example: a consultant who is not registered for GST/HST takes a prospective client to lunch and pays $84, including tax, which is reasonable for the meeting. The consultant enters $42 on line 8523 and notes on the receipt who attended and what was discussed. If the consultant were a GST/HST registrant, the input tax credit on the meal would be restricted the same way; our GST/HST guide explains how.",
+      },
+      {
+        type: "h2",
+        text: "What You Cannot Deduct",
+      },
+      {
+        type: "p",
+        text: "Guide T4002 and the CRA's business expenses page name the costs that never go on Form T2125, whatever line you try:",
+      },
+      {
+        type: "ul",
+        items: [
+          "Personal and living expenses, and the personal part of anything you use for both.",
+          "The cost of capital property in the year you buy it. Claim CCA over time.",
+          "Salary, wages or drawings you pay yourself, and the value of your own labour.",
+          "Donations to charities and political contributions. Charitable gifts are claimed as a credit on your return, not as business expenses.",
+          "Interest and penalties you paid on your income tax.",
+          "Most fines and penalties imposed under the law of Canada or a province.",
+          "Most life insurance premiums.",
+          "Club membership dues, including initiation fees, if the main purpose of the club is dining, recreation or sporting activities.",
+          "Business-use-of-home expenses beyond your net business income for the year. They cannot create or increase a loss, but you can carry the excess forward.",
         ],
       },
       {
         type: "h2",
-        text: "Home Office Deductions",
+        text: "Expenses a Client Reimburses",
       },
       {
         type: "p",
-        text: "If you work from home regularly and your home workspace is your principal place of business (or you use it only for the business and regularly meet clients there), you can deduct a proportional share of home expenses. The calculation is based on the percentage of your home used for business — typically square footage of the workspace divided by total square footage. Eligible expenses include rent or mortgage interest, utilities, internet, property taxes, and maintenance costs.",
+        text: "Freelancers often pay costs for a project, such as travel, materials or a stock licence, and then bill the client. For income tax, the rule is that a reimbursement is counted once. Paragraph 12(1)(x) of the Income Tax Act includes in your income an amount you receive in the course of earning business income as a reimbursement of an expense, unless the amount has already reduced that expense. That leaves two consistent ways to report it:",
+      },
+      {
+        type: "ul",
+        items: [
+          "Include what the client paid you in your gross income and deduct the full expense.",
+          "Or reduce the expense by the reimbursement and deduct only the part you bore yourself.",
+        ],
+      },
+      {
+        type: "p",
+        text: "Either way, only the shortfall you carry ends up as a net deduction. What you cannot do is deduct the full expense and leave the reimbursement out of income. Meals are the exception worth knowing: if you bill the client for a meal and show it on the invoice, the 50% limit does not apply to it.",
+      },
+      {
+        type: "p",
+        text: "For GST/HST registrants, the CRA's GST/HST Info Sheet GI-197, Out-of-Pocket Expenses, turns on whether you incurred the expense as your client's agent. Most freelancers do not. In that case the amount you invoice is additional consideration for your service, and GST/HST applies to it in the same manner and at the same rate as to the service itself. You claim the ITC on the tax you paid, so you bill the cost before tax. If you did act as agent, the reimbursement is not consideration for your service: you charge no GST/HST on it, you cannot claim the ITC, and a registered client may claim it instead.",
+      },
+      {
+        type: "p",
+        text: "Hypothetical example: a registered consultant in Ontario pays $250 plus $32.50 HST for a hotel night on a client project and does not act as the client's agent. The consultant claims the $32.50 as an ITC, invoices the $250 with the fee and charges 13% HST on it. For income tax, the $250 goes into gross income and the $250 hotel cost is deducted on line 9200, so the net effect is nil.",
+      },
+      {
+        type: "p",
+        text: "The practical rule is to mark a reimbursable cost when you capture the receipt: the client, the project, and whether all or part of it will be billed. Costs flagged at the time get invoiced; costs remembered at billing time get missed.",
       },
       {
         type: "h2",
-        text: "Technology and Equipment",
+        text: "Common Mistakes, Stated as Rules",
       },
       {
         type: "p",
-        text: "Computers, phones, cameras, and other equipment used for business can be deducted, but generally through the Capital Cost Allowance (CCA) system rather than as a full immediate deduction. Most computer equipment falls under Class 10 (30% declining balance) or Class 50 (55% declining balance for general-purpose computing equipment). The temporary immediate expensing incentive (up to $1.5 million a year) applied to unincorporated businesses only for eligible property acquired after 2021 that became available for use before 2025, so it does not cover equipment you put into use in 2025 or later.",
+        text: "These are the errors that most often lead to denied claims, interest or money left on the table. Each is stated as the rule that prevents it.",
+      },
+      {
+        type: "ul",
+        items: [
+          "Meals are claimed at 50%, not 100%. Claim the full amount only under one of the listed exceptions, such as a meal you billed to a client and showed on the invoice.",
+          "Mileage is recorded as you drive. A logbook entry shows the date, destination, purpose and kilometres of each business trip, with odometer readings at the start and end of the year. The CRA calls an accurate logbook kept for the entire year the best evidence; after a full base year, a three-month sample can be used if business use stays within 10% of the base year.",
+          "Instalments are paid when the threshold is met. For 2026 you pay instalments if your net tax owing is more than $3,000 ($1,800 in Quebec) in 2026 and in either 2025 or 2024. The due dates are March 15, June 15, September 15 and December 15; the CRA charges instalment interest when payments are late or short.",
+          "Personal costs stay off the form. A cost is deductible only if it was incurred to earn business income, and a shared cost only for its business part.",
+          "GST/HST collected is not income. On Form T2125 you include it in gross sales at amount 3A and subtract it at amount 3B, unless you use the quick method.",
+          "Home office expenses stop at net business income. They cannot create or increase a loss; carry the excess forward.",
+          "GST/HST registration starts at the threshold, not at filing time. Once you go over $30,000 in a single calendar quarter, you charge GST/HST on the sale that took you over. Over the previous four consecutive quarters, you stop being a small supplier at the end of the month after the quarter in which you went over.",
+          "Capital purchases go through CCA. A computer or desk is not an office expense.",
+          "A reimbursed expense is counted once. Report the reimbursement as income or net it against the expense, but not neither.",
+        ],
       },
       {
         type: "callout",
-        text: "For 2026, the federal basic personal amount is $16,452 if your net income is $181,440 or less. It is a non-refundable credit that applies to everyone; your business expenses are deducted separately, in calculating your net business income on Form T2125.",
+        text: "Deadlines for 2026 returns: self-employed individuals file by June 15, and any balance owing is due April 30. The same rules put them at April 30 and June 15, 2027 for 2026 returns, but the CRA had not published its dated 2026 calendar when this was written, so confirm before you file.",
       },
       {
         type: "h2",
-        text: "Phone and Internet",
+        text: "Frequently Asked Questions",
       },
       {
-        type: "ul",
-        items: [
-          "Claim the business-use percentage of your phone bill (e.g., 70% if used mostly for work)",
-          "Home internet can be partially deducted if used for business",
-          "A dedicated business phone line is 100% deductible",
-          "Keep your phone bills for six years from the end of the tax year they relate to, so you can show how you worked out the business share",
+        type: "faq",
+        q: "Can I deduct software subscriptions?",
+        a: "Yes, if you use them to earn business income. A subscription is a current expense; Form T2125 has no line named for software, so it usually goes on line 9270, Other expenses, with a description. Software you buy outright with a computer may be capital property instead. Whichever line you use, use it consistently.",
+      },
+      {
+        type: "faq",
+        q: "Do I need a receipt for every expense?",
+        a: "You need a record that supports every expense you claim, normally the receipt or invoice, and you keep it for six years from the end of the tax year it relates to. A bank statement alone shows that you paid, not what you bought.",
+      },
+      {
+        type: "faq",
+        q: "Can I deduct a meal I eat alone while working?",
+        a: "Generally not. An ordinary meal you would have eaten anyway is a personal expense. Meals on a business trip away from home are travel expenses, and the 50% limit applies to them.",
+      },
+      {
+        type: "faq",
+        q: "My client paid my travel costs directly. Do I report anything?",
+        a: "If the client paid the airline or hotel directly, you did not incur the expense, so there is nothing for you to deduct and no reimbursement to report. The reimbursement rules apply when you pay first and then bill the client.",
+      },
+      {
+        type: "faq",
+        q: "What if I find a missed deduction after I file?",
+        a: "You can ask the CRA to change your return, for example through Change my return in My Account. Keep the receipts that support the change.",
+      },
+      {
+        type: "sources",
+        links: [
+          {
+            label: "T4002, Chapter 3: business expenses",
+            href: "https://www.canada.ca/en/revenue-agency/services/forms-publications/publications/t4002/t4002-5.html",
+          },
+          {
+            label: "T4002, Chapter 2: income (amounts 3A and 3B)",
+            href: "https://www.canada.ca/en/revenue-agency/services/forms-publications/publications/t4002/t4002-4.html",
+          },
+          {
+            label: "T4002, Chapter 4: capital cost allowance",
+            href: "https://www.canada.ca/en/revenue-agency/services/forms-publications/publications/t4002/t4002-6.html",
+          },
+          {
+            label: "Business expenses",
+            href: "https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/sole-proprietorships-partnerships/business-expenses.html",
+          },
+          {
+            label: "Line 8523, meals and entertainment",
+            href: "https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/sole-proprietorships-partnerships/report-business-income-expenses/completing-form-t2125/line-8523-meals-entertainment-allowable-part-only.html",
+          },
+          {
+            label: "Motor vehicle records",
+            href: "https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/sole-proprietorships-partnerships/business-expenses/motor-vehicle-expenses/motor-vehicle-records.html",
+          },
+          {
+            label: "GST/HST Info Sheet GI-197, Out-of-Pocket Expenses",
+            href: "https://www.canada.ca/en/revenue-agency/services/forms-publications/publications/gi-197/out-of-pocket-expenses.html",
+          },
+          {
+            label: "When to register and start charging GST/HST",
+            href: "https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/gst-hst-businesses/when-register-charge.html",
+          },
+          {
+            label: "Who has to pay instalments",
+            href: "https://www.canada.ca/en/revenue-agency/services/payments/payments-cra/individual-payments/income-tax-instalments/who-pays-instalments.html",
+          },
+          {
+            label: "Instalment due dates",
+            href: "https://www.canada.ca/en/revenue-agency/services/payments/payments-cra/individual-payments/income-tax-instalments/due-dates.html",
+          },
+          {
+            label: "Income Tax Act, section 12 (paragraph 12(1)(x))",
+            href: "https://laws-lois.justice.gc.ca/eng/acts/i-3.3/section-12.html",
+          },
+          {
+            label: "Income Tax Act, section 67",
+            href: "https://laws-lois.justice.gc.ca/eng/acts/i-3.3/section-67.html",
+          },
         ],
+        checked:
+          "canada.ca and Justice Laws pages all read on October 6, 2026. Guide T4002 is the 2025 edition, the newest published. This is general information, not tax advice.",
       },
     ],
   },
@@ -2214,7 +2347,7 @@ export const ARTICLES: Article[] = [
     relatedSlugs: [
       "freelancer-taxes-canada-guide",
       "home-office-vs-coworking-expense-canada",
-      "top-tax-deductions-canadian-self-employed-2025",
+      "self-employed-tax-deductions-canada",
     ],
     body: [
       {
@@ -2286,8 +2419,7 @@ export const ARTICLES: Article[] = [
     clusterName: "Freelancer Tax Fundamentals",
     relatedSlugs: [
       "freelancer-taxes-canada-guide",
-      "business-expense-categories-canada",
-      "top-tax-deductions-canadian-self-employed-2025",
+      "self-employed-tax-deductions-canada",
     ],
     body: [
       {
@@ -2566,8 +2698,7 @@ export const ARTICLES: Article[] = [
     clusterName: "Freelancer Tax Fundamentals",
     relatedSlugs: [
       "freelancer-taxes-canada-guide",
-      "top-tax-deductions-canadian-self-employed-2025",
-      "freelancer-tax-mistakes-canada",
+      "self-employed-tax-deductions-canada",
     ],
     body: [
       {
@@ -3149,67 +3280,6 @@ export const ARTICLES: Article[] = [
   /* ═══════════════════════════════════════════════════════════════
      CLUSTER 7 — TAX STRATEGY & MINDSET
      ═══════════════════════════════════════════════════════════════ */
-
-  {
-    slug: "freelancer-tax-mistakes-canada",
-    title: "7 Common Tax Mistakes Canadian Freelancers Make",
-    excerpt:
-      "Seven mistakes that cost Canadian freelancers money through missed deductions, CRA interest charges and denied claims, and how to avoid each one.",
-    category: "Tax Strategy",
-    publishedAt: "2026-05-10",
-    updatedAt: "2026-10-05",
-    imageUrl: "https://picsum.photos/seed/freelancer-tax-mistakes-canada/600/400",
-    imageAlt: "Canadian freelancer reviewing tax mistakes and corrections",
-    tags: ["tax mistakes", "freelancer", "CRA", "deductions", "self-employed", "common errors"],
-    relatedSlugs: [
-      "freelancer-taxes-canada-guide",
-      "cra-audit-proof-expenses",
-      "tax-instalment-payments-canada-self-employed",
-    ],
-    body: [
-      {
-        type: "p",
-        text: "Most of the mistakes below have nothing to do with fraud. They come from misreading a rule or not keeping the record that proves a claim. Here are seven that cost self-employed Canadians money, with the CRA rule behind each one.",
-      },
-      {
-        type: "h2",
-        text: "1. Deducting 100% of Meals and Entertainment",
-      },
-      {
-        type: "p",
-        text: "The deduction for food, beverages and entertainment is generally limited to 50% of the lesser of what you spent and an amount that is reasonable in the circumstances, even when the meal was entirely for business. Guide T4002 lists exceptions, such as meals you bill to a client and show on the invoice.",
-      },
-      {
-        type: "h2",
-        text: "2. Not Keeping Contemporaneous Mileage Records",
-      },
-      {
-        type: "p",
-        text: "Reconstructing a mileage logbook from memory or calendar entries at year-end is not a contemporaneous record. The CRA calls an accurate logbook kept for the entire year the best evidence of business use, and it can disallow expenses you cannot support. Record each trip as you make it.",
-      },
-      {
-        type: "h2",
-        text: "3. Missing the Tax Instalment Deadlines",
-      },
-      {
-        type: "p",
-        text: "If your net tax owing is more than $3,000 ($1,800 in Quebec) this year and in either of the two previous years, quarterly instalments are required. Late or missed instalments are charged interest at the prescribed rate, which is set every quarter; for October 1 to December 31, 2026 it is 7%. The CRA sends instalment reminders, but you're responsible for paying whether or not the reminder arrives.",
-      },
-      {
-        type: "h2",
-        text: "More Common Mistakes",
-      },
-      {
-        type: "ul",
-        items: [
-          "Claiming personal expenses as business (e.g., gym membership without a demonstrable business necessity)",
-          "Counting the GST/HST you collected as business income: on Form T2125 you include it in gross sales at amount 3A, then subtract it at amount 3B (the Quick Method works differently)",
-          "Claiming home office expenses that exceed net business income (not allowed — they carry forward)",
-          "Missing the GST/HST registration point: once your taxable revenue goes over $30,000 in one calendar quarter or over four consecutive quarters, you must charge GST/HST from your effective date of registration, even before you have registered",
-        ],
-      },
-    ],
-  },
 
   {
     slug: "cra-audit-guide-self-employed-canada",
