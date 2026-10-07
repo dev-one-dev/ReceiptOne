@@ -20,6 +20,10 @@ export const config = {
     "/articles/mileage-tracking-self-employed-2025-guide",
     "/articles/cra-mileage-logbook-requirements",
     "/articles/vehicle-expense-deductions-canada",
+    "/articles/gst-hst-expense-tracking-canada",
+    "/articles/input-tax-credits-canada-guide",
+    "/articles/gst-hst-registration-threshold-canada",
+    "/articles/pst-qst-freelancers-canada",
   ],
 };
 
@@ -36,6 +40,10 @@ const MERGED_ARTICLES: Record<string, string> = {
   "/articles/mileage-tracking-self-employed-2025-guide": "/articles/mileage-deduction-canada-freelancers",
   "/articles/cra-mileage-logbook-requirements": "/articles/mileage-deduction-canada-freelancers",
   "/articles/vehicle-expense-deductions-canada": "/articles/mileage-deduction-canada-freelancers",
+  "/articles/gst-hst-expense-tracking-canada": "/articles/track-gst-hst-business-expenses",
+  "/articles/input-tax-credits-canada-guide": "/articles/track-gst-hst-business-expenses",
+  "/articles/gst-hst-registration-threshold-canada": "/articles/track-gst-hst-business-expenses",
+  "/articles/pst-qst-freelancers-canada": "/articles/track-gst-hst-business-expenses",
 };
 
 export default function middleware(request: Request) {
