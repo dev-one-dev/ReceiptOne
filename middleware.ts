@@ -17,6 +17,9 @@ export const config = {
     "/articles/self-employed-expense-report-template-canada",
     "/articles/year-round-tax-prep-canada",
     "/articles/tax-season-stress-freelancers-canada",
+    "/articles/mileage-tracking-self-employed-2025-guide",
+    "/articles/cra-mileage-logbook-requirements",
+    "/articles/vehicle-expense-deductions-canada",
   ],
 };
 
@@ -30,6 +33,9 @@ const MERGED_ARTICLES: Record<string, string> = {
   "/articles/self-employed-expense-report-template-canada": "/articles/expense-tracking-canada-freelancers",
   "/articles/year-round-tax-prep-canada": "/articles/expense-tracking-canada-freelancers",
   "/articles/tax-season-stress-freelancers-canada": "/articles/expense-tracking-canada-freelancers",
+  "/articles/mileage-tracking-self-employed-2025-guide": "/articles/mileage-deduction-canada-freelancers",
+  "/articles/cra-mileage-logbook-requirements": "/articles/mileage-deduction-canada-freelancers",
+  "/articles/vehicle-expense-deductions-canada": "/articles/mileage-deduction-canada-freelancers",
 };
 
 export default function middleware(request: Request) {
