@@ -29,6 +29,8 @@ export const config = {
     "/articles/reimbursable-expenses-canada-freelancers",
     "/articles/freelancer-tax-mistakes-canada",
     "/articles/home-office-vs-coworking-expense-canada",
+    "/articles/excel-vs-expense-app-canada",
+    "/articles/manual-vs-automated-expense-tracking-canada",
   ],
 };
 
@@ -54,6 +56,8 @@ const MERGED_ARTICLES: Record<string, string> = {
   "/articles/reimbursable-expenses-canada-freelancers": "/articles/self-employed-tax-deductions-canada",
   "/articles/freelancer-tax-mistakes-canada": "/articles/self-employed-tax-deductions-canada",
   "/articles/home-office-vs-coworking-expense-canada": "/articles/home-office-deduction-canadian-freelancers",
+  "/articles/excel-vs-expense-app-canada": "/articles/spreadsheet-vs-expense-app",
+  "/articles/manual-vs-automated-expense-tracking-canada": "/articles/spreadsheet-vs-expense-app",
 };
 
 export default function middleware(request: Request) {

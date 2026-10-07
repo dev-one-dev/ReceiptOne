@@ -2881,7 +2881,7 @@ export const ARTICLES: Article[] = [
     relatedSlugs: [
       "quickbooks-vs-receiptone-canada",
       "expense-tracking-canada-freelancers",
-      "excel-vs-expense-app-canada",
+      "spreadsheet-vs-expense-app",
     ],
     body: [
       {
@@ -3111,7 +3111,7 @@ export const ARTICLES: Article[] = [
     relatedSlugs: [
       "receipt-scanner-apps-canada-comparison",
       "expense-tracking-canada-freelancers",
-      "manual-vs-automated-expense-tracking-canada",
+      "spreadsheet-vs-expense-app",
     ],
     body: [
       {
@@ -3294,108 +3294,225 @@ export const ARTICLES: Article[] = [
   },
 
   {
-    slug: "manual-vs-automated-expense-tracking-canada",
-    regions: ["all"],
-    title: "Manual vs. Automated Expense Tracking in Canada",
+    slug: "spreadsheet-vs-expense-app",
+    title: "Spreadsheet vs. Expense App: Which Do You Need?",
     excerpt:
-      "Spreadsheets are free. Automated apps cost money. Here's when the manual approach is good enough — and when automation pays for itself.",
+      "What a spreadsheet does well, where it falls short of CRA record-keeping rules, what an expense app adds, and when a spreadsheet is enough.",
     category: "Tools & Apps",
-    publishedAt: "2026-05-10",
-    updatedAt: "2026-10-05",
-    imageUrl: "https://picsum.photos/seed/manual-vs-automated-expense-tracking-canada/600/400",
-    imageAlt: "Canadian freelancer comparing manual spreadsheet vs automated expense tracking",
-    tags: ["expense tracking", "automation", "spreadsheet", "freelancer", "bookkeeping"],
+    publishedAt: "2026-10-06",
+    updatedAt: "2026-10-06",
+    imageUrl: "https://picsum.photos/seed/spreadsheet-vs-expense-app/600/400",
+    imageAlt: "Expense spreadsheet on a laptop next to a phone showing a receipt app",
+    tags: ["spreadsheet", "Excel", "expense app", "record keeping", "bookkeeping", "freelancer"],
     relatedSlugs: [
       "expense-tracking-canada-freelancers",
-      "excel-vs-expense-app-canada",
+      "cra-receipt-rules-canada",
       "receipt-scanner-apps-canada-comparison",
     ],
     body: [
       {
         type: "p",
-        text: "There's a break-even point where automated expense tracking stops being an optional convenience and becomes economically obvious. The question is where that point is for your situation.",
-      },
-      {
-        type: "h2",
-        text: "When Manual Tracking Is Fine",
-      },
-      {
-        type: "ul",
-        items: [
-          "A small number of business expenses each month, so entering them by hand stays manageable",
-          "Expenses that are highly regular and predictable (same vendors, same amounts)",
-          "A single bank account with no mixed personal/business spending",
-          "Your accountant already does the categorization at year-end",
-        ],
-      },
-      {
-        type: "h2",
-        text: "When Automation Pays for Itself",
-      },
-      {
-        type: "ul",
-        items: [
-          "A high volume of receipts — scanning reads the merchant, date, amount and tax for you instead of you typing each one",
-          "Significant mileage claims — the CRA accepts any accurate logbook, paper or electronic, but an app makes it easier to record every trip as it happens",
-          "Multiple projects or clients requiring separate expense tracking",
-          "You've ever lost a receipt or missed a deduction because of poor organization",
-        ],
-      },
-      {
-        type: "callout",
-        text: "The hidden cost of manual tracking isn't the time — it's the missed deductions. Income you could have offset with a deduction is taxed at your marginal rate instead. As an illustration only: at a combined federal and provincial marginal rate of 30%, $5,000 of unclaimed expenses would mean about $1,500 more income tax, before any extra CPP contributions on the higher net income. Your own rate depends on your income and province.",
-      },
-    ],
-  },
-
-  {
-    slug: "excel-vs-expense-app-canada",
-    regions: ["all"],
-    title: "Excel vs. Expense Tracking App for Canadian Freelancers",
-    excerpt:
-      "Excel is powerful and free. Expense apps are convenient and automated. For Canadian freelancers filing T2125, here's the honest comparison.",
-    category: "Tools & Apps",
-    publishedAt: "2026-05-10",
-    updatedAt: "2026-05-20",
-    imageUrl: "https://picsum.photos/seed/excel-vs-expense-app-canada/600/400",
-    imageAlt: "Canadian freelancer using Excel spreadsheet versus expense tracking app",
-    tags: ["Excel", "spreadsheet", "expense app", "freelancer", "bookkeeping", "T2125"],
-    relatedSlugs: [
-      "manual-vs-automated-expense-tracking-canada",
-      "expense-tracking-canada-freelancers",
-      "receipt-scanner-apps-canada-comparison",
-    ],
-    body: [
-      {
-        type: "p",
-        text: "Excel can absolutely handle freelancer expense tracking — many accountants and bookkeepers still prefer CSV exports over proprietary app formats. The question isn't whether Excel is capable; it's whether your Excel setup captures everything the CRA needs and survives the friction of daily use.",
-      },
-      {
-        type: "h2",
-        text: "What a CRA-Ready Excel Tracker Must Include",
-      },
-      {
-        type: "ul",
-        items: [
-          "Date, vendor, description, and total for every expense",
-          "Separate columns for GST, HST, and PST amounts (not a single 'tax' column)",
-          "Category column mapping to T2125 lines",
-          "A receipt reference or filename for every row",
-          "Mileage log as a separate tab if you have vehicle claims",
-          "Year-end summary totals by T2125 category",
-        ],
-      },
-      {
-        type: "h2",
-        text: "Where Excel Falls Short",
+        text: "A spreadsheet is the default expense tracker for a lot of freelancers, and for many it works. The real question is not whether a spreadsheet can track expenses, but whether your spreadsheet, as you actually keep it, gives you the records the CRA expects. This guide sets out what a spreadsheet does well, where it tends to fall short, what an expense app adds, and when a spreadsheet is genuinely enough.",
       },
       {
         type: "p",
-        text: "Excel doesn't capture receipts — it just records numbers. The actual receipt documentation still needs to exist somewhere. Freelancers who track in Excel but store receipts in a physical folder (or worse, don't store them at all) have an organization system that looks complete until an audit reveals missing backup. An expense app that scans and links receipts to expense lines eliminates this gap entirely.",
+        text: "We make ReceiptOne, an expense app, so read this with that in mind. The record-keeping rules below come from the CRA's pages on keeping records (sources at the end); the rest is practical judgment, not tax advice.",
+      },
+      {
+        type: "h2",
+        text: "What the CRA Expects From Your Records",
+      },
+      {
+        type: "p",
+        text: "The CRA does not prescribe a tool. It accepts records kept on paper, on paper later converted to an accessible electronic format, or electronically. What it sets are requirements that apply whatever you use. Your records must:",
+      },
+      {
+        type: "ul",
+        items: [
+          "Be reliable and complete, and include the information needed to meet your tax obligations.",
+          "Be supported by documents, such as receipts, invoices and bank statements.",
+          "Be kept in English, French or both.",
+          "Be kept for six years from the end of the last tax year they relate to.",
+          "Be kept at your place of business or your residence in Canada, unless the CRA gives you written permission to keep them elsewhere. Records kept outside Canada and accessed electronically from Canada are not considered kept in Canada.",
+        ],
+      },
+      {
+        type: "p",
+        text: "Electronic records have extra rules. They must be readable by CRA software, show an audit trail from the supporting documents to the summarized accounts, and be backed up. The CRA suggests keeping backups at a site in Canada other than your business location. What a receipt itself must show is covered in our CRA receipt rules guide.",
+      },
+      {
+        type: "h2",
+        text: "What a Spreadsheet Does Well",
+      },
+      {
+        type: "ul",
+        items: [
+          "It is yours. The file sits where you put it, in a format you can open years from now without a subscription.",
+          "It is flexible. You choose the columns, the categories and the summaries, and change them when your business changes.",
+          "It is transparent. Every total is a formula you can check, which makes year-end figures easy to trace.",
+          "Any accountant can open it. A spreadsheet or CSV is a format every bookkeeping tool and tax preparer can work with.",
+          "It costs little or nothing if you already have spreadsheet software.",
+        ],
+      },
+      {
+        type: "h2",
+        text: "Where a Spreadsheet Breaks Down",
+      },
+      {
+        type: "p",
+        text: "None of these makes a spreadsheet unacceptable. They are the places where spreadsheet records tend to stop meeting the requirements above, usually without anyone noticing until the CRA asks.",
+      },
+      {
+        type: "ul",
+        items: [
+          "It holds numbers, not the receipts. The CRA wants records supported by documents. A row that says $84 at a restaurant is not evidence on its own; the receipt has to exist somewhere, and you have to be able to find it.",
+          "The audit trail is up to you. Electronic records must show a trail from each supporting document to the totals. Without a receipt reference or file name on every row, that link lives only in your memory.",
+          "Scanning is a separate job. If you want to keep images instead of paper, the image has to be an accurate, legible reproduction. A spreadsheet does nothing to capture or check it.",
+          "Edits leave no history. A mistyped amount or a deleted row changes your totals silently, which works against records that must be reliable and complete.",
+          "Sales tax is manual. Separating GST/HST from PST or QST, and recording it correctly for input tax credits, means typing each amount into the right column.",
+          "Backups are your job. A file on one laptop is one failure away from gone, and the CRA expects you to keep backups.",
+          "It is filled in later. Receipts collected in a wallet and entered at month-end are the ones that go missing.",
+        ],
+      },
+      {
+        type: "h2",
+        text: "What an Expense App Adds",
+      },
+      {
+        type: "p",
+        text: "An expense app is mostly an answer to the first and last points: it captures the receipt at the moment you pay and keeps the image attached to the entry. The useful features are the ones that close the gaps above.",
+      },
+      {
+        type: "ul",
+        items: [
+          "Capture at the point of purchase: a photo of the receipt becomes the entry, so the document and the record are never separated.",
+          "Field reading: the app reads the merchant, date, total and tax amounts, which you then check rather than type.",
+          "Tax split: GST/HST and PST or QST are kept as separate fields, ready for input tax credit claims.",
+          "Categories and exports: entries are grouped by category and exported for you or your accountant.",
+          "Off-device storage: the receipts are not tied to one laptop or one phone.",
+        ],
+      },
+      {
+        type: "p",
+        text: "An app does not make records compliant by itself, and it brings trade-offs of its own:",
+      },
+      {
+        type: "ul",
+        items: [
+          "Automatic reading makes mistakes. Check what it read against the receipt, especially the tax lines.",
+          "Where the data is stored matters. If an app stores your records outside Canada, keep an exported copy in Canada. ReceiptOne's privacy policy explains that its data may be stored outside Canada, which is why its PDF and CSV exports matter.",
+          "Your records should not depend on one company. Before you commit, make sure you can export everything, receipts included, in a format you can open without the app.",
+          "It is a subscription. Compare the price with what your time and missed receipts cost you, not with zero.",
+        ],
+      },
+      {
+        type: "p",
+        text: "ReceiptOne keeps a photo of each receipt, reads the merchant, date, total and sales-tax amounts from it, lets you mark each receipt business or personal and add a note, and exports your records as PDF or CSV. It does not import receipts from your email yet, and mileage trips are entered rather than tracked automatically.",
+      },
+      {
+        type: "h2",
+        text: "When a Spreadsheet Is Genuinely Enough",
+      },
+      {
+        type: "p",
+        text: "A spreadsheet is a sound choice when most of these are true:",
+      },
+      {
+        type: "ul",
+        items: [
+          "You have few business expenses, and most arrive as PDF invoices or emails you can save in one folder.",
+          "You use a separate account or card for the business, so the statement already lists every business transaction.",
+          "You keep it up to date weekly or monthly, not once a year.",
+          "You are not registered for GST/HST, or your tax amounts are simple to split.",
+          "You have no vehicle claim, or you keep a separate logbook as you drive.",
+        ],
+      },
+      {
+        type: "p",
+        text: "If that is you, set it up so that the spreadsheet and the documents always point at each other:",
+      },
+      {
+        type: "table",
+        caption: "A minimal expense spreadsheet that keeps the audit trail intact",
+        headers: ["Column", "Why it is there"],
+        rows: [
+          ["Date", "Places the expense in the right tax year"],
+          ["Vendor", "Matches the row to the receipt and the bank statement"],
+          ["What it was for", "The business purpose, written while you remember it"],
+          ["Amount before tax", "The figure you deduct if you claim input tax credits"],
+          ["GST/HST", "Kept separate for input tax credits"],
+          ["PST or QST", "Kept separate because the rules differ from GST/HST"],
+          ["Total paid", "Reconciles to the bank or card statement"],
+          ["T2125 category", "Feeds your year-end totals by line"],
+          ["Receipt file name", "The audit trail from document to total"],
+        ],
+      },
+      {
+        type: "p",
+        text: "Name each receipt file the same way, for example date, vendor and amount, and store the folder somewhere backed up in Canada. Lock or copy each finished month so that later edits don't change totals you have already reported.",
+      },
+      {
+        type: "h2",
+        text: "The Middle Ground",
+      },
+      {
+        type: "p",
+        text: "You do not have to pick one. Some freelancers capture receipts in an app and export a CSV into the spreadsheet they and their accountant already use. Others keep the spreadsheet and use a phone's scanner to save each receipt into a dated folder the moment they pay. Either works if every row has its document and every document has its row.",
       },
       {
         type: "callout",
-        text: "Best of both worlds: use ReceiptOne to scan and auto-extract receipt data, then export to CSV for your accountant's Excel-based workflow. You get automated capture with the flexibility your accountant expects.",
+        text: "A simple test: pick any expense from last year and time how long it takes to find the receipt. If you can produce it quickly from your spreadsheet alone, your system works. If you can't, the tool is not the problem to fix first; the link between row and receipt is.",
+      },
+      {
+        type: "h2",
+        text: "Frequently Asked Questions",
+      },
+      {
+        type: "faq",
+        q: "Does the CRA accept a spreadsheet as my expense records?",
+        a: "Yes. The CRA accepts paper and electronic records, and does not require any particular software. The spreadsheet has to be reliable and complete, be backed by the receipts and invoices it summarizes, and be kept for six years, in Canada unless the CRA permits otherwise.",
+      },
+      {
+        type: "faq",
+        q: "Can I throw away paper receipts once I have photographed them?",
+        a: "Only if the images meet the CRA's imaging requirements. The CRA generally expects you to keep paper originals, and lets you rely on images instead when they are accurate, legible reproductions made to its standards. Our guide to digital receipts explains the rules.",
+      },
+      {
+        type: "faq",
+        q: "Do I need separate columns for GST/HST and PST?",
+        a: "If you are registered for GST/HST, yes. You claim input tax credits on GST/HST, not on PST, so the two have to be recorded separately. If you are not registered, the tax is part of the expense, and a single total is enough.",
+      },
+      {
+        type: "faq",
+        q: "Does using an expense app make my records audit-proof?",
+        a: "No. An app helps you keep the receipt with the entry, but the records still have to be complete and accurate, and you remain responsible for them. Check what the app read, and keep an export you control.",
+      },
+      {
+        type: "sources",
+        links: [
+          {
+            label: "What are records, who has to keep them",
+            href: "https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/keeping-records/what-records-who-keep-them.html",
+          },
+          {
+            label: "Your responsibilities and requirements for records",
+            href: "https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/keeping-records/your-responsibilities-requirements-associated-records-law-requires-you-keep.html",
+          },
+          {
+            label: "Where to keep your records and for how long",
+            href: "https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/keeping-records/where-keep-your-records-long-request-permission-destroy-them-early.html",
+          },
+          {
+            label: "Acceptable format, imaging and backups",
+            href: "https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/keeping-records/acceptable-format-imaging-paper-documents-backing-electronic-files.html",
+          },
+          {
+            label: "Business systems and audit trails",
+            href: "https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/keeping-records/review-business-systems-keeping-audit-trails-business-transactions.html",
+          },
+        ],
+        checked:
+          "canada.ca pages all read on October 6, 2026. ReceiptOne details are from our own app and privacy policy. This is general information, not tax advice.",
       },
     ],
   },
