@@ -1889,74 +1889,262 @@ export const ARTICLES: Article[] = [
     slug: "freelancer-taxes-canada-guide",
     title: "Canadian Freelancer Taxes: How to File as Self-Employed",
     excerpt:
-      "How Canadian freelancers and contractors file taxes, from reporting income correctly to claiming every deduction you're entitled to.",
+      "How self-employed Canadians are taxed in 2026: registering, what T2125 is for, CPP rates and maximums, instalments and the filing and payment deadlines.",
     category: "Tax Fundamentals",
     publishedAt: "2026-05-10",
-    updatedAt: "2026-10-05",
+    updatedAt: "2026-10-06",
     imageUrl: "https://picsum.photos/seed/freelancer-taxes-canada-guide/600/400",
     imageAlt: "Canadian freelancer filing self-employed taxes with CRA forms",
-    tags: ["freelancer taxes", "self-employed", "T2125", "CRA", "tax filing", "deductions"],
+    tags: [
+      "freelancer taxes",
+      "self-employed",
+      "T2125",
+      "CPP",
+      "tax instalments",
+      "CRA",
+      "tax filing",
+    ],
     clusterName: "Freelancer Tax Fundamentals",
     relatedSlugs: [
+      "t2125-form-guide-canada",
       "self-employed-tax-deductions-canada",
       "home-office-deduction-canadian-freelancers",
-      "t2125-form-guide-canada",
-      "tax-instalment-payments-canada-self-employed",
+      "track-gst-hst-business-expenses",
     ],
     body: [
       {
         type: "p",
-        text: "Filing taxes as a self-employed Canadian is fundamentally different from filing as an employee. You report business income and expenses on Form T2125, pay both your own and the 'employer' portion of CPP contributions, and manage your own tax instalment payments. The good news: the deductions available to you are significantly more expansive than those available to employees. This guide walks you through the full picture.",
-      },
-      {
-        type: "h2",
-        text: "Reporting Self-Employment Income",
+        text: "Working for yourself changes how you pay tax more than how much. No one withholds income tax or CPP from what clients pay you, so you work out your own business income, pay both halves of CPP on it and, once your tax bill is large enough, pay during the year in instalments. This guide covers that framework for the 2026 tax year: whether you need to register, what Form T2125 is for, how CPP is calculated, how instalments work and which deadlines apply.",
       },
       {
         type: "p",
-        text: "All income earned from freelancing, contracting, or operating a business goes on Form T2125 (Statement of Business or Professional Activities), which is filed with your T1 personal return. You report gross income (total invoiced), then subtract eligible business expenses to arrive at net business income — the amount that's actually taxed. If you have multiple businesses or professional practices, you file a separate T2125 for each.",
+        text: "It is a map, not a line-by-line walk-through. For filling in the form, see our T2125 guide; for what you can deduct, see our self-employed deductions guide. Rates and rules come from canada.ca and the Income Tax Act (sources at the end). Examples are hypothetical.",
       },
       {
         type: "h2",
-        text: "CPP Contributions for Self-Employed Workers",
+        text: "Do You Need to Register as Self-Employed?",
       },
       {
         type: "p",
-        text: "As a self-employed Canadian, you pay both the employee and employer portions of CPP on your net self-employment income. For 2026, that is 11.9% of earnings between the $3,500 basic exemption and the maximum pensionable earnings of $74,600 (a maximum of $8,460.90), plus second additional contributions (CPP2) of 8% on earnings between $74,600 and $85,000 (a maximum of $832). For 2025 the ceilings were $71,300 and $81,200. Half of your base contributions earns a non-refundable tax credit; the other half, plus the first and second additional contributions, is deducted from income.",
-      },
-      {
-        type: "h2",
-        text: "Tax Instalment Payments",
+        text: "For income tax, no. There is no separate CRA registration for an unincorporated sole proprietor: you report business income on your personal return. The CRA's business number page says not every business needs a business number (BN), and an unincorporated business needs one only when it registers for a CRA program account, such as a GST/HST or payroll account.",
       },
       {
         type: "p",
-        text: "You have to pay quarterly instalments if your net tax owing is more than $3,000 ($1,800 in Quebec) in the current year and in either of the two previous years. They are due March 15, June 15, September 15, and December 15. Missing instalments triggers interest charges at the prescribed rate. The easiest method: pay one-quarter of your prior year's net tax owing each quarter.",
+        text: "The registration most freelancers meet sooner or later is GST/HST. You have to register once your taxable sales go over the $30,000 small supplier threshold, and registering gives you a BN. Our GST/HST guide covers the threshold and how it is measured. Registering a business name is a provincial matter; check your province's rules if you trade under a name other than your own.",
+      },
+      {
+        type: "p",
+        text: "You start reporting income, and can start deducting expenses, when the business starts. T4002 says the CRA generally considers a business started when you begin some significant activity that is a regular part of the business or necessary to get it going. Researching whether to go into business does not count, so those research costs are not deductible.",
       },
       {
         type: "h2",
-        text: "Key Tax Deadlines for Self-Employed Canadians",
+        text: "What Form T2125 Is For",
+      },
+      {
+        type: "p",
+        text: "Form T2125, Statement of Business or Professional Activities, is where gross business income becomes net business income. You list what you earned and what you spent to earn it, and the result goes on line 13500, 13700 or 13900 of your return, depending on whether it is business, professional or commission income. You file a separate T2125 for each business, and you file it with your T1 return, not on its own.",
+      },
+      {
+        type: "p",
+        text: "Self-employed individuals generally have to use a December 31 year-end, so the 2026 form covers January 1 to December 31, 2026. Everything that follows, from CPP to instalments, is calculated from the net income figure the form produces.",
+      },
+      {
+        type: "h2",
+        text: "How Self-Employment Income Is Taxed",
+      },
+      {
+        type: "p",
+        text: "Net business income is added to any other income you have, such as a salary or investment income, and taxed at the same federal and provincial rates. What differs is timing: nothing is withheld, so the full amount is due when you file unless you have paid instalments.",
+      },
+      {
+        type: "p",
+        text: "Report all of it. T4002 says the CRA will charge a penalty if you fail to report an amount of $500 or more in a tax year and in any of the three previous tax years. The penalty is the lesser of 10% of the unreported amount and 50% of the difference between the understated tax on it and any tax withheld on it.",
+      },
+      {
+        type: "h2",
+        text: "CPP on Self-Employment Income",
+      },
+      {
+        type: "p",
+        text: "If you are 18 or over, work outside Quebec and earn more than $3,500 a year, you contribute to the Canada Pension Plan on your net self-employment income. An employee and an employer each pay half; self-employed, you pay both halves, worked out on Schedule 8 when you file. Quebec residents contribute to the Quebec Pension Plan instead, at different rates.",
+      },
+      {
+        type: "table",
+        caption: "CPP on self-employment income, 2026 (2025 figures in brackets)",
+        headers: ["Contribution", "Rate", "Earnings it applies to", "Maximum"],
+        rows: [
+          ["Base and first additional", "11.9%", "$3,500 to $74,600 ($71,300)", "$8,460.90 ($8,068.20)"],
+          ["Second additional (CPP2)", "8%", "$74,600 to $85,000 ($71,300 to $81,200)", "$832 ($792)"],
+        ],
+      },
+      {
+        type: "p",
+        text: "Hypothetical example: a designer has $60,000 of net self-employment income in 2026 and no job. CPP is 11.9% of $56,500, the income above the $3,500 exemption, or $6,723.50. A consultant with $90,000 pays the base maximum of $8,460.90 plus CPP2 of 8% on $10,400, or $832, for $9,292.90 in total.",
+      },
+      {
+        type: "p",
+        text: "These amounts are not all treated the same way on your return. The base contribution is 9.9%: you claim a non-refundable tax credit on half of it and deduct the other half. The first additional contribution (2%) and all CPP2 contributions are deducted from income. Schedule 8 makes the split, and tax software applies it for you.",
+      },
+      {
+        type: "p",
+        text: "If you also have a job, the CPP withheld from your pay counts toward the same annual maximums, so how much you owe on self-employment income depends on what you have already contributed as an employee.",
+      },
+      {
+        type: "h2",
+        text: "Instalments: Who Has to Pay",
+      },
+      {
+        type: "p",
+        text: "Because nothing is withheld, the CRA asks people with a large enough tax bill to pay during the year. You have to pay instalments for 2026 if both of these apply:",
       },
       {
         type: "ul",
         items: [
-          "April 30: balance owing due (even though filing deadline is June 15)",
-          "June 15: T1 filing deadline for self-employed individuals and their spouses",
-          "March 15, June 15, Sept 15, Dec 15: quarterly instalment due dates",
-          "June 15 / April 30: GST/HST return and payment for annual filers who are sole proprietors with a calendar fiscal year",
-          "End of February (next year): T4A slips from businesses that paid you more than $500 for services in the calendar year (box 048)",
+          "Your net tax owing for 2026 is more than $3,000, or $1,800 if you live in Quebec.",
+          "Your net tax owing for either 2025 or 2024 was also more than $3,000, or $1,800 for Quebec.",
         ],
       },
       {
+        type: "p",
+        text: "The amount you pay covers more than income tax: the CRA's options add CPP contributions payable on self-employment income, and any voluntary EI premiums, to net tax owing. Because of the two-year test, many people pay no instalments in their first year of self-employment and owe the whole balance at once instead. If you get a reminder but your 2026 net tax owing will be $3,000 or less ($1,800 in Quebec), you do not have to pay instalments for 2026.",
+      },
+      {
         type: "h2",
-        text: "The Self-Employed Tax Advantage",
+        text: "The Four Due Dates",
       },
       {
         type: "p",
-        text: "Despite the extra complexity, self-employed Canadians have access to a broader range of deductions than employees. Home office, vehicle expenses, professional development, business meals, equipment, software, and more — all reduce your taxable income dollar for dollar. Hypothetical example: a freelancer with $80,000 of business income and $20,000 of legitimate expenses has net business income of $60,000, not $80,000. Building a solid expense-tracking system is the single highest-ROI financial habit a freelancer can develop.",
+        text: "Instalments are due March 15, June 15, September 15 and December 15. If a due date falls on a weekend or a public holiday, the CRA considers your payment on time if it is received on the next business day. The CRA sends two reminders: one in February for the March and June payments, and one in August for September and December.",
       },
       {
-        type: "callout",
-        text: "The RRSP advantage: self-employed Canadians have no workplace pension, but RRSP deduction room grows each year by the lesser of 18% of your previous year's earned income and the annual RRSP dollar limit ($33,810 for 2026), less any pension adjustment. Maxing your RRSP is often the largest single deduction available to a high-earning freelancer.",
+        type: "h2",
+        text: "Three Ways to Work Out the Amount",
+      },
+      {
+        type: "ul",
+        items: [
+          "No-calculation option: pay the amounts on the CRA's reminders, which it works out from your latest assessed return. Best if your income stays about the same from year to year.",
+          "Prior-year option: base the instalments on your 2025 net tax owing plus CPP contributions payable. Best if 2026 will look like 2025 but not like 2024.",
+          "Current-year option: estimate your 2026 net tax owing and CPP contributions and pay on that. Best if 2026 will be very different from both earlier years, but if your estimate is too low, you pay interest on the shortfall.",
+        ],
+      },
+      {
+        type: "p",
+        text: "The reminder amounts follow paragraph 156(1)(b) of the Income Tax Act. The March and June payments are each one quarter of your instalment base for the second preceding year. The September and December payments are each half of what remains when half of that older base is taken away from the base for the preceding year. For 2026, March and June come from 2024, and September and December bring the total up to the 2025 figure. The instalment base is an amount set by regulation from your tax for that year.",
+      },
+      {
+        type: "p",
+        text: "Hypothetical example: a writer's instalment base was $8,000 for 2024 and $12,000 for 2025. The March and June reminders each ask for $2,000, a quarter of $8,000. September and December each ask for half of $12,000 minus $4,000, which is $4,000. The four payments total $12,000, the 2025 figure, with less of it paid early in the year.",
+      },
+      {
+        type: "p",
+        text: "Paying the reminder amounts in full and on time protects you from instalment interest even if your 2026 tax turns out higher, because the CRA calculates instalment interest using whichever payment option gives the least interest. You still owe any remaining balance by the payment deadline.",
+      },
+      {
+        type: "p",
+        text: "Late or short instalments are charged instalment interest, compounded daily at the prescribed rate, which can change every three months. From October 1 to December 31, 2026, the rate on overdue taxes is 7%. The CRA charges the interest only if it is more than $25, and adds a penalty only if your instalment interest for the year is more than $1,000. Interest on payments you made early, or in excess, is credited against interest on payments that were late or short.",
+      },
+      {
+        type: "h2",
+        text: "Deadlines for the 2026 Tax Year",
+      },
+      {
+        type: "p",
+        text: "For 2025 returns, T4002 set April 30, 2026 for paying any balance and June 15, 2026 for filing a return with self-employment income. The same rules put them at April 30 and June 15, 2027 for 2026, but the CRA had not published its dated 2026 calendar when this was written, so confirm before you file.",
+      },
+      {
+        type: "table",
+        caption: "The self-employed calendar for the 2026 tax year",
+        headers: ["Date", "What is due"],
+        rows: [
+          ["March 15, June 15, September 15 and December 15, 2026", "Instalments, if you have to pay them"],
+          ["April 30, 2027 (confirm)", "Any balance owing for 2026"],
+          ["June 15, 2027 (confirm)", "Your 2026 return, with Form T2125 and Schedule 8"],
+        ],
+      },
+      {
+        type: "p",
+        text: "June 15 is a filing deadline, not a payment deadline: any balance is due by April 30 even if you file in June. A GST/HST registrant who files annually, is a sole proprietor with a December 31 year-end and has business income for the year follows the same pattern, paying by April 30 and filing by June 15. Our GST/HST guide covers the other filing periods.",
+      },
+      {
+        type: "h2",
+        text: "Frequently Asked Questions",
+      },
+      {
+        type: "faq",
+        q: "Do I have to register with the CRA to start freelancing?",
+        a: "Not for income tax. A sole proprietor reports business income on Form T2125 with the personal return. You need a business number only when you register for a CRA program account, most often GST/HST once your taxable sales go over $30,000.",
+      },
+      {
+        type: "faq",
+        q: "Do I pay instalments in my first year of self-employment?",
+        a: "Only if your net tax owing was also more than $3,000 ($1,800 in Quebec) in one of the two previous years. If it was not, you pay the whole 2026 balance by the payment deadline instead, so set money aside as you earn it.",
+      },
+      {
+        type: "faq",
+        q: "I have a job and freelance on the side. Do I still pay CPP on the freelance income?",
+        a: "Yes, on net self-employment income, up to what your employment contributions have not already covered. The CPP withheld from your pay counts toward the same annual maximums, and Schedule 8 works out the rest.",
+      },
+      {
+        type: "faq",
+        q: "What happens if I ignore the instalment reminders?",
+        a: "If you had to pay and did not, the CRA charges instalment interest at the prescribed rate, compounded daily, and a penalty if that interest is more than $1,000 for the year. If your 2026 net tax owing will be $3,000 or less ($1,800 in Quebec), you can disregard the reminders.",
+      },
+      {
+        type: "faq",
+        q: "Is June 15 the deadline to pay?",
+        a: "No. June 15 is the filing deadline for self-employed people; any balance owing is due by April 30. For 2026 returns the same rules put those dates at April 30 and June 15, 2027, but confirm them once the CRA publishes its 2026 calendar.",
+      },
+      {
+        type: "sources",
+        links: [
+          {
+            label: "When you need a business number",
+            href: "https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/registering-your-business/you-need-a-business-number-a-program-account.html",
+          },
+          {
+            label: "T4002, Chapter 1: business income, fiscal period, penalties",
+            href: "https://www.canada.ca/en/revenue-agency/services/forms-publications/publications/t4002/t4002-3.html",
+          },
+          {
+            label: "CPP contribution rates, maximums and exemptions",
+            href: "https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/payroll/payroll-deductions-contributions/canada-pension-plan-cpp/cpp-contribution-rates-maximums-exemptions.html",
+          },
+          {
+            label: "Second additional CPP (CPP2) rates and maximums",
+            href: "https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/payroll/calculating-deductions/making-deductions/second-additional-cpp-contribution-rates-maximums.html",
+          },
+          {
+            label: "The CPP enhancement: what it means for the self-employed",
+            href: "https://www.canada.ca/en/revenue-agency/news/2023/05/the-canada-pension-plan-enhancement--businesses-individuals-and-self-employed-what-it-means-for-you.html",
+          },
+          {
+            label: "Who has to pay instalments",
+            href: "https://www.canada.ca/en/revenue-agency/services/payments/payments-cra/individual-payments/income-tax-instalments/who-pays-instalments.html",
+          },
+          {
+            label: "Options to calculate instalments",
+            href: "https://www.canada.ca/en/revenue-agency/services/payments/payments-cra/individual-payments/income-tax-instalments/options-calculate.html",
+          },
+          {
+            label: "Instalment due dates",
+            href: "https://www.canada.ca/en/revenue-agency/services/payments/payments-cra/individual-payments/income-tax-instalments/due-dates.html",
+          },
+          {
+            label: "Instalment interest and penalty charges",
+            href: "https://www.canada.ca/en/revenue-agency/services/payments/payments-cra/individual-payments/income-tax-instalments/interest-penalty-charges.html",
+          },
+          {
+            label: "Prescribed interest rates, fourth quarter 2026",
+            href: "https://www.canada.ca/en/revenue-agency/services/tax/prescribed-interest-rates/2026-q4.html",
+          },
+          {
+            label: "Income Tax Act, section 156",
+            href: "https://laws-lois.justice.gc.ca/eng/acts/i-3.3/section-156.html",
+          },
+        ],
+        checked:
+          "canada.ca and Justice Laws pages all read on October 6, 2026. Guide T4002 is the 2025 edition, the newest published. This is general information, not tax advice.",
       },
     ],
   },
@@ -2802,55 +2990,6 @@ export const ARTICLES: Article[] = [
       {
         type: "p",
         text: "Read on October 5, 2026: Guide T4002, 2025 edition (canada.ca/en/revenue-agency/services/forms-publications/publications/t4002.html); Form T2125, 2025 (canada.ca/en/revenue-agency/services/forms-publications/forms/t2125.html); Finance Canada, 2026 automobile deduction limits, January 14, 2026 (canada.ca/en/department-finance/news/2026/01/government-announces-the-2026-automobile-deduction-limits-and-expense-benefit-rates-for-businesses.html). This is general information, not tax advice.",
-      },
-    ],
-  },
-
-  {
-    slug: "tax-instalment-payments-canada-self-employed",
-    title: "Tax Instalments for Self-Employed Canadians: How They Work",
-    excerpt:
-      "If your net tax owing is over $3,000 this year and in either of the two previous years, the CRA requires quarterly instalments. Here's how they work.",
-    category: "Tax Fundamentals",
-    publishedAt: "2026-05-10",
-    updatedAt: "2026-10-05",
-    imageUrl: "https://picsum.photos/seed/tax-instalment-payments-canada-self-employed/600/400",
-    imageAlt: "Calendar showing Canadian tax instalment due dates for self-employed workers",
-    tags: ["tax instalments", "quarterly payments", "self-employed", "CRA", "cash flow"],
-    clusterPillar: "freelancer-taxes-canada-guide",
-    clusterName: "Freelancer Tax Fundamentals",
-    relatedSlugs: [
-      "freelancer-taxes-canada-guide",
-      "self-employed-tax-deductions-canada",
-    ],
-    body: [
-      {
-        type: "p",
-        text: "Unlike employees whose tax is withheld at source, self-employed Canadians receive income with no tax deducted. The CRA's response is quarterly tax instalment payments — essentially paying next year's tax bill in advance, in four equal instalments. Failing to pay instalments on time triggers interest, even if you eventually pay the full amount owing.",
-      },
-      {
-        type: "h2",
-        text: "When Instalments Are Required",
-      },
-      {
-        type: "p",
-        text: "The CRA requires quarterly instalment payments if your net tax owing (federal + provincial, after credits) is more than $3,000 in the current year AND was also more than $3,000 in either of the two preceding years. If this year's net tax owing will be $3,000 or less, you don't have to pay instalments, even if the CRA sends you reminders. In Quebec, the threshold is $1,800. The due dates are: March 15, June 15, September 15, and December 15.",
-      },
-      {
-        type: "h2",
-        text: "Three Ways to Calculate Your Instalments",
-      },
-      {
-        type: "ul",
-        items: [
-          "Prior-year method: pay one-quarter of your previous year's net tax owing each quarter — simplest, avoids interest if income stays similar",
-          "Current-year method: estimate this year's taxes, pay one-quarter each quarter — risky if you underestimate",
-          "No-calculation method: pay the amounts on the instalment reminders the CRA sends you, which it works out from your latest assessed return",
-        ],
-      },
-      {
-        type: "callout",
-        text: "If you have a strong quarter, pay more than your minimum instalment. The CRA calculates interest on the shortfall daily — overpaying early costs nothing, while underpaying costs you the prescribed rate on the shortfall. The rate is set every quarter; for October 1 to December 31, 2026 it is 7% on overdue taxes.",
       },
     ],
   },

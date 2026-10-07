@@ -31,6 +31,7 @@ export const config = {
     "/articles/home-office-vs-coworking-expense-canada",
     "/articles/excel-vs-expense-app-canada",
     "/articles/manual-vs-automated-expense-tracking-canada",
+    "/articles/tax-instalment-payments-canada-self-employed",
   ],
 };
 
@@ -58,6 +59,7 @@ const MERGED_ARTICLES: Record<string, string> = {
   "/articles/home-office-vs-coworking-expense-canada": "/articles/home-office-deduction-canadian-freelancers",
   "/articles/excel-vs-expense-app-canada": "/articles/spreadsheet-vs-expense-app",
   "/articles/manual-vs-automated-expense-tracking-canada": "/articles/spreadsheet-vs-expense-app",
+  "/articles/tax-instalment-payments-canada-self-employed": "/articles/freelancer-taxes-canada-guide",
 };
 
 export default function middleware(request: Request) {
