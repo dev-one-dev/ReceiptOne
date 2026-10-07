@@ -104,6 +104,13 @@ function renderBlock(block: ContentBlock, index: number) {
         </p>
       );
 
+    case "faq":
+      return (
+        <p key={index} className="mb-5 font-sans text-body text-ink-80">
+          {block.q} {block.a}
+        </p>
+      );
+
     case "h2":
       return (
         <h2 key={index} className="mb-4 mt-10 text-h3 text-ink">

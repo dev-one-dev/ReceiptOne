@@ -9,6 +9,8 @@ export type ContentBlock =
   | { type: "h2"; text: string }
   | { type: "ul"; items: string[] }
   | { type: "callout"; text: string }
+  /** One FAQ entry, under the "Frequently Asked Questions" h2. Each is one FAQPage Question. */
+  | { type: "faq"; q: string; a: string }
   | { type: "table"; caption: string; headers: string[]; rows: string[][] }
   /** Linked sources under a table: one link per vendor, then a checked-on line. */
   | { type: "sources"; links: { label: string; href: string }[]; checked: string };
@@ -200,28 +202,34 @@ export const ARTICLES: Article[] = [
         text: "Frequently Asked Questions",
       },
       {
-        type: "p",
-        text: "Is a credit card or bank statement enough on its own? Bank statements and statements of account are on the CRA's list of records, but a statement does not show what you bought, who the buyer was or how much GST/HST was charged. T4002 asks for those details on receipts, and the ITC chart requires them from $100 upward. Keep the receipt or invoice as well.",
+        type: "faq",
+        q: "Is a credit card or bank statement enough on its own?",
+        a: "Bank statements and statements of account are on the CRA's list of records, but a statement does not show what you bought, who the buyer was or how much GST/HST was charged. T4002 asks for those details on receipts, and the ITC chart requires them from $100 upward. Keep the receipt or invoice as well.",
       },
       {
-        type: "p",
-        text: "Can I throw away paper receipts once I've photographed them? Only if your imaging meets the CAN/CGSB 72.34 standard. Then the images become the permanent records. If it doesn't, the CRA says to keep the paper originals, and to get legal advice if you're unsure.",
+        type: "faq",
+        q: "Can I throw away paper receipts once I've photographed them?",
+        a: "Only if your imaging meets the CAN/CGSB 72.34 standard. Then the images become the permanent records. If it doesn't, the CRA says to keep the paper originals, and to get legal advice if you're unsure.",
       },
       {
-        type: "p",
-        text: "When can I shred my 2020 business receipts? Six years from the end of 2020 is December 31, 2026. After that, you can generally dispose of them if your 2020 return was filed on time, is not under objection or appeal, and the receipts don't support a later year, as with capital property.",
+        type: "faq",
+        q: "When can I shred my 2020 business receipts?",
+        a: "Six years from the end of 2020 is December 31, 2026. After that, you can generally dispose of them if your 2020 return was filed on time, is not under objection or appeal, and the receipts don't support a later year, as with capital property.",
       },
       {
-        type: "p",
-        text: "Do I send receipts with my tax return? No. T4002 says not to send your records with your income tax return, but to keep them in case the CRA asks to see them. GST/HST registrants likewise don't submit ITC documents with their return.",
+        type: "faq",
+        q: "Do I send receipts with my tax return?",
+        a: "No. T4002 says not to send your records with your income tax return, but to keep them in case the CRA asks to see them. GST/HST registrants likewise don't submit ITC documents with their return.",
       },
       {
-        type: "p",
-        text: "Can I keep my records in a cloud service? The CRA requires records to be kept at your place of business or residence in Canada unless it gives written permission otherwise. Records kept outside Canada and accessed electronically from Canada are not considered kept in Canada. Find out where your provider stores data, and keep a copy in Canada.",
+        type: "faq",
+        q: "Can I keep my records in a cloud service?",
+        a: "The CRA requires records to be kept at your place of business or residence in Canada unless it gives written permission otherwise. Records kept outside Canada and accessed electronically from Canada are not considered kept in Canada. Find out where your provider stores data, and keep a copy in Canada.",
       },
       {
-        type: "p",
-        text: "What if my receipts were lost in a fire or flood? For lost or damaged electronic records, the CRA asks you to report them missing at 1-800-959-5525 and recreate them within a reasonable time. For disasters, it points to its page on support for those affected.",
+        type: "faq",
+        q: "What if my receipts were lost in a fire or flood?",
+        a: "For lost or damaged electronic records, the CRA asks you to report them missing at 1-800-959-5525 and recreate them within a reasonable time. For disasters, it points to its page on support for those affected.",
       },
     ],
   },
@@ -372,28 +380,34 @@ export const ARTICLES: Article[] = [
         text: "Frequently Asked Questions",
       },
       {
-        type: "p",
-        text: "Is a photo of a receipt as good as the original? It can be used as a copy, and it must be an accurate, legible reproduction. Whether you can discard the paper depends on meeting the CAN/CGSB 72.34 imaging standard; if you don't, the CRA says to keep the original.",
+        type: "faq",
+        q: "Is a photo of a receipt as good as the original?",
+        a: "It can be used as a copy, and it must be an accurate, legible reproduction. Whether you can discard the paper depends on meeting the CAN/CGSB 72.34 imaging standard; if you don't, the CRA says to keep the original.",
       },
       {
-        type: "p",
-        text: "Can I just print my email receipts and delete the emails? No. A record received electronically has to be kept electronically, even if you also have a paper copy.",
+        type: "faq",
+        q: "Can I just print my email receipts and delete the emails?",
+        a: "No. A record received electronically has to be kept electronically, even if you also have a paper copy.",
       },
       {
-        type: "p",
-        text: "Does my receipt app keep my records for me? It can hold copies, but the responsibility to keep, produce and keep readable your records stays with you. Exporting a copy you control, and keeping it in Canada, covers the most common gaps.",
+        type: "faq",
+        q: "Does my receipt app keep my records for me?",
+        a: "It can hold copies, but the responsibility to keep, produce and keep readable your records stays with you. Exporting a copy you control, and keeping it in Canada, covers the most common gaps.",
       },
       {
-        type: "p",
-        text: "What file format should I save receipts in? The CRA asks for records in a non-proprietary, commonly used format that its software can read. For sending documents in a review, it lists .pdf and .jpg among the accepted formats.",
+        type: "faq",
+        q: "What file format should I save receipts in?",
+        a: "The CRA asks for records in a non-proprietary, commonly used format that its software can read. For sending documents in a review, it lists .pdf and .jpg among the accepted formats.",
       },
       {
-        type: "p",
-        text: "My laptop died and took my receipts with it. What now? Report the loss to the CRA and recreate the records within a reasonable time, for example by asking suppliers and your bank for copies. A tested backup kept off-site in Canada is what the CRA recommends to avoid this.",
+        type: "faq",
+        q: "My laptop died and took my receipts with it. What now?",
+        a: "Report the loss to the CRA and recreate the records within a reasonable time, for example by asking suppliers and your bank for copies. A tested backup kept off-site in Canada is what the CRA recommends to avoid this.",
       },
       {
-        type: "p",
-        text: "Can I email my receipts to a CRA auditor? No. Auditors are not allowed to receive records by email; they will tell you how to send documents through the CRA's secure services.",
+        type: "faq",
+        q: "Can I email my receipts to a CRA auditor?",
+        a: "No. Auditors are not allowed to receive records by email; they will tell you how to send documents through the CRA's secure services.",
       },
     ],
   },
@@ -521,28 +535,34 @@ export const ARTICLES: Article[] = [
         text: "Frequently Asked Questions",
       },
       {
-        type: "p",
-        text: "How long do I have to respond during an audit? If the auditor sends a proposal letter, you have 30 days to agree or disagree. For a review letter, reply within the time frame the letter gives, and call the number on it if you need more time.",
+        type: "faq",
+        q: "How long do I have to respond during an audit?",
+        a: "If the auditor sends a proposal letter, you have 30 days to agree or disagree. For a review letter, reply within the time frame the letter gives, and call the number on it if you need more time.",
       },
       {
-        type: "p",
-        text: "Can the CRA look at my personal bank account? Yes. RC4188 lists your personal records, including bank and credit card statements, among the records an auditor can examine, along with records of family members and related entities.",
+        type: "faq",
+        q: "Can the CRA look at my personal bank account?",
+        a: "Yes. RC4188 lists your personal records, including bank and credit card statements, among the records an auditor can examine, along with records of family members and related entities.",
       },
       {
-        type: "p",
-        text: "Is a bank statement enough to support an expense? It is a record, and it proves payment, but it does not show what you bought. Keep the receipt or invoice with it; for GST/HST input tax credits, the CRA's documentary requirements apply on top.",
+        type: "faq",
+        q: "Is a bank statement enough to support an expense?",
+        a: "It is a record, and it proves payment, but it does not show what you bought. Keep the receipt or invoice with it; for GST/HST input tax credits, the CRA's documentary requirements apply on top.",
       },
       {
-        type: "p",
-        text: "Can I deduct the full cost of a client lunch? Generally no: the claim is limited to 50% of the lesser of the cost and a reasonable amount. One exception is when you bill the client for the meal and show it on the bill.",
+        type: "faq",
+        q: "Can I deduct the full cost of a client lunch?",
+        a: "Generally no: the claim is limited to 50% of the lesser of the cost and a reasonable amount. One exception is when you bill the client for the meal and show it on the bill.",
       },
       {
-        type: "p",
-        text: "Can I claim my home office if I also work at a client's site? Only if you meet one of the two conditions: the home workspace is your principal place of business, or you use it only for the business and regularly meet clients there.",
+        type: "faq",
+        q: "Can I claim my home office if I also work at a client's site?",
+        a: "Only if you meet one of the two conditions: the home workspace is your principal place of business, or you use it only for the business and regularly meet clients there.",
       },
       {
-        type: "p",
-        text: "What happens if I can't find a receipt the CRA asks for? Ask the supplier or your bank for a copy. If that fails, explain in writing (in a review) or discuss alternatives with the auditor (in an audit). If an expense cannot be supported, the CRA may disallow it.",
+        type: "faq",
+        q: "What happens if I can't find a receipt the CRA asks for?",
+        a: "Ask the supplier or your bank for a copy. If that fails, explain in writing (in a review) or discuss alternatives with the auditor (in an audit). If an expense cannot be supported, the CRA may disallow it.",
       },
     ],
   },
@@ -760,24 +780,29 @@ export const ARTICLES: Article[] = [
         text: "Frequently Asked Questions",
       },
       {
-        type: "p",
-        text: "Does the CRA require a specific bookkeeping system or app? No. T4002 says the CRA does not issue record books or suggest any type of book or set of books. Computerized records must be clear and easy to read, and you keep separate records for each business you run.",
+        type: "faq",
+        q: "Does the CRA require a specific bookkeeping system or app?",
+        a: "No. T4002 says the CRA does not issue record books or suggest any type of book or set of books. Computerized records must be clear and easy to read, and you keep separate records for each business you run.",
       },
       {
-        type: "p",
-        text: "Do I need a separate business bank account? T4002 does not require one. It does require you to deduct only the business part of each expense and to support your claims, and a separate account makes both easier.",
+        type: "faq",
+        q: "Do I need a separate business bank account?",
+        a: "T4002 does not require one. It does require you to deduct only the business part of each expense and to support your claims, and a separate account makes both easier.",
       },
       {
-        type: "p",
-        text: "What if I find a missing receipt at year end? Ask the vendor for a copy or download it from your account. A card statement shows the charge but not what you bought or the GST/HST, so it is weak support on its own. The receipt rules guide explains what a receipt must show.",
+        type: "faq",
+        q: "What if I find a missing receipt at year end?",
+        a: "Ask the vendor for a copy or download it from your account. A card statement shows the charge but not what you bought or the GST/HST, so it is weak support on its own. The receipt rules guide explains what a receipt must show.",
       },
       {
-        type: "p",
-        text: "When are tax instalments due in 2026? March 15, June 15, September 15 and December 15 for business, professional or commission income, if your net tax owing is over $3,000 ($1,800 in Quebec) in 2026 and in either 2025 or 2024.",
+        type: "faq",
+        q: "When are tax instalments due in 2026?",
+        a: "March 15, June 15, September 15 and December 15 for business, professional or commission income, if your net tax owing is over $3,000 ($1,800 in Quebec) in 2026 and in either 2025 or 2024.",
       },
       {
-        type: "p",
-        text: "What should I hand my accountant? The year-end report described above, the receipts behind it, your vehicle logbook, home workspace figures, every invoice you issued, any T4A slips and, if you are registered, your GST/HST totals.",
+        type: "faq",
+        q: "What should I hand my accountant?",
+        a: "The year-end report described above, the receipts behind it, your vehicle logbook, home workspace figures, every invoice you issued, any T4A slips and, if you are registered, your GST/HST totals.",
       },
       {
         type: "sources",
@@ -1522,28 +1547,34 @@ export const ARTICLES: Article[] = [
         text: "Frequently Asked Questions",
       },
       {
-        type: "p",
-        text: "Can I just claim the 73-cents-per-kilometre rate on my T2125? No. That rate is the limit on tax-free allowances employers pay employees. A sole proprietor claims the business share of actual vehicle costs through Chart A and line 9281, plus CCA on line 9936.",
+        type: "faq",
+        q: "Can I just claim the 73-cents-per-kilometre rate on my T2125?",
+        a: "No. That rate is the limit on tax-free allowances employers pay employees. A sole proprietor claims the business share of actual vehicle costs through Chart A and line 9281, plus CCA on line 9936.",
       },
       {
-        type: "p",
-        text: "Is driving from home to a client's office deductible? It depends where your business is based. If your home is the base of your business operations and you have no office elsewhere, trips out to clients can count as business travel. If you have an office or other fixed workplace, travel between home and that workplace is personal.",
+        type: "faq",
+        q: "Is driving from home to a client's office deductible?",
+        a: "It depends where your business is based. If your home is the base of your business operations and you have no office elsewhere, trips out to clients can count as business travel. If you have an office or other fixed workplace, travel between home and that workplace is personal.",
       },
       {
-        type: "p",
-        text: "Do I have to keep a logbook every year? You need one full 12-month logbook to set a base year. After that, a three-month sample logbook each year is enough, as long as the calculated annual business use stays within 10 percentage points of the base year.",
+        type: "faq",
+        q: "Do I have to keep a logbook every year?",
+        a: "You need one full 12-month logbook to set a base year. After that, a three-month sample logbook each year is enough, as long as the calculated annual business use stays within 10 percentage points of the base year.",
       },
       {
-        type: "p",
-        text: "Are parking costs reduced by my business-use percentage? No. The CRA lets you deduct the full amount of parking fees related to your business, and supplementary business insurance, without prorating them.",
+        type: "faq",
+        q: "Are parking costs reduced by my business-use percentage?",
+        a: "No. The CRA lets you deduct the full amount of parking fees related to your business, and supplementary business insurance, without prorating them.",
       },
       {
-        type: "p",
-        text: "I bought a car in 2026 for $45,000. What can I claim? If it is a passenger vehicle, it goes into Class 10.1 and its capital cost is capped at $39,000 plus GST/HST or PST on that amount. CCA is claimed at 30% on the capped amount (subject to the first-year rules in Guide T4002), reduced to your business-use share. A zero-emission passenger vehicle goes into Class 54 instead, with a $61,000 ceiling.",
+        type: "faq",
+        q: "I bought a car in 2026 for $45,000. What can I claim?",
+        a: "If it is a passenger vehicle, it goes into Class 10.1 and its capital cost is capped at $39,000 plus GST/HST or PST on that amount. CCA is claimed at 30% on the capped amount (subject to the first-year rules in Guide T4002), reduced to your business-use share. A zero-emission passenger vehicle goes into Class 54 instead, with a $61,000 ceiling.",
       },
       {
-        type: "p",
-        text: "I'm an employee, not self-employed. Do these rules apply? Partly. Employees claim on line 22900 using Form T777, and only if all of the CRA's conditions are met. You must normally be required to work away from your employer's place of business or in different places, and have to pay your own vehicle expenses under your employment contract. You must also not receive a non-taxable vehicle allowance, and must keep a Form T2200 signed by your employer. The logbook and business-use rules are the same.",
+        type: "faq",
+        q: "I'm an employee, not self-employed. Do these rules apply?",
+        a: "Partly. Employees claim on line 22900 using Form T777, and only if all of the CRA's conditions are met. You must normally be required to work away from your employer's place of business or in different places, and have to pay your own vehicle expenses under your employment contract. You must also not receive a non-taxable vehicle allowance, and must keep a Form T2200 signed by your employer. The logbook and business-use rules are the same.",
       },
     ],
   },
@@ -1989,28 +2020,34 @@ export const ARTICLES: Article[] = [
         text: "Frequently Asked Questions",
       },
       {
-        type: "p",
-        text: "Can I deduct 73 cents a kilometre as a self-employed Canadian? No. That rate caps tax-free allowances employers pay employees. A sole proprietor deducts actual vehicle expenses multiplied by business-use percentage, using Chart A of Form T2125, on line 9281.",
+        type: "faq",
+        q: "Can I deduct 73 cents a kilometre as a self-employed Canadian?",
+        a: "No. That rate caps tax-free allowances employers pay employees. A sole proprietor deducts actual vehicle expenses multiplied by business-use percentage, using Chart A of Form T2125, on line 9281.",
       },
       {
-        type: "p",
-        text: "Do I need a mileage app to claim vehicle expenses? No. A paper logbook or spreadsheet with each business trip's date, destination, purpose and kilometres, plus start and end odometer readings, meets the CRA's description. An app makes it easier to record trips as they happen.",
+        type: "faq",
+        q: "Do I need a mileage app to claim vehicle expenses?",
+        a: "No. A paper logbook or spreadsheet with each business trip's date, destination, purpose and kilometres, plus start and end odometer readings, meets the CRA's description. An app makes it easier to record trips as they happen.",
       },
       {
-        type: "p",
-        text: "Does the CRA certify mileage apps? No. \"CRA-compliant\" is the vendor's own description. What counts is a complete log backed by odometer readings.",
+        type: "faq",
+        q: "Does the CRA certify mileage apps?",
+        a: "No. \"CRA-compliant\" is the vendor's own description. What counts is a complete log backed by odometer readings.",
       },
       {
-        type: "p",
-        text: "Do I have to keep a full logbook every year? No. After one full base year, the CRA accepts a three-month sample logbook in later years, as long as business use stays within 10% of the base year.",
+        type: "faq",
+        q: "Do I have to keep a full logbook every year?",
+        a: "No. After one full base year, the CRA accepts a three-month sample logbook in later years, as long as business use stays within 10% of the base year.",
       },
       {
-        type: "p",
-        text: "Why does my business-use percentage need odometer readings? The percentage is business kilometres over total kilometres, and the odometer is the reliable record of the total. An app that logged only business trips does not know it.",
+        type: "faq",
+        q: "Why does my business-use percentage need odometer readings?",
+        a: "The percentage is business kilometres over total kilometres, and the odometer is the reliable record of the total. An app that logged only business trips does not know it.",
       },
       {
-        type: "p",
-        text: "Is automatic trip detection worth paying for? If you make many short business drives, usually yes, because missed trips are the usual gap in a logbook. You still classify each trip and add its purpose. A few client visits a week can be entered by hand.",
+        type: "faq",
+        q: "Is automatic trip detection worth paying for?",
+        a: "If you make many short business drives, usually yes, because missed trips are the usual gap in a logbook. You still classify each trip and add its purpose. A few client visits a week can be entered by hand.",
       },
       {
         type: "callout",
@@ -2489,28 +2526,34 @@ export const ARTICLES: Article[] = [
         text: "Frequently Asked Questions",
       },
       {
-        type: "p",
-        text: "Is the 2026 Form T2125 available yet? Not as of October 5, 2026. The newest form and Guide T4002 on canada.ca are the 2025 editions.",
+        type: "faq",
+        q: "Is the 2026 Form T2125 available yet?",
+        a: "Not as of October 5, 2026. The newest form and Guide T4002 on canada.ca are the 2025 editions.",
       },
       {
-        type: "p",
-        text: "When is my 2026 T2125 due? It goes in with your return. For 2025 returns, T4002 sets a June 15, 2026 filing date for self-employed people, with any balance owing due April 30. The same rule points to June 15, 2027 for 2026 returns, but confirm it in the 2026 guide.",
+        type: "faq",
+        q: "When is my 2026 T2125 due?",
+        a: "It goes in with your return. For 2025 returns, T4002 sets a June 15, 2026 filing date for self-employed people, with any balance owing due April 30. The same rule points to June 15, 2027 for 2026 returns, but confirm it in the 2026 guide.",
       },
       {
-        type: "p",
-        text: "Do I need a separate T2125 for each business? Yes. You also need separate forms if you have both business and professional income.",
+        type: "faq",
+        q: "Do I need a separate T2125 for each business?",
+        a: "Yes. You also need separate forms if you have both business and professional income.",
       },
       {
-        type: "p",
-        text: "Can I ever deduct 100% of a meal? Yes, in some cases, such as meals you bill to a client and show on the invoice, or up to six all-employee events a year.",
+        type: "faq",
+        q: "Can I ever deduct 100% of a meal?",
+        a: "Yes, in some cases, such as meals you bill to a client and show on the invoice, or up to six all-employee events a year.",
       },
       {
-        type: "p",
-        text: "What happens to home office costs I can't deduct this year? They carry forward as amount 7O. You can claim them in a later year when your business income is high enough, as long as you still meet one of the workspace conditions.",
+        type: "faq",
+        q: "What happens to home office costs I can't deduct this year?",
+        a: "They carry forward as amount 7O. You can claim them in a later year when your business income is high enough, as long as you still meet one of the workspace conditions.",
       },
       {
-        type: "p",
-        text: "Where does depreciation on my car go? Add the car in Area B, calculate CCA in Area A and claim it on line 9936. Chart A covers operating costs only.",
+        type: "faq",
+        q: "Where does depreciation on my car go?",
+        a: "Add the car in Area B, calculate CCA in Area A and claim it on line 9936. Chart A covers operating costs only.",
       },
       {
         type: "h2",
@@ -3340,28 +3383,34 @@ export const ARTICLES: Article[] = [
         text: "Frequently Asked Questions",
       },
       {
-        type: "p",
-        text: "How do I know a CRA call is genuine? Take the caller's name, number and office location, hang up, and confirm through the CRA's own enquiry lines before sharing anything. Demands for gift cards or cryptocurrency, or threats of arrest, are scam red flags.",
+        type: "faq",
+        q: "How do I know a CRA call is genuine?",
+        a: "Take the caller's name, number and office location, hang up, and confirm through the CRA's own enquiry lines before sharing anything. Demands for gift cards or cryptocurrency, or threats of arrest, are scam red flags.",
       },
       {
-        type: "p",
-        text: "What is the difference between a review and an audit? A review checks that specific amounts on your return are supported, usually by asking for documents. An audit examines your books and records more broadly, may happen on-site, and ends with a proposal letter if changes are needed.",
+        type: "faq",
+        q: "What is the difference between a review and an audit?",
+        a: "A review checks that specific amounts on your return are supported, usually by asking for documents. An audit examines your books and records more broadly, may happen on-site, and ends with a proposal letter if changes are needed.",
       },
       {
-        type: "p",
-        text: "How long do I have to respond? For a review, the time frame is in the letter, and you can call the number on it to ask for more time. For an audit proposal letter, you have 30 days to agree or disagree.",
+        type: "faq",
+        q: "How long do I have to respond?",
+        a: "For a review, the time frame is in the letter, and you can call the number on it to ask for more time. For an audit proposal letter, you have 30 days to agree or disagree.",
       },
       {
-        type: "p",
-        text: "Can my accountant deal with the CRA for me? Yes, once you authorize them, most quickly through My Account. Authorizing a representative does not remove your own responsibility for your records.",
+        type: "faq",
+        q: "Can my accountant deal with the CRA for me?",
+        a: "Yes, once you authorize them, most quickly through My Account. Authorizing a representative does not remove your own responsibility for your records.",
       },
       {
-        type: "p",
-        text: "Do I have to pay a reassessment I am objecting to? The Taxpayer Bill of Rights says you have the right not to pay income tax amounts in dispute before an impartial review, unless the law provides otherwise.",
+        type: "faq",
+        q: "Do I have to pay a reassessment I am objecting to?",
+        a: "The Taxpayer Bill of Rights says you have the right not to pay income tax amounts in dispute before an impartial review, unless the law provides otherwise.",
       },
       {
-        type: "p",
-        text: "Can I still use the Voluntary Disclosures Program if the CRA has written to me? Since October 1, 2025, applications prompted by a CRA communication can be accepted, normally with partial relief. It is restricted once you are under audit or investigation.",
+        type: "faq",
+        q: "Can I still use the Voluntary Disclosures Program if the CRA has written to me?",
+        a: "Since October 1, 2025, applications prompted by a CRA communication can be accepted, normally with partial relief. It is restricted once you are under audit or investigation.",
       },
     ],
   },
@@ -3382,7 +3431,9 @@ export function articleWordCount(article: Article): number {
           ? [block.caption, ...block.headers, ...block.rows.flat()]
           : block.type === "sources"
             ? [...block.links.map((l) => l.label), block.checked]
-            : [block.text];
+            : block.type === "faq"
+              ? [block.q, block.a]
+              : [block.text];
     for (const text of texts) words += text.split(/\s+/).filter(Boolean).length;
   }
   return words;
@@ -3445,26 +3496,16 @@ export function getRelatedArticles(slug: string, count = 3): Article[] {
   return scored.slice(0, count).map((s) => s.article);
 }
 
-const FAQ_HEADING = "Frequently Asked Questions";
+export const FAQ_HEADING = "Frequently Asked Questions";
 
 /**
- * Q&A pairs from an article's FAQ section: the paragraphs after the
- * "Frequently Asked Questions" h2, up to the next h2. Each paragraph is
- * rendered as "Question? Answer", so it is split at the first "?". Empty when
- * the article has no FAQ section.
+ * Q&A pairs for the FAQPage schema: the article's faq blocks, in order. The
+ * question and answer are separate fields, so a "?" in either cannot change
+ * the split. scripts/check-articles.mjs fails the build if a faq block sits
+ * outside the FAQ section or anything else is rendered inside it.
  */
 export function articleFaq(article: Article): { q: string; a: string }[] {
-  const start = article.body.findIndex((b) => b.type === "h2" && b.text === FAQ_HEADING);
-  if (start === -1) return [];
-  const items: { q: string; a: string }[] = [];
-  for (const block of article.body.slice(start + 1)) {
-    if (block.type === "h2") break;
-    if (block.type !== "p") continue;
-    const end = block.text.indexOf("?");
-    if (end === -1) continue;
-    items.push({ q: block.text.slice(0, end + 1), a: block.text.slice(end + 1).trim() });
-  }
-  return items;
+  return article.body.flatMap((b) => (b.type === "faq" ? [{ q: b.q, a: b.a }] : []));
 }
 
 export function articleJsonLd(article: Article, path = `/articles/${article.slug}`): object {
