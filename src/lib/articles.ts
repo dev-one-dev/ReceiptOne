@@ -730,7 +730,7 @@ export const ARTICLES: Article[] = [
       },
       {
         type: "p",
-        text: "The deadlines that follow: T4002 set April 30, 2026 for paying any 2025 balance and June 15, 2026 for filing a 2025 return with self-employment income. The same rule points to April 30 and June 15, 2027 for 2026, but confirm it in the 2026 guide. An annual GST/HST filer who is a sole proprietor with a December 31 year-end and business income for the year pays by April 30 and files by June 15.",
+        text: "The deadlines that follow: T4002 set April 30, 2026 for paying any 2025 balance and June 15, 2026 for filing a 2025 return with self-employment income. The same rules put them at April 30 and June 15, 2027 for 2026, but the CRA had not published its dated 2026 calendar when this was written, so confirm before you file. An annual GST/HST filer who is a sole proprietor with a December 31 year-end and business income for the year pays by April 30 and files by June 15.",
       },
       {
         type: "h2",
@@ -1240,7 +1240,7 @@ export const ARTICLES: Article[] = [
         items: [
           "Monthly and quarterly filers file and pay one month after the end of each period.",
           "Most annual filers file and pay three months after their fiscal year-end.",
-          "A sole proprietor with a December 31 year-end and business income for the year pays by April 30 and files by June 15. For the 2026 year that means paying by April 30, 2027 and filing by June 15, 2027.",
+          "A sole proprietor with a December 31 year-end and business income for the year pays by April 30 and files by June 15. The same rules put the 2026 dates at April 30 and June 15, 2027, but the CRA had not published its dated 2026 calendar when this was written, so confirm before you file.",
           "If your net tax was $3,000 or more in both the previous and current fiscal year, an annual filer pays quarterly instalments, each due one month after the end of a fiscal quarter.",
           "File a return for every period, including a nil return when there is nothing to report.",
           "Returns for periods ending in 2024 and later must be filed electronically, except by charities and selected listed financial institutions; a paper return draws a penalty.",
@@ -2278,7 +2278,7 @@ export const ARTICLES: Article[] = [
       "A line-by-line guide to CRA Form T2125 for 2026: income, cost of goods sold, each expense line, business-use-of-home, CCA and the vehicle charts.",
     category: "Tax Fundamentals",
     publishedAt: "2026-10-05",
-    updatedAt: "2026-10-05",
+    updatedAt: "2026-10-06",
     imageUrl: "https://picsum.photos/seed/t2125-form-guide-canada/600/400",
     imageAlt: "Canadian freelancer completing Form T2125 for CRA tax filing",
     tags: ["T2125", "business income", "self-employed", "CRA", "tax form", "deductions"],
@@ -2518,7 +2518,7 @@ export const ARTICLES: Article[] = [
       {
         type: "faq",
         q: "When is my 2026 T2125 due?",
-        a: "It goes in with your return. For 2025 returns, T4002 sets a June 15, 2026 filing date for self-employed people, with any balance owing due April 30. The same rule points to June 15, 2027 for 2026 returns, but confirm it in the 2026 guide.",
+        a: "It goes in with your return. For 2025 returns, T4002 sets a June 15, 2026 filing date for self-employed people, with any balance owing due April 30. The same rules put them at April 30 and June 15, 2027 for 2026 returns, but the CRA had not published its dated 2026 calendar when this was written, so confirm before you file.",
       },
       {
         type: "faq",
