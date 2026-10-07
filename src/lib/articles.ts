@@ -554,80 +554,261 @@ export const ARTICLES: Article[] = [
 
   {
     slug: "expense-tracking-canada-freelancers",
-    title: "Expense Tracking System for Canadian Freelancers",
+    title: "Expense Tracking for Canadian Freelancers (2026 Guide)",
     excerpt:
-      "An end-to-end expense tracking system for Canadian freelancers and contractors, from capturing receipts daily to CRA-ready reports at filing time.",
+      "A year-round expense system for Canadian freelancers: capture receipts, sort them by T2125 line, reconcile monthly and build a year-end report.",
     category: "Expense Tracking",
-    publishedAt: "2026-05-10",
-    updatedAt: "2026-05-11",
+    publishedAt: "2026-10-06",
+    updatedAt: "2026-10-06",
     imageUrl: "https://picsum.photos/seed/expense-tracking-canada-freelancers/600/400",
     imageAlt: "Freelancer tracking business expenses on a laptop with receipts",
-    tags: ["expense tracking", "freelancer", "self-employed", "receipts", "CRA", "bookkeeping"],
+    tags: [
+      "expense tracking",
+      "freelancer",
+      "self-employed",
+      "receipts",
+      "T2125",
+      "bookkeeping",
+      "tax preparation",
+      "expense report",
+    ],
     clusterName: "Expense Tracking",
     relatedSlugs: [
+      "cra-receipt-rules-canada",
       "business-expense-categories-canada",
-      "receipt-organization-tips-canada",
+      "t2125-form-guide-canada",
       "reimbursable-expenses-canada-freelancers",
-      "self-employed-expense-report-template-canada",
     ],
     body: [
       {
         type: "p",
-        text: "Most Canadian freelancers treat expense tracking as a once-a-year scramble before tax filing. The result: missed deductions, stress, and records that don't survive CRA scrutiny. A consistent tracking system — one that takes minutes per week rather than hours per year — changes this completely. Here's how to build one.",
+        text: "Guide T4002 says you are required by law to keep records of all your transactions so you can support your income and expense claims, and to keep a record of your daily income and expenses. The CRA does not prescribe a system. The one you choose decides whether filing time is a review of records you already have or a reconstruction from bank statements and memory.",
+      },
+      {
+        type: "p",
+        text: "This guide sets out one system for the 2026 tax year: capture, categories, a routine, year-end reconciliation and the final report. Every rule and figure comes from canada.ca (sources at the end), and examples are hypothetical. What a receipt must show and how long to keep it are in our guide CRA Receipt Rules: What to Keep and for How Long.",
       },
       {
         type: "h2",
-        text: "The Three Pillars of Freelancer Expense Tracking",
+        text: "Step 1: Capture Every Receipt When It Happens",
+      },
+      {
+        type: "p",
+        text: "Receipt systems usually fail right after a purchase, when filing feels like effort. So make capture the only step that cannot wait: before you put your wallet away or close the browser tab. Categorizing and matching to your bank statement can happen later, in batches. A receipt that was never captured cannot be categorized at all.",
       },
       {
         type: "ul",
         items: [
-          "Capture: photograph or save every business receipt the moment you incur the expense",
-          "Categorize: tag each expense with the correct CRA expense category (meals, office supplies, professional fees, etc.)",
-          "Reconcile: match your receipts against your bank and credit card statements monthly",
+          "Paper receipts: photograph them on the spot. Whether you can then discard the paper depends on CRA imaging rules, which the receipt rules guide covers.",
+          "Emailed receipts and invoices: forward them to one address or save the PDF to one folder. These are electronic originals, so keep them in electronic form.",
+          "Subscriptions and online purchases: download the invoice from the account page each billing cycle. Card statements show the charge, not what was bought.",
+          "No description on the receipt: T4002 says to write what the item is on the receipt or in your expense records, as with a cash register tape.",
+          "Business driving: log each trip with its date, destination, purpose and kilometres. T4002 lists those four details for every trip.",
         ],
       },
       {
-        type: "h2",
-        text: "Setting Up Your Expense Categories",
-      },
-      {
         type: "p",
-        text: "Your expense categories should map directly to the lines on CRA Form T2125 (Statement of Business or Professional Activities). The main categories are: advertising, meals and entertainment (50% deductible), office expenses, professional fees, rent, repairs and maintenance, salaries, telephone and utilities, travel, and vehicle expenses. Setting these up correctly from day one means your year-end categorization is already done.",
-      },
-      {
-        type: "h2",
-        text: "The Monthly Reconciliation Habit",
-      },
-      {
-        type: "p",
-        text: "Once per month, spend 20 minutes reconciling: check that every business transaction on your bank and credit card statements has a corresponding receipt in your tracking system. Flag anything missing. This monthly habit means you're never more than 30 days behind on documentation — making tax season a review, not a rescue operation.",
-      },
-      {
-        type: "h2",
-        text: "Separating Business and Personal Finances",
-      },
-      {
-        type: "p",
-        text: "A dedicated business bank account and credit card are the single biggest time-savers for freelancer bookkeeping. When all your business transactions flow through a single account, reconciliation is straightforward. When business and personal are mixed, every statement review requires judgment calls about each line — multiplying your bookkeeping time significantly.",
+        text: "Add context while you remember it: who was at a meal and why, which client will repay a cost, and the business share of a mixed-use purchase.",
       },
       {
         type: "callout",
-        text: "CRA rule of thumb: if an expense has both a personal and business component, you can only deduct the business portion — and you must be able to document that calculation. A 60/40 business/personal phone split, for example, should be supported by records of how you determined that ratio.",
+        text: "ReceiptOne keeps a photo of each receipt and reads the merchant, date, total and sales-tax amounts from it. It does not check a supplier's GST/HST registration number, so look for one yourself on purchases of $100 or more.",
       },
       {
         type: "h2",
-        text: "What to Do With Mixed-Use Expenses",
+        text: "Step 2: Keep Business and Personal Apart",
+      },
+      {
+        type: "p",
+        text: "T4002 says that since you cannot deduct personal expenses, you enter only the business part of an expense on Form T2125. A dedicated business account and card are not required, but they make that rule easier: every line on the statement is a business transaction. For genuinely mixed expenses, record how you worked out the business part:",
       },
       {
         type: "ul",
         items: [
-          "Phone bills: track business call time vs. total usage for at least one representative month",
-          "Vehicle: keep a mileage logbook to establish the business-use percentage",
-          "Home office: calculate workspace square footage as a percentage of total home area",
-          "Meals: note the client name and business purpose on the receipt at the time of the meal",
-          "Travel: document which portion was for business if the trip had personal components",
+          "Cellphone: T4002 lets you deduct the business percentage of airtime. You cannot deduct the basic monthly rate of a home landline, but you can deduct business long-distance calls on it, or the full basic rate of a separate business-only line.",
+          "Vehicle: your claim follows business kilometres as a share of total kilometres, so the logbook is the record. After one full-year logbook sets a base year, T4002 allows a three-month sample logbook in later years, as long as business use stays within 10% of the base year.",
+          "Home workspace: deductible only if it is your principal place of business, or you use it only for the business and regularly meet clients there. Split costs on a reasonable basis, such as the workspace's floor area over the home's total area.",
+          "Meals and entertainment: the claim is generally limited to 50% of the lesser of what you spent and a reasonable amount, so record the full cost and let the category apply the limit.",
         ],
+      },
+      {
+        type: "h2",
+        text: "Step 3: Organize by T2125 Line",
+      },
+      {
+        type: "p",
+        text: "Use the expense lines on Form T2125 as your categories from day one, so the year-end totals go straight onto the form. The line numbers below are from the 2025 form and Guide T4002, the newest on canada.ca as of October 6, 2026; check them against the 2026 form.",
+      },
+      {
+        type: "table",
+        caption: "The T2125 lines most freelancers use, with typical items (2025 form).",
+        headers: ["Line", "Category", "Typical freelancer items"],
+        rows: [
+          ["8521", "Advertising", "Ads, including on foreign websites; finder's fees"],
+          ["8523", "Meals and entertainment", "Client meals, at the allowable 50%"],
+          ["8710", "Interest and bank charges", "Interest on money borrowed for the business"],
+          ["8760", "Business taxes, licences and memberships", "Licence fees, trade association dues"],
+          ["8810", "Office expenses", "Pens, stationery, stamps (not furniture)"],
+          ["8811", "Office stationery and supplies", "Supplies used to provide your service"],
+          ["8860", "Professional fees", "Accountant, lawyer, tax return preparation"],
+          ["9200", "Travel expenses", "Fares and hotels on business trips"],
+          ["9220", "Utilities", "Business share of cellphone airtime, business line"],
+          ["9270", "Other expenses", "Items no earlier line covers, listed on the form"],
+          ["9281", "Motor vehicle expenses", "Business share of fuel, insurance, repairs (Chart A)"],
+          ["9936", "Capital cost allowance", "Computers, desks and other capital items"],
+          ["9945", "Business-use-of-home", "Home workspace costs, worked out in Part 7"],
+        ],
+      },
+      {
+        type: "p",
+        text: "Two decisions come up at capture. The first is current versus capital. T4002 says a capital expense generally gives a lasting benefit, while a current expense usually recurs after a short period. Pens go on line 8810, but T4002 names calculators, filing cabinets, chairs and a desk as capital items, claimed through capital cost allowance rather than as expenses. The second is GST/HST. If you are a registrant and claim input tax credits, T4002 says to reduce each expense by the credit, so record the GST/HST on every receipt as its own amount, not just the total.",
+      },
+      {
+        type: "p",
+        text: "If you keep files yourself, use one folder per tax year with a subfolder per month or per T2125 line, name each file by date, vendor and amount (2026-03-04_Vendor_84.75.pdf), and keep a backup in a second place. For edge cases on any line, see our guides to business expense categories and to Form T2125.",
+      },
+      {
+        type: "h2",
+        text: "Step 4: A Weekly, Monthly and Quarterly Routine",
+      },
+      {
+        type: "ul",
+        items: [
+          "Weekly: capture any receipts you missed during the week, forward or save emailed receipts, and log any trips you have not recorded.",
+          "Monthly: match every business transaction on your bank and card statements to a receipt. Request copies of missing receipts while the vendor still has them. Assign a T2125 line to anything uncategorized, split mixed-use items, and total the month's business kilometres.",
+          "Quarterly: pay your tax instalment if you are required to (dates below). If you file GST/HST quarterly, file and pay one month after the quarter ends. Compare income to date with your estimate, and back up your records.",
+        ],
+      },
+      {
+        type: "p",
+        text: "Instalments apply for 2026 if your net tax owing is more than $3,000 ($1,800 in Quebec) in 2026 and in either 2025 or 2024. For business, professional or commission income, the due dates are March 15, June 15, September 15 and December 15. If a date falls on a weekend or public holiday, payment on the next business day is on time. The CRA sends reminders to people likely to owe instalments: in February for the March and June payments, and in August for September and December. Late or insufficient payments can bring instalment interest and penalties.",
+      },
+      {
+        type: "callout",
+        text: "Hypothetical example: reconciling April, a designer finds a $64.41 software charge with no receipt captured. The vendor's billing page still has the invoice, so it is downloaded and filed. Found in December, it might be past the vendor's download window.",
+      },
+      {
+        type: "h2",
+        text: "Before December 31: What to Reconcile",
+      },
+      {
+        type: "p",
+        text: "Most self-employed individuals have a December 31 year-end, and most must use the accrual method, which T4002 defines as reporting income in the fiscal period you earn it, no matter when you receive it, and deducting expenses in the period you incur them, whether or not you have paid. So December is for closing the year's records, not just totalling them:",
+      },
+      {
+        type: "ul",
+        items: [
+          "Statements: confirm that every business transaction from January to December has a receipt and a T2125 line.",
+          "Income: list every invoice issued in 2026, including those unpaid at December 31, and match payments to deposits. Report all your income, whether or not a slip arrives.",
+          "T4A slips: payers must report fees for services over $500 in a calendar year, usually in box 048 of a T4A slip. Outside the trucking industry, the CRA still has a moratorium on penalties for not completing box 048, so do not count on a slip from every client. Your invoices are the complete record.",
+          "Vehicle: record each vehicle's odometer reading at the end of the fiscal period, as T4002 requires, and total business and overall kilometres.",
+          "Prepaid expenses: under the accrual method you deduct a prepaid amount in the year you get the benefit. Annual subscriptions running past December 31 are split.",
+          "Capital purchases: for each asset bought or sold, record the seller, cost and date, as T4002 asks, so capital cost allowance can be calculated.",
+          "Home workspace: total the year's home costs and confirm the floor-area split.",
+          "GST/HST: if you are a registrant, total the tax you collected and the input tax credits you will claim.",
+        ],
+      },
+      {
+        type: "p",
+        text: "The deadlines that follow: T4002 set April 30, 2026 for paying any 2025 balance and June 15, 2026 for filing a 2025 return with self-employment income. The same rule points to April 30 and June 15, 2027 for 2026, but confirm it in the 2026 guide. An annual GST/HST filer who is a sole proprietor with a December 31 year-end and business income for the year pays by April 30 and files by June 15.",
+      },
+      {
+        type: "h2",
+        text: "What an Expense Report or Export Needs to Contain",
+      },
+      {
+        type: "p",
+        text: "At year end, the records become a report for whoever fills in T2125: you, your accountant or your tax software. It should contain:",
+      },
+      {
+        type: "ul",
+        items: [
+          "Your name, business name and the fiscal period covered.",
+          "One line per expense: date, vendor, description, T2125 line, amount before tax, GST/HST paid, and the business-use percentage where it is less than 100%.",
+          "A reference to the receipt image or file for each line, so any item can be produced if the CRA asks.",
+          "Subtotals by T2125 line, with meals shown at both full cost and the allowable 50%.",
+          "Total GST/HST paid, kept separate from the expenses if you claim input tax credits.",
+          "A vehicle summary: odometer readings at the start and end of the year, total and business kilometres, and operating costs for Chart A.",
+          "A list of capital purchases with date, seller and cost, and the home workspace figures for Part 7.",
+        ],
+      },
+      {
+        type: "table",
+        caption: "Hypothetical example: four lines from an Ontario freelancer's 2026 report (HST at 13%).",
+        headers: ["Date", "Vendor", "Description", "T2125 line", "Before tax", "HST", "Business use"],
+        rows: [
+          ["2026-02-11", "Office supply store", "Printer paper, pens", "8810", "$42.00", "$5.46", "100%"],
+          ["2026-03-04", "Restaurant", "Lunch with client, project scope", "8523", "$75.00", "$9.75", "100% (50% claimable)"],
+          ["2026-05-20", "Mobile carrier", "May cellphone bill", "9220", "$65.00", "$8.45", "60%"],
+          ["2026-09-02", "Electronics retailer", "Laptop", "9936 (capital)", "$1,400.00", "$182.00", "100%"],
+        ],
+      },
+      {
+        type: "p",
+        text: "A client reimbursement report is narrower: the project or contract, then each expense's date, description, amount and whether tax is included, with the receipt attached and the total requested. If one document covers several clients, keep each client's expenses separate. How reimbursements affect your own income and expenses is covered in our guide to tracking reimbursable expenses.",
+      },
+      {
+        type: "p",
+        text: "A report summarizes your records. It does not replace them. T4002 says not to send your records with your return but to keep them in case the CRA asks to see them. It may disallow expenses you cannot support, and a total is not support.",
+      },
+      {
+        type: "callout",
+        text: "ReceiptOne's year-end export gives you a PDF or CSV of your organized records: expenses grouped by category, GST/HST totals by type, and a mileage summary. It covers the expense side of this guide, not your income or the GST/HST you collected. You or your accountant use it to fill in T2125; ReceiptOne does not prepare or file the form.",
+      },
+      {
+        type: "h2",
+        text: "Frequently Asked Questions",
+      },
+      {
+        type: "p",
+        text: "Does the CRA require a specific bookkeeping system or app? No. T4002 says the CRA does not issue record books or suggest any type of book or set of books. Computerized records must be clear and easy to read, and you keep separate records for each business you run.",
+      },
+      {
+        type: "p",
+        text: "Do I need a separate business bank account? T4002 does not require one. It does require you to deduct only the business part of each expense and to support your claims, and a separate account makes both easier.",
+      },
+      {
+        type: "p",
+        text: "What if I find a missing receipt at year end? Ask the vendor for a copy or download it from your account. A card statement shows the charge but not what you bought or the GST/HST, so it is weak support on its own. The receipt rules guide explains what a receipt must show.",
+      },
+      {
+        type: "p",
+        text: "When are tax instalments due in 2026? March 15, June 15, September 15 and December 15 for business, professional or commission income, if your net tax owing is over $3,000 ($1,800 in Quebec) in 2026 and in either 2025 or 2024.",
+      },
+      {
+        type: "p",
+        text: "What should I hand my accountant? The year-end report described above, the receipts behind it, your vehicle logbook, home workspace figures, every invoice you issued, any T4A slips and, if you are registered, your GST/HST totals.",
+      },
+      {
+        type: "sources",
+        links: [
+          {
+            label: "T4002, Chapter 1",
+            href: "https://www.canada.ca/en/revenue-agency/services/forms-publications/publications/t4002/t4002-3.html",
+          },
+          {
+            label: "T4002, Chapter 3",
+            href: "https://www.canada.ca/en/revenue-agency/services/forms-publications/publications/t4002/t4002-5.html",
+          },
+          {
+            label: "Instalments: who has to pay",
+            href: "https://www.canada.ca/en/revenue-agency/services/payments/payments-cra/individual-payments/income-tax-instalments/who-pays-instalments.html",
+          },
+          {
+            label: "Instalment due dates",
+            href: "https://www.canada.ca/en/revenue-agency/services/payments/payments-cra/individual-payments/income-tax-instalments/due-dates.html",
+          },
+          {
+            label: "GST/HST deadlines",
+            href: "https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/gst-hst-businesses/file-gst-hst-return/reporting-requirements-deadlines.html",
+          },
+          {
+            label: "Reporting fees for service",
+            href: "https://www.canada.ca/en/revenue-agency/programs/about-canada-revenue-agency-cra/compliance/reporting-fees-for-service.html",
+          },
+        ],
+        checked:
+          "All read on canada.ca on October 6, 2026. Guide T4002 is the 2025 edition, the newest published. This is general information, not tax advice.",
       },
     ],
   },
@@ -692,111 +873,6 @@ export const ARTICLES: Article[] = [
   },
 
   {
-    slug: "receipt-organization-tips-canada",
-    title: "How to Organize Receipts for Tax Season in Canada",
-    excerpt:
-      "Simple receipt organization systems that keep your records in order all year and make tax season a review — not a recovery mission.",
-    category: "Expense Tracking",
-    publishedAt: "2026-05-10",
-    updatedAt: "2026-10-05",
-    imageUrl: "https://picsum.photos/seed/receipt-organization-tips-canada/600/400",
-    imageAlt: "Organized filing system for business receipts and tax documents",
-    tags: ["receipt organization", "tax season", "record keeping", "freelancer", "CRA"],
-    clusterPillar: "expense-tracking-canada-freelancers",
-    clusterName: "Expense Tracking",
-    relatedSlugs: [
-      "expense-tracking-canada-freelancers",
-      "digital-receipts-canada-are-they-valid",
-      "cra-receipt-rules-canada",
-    ],
-    body: [
-      {
-        type: "p",
-        text: "Receipt organization fails for one reason: the system requires too much effort at the moment you're least motivated — right after a purchase. The solution is to make the default action automatic, not effortful.",
-      },
-      {
-        type: "h2",
-        text: "The Capture-First System",
-      },
-      {
-        type: "p",
-        text: "The only rule that matters: photograph or save every business receipt immediately. Don't wait until you're back at your desk. The photo goes into your receipt app, email folder, or designated album before you put your wallet away. Everything else — categorization, amount entry, GST extraction — can wait. The critical thing is that the receipt is captured before it's lost.",
-      },
-      {
-        type: "h2",
-        text: "Folder Structure for Digital Receipt Archives",
-      },
-      {
-        type: "ul",
-        items: [
-          "Top level: one folder per tax year (e.g., '2026 Business Receipts')",
-          "Subfolders by month: 01-January through 12-December",
-          "Or subfolders by category: matching your T2125 expense lines",
-          "Naming convention: YYYY-MM-DD_Vendor_Amount.pdf (sortable, searchable)",
-          "Back up to at least two locations — cloud + local external drive",
-        ],
-      },
-      {
-        type: "callout",
-        text: "Apps like ReceiptOne eliminate manual folder management entirely: scan, extract, categorize automatically, and export a CRA-ready report at any time. A manual folder system can work well when you have only a few receipts; the more you collect, the more an app saves you from naming and filing each one by hand.",
-      },
-    ],
-  },
-
-  {
-    slug: "self-employed-expense-report-template-canada",
-    title: "How to Create an Expense Report as a Self-Employed Canadian",
-    excerpt:
-      "A step-by-step guide to expense reports for your accountant, clients and the CRA: what to include, how to format it, and how to automate it.",
-    category: "Expense Tracking",
-    publishedAt: "2026-05-10",
-    updatedAt: "2026-05-11",
-    imageUrl: "https://picsum.photos/seed/self-employed-expense-report-template-canada/600/400",
-    imageAlt: "Self-employed Canadian creating an expense report on a laptop",
-    tags: ["expense report", "self-employed", "freelancer", "accountant", "CRA"],
-    clusterPillar: "expense-tracking-canada-freelancers",
-    clusterName: "Expense Tracking",
-    relatedSlugs: [
-      "expense-tracking-canada-freelancers",
-      "business-expense-categories-canada",
-      "reimbursable-expenses-canada-freelancers",
-    ],
-    body: [
-      {
-        type: "p",
-        text: "As a self-employed Canadian, you need expense reports for two audiences: the CRA (to support your T2125 filing) and clients or employers (for reimbursement). Both require the same underlying data, but formatted differently.",
-      },
-      {
-        type: "h2",
-        text: "What a CRA-Ready Expense Report Must Include",
-      },
-      {
-        type: "ul",
-        items: [
-          "Your name and business name",
-          "Tax year the report covers",
-          "Each expense: date, vendor, description, category, amount, GST/HST amount",
-          "Subtotals by T2125 category",
-          "Total GST/HST paid (for ITC calculation)",
-          "Note of any partially deductible expenses and the percentage claimed",
-        ],
-      },
-      {
-        type: "h2",
-        text: "Client Reimbursement Reports",
-      },
-      {
-        type: "p",
-        text: "For client reimbursement, include: project or contract name, expense date, description, receipt attached or reference number, and total requested. Most clients want a PDF with receipts as attachments. Clearly separate reimbursable from non-reimbursable expenses if you're reporting both in one document.",
-      },
-      {
-        type: "callout",
-        text: "ReceiptOne exports both formats: a category-summary CSV for your accountant's T2125 prep, and a per-expense PDF with attached receipt images for clients. This eliminates re-formatting the same data for two different audiences.",
-      },
-    ],
-  },
-
-  {
     slug: "reimbursable-expenses-canada-freelancers",
     regions: ["all"],
     title: "Tracking Reimbursable Expenses as a Canadian Freelancer",
@@ -818,8 +894,8 @@ export const ARTICLES: Article[] = [
     clusterName: "Expense Tracking",
     relatedSlugs: [
       "expense-tracking-canada-freelancers",
-      "self-employed-expense-report-template-canada",
       "business-expense-categories-canada",
+      "cra-receipt-rules-canada",
     ],
     body: [
       {
@@ -3047,72 +3123,6 @@ export const ARTICLES: Article[] = [
      ═══════════════════════════════════════════════════════════════ */
 
   {
-    slug: "year-round-tax-prep-canada",
-    title: "Year-Round Tax Preparation for Canadian Freelancers",
-    excerpt:
-      "Tax season isn't a season — it's a year-round habit. Here's the monthly system that keeps Canadian freelancers CRA-ready without the April panic.",
-    category: "Tax Strategy",
-    publishedAt: "2026-05-10",
-    updatedAt: "2026-10-05",
-    imageUrl: "https://picsum.photos/seed/year-round-tax-prep-canada/600/400",
-    imageAlt: "Canadian freelancer maintaining year-round tax preparation system",
-    tags: ["tax preparation", "year-round", "freelancer", "CRA", "tax season", "organization"],
-    relatedSlugs: [
-      "freelancer-taxes-canada-guide",
-      "expense-tracking-canada-freelancers",
-      "freelancer-tax-mistakes-canada",
-    ],
-    body: [
-      {
-        type: "p",
-        text: "The freelancers who dread tax season are the ones who treat it as a once-a-year event. Those who keep their records up as they go have far less to do at filing time. Here's a simple weekly, monthly and quarterly routine.",
-      },
-      {
-        type: "h2",
-        text: "Weekly",
-      },
-      {
-        type: "ul",
-        items: [
-          "Photograph any paper receipts from the week — they go into your expense app or designated folder immediately",
-          "Forward any email receipts to your designated expense email or save as PDF",
-          "Log any business trips from the week that you haven't recorded yet",
-        ],
-      },
-      {
-        type: "h2",
-        text: "Monthly",
-      },
-      {
-        type: "ul",
-        items: [
-          "Reconcile your bank and credit card statements against your expense records — every business transaction should have a receipt",
-          "Categorize any uncategorized expenses",
-          "Record your mileage total for the month",
-          "Note any large upcoming business purchases that could affect your instalment payments",
-        ],
-      },
-      {
-        type: "h2",
-        text: "Quarterly",
-      },
-      {
-        type: "ul",
-        items: [
-          "Pay your tax instalment by the due date (March 15, June 15, Sept 15, Dec 15)",
-          "File your GST/HST return if you're a quarterly filer",
-          "Review your income-to-expense ratio — are your estimated taxes still accurate?",
-          "Assess whether any capital purchases before year-end would benefit this year's CCA claim",
-        ],
-      },
-      {
-        type: "callout",
-        text: "The year-end benefit: when receipts, mileage and reconciliations are kept up month by month, preparing your filing information is a review of records you already have, not a reconstruction from bank statements and memory.",
-      },
-    ],
-  },
-
-  {
     slug: "freelancer-tax-mistakes-canada",
     title: "7 Common Tax Mistakes Canadian Freelancers Make",
     excerpt:
@@ -3169,74 +3179,6 @@ export const ARTICLES: Article[] = [
           "Claiming home office expenses that exceed net business income (not allowed — they carry forward)",
           "Missing the GST/HST registration point: once your taxable revenue goes over $30,000 in one calendar quarter or over four consecutive quarters, you must charge GST/HST from your effective date of registration, even before you have registered",
         ],
-      },
-    ],
-  },
-
-  {
-    slug: "tax-season-stress-freelancers-canada",
-    title: "Stress-Free Tax Season: A Canadian Year-End Checklist",
-    excerpt:
-      "A year-end checklist that gets Canadian freelancers ready to file: receipts, income summaries, GST/HST, CPP, and what to hand off to your accountant.",
-    category: "Tax Strategy",
-    publishedAt: "2026-05-10",
-    updatedAt: "2026-10-05",
-    imageUrl: "https://picsum.photos/seed/tax-season-stress-freelancers-canada/600/400",
-    imageAlt: "Canadian freelancer completing year-end tax checklist at desk",
-    tags: ["tax season", "checklist", "year-end", "freelancer", "CRA", "filing"],
-    relatedSlugs: [
-      "year-round-tax-prep-canada",
-      "freelancer-taxes-canada-guide",
-      "freelancer-tax-mistakes-canada",
-    ],
-    body: [
-      {
-        type: "p",
-        text: "January is the best time to prepare for April filing. Here's a structured checklist organized by what you need to gather, calculate, and confirm before handing anything to an accountant or entering data into tax software.",
-      },
-      {
-        type: "h2",
-        text: "Income Records",
-      },
-      {
-        type: "ul",
-        items: [
-          "All client invoices issued in the tax year — gross amounts, not net of expenses",
-          "T4A slips from businesses that paid you more than $500 for services in the year (box 048) — check them against your invoices",
-          "Any other income: interest, dividends, rental income (goes on different T1 schedules)",
-          "Foreign income converted to CAD at the Bank of Canada exchange rate for the date received",
-        ],
-      },
-      {
-        type: "h2",
-        text: "Expense Records",
-      },
-      {
-        type: "ul",
-        items: [
-          "Complete expense report from your tracking app or spreadsheet, categorized by T2125 line",
-          "GST/HST totals paid on business expenses (for ITC calculation)",
-          "Vehicle logbook with total km, business km, and business-use percentage",
-          "Home office calculation: workspace square footage as % of total home area",
-          "Capital purchases: receipts for any equipment or asset purchases",
-        ],
-      },
-      {
-        type: "h2",
-        text: "GST/HST Records",
-      },
-      {
-        type: "ul",
-        items: [
-          "Total GST/HST collected from clients during the year",
-          "Total ITCs claimed on business expenses",
-          "Net amount owing or refund expected",
-          "Confirm your GST/HST return is filed: annual filers who are sole proprietors with a calendar fiscal year generally file by June 15 and pay by April 30; quarterly filers file one month after each quarter",
-        ],
-      },
-      {
-        type: "callout",
-        text: "ReceiptOne's year-end export gives you a PDF or CSV of your organized records: expenses grouped by category, GST/HST totals by type, and a mileage summary. It covers the expense side of this checklist, not your income or the GST/HST you collected. You or your accountant use it when filling in T2125; ReceiptOne does not prepare or file the form for you.",
       },
     ],
   },

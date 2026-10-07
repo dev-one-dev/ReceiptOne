@@ -13,6 +13,10 @@ export const config = {
     "/articles/cra-receipt-rules-canadian-freelancer",
     "/articles/cra-acceptable-receipt-requirements",
     "/articles/what-receipts-do-i-need-for-taxes-canada",
+    "/articles/receipt-organization-tips-canada",
+    "/articles/self-employed-expense-report-template-canada",
+    "/articles/year-round-tax-prep-canada",
+    "/articles/tax-season-stress-freelancers-canada",
   ],
 };
 
@@ -22,6 +26,10 @@ const MERGED_ARTICLES: Record<string, string> = {
   "/articles/cra-receipt-rules-canadian-freelancer": "/articles/cra-receipt-rules-canada",
   "/articles/cra-acceptable-receipt-requirements": "/articles/cra-receipt-rules-canada",
   "/articles/what-receipts-do-i-need-for-taxes-canada": "/articles/cra-receipt-rules-canada",
+  "/articles/receipt-organization-tips-canada": "/articles/expense-tracking-canada-freelancers",
+  "/articles/self-employed-expense-report-template-canada": "/articles/expense-tracking-canada-freelancers",
+  "/articles/year-round-tax-prep-canada": "/articles/expense-tracking-canada-freelancers",
+  "/articles/tax-season-stress-freelancers-canada": "/articles/expense-tracking-canada-freelancers",
 };
 
 export default function middleware(request: Request) {
