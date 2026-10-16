@@ -42,7 +42,7 @@ function USContactPage() {
           <p className="eyebrow">Contact</p>
           <h1 className="mt-3 text-ink">Get in touch</h1>
           <p className="mx-auto mt-3 max-w-lg font-sans text-body text-ink-60">
-            Questions, feedback, or something not working right? We reply within one business day.
+            Questions, feedback, or something not working right? We reply within 1–2 business days.
           </p>
         </div>
       </section>
