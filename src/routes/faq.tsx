@@ -53,7 +53,7 @@ function FaqPage() {
             >
               Reach out to our team
             </Link>{" "}
-            — we reply within one business day.
+            — we reply within 1–2 business days.
           </p>
         </div>
       </section>

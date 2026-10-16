@@ -81,7 +81,7 @@ export function ContactForm({ region }: { region: Region }) {
         </div>
         <p className="mt-5 font-display text-lead font-semibold text-ink">Message sent</p>
         <p className="mt-2 font-sans text-sm text-ink-60">
-          Thanks for reaching out — we reply within one business day.
+          Thanks for reaching out — we reply within 1–2 business days.
         </p>
       </div>
     );
