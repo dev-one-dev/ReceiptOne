@@ -108,9 +108,9 @@ const TERMS_SUMMARY: SummaryItem[] = [
     region: "all",
   },
   {
-    title: "Canada — governing law",
-    body: "Quebec residents retain mandatory consumer protections. Disputes governed by the laws of the applicable Canadian province.",
-    region: "ca",
+    title: "Governing law",
+    body: "These Terms are governed by the laws of British Columbia, Canada. Mandatory consumer protections where you live, including Quebec's, still apply.",
+    region: "all",
   },
   {
     title: "United States — arbitration",
@@ -151,11 +151,11 @@ const PARTS: PartEntry[] = [
         content: () => (
           <BulletList
             items={[
-              "Service provider: ReceiptOne (operator of receipt-one.com and the ReceiptOne mobile and web applications).",
+              "Service provider: Flutter Horizon, a sole proprietorship registered in British Columbia, Canada, operating the ReceiptOne service (receipt-one.com and the ReceiptOne mobile and web applications).",
+              "Business address: 6555 Bonsor Ave, Burnaby, BC V5H 3E9, Canada.",
               "Service area: United States and Canada.",
-              "General support: support@receipt-one.com.",
-              "Privacy requests: privacy@receipt-one.com.",
-              "Legal notices: legal@receipt-one.com.",
+              "Support, privacy requests, and legal notices: support@receipt-one.com.",
+              "Contact form: receipt-one.com/contact.",
             ]}
           />
         ),
@@ -539,18 +539,20 @@ const PARTS: PartEntry[] = [
           <div className="space-y-4">
             {(region === "all" || region === "us") && (
               <RegionParagraph active={region === "us"} label="United States">
-                For users located in the United States, these Terms are governed by the federal laws
-                of the United States and the laws of the State of Delaware, excluding
-                conflict-of-law rules, except to the extent non-waivable consumer protection laws of
-                your state of residence apply.
+                For users located in the United States, these Terms are governed by the laws of the
+                Province of British Columbia and the federal laws of Canada applicable there,
+                excluding conflict-of-law rules, except to the extent non-waivable consumer
+                protection laws of your state of residence apply. Disputes are resolved as set out
+                in Section 17.
               </RegionParagraph>
             )}
             {(region === "all" || region === "ca") && (
               <RegionParagraph active={region === "ca"} label="Canada">
-                For users located in Canada, these Terms are governed by the federal laws of Canada
-                and the laws of the Province of Ontario, excluding conflict-of-law rules, except to
-                the extent non-waivable consumer protection laws of your province or territory
-                apply.
+                For users located in Canada, these Terms are governed by the laws of the Province of
+                British Columbia and the federal laws of Canada applicable there, excluding
+                conflict-of-law rules, except to the extent non-waivable consumer protection laws of
+                your province or territory apply, including, for Quebec residents, the Consumer
+                Protection Act (Quebec).
               </RegionParagraph>
             )}
           </div>
@@ -699,6 +701,17 @@ const PARTS: PartEntry[] = [
               depending on the specific function being performed.
             </p>
             <p>
+              The current list of service providers, the information each one receives, and where
+              each one processes it is set out in Section 5 of our{" "}
+              <Link
+                to="/privacy"
+                className="font-medium text-foreground underline underline-offset-4"
+              >
+                Privacy Policy
+              </Link>
+              .
+            </p>
+            <p>
               We require service providers acting on our behalf to process information under
               contractual or platform controls appropriate to their role.
             </p>
@@ -766,11 +779,18 @@ const PARTS: PartEntry[] = [
               To exercise privacy rights, contact{" "}
               <a
                 className="font-medium text-foreground underline underline-offset-4"
-                href="mailto:privacy@receipt-one.com"
+                href="mailto:support@receipt-one.com"
               >
-                privacy@receipt-one.com
-              </a>{" "}
-              or use any in-app privacy request mechanism we make available. We may need to verify
+                support@receipt-one.com
+              </a>
+              , use our{" "}
+              <Link
+                to="/contact"
+                className="font-medium text-foreground underline underline-offset-4"
+              >
+                contact form
+              </Link>
+              , or use any in-app privacy request mechanism we make available. We may need to verify
               your identity before fulfilling a request. Authorized agents may be required to
               provide proof of authority where applicable.
             </p>
@@ -859,9 +879,8 @@ const PARTS: PartEntry[] = [
           <>
             <BulletList
               items={[
-                "General support: support@receipt-one.com.",
-                "Privacy requests: privacy@receipt-one.com.",
-                "Legal notices: legal@receipt-one.com.",
+                "Support, privacy requests, and legal notices: support@receipt-one.com.",
+                "Contact form: receipt-one.com/contact.",
               ]}
             />
             {(region === "all" || region === "us") && (
@@ -872,7 +891,7 @@ const PARTS: PartEntry[] = [
             )}
             <BulletList
               items={[
-                "For written legal notices, contact legal@receipt-one.com to request a current postal address.",
+                "Written legal notices: Flutter Horizon, 6555 Bonsor Ave, Burnaby, BC V5H 3E9, Canada.",
               ]}
             />
           </>
@@ -1000,7 +1019,7 @@ function TermsPage() {
       <article className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8 lg:py-12">
         <header className="border-b border-border pb-8">
           <p className="text-sm font-medium text-muted-foreground">
-            Last updated: April 23, 2026 · Effective date: April 23, 2026
+            Last updated: October 18, 2026 · Effective date: October 18, 2026
           </p>
           <h1 className="mt-3 font-display text-4xl font-semibold tracking-normal sm:text-5xl">
             ReceiptOne — Terms of Use
@@ -1008,10 +1027,10 @@ function TermsPage() {
           <div className="mt-6 max-w-3xl space-y-4 text-base leading-7 text-muted-foreground">
             <p>
               These Legal Terms (&quot;Terms&quot;) form a legally binding agreement between you and
-              ReceiptOne governing your access to and use of the ReceiptOne mobile application, web
-              application, and related services. These Terms are intended for a United States and
-              Canada launch and are drafted to reduce product, privacy, and consumer-law risk for
-              the current scope of the Services.
+              Flutter Horizon, a sole proprietorship registered in British Columbia, Canada, which
+              operates the ReceiptOne service (&quot;ReceiptOne,&quot; &quot;we,&quot;
+              &quot;us,&quot; or &quot;our&quot;), governing your access to and use of the
+              ReceiptOne mobile application, web application, and related services.
             </p>
           </div>
 

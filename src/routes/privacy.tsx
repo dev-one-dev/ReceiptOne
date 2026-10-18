@@ -39,9 +39,10 @@ const SECTIONS: {
       { id: "2.3", title: "2.3 Payment Information" },
       { id: "2.4", title: "2.4 Automatically Collected Information" },
       { id: "2.5", title: "2.5 Device Permissions" },
+      { id: "2.6", title: "2.6 Location Information and Background Location" },
       {
-        id: "2.6",
-        title: "2.6 Categories of Personal Information for California Residents",
+        id: "2.7",
+        title: "2.7 Categories of Personal Information for California Residents",
         region: "us",
       },
     ],
@@ -93,7 +94,11 @@ const subsectionAnchorId = (id: string) => `section-${id.replace(".", "-")}`;
 const PRIVACY_SUMMARY: SummaryItem[] = [
   {
     title: "What we collect",
-    body: "Account info, receipts/expenses you upload, OCR-extracted data, device & usage diagnostics, and limited subscription metadata from Apple/Google.",
+    body: "Account info, receipts/expenses you upload, OCR-extracted data, device location while you record a trip, device & usage diagnostics, and limited subscription metadata from Apple/Google.",
+  },
+  {
+    title: "Location",
+    body: "Collected only while a trip is recording, including in the background, and used only for your mileage records. Never sold or used for advertising.",
   },
   {
     title: "How we use it",
@@ -105,7 +110,7 @@ const PRIVACY_SUMMARY: SummaryItem[] = [
   },
   {
     title: "Sharing",
-    body: "Limited to service providers (hosting, analytics, payments) under contract, plus legal/compliance disclosures when required.",
+    body: "Limited to the service providers listed in Section 5 (hosting, AI processing, maps, subscriptions, email, messaging), most of them in the United States, plus legal/compliance disclosures when required.",
   },
   {
     title: "Your rights",
@@ -128,7 +133,7 @@ const PRIVACY_SUMMARY: SummaryItem[] = [
   },
   {
     title: "Contact",
-    body: "Questions or privacy requests: support@receipt-one.com.",
+    body: "Privacy Officer, Flutter Horizon: support@receipt-one.com or the contact form at receipt-one.com/contact.",
   },
 ];
 
@@ -253,17 +258,20 @@ function PrivacyPage() {
 
       <article className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8 lg:py-12">
         <header className="border-b border-border pb-8">
-          <p className="text-sm font-medium text-muted-foreground">Last updated: April 23, 2026</p>
+          <p className="text-sm font-medium text-muted-foreground">
+            Last updated: October 18, 2026
+          </p>
           <h1 className="mt-3 font-display text-4xl font-semibold tracking-normal sm:text-5xl">
             ReceiptOne — Privacy Policy
           </h1>
           <div className="mt-6 max-w-3xl space-y-4 text-base leading-7 text-muted-foreground">
             <p>
-              This Privacy Policy explains how ReceiptOne (&quot;ReceiptOne,&quot; &quot;we,&quot;
-              &quot;us,&quot; or &quot;our&quot;) collects, uses, discloses, stores, and protects
-              personal information when you use the ReceiptOne mobile applications (iOS and
-              Android), the ReceiptOne web application, and related services (collectively, the
-              &quot;Services&quot;).
+              This Privacy Policy explains how Flutter Horizon, a sole proprietorship registered in
+              British Columbia, Canada, which operates the ReceiptOne service
+              (&quot;ReceiptOne,&quot; &quot;we,&quot; &quot;us,&quot; or &quot;our&quot;),
+              collects, uses, discloses, stores, and protects personal information when you use the
+              ReceiptOne mobile applications (iOS and Android), the ReceiptOne web application, and
+              related services (collectively, the &quot;Services&quot;).
             </p>
             <p>
               ReceiptOne is designed for self-employed individuals, contractors, and small
@@ -334,6 +342,7 @@ function PrivacyPage() {
                   items={[
                     "Create an account",
                     "Upload receipts, invoices, or other documents",
+                    "Record or enter mileage trips",
                     "Use reporting, analytics, or tax configuration features",
                     "Contact support",
                     "Otherwise interact with the Services",
@@ -415,6 +424,18 @@ function PrivacyPage() {
                       "Security and log information necessary to detect misuse, fraud, or service errors",
                     ]}
                   />
+                  <p>
+                    <strong>On our website (receipt-one.com):</strong> we do not use analytics,
+                    advertising, or tracking cookies. The website uses:
+                  </p>
+                  <BulletList
+                    items={[
+                      "Google reCAPTCHA v3, through Firebase App Check, on every page to protect our contact form and services from automated abuse. reCAPTCHA collects your IP address, browser and device information, and interaction signals, and may set Google cookies.",
+                      "Google Fonts, which receives your IP address and browser information when the page loads its fonts.",
+                      'A first-party cookie and local storage entry named "ro_referral", set only when you open a referral link (receipt-one.com/r/...), which stores the referral code for 30 days so a referral is credited if you sign up later.',
+                      "Local storage in your browser to remember interface preferences, such as which sections of our legal pages you expanded. This information stays on your device.",
+                    ]}
+                  />
                 </SubSection>
 
                 <SubSection title="2.5 Device Permissions">
@@ -436,6 +457,16 @@ function PrivacyPage() {
                         "Send service-related reminders, alerts, and updates",
                         "Yes",
                       ],
+                      [
+                        "Location (while using the app)",
+                        "Record a trip you start and look up trip addresses (see Section 2.6)",
+                        "Yes",
+                      ],
+                      [
+                        'Background location ("Allow all the time" on Android, "Always" on iOS)',
+                        "Keep recording a trip you started while the app is in the background or closed (see Section 2.6)",
+                        "Yes",
+                      ],
                     ]}
                   />
                   <p>
@@ -444,7 +475,53 @@ function PrivacyPage() {
                   </p>
                 </SubSection>
 
-                <SubSection title="2.6 Categories of Personal Information for California Residents">
+                <SubSection title="2.6 Location Information and Background Location">
+                  <p>
+                    The ReceiptOne mobile app can record a business trip using your device&apos;s
+                    location so that your mileage log shows the route and distance driven.
+                  </p>
+                  <p>
+                    <strong>What we collect:</strong> while a trip is recording, the app collects
+                    your device&apos;s precise location (latitude and longitude) with the time of
+                    each reading, and calculates the trip&apos;s distance from it. We also store the
+                    start and end addresses and the purpose note saved with the trip.
+                  </p>
+                  <p>
+                    <strong>Collection in the background:</strong> once you start recording a trip,
+                    the app continues to collect your location in the background, including when the
+                    app is closed or not in use, until you stop the trip. The app shows a
+                    notification on your device while a trip is recording. We do not collect your
+                    location when no trip is recording.
+                  </p>
+                  <p>
+                    <strong>Why we collect it:</strong> only to create your mileage records, namely
+                    the trip&apos;s route, distance, and date in your logbook and the business-use
+                    figures and mileage reports built from it.
+                  </p>
+                  <p>
+                    <strong>What we do not do:</strong> we do not sell location data, use it for
+                    advertising or to build advertising profiles, or share it with data brokers. It
+                    is shared only with the service providers that store it and calculate routes and
+                    distances on our behalf (Google Cloud / Firebase and Google Maps Platform; see
+                    Section 5).
+                  </p>
+                  <p>
+                    <strong>How to turn it off:</strong> stop the trip in the app to end collection
+                    immediately. To stop background collection altogether, change ReceiptOne&apos;s
+                    location permission in your device settings (Android: Settings → Apps →
+                    ReceiptOne → Permissions → Location; iOS: Settings → ReceiptOne → Location) to
+                    &quot;Allow only while using the app&quot;, &quot;While Using the App&quot;, or
+                    &quot;Don&apos;t allow&quot;. You can still enter trips manually by typing the
+                    start and end addresses.
+                  </p>
+                  <p>
+                    <strong>How long we keep it:</strong> location data recorded for a trip is
+                    stored with that trip and kept until you delete the trip or your account,
+                    subject to the retention rules in Section 7.
+                  </p>
+                </SubSection>
+
+                <SubSection title="2.7 Categories of Personal Information for California Residents">
                   <p>
                     For purposes of the CCPA/CPRA, we may collect the following categories of
                     personal information:
@@ -462,7 +539,7 @@ function PrivacyPage() {
                       ["Approximate geolocation", "Derived from IP address"],
                       [
                         "Sensitive personal information",
-                        "Financial or expense-related information contained in receipts, reports, and uploaded documents",
+                        "Financial or expense-related information contained in receipts, reports, and uploaded documents; precise geolocation recorded while a trip you started is recording",
                       ],
                     ]}
                   />
@@ -538,31 +615,110 @@ function PrivacyPage() {
                     "Cloud hosting and infrastructure providers",
                     "Authentication, storage, database, messaging, and platform service providers",
                     "OCR, document analysis, and AI service providers",
-                    "Analytics, diagnostics, logging, and crash reporting providers",
-                    "Email and customer communication providers",
+                    "Logging, diagnostics, and crash reporting providers",
+                    "Mapping and address lookup providers",
+                    "Subscription management providers",
+                    "Email, messaging, and customer communication providers",
                     "Professional advisors, auditors, insurers, and legal compliance providers where reasonably necessary",
                     "Government authorities, courts, regulators, law enforcement, or other third parties where required by law or legal process",
                   ]}
                 />
                 <h3 className="font-display text-lg font-semibold text-foreground">
-                  Examples of service providers used in connection with the Services:
+                  Service providers (processors) we use
                 </h3>
+                <p>
+                  The following service providers process personal information on our behalf. Each
+                  receives only the information needed for its function. Most of them process
+                  information outside Canada, mainly in the United States.
+                </p>
                 <DataTable
-                  headers={["Provider", "Purpose"]}
+                  headers={["Provider", "Information received", "Purpose", "Where processed"]}
                   rows={[
                     [
-                      "Firebase / Google Cloud",
-                      "Authentication, storage, database, cloud functions, messaging, remote config",
+                      "Google Cloud / Firebase (Google LLC): Authentication, Cloud Firestore, Cloud Storage, Cloud Functions, Cloud Messaging",
+                      "Account details (name, email, sign-in identifiers), receipts and uploaded documents, expense, mileage, trip location, and home office records, support requests, device tokens, and service logs",
+                      "Hosting, sign-in, database and file storage, server-side processing, and push notifications",
+                      "United States (Cloud Functions run in Iowa, us-central1) and other Google Cloud locations — outside Canada",
                     ],
-                    ["Google Cloud Vision API", "OCR processing of receipt images"],
-                    ["Google Cloud Vertex AI / Gemini", "AI-assisted analysis and processing"],
-                    ["OpenAI, LLC", "AI-assisted merchant categorization and extraction support"],
+                    [
+                      "Google Vertex AI — Gemini (Google LLC)",
+                      "Receipt images and PDFs and the text read from them; for the AI assistant, your questions and the expense records needed to answer them",
+                      "Receipt recognition and data extraction, and the in-app AI assistant",
+                      "Google's global endpoint, which may route requests to any Google region, including the United States — outside Canada",
+                    ],
+                    [
+                      "Google Cloud Vision API (Google LLC)",
+                      "Receipt images captured in the mobile app",
+                      "Extracting text from receipt images",
+                      "United States and other Google Cloud locations — outside Canada",
+                    ],
+                    [
+                      "OpenAI, LLC",
+                      "Merchant names and text read from receipts; if configured as a fallback, receipt content and assistant questions",
+                      "Identifying merchants in the mobile app, and backup provider for receipt recognition and the AI assistant",
+                      "United States — outside Canada",
+                    ],
+                    [
+                      "Google Maps Platform (Google LLC)",
+                      "Addresses and place searches you enter, trip start and end points, your IP address",
+                      "Address lookup and route and distance calculation for mileage trips",
+                      "United States and other Google locations — outside Canada",
+                    ],
+                    [
+                      "RevenueCat, Inc.",
+                      "Your account identifier, app store transaction identifiers, plan, renewal and subscription status, and country",
+                      "Managing subscriptions and access to paid features",
+                      "United States — outside Canada",
+                    ],
+                    [
+                      "Telegram (only if you connect the ReceiptOne bot)",
+                      "Your Telegram user and chat identifiers, the receipt photos, files and messages you send the bot, and our replies",
+                      "Receiving receipts and support messages through Telegram",
+                      "Telegram's data centres in several countries — outside Canada",
+                    ],
+                    [
+                      "Resend",
+                      "Your email address and name, message contents, and any report you choose to email",
+                      "Sending transactional email, support replies, and emailed reports",
+                      "United States — outside Canada",
+                    ],
                     [
                       "Logo.dev (Simple Casual, LLC)",
-                      "Retrieval of merchant logo assets based on merchant domain information",
+                      "Merchant names or domains; your IP address and browser information when a logo loads in your browser",
+                      "Showing merchant logos next to your expenses",
+                      "United States — outside Canada",
+                    ],
+                    [
+                      "Vercel Inc.",
+                      "Your IP address, browser information, the pages you request, and information you submit through our website and web app",
+                      "Hosting receipt-one.com and the ReceiptOne web app",
+                      "United States and Vercel's global edge network — outside Canada",
+                    ],
+                    [
+                      "Google reCAPTCHA via Firebase App Check (Google LLC)",
+                      "Your IP address, browser and device information, interaction signals, and Google cookies",
+                      "Protecting our website, contact form, and services from automated abuse",
+                      "United States — outside Canada",
+                    ],
+                    [
+                      "Google Fonts (Google LLC)",
+                      "Your IP address and browser information",
+                      "Delivering the fonts our website uses",
+                      "United States — outside Canada",
+                    ],
+                    [
+                      "ExchangeRate-API (open.er-api.com)",
+                      "Your IP address and browser information; no account or expense data",
+                      "Currency exchange rates in the web app",
+                      "Not stated by the provider",
                     ],
                   ]}
                 />
+                <p>
+                  Apple (App Store) and Google (Google Play) process payments for mobile
+                  subscriptions under their own terms and privacy policies, as described in Section
+                  2.3.
+                </p>
                 <p>
                   We instruct all service providers to process personal information on our behalf
                   and for limited purposes related to providing and supporting the Services, subject
@@ -588,6 +744,11 @@ function PrivacyPage() {
                     "Other jurisdictions where we or our service providers operate",
                   ]}
                 />
+                <p>
+                  Most of the service providers listed in Section 5 process personal information in
+                  the United States, so most information you provide to the Services is processed or
+                  stored outside Canada.
+                </p>
                 <p>
                   <strong>Legal implications:</strong> As a result, personal information may be
                   subject to the laws of those jurisdictions, including lawful access requests by
@@ -621,6 +782,10 @@ function PrivacyPage() {
                     [
                       "Receipts, expenses, mileage, reports, uploaded documents",
                       "Until you delete them, request deletion, or account is deleted (unless longer retention required by law)",
+                    ],
+                    [
+                      "Trip location data",
+                      "Stored with the trip until you delete the trip or your account",
                     ],
                     [
                       "Support communications",
@@ -695,6 +860,21 @@ function PrivacyPage() {
                       support@receipt-one.com
                     </a>{" "}
                     <strong>Subject line:</strong> &quot;Privacy Request&quot;
+                  </p>
+                  <p>
+                    <strong>Contact form:</strong> if you prefer not to use email, submit your
+                    request through our{" "}
+                    <Link
+                      to="/contact"
+                      className="font-medium text-foreground underline underline-offset-4"
+                    >
+                      contact form
+                    </Link>
+                    .
+                  </p>
+                  <p>
+                    <strong>Mail:</strong> Privacy Officer, Flutter Horizon, 6555 Bonsor Ave,
+                    Burnaby, BC V5H 3E9, Canada.
                   </p>
                   <p>In your request, please include:</p>
                   <BulletList
@@ -871,8 +1051,15 @@ function PrivacyPage() {
 
               <Section number="13" title="Contact Information">
                 <p>
-                  <strong>Privacy Contact / Data Protection Officer (DPO) responsibilities</strong>{" "}
-                  are handled by the ReceiptOne privacy team.
+                  <strong>Person in charge of the protection of personal information</strong>{" "}
+                  (including for the purposes of Quebec&apos;s Law 25): Privacy Officer, Flutter
+                  Horizon —{" "}
+                  <a
+                    className="font-medium text-foreground underline underline-offset-4"
+                    href="mailto:support@receipt-one.com"
+                  >
+                    support@receipt-one.com
+                  </a>
                 </p>
                 <p>
                   <strong>Email:</strong>{" "}
@@ -883,6 +1070,19 @@ function PrivacyPage() {
                     support@receipt-one.com
                   </a>{" "}
                   <strong>Subject line for privacy matters:</strong> &quot;Privacy Request&quot;
+                </p>
+                <p>
+                  <strong>Contact form:</strong>{" "}
+                  <Link
+                    to="/contact"
+                    className="font-medium text-foreground underline underline-offset-4"
+                  >
+                    receipt-one.com/contact
+                  </Link>
+                </p>
+                <p>
+                  <strong>Mail:</strong> Flutter Horizon, 6555 Bonsor Ave, Burnaby, BC V5H 3E9,
+                  Canada
                 </p>
                 <div className="space-y-3">
                   <p>
@@ -922,7 +1122,8 @@ function PrivacyPage() {
                   </p>
                 </div>
                 <p className="text-sm text-muted-foreground">
-                  © 2026 ReceiptOne. All rights reserved.
+                  © 2026 Flutter Horizon. ReceiptOne is operated by Flutter Horizon. All rights
+                  reserved.
                 </p>
               </Section>
             </div>

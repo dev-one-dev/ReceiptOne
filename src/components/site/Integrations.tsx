@@ -1,4 +1,4 @@
-import { Mail } from "lucide-react";
+import { FileSpreadsheet, Mail } from "lucide-react";
 import telegramLogo from "@/assets/integrations/telegram.png";
 import quickbooksLogo from "@/assets/integrations/quickbooks-logo.png";
 import plaidLogo from "@/assets/integrations/plaid-logo.png";
@@ -12,6 +12,11 @@ type Integration = {
   | { brand: "icon"; icon: typeof Mail }
 );
 
+/**
+ * Order matches the grid below: receipt intake (Telegram, email) on the first
+ * row, books and bank (QuickBooks, Plaid, statements) on the second. The
+ * coming-soon set mirrors the web portal's Integrations page.
+ */
 const INTEGRATIONS: Integration[] = [
   {
     name: "Telegram",
@@ -19,6 +24,13 @@ const INTEGRATIONS: Integration[] = [
     comingSoon: false,
     brand: "logo",
     logo: telegramLogo,
+  },
+  {
+    name: "Email forwarding",
+    description: "Forward receipts to your ReceiptOne inbox — no app required.",
+    comingSoon: true,
+    brand: "icon",
+    icon: Mail,
   },
   {
     name: "QuickBooks",
@@ -36,12 +48,25 @@ const INTEGRATIONS: Integration[] = [
     logoHeightClassName: "h-6",
   },
   {
-    name: "Email forwarding",
-    description: "Forward receipts to your ReceiptOne inbox — no app required.",
+    name: "Bank statement reconciliation",
+    description: "Upload your bank statements.",
     comingSoon: true,
     brand: "icon",
-    icon: Mail,
+    icon: FileSpreadsheet,
   },
+];
+
+/**
+ * Five cards on a six-track grid: two wide cards (3 tracks each) over three
+ * narrow ones (2 tracks each). On the two-column mobile grid the fifth card
+ * spans the full row so nothing is left orphaned.
+ */
+const CARD_SPAN = [
+  "lg:col-span-3",
+  "lg:col-span-3",
+  "lg:col-span-2",
+  "lg:col-span-2",
+  "col-span-2 lg:col-span-2",
 ];
 
 export function Integrations() {
@@ -56,17 +81,17 @@ export function Integrations() {
           <p className="eyebrow">Integrations</p>
           <h2 className="mt-2 text-ink">Fits into how you already work</h2>
           <p className="mt-3 max-w-2xl text-body text-ink-60 sm:text-lead">
-            Send receipts straight from Telegram today. QuickBooks, bank sync, and email forwarding
-            are on the way.
+            Send receipts straight from Telegram today. Email forwarding, QuickBooks, bank sync, and
+            bank statement reconciliation are on the way.
           </p>
         </div>
 
         {/* Cards */}
-        <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-          {INTEGRATIONS.map((integration) => (
+        <div className="grid grid-cols-2 gap-4 lg:grid-cols-6">
+          {INTEGRATIONS.map((integration, i) => (
             <div
               key={integration.name}
-              className="flex flex-col gap-3 rounded-card border border-hairline bg-white p-5 shadow-[0_2px_12px_rgba(0,0,0,0.06)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_40px_rgba(0,0,0,0.10)]"
+              className={`${CARD_SPAN[i]} flex flex-col gap-3 rounded-card border border-hairline bg-white p-5 shadow-[0_2px_12px_rgba(0,0,0,0.06)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_40px_rgba(0,0,0,0.10)]`}
             >
               <div className="flex items-start justify-between gap-2">
                 {integration.brand === "logo" ? (
