@@ -90,7 +90,15 @@ export function Pricing({ region = "ca" }: { region?: Region }) {
           <p className="eyebrow">Pricing</p>
           <h2 className="mt-3 text-ink">Simple pricing. Cancel anytime.</h2>
           <p className="mt-4 text-body text-ink-60 sm:text-lead">
-            Try it free for {TRIAL_DAYS} days — no credit card required.
+            Try it free for {TRIAL_DAYS} days. The trial starts when you sign up, with no payment
+            details needed.
+          </p>
+          {/* Purchase flow per the portal: no web billing; subscriptions are
+              bought, managed and cancelled in the App Store or Google Play. */}
+          <p className="mt-2 text-sm text-ink-60">
+            To keep adding receipts after the trial, subscribe in the ReceiptOne app for iPhone or
+            Android. Subscriptions are billed through the App Store or Google Play, and you manage
+            or cancel them in your store account.
           </p>
         </div>
 

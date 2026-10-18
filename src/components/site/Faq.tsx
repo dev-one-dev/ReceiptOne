@@ -20,6 +20,18 @@ const telegramQA: QA = {
   link: { to: "https://t.me/ReceiptOne_bot", label: "Open @ReceiptOne_bot", external: true },
 };
 
+/**
+ * How paying works, the same in both regions. From the portal: every new
+ * account gets a trial on sign-up with no payment step (initializeUserPromo,
+ * startTrialDays, default 7); the web app sells no subscription and sends
+ * users to the stores (profilePage upgradeDialogDesc, Manage on App Store /
+ * Google Play); an expired account is read-only (common readOnly.body).
+ */
+const paymentQA: QA = {
+  q: "How do the free trial and payment work?",
+  a: "Every new account starts with a 7-day free trial as soon as you sign up, in the app or on the web, and we don't ask for any payment details to start it. To keep adding receipts after the trial, subscribe in the ReceiptOne app for iPhone or Android: subscriptions are sold through the App Store and Google Play, not on our website or in the web app. You manage or cancel your subscription in your App Store or Google Play account settings. If your trial or subscription ends, your account becomes read-only: you can still view and edit your records, but you can't add new ones until you subscribe.",
+};
+
 /** Shared FAQ list (used both for UI rendering and FAQPage JSON-LD). */
 export const faqItems: QA[] = [
   {
@@ -56,7 +68,7 @@ export const faqItems: QA[] = [
   },
   {
     q: "Can I cancel anytime?",
-    a: "Yes — cancel in one tap from the app. No phone calls, no cancellation fees, no questions asked. Your data stays accessible until the end of your billing period.",
+    a: "Yes. Your subscription is billed by the App Store or Google Play, so you cancel it in your App Store or Google Play subscription settings, with no phone calls and no cancellation fees. You keep full access until the end of the period you've paid for; after that your account becomes read-only, so you can still view and edit your records but not add new ones.",
   },
   {
     q: "Is ReceiptOne a tax filing service?",
@@ -106,6 +118,7 @@ export const faqItems: QA[] = [
     q: "What reports can I export for my T2125?",
     a: "From the ReceiptOne web app you can export a T2125 report, in PDF and CSV, laid out like CRA Form T2125, Statement of Business or Professional Activities: Part 1 identification, your expenses by Part 4 line, Part 7 business-use-of-home expenses, and the kilometres for Chart A, Motor vehicle expenses: business kilometres, total kilometres and business-use percentage. Chart A's actual vehicle costs, such as fuel, insurance and repairs, are left blank for you to fill in. You can also export a mileage report: the CSV lists every trip in the year, business and personal, with its date, start and end addresses, purpose and distance, and the PDF lists your business trips. Both are working papers for you or your accountant; ReceiptOne does not file the form.",
   },
+  paymentQA,
 ];
 
 /** US FAQ list — replaces CRA/GST/PST references with IRS/sales tax equivalents. */
@@ -144,13 +157,50 @@ export const faqItemsUS: QA[] = [
   },
   {
     q: "Can I cancel anytime?",
-    a: "Yes — cancel in one tap from the app. No phone calls, no cancellation fees, no questions asked. Your data stays accessible until the end of your billing period.",
+    a: "Yes. Your subscription is billed by the App Store or Google Play, so you cancel it in your App Store or Google Play subscription settings, with no phone calls and no cancellation fees. You keep full access until the end of the period you've paid for; after that your account becomes read-only, so you can still view and edit your records but not add new ones.",
   },
   {
     q: "Is ReceiptOne a tax filing service?",
     a: "No. ReceiptOne organizes your receipts and expenses so that filing — whether you do it yourself or hand off to an accountant — is fast, accurate, and stress-free. We don't file taxes on your behalf.",
   },
   telegramQA,
+  {
+    q: "How does mileage tracking work?",
+    a: "Start a trip in the mobile app and ReceiptOne tracks the route by GPS, in the background, until you stop it. Or log a trip by entering your start and end addresses, and ReceiptOne calculates the route and distance via Google Maps. Tag each trip business or personal. Set your per-mile rate in settings and your mileage report multiplies your business miles by it, so check that rate against the IRS standard mileage rate for the period you drove. Your Schedule C report shows your business miles for the year in Part IV, Information on Your Vehicle.",
+  },
+  {
+    q: "What counts as IRS-acceptable mileage documentation?",
+    a: "IRS Publication 463 asks you to record, at or near the time of each trip, the miles for each business use, the date, your business destination and the business purpose, plus your total miles for the year. In ReceiptOne you either start a trip in the mobile app and let it track the route by GPS, or enter the start and end addresses; add a note on the purpose and the app saves the trip with its date and distance. ReceiptOne doesn't record odometer readings, so keep your start- and end-of-year readings yourself.",
+    link: {
+      to: "/us/articles/$slug",
+      slug: "irs-mileage-rate-2025-self-employed",
+      label: "Read the IRS mileage rate guide",
+    },
+  },
+  {
+    q: "How is the home office deduction calculated?",
+    a: "Enter your office's square footage, your home's total square footage and your home expenses, such as rent or mortgage interest, insurance, utilities and maintenance. ReceiptOne works out the IRS simplified method ($5 per square foot, up to 300 square feet) and the regular method (your business-use percentage of actual expenses, as on Form 8829), and shows which gives the larger deduction. The space must be used regularly and exclusively for your business.",
+    link: {
+      to: "/us/articles/$slug",
+      slug: "home-office-deduction-form-8829-us",
+      label: "Read the Form 8829 guide",
+    },
+  },
+  {
+    q: "Can I claim both mileage and home office deductions?",
+    a: "Yes. They're tracked independently in the app, and both appear in your Schedule C report: business miles in Part IV and business use of your home on line 30.",
+  },
+  {
+    q: "Where is my data stored?",
+    a: "Your data is stored and processed on Firebase and Google Cloud in the United States: the database in the nam5 multi-region (Iowa and South Carolina), receipt images and files in Cloud Storage in the United States, and server-side processing in us-central1 (Iowa). Some of our service providers process information in other locations — see our Privacy Policy for the full list.",
+    link: { to: "/privacy", label: "Read our Privacy Policy" },
+  },
+  {
+    q: "What happens to my data if I delete my account?",
+    a: "Your receipts, expenses, and other records are deleted when you delete your account, unless we're required to retain them longer for legal, tax, or security reasons. Some infrastructure providers may keep hashed or cached copies for a limited period (typically up to 30 days) for fraud-prevention and security purposes before those residual copies are removed.",
+    link: { to: "/privacy", label: "Read our Privacy Policy" },
+  },
+  paymentQA,
 ];
 
 /** FAQ questions grouped by category — used on the /faq help-center page. */
@@ -165,7 +215,7 @@ export const CATEGORIZED_FAQ: { category: string; items: QA[] }[] = [
   },
   {
     category: "Pricing & Plans",
-    items: [faqItems[7], faqItems[8]],
+    items: [faqItems[7], faqItems[8], faqItems[20]],
   },
   {
     category: "Mileage & Home Office",
@@ -193,11 +243,19 @@ export const CATEGORIZED_FAQ_US: { category: string; items: QA[] }[] = [
   },
   {
     category: "Pricing & Plans",
-    items: [faqItemsUS[7], faqItemsUS[8]],
+    items: [faqItemsUS[7], faqItemsUS[8], faqItemsUS[17]],
   },
   {
     category: "Integrations",
     items: [faqItemsUS[10]],
+  },
+  {
+    category: "Mileage & Home Office",
+    items: [faqItemsUS[11], faqItemsUS[12], faqItemsUS[13], faqItemsUS[14]],
+  },
+  {
+    category: "Data & Security",
+    items: [faqItemsUS[15], faqItemsUS[16]],
   },
 ];
 

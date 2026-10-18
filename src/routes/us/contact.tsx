@@ -51,6 +51,16 @@ function USContactPage() {
       <section className="py-6 sm:py-8 lg:py-10">
         <div className="mx-auto max-w-[600px] px-4 sm:px-6 lg:px-0">
           <ContactForm region="us" />
+          <p className="mt-4 text-center text-sm text-ink-60">
+            Prefer email? Write to us at{" "}
+            <a
+              href="mailto:support@receipt-one.com"
+              className="font-medium text-ink underline underline-offset-2 hover:underline-offset-4"
+            >
+              support@receipt-one.com
+            </a>
+            .
+          </p>
         </div>
       </section>
 
