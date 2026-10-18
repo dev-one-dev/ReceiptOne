@@ -191,7 +191,7 @@ const PARTS: PartEntry[] = [
               your plan and product version, the Services may include receipt scanning, OCR-based
               text extraction, expense categorization and tagging, mileage tracking, home office
               allocation tools, analytics, bulk upload tools, referral functionality, and report
-              generation and export in formats such as PDF or CSV.
+              generation and export in formats such as PDF and CSV.
             </p>
             <p>
               The Services are productivity and record-organization tools only. They are not a
@@ -1011,8 +1011,7 @@ function TermsPage() {
               ReceiptOne governing your access to and use of the ReceiptOne mobile application, web
               application, and related services. These Terms are intended for a United States and
               Canada launch and are drafted to reduce product, privacy, and consumer-law risk for
-              the current scope of the Services. Company-identifying details marked for completion
-              must be finalized before public release.
+              the current scope of the Services.
             </p>
           </div>
 

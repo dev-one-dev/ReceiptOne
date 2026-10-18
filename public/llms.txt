@@ -1,6 +1,6 @@
 # ReceiptOne
 
-> ReceiptOne is a receipt, expense and mileage tracker for freelancers, contractors and small businesses in Canada and the United States. Scan a receipt and it reads the merchant, date, total and tax amounts; log trips for mileage; and export PDF or CSV expense reports for your accountant or your own filing.
+> ReceiptOne is a receipt, expense and mileage tracker for freelancers, contractors and small businesses in Canada and the United States. Scan a receipt and it reads the merchant, date, total and tax amounts; log trips for mileage; and export PDF and CSV expense reports for your accountant or your own filing.
 
 ReceiptOne organizes records; it is not a tax filing service and does not calculate tax refunds. Subscriptions can be cancelled in the app at any time.
 

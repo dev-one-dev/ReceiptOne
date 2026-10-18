@@ -20,7 +20,7 @@ export const faqItems: QA[] = [
   },
   {
     q: "Why is PST marked as non-refundable?",
-    a: "Provincial sales tax (PST — charged in BC, Saskatchewan, Manitoba, and Quebec's QST) is generally not recoverable as an input tax credit the way GST/HST is. We flag it separately so your records are accurate when you file.",
+    a: "Provincial sales tax (PST — charged in BC, Saskatchewan, and Manitoba) is generally not recoverable as an input tax credit the way GST/HST is. We flag it separately so your records are accurate when you file.",
   },
   {
     q: "What if my receipt has no tax?",
@@ -28,7 +28,7 @@ export const faqItems: QA[] = [
   },
   {
     q: "Can I export my expense reports?",
-    a: "Yes. Export as PDF or CSV any time — formatted for your accountant, bookkeeper, or your own CRA filing. Your data, your format, no lock-in.",
+    a: "Yes. Export as PDF and CSV any time — formatted for your accountant, bookkeeper, or your own CRA filing. Your data, your format, no lock-in.",
   },
   {
     q: 'What does "Reimbursable" mean?',
@@ -36,7 +36,7 @@ export const faqItems: QA[] = [
   },
   {
     q: "What's included in the paid plan?",
-    a: "Everything: unlimited receipt scanning, automatic GST/HST/PST extraction, mileage tracking, bulk upload, multi-device sync, and PDF & CSV exports.",
+    a: "Everything: unlimited receipt scanning, automatic GST/HST/PST extraction, mileage tracking, bulk upload, multi-device sync, and PDF and CSV exports.",
   },
   {
     q: "Can I cancel anytime?",
@@ -115,7 +115,7 @@ export const faqItemsUS: QA[] = [
   },
   {
     q: "Can I export my expense reports?",
-    a: "Yes. Export as PDF or CSV any time — formatted for your accountant, bookkeeper, or your own IRS filing. Your data, your format, no lock-in.",
+    a: "Yes. Export as PDF and CSV any time — formatted for your accountant, bookkeeper, or your own IRS filing. Your data, your format, no lock-in.",
   },
   {
     q: 'What does "Reimbursable" mean?',
@@ -123,7 +123,7 @@ export const faqItemsUS: QA[] = [
   },
   {
     q: "What's included in the paid plan?",
-    a: "Everything: unlimited receipt scanning, automatic sales tax extraction, mileage tracking, bulk upload, multi-device sync, and PDF & CSV exports.",
+    a: "Everything: unlimited receipt scanning, automatic sales tax extraction, mileage tracking, bulk upload, multi-device sync, and PDF and CSV exports.",
   },
   {
     q: "Can I cancel anytime?",

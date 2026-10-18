@@ -121,7 +121,7 @@ export const ARTICLES: Article[] = [
       },
       {
         type: "callout",
-        text: "ReceiptOne keeps a photo of each receipt, reads the merchant, date, total and sales-tax amounts from it, and exports your records as PDF or CSV. It does not check a supplier's GST/HST registration number, so look for one yourself on purchases of $100 or more. Our privacy policy explains that data may be stored outside Canada, so keep your exported copy in Canada.",
+        text: "ReceiptOne keeps a photo of each receipt, reads the merchant, date, total and sales-tax amounts from it, and exports your records as PDF and CSV. It does not check a supplier's GST/HST registration number, so look for one yourself on purchases of $100 or more. Our privacy policy explains that data may be stored outside Canada, so keep your exported copy in Canada.",
       },
       {
         type: "h2",
@@ -361,7 +361,7 @@ export const ARTICLES: Article[] = [
       },
       {
         type: "callout",
-        text: "These rules apply to a receipt app like any other provider. ReceiptOne can export your records as PDF or CSV, which gives you a copy you hold yourself. Our privacy policy explains that its data may be stored outside Canada, so keep that exported copy in Canada.",
+        text: "These rules apply to a receipt app like any other provider. ReceiptOne can export your records as PDF and CSV, which gives you a copy you hold yourself. Our privacy policy explains that its data may be stored outside Canada, so keep that exported copy in Canada.",
       },
       {
         type: "h2",
@@ -772,7 +772,7 @@ export const ARTICLES: Article[] = [
       },
       {
         type: "callout",
-        text: "ReceiptOne's year-end export gives you a PDF or CSV of your organized records: expenses grouped by category, GST/HST totals by type, and a mileage summary. It covers the expense side of this guide, not your income or the GST/HST you collected. You or your accountant use it to fill in T2125; ReceiptOne does not prepare or file the form.",
+        text: "ReceiptOne's year-end export gives you a PDF and a CSV of your organized records: expenses grouped by category, GST/HST totals by type, and a mileage summary. It covers the expense side of this guide, not your income or the GST/HST you collected. You or your accountant use it to fill in T2125; ReceiptOne does not prepare or file the form.",
       },
       {
         type: "h2",
@@ -2864,7 +2864,7 @@ export const ARTICLES: Article[] = [
       },
       {
         type: "callout",
-        text: "ReceiptOne's year-end export gives you a PDF or CSV of your organized records: expenses grouped by category, GST/HST totals by type, and a mileage summary. You or your accountant use it to fill in Part 4. It does not cover your income, and ReceiptOne does not prepare or file T2125.",
+        text: "ReceiptOne's year-end export gives you a PDF and a CSV of your organized records: expenses grouped by category, GST/HST totals by type, and a mileage summary. You or your accountant use it to fill in Part 4. It does not cover your income, and ReceiptOne does not prepare or file T2125.",
       },
       {
         type: "h2",
@@ -3187,7 +3187,7 @@ export const ARTICLES: Article[] = [
       },
       {
         type: "p",
-        text: "ReceiptOne reads the merchant, date, total and tax lines from a receipt photo or PDF, labels each tax line GST, HST, PST or QST, and splits the tax by your province's rates when a receipt shows only a total. You can correct anything it reads wrongly. Mileage, home office and receipts sit in one app, and exports come as PDF or CSV, including a T2125 report. Receipt scanning is unlimited on every plan.",
+        text: "ReceiptOne reads the merchant, date, total and tax lines from a receipt photo or PDF, labels each tax line GST, HST, PST or QST, and splits the tax by your province's rates when a receipt shows only a total. You can correct anything it reads wrongly. Mileage, home office and receipts sit in one app, and exports come as PDF and CSV, including a T2125 report. Receipt scanning is unlimited on every plan.",
       },
       {
         type: "p",
@@ -3384,7 +3384,7 @@ export const ARTICLES: Article[] = [
           "Receipt capture. Photograph a receipt or upload a photo or PDF, and ReceiptOne reads the merchant, date, total and tax lines. Scanning is unlimited on every plan. You do not need a bank connection for a receipt to be recorded.",
           "GST/HST/PST per receipt. Each tax line on a receipt is labelled GST, HST, PST or QST, and when a receipt shows only a total, ReceiptOne splits the tax using your province's rates. You can correct anything it reads wrongly. Lite's pages describe sales tax tracking but do not say whether it reads the tax lines from a receipt photo.",
           "Mileage logbook. You enter a trip's start and end addresses and ReceiptOne works out the distance, building a log with dates, distances and purposes. It takes a minute per trip, which some people prefer to reviewing trips an automatic tracker recorded, and others will find tedious.",
-          "Expense export. A PDF or CSV of your expenses by category, plus mileage and home office, ready to hand to an accountant or to use when you fill T2125. There is no ledger to learn first.",
+          "Expense export. A PDF and a CSV of your expenses by category, plus mileage and home office, ready to hand to an accountant or to use when you fill T2125. There is no ledger to learn first.",
         ],
       },
       {
@@ -3546,7 +3546,7 @@ export const ARTICLES: Article[] = [
       },
       {
         type: "p",
-        text: "ReceiptOne keeps a photo of each receipt, reads the merchant, date, total and sales-tax amounts from it, lets you mark each receipt business or personal and add a note, and exports your records as PDF or CSV. It does not import receipts from your email yet, and mileage trips are entered rather than tracked automatically.",
+        text: "ReceiptOne keeps a photo of each receipt, reads the merchant, date, total and sales-tax amounts from it, lets you mark each receipt business or personal and add a note, and exports your records as PDF and CSV. It does not import receipts from your email yet, and mileage trips are entered rather than tracked automatically.",
       },
       {
         type: "h2",

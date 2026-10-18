@@ -20,7 +20,7 @@ const CA_FEATURES = [
   {
     label: "Reports",
     title: "Create reports anytime, anywhere",
-    desc: "Generate expense reports in seconds. Export to PDF or CSV with totals, categories, and receipt links — exactly how your accountant wants them.",
+    desc: "Generate expense reports in seconds. Export to PDF and CSV with totals, categories, and receipt links — exactly how your accountant wants them.",
     img: icPhoneReports,
     alt: "ReceiptOne app showing reports list",
   },

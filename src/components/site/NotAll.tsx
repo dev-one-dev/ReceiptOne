@@ -13,7 +13,7 @@ import usGraphic6 from "@/assets/figma/mileage-auto/US/Graphic-Small6.png";
 const CA_FEATURES = [
   {
     title: "Build Expense Reports That Make You Look Good",
-    desc: "ReceiptOne turns messy receipts into neat reports, ready to export to PDF or Excel.",
+    desc: "ReceiptOne turns messy receipts into neat reports, ready to export to PDF and CSV.",
     img: naBeaverPeace,
     alt: "Beaver giving a peace sign",
   },
@@ -31,13 +31,13 @@ const CA_FEATURES = [
   },
   {
     title: "Turn Organized Receipts into Audit-Ready Reports",
-    desc: "Export structured reports in PDF or Excel, complete with totals and receipt links for your accountant.",
+    desc: "Export structured reports in PDF and CSV, complete with totals and receipt links for your accountant.",
     img: naBeaverPhoneFolders,
     alt: "Beaver with phone and folders",
   },
   {
     title: "Plug ReceiptOne Into Your Workflow",
-    desc: "ReceiptOne will soon connect with QuickBooks and Google Drive, so syncing and reporting take care of themselves.",
+    desc: "ReceiptOne will soon sync with QuickBooks, connect your bank through Plaid, and take receipts by email forwarding, so syncing and reporting take care of themselves.",
     img: naBeaverThinking,
     alt: "Beaver thinking",
     comingSoon: true,
@@ -47,7 +47,7 @@ const CA_FEATURES = [
 const US_FEATURES = [
   {
     title: "Build Expense Reports That Make You Look Good",
-    desc: "ReceiptOne turns messy receipts into neat reports, ready to export to PDF or Excel.",
+    desc: "ReceiptOne turns messy receipts into neat reports, ready to export to PDF and CSV.",
     img: usGraphic1,
     alt: "Eagle building expense reports",
   },
@@ -65,13 +65,13 @@ const US_FEATURES = [
   },
   {
     title: "Turn Organized Receipts into Audit-Ready Reports",
-    desc: "Export structured reports in PDF or Excel, complete with totals and receipt links for your accountant.",
+    desc: "Export structured reports in PDF and CSV, complete with totals and receipt links for your accountant.",
     img: usGraphic4,
     alt: "Eagle with audit-ready reports",
   },
   {
     title: "Plug ReceiptOne Into Your Workflow",
-    desc: "ReceiptOne will soon connect with QuickBooks and Google Drive, so syncing and reporting take care of themselves.",
+    desc: "ReceiptOne will soon sync with QuickBooks, connect your bank through Plaid, and take receipts by email forwarding, so syncing and reporting take care of themselves.",
     img: usGraphic6,
     alt: "Eagle plugging into workflow",
     comingSoon: true,

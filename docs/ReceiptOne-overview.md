@@ -29,7 +29,7 @@ All expenses are organized, searchable, and categorizable. Mark individual expen
 Log trips and set custom mileage rates for accurate deduction claims. No spreadsheets or manual calculations needed.
 
 ### Tax-Ready Reports
-Export accountant-ready reports as PDF or CSV at any time. Reports include totals, tax breakdowns, and receipt links — ready to hand to an accountant or drop into tax software. ReceiptOne does not file taxes on your behalf; it organizes your data so filing is faster and more accurate.
+Export accountant-ready reports as PDF and CSV at any time. Reports include totals, tax breakdowns, and receipt links — ready to hand to an accountant or drop into tax software. ReceiptOne does not file taxes on your behalf; it organizes your data so filing is faster and more accurate.
 
 ### Home Office Expenses
 Track and organize home office expenses with dedicated categorization, making it easy to calculate deductible portions at tax time.
@@ -38,10 +38,9 @@ Track and organize home office expenses with dedicated categorization, making it
 Invite your accountant directly to your ReceiptOne archive. They get read-only access to your organized receipts and reports — no back-and-forth emails of exported files.
 
 ### Integrations
-- **QuickBooks** sync for bookkeeping workflows
-- **Google Drive** for backup and file sharing
-- **Email forwarding** — forward receipts directly to your ReceiptOne inbox
+- **Telegram** — send a receipt photo to the bot and it lands in your account
 - **Bulk upload** for catching up on a backlog of receipts
+- Coming soon: **QuickBooks** sync, **Plaid** bank connection, and **email forwarding** to your ReceiptOne inbox
 
 ### Mobile + Web
 Real-time sync between the mobile app (iOS and Android) and the web dashboard. Start a report on your phone, review it on desktop.
