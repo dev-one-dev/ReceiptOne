@@ -1,4 +1,5 @@
 import { Chip } from "@/components/site/Chip";
+import { useLang } from "@/lib/use-lang";
 import naBeaverPeace from "@/assets/figma/na-beaver-peace.webp";
 import naBeaverWheel from "@/assets/figma/na-beaver-wheel.webp";
 import naBeaverLaptop from "@/assets/figma/na-beaver-laptop.webp";
@@ -44,6 +45,40 @@ const CA_FEATURES = [
   },
 ] as const;
 
+const FR_FEATURES = [
+  {
+    title: "Des rapports de dépenses qui vous font bien paraître",
+    desc: "ReceiptOne transforme des reçus en désordre en rapports soignés, prêts à exporter en PDF et en CSV.",
+    img: naBeaverPeace,
+    alt: "Castor faisant le signe de la paix",
+  },
+  {
+    title: "Notez chaque kilomètre parcouru",
+    desc: "Enregistrez vos trajets rapidement, indiquez s'ils sont professionnels ou personnels et voyez votre pourcentage d'utilisation professionnelle. Enregistrez aussi vos trajets personnels, pour que le pourcentage soit exact.",
+    img: naBeaverWheel,
+    alt: "Castor au volant",
+  },
+  {
+    title: "Des dossiers de bureau à domicile prêts pour la déduction",
+    desc: "ReceiptOne vous aide à suivre et à organiser rapidement les dépenses de votre bureau à domicile, pour des demandes en toute confiance.",
+    img: naBeaverLaptop,
+    alt: "Castor avec un ordinateur portable et un casque d'écoute",
+  },
+  {
+    title: "Des reçus organisés, des rapports prêts en cas de vérification",
+    desc: "Exportez des rapports structurés en PDF et en CSV, avec totaux et liens vers les reçus pour votre comptable.",
+    img: naBeaverPhoneFolders,
+    alt: "Castor avec un téléphone et des dossiers",
+  },
+  {
+    title: "Intégrez ReceiptOne à votre façon de travailler",
+    desc: "ReceiptOne se synchronisera bientôt avec QuickBooks, se connectera à votre banque par Plaid et recevra vos reçus par transfert de courriels : synchronisation et rapports se feront d'eux-mêmes.",
+    img: naBeaverThinking,
+    alt: "Castor en pleine réflexion",
+    comingSoon: true,
+  },
+] as const;
+
 const US_FEATURES = [
   {
     title: "Build Expense Reports That Make You Look Good",
@@ -79,14 +114,15 @@ const US_FEATURES = [
 ] as const;
 
 export function NotAll({ region = "ca" }: { region?: "ca" | "us" }) {
-  const FEATURES = region === "us" ? US_FEATURES : CA_FEATURES;
+  const fr = useLang() === "fr" && region === "ca";
+  const FEATURES = region === "us" ? US_FEATURES : fr ? FR_FEATURES : CA_FEATURES;
   return (
     <section className="w-full px-4 pt-4 pb-4 sm:px-6 sm:pt-6 sm:pb-6 lg:px-8">
       <div className="mx-auto w-full max-w-[1200px]">
         {/* Header */}
         <div className="mb-10 flex items-center gap-4 sm:mb-12">
           <div className="h-px flex-1 bg-ink-10" />
-          <h2 className="eyebrow">And this is not all</h2>
+          <h2 className="eyebrow">{fr ? "Et ce n'est pas tout" : "And this is not all"}</h2>
           <div className="h-px flex-1 bg-ink-10" />
         </div>
 
@@ -110,7 +146,7 @@ export function NotAll({ region = "ca" }: { region?: "ca" | "us" }) {
             >
               {"comingSoon" in f && f.comingSoon && (
                 <Chip className="absolute top-0 left-1/2 z-20 -translate-x-1/2 -translate-y-1/2">
-                  Coming soon
+                  {fr ? "Bientôt disponible" : "Coming soon"}
                 </Chip>
               )}
               <div className="group flex h-full flex-col overflow-hidden rounded-card border border-hairline bg-white shadow-[0_2px_12px_rgba(0,0,0,0.06)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_40px_rgba(0,0,0,0.10)]">

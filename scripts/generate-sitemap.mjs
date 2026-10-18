@@ -15,6 +15,10 @@
  * some CI hosts) git history is incomplete, so the dates already committed in
  * public/sitemap.xml are reused instead; a page with no known date gets no
  * lastmod rather than a made-up one.
+ *
+ * Pages that have equivalents in another region or language (src/lib/locales.ts:
+ * /ca, /us and /fr, and their FAQ and contact pages) list every equivalent as
+ * an xhtml:link hreflang alternate, the same set the pages emit in <head>.
  */
 import { execFileSync } from "node:child_process";
 import { existsSync, readdirSync, readFileSync, statSync, writeFileSync, mkdirSync } from "node:fs";
@@ -30,6 +34,7 @@ const OUTPUT = "public/sitemap.xml";
 const PRIORITY = {
   "/ca": { p: "0.9", c: "weekly" },
   "/us": { p: "0.9", c: "weekly" },
+  "/fr": { p: "0.9", c: "weekly" },
   "/terms": { p: "0.3", c: "monthly" },
   "/privacy": { p: "0.3", c: "monthly" },
 };
@@ -157,6 +162,13 @@ const slugs = await loadTs(`
   export const ca = ARTICLES.map((a) => [a.slug, a.updatedAt]);
   export const us = US_ARTICLES.map((a) => [a.slug, a.updatedAt]);
 `);
+const { alternatesOf } = await loadTs(`
+  import { canadianPageOf, hreflangAlternates } from "@/lib/locales";
+  export const alternatesOf = (path) => {
+    const ca = canadianPageOf(path);
+    return ca ? hreflangAlternates(ca) : [];
+  };
+`);
 const routes = collect(ROUTES_DIR);
 const gitDates = gitLastCommitDates();
 const previous = gitDates ? null : previousLastmods();
@@ -210,11 +222,16 @@ const urls = [...pages.keys()]
   .map((path) => {
     const meta = PRIORITY[path] ?? { p: "0.6", c: "monthly" };
     const lastmod = pages.get(path);
-    return `  <url><loc>${ORIGIN}${path}</loc>${lastmod ? `<lastmod>${lastmod}</lastmod>` : ""}<changefreq>${meta.c}</changefreq><priority>${meta.p}</priority></url>`;
+    const alternates = alternatesOf(path)
+      .map(
+        (a) => `<xhtml:link rel="alternate" hreflang="${a.hrefLang}" href="${ORIGIN}${a.path}"/>`,
+      )
+      .join("");
+    return `  <url><loc>${ORIGIN}${path}</loc>${lastmod ? `<lastmod>${lastmod}</lastmod>` : ""}<changefreq>${meta.c}</changefreq><priority>${meta.p}</priority>${alternates}</url>`;
   })
   .join("\n");
 
-const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`;
+const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n${urls}\n</urlset>\n`;
 mkdirSync("public", { recursive: true });
 writeFileSync(OUTPUT, xml);
 console.log(

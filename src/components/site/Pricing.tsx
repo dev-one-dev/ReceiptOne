@@ -11,6 +11,7 @@ import { PrimaryCta } from "@/components/site/PrimaryCta";
 import { ROUTES } from "@/lib/routes";
 import { cn } from "@/lib/utils";
 import { formatPrice, getPlanFeatures, getPlans, TRIAL_DAYS, type Plan } from "@/lib/pricing";
+import { useLang } from "@/lib/use-lang";
 
 type Platform = "ios" | "android" | "desktop";
 type Region = "ca" | "us";
@@ -40,6 +41,32 @@ const US_PLAN_IMAGES: Record<string, string> = {
   year: usAnnualImg,
 };
 
+/**
+ * French display labels for the Canadian plans. Only names, periods and the
+ * feature list are translated here; prices, currency and the plan data in
+ * src/lib/pricing.ts are untouched. "TPS / TVH / TVP" and "ARC" follow the
+ * portal's fr locale.
+ */
+const PLAN_NAME_FR: Record<Plan["id"], string> = {
+  week: "Hebdomadaire",
+  month: "Mensuel",
+  year: "Annuel",
+};
+const PLAN_PERIOD_FR: Record<Plan["id"], string> = {
+  week: "/ semaine",
+  month: "/ mois",
+  year: "/ an",
+};
+const FEATURES_FR = [
+  "Numérisation de reçus illimitée",
+  "Suivi des dépenses et du kilométrage",
+  "Suivi de la TPS / TVH / TVP",
+  "Rapports de dépenses prêts pour l'ARC",
+  "Synchronisation multiappareil",
+  "Assistance dans l'application",
+  "Applications iOS, Android et Web",
+];
+
 /** A year's worth of the Monthly price. */
 function monthlyBasisPerYear(monthly: Plan): number {
   return parseFloat(monthly.price) * 12;
@@ -55,11 +82,16 @@ function yearlySavingPercent(monthly: Plan, yearly: Plan): number {
 
 function StoreCTA({ region }: { region: Region }) {
   const platform = usePlatform();
+  const fr = useLang() === "fr" && region === "ca";
 
   // One 44px row on desktop (12px gaps); stacked, button first, on mobile.
   return (
     <div className="flex flex-col items-stretch gap-3 sm:flex-row sm:flex-wrap sm:items-center">
-      <PrimaryCta href={ROUTES.signup}>Start {TRIAL_DAYS}-day free trial</PrimaryCta>
+      <PrimaryCta href={ROUTES.signup}>
+        {fr
+          ? `Commencer l'essai gratuit de ${TRIAL_DAYS} jours`
+          : `Start ${TRIAL_DAYS}-day free trial`}
+      </PrimaryCta>
       <div className="flex flex-wrap items-center gap-3">
         {platform !== "android" && <StoreBadge platform="apple" region={region} />}
         {platform !== "ios" && <StoreBadge platform="google" region={region} />}
@@ -70,7 +102,10 @@ function StoreCTA({ region }: { region: Region }) {
 
 export function Pricing({ region = "ca" }: { region?: Region }) {
   const plans = getPlans(region);
-  const features = getPlanFeatures(region);
+  const fr = useLang() === "fr" && region === "ca";
+  const features = fr ? FEATURES_FR : getPlanFeatures(region);
+  const planName = (p: Plan) => (fr ? PLAN_NAME_FR[p.id] : p.name);
+  const planPeriod = (p: Plan) => (fr ? PLAN_PERIOD_FR[p.id] : p.period);
   const planImages = region === "us" ? US_PLAN_IMAGES : CA_PLAN_IMAGES;
 
   const [selectedId, setSelectedId] = useState<string>("month");
@@ -87,18 +122,21 @@ export function Pricing({ region = "ca" }: { region?: Region }) {
       <div className="mx-auto w-full max-w-[1200px]">
         {/* Header */}
         <div className="mx-auto mb-6 max-w-2xl text-center">
-          <p className="eyebrow">Pricing</p>
-          <h2 className="mt-3 text-ink">Simple pricing. Cancel anytime.</h2>
+          <p className="eyebrow">{fr ? "Tarifs" : "Pricing"}</p>
+          <h2 className="mt-3 text-ink">
+            {fr ? "Des tarifs simples. Annulez en tout temps." : "Simple pricing. Cancel anytime."}
+          </h2>
           <p className="mt-4 text-body text-ink-60 sm:text-lead">
-            Try it free for {TRIAL_DAYS} days. The trial starts when you sign up, with no payment
-            details needed.
+            {fr
+              ? `Essayez-le gratuitement pendant ${TRIAL_DAYS} jours. L'essai commence à votre inscription, sans aucun renseignement de paiement.`
+              : `Try it free for ${TRIAL_DAYS} days. The trial starts when you sign up, with no payment details needed.`}
           </p>
           {/* Purchase flow per the portal: no web billing; subscriptions are
               bought, managed and cancelled in the App Store or Google Play. */}
           <p className="mt-2 text-sm text-ink-60">
-            To keep adding receipts after the trial, subscribe in the ReceiptOne app for iPhone or
-            Android. Subscriptions are billed through the App Store or Google Play, and you manage
-            or cancel them in your store account.
+            {fr
+              ? "Pour continuer à ajouter des reçus après l'essai, abonnez-vous dans l'application ReceiptOne pour iPhone ou Android. Les abonnements sont facturés par l'App Store ou Google Play, et vous les gérez ou les annulez dans votre compte de la boutique."
+              : "To keep adding receipts after the trial, subscribe in the ReceiptOne app for iPhone or Android. Subscriptions are billed through the App Store or Google Play, and you manage or cancel them in your store account."}
           </p>
         </div>
 
@@ -109,7 +147,7 @@ export function Pricing({ region = "ca" }: { region?: Region }) {
           className="flex flex-col items-center"
         >
           <TabsPrimitive.List
-            aria-label="Billing period"
+            aria-label={fr ? "Période de facturation" : "Billing period"}
             className="flex items-center gap-1 rounded-pill border border-hairline bg-white p-1.5 shadow-[0_2px_12px_rgba(0,0,0,0.06)]"
           >
             {plans.map((plan) => {
@@ -123,7 +161,7 @@ export function Pricing({ region = "ca" }: { region?: Region }) {
                     isActive ? "bg-ink text-paper" : "text-ink-60 hover:text-ink",
                   )}
                 >
-                  {plan.name}
+                  {planName(plan)}
                   {/* Inline saving, Yearly only. Its 16px line box sits inside
                       the tab's 20px line, so the pill height is unchanged.
                       Template string, not cn(): tailwind-merge would drop
@@ -168,7 +206,7 @@ export function Pricing({ region = "ca" }: { region?: Region }) {
 
           {/* Content layer — z-10 keeps text and CTA above the asset */}
           <div className="relative z-10">
-            <h3 className="eyebrow">{selectedPlan.name}</h3>
+            <h3 className="eyebrow">{planName(selectedPlan)}</h3>
 
             {/*
              * grid + col/row-start-1 stacks all three periods' price blocks in
@@ -194,7 +232,7 @@ export function Pricing({ region = "ca" }: { region?: Region }) {
                       <span className="font-display text-h2 font-semibold tracking-display whitespace-nowrap text-ink">
                         {formatPrice(plan, plan.price)}
                       </span>
-                      <span className="font-sans text-body text-ink-60">{plan.period}</span>
+                      <span className="font-sans text-body text-ink-60">{planPeriod(plan)}</span>
                     </div>
                   </div>
                 );
@@ -226,8 +264,9 @@ export function Pricing({ region = "ca" }: { region?: Region }) {
         </div>
 
         <p className="mt-4 text-center font-sans text-sm text-ink-60">
-          All plans include a {TRIAL_DAYS}-day free trial · Cancel anytime · Prices in{" "}
-          {plans[0].currency}
+          {fr
+            ? `Tous les forfaits comprennent un essai gratuit de ${TRIAL_DAYS} jours · Annulez en tout temps · Prix en ${plans[0].currency}`
+            : `All plans include a ${TRIAL_DAYS}-day free trial · Cancel anytime · Prices in ${plans[0].currency}`}
         </p>
       </div>
     </section>

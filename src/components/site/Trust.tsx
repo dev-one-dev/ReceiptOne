@@ -1,4 +1,5 @@
 import React from "react";
+import { useLang } from "@/lib/use-lang";
 
 type Region = "ca" | "us";
 
@@ -41,6 +42,39 @@ const CA_ITEMS: TrustItem[] = [
   },
 ];
 
+const FR_ITEMS: TrustItem[] = [
+  {
+    Icon: LockIcon,
+    title: "Chiffrement de niveau bancaire",
+    desc: "Tous les reçus et toutes les données financières sont chiffrés au repos et en transit avec AES-256. Vos données n'appartiennent qu'à vous.",
+  },
+  {
+    Icon: ShieldCheckIcon,
+    title: "Rapports prêts pour l'ARC",
+    desc: "Des rapports de dépenses mis en forme selon les exigences de l'ARC. Prêts pour votre déclaration de revenus, vos déclarations de TVH ou une vérification de l'ARC.",
+  },
+  {
+    Icon: CloudIcon,
+    title: "Sauvegarde automatique dans le nuage",
+    desc: "Chaque reçu est sauvegardé dès que vous le photographiez. Consultez tout votre historique sur n'importe quel appareil, en tout temps.",
+  },
+  {
+    Icon: EyeOffIcon,
+    title: "Confidentialité avant tout",
+    desc: "Vos données financières ne sont jamais vendues, partagées ni utilisées à des fins publicitaires. Point final.",
+  },
+  {
+    Icon: FileCheckIcon,
+    title: "Documentation prête en cas de vérification",
+    desc: "Toutes les pièces justificatives sont organisées et horodatées. Classées et prêtes si l'ARC vous les demande un jour.",
+  },
+  {
+    Icon: ReceiptTaxIcon,
+    title: "Suivi de la TPS / TVH / TVP",
+    desc: "Crédits de taxe sur les intrants suivis automatiquement par province, pour des dossiers exacts et organisés.",
+  },
+];
+
 const US_ITEMS: TrustItem[] = [
   {
     Icon: LockIcon,
@@ -75,9 +109,14 @@ const US_ITEMS: TrustItem[] = [
 ];
 
 export function Trust({ region = "ca" }: { region?: Region }) {
-  const items = region === "us" ? US_ITEMS : CA_ITEMS;
+  const fr = useLang() === "fr" && region === "ca";
+  const items = region === "us" ? US_ITEMS : fr ? FR_ITEMS : CA_ITEMS;
   const heading =
-    region === "us" ? "Built for US tax compliance" : "Built for Canadian tax compliance";
+    region === "us"
+      ? "Built for US tax compliance"
+      : fr
+        ? "Conçu pour la conformité fiscale canadienne"
+        : "Built for Canadian tax compliance";
 
   return (
     <section
@@ -87,12 +126,14 @@ export function Trust({ region = "ca" }: { region?: Region }) {
       <div className="mx-auto w-full max-w-[1200px]">
         {/* Header */}
         <div className="mx-auto mb-14 max-w-2xl text-center">
-          <p className="eyebrow">Security &amp; compliance</p>
+          <p className="eyebrow">{fr ? "Sécurité et conformité" : "Security & compliance"}</p>
           <h2 className="mt-3 text-paper">{heading}</h2>
           <p className="mt-4 text-body text-paper-40 sm:text-lead">
             {region === "us"
               ? "AES-256 encryption, IRS-ready records, and cloud backup that keeps your receipts until you delete them — built to protect your data and your deductions."
-              : "AES-256 encryption, CRA-ready records, and cloud backup that keeps your receipts until you delete them — built to protect your data and your deductions."}
+              : fr
+                ? "Chiffrement AES-256, dossiers prêts pour l'ARC et sauvegarde dans le nuage qui conserve vos reçus jusqu'à ce que vous les supprimiez — conçu pour protéger vos données et vos déductions."
+                : "AES-256 encryption, CRA-ready records, and cloud backup that keeps your receipts until you delete them — built to protect your data and your deductions."}
           </p>
         </div>
 

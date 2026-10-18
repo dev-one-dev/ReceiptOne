@@ -16,7 +16,7 @@ export const Route = (createFileRoute as any)("/articles/")({
       ogTitle: "Canadian Freelancer Tax Guides | ReceiptOne",
       ogDescription:
         "Expert guides on CRA compliance, GST/HST, mileage tracking, and top deductions for self-employed Canadians.",
-      hreflang: regionHreflang("/articles", "/us/articles"),
+      hreflang: regionHreflang("/articles"),
     });
 
     const breadcrumb = breadcrumbJsonLd([

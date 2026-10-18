@@ -40,10 +40,16 @@ const txt = `# ReceiptOne
 
 > ReceiptOne is a receipt, expense and mileage tracker for freelancers, contractors and small businesses in Canada and the United States. Scan a receipt and it reads the merchant, date, total and tax amounts; log trips for mileage; and export PDF and CSV expense reports for your accountant or your own filing.
 
-ReceiptOne organizes records; it is not a tax filing service and does not calculate tax refunds. Subscriptions can be cancelled in the app at any time.
+ReceiptOne organizes records; it is not a tax filing service and does not calculate tax refunds. Subscriptions are bought in the mobile app through the App Store or Google Play and can be cancelled there at any time.
 
 ${regionSection("Canada", "/ca", regions.ca, "GST/HST/PST tracking and CRA-ready expense reports.")}
 ${regionSection("United States", "/us", regions.us, "sales tax tracking and IRS-ready expense reports.")}
+## Canada (French)
+
+- [Page d'accueil](${ORIGIN}/fr): the Canadian site in Canadian French (fr-CA); same plans and prices as /ca.
+- [Centre d'aide](${ORIGIN}/fr/faq): frequently asked questions in French
+- [Nous joindre](${ORIGIN}/fr/contact): contact form in French
+
 ## Apps
 
 - [App Store (Canada)](${appStore.ca})

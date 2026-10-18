@@ -28,7 +28,7 @@ export const Route = createFileRoute("/ca")({
       ogTitle: "ReceiptOne Canada | Receipt, Expense & Mileage Tracker",
       ogDescription:
         "Turn receipts into CRA-ready expense reports automatically. Built for Canadian freelancers, contractors, and small businesses.",
-      hreflang: regionHreflang("/ca", "/us"),
+      hreflang: regionHreflang("/ca"),
     });
     return {
       meta: seo.meta,

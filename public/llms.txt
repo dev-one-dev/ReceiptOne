@@ -2,7 +2,7 @@
 
 > ReceiptOne is a receipt, expense and mileage tracker for freelancers, contractors and small businesses in Canada and the United States. Scan a receipt and it reads the merchant, date, total and tax amounts; log trips for mileage; and export PDF and CSV expense reports for your accountant or your own filing.
 
-ReceiptOne organizes records; it is not a tax filing service and does not calculate tax refunds. Subscriptions can be cancelled in the app at any time.
+ReceiptOne organizes records; it is not a tax filing service and does not calculate tax refunds. Subscriptions are bought in the mobile app through the App Store or Google Play and can be cancelled there at any time.
 
 ## Canada
 
@@ -15,6 +15,12 @@ ReceiptOne organizes records; it is not a tax filing service and does not calcul
 - [Landing page](https://receipt-one.com/us): sales tax tracking and IRS-ready expense reports.
 - Prices: Weekly USD 3.99 per week; Monthly USD 9.99 per month; Yearly USD 99.99 per year. All plans include a 7-day free trial and the same features.
 - Included: Unlimited receipt scanning, Expense & mileage tracking, Sales tax tracking, IRS-ready expense reports, Multi-device sync, In-app support, iOS, Android and web apps.
+
+## Canada (French)
+
+- [Page d'accueil](https://receipt-one.com/fr): the Canadian site in Canadian French (fr-CA); same plans and prices as /ca.
+- [Centre d'aide](https://receipt-one.com/fr/faq): frequently asked questions in French
+- [Nous joindre](https://receipt-one.com/fr/contact): contact form in French
 
 ## Apps
 

@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
 import { APP_STORE_URL, PLAY_STORE_URL, type StoreRegion } from "@/lib/stores";
+import { useLang } from "@/lib/use-lang";
 
 type StorePlatform = "apple" | "google";
 type StoreBadgeVariant = "light" | "dark";
@@ -50,11 +51,23 @@ export function StoreBadge({
 }) {
   const isApple = platform === "apple";
   const href = isApple ? APP_STORE_URL[region] : PLAY_STORE_URL;
-  const microLabel = isApple ? "Download on the" : "GET IT ON";
+  // French micro-labels are Apple's and Google's own fr-CA badge wording.
+  const fr = useLang() === "fr";
+  const microLabel = isApple
+    ? fr
+      ? "Télécharger dans l'"
+      : "Download on the"
+    : fr
+      ? "DISPONIBLE SUR"
+      : "GET IT ON";
   const name = isApple ? "App Store" : "Google Play";
   const ariaLabel = isApple
-    ? "Download ReceiptOne on the App Store"
-    : "Get ReceiptOne on Google Play";
+    ? fr
+      ? "Télécharger ReceiptOne dans l'App Store"
+      : "Download ReceiptOne on the App Store"
+    : fr
+      ? "Obtenir ReceiptOne sur Google Play"
+      : "Get ReceiptOne on Google Play";
   const transitionClass = variant === "dark" ? "transition-colors" : "transition-opacity";
 
   return (

@@ -12,7 +12,7 @@ export const Route = (createFileRoute as any)("/faq")({
       title: "Help Center — Frequently Asked Questions | ReceiptOne",
       description:
         "Answers to common questions about ReceiptOne — receipt scanning, GST/HST tracking, mileage, exports, pricing, and CRA compliance.",
-      hreflang: regionHreflang("/faq", "/us/faq"),
+      hreflang: regionHreflang("/faq"),
     });
 
     const breadcrumb = breadcrumbJsonLd([

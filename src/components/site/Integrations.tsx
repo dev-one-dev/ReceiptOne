@@ -2,6 +2,7 @@ import { FileSpreadsheet, Mail } from "lucide-react";
 import telegramLogo from "@/assets/integrations/telegram.png";
 import quickbooksLogo from "@/assets/integrations/quickbooks-logo.png";
 import plaidLogo from "@/assets/integrations/plaid-logo.png";
+import { useLang } from "@/lib/use-lang";
 
 type Integration = {
   name: string;
@@ -69,6 +70,58 @@ const INTEGRATIONS: Integration[] = [
 ];
 
 /**
+ * French copy of INTEGRATIONS, same order and assets. Labels follow the
+ * portal's fr locale (integrationsPage, telegram): "Connecter Telegram",
+ * "Ouvrir dans Telegram", "Transfert de courriels", "Rapprochement de relevés
+ * bancaires", "Bientôt disponible".
+ */
+const INTEGRATIONS_FR: Integration[] = [
+  {
+    name: "Telegram",
+    description:
+      "Envoyez une photo, une image ou un PDF de reçu à @ReceiptOne_bot. Il est lu, enregistré dans votre compte et confirmé dans la conversation. Posez une question à l'assistant ou envoyez /support pour joindre notre équipe.",
+    steps: [
+      "Dans l'application Web ReceiptOne, ouvrez Intégrations et choisissez Connecter Telegram.",
+      "Scannez le code QR avec votre téléphone, ou touchez Ouvrir dans Telegram.",
+      "Envoyez votre premier reçu au robot.",
+    ],
+    link: { href: "https://t.me/ReceiptOne_bot", label: "Ouvrir @ReceiptOne_bot" },
+    comingSoon: false,
+    brand: "logo",
+    logo: telegramLogo,
+  },
+  {
+    name: "Transfert de courriels",
+    description: "Transférez vos reçus à votre adresse ReceiptOne — sans application.",
+    comingSoon: true,
+    brand: "icon",
+    icon: Mail,
+  },
+  {
+    name: "QuickBooks",
+    description: "Synchronisez vos dépenses classées directement avec votre comptabilité.",
+    comingSoon: true,
+    brand: "logo",
+    logo: quickbooksLogo,
+  },
+  {
+    name: "Plaid",
+    description: "Connectez votre banque pour rapprocher vos dépenses automatiquement.",
+    comingSoon: true,
+    brand: "logo",
+    logo: plaidLogo,
+    logoHeightClassName: "h-6",
+  },
+  {
+    name: "Rapprochement de relevés bancaires",
+    description: "Téléversez vos relevés bancaires.",
+    comingSoon: true,
+    brand: "icon",
+    icon: FileSpreadsheet,
+  },
+];
+
+/**
  * Five cards on a six-track grid: two wide cards (3 tracks each) over three
  * narrow ones (2 tracks each). On the two-column mobile grid the fifth card
  * spans the full row so nothing is left orphaned.
@@ -82,6 +135,8 @@ const CARD_SPAN = [
 ];
 
 export function Integrations() {
+  const fr = useLang() === "fr";
+  const integrations = fr ? INTEGRATIONS_FR : INTEGRATIONS;
   return (
     <section
       id="integrations"
@@ -90,17 +145,20 @@ export function Integrations() {
       <div className="mx-auto w-full max-w-[1200px]">
         {/* Header */}
         <div className="mx-auto mb-10 max-w-2xl text-center">
-          <p className="eyebrow">Integrations</p>
-          <h2 className="mt-2 text-ink">Fits into how you already work</h2>
+          <p className="eyebrow">{fr ? "Intégrations" : "Integrations"}</p>
+          <h2 className="mt-2 text-ink">
+            {fr ? "S'intègre à votre façon de travailler" : "Fits into how you already work"}
+          </h2>
           <p className="mt-3 max-w-2xl text-body text-ink-60 sm:text-lead">
-            Send receipts to @ReceiptOne_bot on Telegram today. Email forwarding, QuickBooks, bank
-            sync, and bank statement reconciliation are on the way.
+            {fr
+              ? "Envoyez dès aujourd'hui vos reçus à @ReceiptOne_bot sur Telegram. Le transfert de courriels, QuickBooks, la synchronisation bancaire et le rapprochement de relevés bancaires s'en viennent."
+              : "Send receipts to @ReceiptOne_bot on Telegram today. Email forwarding, QuickBooks, bank sync, and bank statement reconciliation are on the way."}
           </p>
         </div>
 
         {/* Cards */}
         <div className="grid grid-cols-2 gap-4 lg:grid-cols-6">
-          {INTEGRATIONS.map((integration, i) => (
+          {integrations.map((integration, i) => (
             <div
               key={integration.name}
               className={`${CARD_SPAN[i]} flex flex-col gap-3 rounded-card border border-hairline bg-white p-5 shadow-[0_2px_12px_rgba(0,0,0,0.06)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_40px_rgba(0,0,0,0.10)]`}
@@ -119,7 +177,7 @@ export function Integrations() {
                 )}
                 {integration.comingSoon && (
                   <span className="shrink-0 rounded-pill bg-ink-05 px-2.5 py-1 text-label font-medium text-ink-60">
-                    Coming soon
+                    {fr ? "Bientôt disponible" : "Coming soon"}
                   </span>
                 )}
               </div>

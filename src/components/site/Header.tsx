@@ -2,7 +2,44 @@ import { Link, useLocation, useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import logoMark from "@/assets/figma/logo-mark.svg";
 import logoWordmark from "@/assets/figma/logo-wordmark.svg";
-import { ROUTES } from "@/lib/routes";
+import { ROUTES, type AppRoute } from "@/lib/routes";
+import { FRENCH_PAGES, US_PAGES, canadianPageOf, langOf, type Lang } from "@/lib/locales";
+
+/** Header copy. French follows the portal's own labels (authPage, nav). */
+const COPY: Record<Lang, Record<string, string>> = {
+  en: {
+    howItWorks: "How It Works",
+    benefits: "Benefits",
+    pricing: "Pricing",
+    faq: "FAQ",
+    login: "Log in",
+    join: "Join now",
+    changeRegion: "Change region",
+    canada: "Canada",
+    usa: "USA",
+    openMenu: "Open menu",
+    closeMenu: "Close menu",
+    primary: "Primary",
+    sections: "Site sections",
+    language: "Language",
+  },
+  fr: {
+    howItWorks: "Comment ça marche",
+    benefits: "Avantages",
+    pricing: "Tarifs",
+    faq: "FAQ",
+    login: "Se connecter",
+    join: "S'inscrire",
+    changeRegion: "Changer de région",
+    canada: "Canada",
+    usa: "États-Unis",
+    openMenu: "Ouvrir le menu",
+    closeMenu: "Fermer le menu",
+    primary: "Navigation principale",
+    sections: "Sections du site",
+    language: "Langue",
+  },
+};
 
 /**
  * Header — pixel-mapped from Figma node 29:26473
@@ -13,6 +50,11 @@ export function Header() {
   const navigate = useNavigate();
   const isUS = location.pathname.startsWith("/us");
   const current: "ca" | "us" = isUS ? "us" : "ca";
+  const lang = langOf(location.pathname);
+  const t = COPY[lang];
+  const home: AppRoute = isUS ? "/us" : lang === "fr" ? "/fr" : "/ca";
+  // The page this one mirrors in the other language/region, when it has one.
+  const canadianPage = canadianPageOf(location.pathname);
   const [open, setOpen] = useState(false);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
@@ -58,25 +100,17 @@ export function Header() {
     if (region === current) return;
     const path = location.pathname;
     if (region === "us") {
-      if (path === "/faq") {
-        navigate({ to: "/us/faq" as any });
-        return;
-      }
       if (path.startsWith("/articles")) {
         navigate({ to: "/us/articles/" as any });
         return;
       }
-      navigate({ to: "/us" });
+      navigate({ to: ((canadianPage && US_PAGES[canadianPage]) ?? "/us") as AppRoute });
     } else {
-      if (path === "/us/faq") {
-        navigate({ to: "/faq" as any });
-        return;
-      }
       if (path.startsWith("/us/articles")) {
         navigate({ to: "/articles/" as any });
         return;
       }
-      navigate({ to: "/ca" });
+      navigate({ to: (canadianPage ?? "/ca") as AppRoute });
     }
   };
 
@@ -90,7 +124,7 @@ export function Header() {
       const top = el.getBoundingClientRect().top + window.scrollY - scrollOffset();
       window.scrollTo({ top, behavior: "smooth" });
     } else {
-      navigate({ to: (isUS ? "/us" : "/ca") as any, hash: id });
+      navigate({ to: home, hash: id });
     }
   };
 
@@ -110,7 +144,7 @@ export function Header() {
           setMobileNavOpen(false);
         }}
         className="flex items-center gap-1.5 rounded-card px-1 py-1 font-display text-body font-semibold text-ink"
-        aria-label="Change region"
+        aria-label={t.changeRegion}
         aria-haspopup="menu"
         aria-expanded={open}
       >
@@ -119,7 +153,11 @@ export function Header() {
         ) : (
           <FlagUSA className="size-7 sm:size-8" />
         )}
-        <span>{current === "ca" ? "CA" : "US"}</span>
+        {/* The flag carries the region on phones, where the language switch
+            needs the room next to the wordmark. */}
+        <span className={isUS ? undefined : "hidden sm:inline"}>
+          {current === "ca" ? "CA" : "US"}
+        </span>
         <svg
           width="12"
           height="12"
@@ -149,7 +187,7 @@ export function Header() {
             className="flex w-full items-center gap-2.5 px-4 py-2.5 text-left text-body font-medium hover:bg-ink-05"
           >
             <FlagCanada className="size-6 shrink-0 sm:size-7" />
-            <span>Canada</span>
+            <span>{t.canada}</span>
           </button>
           <button
             role="menuitem"
@@ -158,10 +196,45 @@ export function Header() {
             className="flex w-full items-center gap-2.5 px-4 py-2.5 text-left text-body font-medium hover:bg-ink-05"
           >
             <FlagUSA className="size-6 shrink-0 sm:size-7" />
-            <span>USA</span>
+            <span>{t.usa}</span>
           </button>
         </div>
       )}
+    </div>
+  );
+
+  const enPath = (canadianPage ?? "/ca") as AppRoute;
+  const frPath = ((canadianPage && FRENCH_PAGES[canadianPage]) ?? "/fr") as AppRoute;
+  const langLinkClass = (active: boolean) =>
+    `rounded-pill px-2 py-1 transition-colors ${active ? "bg-ink text-paper" : "text-ink-60 hover:text-ink"}`;
+  const languageSwitcher = isUS ? null : (
+    <div
+      role="group"
+      aria-label={t.language}
+      className="flex shrink-0 items-center rounded-pill border border-hairline bg-white/60 p-0.5 font-mono text-label uppercase tracking-mono"
+    >
+      <Link
+        to={enPath}
+        hash={location.hash || undefined}
+        hrefLang="en-CA"
+        lang="en"
+        aria-label="English"
+        aria-current={lang === "en" ? "true" : undefined}
+        className={langLinkClass(lang === "en")}
+      >
+        EN
+      </Link>
+      <Link
+        to={frPath}
+        hash={location.hash || undefined}
+        hrefLang="fr-CA"
+        lang="fr"
+        aria-label="Français"
+        aria-current={lang === "fr" ? "true" : undefined}
+        className={langLinkClass(lang === "fr")}
+      >
+        FR
+      </Link>
     </div>
   );
 
@@ -174,12 +247,12 @@ export function Header() {
               ? "border-hairline bg-white/70 shadow-[0_8px_32px_rgba(0,0,0,0.08)]"
               : "border-transparent bg-white/40"
           }`}
-          aria-label="Primary"
+          aria-label={t.primary}
         >
           <Link
-            to={isUS ? "/us" : "/ca"}
+            to={home}
             onClick={(e) => {
-              if (location.pathname === (isUS ? "/us" : "/ca")) {
+              if (location.pathname === home) {
                 e.preventDefault();
               }
               setMobileNavOpen(false);
@@ -188,7 +261,7 @@ export function Header() {
             className="flex min-w-0 shrink items-center gap-1.5 sm:gap-2"
           >
             <LogoMark />
-            <LogoWordmark />
+            <LogoWordmark compact={!isUS} />
           </Link>
 
           <div className="hidden flex-1 items-center justify-center gap-3 lg:flex">
@@ -199,7 +272,7 @@ export function Header() {
                   onClick={scrollTo("how-it-works")}
                   className="rounded-card px-0.5 py-1 transition-opacity hover:opacity-70 whitespace-nowrap"
                 >
-                  How It Works
+                  {t.howItWorks}
                 </button>
               </li>
               <li>
@@ -208,7 +281,7 @@ export function Header() {
                   onClick={scrollTo("benefits")}
                   className="rounded-card px-0.5 py-1 transition-opacity hover:opacity-70"
                 >
-                  Benefits
+                  {t.benefits}
                 </button>
               </li>
               <li>
@@ -217,7 +290,7 @@ export function Header() {
                   onClick={scrollTo("pricing")}
                   className="rounded-card px-0.5 py-1 transition-opacity hover:opacity-70"
                 >
-                  Pricing
+                  {t.pricing}
                 </button>
               </li>
               <li>
@@ -226,36 +299,40 @@ export function Header() {
                   onClick={scrollTo("faq")}
                   className="rounded-card px-0.5 py-1 transition-opacity hover:opacity-70"
                 >
-                  FAQ
+                  {t.faq}
                 </button>
               </li>
             </ul>
 
+            {languageSwitcher}
             {regionSwitcher}
           </div>
 
           <div className="flex shrink-0 flex-nowrap items-center justify-end gap-2">
-            <div className="lg:hidden">{regionSwitcher}</div>
+            <div className="flex items-center gap-2 lg:hidden">
+              {languageSwitcher}
+              {regionSwitcher}
+            </div>
 
             <div className="hidden items-center gap-2 sm:gap-3 lg:flex">
               <a
                 href={ROUTES.login}
                 className="shrink-0 whitespace-nowrap rounded-pill border border-ink px-3 py-2 font-display text-body font-semibold text-ink transition-colors hover:bg-ink-05"
               >
-                Log in
+                {t.login}
               </a>
               <a
                 href={ROUTES.signup}
                 className="shrink-0 whitespace-nowrap rounded-pill bg-ink px-3 py-2 font-display text-body font-semibold text-paper transition-opacity hover:opacity-90"
               >
-                Join now
+                {t.join}
               </a>
             </div>
 
             <button
               type="button"
               className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-card border border-hairline bg-white/80 text-ink transition-colors hover:bg-ink-05 lg:hidden"
-              aria-label={mobileNavOpen ? "Close menu" : "Open menu"}
+              aria-label={mobileNavOpen ? t.closeMenu : t.openMenu}
               aria-expanded={mobileNavOpen}
               aria-controls="site-mobile-nav"
               onClick={() => {
@@ -272,7 +349,7 @@ export function Header() {
           <div
             id="site-mobile-nav"
             role="navigation"
-            aria-label="Site sections"
+            aria-label={t.sections}
             className="absolute left-0 right-0 top-full z-40 mt-2 rounded-card border border-hairline bg-white/95 p-3 shadow-[0_16px_48px_rgba(0,0,0,0.12)] backdrop-blur-xl lg:hidden"
           >
             <div className="flex flex-col gap-0.5 border-b border-hairline pb-2">
@@ -281,16 +358,16 @@ export function Header() {
                 className={mobileNavBtnClass}
                 onClick={scrollTo("how-it-works")}
               >
-                How It Works
+                {t.howItWorks}
               </button>
               <button type="button" className={mobileNavBtnClass} onClick={scrollTo("benefits")}>
-                Benefits
+                {t.benefits}
               </button>
               <button type="button" className={mobileNavBtnClass} onClick={scrollTo("pricing")}>
-                Pricing
+                {t.pricing}
               </button>
               <button type="button" className={mobileNavBtnClass} onClick={scrollTo("faq")}>
-                FAQ
+                {t.faq}
               </button>
             </div>
             <div className="mt-3 flex flex-col gap-2">
@@ -299,14 +376,14 @@ export function Header() {
                 onClick={() => setMobileNavOpen(false)}
                 className="block w-full rounded-pill border border-ink py-3 text-center font-display text-body font-semibold text-ink transition-colors hover:bg-ink-05"
               >
-                Log in
+                {t.login}
               </a>
               <a
                 href={ROUTES.signup}
                 onClick={() => setMobileNavOpen(false)}
                 className="block w-full rounded-pill bg-ink py-3 text-center font-display text-body font-semibold text-paper transition-opacity hover:opacity-90"
               >
-                Join now
+                {t.join}
               </a>
             </div>
           </div>
@@ -354,12 +431,16 @@ function LogoMark() {
   return <img src={logoMark} alt="" aria-hidden className="block size-8 shrink-0 sm:size-10" />;
 }
 
-function LogoWordmark() {
+/**
+ * `compact`: on the narrowest phones (< 360px) the header also carries the
+ * EN/FR switch, so the wordmark steps aside and the mark alone stands in.
+ */
+function LogoWordmark({ compact = false }: { compact?: boolean }) {
   return (
     <img
       src={logoWordmark}
       alt="ReceiptOne"
-      className="block h-[18px] w-auto max-w-[min(140px,38vw)] shrink object-left object-contain sm:h-6 sm:max-w-none"
+      className={`${compact ? "hidden min-[360px]:block" : "block"} h-[18px] w-auto max-w-[min(140px,38vw)] shrink object-left object-contain sm:h-6 sm:max-w-none`}
     />
   );
 }

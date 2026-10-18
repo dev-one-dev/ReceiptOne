@@ -7,6 +7,7 @@ import { AuthProvider } from "@/integrations/firebase/auth-context";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { NotFoundBeaver } from "@/components/site/NotFoundBeaver";
+import { langOf } from "@/lib/locales";
 
 export function NotFoundComponent() {
   const location = useLocation();
@@ -80,8 +81,10 @@ export const Route = createRootRoute({
 });
 
 function RootShell({ children }: { children: React.ReactNode }) {
+  // /fr pages are Canadian French; everything else stays "en".
+  const lang = langOf(useLocation().pathname) === "fr" ? "fr-CA" : "en";
   return (
-    <html lang="en">
+    <html lang={lang}>
       <head>
         <HeadContent />
       </head>

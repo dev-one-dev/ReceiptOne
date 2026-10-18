@@ -16,7 +16,7 @@ export const Route = (createFileRoute as any)("/us/articles/")({
       ogTitle: "US Freelancer Tax Guides | ReceiptOne",
       ogDescription:
         "Expert guides on IRS compliance, Schedule C, mileage tracking, and top deductions for self-employed Americans.",
-      hreflang: regionHreflang("/articles", "/us/articles"),
+      hreflang: regionHreflang("/articles"),
     });
 
     const breadcrumb = breadcrumbJsonLd([

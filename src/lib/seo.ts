@@ -7,6 +7,7 @@
 import { SITE_URL as EXTERNAL_SITE_URL, siteUrl } from "@/lib/external";
 import { getPlans, type Plan } from "@/lib/pricing";
 import { APP_STORE_URL, PLAY_STORE_URL } from "@/lib/stores";
+import { hreflangAlternates, type Lang } from "@/lib/locales";
 
 export const SITE_URL = EXTERNAL_SITE_URL;
 export const SITE_NAME = "ReceiptOne";
@@ -17,9 +18,7 @@ export const DEFAULT_OG_IMAGE = siteUrl("/og-image.png");
 export const url = (path: string) => `${SITE_URL}${path.startsWith("/") ? path : `/${path}`}`;
 
 type MetaEntry =
-  | { title: string }
-  | { name: string; content: string }
-  | { property: string; content: string };
+  { title: string } | { name: string; content: string } | { property: string; content: string };
 
 type LinkEntry = { rel: string; href: string; hrefLang?: string };
 
@@ -108,8 +107,17 @@ export const websiteJsonLd = {
 /** UN/CEFACT codes for a subscription's billing period. */
 const BILLING_UNIT: Record<Plan["id"], string> = { week: "WEE", month: "MON", year: "ANN" };
 
-export function softwareApplicationJsonLd(region: "us" | "ca") {
-  const pageUrl = url(region === "us" ? "/us" : "/ca");
+/** French plan names, matching the Pricing section's tabs. Prices are untouched. */
+const PLAN_NAME_FR: Record<Plan["id"], string> = {
+  week: "Hebdomadaire",
+  month: "Mensuel",
+  year: "Annuel",
+};
+
+/** `lang: "fr"` is the Canadian offer described in French, at /fr. */
+export function softwareApplicationJsonLd(region: "us" | "ca", lang: Lang = "en") {
+  const fr = region === "ca" && lang === "fr";
+  const pageUrl = url(region === "us" ? "/us" : fr ? "/fr" : "/ca");
   const country = region === "us" ? "US" : "CA";
   return {
     "@context": "https://schema.org",
@@ -117,17 +125,20 @@ export function softwareApplicationJsonLd(region: "us" | "ca") {
     name: SITE_NAME,
     applicationCategory: "FinanceApplication",
     operatingSystem: "iOS, Android, Web",
+    ...(fr ? { inLanguage: "fr-CA" } : {}),
     description:
       region === "us"
         ? "ReceiptOne helps US freelancers, contractors, and small businesses organize receipts, track expenses and mileage, and export tax-ready reports."
-        : "ReceiptOne helps Canadian freelancers, contractors, and small businesses organize receipts, track GST/HST, mileage, and export accountant-ready reports.",
+        : fr
+          ? "ReceiptOne aide les travailleurs autonomes, les entrepreneurs et les petites entreprises du Canada à organiser leurs reçus, à suivre la TPS/TVH et le kilométrage, et à exporter des rapports prêts pour leur comptable."
+          : "ReceiptOne helps Canadian freelancers, contractors, and small businesses organize receipts, track GST/HST, mileage, and export accountant-ready reports.",
     url: pageUrl,
     publisher: { "@id": ORGANIZATION_ID },
     // areaServed sits on each Offer: schema.org defines it for Offer, not
     // for SoftwareApplication, so validators would reject it one level up.
     offers: getPlans(region).map((plan) => ({
       "@type": "Offer",
-      name: plan.name,
+      name: fr ? PLAN_NAME_FR[plan.id] : plan.name,
       price: plan.price,
       priceCurrency: plan.currency,
       areaServed: country,
@@ -172,15 +183,15 @@ export function faqJsonLd(items: { q: string; a: string }[]) {
 }
 
 /**
- * hreflang set for a page that exists in both regions. Both pages of a pair
- * must emit the identical set (each one includes itself). The CA version is
- * canonical, so it is also x-default. Only pass genuine equivalents: a US
- * page with no CA counterpart gets no hreflang at all.
+ * hreflang set for a page cluster, named by its Canadian English page. The
+ * US (en-US) and French (fr-CA) equivalents come from src/lib/locales.ts, so
+ * every page of a cluster emits the identical set (each one includes itself).
+ * The CA version is canonical, so it is also x-default. A page with no
+ * equivalent in any other region or language gets no hreflang at all.
  */
-export function regionHreflang(caPath: string, usPath: string) {
-  return [
-    { hrefLang: "en-CA", href: url(caPath) },
-    { hrefLang: "en-US", href: url(usPath) },
-    { hrefLang: "x-default", href: url(caPath) },
-  ];
+export function regionHreflang(caPath: string, usPath?: string) {
+  return hreflangAlternates(caPath, usPath).map(({ hrefLang, path }) => ({
+    hrefLang,
+    href: url(path),
+  }));
 }

@@ -2,12 +2,60 @@ import { useState } from "react";
 import { CONTACT_LIMITS, submitContactRequest } from "@/integrations/firebase/support";
 import { callableErrorMessage, isRateLimited } from "@/integrations/firebase/callable-error";
 import { toast } from "sonner";
+import { useLang } from "@/lib/use-lang";
+import type { Lang } from "@/lib/locales";
 
 type Region = "ca" | "us";
 
-// Sent as the request's `locale` so support can see which storefront the
-// visitor wrote from. The form is English-only on both, hence en-*.
+// Sent as the request's `locale` so support can see which storefront and
+// language the visitor wrote from: en-CA, en-US, or fr-CA on /fr/contact.
 const REGION_LOCALE: Record<Region, string> = { ca: "en-CA", us: "en-US" };
+
+const COPY: Record<Lang, Record<string, string>> = {
+  en: {
+    errName: "Please enter your name.",
+    errEmail: "Please enter a valid email address.",
+    errSubject: "Please add a short subject.",
+    errMessage: "Please add a bit more detail to your message.",
+    errRate: "You've sent a few messages recently. Please wait an hour before sending another.",
+    errSend: "Failed to send your message. Please try again.",
+    sentTitle: "Message sent",
+    sentBody: "Thanks for reaching out — we reply within 1–2 business days.",
+    name: "Name",
+    namePh: "Jane Doe",
+    email: "Email",
+    emailPh: "you@example.com",
+    subject: "Subject",
+    subjectPh: "What's this about?",
+    message: "Message",
+    messagePh: "How can we help?",
+    sending: "Sending…",
+    send: "Send message",
+  },
+  // Response time wording matches the portal's contactSupportPage.fr
+  // ("sous 1 à 2 jours ouvrables").
+  fr: {
+    errName: "Veuillez entrer votre nom.",
+    errEmail: "Veuillez entrer une adresse courriel valide.",
+    errSubject: "Veuillez ajouter un court objet.",
+    errMessage: "Veuillez donner un peu plus de détails dans votre message.",
+    errRate:
+      "Vous avez envoyé plusieurs messages récemment. Veuillez attendre une heure avant d'en envoyer un autre.",
+    errSend: "Impossible d'envoyer votre message. Veuillez réessayer.",
+    sentTitle: "Message envoyé",
+    sentBody: "Merci de nous avoir écrit — nous répondons sous 1 à 2 jours ouvrables.",
+    name: "Nom",
+    namePh: "Marie Tremblay",
+    email: "Courriel",
+    emailPh: "vous@exemple.com",
+    subject: "Objet",
+    subjectPh: "À quel sujet?",
+    message: "Message",
+    messagePh: "Comment pouvons-nous vous aider?",
+    sending: "Envoi en cours…",
+    send: "Envoyer le message",
+  },
+};
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -18,6 +66,8 @@ export function ContactForm({ region }: { region: Region }) {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const lang: Lang = useLang() === "fr" && region === "ca" ? "fr" : "en";
+  const t = COPY[lang];
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -27,19 +77,19 @@ export function ContactForm({ region }: { region: Region }) {
     const msg = message.trim();
 
     if (n.length < 2) {
-      toast.error("Please enter your name.");
+      toast.error(t.errName);
       return;
     }
     if (!EMAIL_RE.test(em)) {
-      toast.error("Please enter a valid email address.");
+      toast.error(t.errEmail);
       return;
     }
     if (subj.length < 3) {
-      toast.error("Please add a short subject.");
+      toast.error(t.errSubject);
       return;
     }
     if (msg.length < 10) {
-      toast.error("Please add a bit more detail to your message.");
+      toast.error(t.errMessage);
       return;
     }
 
@@ -53,7 +103,7 @@ export function ContactForm({ region }: { region: Region }) {
         email: em.slice(0, CONTACT_LIMITS.email),
         subject: subj.slice(0, CONTACT_LIMITS.subject),
         message: msg.slice(0, CONTACT_LIMITS.message),
-        locale: REGION_LOCALE[region],
+        locale: lang === "fr" ? "fr-CA" : REGION_LOCALE[region],
         userAgent:
           typeof navigator !== "undefined"
             ? navigator.userAgent.slice(0, CONTACT_LIMITS.userAgent)
@@ -62,11 +112,9 @@ export function ContactForm({ region }: { region: Region }) {
       setSubmitted(true);
     } catch (err) {
       if (isRateLimited(err)) {
-        toast.error(
-          "You've sent a few messages recently. Please wait an hour before sending another.",
-        );
+        toast.error(t.errRate);
       } else {
-        toast.error(callableErrorMessage(err, "Failed to send your message. Please try again."));
+        toast.error(callableErrorMessage(err, t.errSend));
       }
     } finally {
       setLoading(false);
@@ -79,10 +127,8 @@ export function ContactForm({ region }: { region: Region }) {
         <div className="mx-auto flex size-14 items-center justify-center rounded-pill bg-ink text-paper">
           <CheckIcon />
         </div>
-        <p className="mt-5 font-display text-lead font-semibold text-ink">Message sent</p>
-        <p className="mt-2 font-sans text-sm text-ink-60">
-          Thanks for reaching out — we reply within 1–2 business days.
-        </p>
+        <p className="mt-5 font-display text-lead font-semibold text-ink">{t.sentTitle}</p>
+        <p className="mt-2 font-sans text-sm text-ink-60">{t.sentBody}</p>
       </div>
     );
   }
@@ -98,14 +144,14 @@ export function ContactForm({ region }: { region: Region }) {
             htmlFor="contact-name"
             className="block font-sans text-label font-medium text-ink-80"
           >
-            Name
+            {t.name}
           </label>
           <input
             id="contact-name"
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value.slice(0, 120))}
-            placeholder="Jane Doe"
+            placeholder={t.namePh}
             className="block w-full rounded-card border border-hairline bg-paper px-4 py-3 text-sm text-ink outline-none transition-colors placeholder:text-ink-60 focus:border-ink-40"
           />
         </div>
@@ -114,14 +160,14 @@ export function ContactForm({ region }: { region: Region }) {
             htmlFor="contact-email"
             className="block font-sans text-label font-medium text-ink-80"
           >
-            Email
+            {t.email}
           </label>
           <input
             id="contact-email"
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value.slice(0, 254))}
-            placeholder="you@example.com"
+            placeholder={t.emailPh}
             className="block w-full rounded-card border border-hairline bg-paper px-4 py-3 text-sm text-ink outline-none transition-colors placeholder:text-ink-60 focus:border-ink-40"
           />
         </div>
@@ -132,14 +178,14 @@ export function ContactForm({ region }: { region: Region }) {
           htmlFor="contact-subject"
           className="block font-sans text-label font-medium text-ink-80"
         >
-          Subject
+          {t.subject}
         </label>
         <input
           id="contact-subject"
           type="text"
           value={subject}
           onChange={(e) => setSubject(e.target.value.slice(0, 200))}
-          placeholder="What's this about?"
+          placeholder={t.subjectPh}
           className="block w-full rounded-card border border-hairline bg-paper px-4 py-3 text-sm text-ink outline-none transition-colors placeholder:text-ink-60 focus:border-ink-40"
         />
       </div>
@@ -149,13 +195,13 @@ export function ContactForm({ region }: { region: Region }) {
           htmlFor="contact-message"
           className="block font-sans text-label font-medium text-ink-80"
         >
-          Message
+          {t.message}
         </label>
         <textarea
           id="contact-message"
           value={message}
           onChange={(e) => setMessage(e.target.value.slice(0, 2000))}
-          placeholder="How can we help?"
+          placeholder={t.messagePh}
           rows={5}
           className="block w-full resize-none rounded-card border border-hairline bg-paper px-4 py-3 text-sm text-ink outline-none transition-colors placeholder:text-ink-60 focus:border-ink-40"
         />
@@ -166,7 +212,7 @@ export function ContactForm({ region }: { region: Region }) {
         disabled={loading}
         className="inline-flex w-full items-center justify-center gap-2 rounded-pill bg-ink px-5 py-3 font-display text-sm font-semibold text-paper transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40"
       >
-        {loading ? "Sending…" : "Send message"}
+        {loading ? t.sending : t.send}
       </button>
     </form>
   );

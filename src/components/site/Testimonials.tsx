@@ -1,4 +1,5 @@
 import { Briefcase, Laptop2, Palette } from "lucide-react";
+import { useLang } from "@/lib/use-lang";
 
 type Persona = {
   role: string;
@@ -27,6 +28,27 @@ const CA_PERSONAS: Persona[] = [
   },
 ];
 
+const FR_PERSONAS: Persona[] = [
+  {
+    role: "Graphiste pigiste",
+    description:
+      "Photographiez vos reçus de logiciels, de rencontres avec des clients et d'équipement dès l'achat — plus besoin de fouiller votre boîte de réception à la période des impôts.",
+    icon: Palette,
+  },
+  {
+    role: "Contractuel indépendant en TI",
+    description:
+      "La TPS/TVH est lue sur chaque reçu que vous numérisez : vous voyez ce que vous pourriez récupérer avant même de parler à votre comptable.",
+    icon: Laptop2,
+  },
+  {
+    role: "Consultant autonome",
+    description:
+      "Frais de véhicule, équipement, repas avec des clients — tout est classé au même endroit, pour une période des impôts sans course contre la montre.",
+    icon: Briefcase,
+  },
+];
+
 const US_PERSONAS: Persona[] = [
   {
     role: "Freelance Graphic Designer",
@@ -49,13 +71,19 @@ const US_PERSONAS: Persona[] = [
 ];
 
 export function Testimonials({ region = "ca" }: { region?: "ca" | "us" }) {
-  const personas = region === "us" ? US_PERSONAS : CA_PERSONAS;
-  const heading = region === "us" ? "Made for US freelancers" : "Built for Canadian freelancers";
+  const fr = useLang() === "fr" && region === "ca";
+  const personas = region === "us" ? US_PERSONAS : fr ? FR_PERSONAS : CA_PERSONAS;
+  const heading =
+    region === "us"
+      ? "Made for US freelancers"
+      : fr
+        ? "Conçu pour les travailleurs autonomes du Canada"
+        : "Built for Canadian freelancers";
   return (
     <section className="w-full px-4 pt-4 pb-12 sm:px-6 sm:pt-6 sm:pb-16 lg:px-8">
       <div className="mx-auto w-full max-w-[1200px]">
         <div className="mb-12 text-center">
-          <p className="eyebrow">Who it's for</p>
+          <p className="eyebrow">{fr ? "Pour qui" : "Who it's for"}</p>
           <h2 className="mt-2 text-ink">{heading}</h2>
         </div>
 

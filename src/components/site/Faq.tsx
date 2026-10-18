@@ -1,12 +1,16 @@
 import { Link } from "@tanstack/react-router";
 import { Plus } from "lucide-react";
 import { useState } from "react";
+import { useLang } from "@/lib/use-lang";
 
 export type QA = {
   q: string;
   a: string;
-  /** `external` renders a plain anchor to an absolute URL instead of a router Link. */
-  link?: { to: string; slug?: string; label: string; external?: boolean };
+  /**
+   * `external` renders a plain anchor to an absolute URL instead of a router
+   * Link. `en` marks an English-only target linked from a French page.
+   */
+  link?: { to: string; slug?: string; label: string; external?: boolean; en?: boolean };
 };
 
 /**
@@ -390,6 +394,7 @@ export function FaqAccordion({ items }: { items: QA[] }) {
                       <Link
                         to={it.link.to as any}
                         params={it.link.slug ? ({ slug: it.link.slug } as any) : undefined}
+                        hrefLang={it.link.en ? "en" : undefined}
                         className="font-medium text-ink underline underline-offset-2 transition-[text-underline-offset] duration-150 hover:underline-offset-4"
                       >
                         {it.link.label}
@@ -422,6 +427,7 @@ export function Faq({
   helpCenterPath?: string;
 } = {}) {
   const displayed = items.slice(0, limit);
+  const fr = useLang() === "fr";
 
   return (
     <section
@@ -431,7 +437,9 @@ export function Faq({
       {/* Header */}
       <div className="mx-auto mb-10 max-w-2xl text-center">
         <p className="eyebrow">FAQ</p>
-        <h2 className="mt-2 text-ink">Everything you need to know</h2>
+        <h2 className="mt-2 text-ink">
+          {fr ? "Tout ce qu'il faut savoir" : "Everything you need to know"}
+        </h2>
       </div>
 
       {/* Accordion */}
@@ -443,7 +451,9 @@ export function Faq({
           to={helpCenterPath as any}
           className="inline-flex items-center gap-1.5 font-sans text-sm font-medium text-ink-60 transition-colors duration-200 hover:text-ink"
         >
-          See all help articles in our Help Center
+          {fr
+            ? "Voir toutes les questions dans notre Centre d'aide"
+            : "See all help articles in our Help Center"}
           <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden>
             <path
               d="M3 8h10M9 4l4 4-4 4"

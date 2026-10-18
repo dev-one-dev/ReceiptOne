@@ -9,45 +9,29 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as UsRouteImport } from './routes/us'
-import { Route as TermsRouteImport } from './routes/terms'
-import { Route as PrivacyRouteImport } from './routes/privacy'
-import { Route as FaqRouteImport } from './routes/faq'
-import { Route as ContactRouteImport } from './routes/contact'
-import { Route as CaRouteImport } from './routes/ca'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as UsIndexRouteImport } from './routes/us/index'
+import { Route as CaRouteImport } from './routes/ca'
+import { Route as ContactRouteImport } from './routes/contact'
+import { Route as FaqRouteImport } from './routes/faq'
+import { Route as FrRouteImport } from './routes/fr'
+import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as TermsRouteImport } from './routes/terms'
+import { Route as UsRouteImport } from './routes/us'
 import { Route as ArticlesIndexRouteImport } from './routes/articles/index'
-import { Route as UsFaqRouteImport } from './routes/us/faq'
-import { Route as UsContactRouteImport } from './routes/us/contact'
-import { Route as RCodeRouteImport } from './routes/r/$code'
 import { Route as ArticlesSlugRouteImport } from './routes/articles/$slug'
+import { Route as FrIndexRouteImport } from './routes/fr/index'
+import { Route as FrContactRouteImport } from './routes/fr/contact'
+import { Route as FrFaqRouteImport } from './routes/fr/faq'
+import { Route as RCodeRouteImport } from './routes/r/$code'
+import { Route as UsIndexRouteImport } from './routes/us/index'
+import { Route as UsContactRouteImport } from './routes/us/contact'
+import { Route as UsFaqRouteImport } from './routes/us/faq'
 import { Route as UsArticlesIndexRouteImport } from './routes/us/articles/index'
 import { Route as UsArticlesSlugRouteImport } from './routes/us/articles/$slug'
 
-const UsRoute = UsRouteImport.update({
-  id: '/us',
-  path: '/us',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const TermsRoute = TermsRouteImport.update({
-  id: '/terms',
-  path: '/terms',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PrivacyRoute = PrivacyRouteImport.update({
-  id: '/privacy',
-  path: '/privacy',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const FaqRoute = FaqRouteImport.update({
-  id: '/faq',
-  path: '/faq',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ContactRoute = ContactRouteImport.update({
-  id: '/contact',
-  path: '/contact',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CaRoute = CaRouteImport.update({
@@ -55,9 +39,64 @@ const CaRoute = CaRouteImport.update({
   path: '/ca',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FaqRoute = FaqRouteImport.update({
+  id: '/faq',
+  path: '/faq',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FrRoute = FrRouteImport.update({
+  id: '/fr',
+  path: '/fr',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const UsRoute = UsRouteImport.update({
+  id: '/us',
+  path: '/us',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ArticlesIndexRoute = ArticlesIndexRouteImport.update({
+  id: '/articles/',
+  path: '/articles/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ArticlesSlugRoute = ArticlesSlugRouteImport.update({
+  id: '/articles/$slug',
+  path: '/articles/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FrIndexRoute = FrIndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => FrRoute,
+} as any)
+const FrContactRoute = FrContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => FrRoute,
+} as any)
+const FrFaqRoute = FrFaqRouteImport.update({
+  id: '/faq',
+  path: '/faq',
+  getParentRoute: () => FrRoute,
+} as any)
+const RCodeRoute = RCodeRouteImport.update({
+  id: '/r/$code',
+  path: '/r/$code',
   getParentRoute: () => rootRouteImport,
 } as any)
 const UsIndexRoute = UsIndexRouteImport.update({
@@ -65,30 +104,15 @@ const UsIndexRoute = UsIndexRouteImport.update({
   path: '/',
   getParentRoute: () => UsRoute,
 } as any)
-const ArticlesIndexRoute = ArticlesIndexRouteImport.update({
-  id: '/articles/',
-  path: '/articles/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const UsFaqRoute = UsFaqRouteImport.update({
-  id: '/faq',
-  path: '/faq',
-  getParentRoute: () => UsRoute,
-} as any)
 const UsContactRoute = UsContactRouteImport.update({
   id: '/contact',
   path: '/contact',
   getParentRoute: () => UsRoute,
 } as any)
-const RCodeRoute = RCodeRouteImport.update({
-  id: '/r/$code',
-  path: '/r/$code',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ArticlesSlugRoute = ArticlesSlugRouteImport.update({
-  id: '/articles/$slug',
-  path: '/articles/$slug',
-  getParentRoute: () => rootRouteImport,
+const UsFaqRoute = UsFaqRouteImport.update({
+  id: '/faq',
+  path: '/faq',
+  getParentRoute: () => UsRoute,
 } as any)
 const UsArticlesIndexRoute = UsArticlesIndexRouteImport.update({
   id: '/articles/',
@@ -106,14 +130,18 @@ export interface FileRoutesByFullPath {
   '/ca': typeof CaRoute
   '/contact': typeof ContactRoute
   '/faq': typeof FaqRoute
+  '/fr': typeof FrRouteWithChildren
   '/privacy': typeof PrivacyRoute
   '/terms': typeof TermsRoute
   '/us': typeof UsRouteWithChildren
   '/articles/$slug': typeof ArticlesSlugRoute
+  '/fr/contact': typeof FrContactRoute
+  '/fr/faq': typeof FrFaqRoute
   '/r/$code': typeof RCodeRoute
   '/us/contact': typeof UsContactRoute
   '/us/faq': typeof UsFaqRoute
   '/articles/': typeof ArticlesIndexRoute
+  '/fr/': typeof FrIndexRoute
   '/us/': typeof UsIndexRoute
   '/us/articles/$slug': typeof UsArticlesSlugRoute
   '/us/articles/': typeof UsArticlesIndexRoute
@@ -126,10 +154,13 @@ export interface FileRoutesByTo {
   '/privacy': typeof PrivacyRoute
   '/terms': typeof TermsRoute
   '/articles/$slug': typeof ArticlesSlugRoute
+  '/fr/contact': typeof FrContactRoute
+  '/fr/faq': typeof FrFaqRoute
   '/r/$code': typeof RCodeRoute
   '/us/contact': typeof UsContactRoute
   '/us/faq': typeof UsFaqRoute
   '/articles': typeof ArticlesIndexRoute
+  '/fr': typeof FrIndexRoute
   '/us': typeof UsIndexRoute
   '/us/articles/$slug': typeof UsArticlesSlugRoute
   '/us/articles': typeof UsArticlesIndexRoute
@@ -140,14 +171,18 @@ export interface FileRoutesById {
   '/ca': typeof CaRoute
   '/contact': typeof ContactRoute
   '/faq': typeof FaqRoute
+  '/fr': typeof FrRouteWithChildren
   '/privacy': typeof PrivacyRoute
   '/terms': typeof TermsRoute
   '/us': typeof UsRouteWithChildren
   '/articles/$slug': typeof ArticlesSlugRoute
+  '/fr/contact': typeof FrContactRoute
+  '/fr/faq': typeof FrFaqRoute
   '/r/$code': typeof RCodeRoute
   '/us/contact': typeof UsContactRoute
   '/us/faq': typeof UsFaqRoute
   '/articles/': typeof ArticlesIndexRoute
+  '/fr/': typeof FrIndexRoute
   '/us/': typeof UsIndexRoute
   '/us/articles/$slug': typeof UsArticlesSlugRoute
   '/us/articles/': typeof UsArticlesIndexRoute
@@ -159,14 +194,18 @@ export interface FileRouteTypes {
     | '/ca'
     | '/contact'
     | '/faq'
+    | '/fr'
     | '/privacy'
     | '/terms'
     | '/us'
     | '/articles/$slug'
+    | '/fr/contact'
+    | '/fr/faq'
     | '/r/$code'
     | '/us/contact'
     | '/us/faq'
     | '/articles/'
+    | '/fr/'
     | '/us/'
     | '/us/articles/$slug'
     | '/us/articles/'
@@ -179,10 +218,13 @@ export interface FileRouteTypes {
     | '/privacy'
     | '/terms'
     | '/articles/$slug'
+    | '/fr/contact'
+    | '/fr/faq'
     | '/r/$code'
     | '/us/contact'
     | '/us/faq'
     | '/articles'
+    | '/fr'
     | '/us'
     | '/us/articles/$slug'
     | '/us/articles'
@@ -192,14 +234,18 @@ export interface FileRouteTypes {
     | '/ca'
     | '/contact'
     | '/faq'
+    | '/fr'
     | '/privacy'
     | '/terms'
     | '/us'
     | '/articles/$slug'
+    | '/fr/contact'
+    | '/fr/faq'
     | '/r/$code'
     | '/us/contact'
     | '/us/faq'
     | '/articles/'
+    | '/fr/'
     | '/us/'
     | '/us/articles/$slug'
     | '/us/articles/'
@@ -210,6 +256,7 @@ export interface RootRouteChildren {
   CaRoute: typeof CaRoute
   ContactRoute: typeof ContactRoute
   FaqRoute: typeof FaqRoute
+  FrRoute: typeof FrRouteWithChildren
   PrivacyRoute: typeof PrivacyRoute
   TermsRoute: typeof TermsRoute
   UsRoute: typeof UsRouteWithChildren
@@ -220,39 +267,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/us': {
-      id: '/us'
-      path: '/us'
-      fullPath: '/us'
-      preLoaderRoute: typeof UsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/terms': {
-      id: '/terms'
-      path: '/terms'
-      fullPath: '/terms'
-      preLoaderRoute: typeof TermsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/privacy': {
-      id: '/privacy'
-      path: '/privacy'
-      fullPath: '/privacy'
-      preLoaderRoute: typeof PrivacyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/faq': {
-      id: '/faq'
-      path: '/faq'
-      fullPath: '/faq'
-      preLoaderRoute: typeof FaqRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/contact': {
-      id: '/contact'
-      path: '/contact'
-      fullPath: '/contact'
-      preLoaderRoute: typeof ContactRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/ca': {
@@ -262,11 +281,88 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CaRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/faq': {
+      id: '/faq'
+      path: '/faq'
+      fullPath: '/faq'
+      preLoaderRoute: typeof FaqRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/fr': {
+      id: '/fr'
+      path: '/fr'
+      fullPath: '/fr'
+      preLoaderRoute: typeof FrRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/us': {
+      id: '/us'
+      path: '/us'
+      fullPath: '/us'
+      preLoaderRoute: typeof UsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/articles/': {
+      id: '/articles/'
+      path: '/articles'
+      fullPath: '/articles/'
+      preLoaderRoute: typeof ArticlesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/articles/$slug': {
+      id: '/articles/$slug'
+      path: '/articles/$slug'
+      fullPath: '/articles/$slug'
+      preLoaderRoute: typeof ArticlesSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/fr/': {
+      id: '/fr/'
       path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+      fullPath: '/fr/'
+      preLoaderRoute: typeof FrIndexRouteImport
+      parentRoute: typeof FrRoute
+    }
+    '/fr/contact': {
+      id: '/fr/contact'
+      path: '/contact'
+      fullPath: '/fr/contact'
+      preLoaderRoute: typeof FrContactRouteImport
+      parentRoute: typeof FrRoute
+    }
+    '/fr/faq': {
+      id: '/fr/faq'
+      path: '/faq'
+      fullPath: '/fr/faq'
+      preLoaderRoute: typeof FrFaqRouteImport
+      parentRoute: typeof FrRoute
+    }
+    '/r/$code': {
+      id: '/r/$code'
+      path: '/r/$code'
+      fullPath: '/r/$code'
+      preLoaderRoute: typeof RCodeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/us/': {
@@ -276,20 +372,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UsIndexRouteImport
       parentRoute: typeof UsRoute
     }
-    '/articles/': {
-      id: '/articles/'
-      path: '/articles'
-      fullPath: '/articles/'
-      preLoaderRoute: typeof ArticlesIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/us/faq': {
-      id: '/us/faq'
-      path: '/faq'
-      fullPath: '/us/faq'
-      preLoaderRoute: typeof UsFaqRouteImport
-      parentRoute: typeof UsRoute
-    }
     '/us/contact': {
       id: '/us/contact'
       path: '/contact'
@@ -297,19 +379,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UsContactRouteImport
       parentRoute: typeof UsRoute
     }
-    '/r/$code': {
-      id: '/r/$code'
-      path: '/r/$code'
-      fullPath: '/r/$code'
-      preLoaderRoute: typeof RCodeRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/articles/$slug': {
-      id: '/articles/$slug'
-      path: '/articles/$slug'
-      fullPath: '/articles/$slug'
-      preLoaderRoute: typeof ArticlesSlugRouteImport
-      parentRoute: typeof rootRouteImport
+    '/us/faq': {
+      id: '/us/faq'
+      path: '/faq'
+      fullPath: '/us/faq'
+      preLoaderRoute: typeof UsFaqRouteImport
+      parentRoute: typeof UsRoute
     }
     '/us/articles/': {
       id: '/us/articles/'
@@ -327,6 +402,20 @@ declare module '@tanstack/react-router' {
     }
   }
 }
+
+interface FrRouteChildren {
+  FrContactRoute: typeof FrContactRoute
+  FrFaqRoute: typeof FrFaqRoute
+  FrIndexRoute: typeof FrIndexRoute
+}
+
+const FrRouteChildren: FrRouteChildren = {
+  FrContactRoute: FrContactRoute,
+  FrFaqRoute: FrFaqRoute,
+  FrIndexRoute: FrIndexRoute,
+}
+
+const FrRouteWithChildren = FrRoute._addFileChildren(FrRouteChildren)
 
 interface UsRouteChildren {
   UsContactRoute: typeof UsContactRoute
@@ -351,6 +440,7 @@ const rootRouteChildren: RootRouteChildren = {
   CaRoute: CaRoute,
   ContactRoute: ContactRoute,
   FaqRoute: FaqRoute,
+  FrRoute: FrRouteWithChildren,
   PrivacyRoute: PrivacyRoute,
   TermsRoute: TermsRoute,
   UsRoute: UsRouteWithChildren,

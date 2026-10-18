@@ -11,7 +11,7 @@ export const Route = createFileRoute("/contact")({
       title: "Contact Us | ReceiptOne",
       description:
         "Get in touch with the ReceiptOne team — questions, feedback, or support requests for Canadian freelancers and small businesses.",
-      hreflang: regionHreflang("/contact", "/us/contact"),
+      hreflang: regionHreflang("/contact"),
     });
 
     const breadcrumb = breadcrumbJsonLd([

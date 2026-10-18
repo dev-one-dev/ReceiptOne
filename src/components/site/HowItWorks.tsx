@@ -1,4 +1,5 @@
 import { ScanLine, Layers, FileDown } from "lucide-react";
+import { useLang } from "@/lib/use-lang";
 
 type Region = "ca" | "us";
 
@@ -20,6 +21,27 @@ const CA_STEPS = [
     title: "Export CRA-ready reports",
     description:
       "Download audit-ready expense reports in one tap. Hand them to your accountant or file your own taxes — stress-free tax season, every year.",
+  },
+];
+
+const FR_STEPS = [
+  {
+    icon: ScanLine,
+    title: "Photographiez vos reçus",
+    description:
+      "Photographiez n'importe quel reçu ou téléversez une image ou un PDF. Reçus papier et numériques sont réunis au même endroit.",
+  },
+  {
+    icon: Layers,
+    title: "Organisés automatiquement",
+    description:
+      "ReceiptOne lit le commerçant, le montant, la date et les taxes, puis classe chaque dépense par catégorie. TPS, TVH et TVP suivies par province. Vérifiez les détails et corrigez tout ce qui a été mal lu.",
+  },
+  {
+    icon: FileDown,
+    title: "Exportez des rapports prêts pour l'ARC",
+    description:
+      "Téléchargez en un geste des rapports de dépenses prêts en cas de vérification. Remettez-les à votre comptable ou produisez vous-même votre déclaration — une période des impôts sans stress, chaque année.",
   },
 ];
 
@@ -45,13 +67,20 @@ const US_STEPS = [
 ];
 
 export function HowItWorks({ region = "ca" }: { region?: Region }) {
-  const steps = region === "us" ? US_STEPS : CA_STEPS;
+  const fr = useLang() === "fr" && region === "ca";
+  const steps = region === "us" ? US_STEPS : fr ? FR_STEPS : CA_STEPS;
   const heading =
-    region === "us" ? "Three steps to tax-ready reports" : "Three steps to tax peace of mind";
+    region === "us"
+      ? "Three steps to tax-ready reports"
+      : fr
+        ? "Trois étapes vers la tranquillité d'esprit fiscale"
+        : "Three steps to tax peace of mind";
   const sub =
     region === "us"
       ? "Point your camera or upload that PDF. ReceiptOne reads, sorts, and reports — no spreadsheets, no tax-season scramble."
-      : "Point your camera or upload that PDF. ReceiptOne reads, sorts, and reports — no spreadsheets, no year-end scramble.";
+      : fr
+        ? "Pointez votre appareil photo ou téléversez ce PDF. ReceiptOne lit, trie et produit les rapports — sans tableur ni course de fin d'année."
+        : "Point your camera or upload that PDF. ReceiptOne reads, sorts, and reports — no spreadsheets, no year-end scramble.";
 
   return (
     <section
@@ -60,7 +89,7 @@ export function HowItWorks({ region = "ca" }: { region?: Region }) {
     >
       <div className="mx-auto w-full max-w-[1200px]">
         <div className="mx-auto max-w-2xl text-center">
-          <p className="eyebrow">How it works</p>
+          <p className="eyebrow">{fr ? "Comment ça marche" : "How it works"}</p>
           <h2 className="mt-2 text-ink">{heading}</h2>
           <p className="mt-3 text-body text-ink-60 sm:text-lead">{sub}</p>
         </div>

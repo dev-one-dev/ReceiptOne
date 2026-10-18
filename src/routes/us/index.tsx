@@ -28,7 +28,7 @@ export const Route = (createFileRoute as any)("/us/")({
       ogTitle: "ReceiptOne US | Receipt, Expense & Mileage Tracker",
       ogDescription:
         "Track receipts, expenses, mileage, and export tax-ready reports for US freelancers, contractors, and small businesses.",
-      hreflang: regionHreflang("/ca", "/us"),
+      hreflang: regionHreflang("/ca"),
     });
     return {
       meta: seo.meta,

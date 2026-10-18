@@ -8,6 +8,7 @@ import icPhoneHomeOffice from "@/assets/figma/feat-home-office.png";
 import usExport from "@/assets/figma/mileage-auto/US/Animation.png";
 import usMileage from "@/assets/figma/mileage-auto/US/Animation1.png";
 import usHomeOffice from "@/assets/figma/mileage-auto/US/Animation2.png";
+import { useLang } from "@/lib/use-lang";
 
 const CA_FEATURES = [
   {
@@ -47,6 +48,48 @@ const CA_FEATURES = [
   },
 ];
 
+/**
+ * French copy of CA_FEATURES (same images). Tax wording follows the portal's
+ * fr locale: "Tableau A", "pourcentage d'utilisation professionnelle".
+ */
+const FR_FEATURES = [
+  {
+    label: "Reçus",
+    title: "Tous vos reçus, saisis et organisés",
+    desc: "Chaque achat saisi, classé et organisé. Prenez une photo ou téléversez une image ou un PDF, et ReceiptOne en lit les détails pour que vous les vérifiiez — fini les pièces justificatives perdues.",
+    img: abScreenReceipts,
+    alt: "Application ReceiptOne affichant la liste des reçus avec des montants en CAD",
+  },
+  {
+    label: "Rapports",
+    title: "Créez des rapports n'importe quand, n'importe où",
+    desc: "Générez des rapports de dépenses en quelques secondes. Exportez en PDF et en CSV avec totaux, catégories et liens vers les reçus — exactement comme votre comptable les veut.",
+    img: icPhoneReports,
+    alt: "Application ReceiptOne affichant la liste des rapports",
+  },
+  {
+    label: "Exportation",
+    title: "Numérisez sur mobile. Gérez sur ordinateur.",
+    desc: "Saisissez vos reçus sur votre téléphone et gérez tout depuis votre ordinateur. Vos données se synchronisent instantanément : vous avez toujours le portrait complet.",
+    img: icPhoneExport,
+    alt: "Application ReceiptOne affichant l'écran d'exportation CSV",
+  },
+  {
+    label: "Kilométrage",
+    title: "Le suivi du kilométrage, directement sur votre téléphone",
+    desc: "Démarrez un trajet et l'application le suit par GPS en arrière-plan, ou entrez ses adresses de départ et d'arrivée, puis indiquez s'il est professionnel ou personnel. Votre rapport T2125 remplit les kilomètres du Tableau A, soit les kilomètres professionnels, le total et le pourcentage d'utilisation professionnelle, à partir des trajets que vous enregistrez : enregistrez donc aussi vos trajets personnels.",
+    img: abScreenMileage,
+    alt: "Application ReceiptOne affichant le suivi du kilométrage sur une carte",
+  },
+  {
+    label: "Bureau à domicile",
+    title: "Suivez les dépenses de votre bureau à domicile",
+    desc: "Entrez vos dépenses du domicile ainsi que la superficie de votre espace de travail et de votre domicile. ReceiptOne calcule le pourcentage de l'espace de travail et l'applique à vos frais de résidence, prêt pour votre T2125.",
+    img: icPhoneHomeOffice,
+    alt: "Application ReceiptOne affichant les résultats de la déduction pour bureau à domicile",
+  },
+];
+
 const US_FEATURES = CA_FEATURES.map((f) => {
   if (f.label === "Receipts")
     return {
@@ -74,7 +117,8 @@ const US_FEATURES = CA_FEATURES.map((f) => {
 });
 
 export function InfoCards({ region = "ca" }: { region?: "ca" | "us" }) {
-  const FEATURES = region === "us" ? US_FEATURES : CA_FEATURES;
+  const fr = useLang() === "fr" && region === "ca";
+  const FEATURES = region === "us" ? US_FEATURES : fr ? FR_FEATURES : CA_FEATURES;
   const heading = region === "us" ? infocardsHeadingUS : infocardsHeading;
   return (
     <section id="benefits" className="w-full px-4 pt-16 pb-4 sm:px-6 sm:pt-20 sm:pb-6 lg:px-8">
@@ -83,7 +127,11 @@ export function InfoCards({ region = "ca" }: { region?: "ca" | "us" }) {
         <div className="-mx-4 mb-10 sm:-mx-6 sm:mb-14 lg:-mx-8">
           <img
             src={heading}
-            alt="Turn Receipt Chaos Into Tax Gold — Stop losing money on missed deductions"
+            alt={
+              fr
+                ? "Transformez le chaos de vos reçus en or fiscal — Cessez de perdre de l'argent en déductions oubliées"
+                : "Turn Receipt Chaos Into Tax Gold — Stop losing money on missed deductions"
+            }
             className="w-full mix-blend-multiply"
             loading="lazy"
             draggable={false}

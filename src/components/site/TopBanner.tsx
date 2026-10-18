@@ -5,10 +5,12 @@ import eagleHeroPoster from "@/assets/figma/hero-eagle-poster.png";
 import { StoreBadge } from "@/components/site/StoreBadge";
 import { PrimaryCta } from "@/components/site/PrimaryCta";
 import { ROUTES } from "@/lib/routes";
+import { useLang } from "@/lib/use-lang";
 
 export function TopBanner({ region = "ca" }: { region?: "ca" | "us" }) {
   const heroVideo = region === "us" ? eagleHeroVideo : beaverHeroVideo;
   const heroPoster = region === "us" ? eagleHeroPoster : beaverHeroPoster;
+  const fr = useLang() === "fr" && region === "ca";
   return (
     <section className="relative w-full overflow-visible px-4 pt-20 sm:px-6 sm:pt-24 lg:px-8 lg:pt-28">
       <div className="mx-auto w-full max-w-[1200px]">
@@ -25,6 +27,11 @@ export function TopBanner({ region = "ca" }: { region?: "ca" | "us" }) {
                   Turn receipts into IRS-ready reports — automatically
                   <span className="text-ember">.</span>
                 </>
+              ) : fr ? (
+                <>
+                  Transformez vos reçus en rapports prêts pour l'ARC — automatiquement
+                  <span className="text-ember">.</span>
+                </>
               ) : (
                 <>
                   Turn receipts into CRA-ready reports — automatically
@@ -36,12 +43,16 @@ export function TopBanner({ region = "ca" }: { region?: "ca" | "us" }) {
             {/* Subheadline — both paragraphs same size and color */}
             <div className="mt-5 max-w-[500px] font-sans">
               <p className="text-lead text-ink-60 sm:text-lead">
-                Snap receipts &amp; mileage, organize expenses, and export audit-ready reports.
+                {fr
+                  ? "Photographiez vos reçus, notez votre kilométrage, organisez vos dépenses et exportez des rapports prêts en cas de vérification."
+                  : "Snap receipts & mileage, organize expenses, and export audit-ready reports."}
               </p>
               <p className="mt-2 text-lead text-ink-60 sm:text-lead">
                 {region === "us"
                   ? "Built for US freelancers, contractors, and small businesses."
-                  : "Built for Canadian freelancers, contractors, and small businesses."}
+                  : fr
+                    ? "Conçu pour les travailleurs autonomes, les contractuels et les petites entreprises du Canada."
+                    : "Built for Canadian freelancers, contractors, and small businesses."}
               </p>
             </div>
 
@@ -52,11 +63,13 @@ export function TopBanner({ region = "ca" }: { region?: "ca" | "us" }) {
                 DOM order, so without a stacking context it sat on top of the
                 Google Play badge at desktop widths and swallowed its clicks. */}
             <div className="relative z-10 mt-6 flex w-full flex-col items-stretch gap-3 sm:w-auto sm:flex-row sm:flex-wrap sm:items-center">
-              <PrimaryCta href={ROUTES.signup}>Start 7-day free trial</PrimaryCta>
+              <PrimaryCta href={ROUTES.signup}>
+                {fr ? "Commencer l'essai gratuit de 7 jours" : "Start 7-day free trial"}
+              </PrimaryCta>
               <div className="flex flex-wrap items-center justify-center gap-3 lg:justify-start">
                 {/* Kept for screen readers; visually the badges speak for
                     themselves, and the label pushed the row past the column. */}
-                <span className="sr-only">Available on:</span>
+                <span className="sr-only">{fr ? "Offert sur :" : "Available on:"}</span>
                 <StoreBadge platform="apple" region={region} />
                 <StoreBadge platform="google" region={region} />
               </div>
@@ -90,7 +103,9 @@ export function TopBanner({ region = "ca" }: { region?: "ca" | "us" }) {
               aria-label={
                 region === "us"
                   ? "Eagle mascot wearing a USA cap, reading a receipt"
-                  : "Beaver mascot wearing a Canadian cap, reading a receipt"
+                  : fr
+                    ? "Mascotte castor portant une casquette canadienne et lisant un reçu"
+                    : "Beaver mascot wearing a Canadian cap, reading a receipt"
               }
             >
               <source src={heroVideo} type="video/mp4" />

@@ -42,24 +42,30 @@ const MERGED_ARTICLES: Record<string, string> = {
   "/articles/cra-acceptable-receipt-requirements": "/articles/cra-receipt-rules-canada",
   "/articles/what-receipts-do-i-need-for-taxes-canada": "/articles/cra-receipt-rules-canada",
   "/articles/receipt-organization-tips-canada": "/articles/expense-tracking-canada-freelancers",
-  "/articles/self-employed-expense-report-template-canada": "/articles/expense-tracking-canada-freelancers",
+  "/articles/self-employed-expense-report-template-canada":
+    "/articles/expense-tracking-canada-freelancers",
   "/articles/year-round-tax-prep-canada": "/articles/expense-tracking-canada-freelancers",
   "/articles/tax-season-stress-freelancers-canada": "/articles/expense-tracking-canada-freelancers",
-  "/articles/mileage-tracking-self-employed-2025-guide": "/articles/mileage-deduction-canada-freelancers",
+  "/articles/mileage-tracking-self-employed-2025-guide":
+    "/articles/mileage-deduction-canada-freelancers",
   "/articles/cra-mileage-logbook-requirements": "/articles/mileage-deduction-canada-freelancers",
   "/articles/vehicle-expense-deductions-canada": "/articles/mileage-deduction-canada-freelancers",
   "/articles/gst-hst-expense-tracking-canada": "/articles/track-gst-hst-business-expenses",
   "/articles/input-tax-credits-canada-guide": "/articles/track-gst-hst-business-expenses",
   "/articles/gst-hst-registration-threshold-canada": "/articles/track-gst-hst-business-expenses",
   "/articles/pst-qst-freelancers-canada": "/articles/track-gst-hst-business-expenses",
-  "/articles/top-tax-deductions-canadian-self-employed-2025": "/articles/self-employed-tax-deductions-canada",
+  "/articles/top-tax-deductions-canadian-self-employed-2025":
+    "/articles/self-employed-tax-deductions-canada",
   "/articles/business-expense-categories-canada": "/articles/self-employed-tax-deductions-canada",
-  "/articles/reimbursable-expenses-canada-freelancers": "/articles/self-employed-tax-deductions-canada",
+  "/articles/reimbursable-expenses-canada-freelancers":
+    "/articles/self-employed-tax-deductions-canada",
   "/articles/freelancer-tax-mistakes-canada": "/articles/self-employed-tax-deductions-canada",
-  "/articles/home-office-vs-coworking-expense-canada": "/articles/home-office-deduction-canadian-freelancers",
+  "/articles/home-office-vs-coworking-expense-canada":
+    "/articles/home-office-deduction-canadian-freelancers",
   "/articles/excel-vs-expense-app-canada": "/articles/spreadsheet-vs-expense-app",
   "/articles/manual-vs-automated-expense-tracking-canada": "/articles/spreadsheet-vs-expense-app",
-  "/articles/tax-instalment-payments-canada-self-employed": "/articles/freelancer-taxes-canada-guide",
+  "/articles/tax-instalment-payments-canada-self-employed":
+    "/articles/freelancer-taxes-canada-guide",
 };
 
 export default function middleware(request: Request) {
@@ -90,9 +96,39 @@ export default function middleware(request: Request) {
   }
 
   // The bare root is never a page of its own. /ca is the canonical version
-  // (and the hreflang x-default); US visitors go to /us. Both are permanent
-  // so "/" consolidates onto the regional pages rather than being indexed.
+  // (and the hreflang x-default); US visitors go to /us, and Canadian
+  // visitors whose browser prefers French go to /fr. Country alone never
+  // picks French: a Canadian with an English (or any non-French) browser
+  // still lands on /ca. Permanent, so "/" consolidates onto the regional
+  // pages rather than being indexed; Vary tells caches the answer depends on
+  // both headers.
   const country = request.headers.get("x-vercel-ip-country");
-  url.pathname = country === "US" ? "/us" : "/ca";
-  return Response.redirect(url.toString(), 301);
+  const prefersFrench =
+    country === "CA" && preferredLanguage(request.headers.get("accept-language")) === "fr";
+  url.pathname = country === "US" ? "/us" : prefersFrench ? "/fr" : "/ca";
+  return new Response(null, {
+    status: 301,
+    headers: { Location: url.toString(), Vary: "Accept-Language, X-Vercel-IP-Country" },
+  });
+}
+
+/**
+ * "fr" when French ranks above English in an Accept-Language header,
+ * otherwise "en" (also for a missing header or neither language listed).
+ * Ties keep header order, as browsers list the preferred language first.
+ * e.g. "fr-CA,fr;q=0.9,en;q=0.8" -> fr; "en-CA,fr;q=0.9" -> en.
+ */
+export function preferredLanguage(header: string | null): "en" | "fr" {
+  if (!header) return "en";
+  let best: { lang: "en" | "fr"; q: number } | null = null;
+  for (const part of header.split(",")) {
+    const [tag, ...params] = part.trim().toLowerCase().split(";");
+    const primary = tag.split("-")[0];
+    if (primary !== "en" && primary !== "fr") continue;
+    const qParam = params.map((p) => p.trim()).find((p) => p.startsWith("q="));
+    const q = qParam ? Number(qParam.slice(2)) : 1;
+    if (!Number.isFinite(q) || q <= 0) continue;
+    if (!best || q > best.q) best = { lang: primary, q };
+  }
+  return best?.lang ?? "en";
 }
