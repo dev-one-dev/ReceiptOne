@@ -34,7 +34,7 @@ const CA_FEATURES = [
   {
     label: "Mileage",
     title: "Mileage tracking, right on your phone",
-    desc: "Start a trip and the app tracks it by GPS in the background, or enter its start and end addresses, then tag it business or personal. Your T2125 report shows the business-use percentage from the trips you log, so log personal trips too.",
+    desc: "Start a trip and the app tracks it by GPS in the background, or enter its start and end addresses, then tag it business or personal. Your T2125 report fills in the kilometres for Chart A, business, total and business-use percentage, from the trips you log, so log personal trips too.",
     img: abScreenMileage,
     alt: "ReceiptOne app showing mileage map tracking",
   },

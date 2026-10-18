@@ -7,6 +7,9 @@ type Integration = {
   name: string;
   description: string;
   comingSoon: boolean;
+  /** How to connect, shown as a numbered list under the description. */
+  steps?: string[];
+  link?: { href: string; label: string };
 } & (
   | { brand: "logo"; logo: string; logoHeightClassName?: string }
   | { brand: "icon"; icon: typeof Mail }
@@ -20,7 +23,16 @@ type Integration = {
 const INTEGRATIONS: Integration[] = [
   {
     name: "Telegram",
-    description: "Send a photo to our bot — receipts land in your account instantly.",
+    // Linking flow and bot behaviour: the portal's TelegramConnectDialog and
+    // functions/src/telegram (telegramWebhook.ts, replies.ts).
+    description:
+      "Send a receipt photo, image or PDF to @ReceiptOne_bot. It's read, saved to your account and confirmed in the chat. Type a question for the assistant, or send /support to reach our team.",
+    steps: [
+      "In the ReceiptOne web app, open Integrations and choose Connect Telegram.",
+      "Scan the QR code with your phone, or tap Open in Telegram.",
+      "Send the bot your first receipt.",
+    ],
+    link: { href: "https://t.me/ReceiptOne_bot", label: "Open @ReceiptOne_bot" },
     comingSoon: false,
     brand: "logo",
     logo: telegramLogo,
@@ -81,8 +93,8 @@ export function Integrations() {
           <p className="eyebrow">Integrations</p>
           <h2 className="mt-2 text-ink">Fits into how you already work</h2>
           <p className="mt-3 max-w-2xl text-body text-ink-60 sm:text-lead">
-            Send receipts straight from Telegram today. Email forwarding, QuickBooks, bank sync, and
-            bank statement reconciliation are on the way.
+            Send receipts to @ReceiptOne_bot on Telegram today. Email forwarding, QuickBooks, bank
+            sync, and bank statement reconciliation are on the way.
           </p>
         </div>
 
@@ -114,6 +126,23 @@ export function Integrations() {
               <div>
                 <p className="font-display text-sm font-semibold text-ink">{integration.name}</p>
                 <p className="mt-1 text-label text-ink-60">{integration.description}</p>
+                {integration.steps && (
+                  <ol className="mt-2 list-decimal space-y-1 pl-4 text-label text-ink-60">
+                    {integration.steps.map((step) => (
+                      <li key={step}>{step}</li>
+                    ))}
+                  </ol>
+                )}
+                {integration.link && (
+                  <a
+                    href={integration.link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-2 inline-block text-label font-medium text-ink underline underline-offset-2 hover:underline-offset-4"
+                  >
+                    {integration.link.label}
+                  </a>
+                )}
               </div>
             </div>
           ))}

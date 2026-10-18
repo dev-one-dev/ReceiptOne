@@ -2,7 +2,23 @@ import { Link } from "@tanstack/react-router";
 import { Plus } from "lucide-react";
 import { useState } from "react";
 
-export type QA = { q: string; a: string; link?: { to: string; slug?: string; label: string } };
+export type QA = {
+  q: string;
+  a: string;
+  /** `external` renders a plain anchor to an absolute URL instead of a router Link. */
+  link?: { to: string; slug?: string; label: string; external?: boolean };
+};
+
+/**
+ * The Telegram answer is the same in both regions. Every capability here is
+ * in the portal's functions/src/telegram (webhook, replies.ts) and its
+ * Integrations page; keep it in step with them.
+ */
+const telegramQA: QA = {
+  q: "Is there a Telegram integration?",
+  a: "Yes. Our Telegram bot is @ReceiptOne_bot. To connect it, sign in to the ReceiptOne web app, open Integrations, choose Connect Telegram, and scan the QR code with your phone's camera, or tap Open in Telegram if you're on your phone. The code works once and expires after 15 minutes. Then send the bot a photo of a receipt, or an image or PDF file: it reads the receipt, saves it to your account, and replies with the merchant, amount and date and a link to the receipt. If you send a receipt you already have, it tells you instead of saving a copy. You can also type a question for the ReceiptOne assistant, or send /support to reach our support team, who reply in the chat and by email. The bot writes in English or French, following your ReceiptOne language setting. Adding receipts needs an active trial or subscription.",
+  link: { to: "https://t.me/ReceiptOne_bot", label: "Open @ReceiptOne_bot", external: true },
+};
 
 /** Shared FAQ list (used both for UI rendering and FAQPage JSON-LD). */
 export const faqItems: QA[] = [
@@ -48,7 +64,7 @@ export const faqItems: QA[] = [
   },
   {
     q: "How does mileage tracking work?",
-    a: "Start a trip in the mobile app and ReceiptOne tracks the route by GPS, in the background, until you stop it. Or log a trip by entering your start and end addresses, and ReceiptOne calculates the route and distance via Google Maps. Either way the trip goes into your logbook. Tag each trip business or personal, and your T2125 report shows your business-use percentage: business kilometres divided by all the kilometres you've logged in the app. It doesn't use your odometer readings, so the percentage is only accurate if you log your personal trips too.",
+    a: "Start a trip in the mobile app and ReceiptOne tracks the route by GPS, in the background, until you stop it. Or log a trip by entering your start and end addresses, and ReceiptOne calculates the route and distance via Google Maps. Either way the trip goes into your logbook. Tag each trip business or personal, and the Chart A section of your T2125 report shows your business kilometres, total kilometres and business-use percentage: business kilometres divided by all the kilometres you've logged in the app. It doesn't use your odometer readings, so the percentage is only accurate if you log your personal trips too.",
   },
   {
     q: "What counts as CRA-acceptable mileage documentation?",
@@ -71,10 +87,7 @@ export const faqItems: QA[] = [
     q: "Can I forward receipts by email?",
     a: "Not yet — email forwarding is in active development. For now, receipts can be scanned with your camera or uploaded from your photo library.",
   },
-  {
-    q: "Is there a Telegram integration?",
-    a: "Yes. Send a photo of your receipt to our Telegram bot and it lands in your ReceiptOne account instantly — no app switching required.",
-  },
+  telegramQA,
   {
     q: "Where is my data stored?",
     a: "Your data is stored and processed on Firebase and Google Cloud in the United States: the database in the nam5 multi-region (Iowa and South Carolina), receipt images and files in Cloud Storage in the United States, and server-side processing in us-central1 (Iowa). Some of our service providers also process information outside Canada — see our Privacy Policy for the full list.",
@@ -88,6 +101,10 @@ export const faqItems: QA[] = [
   {
     q: "How long do I need to keep my receipts?",
     a: "The CRA requires business records, including receipts and logbooks, to be kept for at least six years from the end of the last tax year they relate to.",
+  },
+  {
+    q: "What reports can I export for my T2125?",
+    a: "From the ReceiptOne web app you can export a T2125 report, in PDF and CSV, laid out like CRA Form T2125, Statement of Business or Professional Activities: Part 1 identification, your expenses by Part 4 line, Part 7 business-use-of-home expenses, and the kilometres for Chart A, Motor vehicle expenses: business kilometres, total kilometres and business-use percentage. Chart A's actual vehicle costs, such as fuel, insurance and repairs, are left blank for you to fill in. You can also export a mileage report: the CSV lists every trip in the year, business and personal, with its date, start and end addresses, purpose and distance, and the PDF lists your business trips. Both are working papers for you or your accountant; ReceiptOne does not file the form.",
   },
 ];
 
@@ -133,6 +150,7 @@ export const faqItemsUS: QA[] = [
     q: "Is ReceiptOne a tax filing service?",
     a: "No. ReceiptOne organizes your receipts and expenses so that filing — whether you do it yourself or hand off to an accountant — is fast, accurate, and stress-free. We don't file taxes on your behalf.",
   },
+  telegramQA,
 ];
 
 /** FAQ questions grouped by category — used on the /faq help-center page. */
@@ -143,7 +161,7 @@ export const CATEGORIZED_FAQ: { category: string; items: QA[] }[] = [
   },
   {
     category: "Tax & CRA",
-    items: [faqItems[1], faqItems[2], faqItems[3], faqItems[9], faqItems[18]],
+    items: [faqItems[1], faqItems[2], faqItems[3], faqItems[9], faqItems[18], faqItems[19]],
   },
   {
     category: "Pricing & Plans",
@@ -176,6 +194,10 @@ export const CATEGORIZED_FAQ_US: { category: string; items: QA[] }[] = [
   {
     category: "Pricing & Plans",
     items: [faqItemsUS[7], faqItemsUS[8]],
+  },
+  {
+    category: "Integrations",
+    items: [faqItemsUS[10]],
   },
 ];
 
@@ -297,13 +319,24 @@ export function FaqAccordion({ items }: { items: QA[] }) {
                 {it.link && (
                   <>
                     {" "}
-                    <Link
-                      to={it.link.to as any}
-                      params={it.link.slug ? ({ slug: it.link.slug } as any) : undefined}
-                      className="font-medium text-ink underline underline-offset-2 transition-[text-underline-offset] duration-150 hover:underline-offset-4"
-                    >
-                      {it.link.label}
-                    </Link>
+                    {it.link.external ? (
+                      <a
+                        href={it.link.to}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="font-medium text-ink underline underline-offset-2 transition-[text-underline-offset] duration-150 hover:underline-offset-4"
+                      >
+                        {it.link.label}
+                      </a>
+                    ) : (
+                      <Link
+                        to={it.link.to as any}
+                        params={it.link.slug ? ({ slug: it.link.slug } as any) : undefined}
+                        className="font-medium text-ink underline underline-offset-2 transition-[text-underline-offset] duration-150 hover:underline-offset-4"
+                      >
+                        {it.link.label}
+                      </Link>
+                    )}
                   </>
                 )}
               </p>
