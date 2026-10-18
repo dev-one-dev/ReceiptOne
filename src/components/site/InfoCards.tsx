@@ -34,7 +34,7 @@ const CA_FEATURES = [
   {
     label: "Mileage",
     title: "Mileage tracking, right on your phone",
-    desc: "Log each trip by entering its start and end addresses and tag it business or personal. Your T2125 report shows the business-use percentage from the trips you log, so log personal trips too.",
+    desc: "Start a trip and the app tracks it by GPS in the background, or enter its start and end addresses, then tag it business or personal. Your T2125 report shows the business-use percentage from the trips you log, so log personal trips too.",
     img: abScreenMileage,
     alt: "ReceiptOne app showing mileage map tracking",
   },
@@ -61,7 +61,7 @@ const US_FEATURES = CA_FEATURES.map((f) => {
       ...f,
       img: usMileage,
       alt: "ReceiptOne app showing mileage map tracking",
-      desc: "Log a trip by entering its start and end addresses. ReceiptOne calculates the distance and separates business from personal miles, so your mileage log stays organized.",
+      desc: "Start a trip and the app tracks it by GPS in the background, or enter its start and end addresses. ReceiptOne calculates the distance and separates business from personal miles, so your mileage log stays organized.",
     };
   if (f.label === "Home office")
     return {

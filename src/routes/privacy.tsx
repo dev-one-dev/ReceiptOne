@@ -638,7 +638,7 @@ function PrivacyPage() {
                       "Google Cloud / Firebase (Google LLC): Authentication, Cloud Firestore, Cloud Storage, Cloud Functions, Cloud Messaging",
                       "Account details (name, email, sign-in identifiers), receipts and uploaded documents, expense, mileage, trip location, and home office records, support requests, device tokens, and service logs",
                       "Hosting, sign-in, database and file storage, server-side processing, and push notifications",
-                      "United States (Cloud Functions run in Iowa, us-central1) and other Google Cloud locations — outside Canada",
+                      "United States — outside Canada. Cloud Firestore: nam5 multi-region (Iowa and South Carolina). Cloud Functions: us-central1 (Iowa). Cloud Storage: United States.",
                     ],
                     [
                       "Google Vertex AI — Gemini (Google LLC)",
@@ -650,7 +650,7 @@ function PrivacyPage() {
                       "Google Cloud Vision API (Google LLC)",
                       "Receipt images captured in the mobile app",
                       "Extracting text from receipt images",
-                      "United States and other Google Cloud locations — outside Canada",
+                      "Google's global endpoint, which may route requests to any Google region, including the United States — outside Canada",
                     ],
                     [
                       "OpenAI, LLC",
@@ -734,20 +734,30 @@ function PrivacyPage() {
 
               <Section number="6" title="International and Cross-Border Processing">
                 <p>
-                  ReceiptOne uses service providers and cloud-based infrastructure that may process
-                  or store personal information in:
+                  <strong>Where your information is stored:</strong> ReceiptOne&apos;s database,
+                  files, and server-side processing run on Google Cloud / Firebase in the United
+                  States:
                 </p>
                 <BulletList
                   items={[
-                    "Canada",
-                    "The United States",
-                    "Other jurisdictions where we or our service providers operate",
+                    "Cloud Firestore (account, expense, mileage, and home office records): nam5, a multi-region in the United States (Iowa and South Carolina)",
+                    "Cloud Storage (receipt images and uploaded documents): United States",
+                    "Cloud Functions (server-side processing): us-central1 (Iowa, United States)",
                   ]}
                 />
                 <p>
-                  Most of the service providers listed in Section 5 process personal information in
-                  the United States, so most information you provide to the Services is processed or
-                  stored outside Canada.
+                  <strong>
+                    If you are in Canada, your personal information is stored and processed in the
+                    United States.
+                  </strong>{" "}
+                  Other service providers listed in Section 5 also process personal information
+                  outside Canada, mainly in the United States; that table shows where each one
+                  processes it.
+                </p>
+                <p>
+                  <strong>For residents of Quebec:</strong> your personal information is
+                  communicated outside Quebec, to the United States, for the purposes described in
+                  this Privacy Policy.
                 </p>
                 <p>
                   <strong>Legal implications:</strong> As a result, personal information may be

@@ -724,10 +724,13 @@ const PARTS: PartEntry[] = [
         content: () => (
           <>
             <p>
-              Your personal information may be stored or processed in the United States and,
-              depending on service configuration, may also be processed in Canada or other
-              jurisdictions where our service providers or their infrastructure operate. Those
-              jurisdictions may have different privacy laws than the place where you reside.
+              Your personal information is stored and processed in the United States: our database
+              (Cloud Firestore) in the nam5 multi-region (Iowa and South Carolina), files in Cloud
+              Storage in the United States, and server-side processing (Cloud Functions) in
+              us-central1 (Iowa). Some service providers may also process it in other jurisdictions
+              where they or their infrastructure operate, as set out in Section 5 of our Privacy
+              Policy. Those jurisdictions may have different privacy laws than the place where you
+              reside.
             </p>
             <p>
               By using the Services, you understand that your information may be transferred to and

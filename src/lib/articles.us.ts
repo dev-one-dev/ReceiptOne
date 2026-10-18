@@ -542,7 +542,7 @@ export const ARTICLES_US_ONLY: Article[] = [
       },
       {
         type: "callout",
-        text: "In ReceiptOne you log a trip by entering its start and end addresses; the app works out the distance and multiplies it by the per-mile rate saved in your settings. Check that rate matches the IRS rate for the period you drove, since it changed on July 1, 2026.",
+        text: "In ReceiptOne you log a trip by starting GPS tracking in the mobile app, which keeps recording in the background, or by entering its start and end addresses; the app works out the distance and multiplies it by the per-mile rate saved in your settings. Check that rate matches the IRS rate for the period you drove, since it changed on July 1, 2026.",
       },
       {
         type: "h2",

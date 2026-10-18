@@ -1502,7 +1502,7 @@ export const ARTICLES: Article[] = [
       },
       {
         type: "callout",
-        text: "ReceiptOne's Log Trip feature records each trip's date and route distance from the start and end addresses you enter, with your note on the purpose. Tag each trip business or personal, and the T2125 report shows business kilometres divided by all the kilometres you've logged in the app. It does not use your odometer readings, so that percentage is only accurate if you log personal trips too. Keep your start- and end-of-year odometer readings yourself.",
+        text: "ReceiptOne records each trip's date and route distance, either tracked by GPS in the mobile app, in the background, once you start the trip or calculated from the start and end addresses you enter, with your note on the purpose. Tag each trip business or personal, and the T2125 report shows business kilometres divided by all the kilometres you've logged in the app. It does not use your odometer readings, so that percentage is only accurate if you log personal trips too. Keep your start- and end-of-year odometer readings yourself.",
       },
       {
         type: "h2",
@@ -3099,7 +3099,7 @@ export const ARTICLES: Article[] = [
             "CA$4.99/wk, CA$9.99/mo or CA$129.99/yr; unlimited receipts",
             "No; 7-day free trial",
             "Yes: labels each tax line GST, HST, PST or QST; editable",
-            "Manual: enter start and end addresses, distance calculated; no automatic trip detection",
+            "GPS tracking in the mobile app, in the background once you start a trip, or enter start and end addresses; distance calculated",
             "PDF and CSV reports, including a T2125 report",
             "iOS, Android, web",
           ],
@@ -3191,7 +3191,7 @@ export const ARTICLES: Article[] = [
       },
       {
         type: "p",
-        text: "Who it suits: a sole proprietor who mainly needs receipts, sales tax and a mileage log in shape for T2125 and for their accountant. Where it falls short, and this matters: there is no automatic trip detection, so you log each trip by entering its start and end addresses. There is no bank sync, so it will not match receipts to card transactions. Email forwarding is not available yet; receipts come in by camera, photo upload, or our Telegram bot. There is no free plan, only a 7-day trial.",
+        text: "Who it suits: a sole proprietor who mainly needs receipts, sales tax and a mileage log in shape for T2125 and for their accountant. Where it falls short: there is no bank sync, so it will not match receipts to card transactions. Email forwarding is not available yet; receipts come in by camera, photo upload, or our Telegram bot. There is no free plan, only a 7-day trial.",
       },
       {
         type: "h2",
@@ -3206,7 +3206,7 @@ export const ARTICLES: Article[] = [
         items: [
           "Mostly paper receipts and you file T2125 yourself or through an accountant: a dedicated scanner that separates GST/HST from PST and exports a report is enough. SparkReceipt, Foreceipt and ReceiptOne all state Canadian tax capture.",
           "Most receipts arrive by email: pick an app that imports from your inbox or gives you a forwarding address. SparkReceipt connects an inbox; Foreceipt, Expensify and Wave publish forwarding addresses. ReceiptOne does not offer this yet.",
-          "You drive a lot for work: automatic tracking saves you remembering to log each trip. SparkReceipt (GPS) and QuickBooks Lite (automatic) say they record trips for you; ReceiptOne needs each trip entered.",
+          "You drive a lot for work: automatic tracking saves you remembering to log each trip. SparkReceipt (GPS) and QuickBooks Lite (automatic) say they record trips for you; ReceiptOne's mobile app tracks a trip by GPS, in the background, once you start it.",
           "You invoice clients and want bank feeds: QuickBooks Lite or Wave Pro do bookkeeping as well as receipts, at a higher price and with more to learn.",
           "You want to try before paying: Foreceipt and Expensify have free plans, and Wave's free plan works for invoicing. Check how long a free plan keeps your receipts against the CRA's six-year rule.",
           "You pay in Canadian dollars: SparkReceipt, Wave, QuickBooks and ReceiptOne publish Canadian prices; Foreceipt prices in US dollars.",
@@ -3214,7 +3214,7 @@ export const ARTICLES: Article[] = [
       },
       {
         type: "p",
-        text: "A hypothetical example: a photographer in Ontario with a few dozen paper receipts a month and regular drives to shoots. Their must-haves are HST capture and a mileage log. If they would rather not log trips by hand, SparkReceipt or QuickBooks Lite fits better than ReceiptOne. If they mostly want receipts and HST organised for their accountant, with a short weekly habit of entering trips, a dedicated scanner such as ReceiptOne or Foreceipt costs less and asks less of them.",
+        text: "A hypothetical example: a photographer in Ontario with a few dozen paper receipts a month and regular drives to shoots. Their must-haves are HST capture and a mileage log, and SparkReceipt, QuickBooks Lite and ReceiptOne's mobile app can all record drives by GPS. If they mostly want receipts and HST organised for their accountant, a dedicated scanner such as ReceiptOne or Foreceipt costs less and asks less of them.",
       },
       {
         type: "p",
@@ -3311,7 +3311,7 @@ export const ARTICLES: Article[] = [
           [
             "Mileage",
             "Automatic kilometre tracking with trip categories",
-            "Manual: enter start and end addresses and the distance is calculated; no automatic trip detection",
+            "GPS tracking in the mobile app, in the background once you start a trip, or enter start and end addresses and the distance is calculated",
           ],
           [
             "Sales tax",
@@ -3363,7 +3363,7 @@ export const ARTICLES: Article[] = [
           "Bank feeds. Lite connects up to two bank accounts, imports transactions and matches receipt photos to them. ReceiptOne has no bank connection, so it will not catch a card charge you forgot to photograph.",
           "Income tracking. Lite records what you earn alongside what you spend, so its profit and loss report shows your net business income. ReceiptOne tracks expenses only: no income, and no GST/HST you collect from clients.",
           "Sales tax on what you sell. Lite calculates GST, HST and PST on your invoices and tracks it in a tax centre. If you are registered for GST/HST, you need a record of the tax you collect as well as the tax you paid, and ReceiptOne only covers the second half.",
-          "Automatic mileage. Lite says it tracks kilometres automatically. In ReceiptOne you add each trip yourself.",
+          "Automatic mileage. Lite says it tracks kilometres automatically. In ReceiptOne you start each trip, and the mobile app then tracks it by GPS in the background; you can also enter trips by hand.",
         ],
       },
       {
@@ -3383,13 +3383,13 @@ export const ARTICLES: Article[] = [
         items: [
           "Receipt capture. Photograph a receipt or upload a photo or PDF, and ReceiptOne reads the merchant, date, total and tax lines. Scanning is unlimited on every plan. You do not need a bank connection for a receipt to be recorded.",
           "GST/HST/PST per receipt. Each tax line on a receipt is labelled GST, HST, PST or QST, and when a receipt shows only a total, ReceiptOne splits the tax using your province's rates. You can correct anything it reads wrongly. Lite's pages describe sales tax tracking but do not say whether it reads the tax lines from a receipt photo.",
-          "Mileage logbook. You enter a trip's start and end addresses and ReceiptOne works out the distance, building a log with dates, distances and purposes. It takes a minute per trip, which some people prefer to reviewing trips an automatic tracker recorded, and others will find tedious.",
+          "Mileage logbook. Start a trip in the mobile app and it tracks the route by GPS in the background, or enter a trip's start and end addresses and ReceiptOne works out the distance. Either way it builds a log with dates, distances and purposes.",
           "Expense export. A PDF and a CSV of your expenses by category, plus mileage and home office, ready to hand to an accountant or to use when you fill T2125. There is no ledger to learn first.",
         ],
       },
       {
         type: "p",
-        text: "What ReceiptOne will not do: it has no bank sync, no automatic trip detection, no income tracking, no invoicing, and no free plan, only a 7-day trial. Email forwarding of receipts has not shipped yet.",
+        text: "What ReceiptOne will not do: it has no bank sync, no income tracking, no invoicing, and no free plan, only a 7-day trial. Email forwarding of receipts has not shipped yet.",
       },
       {
         type: "h2",
@@ -3405,7 +3405,7 @@ export const ARTICLES: Article[] = [
           "You invoice clients and want income, expenses and bank in one place: QuickBooks Lite. Remember Lite has no accountant access, so if someone else does your books, check whether you need a higher QuickBooks plan.",
           "You are registered for GST/HST and file returns yourself: you need a record of the tax you collect. QuickBooks tracks it; ReceiptOne does not.",
           "You mostly need receipts, sales tax on purchases and a mileage log for T2125 or for your accountant: ReceiptOne asks less of you and has no ledger to maintain.",
-          "You drive a lot and do not want to log trips: Lite's automatic tracking saves the habit ReceiptOne needs.",
+          "You drive a lot and do not want to start each trip yourself: Lite says it tracks kilometres automatically, while ReceiptOne's GPS tracking runs once you start a trip.",
           "Your clients pay you through a platform that already gives you an income summary: an expense app may be all you are missing.",
         ],
       },
@@ -3546,7 +3546,7 @@ export const ARTICLES: Article[] = [
       },
       {
         type: "p",
-        text: "ReceiptOne keeps a photo of each receipt, reads the merchant, date, total and sales-tax amounts from it, lets you mark each receipt business or personal and add a note, and exports your records as PDF and CSV. It does not import receipts from your email yet, and mileage trips are entered rather than tracked automatically.",
+        text: "ReceiptOne keeps a photo of each receipt, reads the merchant, date, total and sales-tax amounts from it, lets you mark each receipt business or personal and add a note, and exports your records as PDF and CSV. It does not import receipts from your email yet, and mileage trips can be tracked by GPS in the mobile app, in the background, or entered by hand.",
       },
       {
         type: "h2",
