@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight, CheckCircle2, Clock } from "lucide-react";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
@@ -16,12 +16,21 @@ import {
 } from "@/lib/articles";
 
 export const Route = (createFileRoute as any)("/articles/$slug")({
+  // An unknown slug throws notFound(): during SSR TanStack Start turns that
+  // into a real 404 response (not a 200 "soft 404"), and the route's own
+  // notFoundComponent renders the friendly page.
+  loader: ({ params }: { params: { slug: string } }) => {
+    if (!getArticle(params.slug)) throw notFound();
+  },
   head: ({ params }: { params: { slug: string } }) => {
     const article = getArticle(params.slug);
 
     if (!article) {
       return {
-        meta: [{ title: "Article Not Found | ReceiptOne" }],
+        meta: [
+          { title: "Article Not Found | ReceiptOne" },
+          { name: "robots", content: "noindex,nofollow" },
+        ],
         links: [],
       };
     }
@@ -63,6 +72,7 @@ export const Route = (createFileRoute as any)("/articles/$slug")({
     };
   },
   component: ArticleDetailPage,
+  notFoundComponent: ArticleNotFound,
 });
 
 /* ----------------------------- Not found ---------------------------------- */

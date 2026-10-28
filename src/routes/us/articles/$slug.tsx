@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight, CheckCircle2, Clock } from "lucide-react";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
@@ -15,11 +15,21 @@ import { articleHreflang, getHelpCenterArticle, getHelpCenterRelated } from "@/l
 import { US_ARTICLES } from "@/lib/articles.us";
 
 export const Route = (createFileRoute as any)("/us/articles/$slug")({
+  // Unknown slug -> notFound(), which SSR answers with a real 404 status.
+  loader: ({ params }: { params: { slug: string } }) => {
+    if (!getHelpCenterArticle(params.slug, US_ARTICLES)) throw notFound();
+  },
   head: ({ params }: { params: { slug: string } }) => {
     const article = getHelpCenterArticle(params.slug, US_ARTICLES);
 
     if (!article) {
-      return { meta: [{ title: "Article Not Found | ReceiptOne" }], links: [] };
+      return {
+        meta: [
+          { title: "Article Not Found | ReceiptOne" },
+          { name: "robots", content: "noindex,nofollow" },
+        ],
+        links: [],
+      };
     }
 
     const seo = pageSEO({
@@ -62,6 +72,7 @@ export const Route = (createFileRoute as any)("/us/articles/$slug")({
     };
   },
   component: USArticleDetailPage,
+  notFoundComponent: ArticleNotFound,
 });
 
 function ArticleNotFound() {
