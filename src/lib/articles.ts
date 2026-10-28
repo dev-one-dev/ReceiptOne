@@ -58,7 +58,11 @@ export const ARTICLES: Article[] = [
     imageAlt: "Canadian freelancer organizing receipts and tax documents",
     tags: ["CRA", "receipts", "compliance", "self-employed", "audit", "record keeping"],
     clusterName: "CRA Receipt Rules",
-    relatedSlugs: ["digital-receipts-canada-are-they-valid", "cra-audit-proof-expenses"],
+    relatedSlugs: [
+      "digital-receipts-canada-are-they-valid",
+      "cra-audit-proof-expenses",
+      "cra-audit-guide-self-employed-canada",
+    ],
     body: [
       {
         type: "p",
@@ -247,7 +251,11 @@ export const ARTICLES: Article[] = [
     tags: ["digital receipts", "CRA", "email receipts", "photo receipts", "compliance"],
     clusterPillar: "cra-receipt-rules-canada",
     clusterName: "CRA Receipt Rules",
-    relatedSlugs: ["cra-receipt-rules-canada", "cra-audit-proof-expenses"],
+    relatedSlugs: [
+      "cra-receipt-rules-canada",
+      "cra-audit-proof-expenses",
+      "track-gst-hst-business-expenses",
+    ],
     body: [
       {
         type: "p",
@@ -425,7 +433,11 @@ export const ARTICLES: Article[] = [
     tags: ["CRA audit", "expense documentation", "self-employed", "record keeping", "compliance"],
     clusterPillar: "cra-receipt-rules-canada",
     clusterName: "CRA Receipt Rules",
-    relatedSlugs: ["cra-receipt-rules-canada", "digital-receipts-canada-are-they-valid"],
+    relatedSlugs: [
+      "cra-receipt-rules-canada",
+      "digital-receipts-canada-are-they-valid",
+      "cra-audit-guide-self-employed-canada",
+    ],
     body: [
       {
         type: "p",
@@ -2731,6 +2743,7 @@ export const ARTICLES: Article[] = [
     relatedSlugs: [
       "freelancer-taxes-canada-guide",
       "self-employed-tax-deductions-canada",
+      "track-gst-hst-business-expenses",
     ],
     body: [
       {
@@ -3671,7 +3684,11 @@ export const ARTICLES: Article[] = [
     imageUrl: "https://picsum.photos/seed/cra-audit-guide-self-employed-canada/600/400",
     imageAlt: "Canadian freelancer preparing documentation for CRA audit review",
     tags: ["CRA audit", "self-employed", "review", "reassessment", "record keeping", "compliance"],
-    relatedSlugs: ["cra-audit-proof-expenses", "cra-receipt-rules-canada"],
+    relatedSlugs: [
+      "cra-audit-proof-expenses",
+      "cra-receipt-rules-canada",
+      "track-gst-hst-business-expenses",
+    ],
     body: [
       {
         type: "p",
