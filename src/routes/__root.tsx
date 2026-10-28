@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Outlet, useLocation, createRootRoute, HeadContent, Scripts } from "@tanstack/react-router";
 
 import appCss from "../styles.css?url";
@@ -8,6 +9,7 @@ import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { NotFoundBeaver } from "@/components/site/NotFoundBeaver";
 import { langOf } from "@/lib/locales";
+import { captureAttribution } from "@/lib/attribution";
 
 export function NotFoundComponent() {
   const location = useLocation();
@@ -97,6 +99,11 @@ function RootShell({ children }: { children: React.ReactNode }) {
 }
 
 function RootComponent() {
+  // Effects never run during SSR/prerender; empty deps = initial load only.
+  useEffect(() => {
+    captureAttribution();
+  }, []);
+
   return (
     <AuthProvider>
       <Outlet />
