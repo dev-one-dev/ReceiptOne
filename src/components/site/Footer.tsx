@@ -6,6 +6,7 @@ import { ROUTES, type AppRoute } from "@/lib/routes";
 import { StoreBadge } from "@/components/site/StoreBadge";
 import { useLang } from "@/lib/use-lang";
 import type { Lang } from "@/lib/locales";
+import { openConsentSettings } from "@/lib/consent";
 
 type FooterProps = {
   region?: "ca" | "us";
@@ -72,6 +73,7 @@ const FOOTER_COPY: Record<Lang, Record<string, string>> = {
     account: "Account",
     legal: "Legal",
     rights: "All rights reserved.",
+    cookieSettings: "Cookie settings",
   },
   fr: {
     backToTop: "Retour en haut",
@@ -79,6 +81,7 @@ const FOOTER_COPY: Record<Lang, Record<string, string>> = {
     account: "Compte",
     legal: "Juridique",
     rights: "Tous droits réservés.",
+    cookieSettings: "Paramètres des témoins",
   },
 };
 
@@ -131,7 +134,7 @@ export function Footer({ region = "ca" }: FooterProps) {
   };
 
   return (
-    <footer data-surface="void" className="w-full bg-ink text-paper">
+    <footer data-surface="void" data-cta-location="footer" className="w-full bg-ink text-paper">
       <div className="mx-auto max-w-[1200px] px-4 pt-8 pb-4 sm:px-6 lg:px-8 lg:pt-10">
         {/* Main grid */}
         <div className="grid gap-6 lg:grid-cols-4">
@@ -228,6 +231,16 @@ export function Footer({ region = "ca" }: FooterProps) {
                     </Link>
                   </li>
                 ))}
+                <li>
+                  {/* Reopens the consent banner; an action, so a button. */}
+                  <button
+                    type="button"
+                    onClick={openConsentSettings}
+                    className="text-left font-sans text-sm text-paper-60 transition-colors hover:text-paper"
+                  >
+                    {t.cookieSettings}
+                  </button>
+                </li>
               </ul>
             </div>
           </div>

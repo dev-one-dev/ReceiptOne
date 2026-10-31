@@ -117,6 +117,7 @@ export function Pricing({ region = "ca" }: { region?: Region }) {
   return (
     <section
       id="pricing"
+      data-cta-location="pricing"
       className="w-full scroll-mt-28 px-4 pt-4 pb-4 sm:px-6 sm:pt-6 sm:pb-6 lg:px-8"
     >
       <div className="mx-auto w-full max-w-[1200px]">

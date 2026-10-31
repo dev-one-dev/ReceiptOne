@@ -3,7 +3,11 @@ import { PrimaryCta } from "@/components/site/PrimaryCta";
 
 export function FinalCta() {
   return (
-    <section id="final-cta" className="w-full px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-24">
+    <section
+      id="final-cta"
+      data-cta-location="final_cta"
+      className="w-full px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-24"
+    >
       <div
         data-surface="void"
         className="relative mx-auto w-full max-w-[1200px] overflow-hidden rounded-card bg-ink px-6 py-14 text-center sm:px-10 sm:py-20 lg:px-16 lg:py-24"

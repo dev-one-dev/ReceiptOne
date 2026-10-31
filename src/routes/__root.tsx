@@ -10,6 +10,7 @@ import { Footer } from "@/components/site/Footer";
 import { NotFoundBeaver } from "@/components/site/NotFoundBeaver";
 import { langOf } from "@/lib/locales";
 import { captureAttribution } from "@/lib/attribution";
+import { CookieConsent } from "@/components/site/CookieConsent";
 
 export function NotFoundComponent() {
   const location = useLocation();
@@ -106,6 +107,8 @@ function RootComponent() {
 
   return (
     <AuthProvider>
+      {/* First in DOM order so keyboard users reach it before the page. */}
+      <CookieConsent />
       <Outlet />
       <Toaster />
     </AuthProvider>

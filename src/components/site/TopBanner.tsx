@@ -12,7 +12,10 @@ export function TopBanner({ region = "ca" }: { region?: "ca" | "us" }) {
   const heroPoster = region === "us" ? eagleHeroPoster : beaverHeroPoster;
   const fr = useLang() === "fr" && region === "ca";
   return (
-    <section className="relative w-full overflow-visible px-4 pt-20 sm:px-6 sm:pt-24 lg:px-8 lg:pt-28">
+    <section
+      data-cta-location="hero"
+      className="relative w-full overflow-visible px-4 pt-20 sm:px-6 sm:pt-24 lg:px-8 lg:pt-28"
+    >
       <div className="mx-auto w-full max-w-[1200px]">
         <div className="grid items-start gap-10 lg:grid-cols-2 lg:gap-12">
           {/* ── LEFT COLUMN ── */}

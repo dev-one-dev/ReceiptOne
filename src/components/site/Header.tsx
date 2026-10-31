@@ -239,7 +239,10 @@ export function Header() {
   );
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 flex w-full justify-center px-4 pt-3 sm:px-6 sm:pt-4 lg:px-8">
+    <header
+      data-cta-location="header"
+      className="fixed inset-x-0 top-0 z-50 flex w-full justify-center px-4 pt-3 sm:px-6 sm:pt-4 lg:px-8"
+    >
       <div ref={rootRef} className="relative w-full max-w-[1200px]">
         <nav
           className={`flex w-full items-center justify-between gap-2 rounded-card border p-3 backdrop-blur-xl backdrop-saturate-150 transition-all duration-300 sm:gap-3 sm:p-3.5 md:p-4 ${

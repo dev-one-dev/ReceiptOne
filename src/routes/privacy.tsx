@@ -14,6 +14,7 @@ import {
   type Region,
 } from "@/components/site/legal/shared";
 import { pageSEO, breadcrumbJsonLd } from "@/lib/seo";
+import { openConsentSettings } from "@/lib/consent";
 
 /* ----------------------------- Section catalog ---------------------------- */
 
@@ -259,7 +260,7 @@ function PrivacyPage() {
       <article className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8 lg:py-12">
         <header className="border-b border-border pb-8">
           <p className="text-sm font-medium text-muted-foreground">
-            Last updated: October 18, 2026
+            Last updated: October 31, 2026
           </p>
           <h1 className="mt-3 font-display text-4xl font-semibold tracking-normal sm:text-5xl">
             ReceiptOne — Privacy Policy
@@ -425,11 +426,27 @@ function PrivacyPage() {
                     ]}
                   />
                   <p>
-                    <strong>On our website (receipt-one.com):</strong> we do not use analytics,
-                    advertising, or tracking cookies. The website uses:
+                    <strong>
+                      On our website (receipt-one.com) — cookies and similar technologies:
+                    </strong>{" "}
+                    analytics cookies are used only if you accept them in our cookie banner. Until
+                    you accept, nothing is sent to Google Analytics. You can change your choice at
+                    any time with the &quot;Cookie settings&quot; link in the website footer or{" "}
+                    <button
+                      type="button"
+                      onClick={openConsentSettings}
+                      className="font-medium text-foreground underline underline-offset-4"
+                    >
+                      here
+                    </button>
+                    . Cookies on receipt-one.com may be shared with app.receipt-one.com, our web
+                    app. The website uses:
                   </p>
                   <BulletList
                     items={[
+                      'A first-party cookie named "ro_consent", which stores your cookie choice ("granted" or "denied") for 12 months so we don\'t ask again on every visit.',
+                      'A first-party cookie named "ro_attr", set only when you arrive from a link that carries ad campaign parameters (such as utm_source, utm_campaign, or click IDs like gclid), which stores those parameters, the page you landed on, and the time for 90 days, so we know which campaign brought a visitor and can credit it if you sign up.',
+                      'Google Analytics cookies named "_ga" and "_ga_<ID>", set only after you accept analytics cookies. Google Analytics (Google LLC) receives your IP address, browser and device information, the pages you view, and the buttons you click (such as sign-up or app-store links), and we use it to measure visits and the performance of our ads. If you later decline, we remove these cookies and Google Analytics stops collecting.',
                       "Google reCAPTCHA v3, through Firebase App Check, on every page to protect our contact form and services from automated abuse. reCAPTCHA collects your IP address, browser and device information, and interaction signals, and may set Google cookies.",
                       "Google Fonts, which receives your IP address and browser information when the page loads its fonts.",
                       'A first-party cookie and local storage entry named "ro_referral", set only when you open a referral link (receipt-one.com/r/...), which stores the referral code for 30 days so a referral is credited if you sign up later.',
@@ -698,6 +715,12 @@ function PrivacyPage() {
                       "Google reCAPTCHA via Firebase App Check (Google LLC)",
                       "Your IP address, browser and device information, interaction signals, and Google cookies",
                       "Protecting our website, contact form, and services from automated abuse",
+                      "United States — outside Canada",
+                    ],
+                    [
+                      "Google Analytics (Google LLC) — only if you accept analytics cookies",
+                      "Your IP address, browser and device information, the pages you view on receipt-one.com, the buttons you click, and Google Analytics cookies",
+                      "Measuring website visits and the performance of our ads",
                       "United States — outside Canada",
                     ],
                     [
