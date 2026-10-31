@@ -5,7 +5,8 @@
  * request to googletagmanager.com or google-analytics.com -- until the
  * visitor has ro_consent=granted (see lib/consent.ts). On grant, the
  * bootstrap below runs once: consent default (all denied), consent update
- * (all granted), then gtag.js and config. cookie_domain is left on "auto"
+ * (analytics_storage only; ad_* stay denied), Google signals and ad
+ * personalization signals off, then gtag.js and config. cookie_domain is left on "auto"
  * so _ga lands on .receipt-one.com and is shared with app.receipt-one.com,
  * which uses the same Measurement ID.
  *
@@ -111,11 +112,16 @@ const ALL_DENIED = {
   analytics_storage: "denied",
 } as const;
 
-const ALL_GRANTED = {
+/**
+ * Accept grants analytics only. ad_storage, ad_user_data and
+ * ad_personalization stay denied: grant them only together with adding a
+ * Google Ads tag AND updating the privacy policy -- never on their own.
+ */
+const ANALYTICS_GRANTED = {
   analytics_storage: "granted",
-  ad_storage: "granted",
-  ad_user_data: "granted",
-  ad_personalization: "granted",
+  ad_storage: "denied",
+  ad_user_data: "denied",
+  ad_personalization: "denied",
 } as const;
 
 export function createAnalytics(deps: AnalyticsDeps) {
@@ -131,7 +137,7 @@ export function createAnalytics(deps: AnalyticsDeps) {
     granted = true;
     win[`ga-disable-${measurementId}`] = false;
     if (loaded) {
-      gtag("consent", "update", ALL_GRANTED);
+      gtag("consent", "update", ANALYTICS_GRANTED);
     } else {
       loaded = true;
       win.dataLayer = win.dataLayer || [];
@@ -142,7 +148,10 @@ export function createAnalytics(deps: AnalyticsDeps) {
         win.dataLayer!.push(arguments);
       };
       gtag("consent", "default", ALL_DENIED);
-      gtag("consent", "update", ALL_GRANTED);
+      gtag("consent", "update", ANALYTICS_GRANTED);
+      // No Google signals, no ad personalization -- see ANALYTICS_GRANTED.
+      gtag("set", "allow_google_signals", false);
+      gtag("set", "allow_ad_personalization_signals", false);
       gtag("js", new Date());
       // Default send_page_view: this sends the page_view for the current page.
       gtag("config", measurementId);

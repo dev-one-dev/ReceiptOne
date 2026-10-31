@@ -36,6 +36,14 @@ const ALL_DENIED = {
   analytics_storage: "denied",
 };
 
+/** Accept grants analytics only; ad_* stay denied. */
+const ANALYTICS_GRANTED = {
+  analytics_storage: "granted",
+  ad_storage: "denied",
+  ad_user_data: "denied",
+  ad_personalization: "denied",
+};
+
 /* ----------------------------- Before consent ----------------------------- */
 
 test("before consent: no gtag, no dataLayer, no script, nothing sent", () => {
@@ -65,30 +73,38 @@ test("no Measurement ID: grant is a no-op", () => {
 
 /* ------------------------------ After consent ----------------------------- */
 
-test("grant: consent default (all denied) -> update (all granted) -> js -> config, then gtag.js", () => {
+test("grant: consent default (all denied) -> update (analytics only) -> signals off -> js -> config, then gtag.js", () => {
   const env = fakeEnv();
   env.analytics.grant();
   const calls = env.calls();
   assert.deepEqual(calls[0], ["consent", "default", ALL_DENIED]);
-  assert.deepEqual(calls[1], [
-    "consent",
-    "update",
-    {
-      analytics_storage: "granted",
-      ad_storage: "granted",
-      ad_user_data: "granted",
-      ad_personalization: "granted",
-    },
-  ]);
-  assert.equal(calls[2][0], "js");
-  assert.ok(calls[2][1] instanceof Date);
+  assert.deepEqual(calls[1], ["consent", "update", ANALYTICS_GRANTED]);
+  assert.deepEqual(calls[2], ["set", "allow_google_signals", false]);
+  assert.deepEqual(calls[3], ["set", "allow_ad_personalization_signals", false]);
+  assert.equal(calls[4][0], "js");
+  assert.ok(calls[4][1] instanceof Date);
   // Bare config: default cookie_domain (auto) and gtag's own page_view.
-  assert.deepEqual(calls[3], ["config", ID]);
-  assert.equal(calls.length, 4);
+  assert.deepEqual(calls[5], ["config", ID]);
+  assert.equal(calls.length, 6);
   assert.equal(env.scripts.length, 1);
   assert.equal(env.scripts[0].src, `https://www.googletagmanager.com/gtag/js?id=${ID}`);
   assert.equal(env.scripts[0].async, true);
   assert.equal(env.win[`ga-disable-${ID}`], false);
+});
+
+test("no consent call ever grants ad_storage, ad_user_data or ad_personalization", () => {
+  const env = fakeEnv();
+  env.analytics.grant();
+  env.analytics.deny();
+  env.analytics.grant();
+  const consent = env.calls().filter((c) => c[0] === "consent");
+  assert.equal(consent.length, 4);
+  for (const [, , state] of consent) {
+    const s = state as Record<string, string>;
+    assert.equal(s.ad_storage, "denied");
+    assert.equal(s.ad_user_data, "denied");
+    assert.equal(s.ad_personalization, "denied");
+  }
 });
 
 test("page views: the app never sends its own page_view (gtag config + history events do)", () => {
@@ -123,7 +139,7 @@ test("re-grant after deny: consent update granted, ga-disable cleared, no second
   env.analytics.grant();
   env.analytics.deny();
   env.analytics.grant();
-  assert.deepEqual(env.calls().at(-1)?.slice(0, 2), ["consent", "update"]);
+  assert.deepEqual(env.calls().at(-1), ["consent", "update", ANALYTICS_GRANTED]);
   assert.equal(env.win[`ga-disable-${ID}`], false);
   assert.equal(env.scripts.length, 1);
 });
