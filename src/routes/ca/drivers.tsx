@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Header } from "@/components/site/Header";
 import { PrimaryCta } from "@/components/site/PrimaryCta";
 import { StoreBadge } from "@/components/site/StoreBadge";
+import { FeatureCard, CA_MILEAGE_FEATURE } from "@/components/site/InfoCards";
 import { Pricing } from "@/components/site/Pricing";
 import { FinalCta } from "@/components/site/FinalCta";
 import { Footer } from "@/components/site/Footer";
@@ -132,6 +133,13 @@ function DriversPage() {
               </li>
             ))}
           </ol>
+        </div>
+      </section>
+
+      {/* Mileage: the same card the /ca landing shows in InfoCards */}
+      <section className="w-full px-4 py-6 sm:px-6 sm:py-8 lg:px-8 lg:py-10">
+        <div className="mx-auto w-full max-w-[1200px]">
+          <FeatureCard feature={CA_MILEAGE_FEATURE} />
         </div>
       </section>
 

@@ -140,43 +140,59 @@ export function InfoCards({ region = "ca" }: { region?: "ca" | "us" }) {
 
         {/* Feature cards */}
         <div className="flex flex-col gap-6">
-          {FEATURES.map((f, i) => {
-            const isEven = i % 2 === 0;
-            return (
-              <div key={f.title} className="rounded-card bg-white p-8 shadow-sm lg:p-12">
-                <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
-                  {/* Text */}
-                  <div className="text-center lg:text-left">
-                    <p className="eyebrow text-ember-text">{f.label}</p>
-                    <h3 className="mt-3 text-ink">{f.title}</h3>
-                    <p className="mt-4 text-body text-ink-80">{f.desc}</p>
-                  </div>
-
-                  {/* Phone mockup — order-first on odd rows puts image left */}
-                  <div className={`flex justify-center ${!isEven ? "lg:order-first" : ""}`}>
-                    <div className="relative">
-                      {/* rounded-[2.5rem] traces the device body below, not a card.
-                          Deliberately outside the two-radius vocabulary -- do not
-                          collapse to rounded-card. */}
-                      <div className="absolute inset-0 rounded-[2.5rem] bg-ember/10 blur-2xl" />
-                      {/* rounded-[2rem] is the phone's own corner radius, not a card
-                          radius. Deliberately outside the two-radius vocabulary --
-                          collapsing it to 12px makes the mockup read as a bug. */}
-                      <img
-                        src={f.img}
-                        alt={f.alt}
-                        className="relative h-auto w-[260px] rounded-[2rem] shadow-[0_24px_64px_rgba(0,0,0,0.5)] sm:w-[300px]"
-                        loading="lazy"
-                        draggable={false}
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
+          {FEATURES.map((f, i) => (
+            <FeatureCard key={f.title} feature={f} imageFirst={i % 2 !== 0} />
+          ))}
         </div>
       </div>
     </section>
+  );
+}
+
+type Feature = (typeof CA_FEATURES)[number];
+
+/** The Canadian "Mileage" card, also shown on /ca/drivers. */
+export const CA_MILEAGE_FEATURE: Feature = CA_FEATURES.find((f) => f.label === "Mileage")!;
+
+/** One feature card: eyebrow, h3 and copy beside a phone mockup. */
+export function FeatureCard({
+  feature: f,
+  imageFirst = false,
+}: {
+  feature: Feature;
+  /** Puts the image on the left at lg and up (odd rows on the landing page). */
+  imageFirst?: boolean;
+}) {
+  return (
+    <div className="rounded-card bg-white p-8 shadow-sm lg:p-12">
+      <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
+        {/* Text */}
+        <div className="text-center lg:text-left">
+          <p className="eyebrow text-ember-text">{f.label}</p>
+          <h3 className="mt-3 text-ink">{f.title}</h3>
+          <p className="mt-4 text-body text-ink-80">{f.desc}</p>
+        </div>
+
+        {/* Phone mockup — order-first on odd rows puts image left */}
+        <div className={`flex justify-center ${imageFirst ? "lg:order-first" : ""}`}>
+          <div className="relative">
+            {/* rounded-[2.5rem] traces the device body below, not a card.
+                Deliberately outside the two-radius vocabulary -- do not
+                collapse to rounded-card. */}
+            <div className="absolute inset-0 rounded-[2.5rem] bg-ember/10 blur-2xl" />
+            {/* rounded-[2rem] is the phone's own corner radius, not a card
+                radius. Deliberately outside the two-radius vocabulary --
+                collapsing it to 12px makes the mockup read as a bug. */}
+            <img
+              src={f.img}
+              alt={f.alt}
+              className="relative h-auto w-[260px] rounded-[2rem] shadow-[0_24px_64px_rgba(0,0,0,0.5)] sm:w-[300px]"
+              loading="lazy"
+              draggable={false}
+            />
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
