@@ -21,9 +21,9 @@ export const Route = createFileRoute("/ca/drivers")({
   head: () => {
     const seo = pageSEO({
       path: "/ca/drivers",
-      title: "Receipt & Mileage Tracker for Uber, Lyft and Delivery Drivers in Canada | ReceiptOne",
+      title: "Mileage Tracker for Uber, Lyft and Delivery Drivers in Canada | ReceiptOne",
       description:
-        "Track business trips with GPS, snap or forward receipts, and export a CRA-ready report. Built for Canadian rideshare and delivery drivers. 7-day free trial.",
+        "GPS mileage tracking for Canadian rideshare and delivery drivers. Log business kilometres automatically, keep fuel and maintenance receipts, and export a CRA-ready report. 7-day free trial.",
     });
     return {
       meta: seo.meta,
@@ -77,10 +77,11 @@ function DriversPage() {
         <div className="mx-auto w-full max-w-[1200px]">
           <div className="max-w-3xl">
             <p className="eyebrow">For rideshare and delivery drivers</p>
-            <h1 className="mt-1 text-ink">Drive more. Sort receipts less.</h1>
+            <h1 className="mt-1 text-ink">Every work kilometre, logged.</h1>
             <p className="mt-2 max-w-2xl text-lead text-ink-60">
-              ReceiptOne records your business trips with GPS and keeps your fuel, phone, car wash
-              and maintenance receipts in one place, ready for your T2125.
+              ReceiptOne tracks your trips with GPS in the background and splits business from
+              personal, so your T2125 gets the right kilometres. Snap your fuel and maintenance
+              receipts in the same app.
             </p>
             <div className="mt-4 flex w-full flex-col items-stretch gap-3 sm:w-auto sm:flex-row sm:flex-wrap sm:items-center">
               <PrimaryCta href={ROUTES.signup}>Start 7-day free trial</PrimaryCta>
