@@ -1,15 +1,4 @@
 import { createFileRoute } from "@tanstack/react-router";
-import {
-  Car,
-  Droplets,
-  Fuel,
-  MapPin,
-  Receipt,
-  ShieldCheck,
-  Smartphone,
-  SquareParking,
-  Wrench,
-} from "lucide-react";
 import { Header } from "@/components/site/Header";
 import { PrimaryCta } from "@/components/site/PrimaryCta";
 import { StoreBadge } from "@/components/site/StoreBadge";
@@ -69,17 +58,6 @@ const REASONS = [
     title: "Thermal receipts fade.",
     body: "Gas station receipts can fade in months. Snap them the day you get them, or forward e-mail receipts to your own ReceiptOne address.",
   },
-];
-
-const TRACKED = [
-  { icon: Fuel, label: "Fuel" },
-  { icon: Smartphone, label: "Phone and data plan" },
-  { icon: Droplets, label: "Car washes" },
-  { icon: Wrench, label: "Maintenance and tires" },
-  { icon: ShieldCheck, label: "Insurance" },
-  { icon: SquareParking, label: "Parking and tolls" },
-  { icon: Car, label: "Vehicle-related fees" },
-  { icon: MapPin, label: "Business trips (GPS)" },
 ];
 
 const STEPS = [
@@ -154,26 +132,6 @@ function DriversPage() {
               </li>
             ))}
           </ol>
-        </div>
-      </section>
-
-      {/* What you can track */}
-      <section className="w-full px-4 py-6 sm:px-6 sm:py-8 lg:px-8 lg:py-10">
-        <div className="mx-auto w-full max-w-[1200px]">
-          <div className="mb-4">
-            <p className="eyebrow">Expenses and trips</p>
-            <h2 className="mt-1 text-ink">What you can track</h2>
-          </div>
-          <ul className="grid grid-cols-2 gap-3 md:grid-cols-4">
-            {TRACKED.map(({ icon: Icon, label }) => (
-              <li key={label} className={`${CARD} flex items-center gap-3 p-3`}>
-                <span className="inline-flex size-10 shrink-0 items-center justify-center rounded-card bg-ink text-paper">
-                  <Icon className="size-5" aria-hidden />
-                </span>
-                <span className="text-body font-medium text-ink">{label}</span>
-              </li>
-            ))}
-          </ul>
         </div>
       </section>
 
