@@ -23,7 +23,7 @@ export const Route = createFileRoute("/ca/drivers")({
       path: "/ca/drivers",
       title: "Receipt & Mileage Tracker for Uber, Lyft and Delivery Drivers in Canada | ReceiptOne",
       description:
-        "Track trips with GPS, forward e-mail receipts, and keep GST/HST on every expense. Built for Canadian rideshare and delivery drivers. 7-day free trial.",
+        "Track business trips with GPS, snap or forward receipts, and export a CRA-ready report. Built for Canadian rideshare and delivery drivers. 7-day free trial.",
     });
     return {
       meta: seo.meta,
@@ -47,11 +47,6 @@ export const Route = createFileRoute("/ca/drivers")({
 
 const REASONS = [
   {
-    title: "GST/HST from your first fare.",
-    body: "Rideshare drivers in Canada must register for GST/HST no matter how much they earn. ReceiptOne records the GST/HST on every receipt so your input tax credits are easy to find.",
-    source: true,
-  },
-  {
     title: "Kilometres are money.",
     body: "GPS trip tracking logs the kilometres you drive for work, right next to your receipts, so both end up in the same year-end report.",
   },
@@ -63,7 +58,6 @@ const REASONS = [
 
 const STEPS = [
   "Snap the receipt or forward the e-mail.",
-  "ReceiptOne reads the amount, date and GST/HST.",
   "Turn on GPS for work trips.",
   "Export a CRA-ready report for your accountant or your return.",
 ];
@@ -86,7 +80,7 @@ function DriversPage() {
             <h1 className="mt-1 text-ink">Drive more. Sort receipts less.</h1>
             <p className="mt-2 max-w-2xl text-lead text-ink-60">
               ReceiptOne records your business trips with GPS and keeps your fuel, phone, car wash
-              and maintenance receipts in one place, ready for your T2125 and your GST/HST return.
+              and maintenance receipts in one place, ready for your T2125.
             </p>
             <div className="mt-4 flex w-full flex-col items-stretch gap-3 sm:w-auto sm:flex-row sm:flex-wrap sm:items-center">
               <PrimaryCta href={ROUTES.signup}>Start 7-day free trial</PrimaryCta>
@@ -107,7 +101,7 @@ function DriversPage() {
             <p className="eyebrow">Why it matters</p>
             <h2 className="mt-1 text-ink">Why drivers need this</h2>
           </div>
-          <ol className="grid gap-3 md:grid-cols-3">
+          <ol className="grid gap-3 md:grid-cols-2">
             {REASONS.map((reason, i) => (
               <li key={reason.title} className={`${CARD} flex flex-col p-4 sm:p-5`}>
                 <span
@@ -118,18 +112,6 @@ function DriversPage() {
                 </span>
                 <h3 className="mt-2 text-lead tracking-body text-ink">{reason.title}</h3>
                 <p className="mt-1.5 text-body text-ink-60">{reason.body}</p>
-                {reason.source && (
-                  <p className="mt-3 text-sm text-ink-60">
-                    <a
-                      href={CRA_SHARING_ECONOMY_URL}
-                      target="_blank"
-                      rel="noopener"
-                      className="underline underline-offset-2 hover:text-ink"
-                    >
-                      Source: Canada Revenue Agency, sharing economy and GST/HST
-                    </a>
-                  </p>
-                )}
               </li>
             ))}
           </ol>
@@ -147,10 +129,10 @@ function DriversPage() {
       <section className="w-full px-4 py-6 sm:px-6 sm:py-8 lg:px-8 lg:py-10">
         <div className="mx-auto w-full max-w-[1200px]">
           <div className="mb-4">
-            <p className="eyebrow">Four steps</p>
+            <p className="eyebrow">Three steps</p>
             <h2 className="mt-1 text-ink">How it works</h2>
           </div>
-          <ol className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          <ol className="grid gap-3 md:grid-cols-3">
             {STEPS.map((step, i) => (
               <li key={step} className={`${CARD} flex flex-col p-4 sm:p-5`}>
                 <span
@@ -171,6 +153,18 @@ function DriversPage() {
 
       <div className="w-full px-4 pb-6 sm:px-6 lg:px-8">
         <p className="mx-auto w-full max-w-[1200px] text-sm text-ink-60">
+          Driving for Uber or Lyft? The CRA requires rideshare drivers to register for GST/HST from
+          their first fare. Source:{" "}
+          <a
+            href={CRA_SHARING_ECONOMY_URL}
+            target="_blank"
+            rel="noopener"
+            className="underline underline-offset-2 hover:text-ink"
+          >
+            Canada Revenue Agency
+          </a>
+        </p>
+        <p className="mx-auto mt-2 w-full max-w-[1200px] text-sm text-ink-60">
           ReceiptOne is not affiliated with Uber, Lyft, DoorDash or SkipTheDishes. This page is
           general information, not tax advice.
         </p>
