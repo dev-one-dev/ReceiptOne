@@ -36,6 +36,7 @@ function productLinks(region: "ca" | "us", lang: Lang): FooterLink[] {
     { label: "How It Works", href: "#how-it-works" },
     { label: "Benefits", href: "#benefits" },
     { label: "Pricing", href: "#pricing" },
+    ...(region === "ca" ? [{ label: "For drivers", href: "/ca/drivers" }] : []),
     { label: "Articles", href: `${prefix}/articles` },
     { label: "Help Center", href: `${prefix}/faq` },
     { label: "Contact", href: `${prefix}/contact` },

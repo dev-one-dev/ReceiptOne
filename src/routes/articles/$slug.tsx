@@ -111,6 +111,17 @@ function renderBlock(block: ContentBlock, index: number) {
       return (
         <p key={index} className="mb-5 font-sans text-body text-ink-80">
           {block.text}
+          {block.link && (
+            <>
+              {" "}
+              <a
+                href={block.link.href}
+                className="text-ink underline underline-offset-2 hover:text-ink-80"
+              >
+                {block.link.label}
+              </a>
+            </>
+          )}
         </p>
       );
 

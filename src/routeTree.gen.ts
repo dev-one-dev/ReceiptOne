@@ -19,6 +19,8 @@ import { Route as TermsRouteImport } from './routes/terms'
 import { Route as UsRouteImport } from './routes/us'
 import { Route as ArticlesIndexRouteImport } from './routes/articles/index'
 import { Route as ArticlesSlugRouteImport } from './routes/articles/$slug'
+import { Route as CaIndexRouteImport } from './routes/ca/index'
+import { Route as CaDriversRouteImport } from './routes/ca/drivers'
 import { Route as FrIndexRouteImport } from './routes/fr/index'
 import { Route as FrContactRouteImport } from './routes/fr/contact'
 import { Route as FrFaqRouteImport } from './routes/fr/faq'
@@ -79,6 +81,16 @@ const ArticlesSlugRoute = ArticlesSlugRouteImport.update({
   path: '/articles/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CaIndexRoute = CaIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => CaRoute,
+} as any)
+const CaDriversRoute = CaDriversRouteImport.update({
+  id: '/drivers',
+  path: '/drivers',
+  getParentRoute: () => CaRoute,
+} as any)
 const FrIndexRoute = FrIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -127,7 +139,7 @@ const UsArticlesSlugRoute = UsArticlesSlugRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/ca': typeof CaRoute
+  '/ca': typeof CaRouteWithChildren
   '/contact': typeof ContactRoute
   '/faq': typeof FaqRoute
   '/fr': typeof FrRouteWithChildren
@@ -135,12 +147,14 @@ export interface FileRoutesByFullPath {
   '/terms': typeof TermsRoute
   '/us': typeof UsRouteWithChildren
   '/articles/$slug': typeof ArticlesSlugRoute
+  '/ca/drivers': typeof CaDriversRoute
   '/fr/contact': typeof FrContactRoute
   '/fr/faq': typeof FrFaqRoute
   '/r/$code': typeof RCodeRoute
   '/us/contact': typeof UsContactRoute
   '/us/faq': typeof UsFaqRoute
   '/articles/': typeof ArticlesIndexRoute
+  '/ca/': typeof CaIndexRoute
   '/fr/': typeof FrIndexRoute
   '/us/': typeof UsIndexRoute
   '/us/articles/$slug': typeof UsArticlesSlugRoute
@@ -148,18 +162,19 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/ca': typeof CaRoute
   '/contact': typeof ContactRoute
   '/faq': typeof FaqRoute
   '/privacy': typeof PrivacyRoute
   '/terms': typeof TermsRoute
   '/articles/$slug': typeof ArticlesSlugRoute
+  '/ca/drivers': typeof CaDriversRoute
   '/fr/contact': typeof FrContactRoute
   '/fr/faq': typeof FrFaqRoute
   '/r/$code': typeof RCodeRoute
   '/us/contact': typeof UsContactRoute
   '/us/faq': typeof UsFaqRoute
   '/articles': typeof ArticlesIndexRoute
+  '/ca': typeof CaIndexRoute
   '/fr': typeof FrIndexRoute
   '/us': typeof UsIndexRoute
   '/us/articles/$slug': typeof UsArticlesSlugRoute
@@ -168,7 +183,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/ca': typeof CaRoute
+  '/ca': typeof CaRouteWithChildren
   '/contact': typeof ContactRoute
   '/faq': typeof FaqRoute
   '/fr': typeof FrRouteWithChildren
@@ -176,12 +191,14 @@ export interface FileRoutesById {
   '/terms': typeof TermsRoute
   '/us': typeof UsRouteWithChildren
   '/articles/$slug': typeof ArticlesSlugRoute
+  '/ca/drivers': typeof CaDriversRoute
   '/fr/contact': typeof FrContactRoute
   '/fr/faq': typeof FrFaqRoute
   '/r/$code': typeof RCodeRoute
   '/us/contact': typeof UsContactRoute
   '/us/faq': typeof UsFaqRoute
   '/articles/': typeof ArticlesIndexRoute
+  '/ca/': typeof CaIndexRoute
   '/fr/': typeof FrIndexRoute
   '/us/': typeof UsIndexRoute
   '/us/articles/$slug': typeof UsArticlesSlugRoute
@@ -199,12 +216,14 @@ export interface FileRouteTypes {
     | '/terms'
     | '/us'
     | '/articles/$slug'
+    | '/ca/drivers'
     | '/fr/contact'
     | '/fr/faq'
     | '/r/$code'
     | '/us/contact'
     | '/us/faq'
     | '/articles/'
+    | '/ca/'
     | '/fr/'
     | '/us/'
     | '/us/articles/$slug'
@@ -212,18 +231,19 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/ca'
     | '/contact'
     | '/faq'
     | '/privacy'
     | '/terms'
     | '/articles/$slug'
+    | '/ca/drivers'
     | '/fr/contact'
     | '/fr/faq'
     | '/r/$code'
     | '/us/contact'
     | '/us/faq'
     | '/articles'
+    | '/ca'
     | '/fr'
     | '/us'
     | '/us/articles/$slug'
@@ -239,12 +259,14 @@ export interface FileRouteTypes {
     | '/terms'
     | '/us'
     | '/articles/$slug'
+    | '/ca/drivers'
     | '/fr/contact'
     | '/fr/faq'
     | '/r/$code'
     | '/us/contact'
     | '/us/faq'
     | '/articles/'
+    | '/ca/'
     | '/fr/'
     | '/us/'
     | '/us/articles/$slug'
@@ -253,7 +275,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  CaRoute: typeof CaRoute
+  CaRoute: typeof CaRouteWithChildren
   ContactRoute: typeof ContactRoute
   FaqRoute: typeof FaqRoute
   FrRoute: typeof FrRouteWithChildren
@@ -337,6 +359,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ArticlesSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/ca/': {
+      id: '/ca/'
+      path: '/'
+      fullPath: '/ca/'
+      preLoaderRoute: typeof CaIndexRouteImport
+      parentRoute: typeof CaRoute
+    }
+    '/ca/drivers': {
+      id: '/ca/drivers'
+      path: '/drivers'
+      fullPath: '/ca/drivers'
+      preLoaderRoute: typeof CaDriversRouteImport
+      parentRoute: typeof CaRoute
+    }
     '/fr/': {
       id: '/fr/'
       path: '/'
@@ -403,6 +439,18 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface CaRouteChildren {
+  CaDriversRoute: typeof CaDriversRoute
+  CaIndexRoute: typeof CaIndexRoute
+}
+
+const CaRouteChildren: CaRouteChildren = {
+  CaDriversRoute: CaDriversRoute,
+  CaIndexRoute: CaIndexRoute,
+}
+
+const CaRouteWithChildren = CaRoute._addFileChildren(CaRouteChildren)
+
 interface FrRouteChildren {
   FrContactRoute: typeof FrContactRoute
   FrFaqRoute: typeof FrFaqRoute
@@ -437,7 +485,7 @@ const UsRouteWithChildren = UsRoute._addFileChildren(UsRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  CaRoute: CaRoute,
+  CaRoute: CaRouteWithChildren,
   ContactRoute: ContactRoute,
   FaqRoute: FaqRoute,
   FrRoute: FrRouteWithChildren,

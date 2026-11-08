@@ -5,7 +5,8 @@
 import { LOGO_URL, SITE_URL } from "@/lib/seo";
 
 export type ContentBlock =
-  | { type: "p"; text: string }
+  /** `link` renders after `text` as an internal link, e.g. to a landing page. */
+  | { type: "p"; text: string; link?: { label: string; href: string } }
   | { type: "h2"; text: string }
   | { type: "ul"; items: string[] }
   | { type: "callout"; text: string }
@@ -1234,7 +1235,7 @@ export const ARTICLES: Article[] = [
       "How self-employed Canadians deduct vehicle costs for 2026: the CRA logbook, Chart A, interest and lease caps, CCA classes 10 and 10.1, and business use.",
     category: "Mileage & Auto",
     publishedAt: "2026-10-06",
-    updatedAt: "2026-10-06",
+    updatedAt: "2026-11-07",
     imageUrl: "https://picsum.photos/seed/mileage-deduction-canada-freelancers/600/400",
     imageAlt: "Canadian freelancer tracking business mileage for CRA deduction",
     tags: [
@@ -1525,6 +1526,11 @@ export const ARTICLES: Article[] = [
         text: "Self-employed individuals file by June 15, but any balance owing is due by April 30. For 2025 returns those dates were April 30 and June 15, 2026. The same rules put them at April 30 and June 15, 2027 for 2026, but the CRA had not published its dated 2026 calendar when this was written, so confirm before you file.",
       },
       {
+        type: "p",
+        text: "Drive for a rideshare or delivery app?",
+        link: { label: "See how ReceiptOne works for drivers.", href: "/ca/drivers" },
+      },
+      {
         type: "h2",
         text: "Frequently Asked Questions",
       },
@@ -1620,7 +1626,7 @@ export const ARTICLES: Article[] = [
       "What self-employed Canadians need from a mileage app, five 2026 options compared: prices, free tiers, auto-tracking, and why 73¢/km isn't your deduction.",
     category: "Mileage & Auto",
     publishedAt: "2026-10-05",
-    updatedAt: "2026-10-06",
+    updatedAt: "2026-11-07",
     imageUrl: "https://picsum.photos/seed/mileage-tracking-apps-canada/600/400",
     imageAlt: "Mileage tracking app on smartphone for Canadian freelancer CRA compliance",
     tags: [
@@ -1850,6 +1856,11 @@ export const ARTICLES: Article[] = [
       {
         type: "p",
         text: "A hypothetical example: a self-employed electrician in Manitoba drives 18,000 km in 2026, 7,200 of them for business. Business use is 40%. Fuel, insurance, registration and repairs total $8,500, so $3,400 goes on line 9281, before capital cost allowance. An app pricing 7,200 km at 73 and 67 cents would show about $5,124, which is the employee allowance cap, not a deduction. Claiming it would overstate their expenses by more than $1,700.",
+      },
+      {
+        type: "p",
+        text: "Drive for a rideshare or delivery app?",
+        link: { label: "See how ReceiptOne works for drivers.", href: "/ca/drivers" },
       },
       {
         type: "h2",
