@@ -38,7 +38,7 @@ const CA_FEATURES = [
   },
   {
     title: "Plug ReceiptOne Into Your Workflow",
-    desc: "ReceiptOne will soon sync with QuickBooks, connect your bank through Plaid, and take receipts by email forwarding, so syncing and reporting take care of themselves.",
+    desc: "ReceiptOne will soon sync with QuickBooks and connect your bank through Plaid, so syncing and reporting take care of themselves.",
     img: naBeaverThinking,
     alt: "Beaver thinking",
     comingSoon: true,
@@ -72,7 +72,7 @@ const FR_FEATURES = [
   },
   {
     title: "Intégrez ReceiptOne à votre façon de travailler",
-    desc: "ReceiptOne se synchronisera bientôt avec QuickBooks, se connectera à votre banque par Plaid et recevra vos reçus par transfert de courriels : synchronisation et rapports se feront d'eux-mêmes.",
+    desc: "ReceiptOne se synchronisera bientôt avec QuickBooks et se connectera à votre banque par Plaid : synchronisation et rapports se feront d'eux-mêmes.",
     img: naBeaverThinking,
     alt: "Castor en pleine réflexion",
     comingSoon: true,
@@ -106,7 +106,7 @@ const US_FEATURES = [
   },
   {
     title: "Plug ReceiptOne Into Your Workflow",
-    desc: "ReceiptOne will soon sync with QuickBooks, connect your bank through Plaid, and take receipts by email forwarding, so syncing and reporting take care of themselves.",
+    desc: "ReceiptOne will soon sync with QuickBooks and connect your bank through Plaid, so syncing and reporting take care of themselves.",
     img: usGraphic6,
     alt: "Eagle plugging into workflow",
     comingSoon: true,

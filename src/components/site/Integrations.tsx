@@ -40,8 +40,8 @@ const INTEGRATIONS: Integration[] = [
   },
   {
     name: "Email forwarding",
-    description: "Forward receipts to your ReceiptOne inbox — no app required.",
-    comingSoon: true,
+    description: "Every account gets its own receipt address. Forward a receipt and it lands in the app.",
+    comingSoon: false,
     brand: "icon",
     icon: Mail,
   },
@@ -92,8 +92,8 @@ const INTEGRATIONS_FR: Integration[] = [
   },
   {
     name: "Transfert de courriels",
-    description: "Transférez vos reçus à votre adresse ReceiptOne — sans application.",
-    comingSoon: true,
+    description: "Chaque compte a sa propre adresse de reçus. Transférez un reçu et il arrive dans l'application.",
+    comingSoon: false,
     brand: "icon",
     icon: Mail,
   },
@@ -151,8 +151,8 @@ export function Integrations() {
           </h2>
           <p className="mt-3 max-w-2xl text-body text-ink-60 sm:text-lead">
             {fr
-              ? "Envoyez dès aujourd'hui vos reçus à @ReceiptOne_bot sur Telegram. Le transfert de courriels, QuickBooks, la synchronisation bancaire et le rapprochement de relevés bancaires s'en viennent."
-              : "Send receipts to @ReceiptOne_bot on Telegram today. Email forwarding, QuickBooks, bank sync, and bank statement reconciliation are on the way."}
+              ? "Envoyez dès aujourd'hui vos reçus à @ReceiptOne_bot sur Telegram ou transférez-les par courriel. QuickBooks, la synchronisation bancaire et le rapprochement de relevés bancaires s'en viennent."
+              : "Send receipts to @ReceiptOne_bot on Telegram or forward them by e-mail today. QuickBooks, bank sync, and bank statement reconciliation are on the way."}
           </p>
         </div>
 

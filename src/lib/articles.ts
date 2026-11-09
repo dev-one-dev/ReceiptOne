@@ -3229,7 +3229,7 @@ export const ARTICLES: Article[] = [
         type: "ul",
         items: [
           "Mostly paper receipts and you file T2125 yourself or through an accountant: a dedicated scanner that separates GST/HST from PST and exports a report is enough. SparkReceipt, Foreceipt and ReceiptOne all state Canadian tax capture.",
-          "Most receipts arrive by email: pick an app that imports from your inbox or gives you a forwarding address. SparkReceipt connects an inbox; Foreceipt, Expensify and Wave publish forwarding addresses. ReceiptOne does not offer this yet.",
+          "Most receipts arrive by email: pick an app that imports from your inbox or gives you a forwarding address. SparkReceipt connects an inbox; Foreceipt, Expensify and Wave publish forwarding addresses, and ReceiptOne gives every account its own receipt address.",
           "You drive a lot for work: automatic tracking saves you remembering to log each trip. SparkReceipt (GPS) and QuickBooks Lite (automatic) say they record trips for you; ReceiptOne's mobile app tracks a trip by GPS, in the background, once you start it.",
           "You invoice clients and want bank feeds: QuickBooks Lite or Wave Pro do bookkeeping as well as receipts, at a higher price and with more to learn.",
           "You want to try before paying: Foreceipt and Expensify have free plans, and Wave's free plan works for invoicing. Check how long a free plan keeps your receipts against the CRA's six-year rule.",
@@ -3345,7 +3345,7 @@ export const ARTICLES: Article[] = [
           [
             "Receipts",
             "Photo upload, matched to bank transactions",
-            "Camera, photo or PDF upload, or our Telegram bot; unlimited. Email forwarding not available yet",
+            "Camera, photo or PDF upload, our Telegram bot, or e-mail forwarding to your own receipt address; unlimited",
           ],
           [
             "Reports and exports",
@@ -3413,7 +3413,7 @@ export const ARTICLES: Article[] = [
       },
       {
         type: "p",
-        text: "What ReceiptOne will not do: it has no bank sync, no income tracking, no invoicing, and no free plan, only a 7-day trial. Email forwarding of receipts has not shipped yet.",
+        text: "What ReceiptOne will not do: it has no bank sync, no income tracking, no invoicing, and no free plan, only a 7-day trial.",
       },
       {
         type: "h2",
@@ -3570,7 +3570,7 @@ export const ARTICLES: Article[] = [
       },
       {
         type: "p",
-        text: "ReceiptOne keeps a photo of each receipt, reads the merchant, date, total and sales-tax amounts from it, lets you mark each receipt business or personal and add a note, and exports your records as PDF and CSV. It does not import receipts from your email yet, and mileage trips can be tracked by GPS in the mobile app, in the background, or entered by hand.",
+        text: "ReceiptOne keeps a photo of each receipt, reads the merchant, date, total and sales-tax amounts from it, lets you mark each receipt business or personal and add a note, and exports your records as PDF and CSV. You can also forward e-mail receipts to your own ReceiptOne address, and mileage trips can be tracked by GPS in the mobile app, in the background, or entered by hand.",
       },
       {
         type: "h2",

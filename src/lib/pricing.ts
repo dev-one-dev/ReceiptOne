@@ -53,6 +53,7 @@ export function formatPrice(plan: Plan, price: string = plan.price): string {
  */
 export const CA_FEATURES = [
   "Unlimited receipt scanning",
+  "Forward e-mail receipts — every account gets its own receipt address; forward a receipt and it lands in the app",
   "Expense & mileage tracking",
   "GST / HST / PST tracking",
   "CRA-ready expense reports",
@@ -63,6 +64,7 @@ export const CA_FEATURES = [
 
 export const US_FEATURES = [
   "Unlimited receipt scanning",
+  "Forward e-mail receipts — every account gets its own receipt address; forward a receipt and it lands in the app",
   "Expense & mileage tracking",
   "Sales tax tracking",
   "IRS-ready expense reports",

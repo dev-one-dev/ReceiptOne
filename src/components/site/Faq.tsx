@@ -101,7 +101,7 @@ export const faqItems: QA[] = [
   },
   {
     q: "Can I forward receipts by email?",
-    a: "Not yet — email forwarding is in active development. For now, receipts can be scanned with your camera or uploaded from your photo library.",
+    a: "Yes. Every account gets its own receipt address. Forward an e-mail receipt to it and it lands in the app, alongside the receipts you scan with your camera or upload from your photo library.",
   },
   telegramQA,
   {

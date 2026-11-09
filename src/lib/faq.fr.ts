@@ -80,7 +80,7 @@ export const faqItemsFR: QA[] = [
   },
   {
     q: "Puis-je transférer mes reçus par courriel?",
-    a: "Pas encore — le transfert de courriels est en cours de développement. Pour l'instant, vous pouvez numériser vos reçus avec votre appareil photo ou les téléverser depuis votre photothèque.",
+    a: "Oui. Chaque compte a sa propre adresse de reçus. Transférez-y un reçu envoyé par courriel et il arrive dans l'application, avec les reçus que vous numérisez avec votre appareil photo ou téléversez depuis votre photothèque.",
   },
   {
     q: "Y a-t-il une intégration Telegram?",
