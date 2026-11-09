@@ -8,13 +8,13 @@ const CA_STEPS = [
     icon: ScanLine,
     title: "Snap your receipts",
     description:
-      "Photograph any receipt or upload an image or PDF. Paper and digital receipts are captured in one place.",
+      "Photograph any receipt, upload an image or PDF, or forward an e-mail receipt to your own ReceiptOne address. Paper and digital receipts, all in one place.",
   },
   {
     icon: Layers,
     title: "Organized automatically",
     description:
-      "ReceiptOne reads merchant, amount, date, and tax — then categorizes every expense. GST, HST, and PST tracked per province. Check the details and edit anything it read wrongly.",
+      "ReceiptOne reads merchant, amount, date, and tax — then categorizes every expense. GST, HST, and PST tracked per province.",
   },
   {
     icon: FileDown,
@@ -29,13 +29,13 @@ const FR_STEPS = [
     icon: ScanLine,
     title: "Photographiez vos reçus",
     description:
-      "Photographiez n'importe quel reçu ou téléversez une image ou un PDF. Reçus papier et numériques sont réunis au même endroit.",
+      "Photographiez n'importe quel reçu, téléversez une image ou un PDF, ou transférez un reçu de courriel à votre propre adresse ReceiptOne. Reçus papier et numériques, au même endroit.",
   },
   {
     icon: Layers,
     title: "Organisés automatiquement",
     description:
-      "ReceiptOne lit le commerçant, le montant, la date et les taxes, puis classe chaque dépense par catégorie. TPS, TVH et TVP suivies par province. Vérifiez les détails et corrigez tout ce qui a été mal lu.",
+      "ReceiptOne lit le commerçant, le montant, la date et les taxes, puis classe chaque dépense par catégorie. TPS, TVH et TVP suivies par province.",
   },
   {
     icon: FileDown,
@@ -50,13 +50,13 @@ const US_STEPS = [
     icon: ScanLine,
     title: "Snap your receipts",
     description:
-      "Photograph any receipt or upload an image or PDF. Paper and digital receipts are captured in one place.",
+      "Photograph any receipt, upload an image or PDF, or forward an e-mail receipt to your own ReceiptOne address. Paper and digital receipts, all in one place.",
   },
   {
     icon: Layers,
     title: "Organized automatically",
     description:
-      "ReceiptOne reads merchant, amount, date, and sales tax — then categorizes every expense into Schedule C-friendly categories. Check the details and edit anything it read wrongly.",
+      "ReceiptOne reads merchant, amount, date, and sales tax — then categorizes every expense into Schedule C-friendly categories.",
   },
   {
     icon: FileDown,
