@@ -59,6 +59,7 @@ const PLAN_PERIOD_FR: Record<Plan["id"], string> = {
 };
 const FEATURES_FR = [
   "Numérisation de reçus illimitée",
+  "Transférez vos reçus par courriel — chaque compte a sa propre adresse de réception; transférez un reçu et il arrive dans l'app",
   "Suivi des dépenses et du kilométrage",
   "Suivi de la TPS / TVH / TVP",
   "Rapports de dépenses prêts pour l'ARC",

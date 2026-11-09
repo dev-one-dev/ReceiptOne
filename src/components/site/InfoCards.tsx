@@ -35,7 +35,7 @@ const CA_FEATURES = [
   {
     label: "Mileage",
     title: "Mileage tracking, right on your phone",
-    desc: "Start a trip and the app tracks it by GPS in the background, or enter its start and end addresses, then tag it business or personal. Your T2125 report fills in the kilometres for Chart A, business, total and business-use percentage, from the trips you log, so log personal trips too.",
+    desc: "Turn on trip tracking once and the app records your work trips by GPS in the background. You can also add a trip by its start and end addresses. Tag each trip business or personal, and your T2125 report fills in the kilometres for Chart A — business, total and business-use percentage — so log personal trips too.",
     img: abScreenMileage,
     alt: "ReceiptOne app showing mileage map tracking",
   },
@@ -77,7 +77,7 @@ const FR_FEATURES = [
   {
     label: "Kilométrage",
     title: "Le suivi du kilométrage, directement sur votre téléphone",
-    desc: "Démarrez un trajet et l'application le suit par GPS en arrière-plan, ou entrez ses adresses de départ et d'arrivée, puis indiquez s'il est professionnel ou personnel. Votre rapport T2125 remplit les kilomètres du Tableau A, soit les kilomètres professionnels, le total et le pourcentage d'utilisation professionnelle, à partir des trajets que vous enregistrez : enregistrez donc aussi vos trajets personnels.",
+    desc: "Activez le suivi des trajets une seule fois et l'application enregistre vos trajets professionnels par GPS en arrière-plan. Vous pouvez aussi ajouter un trajet par ses adresses de départ et d'arrivée. Indiquez si chaque trajet est professionnel ou personnel, et votre rapport T2125 remplit les kilomètres du Tableau A (kilomètres professionnels, total et pourcentage d'utilisation professionnelle) : enregistrez donc aussi vos trajets personnels.",
     img: abScreenMileage,
     alt: "Application ReceiptOne affichant le suivi du kilométrage sur une carte",
   },
@@ -104,7 +104,7 @@ const US_FEATURES = CA_FEATURES.map((f) => {
       ...f,
       img: usMileage,
       alt: "ReceiptOne app showing mileage map tracking",
-      desc: "Start a trip and the app tracks it by GPS in the background, or enter its start and end addresses. ReceiptOne calculates the distance and separates business from personal miles, so your mileage log stays organized.",
+      desc: "Turn on trip tracking once and the app records your work trips by GPS in the background. You can also add a trip by its start and end addresses. Tag each trip business or personal, and ReceiptOne separates business from personal miles, so your mileage log stays organized.",
     };
   if (f.label === "Home office")
     return {

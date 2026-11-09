@@ -80,11 +80,11 @@ export const faqItems: QA[] = [
   },
   {
     q: "How does mileage tracking work?",
-    a: "Start a trip in the mobile app and ReceiptOne tracks the route by GPS, in the background, until you stop it. Or log a trip by entering your start and end addresses, and ReceiptOne calculates the route and distance via Google Maps. Either way the trip goes into your logbook. Tag each trip business or personal, and the Chart A section of your T2125 report shows your business kilometres, total kilometres and business-use percentage: business kilometres divided by all the kilometres you've logged in the app. It doesn't use your odometer readings, so the percentage is only accurate if you log your personal trips too.",
+    a: "Turn on trip tracking once and the mobile app records your work trips by GPS, in the background. Or add a trip by entering its start and end addresses, on mobile or web, and ReceiptOne calculates the route and distance via Google Maps. Either way the trip goes into your logbook. Tag each trip business or personal, and the Chart A section of your T2125 report shows your business kilometres, total kilometres and business-use percentage: business kilometres divided by all the kilometres you've logged in the app. It doesn't use your odometer readings, so the percentage is only accurate if you log your personal trips too.",
   },
   {
     q: "What counts as CRA-acceptable mileage documentation?",
-    a: "The CRA calls an accurate logbook kept for the whole year the best evidence of business use. For each business trip it lists the date, destination, purpose and kilometres driven, plus odometer readings at the start and end of the year. In ReceiptOne you either start a trip in the mobile app and let it track the route by GPS, or enter the start and end addresses; add a note on the purpose and the app saves the trip with its date and distance.",
+    a: "The CRA calls an accurate logbook kept for the whole year the best evidence of business use. For each business trip it lists the date, destination, purpose and kilometres driven, plus odometer readings at the start and end of the year. In ReceiptOne the mobile app records your trips by GPS once trip tracking is on, or you enter the start and end addresses; add a note on the purpose and the app saves the trip with its date and distance.",
     link: {
       to: "/articles/$slug",
       slug: "mileage-deduction-canada-freelancers",
@@ -170,11 +170,11 @@ export const faqItemsUS: QA[] = [
   telegramQA,
   {
     q: "How does mileage tracking work?",
-    a: "Start a trip in the mobile app and ReceiptOne tracks the route by GPS, in the background, until you stop it. Or log a trip by entering your start and end addresses, and ReceiptOne calculates the route and distance via Google Maps. Tag each trip business or personal. Set your per-mile rate in settings and your mileage report multiplies your business miles by it, so check that rate against the IRS standard mileage rate for the period you drove. Your Schedule C report shows your business miles for the year in Part IV, Information on Your Vehicle.",
+    a: "Turn on trip tracking once and the mobile app records your work trips by GPS, in the background. Or add a trip by entering its start and end addresses, on mobile or web, and ReceiptOne calculates the route and distance via Google Maps. Tag each trip business or personal. Set your per-mile rate in settings and your mileage report multiplies your business miles by it, so check that rate against the IRS standard mileage rate for the period you drove. Your Schedule C report shows your business miles for the year in Part IV, Information on Your Vehicle.",
   },
   {
     q: "What counts as IRS-acceptable mileage documentation?",
-    a: "IRS Publication 463 asks you to record, at or near the time of each trip, the miles for each business use, the date, your business destination and the business purpose, plus your total miles for the year. In ReceiptOne you either start a trip in the mobile app and let it track the route by GPS, or enter the start and end addresses; add a note on the purpose and the app saves the trip with its date and distance. ReceiptOne doesn't record odometer readings, so keep your start- and end-of-year readings yourself.",
+    a: "IRS Publication 463 asks you to record, at or near the time of each trip, the miles for each business use, the date, your business destination and the business purpose, plus your total miles for the year. In ReceiptOne the mobile app records your trips by GPS once trip tracking is on, or you enter the start and end addresses; add a note on the purpose and the app saves the trip with its date and distance. ReceiptOne doesn't record odometer readings, so keep your start- and end-of-year readings yourself.",
     link: {
       to: "/us/articles/$slug",
       slug: "irs-mileage-rate-2025-self-employed",
