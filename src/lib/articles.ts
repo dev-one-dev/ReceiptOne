@@ -3392,7 +3392,6 @@ export const ARTICLES: Article[] = [
           "Bank feeds. Lite connects up to two bank accounts, imports transactions and matches receipt photos to them. ReceiptOne has no bank connection, so it will not catch a card charge you forgot to photograph.",
           "Income tracking. Lite records what you earn alongside what you spend, so its profit and loss report shows your net business income. ReceiptOne tracks expenses only: no income, and no GST/HST you collect from clients.",
           "Sales tax on what you sell. Lite calculates GST, HST and PST on your invoices and tracks it in a tax centre. If you are registered for GST/HST, you need a record of the tax you collect as well as the tax you paid, and ReceiptOne only covers the second half.",
-          "Automatic mileage. Lite says it tracks kilometres automatically. ReceiptOne's mobile app also records trips automatically: turn on trip tracking once and it tracks them by GPS in the background; you can enter trips by hand as well.",
         ],
       },
       {

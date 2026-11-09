@@ -260,7 +260,7 @@ function PrivacyPage() {
       <article className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8 lg:py-12">
         <header className="border-b border-border pb-8">
           <p className="text-sm font-medium text-muted-foreground">
-            Last updated: October 31, 2026
+            Last updated: November 9, 2026
           </p>
           <h1 className="mt-3 font-display text-4xl font-semibold tracking-normal sm:text-5xl">
             ReceiptOne — Privacy Policy
@@ -504,11 +504,10 @@ function PrivacyPage() {
                     start and end addresses and the purpose note saved with the trip.
                   </p>
                   <p>
-                    <strong>Collection in the background:</strong> once you start recording a trip,
-                    the app continues to collect your location in the background, including when the
-                    app is closed or not in use, until you stop the trip. The app shows a
-                    notification on your device while a trip is recording. We do not collect your
-                    location when no trip is recording.
+                    <strong>Collection in the background:</strong> When you turn on trip tracking in
+                    the mobile app, we collect your device&apos;s location in the background to record
+                    your trips, either at all times or during the schedule you choose. The app shows a
+                    notification on your device while a trip is recording.
                   </p>
                   <p>
                     <strong>Why we collect it:</strong> only to create your mileage records, namely
@@ -523,8 +522,11 @@ function PrivacyPage() {
                     Section 5).
                   </p>
                   <p>
-                    <strong>How to turn it off:</strong> stop the trip in the app to end collection
-                    immediately. To stop background collection altogether, change ReceiptOne&apos;s
+                    <strong>How to turn it off:</strong> You can pause trip tracking or turn it off
+                    at any time in the app&apos;s trip settings, and you can withdraw location
+                    permission at any time in your device&apos;s settings. When trip tracking is off or
+                    paused, we do not collect location for trips. To stop background collection
+                    altogether, change ReceiptOne&apos;s
                     location permission in your device settings (Android: Settings → Apps →
                     ReceiptOne → Permissions → Location; iOS: Settings → ReceiptOne → Location) to
                     &quot;Allow only while using the app&quot;, &quot;While Using the App&quot;, or
