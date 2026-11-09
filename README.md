@@ -198,7 +198,7 @@ A floating action button that opens directly to a browsable, votable list of exi
 ### SEO assets
 
 - `public/og-image.png` is a designed 1200×630 card rendered by `npm run og`: the script boots the Vite dev server, screenshots the first Pricing card on `/ca` at 2x, injects it into `scripts/og/og-template.html` and renders the page with Playwright Chromium. Set `OG_BASE_URL` to render against an already-running server instead
-- `public/sitemap.xml` is generated in `prebuild` from `src/routes`, expanding article slugs and skipping `/` and other dynamic segments. Article `lastmod` is the article's `updatedAt`; every other page's is the newest git commit date among the files it imports (in a shallow clone the committed dates are reused)
+- `public/sitemap.xml` is generated in `prebuild` from `src/routes`, expanding article slugs and skipping `/` and other dynamic segments. Article `lastmod` is the article's `updatedAt` (or `publishedAt`); every other page's comes from `PAGE_LASTMOD` in the script. Bump that date when a page's content changes, then run `npm run sitemap`. The output never depends on the clock or git, so builds reproduce the committed file, and `tests/sitemap.test.ts` fails if the two drift apart
 - `public/llms.txt` is generated in `prebuild` by `scripts/generate-llms.mjs`; prices, plan features and store URLs come from `src/lib/pricing.ts` and `src/lib/stores.ts`
 - `public/logo-512.png` is the Organization logo in JSON-LD; regenerate with `node scripts/generate-logo.mjs`
 - hreflang: pages that exist in both regions call `regionHreflang(caPath, usPath)` (x-default = CA); articles use `articleHreflang(slug)`, which only pairs a slug published in both regions
