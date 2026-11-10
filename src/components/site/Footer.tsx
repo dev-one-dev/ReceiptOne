@@ -2,11 +2,23 @@ import { Link, useNavigate } from "@tanstack/react-router";
 import { Facebook, Linkedin } from "lucide-react";
 import logoMark from "@/assets/figma/logo-mark.svg";
 import logoWordmark from "@/assets/figma/logo-wordmark.svg";
+import logoWordmarkSource from "@/assets/figma/logo-wordmark.svg?raw";
 import { ROUTES, type AppRoute } from "@/lib/routes";
 import { StoreBadge } from "@/components/site/StoreBadge";
 import { useLang } from "@/lib/use-lang";
 import type { Lang } from "@/lib/locales";
 import { openConsentSettings } from "@/lib/consent";
+
+/**
+ * The oversized footer wordmark reuses the logo's lettering from the same file
+ * the header loads, so the two can never drift apart. Inlined (not an <img>)
+ * so the fill can follow the footer's text colour via currentColor.
+ * The file's viewBox is 0 0 120 24 with padding round the letters; the letters'
+ * own bounding box is 7 3 106 20, so that is the viewBox here and the letters
+ * touch both edges of the content box.
+ */
+const WORDMARK_PATH = /\sd="([^"]+)"/.exec(logoWordmarkSource)?.[1] ?? "";
+const WORDMARK_VIEWBOX = "7 3 106 20";
 
 type FooterProps = {
   region?: "ca" | "us";
@@ -254,13 +266,16 @@ export function Footer({ region = "ca" }: FooterProps) {
         </div>
 
         {/* Oversized wordmark — decorative; the logo above is the accessible name.
-            The wrapper is the size container, so the word fills the same
-            content box as the columns. "ReceiptOne" in every language. */}
-        <div className="@container mt-6">
-          <p aria-hidden="true" className="footer-wordmark text-paper">
-            ReceiptOne
-          </p>
-        </div>
+            The logo's own lettering at 100% of the content box, so it spans the
+            same edges as the columns. "ReceiptOne" in every language. */}
+        <svg
+          viewBox={WORDMARK_VIEWBOX}
+          aria-hidden="true"
+          focusable="false"
+          className="mt-6 block h-auto w-full text-paper"
+        >
+          <path fill="currentColor" d={WORDMARK_PATH} />
+        </svg>
 
         {/* Bottom bar */}
         <div className="mt-4 flex flex-col items-center justify-between gap-2 border-t border-hairline-void pt-4 sm:flex-row">
