@@ -15,6 +15,8 @@ export const FRENCH_PAGES: Record<string, string> = {
   "/ca": "/fr",
   "/faq": "/fr/faq",
   "/contact": "/fr/contact",
+  // Global changelog: one English page (no /us copy) and its French twin.
+  "/roadmap": "/fr/roadmap",
 };
 
 /** Canadian English page -> its US equivalent. */

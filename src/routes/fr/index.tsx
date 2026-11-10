@@ -1,4 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { getRoadmap, ROADMAP_STALE_TIME_MS } from "@/lib/roadmap.functions";
+import { announcementFor, roadmapCacheControl } from "@/lib/roadmap";
 import { Header } from "@/components/site/Header";
 import { TopBanner } from "@/components/site/TopBanner";
 import { HowItWorks } from "@/components/site/HowItWorks";
@@ -6,7 +8,6 @@ import { InfoCards } from "@/components/site/InfoCards";
 import { NotAll } from "@/components/site/NotAll";
 import { Testimonials } from "@/components/site/Testimonials";
 import { Trust } from "@/components/site/Trust";
-import { Integrations } from "@/components/site/Integrations";
 import { Pricing } from "@/components/site/Pricing";
 import { Faq } from "@/components/site/Faq";
 import { Footer } from "@/components/site/Footer";
@@ -22,6 +23,12 @@ import { formatPrice, getPlan, TRIAL_DAYS } from "@/lib/pricing";
 
 /** French counterpart of /ca: the same Canadian sections, prices and stores, in fr-CA. */
 export const Route = createFileRoute("/fr/")({
+  // Roadmap data for the hero's "Nouveau · …" pill (server-rendered).
+  loader: () => getRoadmap(),
+  staleTime: ROADMAP_STALE_TIME_MS,
+  headers: ({ loaderData }) => ({
+    "Cache-Control": roadmapCacheControl(loaderData),
+  }),
   head: () => {
     const seo = pageSEO({
       path: "/fr",
@@ -63,13 +70,12 @@ function FrenchPage() {
       className="min-h-screen overflow-x-clip bg-paper font-sans text-ink antialiased"
     >
       <Header />
-      <TopBanner />
+      <TopBanner announcement={announcementFor(Route.useLoaderData(), "fr")} />
       <HowItWorks region="ca" />
       <InfoCards />
       <NotAll />
       <Testimonials />
       <Trust region="ca" />
-      <Integrations />
       <Pricing region="ca" />
       <Faq items={faqItemsFR} helpCenterPath="/fr/faq" />
       <Footer />

@@ -1,4 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { getRoadmap, ROADMAP_STALE_TIME_MS } from "@/lib/roadmap.functions";
+import { announcementFor, roadmapCacheControl } from "@/lib/roadmap";
 import { Header } from "@/components/site/Header";
 import { TopBanner } from "@/components/site/TopBanner";
 import { HowItWorks } from "@/components/site/HowItWorks";
@@ -6,7 +8,6 @@ import { InfoCards } from "@/components/site/InfoCards";
 import { NotAll } from "@/components/site/NotAll";
 import { Testimonials } from "@/components/site/Testimonials";
 import { Trust } from "@/components/site/Trust";
-import { Integrations } from "@/components/site/Integrations";
 import { Pricing } from "@/components/site/Pricing";
 import { Faq, faqItems } from "@/components/site/Faq";
 import { Footer } from "@/components/site/Footer";
@@ -20,6 +21,10 @@ import {
 import { priceSummary } from "@/lib/pricing";
 
 export const Route = createFileRoute("/ca/")({
+  // Roadmap data for the hero's "New · …" pill (server-rendered).
+  loader: () => getRoadmap(),
+  staleTime: ROADMAP_STALE_TIME_MS,
+  headers: ({ loaderData }) => ({ "Cache-Control": roadmapCacheControl(loaderData) }),
   head: () => {
     const seo = pageSEO({
       path: "/ca",
@@ -58,13 +63,12 @@ function CanadaPage() {
       className="min-h-screen overflow-x-clip bg-paper font-sans text-ink antialiased"
     >
       <Header />
-      <TopBanner />
+      <TopBanner announcement={announcementFor(Route.useLoaderData(), "ca")} />
       <HowItWorks region="ca" />
       <InfoCards />
       <NotAll />
       <Testimonials />
       <Trust region="ca" />
-      <Integrations />
       <Pricing region="ca" />
       <Faq />
       <Footer />

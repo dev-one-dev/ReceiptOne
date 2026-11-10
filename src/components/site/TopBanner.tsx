@@ -6,8 +6,17 @@ import { StoreBadge } from "@/components/site/StoreBadge";
 import { PrimaryCta } from "@/components/site/PrimaryCta";
 import { ROUTES } from "@/lib/routes";
 import { useLang } from "@/lib/use-lang";
+import { AnnouncementPill } from "@/components/site/AnnouncementPill";
+import type { Announcement } from "@/lib/roadmap";
 
-export function TopBanner({ region = "ca" }: { region?: "ca" | "us" }) {
+export function TopBanner({
+  region = "ca",
+  announcement = null,
+}: {
+  region?: "ca" | "us";
+  /** Latest shipped feature, from the route loader; null renders nothing. */
+  announcement?: Announcement | null;
+}) {
   const heroVideo = region === "us" ? eagleHeroVideo : beaverHeroVideo;
   const heroPoster = region === "us" ? eagleHeroPoster : beaverHeroPoster;
   const fr = useLang() === "fr" && region === "ca";
@@ -23,6 +32,8 @@ export function TopBanner({ region = "ca" }: { region?: "ca" | "us" }) {
             {/* TODO(eyebrow): the hero has no label above the h1. Add
                 <p className="eyebrow"> with real copy -- deliberately not
                 invented here. */}
+            {/* Announcement pill: present or absent at SSR, never reserved space */}
+            {announcement && <AnnouncementPill announcement={announcement} />}
             {/* H1 */}
             <h1 className="text-ink">
               {region === "us" ? (

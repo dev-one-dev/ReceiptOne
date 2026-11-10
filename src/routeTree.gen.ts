@@ -15,6 +15,7 @@ import { Route as ContactRouteImport } from './routes/contact'
 import { Route as FaqRouteImport } from './routes/faq'
 import { Route as FrRouteImport } from './routes/fr'
 import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as RoadmapRouteImport } from './routes/roadmap'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as UsRouteImport } from './routes/us'
 import { Route as ArticlesIndexRouteImport } from './routes/articles/index'
@@ -24,6 +25,7 @@ import { Route as CaDriversRouteImport } from './routes/ca/drivers'
 import { Route as FrIndexRouteImport } from './routes/fr/index'
 import { Route as FrContactRouteImport } from './routes/fr/contact'
 import { Route as FrFaqRouteImport } from './routes/fr/faq'
+import { Route as FrRoadmapRouteImport } from './routes/fr/roadmap'
 import { Route as RCodeRouteImport } from './routes/r/$code'
 import { Route as UsIndexRouteImport } from './routes/us/index'
 import { Route as UsContactRouteImport } from './routes/us/contact'
@@ -59,6 +61,11 @@ const FrRoute = FrRouteImport.update({
 const PrivacyRoute = PrivacyRouteImport.update({
   id: '/privacy',
   path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RoadmapRoute = RoadmapRouteImport.update({
+  id: '/roadmap',
+  path: '/roadmap',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TermsRoute = TermsRouteImport.update({
@@ -106,6 +113,11 @@ const FrFaqRoute = FrFaqRouteImport.update({
   path: '/faq',
   getParentRoute: () => FrRoute,
 } as any)
+const FrRoadmapRoute = FrRoadmapRouteImport.update({
+  id: '/roadmap',
+  path: '/roadmap',
+  getParentRoute: () => FrRoute,
+} as any)
 const RCodeRoute = RCodeRouteImport.update({
   id: '/r/$code',
   path: '/r/$code',
@@ -144,12 +156,14 @@ export interface FileRoutesByFullPath {
   '/faq': typeof FaqRoute
   '/fr': typeof FrRouteWithChildren
   '/privacy': typeof PrivacyRoute
+  '/roadmap': typeof RoadmapRoute
   '/terms': typeof TermsRoute
   '/us': typeof UsRouteWithChildren
   '/articles/$slug': typeof ArticlesSlugRoute
   '/ca/drivers': typeof CaDriversRoute
   '/fr/contact': typeof FrContactRoute
   '/fr/faq': typeof FrFaqRoute
+  '/fr/roadmap': typeof FrRoadmapRoute
   '/r/$code': typeof RCodeRoute
   '/us/contact': typeof UsContactRoute
   '/us/faq': typeof UsFaqRoute
@@ -165,11 +179,13 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/faq': typeof FaqRoute
   '/privacy': typeof PrivacyRoute
+  '/roadmap': typeof RoadmapRoute
   '/terms': typeof TermsRoute
   '/articles/$slug': typeof ArticlesSlugRoute
   '/ca/drivers': typeof CaDriversRoute
   '/fr/contact': typeof FrContactRoute
   '/fr/faq': typeof FrFaqRoute
+  '/fr/roadmap': typeof FrRoadmapRoute
   '/r/$code': typeof RCodeRoute
   '/us/contact': typeof UsContactRoute
   '/us/faq': typeof UsFaqRoute
@@ -188,12 +204,14 @@ export interface FileRoutesById {
   '/faq': typeof FaqRoute
   '/fr': typeof FrRouteWithChildren
   '/privacy': typeof PrivacyRoute
+  '/roadmap': typeof RoadmapRoute
   '/terms': typeof TermsRoute
   '/us': typeof UsRouteWithChildren
   '/articles/$slug': typeof ArticlesSlugRoute
   '/ca/drivers': typeof CaDriversRoute
   '/fr/contact': typeof FrContactRoute
   '/fr/faq': typeof FrFaqRoute
+  '/fr/roadmap': typeof FrRoadmapRoute
   '/r/$code': typeof RCodeRoute
   '/us/contact': typeof UsContactRoute
   '/us/faq': typeof UsFaqRoute
@@ -213,12 +231,14 @@ export interface FileRouteTypes {
     | '/faq'
     | '/fr'
     | '/privacy'
+    | '/roadmap'
     | '/terms'
     | '/us'
     | '/articles/$slug'
     | '/ca/drivers'
     | '/fr/contact'
     | '/fr/faq'
+    | '/fr/roadmap'
     | '/r/$code'
     | '/us/contact'
     | '/us/faq'
@@ -234,11 +254,13 @@ export interface FileRouteTypes {
     | '/contact'
     | '/faq'
     | '/privacy'
+    | '/roadmap'
     | '/terms'
     | '/articles/$slug'
     | '/ca/drivers'
     | '/fr/contact'
     | '/fr/faq'
+    | '/fr/roadmap'
     | '/r/$code'
     | '/us/contact'
     | '/us/faq'
@@ -256,12 +278,14 @@ export interface FileRouteTypes {
     | '/faq'
     | '/fr'
     | '/privacy'
+    | '/roadmap'
     | '/terms'
     | '/us'
     | '/articles/$slug'
     | '/ca/drivers'
     | '/fr/contact'
     | '/fr/faq'
+    | '/fr/roadmap'
     | '/r/$code'
     | '/us/contact'
     | '/us/faq'
@@ -280,6 +304,7 @@ export interface RootRouteChildren {
   FaqRoute: typeof FaqRoute
   FrRoute: typeof FrRouteWithChildren
   PrivacyRoute: typeof PrivacyRoute
+  RoadmapRoute: typeof RoadmapRoute
   TermsRoute: typeof TermsRoute
   UsRoute: typeof UsRouteWithChildren
   ArticlesSlugRoute: typeof ArticlesSlugRoute
@@ -329,6 +354,13 @@ declare module '@tanstack/react-router' {
       path: '/privacy'
       fullPath: '/privacy'
       preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/roadmap': {
+      id: '/roadmap'
+      path: '/roadmap'
+      fullPath: '/roadmap'
+      preLoaderRoute: typeof RoadmapRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/terms': {
@@ -394,6 +426,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FrFaqRouteImport
       parentRoute: typeof FrRoute
     }
+    '/fr/roadmap': {
+      id: '/fr/roadmap'
+      path: '/roadmap'
+      fullPath: '/fr/roadmap'
+      preLoaderRoute: typeof FrRoadmapRouteImport
+      parentRoute: typeof FrRoute
+    }
     '/r/$code': {
       id: '/r/$code'
       path: '/r/$code'
@@ -454,12 +493,14 @@ const CaRouteWithChildren = CaRoute._addFileChildren(CaRouteChildren)
 interface FrRouteChildren {
   FrContactRoute: typeof FrContactRoute
   FrFaqRoute: typeof FrFaqRoute
+  FrRoadmapRoute: typeof FrRoadmapRoute
   FrIndexRoute: typeof FrIndexRoute
 }
 
 const FrRouteChildren: FrRouteChildren = {
   FrContactRoute: FrContactRoute,
   FrFaqRoute: FrFaqRoute,
+  FrRoadmapRoute: FrRoadmapRoute,
   FrIndexRoute: FrIndexRoute,
 }
 
@@ -490,6 +531,7 @@ const rootRouteChildren: RootRouteChildren = {
   FaqRoute: FaqRoute,
   FrRoute: FrRouteWithChildren,
   PrivacyRoute: PrivacyRoute,
+  RoadmapRoute: RoadmapRoute,
   TermsRoute: TermsRoute,
   UsRoute: UsRouteWithChildren,
   ArticlesSlugRoute: ArticlesSlugRoute,
