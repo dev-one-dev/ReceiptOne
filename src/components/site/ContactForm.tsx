@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { CONTACT_LIMITS, submitContactRequest } from "@/integrations/firebase/support";
-import { callableErrorMessage, isRateLimited } from "@/integrations/firebase/callable-error";
+import { contactErrorMessage, isValidContactEmail } from "@/lib/contact-form";
 import { toast } from "sonner";
 import { useLang } from "@/lib/use-lang";
 import type { Lang } from "@/lib/locales";
@@ -17,7 +17,6 @@ const COPY: Record<Lang, Record<string, string>> = {
     errEmail: "Please enter a valid email address.",
     errSubject: "Please add a short subject.",
     errMessage: "Please add a bit more detail to your message.",
-    errRate: "You've sent a few messages recently. Please wait an hour before sending another.",
     errSend: "Failed to send your message. Please try again.",
     sentTitle: "Message sent",
     sentBody: "Thanks for reaching out — we reply within 1–2 business days.",
@@ -39,8 +38,6 @@ const COPY: Record<Lang, Record<string, string>> = {
     errEmail: "Veuillez entrer une adresse courriel valide.",
     errSubject: "Veuillez ajouter un court objet.",
     errMessage: "Veuillez donner un peu plus de détails dans votre message.",
-    errRate:
-      "Vous avez envoyé plusieurs messages récemment. Veuillez attendre une heure avant d'en envoyer un autre.",
     errSend: "Impossible d'envoyer votre message. Veuillez réessayer.",
     sentTitle: "Message envoyé",
     sentBody: "Merci de nous avoir écrit — nous répondons sous 1 à 2 jours ouvrables.",
@@ -56,8 +53,6 @@ const COPY: Record<Lang, Record<string, string>> = {
     send: "Envoyer le message",
   },
 };
-
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export function ContactForm({ region }: { region: Region }) {
   const [name, setName] = useState("");
@@ -80,7 +75,7 @@ export function ContactForm({ region }: { region: Region }) {
       toast.error(t.errName);
       return;
     }
-    if (!EMAIL_RE.test(em)) {
+    if (!isValidContactEmail(em)) {
       toast.error(t.errEmail);
       return;
     }
@@ -111,11 +106,7 @@ export function ContactForm({ region }: { region: Region }) {
       });
       setSubmitted(true);
     } catch (err) {
-      if (isRateLimited(err)) {
-        toast.error(t.errRate);
-      } else {
-        toast.error(callableErrorMessage(err, t.errSend));
-      }
+      toast.error(contactErrorMessage(err, lang, t.errSend));
     } finally {
       setLoading(false);
     }
