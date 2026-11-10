@@ -253,6 +253,15 @@ export function Footer({ region = "ca" }: FooterProps) {
           <StoreBadge platform="google" region={region} variant="dark" size="sm" />
         </div>
 
+        {/* Oversized wordmark — decorative; the logo above is the accessible name.
+            The wrapper is the size container, so the word fills the same
+            content box as the columns. "ReceiptOne" in every language. */}
+        <div className="@container mt-6">
+          <p aria-hidden="true" className="footer-wordmark text-paper">
+            ReceiptOne
+          </p>
+        </div>
+
         {/* Bottom bar */}
         <div className="mt-4 flex flex-col items-center justify-between gap-2 border-t border-hairline-void pt-4 sm:flex-row">
           <p className="font-sans text-sm text-paper-40">
