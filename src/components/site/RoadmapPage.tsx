@@ -1,5 +1,6 @@
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
+import { appUrl } from "@/lib/external";
 import {
   localized,
   roadmapView,
@@ -19,6 +20,7 @@ const COPY = {
     inProgress: "In progress",
     planned: "Planned",
     unavailable: "Our changelog is being updated — check back soon.",
+    ideas: "Have an idea? Sign in to suggest it or vote →",
   },
   fr: {
     eyebrow: "Mises à jour du produit",
@@ -31,12 +33,31 @@ const COPY = {
     inProgress: "En cours",
     planned: "Prévu",
     unavailable: "Notre journal des nouveautés est en cours de mise à jour — revenez bientôt.",
+    ideas: "Vous avez une idée? Connectez-vous pour la proposer ou voter →",
   },
 } as const;
 
 const CARD =
   "rounded-card border border-hairline bg-white p-3 shadow-[0_2px_12px_rgba(0,0,0,0.06)]";
 const PILL = "rounded-pill px-2.5 py-1 font-mono text-label uppercase tracking-mono";
+
+/** The portal's roadmap, where signed-in users suggest ideas and vote. Same tab. */
+const IDEAS_URL = `${appUrl("/roadmap")}?utm_source=landing&utm_medium=roadmap&utm_campaign=ideas`;
+
+/**
+ * "Have an idea?" link under Coming next. Independent of the roadmap data, so
+ * it also renders under the fallback line and when Coming next is empty.
+ * Inside a <p>, so it gets the site's animated text-link underline.
+ */
+function IdeasLink({ lang }: { lang: Lang }) {
+  return (
+    <p className="mt-4 text-sm">
+      <a href={IDEAS_URL} className="font-medium text-ink">
+        {COPY[lang].ideas}
+      </a>
+    </p>
+  );
+}
 
 /** Region in small mono text, only when the data carries one (it does not today). */
 function RegionTag({ region }: { region: string | null }) {
@@ -86,6 +107,7 @@ export function RoadmapPage({ lang, data }: { lang: Lang; data: RoadmapData | nu
         <section className="py-6 sm:py-8 lg:py-10">
           <div className="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
             <p className="text-body text-ink-80">{t.unavailable}</p>
+            <IdeasLink lang={lang} />
           </div>
         </section>
       ) : (
@@ -144,6 +166,14 @@ export function RoadmapPage({ lang, data }: { lang: Lang; data: RoadmapData | nu
                     );
                   })}
                 </ul>
+                <IdeasLink lang={lang} />
+              </div>
+            </section>
+          )}
+          {view.comingNext.length === 0 && (
+            <section className="pb-6 sm:pb-8 lg:pb-10">
+              <div className="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
+                <IdeasLink lang={lang} />
               </div>
             </section>
           )}
