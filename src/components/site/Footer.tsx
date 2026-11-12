@@ -26,7 +26,7 @@ type FooterProps = {
 
 /**
  * `en` marks a link from a French page to a page that is still English-only
- * (articles, legal pages): it gets hrefLang="en" and a visible "(en anglais)",
+ * (articles): it gets hrefLang="en" and a visible "(en anglais)",
  * so a French reader is not dropped into English without warning.
  */
 type FooterLink = { label: string; href: string; en?: boolean };
@@ -76,8 +76,8 @@ const LEGAL_LINKS: Record<Lang, { label: string; href: AppRoute; en?: boolean }[
     { label: "Privacy Policy", href: ROUTES.privacy },
   ],
   fr: [
-    { label: "Conditions d'utilisation", href: ROUTES.terms, en: true },
-    { label: "Politique de confidentialité", href: ROUTES.privacy, en: true },
+    { label: "Conditions d'utilisation", href: ROUTES.frTerms },
+    { label: "Politique de confidentialité", href: ROUTES.frPrivacy },
   ],
 };
 

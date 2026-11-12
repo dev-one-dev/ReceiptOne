@@ -25,7 +25,9 @@ import { Route as CaDriversRouteImport } from './routes/ca/drivers'
 import { Route as FrIndexRouteImport } from './routes/fr/index'
 import { Route as FrContactRouteImport } from './routes/fr/contact'
 import { Route as FrFaqRouteImport } from './routes/fr/faq'
+import { Route as FrPrivacyRouteImport } from './routes/fr/privacy'
 import { Route as FrRoadmapRouteImport } from './routes/fr/roadmap'
+import { Route as FrTermsRouteImport } from './routes/fr/terms'
 import { Route as RCodeRouteImport } from './routes/r/$code'
 import { Route as UsIndexRouteImport } from './routes/us/index'
 import { Route as UsContactRouteImport } from './routes/us/contact'
@@ -113,9 +115,19 @@ const FrFaqRoute = FrFaqRouteImport.update({
   path: '/faq',
   getParentRoute: () => FrRoute,
 } as any)
+const FrPrivacyRoute = FrPrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => FrRoute,
+} as any)
 const FrRoadmapRoute = FrRoadmapRouteImport.update({
   id: '/roadmap',
   path: '/roadmap',
+  getParentRoute: () => FrRoute,
+} as any)
+const FrTermsRoute = FrTermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
   getParentRoute: () => FrRoute,
 } as any)
 const RCodeRoute = RCodeRouteImport.update({
@@ -163,7 +175,9 @@ export interface FileRoutesByFullPath {
   '/ca/drivers': typeof CaDriversRoute
   '/fr/contact': typeof FrContactRoute
   '/fr/faq': typeof FrFaqRoute
+  '/fr/privacy': typeof FrPrivacyRoute
   '/fr/roadmap': typeof FrRoadmapRoute
+  '/fr/terms': typeof FrTermsRoute
   '/r/$code': typeof RCodeRoute
   '/us/contact': typeof UsContactRoute
   '/us/faq': typeof UsFaqRoute
@@ -185,7 +199,9 @@ export interface FileRoutesByTo {
   '/ca/drivers': typeof CaDriversRoute
   '/fr/contact': typeof FrContactRoute
   '/fr/faq': typeof FrFaqRoute
+  '/fr/privacy': typeof FrPrivacyRoute
   '/fr/roadmap': typeof FrRoadmapRoute
+  '/fr/terms': typeof FrTermsRoute
   '/r/$code': typeof RCodeRoute
   '/us/contact': typeof UsContactRoute
   '/us/faq': typeof UsFaqRoute
@@ -211,7 +227,9 @@ export interface FileRoutesById {
   '/ca/drivers': typeof CaDriversRoute
   '/fr/contact': typeof FrContactRoute
   '/fr/faq': typeof FrFaqRoute
+  '/fr/privacy': typeof FrPrivacyRoute
   '/fr/roadmap': typeof FrRoadmapRoute
+  '/fr/terms': typeof FrTermsRoute
   '/r/$code': typeof RCodeRoute
   '/us/contact': typeof UsContactRoute
   '/us/faq': typeof UsFaqRoute
@@ -238,7 +256,9 @@ export interface FileRouteTypes {
     | '/ca/drivers'
     | '/fr/contact'
     | '/fr/faq'
+    | '/fr/privacy'
     | '/fr/roadmap'
+    | '/fr/terms'
     | '/r/$code'
     | '/us/contact'
     | '/us/faq'
@@ -260,7 +280,9 @@ export interface FileRouteTypes {
     | '/ca/drivers'
     | '/fr/contact'
     | '/fr/faq'
+    | '/fr/privacy'
     | '/fr/roadmap'
+    | '/fr/terms'
     | '/r/$code'
     | '/us/contact'
     | '/us/faq'
@@ -285,7 +307,9 @@ export interface FileRouteTypes {
     | '/ca/drivers'
     | '/fr/contact'
     | '/fr/faq'
+    | '/fr/privacy'
     | '/fr/roadmap'
+    | '/fr/terms'
     | '/r/$code'
     | '/us/contact'
     | '/us/faq'
@@ -426,11 +450,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FrFaqRouteImport
       parentRoute: typeof FrRoute
     }
+    '/fr/privacy': {
+      id: '/fr/privacy'
+      path: '/privacy'
+      fullPath: '/fr/privacy'
+      preLoaderRoute: typeof FrPrivacyRouteImport
+      parentRoute: typeof FrRoute
+    }
     '/fr/roadmap': {
       id: '/fr/roadmap'
       path: '/roadmap'
       fullPath: '/fr/roadmap'
       preLoaderRoute: typeof FrRoadmapRouteImport
+      parentRoute: typeof FrRoute
+    }
+    '/fr/terms': {
+      id: '/fr/terms'
+      path: '/terms'
+      fullPath: '/fr/terms'
+      preLoaderRoute: typeof FrTermsRouteImport
       parentRoute: typeof FrRoute
     }
     '/r/$code': {
@@ -493,14 +531,18 @@ const CaRouteWithChildren = CaRoute._addFileChildren(CaRouteChildren)
 interface FrRouteChildren {
   FrContactRoute: typeof FrContactRoute
   FrFaqRoute: typeof FrFaqRoute
+  FrPrivacyRoute: typeof FrPrivacyRoute
   FrRoadmapRoute: typeof FrRoadmapRoute
+  FrTermsRoute: typeof FrTermsRoute
   FrIndexRoute: typeof FrIndexRoute
 }
 
 const FrRouteChildren: FrRouteChildren = {
   FrContactRoute: FrContactRoute,
   FrFaqRoute: FrFaqRoute,
+  FrPrivacyRoute: FrPrivacyRoute,
   FrRoadmapRoute: FrRoadmapRoute,
+  FrTermsRoute: FrTermsRoute,
   FrIndexRoute: FrIndexRoute,
 }
 

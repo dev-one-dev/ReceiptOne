@@ -23,6 +23,8 @@ export const INTERNAL_ROUTES = {
   faq: "/faq",
   terms: "/terms",
   privacy: "/privacy",
+  frTerms: "/fr/terms",
+  frPrivacy: "/fr/privacy",
   articles: "/articles",
 } as const satisfies Record<string, AppRoute>;
 

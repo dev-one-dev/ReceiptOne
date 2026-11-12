@@ -25,8 +25,7 @@ const COPY: Record<
   fr: {
     label: "Consentement aux témoins",
     text: "Avec votre accord, nous utilisons les témoins de Google Analytics pour mesurer les visites et la performance de nos publicités.",
-    // The privacy policy is English-only for now.
-    link: "Détails sur les témoins (en anglais)",
+    link: "Détails sur les témoins",
     accept: "Accepter",
     decline: "Refuser",
   },
@@ -112,9 +111,8 @@ export function CookieConsent() {
         <p id="cookie-consent-text" className="font-sans text-sm text-ink-80">
           {t.text}{" "}
           <Link
-            to="/privacy"
+            to={lang === "fr" ? "/fr/privacy" : "/privacy"}
             hash="section-2-4"
-            hrefLang={lang === "fr" ? "en" : undefined}
             className="text-ink underline underline-offset-4"
           >
             {t.link}

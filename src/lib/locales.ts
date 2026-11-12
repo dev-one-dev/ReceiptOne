@@ -6,7 +6,7 @@
  * The Canadian English page is the anchor of every cluster: it is canonical
  * for x-default, and the US and French equivalents are looked up from it.
  * Only list genuine equivalents. A Canadian page with no French version
- * (articles, legal pages for now) is simply absent from FRENCH_PAGES.
+ * (articles, for now) is simply absent from FRENCH_PAGES.
  */
 export type Lang = "en" | "fr";
 
@@ -17,6 +17,9 @@ export const FRENCH_PAGES: Record<string, string> = {
   "/contact": "/fr/contact",
   // Global changelog: one English page (no /us copy) and its French twin.
   "/roadmap": "/fr/roadmap",
+  // Legal pages: one English page each (no /us copy) and a French translation.
+  "/privacy": "/fr/privacy",
+  "/terms": "/fr/terms",
 };
 
 /** Canadian English page -> its US equivalent. */

@@ -91,18 +91,16 @@ export const faqItemsFR: QA[] = [
     q: "Où mes données sont-elles stockées?",
     a: "Vos données sont stockées et traitées sur Firebase et Google Cloud aux États-Unis : la base de données dans la multirégion nam5 (Iowa et Caroline du Sud), les images de reçus et les fichiers dans Cloud Storage aux États-Unis, et le traitement côté serveur dans us-central1 (Iowa). Certains de nos fournisseurs de services traitent aussi des renseignements à l'extérieur du Canada — consultez notre politique de confidentialité pour la liste complète.",
     link: {
-      to: "/privacy",
-      label: "Lire notre politique de confidentialité (en anglais)",
-      en: true,
+      to: "/fr/privacy",
+      label: "Lire notre politique de confidentialité",
     },
   },
   {
     q: "Qu'arrive-t-il à mes données si je supprime mon compte?",
     a: "Vos reçus, vos dépenses et vos autres dossiers sont supprimés lorsque vous supprimez votre compte, sauf si nous sommes tenus de les conserver plus longtemps pour des raisons juridiques, fiscales ou de sécurité. Certains fournisseurs d'infrastructure peuvent conserver des copies hachées ou en cache pendant une période limitée (généralement jusqu'à 30 jours) à des fins de prévention de la fraude et de sécurité, avant que ces copies résiduelles ne soient supprimées.",
     link: {
-      to: "/privacy",
-      label: "Lire notre politique de confidentialité (en anglais)",
-      en: true,
+      to: "/fr/privacy",
+      label: "Lire notre politique de confidentialité",
     },
   },
   {

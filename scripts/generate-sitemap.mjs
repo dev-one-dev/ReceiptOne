@@ -14,8 +14,9 @@
  * PAGE_LASTMOD fails the build rather than getting a made-up date.
  *
  * Pages that have equivalents in another region or language (src/lib/locales.ts:
- * /ca, /us and /fr, and their FAQ and contact pages) list every equivalent as
- * an xhtml:link hreflang alternate, the same set the pages emit in <head>.
+ * /ca, /us and /fr, their FAQ and contact pages, the roadmap and the legal
+ * pages) list every equivalent as an xhtml:link hreflang alternate, the same
+ * set the pages emit in <head>.
  */
 import { readdirSync, statSync, writeFileSync, mkdirSync } from "node:fs";
 import { join, resolve } from "node:path";
@@ -32,6 +33,8 @@ const PRIORITY = {
   "/fr": { p: "0.9", c: "weekly" },
   "/terms": { p: "0.3", c: "monthly" },
   "/privacy": { p: "0.3", c: "monthly" },
+  "/fr/terms": { p: "0.3", c: "monthly" },
+  "/fr/privacy": { p: "0.3", c: "monthly" },
 };
 
 /**
@@ -48,7 +51,9 @@ export const PAGE_LASTMOD = {
   "/fr": "2026-11-11",
   "/fr/contact": "2026-10-18",
   "/fr/faq": "2026-10-18",
+  "/fr/privacy": "2026-11-11",
   "/fr/roadmap": "2026-11-10",
+  "/fr/terms": "2026-11-11",
   "/privacy": "2026-11-09",
   "/roadmap": "2026-11-10",
   "/terms": "2026-10-18",

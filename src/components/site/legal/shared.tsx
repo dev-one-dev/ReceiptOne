@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState, type ReactNode } from "react";
 import { Check, Link2, Printer, Sparkles } from "lucide-react";
+import type { Lang } from "@/lib/locales";
 
 export type Region = "all" | "us" | "ca";
 
@@ -9,12 +10,25 @@ export const REGION_OPTIONS: { value: Region; label: string; flag: string }[] = 
   { value: "ca", label: "Canada", flag: "🇨🇦" },
 ];
 
+/** French labels for the same options, in the same order. */
+const REGION_LABELS_FR: Record<Region, string> = {
+  all: "Tous",
+  us: "États-Unis",
+  ca: "Canada",
+};
+
+/** Short jurisdiction tags shown next to region-specific headings. */
+export const REGION_TAG_LABELS: Record<Lang, Record<"us" | "ca", string>> = {
+  en: { us: "US", ca: "CA" },
+  fr: { us: "É.-U.", ca: "CA" },
+};
+
 export const isRegion = (v: unknown): v is Region => v === "all" || v === "us" || v === "ca";
 
 /* ------------------------- URL + localStorage state ------------------------ */
 
 /**
- * Persisted UI state for /terms and /privacy. Region lives in the URL so
+ * Persisted UI state for /terms and /privacy (and /fr/terms, /fr/privacy). Region lives in the URL so
  * shareable links (e.g. ?region=us#section-18) reproduce the exact view.
  * Open Part/Section ids live in localStorage so they survive refresh without
  * polluting the URL.
@@ -98,14 +112,16 @@ export function useLegalUIState(storageKey: string, allPartIds: string[]) {
 export function RegionSwitcher({
   region,
   onChange,
+  lang = "en",
 }: {
   region: Region;
   onChange: (r: Region) => void;
+  lang?: Lang;
 }) {
   return (
     <div
       role="radiogroup"
-      aria-label="Jurisdiction"
+      aria-label={lang === "fr" ? "Région" : "Jurisdiction"}
       className="inline-flex items-center gap-1 rounded-full border border-border bg-card p-1 print:hidden"
     >
       {REGION_OPTIONS.map((o) => {
@@ -124,7 +140,7 @@ export function RegionSwitcher({
             }`}
           >
             <span aria-hidden>{o.flag}</span>
-            {o.label}
+            {lang === "fr" ? REGION_LABELS_FR[o.value] : o.label}
           </button>
         );
       })}
@@ -188,14 +204,18 @@ export function RegionParagraph({
 export function AnchorButton({
   hash,
   region,
-  label = "Copy link",
+  label,
   className,
+  lang = "en",
 }: {
   hash: string;
   region: Region;
   label?: string;
   className?: string;
+  lang?: Lang;
 }) {
+  const fr = lang === "fr";
+  label ??= fr ? "Copier le lien" : "Copy link";
   const [copied, setCopied] = useState(false);
 
   const onClick = async () => {
@@ -208,7 +228,7 @@ export function AnchorButton({
     try {
       await navigator.clipboard.writeText(href);
     } catch {
-      window.prompt("Copy link", href);
+      window.prompt(fr ? "Copier le lien" : "Copy link", href);
     }
     setCopied(true);
     window.setTimeout(() => setCopied(false), 1600);
@@ -222,7 +242,7 @@ export function AnchorButton({
         void onClick();
       }}
       aria-label={label}
-      title={copied ? "Copied!" : label}
+      title={copied ? (fr ? "Lien copié!" : "Copied!") : label}
       className={`inline-flex items-center justify-center rounded-md p-1.5 text-muted-foreground/70 opacity-0 transition-all hover:bg-accent hover:text-foreground focus-visible:opacity-100 group-hover:opacity-100 print:hidden ${className ?? ""}`}
     >
       {copied ? <Check className="size-3.5" /> : <Link2 className="size-3.5" />}
@@ -240,10 +260,12 @@ export function PrintButton({
   onBeforePrint,
   onAfterPrint,
   className,
+  lang = "en",
 }: {
   onBeforePrint: () => void;
   onAfterPrint: () => void;
   className?: string;
+  lang?: Lang;
 }) {
   const handlePrint = () => {
     if (typeof window === "undefined") return;
@@ -262,7 +284,7 @@ export function PrintButton({
       className={`inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground print:hidden ${className ?? ""}`}
     >
       <Printer className="size-4" />
-      Print / Export
+      {lang === "fr" ? "Imprimer / Exporter" : "Print / Export"}
     </button>
   );
 }
@@ -297,16 +319,21 @@ export type SummaryItem = {
 };
 
 export function LegalSummary({
-  title = "Summary",
+  title,
   subtitle,
   items,
   region,
+  lang = "en",
 }: {
   title?: string;
   subtitle?: string;
   items: SummaryItem[];
   region: Region;
+  lang?: Lang;
 }) {
+  const fr = lang === "fr";
+  title ??= fr ? "Résumé" : "Summary";
+  const tags = REGION_TAG_LABELS[lang];
   const visible = items.filter(
     (i) => !i.region || i.region === "all" || region === "all" || region === i.region,
   );
@@ -335,15 +362,17 @@ export function LegalSummary({
           <li key={item.title} className="rounded-lg border border-border/60 bg-background/60 p-3">
             <div className="flex items-start justify-between gap-2">
               <p className="text-sm font-semibold text-foreground">{item.title}</p>
-              {item.region === "us" && <RegionTag tone="us">US</RegionTag>}
-              {item.region === "ca" && <RegionTag tone="ca">CA</RegionTag>}
+              {item.region === "us" && <RegionTag tone="us">{tags.us}</RegionTag>}
+              {item.region === "ca" && <RegionTag tone="ca">{tags.ca}</RegionTag>}
             </div>
             <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{item.body}</p>
           </li>
         ))}
       </ul>
       <p className="mt-4 text-[11px] leading-relaxed text-muted-foreground/80">
-        This summary is for convenience only and does not replace the full document below.
+        {fr
+          ? "Ce résumé est fourni à titre indicatif seulement et ne remplace pas le document complet ci-dessous."
+          : "This summary is for convenience only and does not replace the full document below."}
       </p>
     </aside>
   );
