@@ -122,27 +122,23 @@ export function InfoCards({ region = "ca" }: { region?: "ca" | "us" }) {
       ? {
           eyebrow: "Features",
           title: "Built for US tax time.",
-          sub: "Schedule C categories and IRS-ready reports.",
         }
       : fr
         ? {
             eyebrow: "Fonctionnalités",
             title: "Conçu pour la saison des impôts au Canada.",
-            sub: "TPS, TVH et TVP gérées pour les 10 provinces et les 3 territoires.",
           }
         : {
             eyebrow: "Features",
             title: "Built for Canadian tax time.",
-            sub: "GST, HST and PST handled for all 10 provinces and 3 territories.",
           };
   return (
     <section id="benefits" className="w-full px-4 pt-16 pb-4 sm:px-6 sm:pt-20 sm:pb-6 lg:px-8">
       <div className="mx-auto w-full max-w-[1200px]">
         {/* Header */}
-        <div className="mx-auto mb-10 max-w-2xl text-center sm:mb-14">
+        <div className="mx-auto mb-12 max-w-2xl text-center">
           <p className="eyebrow">{heading.eyebrow}</p>
-          <h2 className="mt-3 text-ink">{heading.title}</h2>
-          <p className="mt-4 text-body text-ink-60 sm:text-lead">{heading.sub}</p>
+          <h2 className="mt-2 text-ink">{heading.title}</h2>
         </div>
 
         {/* Feature cards */}
