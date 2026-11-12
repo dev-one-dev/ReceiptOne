@@ -2,117 +2,37 @@
 /**
  * Renders public/og-image.png (1200x630) with Playwright.
  *
- * 1. Starts the Vite dev server (or uses OG_BASE_URL if set), opens /ca and
- *    screenshots the first Pricing card at 2x. The hero's own visual is the
- *    mascot video, so the pricing card stands in as the product visual.
- * 2. Injects that screenshot plus the header's logo SVGs into
- *    scripts/og/og-template.html and screenshots the page at exactly 1200x630.
+ * Fills scripts/og/og-template.html with the header's logo SVGs and the
+ * beaver mascot (hero-beaver-poster.png, inlined as a data URI), then
+ * screenshots the page at exactly 1200x630. The card carries no prices,
+ * discounts or other figures, so it never goes stale against pricing.ts.
+ *
+ * After regenerating, bump OG_IMAGE_VERSION in src/lib/seo.ts so social
+ * platforms refetch the image.
  *
  * Run with: npm run og
  */
-import { spawn } from "node:child_process";
 import { readFileSync, writeFileSync } from "node:fs";
 import { chromium } from "playwright";
 
 const OUTPUT = "public/og-image.png";
 const TEMPLATE = "scripts/og/og-template.html";
+const MASCOT = "src/assets/figma/hero-beaver-poster.png";
 const WIDTH = 1200;
 const HEIGHT = 630;
-const PORT = 5199;
-const CARD_SELECTOR = "#pricing .max-w-xl";
-
-/* ----------------------------- dev server ------------------------------ */
-
-async function waitForServer(url, timeoutMs = 90_000) {
-  const started = Date.now();
-  while (Date.now() - started < timeoutMs) {
-    try {
-      const res = await fetch(url);
-      if (res.ok) return;
-    } catch {
-      // not up yet
-    }
-    await new Promise((r) => setTimeout(r, 300));
-  }
-  throw new Error(`Dev server did not respond at ${url} within ${timeoutMs}ms`);
-}
-
-function startDevServer() {
-  const child = spawn(
-    "npx",
-    ["vite", "dev", "--host", "127.0.0.1", "--port", String(PORT), "--strictPort"],
-    { shell: true, stdio: ["ignore", "ignore", "pipe"] },
-  );
-  child.stderr.on("data", (d) => process.stderr.write(d));
-  return child;
-}
-
-function stopDevServer(child) {
-  if (!child) return;
-  if (process.platform === "win32") {
-    // shell:true means child.pid is the cmd.exe wrapper; kill the whole tree.
-    spawn("taskkill", ["/pid", String(child.pid), "/T", "/F"], { stdio: "ignore" });
-  } else {
-    child.kill("SIGTERM");
-  }
-}
-
-/* ------------------------------ screenshot ----------------------------- */
-
-async function screenshotPricingCard(browser, baseUrl) {
-  const page = await browser.newPage({
-    viewport: { width: 1440, height: 1200 },
-    deviceScaleFactor: 2,
-  });
-  await page.goto(`${baseUrl}/ca`, { waitUntil: "networkidle" });
-  // The fixed header would otherwise overlap whatever scrolls under it, and
-  // the store-badge row is dropped so the card ends cleanly on the trial CTA
-  // instead of the canvas edge slicing through the badges.
-  await page.addStyleTag({
-    content: [
-      "header { visibility: hidden !important; }",
-      `${CARD_SELECTOR} a[aria-label^="Download ReceiptOne"],`,
-      `${CARD_SELECTOR} a[aria-label^="Get ReceiptOne"] { display: none !important; }`,
-    ].join("\n"),
-  });
-
-  const card = page.locator(CARD_SELECTOR).first();
-  await card.waitFor({ state: "visible" });
-  await card.scrollIntoViewIfNeeded();
-  // Lazy-loaded mascot art inside the card; wait for every <img> to settle.
-  await card.evaluate((el) =>
-    Promise.all(
-      Array.from(el.querySelectorAll("img")).map((img) =>
-        img.complete
-          ? Promise.resolve()
-          : new Promise((resolve) => {
-              img.addEventListener("load", resolve, { once: true });
-              img.addEventListener("error", resolve, { once: true });
-            }),
-      ),
-    ),
-  );
-  await page.evaluate(() => document.fonts.ready);
-  await page.waitForTimeout(400); // let the card's crossfade finish
-
-  const png = await card.screenshot({ type: "png" });
-  await page.close();
-  return `data:image/png;base64,${png.toString("base64")}`;
-}
-
-/* -------------------------------- render ------------------------------- */
 
 function withClass(svg, className) {
   return svg.replace("<svg", `<svg class="${className}"`);
 }
 
-function buildHtml(screenshotSrc) {
+function buildHtml() {
   const mark = readFileSync("src/assets/figma/logo-mark.svg", "utf8");
   const word = readFileSync("src/assets/figma/logo-wordmark.svg", "utf8");
+  const mascot = `data:image/png;base64,${readFileSync(MASCOT).toString("base64")}`;
   return readFileSync(TEMPLATE, "utf8")
     .replace("{{LOGO_MARK_SVG}}", withClass(mark, "mark"))
     .replace("{{LOGO_WORDMARK_SVG}}", withClass(word, "word"))
-    .replace("{{SCREENSHOT_SRC}}", screenshotSrc);
+    .replace("{{MASCOT_SRC}}", mascot);
 }
 
 async function renderCard(browser, html) {
@@ -155,24 +75,13 @@ async function renderCard(browser, html) {
   return { png, size, lines };
 }
 
-/* --------------------------------- main -------------------------------- */
-
-let devServer;
 const browser = await chromium.launch();
 try {
-  let baseUrl = process.env.OG_BASE_URL;
-  if (!baseUrl) {
-    baseUrl = `http://127.0.0.1:${PORT}`;
-    devServer = startDevServer();
-    await waitForServer(`${baseUrl}/ca`);
-  }
-  const shot = await screenshotPricingCard(browser, baseUrl);
-  const { png, size, lines } = await renderCard(browser, buildHtml(shot));
+  const { png, size, lines } = await renderCard(browser, buildHtml());
   writeFileSync(OUTPUT, png);
   console.log(
     `✓ wrote ${OUTPUT} (${WIDTH}x${HEIGHT}, ${(png.length / 1024).toFixed(1)} KB, headline ${size}px on ${lines} lines)`,
   );
 } finally {
   await browser.close();
-  stopDevServer(devServer);
 }

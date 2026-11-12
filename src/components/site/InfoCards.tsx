@@ -1,5 +1,3 @@
-import infocardsHeading from "@/assets/figma/infocards-heading.png";
-import infocardsHeadingUS from "@/assets/figma/mileage-auto/US/infocards-heading.png";
 import abScreenReceipts from "@/assets/figma/feat-receipts.png";
 import abScreenMileage from "@/assets/figma/feat-mileage.png";
 import icPhoneReports from "@/assets/figma/feat-reports.png";
@@ -119,23 +117,32 @@ const US_FEATURES = CA_FEATURES.map((f) => {
 export function InfoCards({ region = "ca" }: { region?: "ca" | "us" }) {
   const fr = useLang() === "fr" && region === "ca";
   const FEATURES = region === "us" ? US_FEATURES : fr ? FR_FEATURES : CA_FEATURES;
-  const heading = region === "us" ? infocardsHeadingUS : infocardsHeading;
+  const heading =
+    region === "us"
+      ? {
+          eyebrow: "Features",
+          title: "Built for US tax time.",
+          sub: "Schedule C categories and IRS-ready reports.",
+        }
+      : fr
+        ? {
+            eyebrow: "Fonctionnalités",
+            title: "Conçu pour la saison des impôts au Canada.",
+            sub: "TPS, TVH et TVP gérées pour les 10 provinces et les 3 territoires.",
+          }
+        : {
+            eyebrow: "Features",
+            title: "Built for Canadian tax time.",
+            sub: "GST, HST and PST handled for all 10 provinces and 3 territories.",
+          };
   return (
     <section id="benefits" className="w-full px-4 pt-16 pb-4 sm:px-6 sm:pt-20 sm:pb-6 lg:px-8">
       <div className="mx-auto w-full max-w-[1200px]">
-        {/* Header image — negative margins bleed past the content column */}
-        <div className="-mx-4 mb-10 sm:-mx-6 sm:mb-14 lg:-mx-8">
-          <img
-            src={heading}
-            alt={
-              fr
-                ? "Transformez le chaos de vos reçus en or fiscal — Cessez de perdre de l'argent en déductions oubliées"
-                : "Turn Receipt Chaos Into Tax Gold — Stop losing money on missed deductions"
-            }
-            className="w-full mix-blend-multiply"
-            loading="lazy"
-            draggable={false}
-          />
+        {/* Header */}
+        <div className="mx-auto mb-10 max-w-2xl text-center sm:mb-14">
+          <p className="eyebrow">{heading.eyebrow}</p>
+          <h2 className="mt-3 text-ink">{heading.title}</h2>
+          <p className="mt-4 text-body text-ink-60 sm:text-lead">{heading.sub}</p>
         </div>
 
         {/* Feature cards */}

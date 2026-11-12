@@ -97,37 +97,31 @@
         margin-bottom: 14px;
         background: var(--ember); /* the one ember accent: a thin rule */
       }
-      .shot {
+      /* hero-beaver-poster.png is a 1200x630 frame on white with the beaver
+         centred around x=660. Shifting it 290px right puts the beaver in the
+         right-hand column, tail inside the frame; multiply drops the white onto the paper background
+         (same treatment as the site's mascot videos). */
+      .mascot {
         position: absolute;
-        left: 700px;
-        top: 72px;
-        width: 620px; /* bleeds 120px off the right edge */
-        border-radius: 12px;
-        border: 1px solid rgba(13, 13, 20, 0.1);
-        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
-        background: #fff;
-        overflow: hidden;
-      }
-      .shot img {
-        display: block;
-        width: 100%;
-        height: auto;
+        left: 290px;
+        top: 0;
+        width: 1200px;
+        height: 630px;
+        mix-blend-mode: multiply;
+        filter: brightness(1.15) contrast(1.08);
+        pointer-events: none;
       }
     </style>
   </head>
   <body>
     <div class="card">
+      <img class="mascot" src="{{MASCOT_SRC}}" alt="" />
       <div class="left">
         <div class="logo">{{LOGO_MARK_SVG}} {{LOGO_WORDMARK_SVG}}</div>
-        <h1 class="headline">
-          Turn receipts into CRA-ready reports — automatically<span class="dot">.</span>
-        </h1>
-        <p class="sub">
-          Snap receipts &amp; mileage, organize expenses, and export audit-ready reports.
-        </p>
+        <h1 class="headline">Snap a receipt.<br />Get a tax-ready report<span class="dot">.</span></h1>
+        <p class="sub">Receipts, mileage and reports for the self&#8209;employed</p>
         <p class="domain">receipt-one.com</p>
       </div>
-      <div class="shot"><img src="{{SCREENSHOT_SRC}}" alt="" /></div>
     </div>
   </body>
 </html>

@@ -25,7 +25,6 @@ export interface HelpCenterConfig {
     landingPath: string;
     faqPath: string;
     articlesPath: string;
-    ctaBody: string;
   };
 }
 
@@ -44,8 +43,6 @@ export const CA_HELP_CENTER: HelpCenterConfig = {
     landingPath: "/ca",
     faqPath: "/faq",
     articlesPath: "/articles",
-    ctaBody:
-      "Join thousands of Canadian freelancers who use ReceiptOne to stay CRA-compliant without the paperwork headache.",
   },
 };
 
@@ -64,8 +61,6 @@ export const US_HELP_CENTER: HelpCenterConfig = {
     landingPath: "/us",
     faqPath: "/us/faq",
     articlesPath: "/us/articles",
-    ctaBody:
-      "Join thousands of US freelancers who use ReceiptOne to stay IRS-ready without the paperwork headache.",
   },
 };
 

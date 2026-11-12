@@ -12,8 +12,8 @@ interface TrustItem {
 const CA_ITEMS: TrustItem[] = [
   {
     Icon: LockIcon,
-    title: "Bank-grade encryption",
-    desc: "All receipts and financial data encrypted at rest and in transit with AES-256. Your data is yours alone.",
+    title: "Encrypted in transit (TLS) and at rest (AES-256)",
+    desc: "All receipts and financial data are encrypted on the way to our servers and while stored. Your data is yours alone.",
   },
   {
     Icon: ShieldCheckIcon,
@@ -45,8 +45,8 @@ const CA_ITEMS: TrustItem[] = [
 const FR_ITEMS: TrustItem[] = [
   {
     Icon: LockIcon,
-    title: "Chiffrement de niveau bancaire",
-    desc: "Tous les reçus et toutes les données financières sont chiffrés au repos et en transit avec AES-256. Vos données n'appartiennent qu'à vous.",
+    title: "Chiffré en transit (TLS) et au repos (AES-256)",
+    desc: "Tous les reçus et toutes les données financières sont chiffrés pendant leur envoi vers nos serveurs et pendant leur stockage. Vos données n'appartiennent qu'à vous.",
   },
   {
     Icon: ShieldCheckIcon,
@@ -78,8 +78,8 @@ const FR_ITEMS: TrustItem[] = [
 const US_ITEMS: TrustItem[] = [
   {
     Icon: LockIcon,
-    title: "Bank-grade encryption",
-    desc: "All receipts and financial data encrypted at rest and in transit with AES-256. Your data is yours alone.",
+    title: "Encrypted in transit (TLS) and at rest (AES-256)",
+    desc: "All receipts and financial data are encrypted on the way to our servers and while stored. Your data is yours alone.",
   },
   {
     Icon: ShieldCheckIcon,

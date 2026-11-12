@@ -11,9 +11,11 @@ import { hreflangAlternates, type Lang } from "@/lib/locales";
 
 export const SITE_URL = EXTERNAL_SITE_URL;
 export const SITE_NAME = "ReceiptOne";
-// Placeholder card from scripts/generate-og-image.mjs. Replace
-// public/og-image.png with a designed 1200x630 asset when one exists.
-export const DEFAULT_OG_IMAGE = siteUrl("/og-image.png");
+// 1200x630 social card rendered by scripts/generate-og-image.mjs (npm run og).
+// Bump OG_IMAGE_VERSION whenever public/og-image.png changes so social
+// platforms refetch it instead of serving their cached copy.
+const OG_IMAGE_VERSION = "2";
+export const DEFAULT_OG_IMAGE = siteUrl(`/og-image.png?v=${OG_IMAGE_VERSION}`);
 
 export const url = (path: string) => `${SITE_URL}${path.startsWith("/") ? path : `/${path}`}`;
 
