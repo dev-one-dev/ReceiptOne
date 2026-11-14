@@ -32,6 +32,15 @@ const COPY: Record<
 };
 
 /**
+ * The footer's shared lg column grid: a wider first column (brand block /
+ * strip heading) and five equal columns, 24px apart. The link columns above
+ * and the deadline strip below both use it, so PRODUCT / ACCOUNT / LEGAL sit
+ * exactly over the 1st, 3rd and 5th deadline. Below lg each row keeps its own
+ * layout.
+ */
+export const FOOTER_GRID_LG = "lg:grid-cols-[minmax(0,1.8fr)_repeat(5,minmax(0,1fr))] lg:gap-x-6";
+
+/**
  * Renders text unchanged, but keeps words with a hyphen or slash ("YEAR-END",
  * "self-employed", "GST/HST") on one line: browsers may break after those
  * characters, and CSS has no switch for it. Text still wraps between words.
@@ -83,7 +92,7 @@ export function TaxDeadlines({
   return (
     <section
       aria-labelledby="tax-deadlines-title"
-      className="mt-6 grid gap-3 border-t border-hairline-void pt-4 lg:grid-cols-4 lg:gap-6"
+      className={`mt-6 grid gap-3 border-t border-hairline-void pt-4 lg:gap-6 ${FOOTER_GRID_LG}`}
     >
       <div>
         <h2 id="tax-deadlines-title" className="eyebrow">
@@ -100,8 +109,9 @@ export function TaxDeadlines({
           <span className="sr-only"> {t.newTab}</span>
         </a>
       </div>
-      {/* 1 column on phones, 2 at sm, 3 at md (5 rows: 3 + 2), all 5 on one line at lg. */}
-      <ul className="grid grid-cols-1 gap-3 hyphens-none sm:grid-cols-2 md:grid-cols-3 lg:col-span-3 lg:grid-cols-5">
+      {/* 1 column on phones, 2 at sm, 3 at md (5 rows: 3 + 2). At lg, a subgrid on
+          columns 2-6 of FOOTER_GRID_LG (same gap), one deadline per column. */}
+      <ul className="grid grid-cols-1 gap-3 hyphens-none sm:grid-cols-2 md:grid-cols-3 lg:col-span-5 lg:grid-cols-subgrid lg:gap-x-6">
         {rows.map((row) => (
           <li key={row.type}>
             {row.type === "t2" ? (

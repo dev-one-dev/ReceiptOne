@@ -8,7 +8,7 @@ import { StoreBadge } from "@/components/site/StoreBadge";
 import { useLang } from "@/lib/use-lang";
 import type { Lang } from "@/lib/locales";
 import { openConsentSettings } from "@/lib/consent";
-import { TaxDeadlines } from "@/components/site/TaxDeadlines";
+import { FOOTER_GRID_LG, TaxDeadlines } from "@/components/site/TaxDeadlines";
 
 /**
  * The oversized footer wordmark reuses the logo's lettering from the same file
@@ -159,7 +159,8 @@ export function Footer({ region = "ca", now }: FooterProps) {
     <footer data-surface="void" data-cta-location="footer" className="w-full bg-ink text-paper">
       <div className="mx-auto max-w-[1200px] px-4 pt-8 pb-4 sm:px-6 lg:px-8 lg:pt-10">
         {/* Main grid */}
-        <div className="grid gap-6 lg:grid-cols-4">
+        {/* At lg: the 6-column grid the deadline strip below shares (FOOTER_GRID_LG). */}
+        <div className={`grid gap-6 ${FOOTER_GRID_LG}`}>
           {/* Brand column */}
           <div className="lg:col-span-1">
             <button
@@ -195,10 +196,12 @@ export function Footer({ region = "ca", now }: FooterProps) {
             </div>
           </div>
 
-          {/* Nav columns */}
-          <div className="grid grid-cols-3 gap-4 lg:col-span-3">
+          {/* Nav columns: 3 across below lg. At lg, a subgrid on columns 2-6 with
+              PRODUCT, ACCOUNT and LEGAL in columns 2, 4 and 6, over the 1st, 3rd
+              and 5th deadline of the strip. */}
+          <div className="grid grid-cols-3 gap-4 lg:col-span-5 lg:grid-cols-subgrid lg:gap-x-6">
             {/* Product */}
-            <div>
+            <div className="lg:col-start-1">
               <p className="eyebrow">{t.product}</p>
               <ul className="mt-2 space-y-1.5">
                 {productLinks(region, lang).map(({ label, href, en }) => {
@@ -221,7 +224,7 @@ export function Footer({ region = "ca", now }: FooterProps) {
             </div>
 
             {/* Company */}
-            <div>
+            <div className="lg:col-start-3">
               <p className="eyebrow">{t.account}</p>
               <ul className="mt-2 space-y-1.5">
                 {ACCOUNT_LINKS[lang].map(({ label, href }) => (
@@ -238,7 +241,7 @@ export function Footer({ region = "ca", now }: FooterProps) {
             </div>
 
             {/* Legal */}
-            <div>
+            <div className="lg:col-start-5">
               <p className="eyebrow">{t.legal}</p>
               <ul className="mt-2 space-y-1.5">
                 {LEGAL_LINKS[lang].map(({ label, href, en }) => (
