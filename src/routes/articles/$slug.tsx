@@ -2,6 +2,7 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight, CheckCircle2, Clock } from "lucide-react";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
+import { ArticleCover } from "@/components/site/ArticleCover";
 import { getServerNow } from "@/lib/server-time.functions";
 import { pageSEO, breadcrumbJsonLd, faqJsonLd } from "@/lib/seo";
 import { articleHreflang } from "@/lib/help-center";
@@ -45,7 +46,6 @@ export const Route = (createFileRoute as any)("/articles/$slug")({
       title: article.title,
       description: article.excerpt,
       ogType: "article",
-      ogImage: article.imageUrl,
       hreflang: articleHreflang(article.slug),
     });
 
@@ -77,9 +77,7 @@ export const Route = (createFileRoute as any)("/articles/$slug")({
     };
   },
   component: ArticleDetailPage,
-  notFoundComponent: ({ data }: { data?: { now?: string } }) => (
-    <ArticleNotFound now={data?.now} />
-  ),
+  notFoundComponent: ({ data }: { data?: { now?: string } }) => <ArticleNotFound now={data?.now} />,
 });
 
 /* ----------------------------- Not found ---------------------------------- */
@@ -264,12 +262,11 @@ function RelatedCard({ article }: { article: Article }) {
       className="group flex flex-col overflow-hidden rounded-card border border-hairline bg-white shadow-[0_2px_12px_rgba(0,0,0,0.06)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_40px_rgba(0,0,0,0.10)]"
     >
       <div className="overflow-hidden">
-        <img
-          src={article.imageUrl}
-          alt={article.imageAlt}
-          loading="lazy"
-          decoding="async"
-          className="aspect-[16/9] w-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+        <ArticleCover
+          category={article.category}
+          title={article.title}
+          size="card"
+          className="transition-transform duration-500 group-hover:scale-[1.02]"
         />
       </div>
       <div className="flex flex-1 flex-col p-5">
@@ -377,14 +374,8 @@ function ArticleDetailPage() {
       <article>
         {/* Hero image */}
         <div className="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
-          <div className="overflow-hidden rounded-card">
-            <img
-              src={article.imageUrl}
-              alt={article.imageAlt}
-              loading="lazy"
-              decoding="async"
-              className="aspect-[16/9] w-full object-cover"
-            />
+          <div className="overflow-hidden rounded-card border border-hairline">
+            <ArticleCover category={article.category} title={article.title} size="hero" />
           </div>
         </div>
 

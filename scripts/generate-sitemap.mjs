@@ -60,7 +60,7 @@ export const PAGE_LASTMOD = {
   "/roadmap": "2026-11-10",
   "/terms": "2026-10-18",
   "/us": "2026-11-14",
-  "/us/articles": "2026-10-18",
+  "/us/articles": "2026-11-14",
   "/us/contact": "2026-10-18",
   "/us/faq": "2026-10-18",
 };

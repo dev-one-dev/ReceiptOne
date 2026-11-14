@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowRight, Clock } from "lucide-react";
 import { ARTICLES, readingMinutes, type Article } from "@/lib/articles";
+import { ArticleCover } from "@/components/site/ArticleCover";
 
 /* ----------------------------- Shared helpers ----------------------------- */
 
@@ -43,12 +44,11 @@ function FeaturedCard({ article, basePath }: { article: Article; basePath: strin
     >
       {/* Image */}
       <div className="overflow-hidden">
-        <img
-          src={article.imageUrl}
-          alt={article.imageAlt}
-          loading="lazy"
-          decoding="async"
-          className="aspect-[16/9] w-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+        <ArticleCover
+          category={article.category}
+          title={article.title}
+          size="featured"
+          className="transition-transform duration-500 group-hover:scale-[1.02]"
         />
       </div>
 
@@ -94,12 +94,11 @@ function SmallCard({ article, basePath }: { article: Article; basePath: string }
     >
       {/* Image */}
       <div className="overflow-hidden">
-        <img
-          src={article.imageUrl}
-          alt={article.imageAlt}
-          loading="lazy"
-          decoding="async"
-          className="aspect-[16/9] w-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+        <ArticleCover
+          category={article.category}
+          title={article.title}
+          size="card"
+          className="transition-transform duration-500 group-hover:scale-[1.02]"
         />
       </div>
 

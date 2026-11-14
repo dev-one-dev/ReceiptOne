@@ -2,7 +2,7 @@
  * Articles data + helpers for the ReceiptOne knowledge base.
  * No React imports — pure TypeScript data layer.
  */
-import { LOGO_URL, SITE_URL } from "@/lib/seo";
+import { DEFAULT_OG_IMAGE, LOGO_URL, SITE_URL } from "@/lib/seo";
 import { getPlan } from "@/lib/pricing";
 
 /** "CA$4.99/wk, CA$9.99/mo or CA$129.99/yr" -- ReceiptOne's Canadian prices, read from src/lib/pricing.ts. */
@@ -34,8 +34,6 @@ export interface Article {
   publishedAt: string;
   /** Date of the article's last content change in this repo (YYYY-MM-DD). */
   updatedAt: string;
-  imageUrl: string;
-  imageAlt: string;
   tags: string[];
   body: ContentBlock[];
   clusterPillar?: string;
@@ -59,9 +57,7 @@ export const ARTICLES: Article[] = [
       "What the CRA requires on a business receipt for 2026, when scans can replace paper, the six-year retention rule, and the $100 and $500 GST/HST ITC tiers.",
     category: "Tax Compliance",
     publishedAt: "2026-10-04",
-    updatedAt: "2026-10-04",
-    imageUrl: "https://picsum.photos/seed/cra-receipt-rules-canada/600/400",
-    imageAlt: "Canadian freelancer organizing receipts and tax documents",
+    updatedAt: "2026-11-14",
     tags: ["CRA", "receipts", "compliance", "self-employed", "audit", "record keeping"],
     clusterName: "CRA Receipt Rules",
     relatedSlugs: [
@@ -251,9 +247,7 @@ export const ARTICLES: Article[] = [
       "When the CRA accepts photos, scans and emailed receipts, when you must still keep the paper, and how to store, back up and hand over electronic records.",
     category: "Tax Compliance",
     publishedAt: "2026-10-04",
-    updatedAt: "2026-10-04",
-    imageUrl: "https://picsum.photos/seed/digital-receipts-canada-are-they-valid/600/400",
-    imageAlt: "Person photographing a paper receipt with a smartphone",
+    updatedAt: "2026-11-14",
     tags: ["digital receipts", "CRA", "email receipts", "photo receipts", "compliance"],
     clusterPillar: "cra-receipt-rules-canada",
     clusterName: "CRA Receipt Rules",
@@ -433,9 +427,7 @@ export const ARTICLES: Article[] = [
       "How to support expense claims in a 2026 CRA review: the general tests, rules for meals, home office, vehicle and family wages, and missing receipts.",
     category: "Tax Compliance",
     publishedAt: "2026-10-04",
-    updatedAt: "2026-10-04",
-    imageUrl: "https://picsum.photos/seed/cra-audit-proof-expenses/600/400",
-    imageAlt: "Organized financial folders and tax documents for CRA audit preparation",
+    updatedAt: "2026-11-14",
     tags: ["CRA audit", "expense documentation", "self-employed", "record keeping", "compliance"],
     clusterPillar: "cra-receipt-rules-canada",
     clusterName: "CRA Receipt Rules",
@@ -597,9 +589,7 @@ export const ARTICLES: Article[] = [
       "A year-round expense system for Canadian freelancers: capture receipts, sort them by T2125 line, reconcile monthly and build a year-end report.",
     category: "Expense Tracking",
     publishedAt: "2026-10-06",
-    updatedAt: "2026-10-06",
-    imageUrl: "https://picsum.photos/seed/expense-tracking-canada-freelancers/600/400",
-    imageAlt: "Freelancer tracking business expenses on a laptop with receipts",
+    updatedAt: "2026-11-14",
     tags: [
       "expense tracking",
       "freelancer",
@@ -867,9 +857,7 @@ export const ARTICLES: Article[] = [
       "When to register for GST/HST, which rate to charge, input tax credits and receipt tiers, PST and QST, the quick method, and 2026 filing deadlines.",
     category: "GST / HST",
     publishedAt: "2026-10-06",
-    updatedAt: "2026-10-06",
-    imageUrl: "https://picsum.photos/seed/track-gst-hst-business-expenses/600/400",
-    imageAlt: "Person reviewing financial spreadsheets and tax documents",
+    updatedAt: "2026-11-14",
     tags: [
       "GST",
       "HST",
@@ -1240,9 +1228,7 @@ export const ARTICLES: Article[] = [
       "How self-employed Canadians deduct vehicle costs for 2026: the CRA logbook, Chart A, interest and lease caps, CCA classes 10 and 10.1, and business use.",
     category: "Mileage & Auto",
     publishedAt: "2026-10-06",
-    updatedAt: "2026-11-07",
-    imageUrl: "https://picsum.photos/seed/mileage-deduction-canada-freelancers/600/400",
-    imageAlt: "Canadian freelancer tracking business mileage for CRA deduction",
+    updatedAt: "2026-11-14",
     tags: [
       "mileage",
       "vehicle expenses",
@@ -1631,9 +1617,7 @@ export const ARTICLES: Article[] = [
       "What self-employed Canadians need from a mileage app, five 2026 options compared: prices, free tiers, auto-tracking, and why 73¢/km isn't your deduction.",
     category: "Mileage & Auto",
     publishedAt: "2026-10-05",
-    updatedAt: "2026-11-07",
-    imageUrl: "https://picsum.photos/seed/mileage-tracking-apps-canada/600/400",
-    imageAlt: "Mileage tracking app on smartphone for Canadian freelancer CRA compliance",
+    updatedAt: "2026-11-14",
     tags: [
       "mileage tracking app",
       "app comparison",
@@ -1920,9 +1904,7 @@ export const ARTICLES: Article[] = [
       "How self-employed Canadians are taxed in 2026: registering, what T2125 is for, CPP rates and maximums, instalments and the filing and payment deadlines.",
     category: "Tax Fundamentals",
     publishedAt: "2026-05-10",
-    updatedAt: "2026-10-06",
-    imageUrl: "https://picsum.photos/seed/freelancer-taxes-canada-guide/600/400",
-    imageAlt: "Canadian freelancer filing self-employed taxes with CRA forms",
+    updatedAt: "2026-11-14",
     tags: [
       "freelancer taxes",
       "self-employed",
@@ -2184,9 +2166,7 @@ export const ARTICLES: Article[] = [
       "What a sole proprietor can deduct in 2026: the reasonableness and business-part tests, T2125 expense lines, the 50% meals limit and client reimbursements.",
     category: "Tax Deductions",
     publishedAt: "2026-10-06",
-    updatedAt: "2026-10-06",
-    imageUrl: "https://picsum.photos/seed/self-employed-tax-deductions-canada/600/400",
-    imageAlt: "Person working on a laptop with financial documents visible",
+    updatedAt: "2026-11-14",
     tags: [
       "deductions",
       "business expenses",
@@ -2507,9 +2487,7 @@ export const ARTICLES: Article[] = [
       "The CRA's two conditions for a home workspace, the area and hours split, owner vs renter costs, the loss limit and Part 7, plus what co-working changes.",
     category: "Tax Deductions",
     publishedAt: "2026-05-10",
-    updatedAt: "2026-10-06",
-    imageUrl: "https://picsum.photos/seed/home-office-deduction-canadian-freelancers/600/400",
-    imageAlt: "Modern home office setup with computer and organized workspace",
+    updatedAt: "2026-11-14",
     tags: [
       "home office",
       "business-use-of-home",
@@ -2750,9 +2728,7 @@ export const ARTICLES: Article[] = [
       "A line-by-line guide to CRA Form T2125 for 2026: income, cost of goods sold, each expense line, business-use-of-home, CCA and the vehicle charts.",
     category: "Tax Fundamentals",
     publishedAt: "2026-10-05",
-    updatedAt: "2026-10-06",
-    imageUrl: "https://picsum.photos/seed/t2125-form-guide-canada/600/400",
-    imageAlt: "Canadian freelancer completing Form T2125 for CRA tax filing",
+    updatedAt: "2026-11-14",
     tags: ["T2125", "business income", "self-employed", "CRA", "tax form", "deductions"],
     clusterPillar: "freelancer-taxes-canada-guide",
     clusterName: "Freelancer Tax Fundamentals",
@@ -3034,9 +3010,7 @@ export const ARTICLES: Article[] = [
       "Six receipt apps compared for self-employed Canadians in 2026: prices, free tiers, GST/HST/PST capture, mileage and CRA-ready exports.",
     category: "Tools & Apps",
     publishedAt: "2026-10-05",
-    updatedAt: "2026-10-06",
-    imageUrl: "https://picsum.photos/seed/receipt-scanner-apps-canada-comparison/600/400",
-    imageAlt: "Comparison of receipt scanning apps on smartphone for Canadian freelancers",
+    updatedAt: "2026-11-14",
     tags: [
       "receipt scanner",
       "app comparison",
@@ -3263,9 +3237,7 @@ export const ARTICLES: Article[] = [
       "QuickBooks Lite vs ReceiptOne for self-employed Canadians in 2026: prices in CAD, invoicing, bank sync, mileage, GST/HST/PST and exports.",
     category: "Tools & Apps",
     publishedAt: "2026-10-05",
-    updatedAt: "2026-10-06",
-    imageUrl: "https://picsum.photos/seed/quickbooks-vs-receiptone-canada/600/400",
-    imageAlt: "Canadian freelancer comparing accounting software options on laptop",
+    updatedAt: "2026-11-14",
     tags: [
       "QuickBooks",
       "QuickBooks Lite",
@@ -3467,9 +3439,7 @@ export const ARTICLES: Article[] = [
       "What a spreadsheet does well, where it falls short of CRA record-keeping rules, what an expense app adds, and when a spreadsheet is enough.",
     category: "Tools & Apps",
     publishedAt: "2026-10-06",
-    updatedAt: "2026-10-06",
-    imageUrl: "https://picsum.photos/seed/spreadsheet-vs-expense-app/600/400",
-    imageAlt: "Expense spreadsheet on a laptop next to a phone showing a receipt app",
+    updatedAt: "2026-11-14",
     tags: ["spreadsheet", "Excel", "expense app", "record keeping", "bookkeeping", "freelancer"],
     relatedSlugs: [
       "expense-tracking-canada-freelancers",
@@ -3695,9 +3665,7 @@ export const ARTICLES: Article[] = [
       "What to do when the CRA reviews or audits your return: verifying the contact, how reviews and audits work, representatives, your rights and objections.",
     category: "Tax Strategy",
     publishedAt: "2026-10-05",
-    updatedAt: "2026-10-05",
-    imageUrl: "https://picsum.photos/seed/cra-audit-guide-self-employed-canada/600/400",
-    imageAlt: "Canadian freelancer preparing documentation for CRA audit review",
+    updatedAt: "2026-11-14",
     tags: ["CRA audit", "self-employed", "review", "reassessment", "record keeping", "compliance"],
     relatedSlugs: [
       "cra-audit-proof-expenses",
@@ -3980,7 +3948,8 @@ export function articleJsonLd(article: Article, path = `/articles/${article.slug
     "@type": "Article",
     headline: article.title,
     description: article.excerpt,
-    image: article.imageUrl,
+    // Site default OG image: articles have no photo of their own.
+    image: DEFAULT_OG_IMAGE,
     datePublished: article.publishedAt,
     dateModified: article.updatedAt,
     author: {
