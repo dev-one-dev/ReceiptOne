@@ -20,8 +20,8 @@ export const ARTICLES_US_ONLY: Article[] = [
     updatedAt: "2026-10-05",
     image: {
       path: "/articles/irs-business-expense-deduction-rules.webp",
-      width: 1600,
-      height: 900,
+      width: 1280,
+      height: 720,
       alt: "Desktop calculator with tax keys and a pen on grid paper",
     },
     tags: ["IRS", "business expenses", "deductions", "self-employed", "audit", "record keeping"],
@@ -118,8 +118,8 @@ export const ARTICLES_US_ONLY: Article[] = [
     updatedAt: "2026-10-05",
     image: {
       path: "/articles/irs-receipt-documentation-requirements.webp",
-      width: 1600,
-      height: 900,
+      width: 1280,
+      height: 720,
       alt: "Crumpled paper receipts on a desk beside an open laptop in soft light",
     },
     tags: ["IRS", "receipts", "documentation", "audit", "self-employed", "record keeping"],
@@ -195,8 +195,8 @@ export const ARTICLES_US_ONLY: Article[] = [
     updatedAt: "2026-10-05",
     image: {
       path: "/articles/schedule-c-deductions-guide-us-freelancers.webp",
-      width: 1600,
-      height: 900,
+      width: 1280,
+      height: 720,
       alt: "Tall stack of printed paper documents on a desk",
     },
     tags: ["Schedule C", "deductions", "freelancer", "IRS", "self-employed", "1099"],
@@ -265,8 +265,8 @@ export const ARTICLES_US_ONLY: Article[] = [
     updatedAt: "2026-10-05",
     image: {
       path: "/articles/self-employed-tax-deductions-us-2025.webp",
-      width: 1600,
-      height: 900,
+      width: 1280,
+      height: 720,
       alt: "White ceramic piggy bank on a light wooden surface",
     },
     tags: ["deductions", "freelancer", "1099", "IRS", "self-employed", "2026", "tax savings"],
@@ -356,8 +356,8 @@ export const ARTICLES_US_ONLY: Article[] = [
     updatedAt: "2026-10-05",
     image: {
       path: "/articles/1099-contractor-tax-guide-us.webp",
-      width: 1600,
-      height: 900,
+      width: 1280,
+      height: 720,
       alt: "Laptop and an open notebook with a pen on a wooden desk",
     },
     tags: ["1099", "contractor", "self-employment tax", "quarterly taxes", "freelancer", "IRS"],
@@ -426,8 +426,8 @@ export const ARTICLES_US_ONLY: Article[] = [
     updatedAt: "2026-10-05",
     image: {
       path: "/articles/quarterly-estimated-taxes-us-freelancers.webp",
-      width: 1600,
-      height: 900,
+      width: 1280,
+      height: 720,
       alt: "Open planner with calendar pages, a binder clip, a pen and a metal ruler on a white desk",
     },
     tags: [
@@ -515,8 +515,8 @@ export const ARTICLES_US_ONLY: Article[] = [
     updatedAt: "2026-10-05",
     image: {
       path: "/articles/irs-mileage-rate-2025-self-employed.webp",
-      width: 1600,
-      height: 900,
+      width: 1280,
+      height: 720,
       alt: "Two-lane desert highway with a double yellow line leading toward red rock formations at sunset",
     },
     tags: ["mileage", "IRS", "vehicle deduction", "standard mileage rate", "self-employed", "2026"],
@@ -594,8 +594,8 @@ export const ARTICLES_US_ONLY: Article[] = [
     updatedAt: "2026-05-20",
     image: {
       path: "/articles/home-office-deduction-form-8829-us.webp",
-      width: 1600,
-      height: 900,
+      width: 1280,
+      height: 720,
       alt: "Home office with a black glass desk, an adjustable desk lamp, a white chair and shelving",
     },
     tags: ["home office", "Form 8829", "deductions", "IRS", "self-employed", "freelancer"],
@@ -670,8 +670,8 @@ export const ARTICLES_US_ONLY: Article[] = [
     updatedAt: "2026-10-05",
     image: {
       path: "/articles/sales-tax-business-expenses-us.webp",
-      width: 1600,
-      height: 900,
+      width: 1280,
+      height: 720,
       alt: "Close-up of vintage cash register keys with price numbers and a No Sale key",
     },
     tags: ["sales tax", "business expenses", "deductions", "IRS", "freelancer", "receipts"],

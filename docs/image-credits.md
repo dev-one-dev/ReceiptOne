@@ -2,13 +2,14 @@
 
 Every article photo is a Pixabay image, downloaded through the Pixabay API and
 self-hosted in `public/articles/` (never hotlinked). Each was cropped to 16:9
-and saved as `{slug}.webp` (1600x900, article hero), `{slug}-card.webp`
+and saved as `{slug}.webp` (1280x720, article hero), `{slug}-card.webp`
 (800x450, cards) and `{slug}-og.jpg` (1200x630, og:image / twitter:image).
 
 Licence: [Pixabay Content License](https://pixabay.com/service/license-summary/).
 Free for commercial use, no attribution required; credit is not displayed on
 the site and is kept here for the record. The API serves at most 1280 px wide,
-so the 1600 px heroes are upscaled from the 1280 px download.
+so each hero is the 1280 px download cropped to 16:9, never enlarged (until
+2026-11-14 the heroes were upscaled to 1600x900).
 
 ## Canada (/articles)
 
@@ -29,6 +30,11 @@ so the 1600 px heroes are upscaled from the 1280 px download.
 | quickbooks-vs-receiptone-canada | `public/articles/quickbooks-vs-receiptone-canada.webp` (+ `-card.webp`, `-og.jpg`) | https://pixabay.com/photos/coffee-caffeine-beverage-table-2425303/ | 2425303 | Engin_Akyurt | 2026-11-14 |
 | spreadsheet-vs-expense-app | `public/articles/spreadsheet-vs-expense-app.webp` (+ `-card.webp`, `-og.jpg`) | https://pixabay.com/photos/cup-notebook-work-coffee-business-5508208/ | 5508208 | ds_30 | 2026-11-14 |
 | cra-audit-guide-self-employed-canada | `public/articles/cra-audit-guide-self-employed-canada.webp` (+ `-card.webp`, `-og.jpg`) | https://pixabay.com/photos/audit-accounting-ledger-figures-4190945/ | 4190945 | Tumisu | 2026-11-14 |
+| bookkeeping-self-employed-canada | `public/articles/bookkeeping-self-employed-canada.webp` (+ `-card.webp`, `-og.jpg`) | https://pixabay.com/photos/desk-smartphone-iphone-notebook-3076954/ | 3076954 | Ylanite | 2026-11-14 |
+| daily-receipt-routine | `public/articles/daily-receipt-routine.webp` (+ `-card.webp`, `-og.jpg`) | https://pixabay.com/photos/hand-man-watch-work-desk-1076597/ | 1076597 | andrewlloydgordon | 2026-11-14 |
+| month-end-bookkeeping-checklist-canada | `public/articles/month-end-bookkeeping-checklist-canada.webp` (+ `-card.webp`, `-og.jpg`) | https://pixabay.com/photos/checklist-goals-box-notebook-pen-2589418/ | 2589418 | StockSnap | 2026-11-14 |
+| separate-business-personal-finances-canada | `public/articles/separate-business-personal-finances-canada.webp` (+ `-card.webp`, `-og.jpg`) | https://pixabay.com/photos/back-to-school-registerbox-1538863/ | 1538863 | PIRO4D | 2026-11-14 |
+| year-end-checklist-accountant-canada | `public/articles/year-end-checklist-accountant-canada.webp` (+ `-card.webp`, `-og.jpg`) | https://pixabay.com/photos/note-box-index-box-index-8907986/ | 8907986 | danieltibi | 2026-11-14 |
 
 ## United States (/us/articles)
 

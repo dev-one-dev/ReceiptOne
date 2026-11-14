@@ -15,6 +15,7 @@ import {
   readingMinutes,
   articleOgImage,
   formatArticleDate,
+  FAQ_HEADING,
   type ContentBlock,
   type Article,
 } from "@/lib/articles";
@@ -147,6 +148,13 @@ function renderBlock(block: ContentBlock, index: number) {
         </h2>
       );
 
+    case "h3":
+      return (
+        <h3 key={index} className="mb-3 mt-8 text-lead tracking-body text-ink">
+          {block.text}
+        </h3>
+      );
+
     case "ul":
       return (
         <ul key={index} className="mb-5 space-y-3">
@@ -245,6 +253,66 @@ function renderBlock(block: ContentBlock, index: number) {
     default:
       return null;
   }
+}
+
+/* ----------------------------- Optional boxes ----------------------------- */
+
+/** "Quick answer" above the body. Ember is the border only; the text is ink. */
+function QuickAnswer({ text }: { text: string }) {
+  return (
+    <div data-quick-answer className="mb-8 rounded-card border border-ember bg-white p-5 sm:p-6">
+      <p className="eyebrow">Quick answer</p>
+      <p className="mt-2 font-sans text-body text-ink-80">{text}</p>
+    </div>
+  );
+}
+
+/** "How ReceiptOne helps", before the FAQ: the callout's stripe with a checklist and a CTA link. */
+function ReceiptOneHelps({ helps }: { helps: NonNullable<Article["receiptOneHelps"]> }) {
+  return (
+    <aside
+      data-receiptone-helps
+      aria-label="How ReceiptOne helps"
+      className="mb-5 mt-10 overflow-hidden rounded-card border border-hairline bg-white"
+    >
+      <div className="flex gap-0">
+        <div className="w-1 shrink-0 bg-ember" aria-hidden />
+        <div className="p-6">
+          <p className="eyebrow">How ReceiptOne helps</p>
+          <ul className="mt-3 space-y-3">
+            {helps.items.map((item, i) => (
+              <li key={i} className="flex gap-3">
+                <CheckCircle2 className="mt-0.5 size-5 shrink-0 text-ember" aria-hidden />
+                <span className="font-sans text-body text-ink-80">{item}</span>
+              </li>
+            ))}
+          </ul>
+          <p className="mt-4 font-sans text-body">
+            <a
+              href={helps.link.href}
+              className="font-medium text-ink underline underline-offset-2 hover:text-ink-80"
+            >
+              {helps.link.label}
+            </a>
+          </p>
+        </div>
+      </div>
+    </aside>
+  );
+}
+
+/** Body blocks, with the optional helps box inserted before the FAQ heading (or at the end). */
+function ArticleBody({ article }: { article: Article }) {
+  const faqAt = article.body.findIndex((b) => b.type === "h2" && b.text === FAQ_HEADING);
+  const split = faqAt === -1 ? article.body.length : faqAt;
+  return (
+    <>
+      {article.quickAnswer && <QuickAnswer text={article.quickAnswer} />}
+      {article.body.slice(0, split).map((block, i) => renderBlock(block, i))}
+      {article.receiptOneHelps && <ReceiptOneHelps helps={article.receiptOneHelps} />}
+      {article.body.slice(split).map((block, i) => renderBlock(block, split + i))}
+    </>
+  );
 }
 
 /* ----------------------------- Small card (related) ----------------------- */
@@ -414,7 +482,7 @@ function ArticleDetailPage() {
 
         {/* Article body */}
         <div className="mx-auto max-w-[760px] px-4 pb-16 sm:px-6 lg:px-0">
-          {article.body.map((block, i) => renderBlock(block, i))}
+          <ArticleBody article={article} />
         </div>
 
         {/* Tags */}

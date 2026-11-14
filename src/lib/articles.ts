@@ -4,6 +4,7 @@
  */
 import { LOGO_URL, SITE_URL } from "@/lib/seo";
 import { getPlan } from "@/lib/pricing";
+import { BOOKKEEPING_ARTICLES } from "@/lib/articles.bookkeeping";
 
 /** "CA$4.99/wk, CA$9.99/mo or CA$129.99/yr" -- ReceiptOne's Canadian prices, read from src/lib/pricing.ts. */
 const caPrice = (id: "week" | "month" | "year") => `CA$${getPlan("ca", id).price}`;
@@ -13,6 +14,8 @@ export type ContentBlock =
   /** `link` renders after `text` as an internal link, e.g. to a landing page. */
   | { type: "p"; text: string; link?: { label: string; href: string } }
   | { type: "h2"; text: string }
+  /** A sub-heading inside an h2 section. */
+  | { type: "h3"; text: string }
   | { type: "ul"; items: string[] }
   | { type: "callout"; text: string }
   /** One FAQ entry, under the "Frequently Asked Questions" h2. Each is one FAQPage Question. */
@@ -24,7 +27,7 @@ export type ContentBlock =
 export type Region = "ca" | "us";
 
 export interface ArticleImage {
-  /** Site-relative path of the 1600x900 WebP, e.g. "/articles/{slug}.webp". */
+  /** Site-relative path of the 1280x720 WebP, e.g. "/articles/{slug}.webp". */
   path: string;
   width: number;
   height: number;
@@ -32,7 +35,7 @@ export interface ArticleImage {
   alt: string;
 }
 
-/** The 800x450 card version, next to the article's 1600 image. */
+/** The 800x450 card version, next to the article's 1280 image. */
 export const articleCardImage = (article: Article) =>
   article.image.path.replace(/\.webp$/, "-card.webp");
 
@@ -52,11 +55,17 @@ export interface Article {
   /** Date of the article's last content change in this repo (YYYY-MM-DD). */
   updatedAt: string;
   /** Self-hosted photo (Pixabay licence; credits in docs/image-credits.md).
-   * `path` is the 1600x900 WebP; articleCardImage() and articleOgImage()
+   * `path` is the 1280x720 WebP; articleCardImage() and articleOgImage()
    * give the 800x450 card and 1200x630 social versions beside it. */
   image: ArticleImage;
   tags: string[];
   body: ContentBlock[];
+  /** Optional "Quick answer" box above the body: 2-4 sentences answering the title. */
+  quickAnswer?: string;
+  /** Optional "How ReceiptOne helps" box, rendered just before the FAQ section.
+   * Bullets name only features stated on the landing site; `link` is the
+   * closing call to action. */
+  receiptOneHelps?: { items: string[]; link: { label: string; href: string } };
   clusterPillar?: string;
   clusterName?: string;
   relatedSlugs?: string[];
@@ -81,8 +90,8 @@ export const ARTICLES: Article[] = [
     updatedAt: "2026-10-04",
     image: {
       path: "/articles/cra-receipt-rules-canada.webp",
-      width: 1600,
-      height: 900,
+      width: 1280,
+      height: 720,
       alt: "Latte in a black cup beside a brass service bell and paper receipts on a spike, on a wooden counter",
     },
     tags: ["CRA", "receipts", "compliance", "self-employed", "audit", "record keeping"],
@@ -277,8 +286,8 @@ export const ARTICLES: Article[] = [
     updatedAt: "2026-10-04",
     image: {
       path: "/articles/digital-receipts-canada-are-they-valid.webp",
-      width: 1600,
-      height: 900,
+      width: 1280,
+      height: 720,
       alt: "White USB flash drive plugged into a laptop on a wooden desk, with a memory card and earbuds nearby",
     },
     tags: ["digital receipts", "CRA", "email receipts", "photo receipts", "compliance"],
@@ -463,8 +472,8 @@ export const ARTICLES: Article[] = [
     updatedAt: "2026-10-04",
     image: {
       path: "/articles/cra-audit-proof-expenses.webp",
-      width: 1600,
-      height: 900,
+      width: 1280,
+      height: 720,
       alt: "Hanging file folders packed tightly in an open filing drawer",
     },
     tags: ["CRA audit", "expense documentation", "self-employed", "record keeping", "compliance"],
@@ -631,8 +640,8 @@ export const ARTICLES: Article[] = [
     updatedAt: "2026-10-06",
     image: {
       path: "/articles/expense-tracking-canada-freelancers.webp",
-      width: 1600,
-      height: 900,
+      width: 1280,
+      height: 720,
       alt: "Calculator and pen beside a printed column of figures marked with handwritten check marks",
     },
     tags: [
@@ -905,8 +914,8 @@ export const ARTICLES: Article[] = [
     updatedAt: "2026-10-06",
     image: {
       path: "/articles/track-gst-hst-business-expenses.webp",
-      width: 1600,
-      height: 900,
+      width: 1280,
+      height: 720,
       alt: "Pile of Canadian silver maple leaf coins",
     },
     tags: [
@@ -1282,8 +1291,8 @@ export const ARTICLES: Article[] = [
     updatedAt: "2026-11-07",
     image: {
       path: "/articles/mileage-deduction-canada-freelancers.webp",
-      width: 1600,
-      height: 900,
+      width: 1280,
+      height: 720,
       alt: "Car instrument panel at night showing a km/h speedometer and the odometer",
     },
     tags: [
@@ -1677,8 +1686,8 @@ export const ARTICLES: Article[] = [
     updatedAt: "2026-11-07",
     image: {
       path: "/articles/mileage-tracking-apps-canada.webp",
-      width: 1600,
-      height: 900,
+      width: 1280,
+      height: 720,
       alt: "Straight gravel road through a dark forest toward a setting sun",
     },
     tags: [
@@ -1970,8 +1979,8 @@ export const ARTICLES: Article[] = [
     updatedAt: "2026-10-06",
     image: {
       path: "/articles/freelancer-taxes-canada-guide.webp",
-      width: 1600,
-      height: 900,
+      width: 1280,
+      height: 720,
       alt: "Calculator with orange keys and a black pen resting on white paperwork",
     },
     tags: [
@@ -2238,8 +2247,8 @@ export const ARTICLES: Article[] = [
     updatedAt: "2026-10-06",
     image: {
       path: "/articles/self-employed-tax-deductions-canada.webp",
-      width: 1600,
-      height: 900,
+      width: 1280,
+      height: 720,
       alt: "Wooden desk from above with reading glasses, a cup of black coffee and the corner of a laptop",
     },
     tags: [
@@ -2565,8 +2574,8 @@ export const ARTICLES: Article[] = [
     updatedAt: "2026-10-06",
     image: {
       path: "/articles/home-office-deduction-canadian-freelancers.webp",
-      width: 1600,
-      height: 900,
+      width: 1280,
+      height: 720,
       alt: "Bright home office with a grey L-shaped desk, upholstered chair, table lamp and closed laptop",
     },
     tags: [
@@ -2812,8 +2821,8 @@ export const ARTICLES: Article[] = [
     updatedAt: "2026-10-06",
     image: {
       path: "/articles/t2125-form-guide-canada.webp",
-      width: 1600,
-      height: 900,
+      width: 1280,
+      height: 720,
       alt: "Blue ballpoint pen above a form checkbox marked with a tick",
     },
     tags: ["T2125", "business income", "self-employed", "CRA", "tax form", "deductions"],
@@ -3100,8 +3109,8 @@ export const ARTICLES: Article[] = [
     updatedAt: "2026-10-06",
     image: {
       path: "/articles/receipt-scanner-apps-canada-comparison.webp",
-      width: 1600,
-      height: 900,
+      width: 1280,
+      height: 720,
       alt: "White smartphone and earbuds on a wooden table beside yellow autumn maple and oak leaves",
     },
     tags: [
@@ -3333,8 +3342,8 @@ export const ARTICLES: Article[] = [
     updatedAt: "2026-10-06",
     image: {
       path: "/articles/quickbooks-vs-receiptone-canada.webp",
-      width: 1600,
-      height: 900,
+      width: 1280,
+      height: 720,
       alt: "Open laptop on a wooden table with a notepad, a blue pen and a cup of coffee",
     },
     tags: [
@@ -3541,8 +3550,8 @@ export const ARTICLES: Article[] = [
     updatedAt: "2026-10-06",
     image: {
       path: "/articles/spreadsheet-vs-expense-app.webp",
-      width: 1600,
-      height: 900,
+      width: 1280,
+      height: 720,
       alt: "Printed spreadsheet of figures under an open planner, a pen, reading glasses and a cup of coffee",
     },
     tags: ["spreadsheet", "Excel", "expense app", "record keeping", "bookkeeping", "freelancer"],
@@ -3773,8 +3782,8 @@ export const ARTICLES: Article[] = [
     updatedAt: "2026-10-05",
     image: {
       path: "/articles/cra-audit-guide-self-employed-canada.webp",
-      width: 1600,
-      height: 900,
+      width: 1280,
+      height: 720,
       alt: "Magnifying glass over a handwritten ledger page of figures",
     },
     tags: ["CRA audit", "self-employed", "review", "reassessment", "record keeping", "compliance"],
@@ -3959,15 +3968,23 @@ export const ARTICLES: Article[] = [
       },
     ],
   },
+  /* Bookkeeping cluster, 2026-11-14: src/lib/articles.bookkeeping.ts */
+  ...BOOKKEEPING_ARTICLES,
 ];
 
 /* ----------------------------- Helpers ------------------------------------ */
 
 const WORDS_PER_MINUTE = 200;
 
-/** Words in the article body: paragraphs, headings, list items, callouts and table cells. */
+/** Words in the article: paragraphs, headings, list items, callouts, table cells and
+ * the optional Quick answer and How ReceiptOne helps boxes. */
 export function articleWordCount(article: Article): number {
+  const count = (text: string) => text.split(/\s+/).filter(Boolean).length;
   let words = 0;
+  if (article.quickAnswer) words += count(article.quickAnswer);
+  if (article.receiptOneHelps)
+    for (const text of [...article.receiptOneHelps.items, article.receiptOneHelps.link.label])
+      words += count(text);
   for (const block of article.body) {
     const texts =
       block.type === "ul"

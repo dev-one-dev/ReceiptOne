@@ -1,0 +1,98 @@
+{
+  "/articles/cra-receipt-rules-canada": {
+    "text": "4dfde088bbc5a820c7f63d3cdd9e8c064aab213af48b4bfcb69d2671be918b7c",
+    "head": "ea610a37426e51e00ba569939f98004307f79df9399dc5040d1161583669c281"
+  },
+  "/articles/digital-receipts-canada-are-they-valid": {
+    "text": "a39e544e406601aaf91f7094728ef864ba5e4f21959cdc345fc3eb695794cd3d",
+    "head": "bb069d3a0481b6c564103fb5be8e31ff957ff302d9f4036deb1e4f84be9b68f2"
+  },
+  "/articles/cra-audit-proof-expenses": {
+    "text": "228ba373fe259c8917a4fc1e94530482eafff145d8ffa22b66a6731ad935c22e",
+    "head": "190fd3a44f4edf58269b58afbb449a468d4a4400f01965470ddcc967126eb2e2"
+  },
+  "/articles/expense-tracking-canada-freelancers": {
+    "text": "9b52d7991397f404b81835a48ae86126160de628d8addbef0bfcf92c964b0c0f",
+    "head": "c44a750fa433f1045aa4c4cc95800d73891b56d6bf11759155f8c74b77b1eac8"
+  },
+  "/articles/track-gst-hst-business-expenses": {
+    "text": "390c486b4f72fbc7bd0508e36767d76046aab23c3d6fd328c28a21d6854b251a",
+    "head": "f8efe0f9307d7ee4da7b28e608901f0736d43ae27841bc1bf19d0ccb55f776e6"
+  },
+  "/articles/mileage-deduction-canada-freelancers": {
+    "text": "a3f7d2d47502e0321990517f20eeb5e8d6dad7e594ce9554c3874148b34ac91a",
+    "head": "9f58ec017a0766acf1b5ca43a30f998d6f0fa54a29fa7799a6fad37f0972b416"
+  },
+  "/articles/mileage-tracking-apps-canada": {
+    "text": "c57381be50113625a38fa7298cee5d84cf9c80368e5291b904f762f2a0f2e3b7",
+    "head": "594f24bacef6bd5976ca90e9e15585c04c5ba2a7483c06855a1cbf99f9dfef4b"
+  },
+  "/articles/freelancer-taxes-canada-guide": {
+    "text": "d9664b715df35ea482abaaec85d47d7bdbdf95de853c642e03fe51ef9357414d",
+    "head": "9034587b056022d24292267fa4ca5873138501bb48692715fb89c26fcfebe426"
+  },
+  "/articles/self-employed-tax-deductions-canada": {
+    "text": "8ea74a27ce1312dcbd75d3032ea72ca9f633c723dde20646990fa658002008ea",
+    "head": "c4227bb5588ac395f94c6e186e3ee981cf8cf733eba9b3151c04bad4a3325d51"
+  },
+  "/articles/home-office-deduction-canadian-freelancers": {
+    "text": "182d398673437f457456ce8f2a143cd93373e20253a767539a3b8e2f3ccd1d98",
+    "head": "cd90ac58ac870da89e4655f405bcaa0d1565cd80746cdd6badff24042739c032"
+  },
+  "/articles/t2125-form-guide-canada": {
+    "text": "bf3131373cf40bcdd891301ed463b3eec1cf50bd13dff94e83bd9dff4164f5a1",
+    "head": "dfe2a1e27d1966f4b7ad01063d8edd836fd447447da787f8e2593b70698b2ee5"
+  },
+  "/articles/receipt-scanner-apps-canada-comparison": {
+    "text": "88e4f2f8ec59a282c0b72901d637b7f47b49db6cdec40c5ed3d9459a5f6cb3c9",
+    "head": "6cea5264125f2d53e4f1072597551b22e5640b5ea6163a158aa564fd0dff2127"
+  },
+  "/articles/quickbooks-vs-receiptone-canada": {
+    "text": "5593c3b956d71ea816807716c0938bef28c764004e52af85f178b6a5a0f0489c",
+    "head": "6cd61cc30203475d9bc92574bc16be82cd0ab1875c5a00dcca6a409c26c58e27"
+  },
+  "/articles/spreadsheet-vs-expense-app": {
+    "text": "f0f1541d432d957125b0379e30ef3bfbd95859aaf84a4b92b73087c92e37f4ae",
+    "head": "4f7823956c1dc89beacd2868d1100c50acccc851723dc289089be4faede21ac6"
+  },
+  "/articles/cra-audit-guide-self-employed-canada": {
+    "text": "aa405460fb583a6f29c7cb332baff37efa9784fb8cdfa614eb1dc8b733d787b4",
+    "head": "40f2be68012091cd158081dfe77049cc4da8226241824dd2475fb9ea28e161d4"
+  },
+  "/us/articles/irs-business-expense-deduction-rules": {
+    "text": "be8c05f0f64c2b596246315e5dc8a6467b24c6d5c536e0461e2cddb7fc4ee96d",
+    "head": "d2ef50f2e34d1f136672523febffd86207b26da3b32c6cf3ef28672a37318f48"
+  },
+  "/us/articles/irs-receipt-documentation-requirements": {
+    "text": "de765eee35749c104d56badb085af3e1c293e3fd939da8e872c394edb6277651",
+    "head": "38da5baff029540fd188b74fa7f2bc91f6d873c1414f5ebb0ab3637395b587ce"
+  },
+  "/us/articles/schedule-c-deductions-guide-us-freelancers": {
+    "text": "5f3fd3acce762484d06476766c178063fca720889ebb0ccad8c28fcf85a694ed",
+    "head": "23b93f0ef9032e8b7c3f30296c497e0a5ac444a9a3c5b6a5664ab6dbbcc61f1d"
+  },
+  "/us/articles/self-employed-tax-deductions-us-2025": {
+    "text": "6ba5c8ca213118344fae4bf03e994b335283804403802e5bbc1c5f9aecd7babf",
+    "head": "0d2ad22610b674cfbe7b2d19ff8423e2ee82b6b37febe9cef5bed1d6b82f6d70"
+  },
+  "/us/articles/1099-contractor-tax-guide-us": {
+    "text": "f42f397ce5ee9627c98b0a05678779c6dee163c7a800cb8934127775940221c1",
+    "head": "543764389bdc75ee1a14d489c851301bc17027cdf7fad08df5414a94c784675b"
+  },
+  "/us/articles/quarterly-estimated-taxes-us-freelancers": {
+    "text": "608400ae93cf4e7099d04b052581fa4745ac0c86bb3fc2639c3fed08b041c7be",
+    "head": "e9f48eee6f8615f416b026a8f678dc78c4593d5ae69125df9af1b7f96816d812"
+  },
+  "/us/articles/irs-mileage-rate-2025-self-employed": {
+    "text": "0a9112174a98c65b66f49f4fa3896f3df7b6ff6c304167d8488c1da54489cd3c",
+    "head": "6494b02a2de8d206e7c0ca6caebce77085cd89a3627bfacadc9b6639203d5590"
+  },
+  "/us/articles/home-office-deduction-form-8829-us": {
+    "text": "51c0f71efe0ccc96acaa416c1e959b364ae12eac714f740d9f51468a4e17d80f",
+    "head": "99002180dadaaf04d2bd954cea8786156b5c6e62e7800ce822c4136ad403bc26"
+  },
+  "/us/articles/sales-tax-business-expenses-us": {
+    "text": "6b05cd7229f01cb11a440aa0a64a6e4ed7f64fc1c87c5aee01cfb625bcf0eabb",
+    "head": "a8d22298e8a33a7d982b39a600f6ffc602f287fa3f7385b63f82763260ccca61"
+  }
+}

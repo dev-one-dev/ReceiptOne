@@ -10,7 +10,7 @@ import { build, type Plugin } from "esbuild";
  * used to be hotlinked from picsum.photos, and when that service went down
  * every article image on the site broke. They are now self-hosted in
  * public/articles/ (Pixabay photos, downloaded and resized; credits in
- * docs/image-credits.md): {slug}.webp 1600x900 for the article hero,
+ * docs/image-credits.md): {slug}.webp 1280x720 for the article hero,
  * {slug}-card.webp 800x450 for cards, {slug}-og.jpg 1200x630 for og:image.
  *
  * Renders both articles indexes and every CA and US article server-side
@@ -225,7 +225,7 @@ test("article images: every article has an image whose three files exist", () =>
       continue;
     }
     if (img.path !== `/articles/${a.slug}.webp`) bad.push(`${a.slug}: path ${img.path}`);
-    if (img.width !== 1600 || img.height !== 900)
+    if (img.width !== 1280 || img.height !== 720)
       bad.push(`${a.slug}: size ${img.width}x${img.height}`);
     const alt = img.alt?.trim() ?? "";
     if (!alt || alt.length >= 120) bad.push(`${a.slug}: alt "${alt}" (${alt.length} chars)`);
