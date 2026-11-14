@@ -150,6 +150,20 @@ export function dateInZone(now: string | Date, timeZone: string): string {
   return `${get("year")}-${get("month")}-${get("day")}`;
 }
 
+/**
+ * Order inside a merged row: returns first, then payments, then instalments.
+ * The GST/HST quarterly entry (file and pay, or an annual filer's instalment)
+ * counts as a payment; it only ever shares Apr 30 with payments.
+ */
+const ROW_ORDER: Record<CraDeadlineKind, number> = {
+  return: 0,
+  "gst-annual-return": 0,
+  balance: 1,
+  "gst-annual-payment": 1,
+  "gst-quarterly": 1,
+  instalment: 2,
+};
+
 /** Sort by official date (stable) and merge deadlines sharing one into a row. */
 function toRows(deadlines: CraDeadline[]): CraDeadlineRow[] {
   const sorted = [...deadlines].sort((a, b) =>
@@ -171,6 +185,7 @@ function toRows(deadlines: CraDeadline[]): CraDeadlineRow[] {
       });
     }
   }
+  for (const row of rows) row.deadlines.sort((a, b) => ROW_ORDER[a.kind] - ROW_ORDER[b.kind]);
   return rows;
 }
 
@@ -394,31 +409,45 @@ const MONTHS: Record<Lang, string[]> = {
   ],
 };
 
-/** The official date: "Dec 15, 2026" / "15 déc. 2026" -- fixed tables, so server and client agree. */
+/** French writes the first of the month as "1er": "1er février", other days as numbers. */
+const frDay = (day: number | string) => (Number(day) === 1 ? "1er" : String(day));
+
+/** The official date: "Dec 15, 2026" / "15 déc. 2026" / "1er févr. 2027" -- fixed tables, so server and client agree. */
 export function formatDeadlineDate(date: string, lang: Lang): string {
   const [y, m, d] = date.split("-").map(Number);
   const month = MONTHS[lang][m - 1];
-  return lang === "fr" ? `${d} ${month} ${y}` : `${month} ${d}, ${y}`;
+  return lang === "fr" ? `${frDay(d)} ${month} ${y}` : `${month} ${d}, ${y}`;
 }
 
-/** Note under a shifted date: "on time until Mon, Jun 16" / "à temps jusqu'au lun. 16 juin". */
-export function formatOnTimeUntil(date: string, lang: Lang): string {
+/** Intl output, with the French day part as "1er" on the first of the month. */
+function formatIntl(date: string, lang: Lang, options: Intl.DateTimeFormatOptions): string {
   const fmt = new Intl.DateTimeFormat(lang === "fr" ? "fr-CA" : "en-CA", {
     timeZone: "UTC",
+    ...options,
+  });
+  if (lang !== "fr") return fmt.format(toUtc(date));
+  return fmt
+    .formatToParts(toUtc(date))
+    .map((p) => (p.type === "day" ? frDay(p.value) : p.value))
+    .join("");
+}
+
+/** Note under a shifted date: "on time until Mon, Jun 16" / "à temps jusqu'au lun. 16 juin" / "… lun. 1er février". */
+export function formatOnTimeUntil(date: string, lang: Lang): string {
+  const fmt = formatIntl(date, lang, {
     weekday: "short",
     month: lang === "fr" ? "long" : "short",
     day: "numeric",
-  }).format(toUtc(date));
+  });
   return lang === "fr" ? `à temps jusqu'au ${fmt}` : `on time until ${fmt}`;
 }
 
-/** Long date for running text: "Sunday, January 31, 2027" / "dimanche 31 janvier 2027". */
+/** Long date for running text: "Sunday, January 31, 2027" / "dimanche 31 janvier 2027" / "lundi 1er février 2027". */
 export function formatLongDate(date: string, lang: Lang, weekday = false): string {
-  return new Intl.DateTimeFormat(lang === "fr" ? "fr-CA" : "en-CA", {
-    timeZone: "UTC",
+  return formatIntl(date, lang, {
     ...(weekday ? { weekday: "long" as const } : {}),
     year: "numeric",
     month: "long",
     day: "numeric",
-  }).format(toUtc(date));
+  });
 }

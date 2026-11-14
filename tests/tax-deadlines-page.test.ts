@@ -135,7 +135,7 @@ test("tax-deadlines page: Next 12 months is server-rendered from the fixed clock
   assert.ok(!en.includes("Nov 14, 2027") && !en.includes("Dec 15, 2027"), "stops at 12 months");
   const fr = text(pages.fr.html);
   assert.ok(fr.includes("Les 12 prochains mois") && fr.includes("15 déc. 2026"));
-  assert.ok(fr.includes("à temps jusqu'au lun. 1 février"));
+  assert.ok(fr.includes("à temps jusqu'au lun. 1er février"));
 });
 
 test("tax-deadlines page: years in the rules and FAQ are computed, not hardcoded", async () => {
@@ -243,4 +243,61 @@ test("tax-deadlines page: pair registered for hreflang and the sitemap; no /us p
   const tree = readFileSync("src/routeTree.gen.ts", "utf8");
   assert.ok(!tree.includes("'/us/tax-deadlines'"));
   assert.ok(!readFileSync("src/components/site/Header.tsx", "utf8").includes("tax-deadlines"));
+});
+
+test("tax-deadlines page: French writes the first of the month as 1er, in the page and the JSON-LD", () => {
+  const fr = text(pages.fr.html);
+  // Jan 31, 2027 is a Sunday: on time until Monday, February 1.
+  assert.ok(fr.includes("à temps jusqu'au lun. 1er février"), "row note");
+  assert.ok(fr.includes("lundi 1er février 2027"), "weekend example in the rules");
+  assert.ok(
+    !/\b1 (janv|févr|février|mars|avr|avril|mai|juin|juil|juillet|août|sept|septembre|oct|octobre|nov|novembre|déc|décembre)\b/.test(
+      fr,
+    ),
+    "no bare '1 <mois>'",
+  );
+  // English is unchanged.
+  assert.ok(text(pages.en.html).includes("on time until Mon, Feb 1"));
+  // Visible FAQ and JSON-LD stay identical (checked in full above); spot-check the FR answers.
+  const faq = jsonLd(pages.fr.head, "FAQPage");
+  for (const q of faq.mainEntity) assert.ok(fr.includes(q.acceptedAnswer.text));
+});
+
+test("tax-deadlines page: merged rows list returns, then payments, then instalments", () => {
+  const order = (html: string, items: string[]) => {
+    const t = text(html);
+    const at = items.map((s) => t.indexOf(s));
+    assert.ok(
+      at.every((i) => i >= 0),
+      `all present: ${items.join(" | ")}`,
+    );
+    assert.deepEqual(
+      [...at].sort((a, b) => a - b),
+      at,
+      `in order: ${items.join(" · ")}`,
+    );
+  };
+  order(pages.en.html, [
+    "File 2026 T1 return",
+    "File 2026 GST/HST return",
+    "Income tax instalment, Q2 2027",
+  ]);
+  order(pages.fr.html, [
+    "Produire la déclaration T1 de 2026",
+    "Produire la déclaration de TPS/TVH de 2026",
+    "Acompte provisionnel d'impôt du 2e trimestre 2027",
+  ]);
+  // Apr 30: payments only, unchanged order.
+  order(pages.en.html, [
+    "Pay 2026 income tax balance owing",
+    "Pay 2026 GST/HST",
+    "GST/HST for Q1 2027",
+  ]);
+});
+
+test("tax-deadlines page: the footer hides its 'All tax deadlines' link on both deadline pages", () => {
+  assert.ok(pages.en.html.includes("Upcoming CRA deadlines"), "EN page shows the footer strip");
+  assert.ok(pages.fr.html.includes("Prochaines échéances de l"), "FR page shows the footer strip");
+  assert.ok(!pages.en.html.includes("All tax deadlines"));
+  assert.ok(!pages.fr.html.includes("Toutes les échéances"));
 });

@@ -33,12 +33,23 @@ const COPY: Record<
 /**
  * Footer strip (/ca and /fr), on the same 4-column grid as the footer above:
  * the next CRA deadlines, computed by rule (src/lib/tax-deadlines.ts), with a
- * source link. `now` is the server's clock from the route loader.
+ * source link. `now` is the server's clock from the route loader. The link to
+ * the full deadlines page is hidden on that page itself (either language).
  */
-export function TaxDeadlines({ lang, now }: { lang: Lang; now: string }) {
+export function TaxDeadlines({
+  lang,
+  now,
+  pathname,
+}: {
+  lang: Lang;
+  now: string;
+  pathname?: string;
+}) {
   const rows = getUpcomingCraDeadlines(dateInZone(now, CRA_TIME_ZONE));
   if (rows.length === 0) return null;
   const t = COPY[lang];
+  const path = pathname && pathname !== "/" ? pathname.replace(/\/$/, "") : pathname;
+  const onDeadlinesPage = path === COPY.en.allHref || path === COPY.fr.allHref;
 
   return (
     <section
@@ -84,12 +95,14 @@ export function TaxDeadlines({ lang, now }: { lang: Lang; now: string }) {
         ))}
       </ul>
       {/* Plain <a>, like the footer's other internal links. */}
-      <a
-        href={t.allHref}
-        className="inline-block justify-self-start font-sans text-sm text-paper-40 underline underline-offset-4 transition-colors hover:text-paper lg:col-span-3 lg:col-start-2"
-      >
-        {t.all}
-      </a>
+      {!onDeadlinesPage && (
+        <a
+          href={t.allHref}
+          className="inline-block justify-self-start font-sans text-sm text-paper-40 underline underline-offset-4 transition-colors hover:text-paper lg:col-span-3 lg:col-start-2"
+        >
+          {t.all}
+        </a>
+      )}
     </section>
   );
 }

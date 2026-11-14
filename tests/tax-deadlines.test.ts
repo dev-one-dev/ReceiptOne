@@ -343,3 +343,43 @@ test("tax-deadlines: the footer links to the deadlines page per locale", () => {
   assert.ok(en.includes('href="/ca/tax-deadlines"') && en.includes("All tax deadlines →"));
   assert.ok(fr.includes('href="/fr/echeances-fiscales"') && fr.includes("Toutes les échéances →"));
 });
+
+test("tax-deadlines: French '1er' on the first of the month; Jun 15 row order", () => {
+  const rows = lib.getCraDeadlinesNext12Months("2026-11-14");
+  const jan31 = rows.find((r) => r.officialDate === "2027-01-31")!;
+  assert.equal(
+    lib.formatOnTimeUntil(jan31.effectiveDate, "fr"),
+    "à temps jusqu'au lun. 1er février",
+  );
+  assert.equal(lib.formatOnTimeUntil(jan31.effectiveDate, "en"), "on time until Mon, Feb 1");
+  assert.equal(lib.formatOnTimeUntil("2025-06-16", "fr"), "à temps jusqu'au lun. 16 juin");
+
+  const jun15 = rows.find((r) => r.officialDate === "2027-06-15")!;
+  assert.deepEqual(
+    jun15.deadlines.map((d) => d.kind),
+    ["return", "gst-annual-return", "instalment"],
+    "returns, then payments, then instalments",
+  );
+  // The footer labels are unchanged by the reorder.
+  const footer = lib.getUpcomingCraDeadlines("2026-11-14");
+  assert.equal(
+    lib.craRowLabel(footer[3], "en"),
+    "File 2026 self-employed and GST/HST returns · Q2 instalment",
+  );
+});
+
+test("tax-deadlines: footer link hidden on both deadline pages, present on /ca and /fr", async () => {
+  const now = "2026-11-14T18:00:00Z";
+  const ca = decode(await lib.renderFooter("/ca", { now }));
+  const fr = decode(await lib.renderFooter("/fr", { now }));
+  assert.ok(ca.includes('href="/ca/tax-deadlines"') && ca.includes("All tax deadlines →"));
+  assert.ok(fr.includes('href="/fr/echeances-fiscales"') && fr.includes("Toutes les échéances →"));
+  for (const path of ["/ca/tax-deadlines", "/fr/echeances-fiscales"]) {
+    const html = decode(await lib.renderFooter(path, { now }));
+    assert.ok(html.includes("tax-deadlines-title"), `${path}: strip still shown`);
+    assert.ok(
+      !html.includes("All tax deadlines") && !html.includes("Toutes les échéances"),
+      `${path}: link hidden`,
+    );
+  }
+});

@@ -43,7 +43,7 @@ export const SOURCES: Record<Lang, { label: string; url: string }[]> = {
     },
     {
       label: "GST/HST reporting requirements and deadlines",
-      url: "https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/gst-hst-businesses/complete-file-when.html",
+      url: "https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/gst-hst-businesses/file-gst-hst-return/reporting-requirements-deadlines.html",
     },
     {
       label: "CRA public holidays",

@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "@tanstack/react-router";
+import { Link, useLocation, useNavigate } from "@tanstack/react-router";
 import { Facebook, Linkedin } from "lucide-react";
 import logoMark from "@/assets/figma/logo-mark.svg";
 import logoWordmark from "@/assets/figma/logo-wordmark.svg";
@@ -133,6 +133,7 @@ const scrollOffset = () =>
 
 export function Footer({ region = "ca", now }: FooterProps) {
   const navigate = useNavigate();
+  const { pathname } = useLocation();
   const lang: Lang = useLang() === "fr" && region === "ca" ? "fr" : "en";
   const t = FOOTER_COPY[lang];
   const home = region === "us" ? "/us" : lang === "fr" ? "/fr" : "/ca";
@@ -268,7 +269,7 @@ export function Footer({ region = "ca", now }: FooterProps) {
         </div>
 
         {/* Upcoming CRA deadlines (/ca and /fr landing pages only) */}
-        {now && region === "ca" && <TaxDeadlines lang={lang} now={now} />}
+        {now && region === "ca" && <TaxDeadlines lang={lang} now={now} pathname={pathname} />}
 
         {/* Store badges — one row, left-aligned, directly above the copyright line */}
         <div className="mt-6 flex items-center gap-2">
