@@ -18,6 +18,7 @@ import {
   FAQ_HEADING,
   type ContentBlock,
   type Article,
+  articleDisplayTitle,
 } from "@/lib/articles";
 
 export const Route = (createFileRoute as any)("/articles/$slug")({
@@ -331,7 +332,7 @@ function RelatedCard({ article }: { article: Article }) {
         <span className="inline-block self-start rounded-pill bg-ink-05 px-3 py-1 eyebrow text-ink-60">
           {article.category}
         </span>
-        <h3 className="mt-3 text-lead tracking-body text-ink">{article.title}</h3>
+        <h3 className="mt-3 text-lead tracking-body text-ink">{articleDisplayTitle(article)}</h3>
         <div className="mt-auto flex items-center gap-3 pt-4 text-label text-ink-60">
           <span className="flex items-center gap-1">
             <Clock className="size-3" aria-hidden />
@@ -454,7 +455,7 @@ function ArticleDetailPage() {
           </span>
 
           {/* Title */}
-          <h1 className="mt-4 text-ink">{article.title}</h1>
+          <h1 className="mt-4 text-ink">{articleDisplayTitle(article)}</h1>
 
           {/* Excerpt / lead */}
           <p className="mt-4 font-sans text-lead text-ink-60">{article.excerpt}</p>

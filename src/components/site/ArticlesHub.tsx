@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { CalendarDays } from "lucide-react";
 import { CategoryPill, SmallCard } from "@/components/site/ArticlesSection";
+import { articleDisplayTitle } from "@/lib/articles";
 import type { HubLink, ResolvedPart } from "@/lib/articles.parts";
 
 /* ----------------------------- Jump buttons ------------------------------- */
@@ -130,7 +131,7 @@ function PartsSidebar({ parts, active }: { parts: ResolvedPart[]; active: string
                         isActive ? "text-ink-80" : "text-ink-60"
                       }`}
                     >
-                      {a.title}
+                      {articleDisplayTitle(a)}
                     </Link>
                   </li>
                 ))}

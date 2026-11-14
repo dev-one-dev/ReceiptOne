@@ -258,6 +258,7 @@ export const ARTICLES_US_ONLY: Article[] = [
     slug: "self-employed-tax-deductions-us-2025",
     regions: ["us"],
     title: "Top Self-Employed Tax Deductions in the US (2026)",
+    displayTitle: "Top Self-Employed Tax Deductions in the US",
     excerpt:
       "The most valuable deductions available to US freelancers and 1099 contractors in 2026 — including the ones most people miss.",
     category: "Tax Deductions",
@@ -508,6 +509,7 @@ export const ARTICLES_US_ONLY: Article[] = [
     slug: "irs-mileage-rate-2025-self-employed",
     regions: ["us"],
     title: "IRS Mileage Rates 2026: How to Claim Vehicle Deductions",
+    displayTitle: "IRS Mileage Rates: How to Claim Vehicle Deductions",
     excerpt:
       "The 2026 IRS business mileage rate is 72.5 cents per mile to June 30 and 76 cents from July 1. How to log trips and choose standard rate or actual costs.",
     category: "Mileage & Auto",

@@ -47,7 +47,11 @@ export interface Article {
   slug: string;
   /** Omitting this field defaults the article to CA-only. */
   regions?: (Region | "all")[];
+  /** SEO title: <title>, og:title, twitter:title and the JSON-LD headline. May carry a year. */
   title: string;
+  /** On-page title (cards, contents sidebar, H1) when it differs from `title`:
+   * the same words without the year marker. Read through articleDisplayTitle(). */
+  displayTitle?: string;
   excerpt: string;
   category: string;
   /** Date the article was first committed to this repo (YYYY-MM-DD). */
@@ -71,6 +75,10 @@ export interface Article {
   relatedSlugs?: string[];
 }
 
+/** The title shown on the page: `displayTitle` when set, otherwise `title`. */
+export const articleDisplayTitle = (article: Pick<Article, "title" | "displayTitle">) =>
+  article.displayTitle ?? article.title;
+
 /** Byline on every article — written by the team, not a named individual. */
 export const ARTICLE_BYLINE = "ReceiptOne Team";
 
@@ -83,6 +91,7 @@ export const ARTICLES: Article[] = [
   {
     slug: "cra-receipt-rules-canada",
     title: "CRA Receipt Rules: What to Keep and for How Long (2026)",
+    displayTitle: "CRA Receipt Rules: What to Keep and for How Long",
     excerpt:
       "What the CRA requires on a business receipt for 2026, when scans can replace paper, the six-year retention rule, and the $100 and $500 GST/HST ITC tiers.",
     category: "Tax Compliance",
@@ -279,6 +288,7 @@ export const ARTICLES: Article[] = [
   {
     slug: "digital-receipts-canada-are-they-valid",
     title: "Are Digital Receipts Valid for the CRA? (2026 Guide)",
+    displayTitle: "Are Digital Receipts Valid for the CRA?",
     excerpt:
       "When the CRA accepts photos, scans and emailed receipts, when you must still keep the paper, and how to store, back up and hand over electronic records.",
     category: "Tax Compliance",
@@ -465,6 +475,7 @@ export const ARTICLES: Article[] = [
   {
     slug: "cra-audit-proof-expenses",
     title: "How to Document Expenses for a CRA Review (2026)",
+    displayTitle: "How to Document Expenses for a CRA Review",
     excerpt:
       "How to support expense claims in a 2026 CRA review: the general tests, rules for meals, home office, vehicle and family wages, and missing receipts.",
     category: "Tax Compliance",
@@ -633,6 +644,7 @@ export const ARTICLES: Article[] = [
   {
     slug: "expense-tracking-canada-freelancers",
     title: "Expense Tracking for Canadian Freelancers (2026 Guide)",
+    displayTitle: "Expense Tracking for Canadian Freelancers",
     excerpt:
       "A year-round expense system for Canadian freelancers: capture receipts, sort them by T2125 line, reconcile monthly and build a year-end report.",
     category: "Expense Tracking",
@@ -907,6 +919,7 @@ export const ARTICLES: Article[] = [
   {
     slug: "track-gst-hst-business-expenses",
     title: "GST/HST for Self-Employed Canadians (2026 Guide)",
+    displayTitle: "GST/HST for Self-Employed Canadians",
     excerpt:
       "When to register for GST/HST, which rate to charge, input tax credits and receipt tiers, PST and QST, the quick method, and 2026 filing deadlines.",
     category: "GST / HST",
@@ -1284,6 +1297,7 @@ export const ARTICLES: Article[] = [
   {
     slug: "mileage-deduction-canada-freelancers",
     title: "Mileage and Vehicle Deductions in Canada (2026 Guide)",
+    displayTitle: "Mileage and Vehicle Deductions in Canada",
     excerpt:
       "How self-employed Canadians deduct vehicle costs for 2026: the CRA logbook, Chart A, interest and lease caps, CCA classes 10 and 10.1, and business use.",
     category: "Mileage & Auto",
@@ -1679,6 +1693,7 @@ export const ARTICLES: Article[] = [
   {
     slug: "mileage-tracking-apps-canada",
     title: "Best Mileage Tracking Apps for Canadian Freelancers (2026)",
+    displayTitle: "Best Mileage Tracking Apps for Canadian Freelancers",
     excerpt:
       "What self-employed Canadians need from a mileage app, five 2026 options compared: prices, free tiers, auto-tracking, and why 73¢/km isn't your deduction.",
     category: "Mileage & Auto",
@@ -2240,6 +2255,7 @@ export const ARTICLES: Article[] = [
   {
     slug: "self-employed-tax-deductions-canada",
     title: "Self-Employed Tax Deductions in Canada (2026 Guide)",
+    displayTitle: "Self-Employed Tax Deductions in Canada",
     excerpt:
       "What a sole proprietor can deduct in 2026: the reasonableness and business-part tests, T2125 expense lines, the 50% meals limit and client reimbursements.",
     category: "Tax Deductions",
@@ -2814,6 +2830,7 @@ export const ARTICLES: Article[] = [
   {
     slug: "t2125-form-guide-canada",
     title: "Form T2125 Explained: Line-by-Line Guide (2026)",
+    displayTitle: "Form T2125 Explained: Line-by-Line Guide",
     excerpt:
       "A line-by-line guide to CRA Form T2125 for 2026: income, cost of goods sold, each expense line, business-use-of-home, CCA and the vehicle charts.",
     category: "Tax Fundamentals",
@@ -3102,6 +3119,7 @@ export const ARTICLES: Article[] = [
   {
     slug: "receipt-scanner-apps-canada-comparison",
     title: "Best Receipt Scanner Apps in Canada (2026): Prices Compared",
+    displayTitle: "Best Receipt Scanner Apps in Canada: Prices Compared",
     excerpt:
       "Six receipt apps compared for self-employed Canadians in 2026: prices, free tiers, GST/HST/PST capture, mileage and CRA-ready exports.",
     category: "Tools & Apps",
@@ -3335,6 +3353,7 @@ export const ARTICLES: Article[] = [
   {
     slug: "quickbooks-vs-receiptone-canada",
     title: "QuickBooks vs ReceiptOne for Canadian Freelancers (2026)",
+    displayTitle: "QuickBooks vs ReceiptOne for Canadian Freelancers",
     excerpt:
       "QuickBooks Lite vs ReceiptOne for self-employed Canadians in 2026: prices in CAD, invoicing, bank sync, mileage, GST/HST/PST and exports.",
     category: "Tools & Apps",
@@ -3775,6 +3794,7 @@ export const ARTICLES: Article[] = [
   {
     slug: "cra-audit-guide-self-employed-canada",
     title: "CRA Reviews and Audits for the Self-Employed (2026 Guide)",
+    displayTitle: "CRA Reviews and Audits for the Self-Employed",
     excerpt:
       "What to do when the CRA reviews or audits your return: verifying the contact, how reviews and audits work, representatives, your rights and objections.",
     category: "Tax Strategy",
