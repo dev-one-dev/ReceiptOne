@@ -4,7 +4,8 @@ import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { ArticlesSection } from "@/components/site/ArticlesSection";
 import { pageSEO, breadcrumbJsonLd, SITE_URL, regionHreflang } from "@/lib/seo";
-import { US_ARTICLES } from "@/lib/articles.us";
+import { US_ARTICLES, US_ARTICLES_INDEX_INDEXABLE } from "@/lib/articles.us";
+import { NOINDEX_FOLLOW } from "@/lib/articles";
 
 export const Route = (createFileRoute as any)("/us/articles/")({
   head: () => {
@@ -53,7 +54,7 @@ export const Route = (createFileRoute as any)("/us/articles/")({
     };
 
     return {
-      meta: seo.meta,
+      meta: US_ARTICLES_INDEX_INDEXABLE ? seo.meta : [...seo.meta, NOINDEX_FOLLOW],
       links: seo.links,
       scripts: [
         { type: "application/ld+json", children: JSON.stringify(breadcrumb) },

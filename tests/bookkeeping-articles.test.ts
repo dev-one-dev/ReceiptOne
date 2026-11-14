@@ -18,6 +18,10 @@ import { loadArticleRenderer, pageText, type Rendered } from "./lib/render-artic
  * tests/fixtures/existing-article-text.json, taken at commit 33fb4fd). The
  * 15 CA text hashes were retaken when the footer deadline strip dropped its
  * "on time until …" note: verified as the only difference on those pages.
+ * The 9 US hashes were retaken when the US articles gained the closing
+ * "not tax advice" line and the noindex, follow robots meta: verified as the
+ * only differences, plus the reading time of irs-mileage-rate-2025-self-employed
+ * (2 -> 3 min, on its page and its related card), which the added words tip over.
  */
 
 type Block =

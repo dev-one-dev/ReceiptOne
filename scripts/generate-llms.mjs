@@ -13,8 +13,9 @@ import { loadTs } from "./lib/load-ts.mjs";
 const ORIGIN = process.env.SITE_ORIGIN || "https://receipt-one.com";
 const OUTPUT = "public/llms.txt";
 
-const { regions, appStore, playStore, trialDays } = await loadTs(`
+const { regions, appStore, playStore, trialDays, usArticlesIndexable } = await loadTs(`
   import { getPlans, getPlanFeatures, TRIAL_DAYS } from "@/lib/pricing";
+  import { US_ARTICLES_INDEX_INDEXABLE } from "@/lib/articles.us";
   import { APP_STORE_URL, PLAY_STORE_URL } from "@/lib/stores";
   const region = (r) => ({
     plans: getPlans(r).map((p) => ({ name: p.name, price: p.currency + " " + p.price, period: p.period })),
@@ -24,7 +25,14 @@ const { regions, appStore, playStore, trialDays } = await loadTs(`
   export const appStore = APP_STORE_URL;
   export const playStore = PLAY_STORE_URL;
   export const trialDays = TRIAL_DAYS;
+  export const usArticlesIndexable = US_ARTICLES_INDEX_INDEXABLE;
 `);
+
+// /us/articles is listed only while it is indexable (src/lib/articles.us.ts).
+const usArticlesLine = usArticlesIndexable
+  ? `- [Tax guides for US freelancers](${ORIGIN}/us/articles): IRS expense rules, Schedule C, mileage and deductions
+`
+  : "";
 
 const plansLine = ({ plans }) =>
   plans.map((p) => `${p.name} ${p.price} ${p.period.replace("/ ", "per ")}`).join("; ");
@@ -59,8 +67,7 @@ ${regionSection("United States", "/us", regions.us, "sales tax tracking and IRS-
 ## Docs
 
 - [Tax guides for Canadian freelancers](${ORIGIN}/articles): CRA receipt rules, GST/HST, mileage and deductions
-- [Tax guides for US freelancers](${ORIGIN}/us/articles): IRS expense rules, Schedule C, mileage and deductions
-- [Help Center (Canada)](${ORIGIN}/faq): frequently asked questions
+${usArticlesLine}- [Help Center (Canada)](${ORIGIN}/faq): frequently asked questions
 - [Help Center (US)](${ORIGIN}/us/faq): frequently asked questions
 - [Contact (Canada)](${ORIGIN}/contact)
 - [Contact (US)](${ORIGIN}/us/contact)

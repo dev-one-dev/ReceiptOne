@@ -7,6 +7,10 @@
  * from the article data in src/lib (lastmod = the article's updatedAt, or
  * publishedAt when there is none); any other dynamic segment is excluded.
  *
+ * Pages kept out of the index (noindex, follow) are left out of the sitemap:
+ * articles whose `indexable` is false, and /us/articles while
+ * US_ARTICLES_INDEX_INDEXABLE is false (both in src/lib/articles.us.ts).
+ *
  * Every other page's lastmod is the explicit date in PAGE_LASTMOD below. The
  * output depends only on source, never on the clock or on git, so a build
  * reproduces the committed sitemap byte for byte (Vercel clones are shallow,
@@ -119,11 +123,15 @@ function collect(dir, prefix = "") {
 export async function generateSitemap() {
   const articles = await loadTs(`
     import { ARTICLES } from "@/lib/articles";
-    import { US_ARTICLES } from "@/lib/articles.us";
-    const dated = (a) => [a.slug, a.updatedAt || a.publishedAt];
-    export const ca = ARTICLES.map(dated);
-    export const us = US_ARTICLES.map(dated);
+    import { isArticleIndexable } from "@/lib/articles";
+    import { US_ARTICLES, US_ARTICLES_INDEX_INDEXABLE } from "@/lib/articles.us";
+    const dated = (list) =>
+      list.filter(isArticleIndexable).map((a) => [a.slug, a.updatedAt || a.publishedAt]);
+    export const ca = dated(ARTICLES);
+    export const us = dated(US_ARTICLES);
+    export const noindexPages = US_ARTICLES_INDEX_INDEXABLE ? [] : ["/us/articles"];
   `);
+  const noindex = new Set(articles.noindexPages);
   const { alternatesOf } = await loadTs(`
     import { canadianPageOf, hreflangAlternates } from "@/lib/locales";
     export const alternatesOf = (path) => {
@@ -135,7 +143,7 @@ export async function generateSitemap() {
   const pages = new Map(); // path -> lastmod
   const undated = [];
   for (const route of collect(ROUTES_DIR)) {
-    if (isExcluded(route)) continue;
+    if (isExcluded(route) || noindex.has(route)) continue;
     const region = ARTICLE_ROUTES[route];
     if (region) {
       for (const [slug, date] of articles[region]) pages.set(route.replace("$slug", slug), date);

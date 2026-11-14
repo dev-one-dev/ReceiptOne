@@ -4,6 +4,17 @@
  */
 import type { Article } from "@/lib/articles";
 
+/**
+ * Whether search engines may index /us/articles. While false the index page
+ * emits noindex, follow and is left out of public/sitemap.xml and llms.txt.
+ * Each article has its own `indexable` flag below.
+ */
+export const US_ARTICLES_INDEX_INDEXABLE = false;
+
+/** Closing line of every US article, the US counterpart of the CA "not tax advice" line. */
+export const US_ARTICLE_DISCLAIMER =
+  "This article is general information, not tax advice. Tax rules and amounts change; check IRS.gov or a tax professional for your situation.";
+
 export const ARTICLES_US_ONLY: Article[] = [
   /* ═══════════════════════════════════════════════════════════════
      CLUSTER 1 — IRS EXPENSE RULES
@@ -12,6 +23,7 @@ export const ARTICLES_US_ONLY: Article[] = [
   {
     slug: "irs-business-expense-deduction-rules",
     regions: ["us"],
+    indexable: false,
     title: "IRS Business Expense Deduction Rules for Freelancers",
     excerpt:
       "What the IRS requires to deduct a business expense: the ordinary-and-necessary test, documentation, record retention, and a system that survives an audit.",
@@ -104,12 +116,14 @@ export const ARTICLES_US_ONLY: Article[] = [
         type: "p",
         text: "When an expense serves both personal and business purposes — your phone, internet, or car — you can only deduct the business-use percentage. Track your usage carefully and be conservative: the IRS scrutinizes mixed-use claims closely.",
       },
+      { type: "p", text: US_ARTICLE_DISCLAIMER },
     ],
   },
 
   {
     slug: "irs-receipt-documentation-requirements",
     regions: ["us"],
+    indexable: false,
     title: "IRS Receipt Requirements for Self-Employed Workers",
     excerpt:
       "Exactly what the IRS wants to see on your business receipts, how long to keep them, and whether digital copies are acceptable for audit purposes.",
@@ -177,6 +191,7 @@ export const ARTICLES_US_ONLY: Article[] = [
         type: "p",
         text: "If you deduct vehicle expenses using the standard mileage rate, you must keep a contemporaneous mileage log — recorded at or near the time of each trip. It should include the date, destination, business purpose, and miles driven. Publication 463 notes that a timely kept record has more value than a statement prepared later, when accurate recall is usually lacking.",
       },
+      { type: "p", text: US_ARTICLE_DISCLAIMER },
     ],
   },
 
@@ -187,6 +202,7 @@ export const ARTICLES_US_ONLY: Article[] = [
   {
     slug: "schedule-c-deductions-guide-us-freelancers",
     regions: ["us"],
+    indexable: false,
     title: "Schedule C Deductions Guide for US Freelancers",
     excerpt:
       "Every deduction on IRS Schedule C explained, from home office and vehicle expenses to the QBI deduction of up to 20% of qualified business income.",
@@ -251,12 +267,14 @@ export const ARTICLES_US_ONLY: Article[] = [
         type: "p",
         text: "You pay self-employment tax (15.3%) on your net Schedule C profit. But you can deduct 50% of that SE tax on Schedule 1 — reducing your adjusted gross income before income taxes are calculated. It's automatic but easy to miss if you're filing manually.",
       },
+      { type: "p", text: US_ARTICLE_DISCLAIMER },
     ],
   },
 
   {
     slug: "self-employed-tax-deductions-us-2025",
     regions: ["us"],
+    indexable: false,
     title: "Top Self-Employed Tax Deductions in the US (2026)",
     displayTitle: "Top Self-Employed Tax Deductions in the US",
     excerpt:
@@ -339,6 +357,7 @@ export const ARTICLES_US_ONLY: Article[] = [
         type: "callout",
         text: "ReceiptOne captures and categorizes every business expense throughout the year — so your Schedule C deductions are organized well before tax time.",
       },
+      { type: "p", text: US_ARTICLE_DISCLAIMER },
     ],
   },
 
@@ -349,6 +368,7 @@ export const ARTICLES_US_ONLY: Article[] = [
   {
     slug: "1099-contractor-tax-guide-us",
     regions: ["us"],
+    indexable: false,
     title: "1099 Contractor Tax Guide: What You Owe and How to Pay It",
     excerpt:
       "What independent contractors need to know about 1099-NEC income, self-employment tax, quarterly payments, and setting cash aside to avoid April surprises.",
@@ -413,12 +433,14 @@ export const ARTICLES_US_ONLY: Article[] = [
         type: "p",
         text: "If you expect to owe $1,000 or more in taxes for the year, the IRS requires quarterly estimated payments. Missing or underpaying these triggers an underpayment penalty — typically small but avoidable. For 2026, the payments are due April 15, June 15 and September 15, 2026, and January 15, 2027.",
       },
+      { type: "p", text: US_ARTICLE_DISCLAIMER },
     ],
   },
 
   {
     slug: "quarterly-estimated-taxes-us-freelancers",
     regions: ["us"],
+    indexable: false,
     title: "How to Calculate and Pay Quarterly Estimated Taxes",
     excerpt:
       "Freelancers who expect to owe $1,000 or more pay estimated tax four times a year. How to calculate it, when to pay, and how to avoid the penalty.",
@@ -498,6 +520,7 @@ export const ARTICLES_US_ONLY: Article[] = [
         type: "p",
         text: "The easiest method is IRS Direct Pay at irs.gov — free, instant, and no account required. You can also use the IRS2Go app, EFTPS (Electronic Federal Tax Payment System), or mail a check with Form 1040-ES voucher. EFTPS is recommended for freelancers who pay regularly — it allows scheduling payments in advance.",
       },
+      { type: "p", text: US_ARTICLE_DISCLAIMER },
     ],
   },
 
@@ -508,6 +531,7 @@ export const ARTICLES_US_ONLY: Article[] = [
   {
     slug: "irs-mileage-rate-2025-self-employed",
     regions: ["us"],
+    indexable: false,
     title: "IRS Mileage Rates 2026: How to Claim Vehicle Deductions",
     displayTitle: "IRS Mileage Rates: How to Claim Vehicle Deductions",
     excerpt:
@@ -582,12 +606,14 @@ export const ARTICLES_US_ONLY: Article[] = [
         type: "p",
         text: "Actual expenses (gas, insurance, registration, depreciation, maintenance — proportional to business use) can exceed the standard rate if you drive a fuel-efficient vehicle or have high fixed costs. However, actual expenses require far more recordkeeping. If you drive a lot of business miles in a high-cost vehicle, run the numbers both ways with your accountant.",
       },
+      { type: "p", text: US_ARTICLE_DISCLAIMER },
     ],
   },
 
   {
     slug: "home-office-deduction-form-8829-us",
     regions: ["us"],
+    indexable: false,
     title: "Home Office Deduction for Freelancers: Form 8829 Explained",
     excerpt:
       "How to claim the home office deduction with Form 8829 or the simplified method: the exclusive-use rule, which expenses qualify, and how to calculate it.",
@@ -658,12 +684,14 @@ export const ARTICLES_US_ONLY: Article[] = [
         type: "p",
         text: "The home office deduction cannot exceed your net business income from that business. If you're in a loss year, the excess carries forward to the next year — it isn't lost. This limits the deduction's value in low-income years but makes it fully recoverable when business picks up.",
       },
+      { type: "p", text: US_ARTICLE_DISCLAIMER },
     ],
   },
 
   {
     slug: "sales-tax-business-expenses-us",
     regions: ["us"],
+    indexable: false,
     title: "Sales Tax on Business Expenses: A Guide for US Freelancers",
     excerpt:
       "How sales tax works on business purchases, whether it's separately deductible, when you may need to collect it, and why tracking it matters.",
@@ -723,6 +751,7 @@ export const ARTICLES_US_ONLY: Article[] = [
         type: "p",
         text: "After the 2018 South Dakota v. Wayfair Supreme Court decision, states can require out-of-state sellers to collect sales tax once they meet an economic nexus threshold set by each state. The South Dakota law in that case used $100,000 in sales or 200 separate transactions, but South Dakota dropped the transaction test from July 1, 2023 and now uses more than $100,000 in gross sales only. Other states set their own tests, so check each state where you have customers. If you sell taxable products online to customers in multiple states, this can apply to you regardless of your physical location.",
       },
+      { type: "p", text: US_ARTICLE_DISCLAIMER },
     ],
   },
 ];

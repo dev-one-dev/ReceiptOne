@@ -73,7 +73,18 @@ export interface Article {
   clusterPillar?: string;
   clusterName?: string;
   relatedSlugs?: string[];
+  /** `false` emits <meta name="robots" content="noindex, follow"> and drops the
+   * article from public/sitemap.xml. Omitted means indexable. Read through
+   * isArticleIndexable(). */
+  indexable?: boolean;
 }
+
+/** Whether search engines may index the article (the default). */
+export const isArticleIndexable = (article: Pick<Article, "indexable">) =>
+  article.indexable !== false;
+
+/** The robots meta for a page kept out of the index: still crawled, links still followed. */
+export const NOINDEX_FOLLOW = { name: "robots", content: "noindex, follow" };
 
 /** The title shown on the page: `displayTitle` when set, otherwise `title`. */
 export const articleDisplayTitle = (article: Pick<Article, "title" | "displayTitle">) =>

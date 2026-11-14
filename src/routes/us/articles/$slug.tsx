@@ -15,6 +15,8 @@ import {
   type ContentBlock,
   type Article,
   articleDisplayTitle,
+  isArticleIndexable,
+  NOINDEX_FOLLOW,
 } from "@/lib/articles";
 import { articleHreflang, getHelpCenterArticle, getHelpCenterRelated } from "@/lib/help-center";
 import { US_ARTICLES } from "@/lib/articles.us";
@@ -57,6 +59,7 @@ export const Route = (createFileRoute as any)("/us/articles/$slug")({
     return {
       meta: [
         ...seo.meta,
+        ...(isArticleIndexable(article) ? [] : [NOINDEX_FOLLOW]),
         { property: "article:published_time", content: article.publishedAt },
         { property: "article:modified_time", content: article.updatedAt },
         { property: "article:author", content: ARTICLE_BYLINE },
