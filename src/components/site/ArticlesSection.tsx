@@ -16,7 +16,7 @@ const formatDate = (iso: string) => formatArticleDate(iso);
 
 /** One pill style on every card. self-start: in the card's flex column it
  * would otherwise stretch to the full width. */
-function CategoryPill({ label }: { label: string }) {
+export function CategoryPill({ label }: { label: string }) {
   return (
     <span className="inline-block self-start rounded-pill bg-ink-05 px-3 py-1 eyebrow text-ink-60">
       {label}
@@ -89,14 +89,23 @@ function FeaturedCard({ article, basePath }: { article: Article; basePath: strin
 
 /* ----------------------------- Small card --------------------------------- */
 
-function SmallCard({ article, basePath }: { article: Article; basePath: string }) {
+export function SmallCard({
+  article,
+  basePath,
+  eager = false,
+}: {
+  article: Article;
+  basePath: string;
+  /** Load the image eagerly: only for a card that is above the fold. */
+  eager?: boolean;
+}) {
   return (
     <Link
       to={`${basePath}/$slug` as any}
       params={{ slug: article.slug } as any}
       className="group flex h-full flex-col overflow-hidden rounded-card border border-hairline bg-white shadow-[0_2px_12px_rgba(0,0,0,0.06)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_40px_rgba(0,0,0,0.10)]"
     >
-      <CardImage article={article} />
+      <CardImage article={article} eager={eager} />
 
       {/* Content */}
       <div className="flex flex-1 flex-col p-3">

@@ -275,7 +275,7 @@ export const BOOKKEEPING_ARTICLES: Article[] = [
       },
       {
         type: "p",
-        text: "Time is the other problem. Self-employed individuals have until June 15 to file, but any balance owing is due by April 30, so you need your numbers before the end of April even though the return itself can wait. For 2025 returns those dates were April 30 and June 15, 2026.",
+        text: "Time is the other problem. Self-employed individuals have until June 15 to file, but any balance owing is due by April 30, so you need your numbers before the end of April even though the return itself can wait. If either date falls on a weekend or public holiday, it moves to the next business day.",
         link: {
           label: "Check the current CRA deadlines.",
           href: DEADLINES,
@@ -761,7 +761,7 @@ export const BOOKKEEPING_ARTICLES: Article[] = [
       },
       {
         type: "p",
-        text: "You may also have to pay during the year. The CRA says you must pay instalments for 2026 if your net tax owing is more than $3,000 ($1,800 in Quebec) in 2026 and was also more than that in either 2025 or 2024. The CRA sends instalment reminders to people who will likely have to pay.",
+        text: "You may also have to pay during the year. The CRA says you must pay instalments if your net tax owing is more than $3,000 ($1,800 in Quebec) in the current year and was also more than that in either of the two previous years. The CRA sends instalment reminders to people who will likely have to pay.",
       },
       {
         type: "h3",
@@ -832,7 +832,7 @@ export const BOOKKEEPING_ARTICLES: Article[] = [
       {
         type: "faq",
         q: "Do I have to pay tax instalments?",
-        a: "For 2026, you must if your net tax owing is more than $3,000 ($1,800 in Quebec) in 2026 and was also more than that in either 2025 or 2024.",
+        a: "You must if your net tax owing is more than $3,000 ($1,800 in Quebec) in the current year and was also more than that in either of the two previous years.",
       },
       {
         type: "faq",
@@ -1051,7 +1051,7 @@ export const BOOKKEEPING_ARTICLES: Article[] = [
       },
       {
         type: "p",
-        text: "Leaving tax money in the business matters because nothing is withheld for you. The CRA says you must pay instalments for 2026 if your net tax owing is more than $3,000 ($1,800 in Quebec) in 2026 and was also more than that in either 2025 or 2024.",
+        text: "Leaving tax money in the business matters because nothing is withheld for you. The CRA says you must pay instalments if your net tax owing is more than $3,000 ($1,800 in Quebec) in the current year and was also more than that in either of the two previous years.",
         link: {
           label: "See the current CRA deadlines.",
           href: "/ca/tax-deadlines",
@@ -1301,7 +1301,7 @@ export const BOOKKEEPING_ARTICLES: Article[] = [
       },
       {
         type: "p",
-        text: "List each income tax instalment you paid during the year, with the date and amount. Instalments are credited against the tax on your return, so missing one can make it look as if you owe more than you do. For 2026, the CRA says you must pay instalments if your net tax owing is more than $3,000 ($1,800 in Quebec) in 2026 and was also more than that in either 2025 or 2024. The usual due dates are March 15, June 15, September 15 and December 15.",
+        text: "List each income tax instalment you paid during the year, with the date and amount. Instalments are credited against the tax on your return, so missing one can make it look as if you owe more than you do. The CRA says you must pay instalments if your net tax owing is more than $3,000 ($1,800 in Quebec) in the current year and was also more than that in either of the two previous years. The usual due dates are March 15, June 15, September 15 and December 15, moved to the next business day when one falls on a weekend or public holiday.",
       },
       {
         type: "h2",
@@ -1317,7 +1317,7 @@ export const BOOKKEEPING_ARTICLES: Article[] = [
       },
       {
         type: "p",
-        text: "Self-employed individuals have until June 15 to file their return, but any balance owing is due by April 30. For 2025 returns, those dates were April 30 and June 15, 2026. Because the payment comes first, your accountant needs your package early enough to work out what you owe before April 30, not just before June 15.",
+        text: "Self-employed individuals have until June 15 to file their return, but any balance owing is due by April 30. If either date falls on a weekend or public holiday, it moves to the next business day. Because the payment comes first, your accountant needs your package early enough to work out what you owe before April 30, not just before June 15.",
         link: {
           label: "See the current CRA deadlines.",
           href: "/ca/tax-deadlines",

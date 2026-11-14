@@ -49,6 +49,7 @@ export async function loadArticleRenderer<T extends Record<string, unknown>>(nam
         import { Route as UsIndex } from "@/routes/us/articles/index";
         import { Route as UsArticle } from "@/routes/us/articles/$slug";
         export * from "@/lib/articles";
+        export { ARTICLE_PARTS, hubArticleOrder } from "@/lib/articles.parts";
         export { US_ARTICLES } from "@/lib/articles.us";
         export { faqJsonLd } from "@/lib/seo";
 

@@ -3,9 +3,13 @@ import { ArrowRight } from "lucide-react";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { getServerNow } from "@/lib/server-time.functions";
-import { ArticlesSection } from "@/components/site/ArticlesSection";
+import { ArticlesHub, PartJumpLinks } from "@/components/site/ArticlesHub";
 import { pageSEO, breadcrumbJsonLd, SITE_URL, regionHreflang } from "@/lib/seo";
-import { ARTICLES } from "@/lib/articles";
+import { hubArticleOrder, resolveArticleParts } from "@/lib/articles.parts";
+
+/** Resolved once at module load: an unknown slug in articles.parts throws here. */
+const PARTS = resolveArticleParts();
+const HUB_ARTICLES = hubArticleOrder();
 
 export const Route = (createFileRoute as any)("/articles/")({
   // The server's clock, for the footer's upcoming tax deadlines.
@@ -46,8 +50,8 @@ export const Route = (createFileRoute as any)("/articles/")({
       "@type": "ItemList",
       name: "Tax guides for self-employed Canadians",
       url: `${SITE_URL}/articles`,
-      numberOfItems: ARTICLES.length,
-      itemListElement: ARTICLES.map((a, i) => ({
+      numberOfItems: HUB_ARTICLES.length,
+      itemListElement: HUB_ARTICLES.map((a, i) => ({
         "@type": "ListItem",
         position: i + 1,
         url: `${SITE_URL}/articles/${a.slug}`,
@@ -88,11 +92,13 @@ function ArticlesIndexPage() {
             CRA-ready tips on receipts, GST/HST, mileage and deductions for freelancers, contractors
             and drivers.
           </p>
+
+          <PartJumpLinks parts={PARTS} />
         </div>
       </section>
 
-      {/* All articles — no header since the page already has its own H1 */}
-      <ArticlesSection articles={ARTICLES} showHeader={false} region="ca" />
+      {/* Five parts: sticky contents sidebar on lg+, card grids on the right */}
+      <ArticlesHub parts={PARTS} />
 
       {/* CTA strip */}
       <CtaBanner />
