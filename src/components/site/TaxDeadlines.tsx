@@ -4,7 +4,6 @@ import {
   dateInZone,
   footerRowLabel,
   formatDeadlineDate,
-  formatOnTimeUntil,
   getFooterDeadlineRows,
   T2_DATE_TEXT,
 } from "@/lib/tax-deadlines";
@@ -126,14 +125,6 @@ export function TaxDeadlines({
                 >
                   <NoBreak text={formatDeadlineDate(row.deadline.officialDate, lang)} />
                 </time>
-                {row.deadline.shifted && (
-                  <time
-                    dateTime={row.deadline.effectiveDate}
-                    className="mt-0.5 block font-sans text-sm text-paper-40"
-                  >
-                    <NoBreak text={formatOnTimeUntil(row.deadline.effectiveDate, lang)} />
-                  </time>
-                )}
               </>
             )}
             <span className="mt-1 block font-sans text-sm text-paper-60">

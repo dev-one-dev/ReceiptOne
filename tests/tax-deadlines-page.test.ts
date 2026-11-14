@@ -138,6 +138,19 @@ test("tax-deadlines page: Next 12 months is server-rendered from the fixed clock
   assert.ok(fr.includes("à temps jusqu'au lun. 1er février"));
 });
 
+test("tax-deadlines page: the shift note is in the page body, not the footer strip", () => {
+  for (const [lang, note] of [
+    ["en", "on time until"],
+    ["fr", "à temps jusqu'au"],
+  ] as const) {
+    const html = pages[lang].html;
+    const i = html.indexOf("<footer");
+    assert.ok(i > 0, `${lang} footer renders`);
+    assert.ok(text(html.slice(0, i)).includes(note), `${lang} body keeps the note`);
+    assert.ok(!text(html.slice(i)).includes(note), `${lang} footer has no note`);
+  }
+});
+
 test("tax-deadlines page: years in the rules and FAQ are computed, not hardcoded", async () => {
   const en = text(pages.en.html);
   assert.ok(en.includes("Your 2026 income tax balance owing is due April 30, 2027."));

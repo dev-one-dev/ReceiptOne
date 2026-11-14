@@ -135,13 +135,6 @@ export function Pricing({ region = "ca" }: { region?: Region }) {
               ? `Essayez-le gratuitement pendant ${TRIAL_DAYS} jours. L'essai commence à votre inscription, sans aucun renseignement de paiement.`
               : `Try it free for ${TRIAL_DAYS} days. The trial starts when you sign up, with no payment details needed.`}
           </p>
-          {/* Purchase flow per the portal: no web billing; subscriptions are
-              bought, managed and cancelled in the App Store or Google Play. */}
-          <p className="mt-2 text-sm text-ink-60">
-            {fr
-              ? "Pour continuer à ajouter des reçus après l'essai, abonnez-vous dans l'application ReceiptOne pour iPhone ou Android. Les abonnements sont facturés par l'App Store ou Google Play, et vous les gérez ou les annulez dans votre compte de la boutique."
-              : "To keep adding receipts after the trial, subscribe in the ReceiptOne app for iPhone or Android. Subscriptions are billed through the App Store or Google Play, and you manage or cancel them in your store account."}
-          </p>
         </div>
 
         {/* Period toggle */}

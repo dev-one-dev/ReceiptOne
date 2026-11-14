@@ -15,7 +15,9 @@ import { loadArticleRenderer, pageText, type Rendered } from "./lib/render-artic
  * links only, its own three image files with alt text, and none of the banned
  * marketing phrases. The 24 existing article pages must render exactly the
  * text and head they did before the change (hashes in
- * tests/fixtures/existing-article-text.json, taken at commit 33fb4fd).
+ * tests/fixtures/existing-article-text.json, taken at commit 33fb4fd). The
+ * 15 CA text hashes were retaken when the footer deadline strip dropped its
+ * "on time until …" note: verified as the only difference on those pages.
  */
 
 type Block =

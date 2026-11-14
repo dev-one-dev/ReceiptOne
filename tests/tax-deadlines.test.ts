@@ -162,38 +162,30 @@ test("tax-deadlines: rule holds 2025-2040 (never a weekend, at most 2 days late)
 
 /* ------------------------- Footer: one row per type ------------------------- */
 
-/** The footer rows as [date or rule text, shifted note or "", label]. */
+/** The footer rows as [official date or rule text, label]: no weekend-shift note. */
 const footer = (today: string, lang: "en" | "fr") =>
   lib
     .getFooterDeadlineRows(today)
     .map((r) =>
       r.deadline
-        ? [
-            lib.formatDeadlineDate(r.deadline.officialDate, lang),
-            r.deadline.shifted ? lib.formatOnTimeUntil(r.deadline.effectiveDate, lang) : "",
-            lib.footerRowLabel(r, lang),
-          ]
-        : [lib.T2_DATE_TEXT[lang], "", lib.footerRowLabel(r, lang)],
+        ? [lib.formatDeadlineDate(r.deadline.officialDate, lang), lib.footerRowLabel(r, lang)]
+        : [lib.T2_DATE_TEXT[lang], lib.footerRowLabel(r, lang)],
     );
 
 test("tax-deadlines: footer on 2026-11-14 -- the 5 expected rows, EN and FR", () => {
   assert.deepEqual(footer("2026-11-14", "en"), [
-    ["Dec 15, 2026", "", "Income tax instalment (Q4)"],
-    ["Jan 31, 2027", "on time until Mon, Feb 1", "GST/HST quarterly filers (Q4 2026)"],
-    ["Apr 30, 2027", "", "2026 income tax and GST/HST balance"],
-    ["Jun 15, 2027", "", "2026 self-employed and GST/HST returns"],
-    ["6 months after fiscal year-end", "", "T2 corporate return"],
+    ["Dec 15, 2026", "Income tax instalment (Q4)"],
+    ["Jan 31, 2027", "GST/HST quarterly filers (Q4 2026)"],
+    ["Apr 30, 2027", "2026 income tax and GST/HST balance"],
+    ["Jun 15, 2027", "2026 self-employed and GST/HST returns"],
+    ["6 months after fiscal year-end", "T2 corporate return"],
   ]);
   assert.deepEqual(footer("2026-11-14", "fr"), [
-    ["15 déc. 2026", "", "Acompte provisionnel d'impôt (4e trimestre)"],
-    [
-      "31 janv. 2027",
-      "à temps jusqu'au lun. 1er février",
-      "Déclarants trimestriels de TPS/TVH (4e trimestre 2026)",
-    ],
-    ["30 avr. 2027", "", "Solde 2026 d'impôt et de TPS/TVH"],
-    ["15 juin 2027", "", "Déclarations 2026 (travailleurs autonomes et TPS/TVH)"],
-    ["6 mois après la fin de l'exercice", "", "Déclaration T2 des sociétés"],
+    ["15 déc. 2026", "Acompte provisionnel d'impôt (4e trimestre)"],
+    ["31 janv. 2027", "Déclarants trimestriels de TPS/TVH (4e trimestre 2026)"],
+    ["30 avr. 2027", "Solde 2026 d'impôt et de TPS/TVH"],
+    ["15 juin 2027", "Déclarations 2026 (travailleurs autonomes et TPS/TVH)"],
+    ["6 mois après la fin de l'exercice", "Déclaration T2 des sociétés"],
   ]);
 });
 
@@ -265,22 +257,26 @@ test("tax-deadlines: balance and return relate to tax year Y-1, instalments to Y
 
 /* ---------------------------- Labels and render ---------------------------- */
 
-test("tax-deadlines: rendered strip -- 5 rows, shifted notes, T2 rule text", () => {
+test("tax-deadlines: rendered strip -- 5 rows, no shifted notes, T2 rule text", () => {
   assert.equal(lib.formatOnTimeUntil("2025-06-16", "fr"), "à temps jusqu'au lun. 16 juin");
   assert.equal(lib.formatOnTimeUntil("2025-06-16", "en"), "on time until Mon, Jun 16");
 
   const en = decode(lib.renderStrip("en", "2026-11-14T18:00:00Z"));
   assert.equal((en.match(/<li/g) ?? []).length, 5);
   assert.ok(en.includes("Upcoming CRA deadlines"));
-  assert.ok(en.includes("on time until Mon, Feb 1"));
+  // Jan 31, 2027 is a Sunday: the strip shows the official date only.
+  assert.ok(en.includes("Jan 31, 2027"));
+  assert.ok(!en.includes("on time until"));
   assert.ok(en.includes("6 months after fiscal year-end") && en.includes("T2 corporate return"));
   const fr = decode(lib.renderStrip("fr", "2026-11-14T18:00:00Z"));
   assert.equal((fr.match(/<li/g) ?? []).length, 5);
   assert.ok(fr.includes("Prochaines échéances de l'ARC"));
-  assert.ok(fr.includes("à temps jusqu'au lun. 1er février"));
+  assert.ok(fr.includes("31 janv. 2027"));
+  assert.ok(!fr.includes("à temps jusqu'au"));
   assert.ok(fr.includes("6 mois après la fin de l'exercice"));
-  // On 2025-06-16 (Pacific) the shifted Jun 15 rows carry the note.
-  assert.ok(decode(lib.renderStrip("fr", "2025-06-16T19:00:00Z")).includes("15 juin 2025"));
+  // On 2025-06-16 (Pacific) the shifted Jun 15 rows are still listed, without a note.
+  const jun16 = decode(lib.renderStrip("fr", "2025-06-16T19:00:00Z"));
+  assert.ok(jun16.includes("15 juin 2025") && !jun16.includes("à temps jusqu'au"));
 });
 
 test("tax-deadlines: heading has no tax-year wording; source links open canada.ca in a new tab", () => {
@@ -307,6 +303,9 @@ test("tax-deadlines: /ca and /fr footers show the strip; /us renders none", asyn
   const fr = decode(await lib.renderFooter("/fr", { now }));
   assert.ok(ca.includes("Upcoming CRA deadlines") && ca.includes("Dec 15, 2026"));
   assert.ok(fr.includes("Prochaines échéances de l'ARC") && fr.includes("15 déc. 2026"));
+  // The shifted Jan 31, 2027 row: official date and label only, no "on time until" note.
+  assert.ok(ca.includes("Jan 31, 2027") && !ca.includes("on time until"));
+  assert.ok(fr.includes("31 janv. 2027") && !fr.includes("à temps jusqu'au"));
 
   // Even if a clock were passed, the US footer has no strip; /us passes none.
   for (const props of [{ region: "us" }, { region: "us", now }]) {
