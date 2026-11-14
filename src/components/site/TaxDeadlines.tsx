@@ -8,18 +8,25 @@ import {
   getUpcomingCraDeadlines,
 } from "@/lib/tax-deadlines";
 
-const COPY: Record<Lang, { title: string; source: string; url: string; newTab: string }> = {
+const COPY: Record<
+  Lang,
+  { title: string; source: string; url: string; newTab: string; all: string; allHref: string }
+> = {
   en: {
     title: "Upcoming CRA deadlines",
     source: "Source: ",
     url: "https://www.canada.ca/en/revenue-agency/services/payments-cra/individual-payments/income-tax-instalments/due-dates.html",
     newTab: "(opens in a new tab)",
+    all: "All tax deadlines →",
+    allHref: "/ca/tax-deadlines",
   },
   fr: {
     title: "Prochaines échéances de l'ARC",
     source: "Source : ",
     url: "https://www.canada.ca/fr/agence-revenu/services/paiements/paiements-arc/paiements-particuliers/impots-acomptes-provisionnels/dates-limites.html",
     newTab: "(s'ouvre dans un nouvel onglet)",
+    all: "Toutes les échéances →",
+    allHref: "/fr/echeances-fiscales",
   },
 };
 
@@ -76,6 +83,13 @@ export function TaxDeadlines({ lang, now }: { lang: Lang; now: string }) {
           </li>
         ))}
       </ul>
+      {/* Plain <a>, like the footer's other internal links. */}
+      <a
+        href={t.allHref}
+        className="inline-block justify-self-start font-sans text-sm text-paper-40 underline underline-offset-4 transition-colors hover:text-paper lg:col-span-3 lg:col-start-2"
+      >
+        {t.all}
+      </a>
     </section>
   );
 }

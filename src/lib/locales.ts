@@ -20,6 +20,8 @@ export const FRENCH_PAGES: Record<string, string> = {
   // Legal pages: one English page each (no /us copy) and a French translation.
   "/privacy": "/fr/privacy",
   "/terms": "/fr/terms",
+  // CRA deadlines page: Canadian only (no /us copy) and its French twin.
+  "/ca/tax-deadlines": "/fr/echeances-fiscales",
 };
 
 /** Canadian English page -> its US equivalent. */

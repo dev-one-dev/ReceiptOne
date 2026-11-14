@@ -22,8 +22,10 @@ import { Route as ArticlesIndexRouteImport } from './routes/articles/index'
 import { Route as ArticlesSlugRouteImport } from './routes/articles/$slug'
 import { Route as CaIndexRouteImport } from './routes/ca/index'
 import { Route as CaDriversRouteImport } from './routes/ca/drivers'
+import { Route as CaTaxDeadlinesRouteImport } from './routes/ca/tax-deadlines'
 import { Route as FrIndexRouteImport } from './routes/fr/index'
 import { Route as FrContactRouteImport } from './routes/fr/contact'
+import { Route as FrEcheancesFiscalesRouteImport } from './routes/fr/echeances-fiscales'
 import { Route as FrFaqRouteImport } from './routes/fr/faq'
 import { Route as FrPrivacyRouteImport } from './routes/fr/privacy'
 import { Route as FrRoadmapRouteImport } from './routes/fr/roadmap'
@@ -100,6 +102,11 @@ const CaDriversRoute = CaDriversRouteImport.update({
   path: '/drivers',
   getParentRoute: () => CaRoute,
 } as any)
+const CaTaxDeadlinesRoute = CaTaxDeadlinesRouteImport.update({
+  id: '/tax-deadlines',
+  path: '/tax-deadlines',
+  getParentRoute: () => CaRoute,
+} as any)
 const FrIndexRoute = FrIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -108,6 +115,11 @@ const FrIndexRoute = FrIndexRouteImport.update({
 const FrContactRoute = FrContactRouteImport.update({
   id: '/contact',
   path: '/contact',
+  getParentRoute: () => FrRoute,
+} as any)
+const FrEcheancesFiscalesRoute = FrEcheancesFiscalesRouteImport.update({
+  id: '/echeances-fiscales',
+  path: '/echeances-fiscales',
   getParentRoute: () => FrRoute,
 } as any)
 const FrFaqRoute = FrFaqRouteImport.update({
@@ -173,7 +185,9 @@ export interface FileRoutesByFullPath {
   '/us': typeof UsRouteWithChildren
   '/articles/$slug': typeof ArticlesSlugRoute
   '/ca/drivers': typeof CaDriversRoute
+  '/ca/tax-deadlines': typeof CaTaxDeadlinesRoute
   '/fr/contact': typeof FrContactRoute
+  '/fr/echeances-fiscales': typeof FrEcheancesFiscalesRoute
   '/fr/faq': typeof FrFaqRoute
   '/fr/privacy': typeof FrPrivacyRoute
   '/fr/roadmap': typeof FrRoadmapRoute
@@ -197,7 +211,9 @@ export interface FileRoutesByTo {
   '/terms': typeof TermsRoute
   '/articles/$slug': typeof ArticlesSlugRoute
   '/ca/drivers': typeof CaDriversRoute
+  '/ca/tax-deadlines': typeof CaTaxDeadlinesRoute
   '/fr/contact': typeof FrContactRoute
+  '/fr/echeances-fiscales': typeof FrEcheancesFiscalesRoute
   '/fr/faq': typeof FrFaqRoute
   '/fr/privacy': typeof FrPrivacyRoute
   '/fr/roadmap': typeof FrRoadmapRoute
@@ -225,7 +241,9 @@ export interface FileRoutesById {
   '/us': typeof UsRouteWithChildren
   '/articles/$slug': typeof ArticlesSlugRoute
   '/ca/drivers': typeof CaDriversRoute
+  '/ca/tax-deadlines': typeof CaTaxDeadlinesRoute
   '/fr/contact': typeof FrContactRoute
+  '/fr/echeances-fiscales': typeof FrEcheancesFiscalesRoute
   '/fr/faq': typeof FrFaqRoute
   '/fr/privacy': typeof FrPrivacyRoute
   '/fr/roadmap': typeof FrRoadmapRoute
@@ -254,7 +272,9 @@ export interface FileRouteTypes {
     | '/us'
     | '/articles/$slug'
     | '/ca/drivers'
+    | '/ca/tax-deadlines'
     | '/fr/contact'
+    | '/fr/echeances-fiscales'
     | '/fr/faq'
     | '/fr/privacy'
     | '/fr/roadmap'
@@ -278,7 +298,9 @@ export interface FileRouteTypes {
     | '/terms'
     | '/articles/$slug'
     | '/ca/drivers'
+    | '/ca/tax-deadlines'
     | '/fr/contact'
+    | '/fr/echeances-fiscales'
     | '/fr/faq'
     | '/fr/privacy'
     | '/fr/roadmap'
@@ -305,7 +327,9 @@ export interface FileRouteTypes {
     | '/us'
     | '/articles/$slug'
     | '/ca/drivers'
+    | '/ca/tax-deadlines'
     | '/fr/contact'
+    | '/fr/echeances-fiscales'
     | '/fr/faq'
     | '/fr/privacy'
     | '/fr/roadmap'
@@ -429,6 +453,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CaDriversRouteImport
       parentRoute: typeof CaRoute
     }
+    '/ca/tax-deadlines': {
+      id: '/ca/tax-deadlines'
+      path: '/tax-deadlines'
+      fullPath: '/ca/tax-deadlines'
+      preLoaderRoute: typeof CaTaxDeadlinesRouteImport
+      parentRoute: typeof CaRoute
+    }
     '/fr/': {
       id: '/fr/'
       path: '/'
@@ -441,6 +472,13 @@ declare module '@tanstack/react-router' {
       path: '/contact'
       fullPath: '/fr/contact'
       preLoaderRoute: typeof FrContactRouteImport
+      parentRoute: typeof FrRoute
+    }
+    '/fr/echeances-fiscales': {
+      id: '/fr/echeances-fiscales'
+      path: '/echeances-fiscales'
+      fullPath: '/fr/echeances-fiscales'
+      preLoaderRoute: typeof FrEcheancesFiscalesRouteImport
       parentRoute: typeof FrRoute
     }
     '/fr/faq': {
@@ -518,11 +556,13 @@ declare module '@tanstack/react-router' {
 
 interface CaRouteChildren {
   CaDriversRoute: typeof CaDriversRoute
+  CaTaxDeadlinesRoute: typeof CaTaxDeadlinesRoute
   CaIndexRoute: typeof CaIndexRoute
 }
 
 const CaRouteChildren: CaRouteChildren = {
   CaDriversRoute: CaDriversRoute,
+  CaTaxDeadlinesRoute: CaTaxDeadlinesRoute,
   CaIndexRoute: CaIndexRoute,
 }
 
@@ -530,6 +570,7 @@ const CaRouteWithChildren = CaRoute._addFileChildren(CaRouteChildren)
 
 interface FrRouteChildren {
   FrContactRoute: typeof FrContactRoute
+  FrEcheancesFiscalesRoute: typeof FrEcheancesFiscalesRoute
   FrFaqRoute: typeof FrFaqRoute
   FrPrivacyRoute: typeof FrPrivacyRoute
   FrRoadmapRoute: typeof FrRoadmapRoute
@@ -539,6 +580,7 @@ interface FrRouteChildren {
 
 const FrRouteChildren: FrRouteChildren = {
   FrContactRoute: FrContactRoute,
+  FrEcheancesFiscalesRoute: FrEcheancesFiscalesRoute,
   FrFaqRoute: FrFaqRoute,
   FrPrivacyRoute: FrPrivacyRoute,
   FrRoadmapRoute: FrRoadmapRoute,
