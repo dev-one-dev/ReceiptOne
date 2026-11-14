@@ -1,9 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { getRoadmap, ROADMAP_STALE_TIME_MS } from "@/lib/roadmap.functions";
+import { getServerNow } from "@/lib/server-time.functions";
 import { announcementFor, roadmapCacheControl, type RoadmapData } from "@/lib/roadmap";
 import { Header } from "@/components/site/Header";
 import { TopBanner } from "@/components/site/TopBanner";
 import { HowItWorks } from "@/components/site/HowItWorks";
+import { BeforeAfter } from "@/components/site/BeforeAfter";
 import { InfoCards } from "@/components/site/InfoCards";
 import { NotAll } from "@/components/site/NotAll";
 import { Testimonials } from "@/components/site/Testimonials";
@@ -23,10 +25,14 @@ import { priceSummary } from "@/lib/pricing";
 export const Route = (createFileRoute as any)("/us/")({
   // Roadmap data for the hero pill. On /us it only shows for an item whose
   // region is not Canada-specific; items carry no region today, so none shows.
-  loader: () => getRoadmap(),
+  // Plus the server's clock, for the footer's upcoming tax deadlines.
+  loader: async () => {
+    const [roadmap, now] = await Promise.all([getRoadmap(), getServerNow()]);
+    return { roadmap, now };
+  },
   staleTime: ROADMAP_STALE_TIME_MS,
-  headers: ({ loaderData }: { loaderData?: RoadmapData | null }) => ({
-    "Cache-Control": roadmapCacheControl(loaderData),
+  headers: ({ loaderData }: { loaderData?: { roadmap: RoadmapData | null; now: string } }) => ({
+    "Cache-Control": roadmapCacheControl(loaderData?.roadmap),
   }),
   head: () => {
     const seo = pageSEO({
@@ -60,21 +66,23 @@ export const Route = (createFileRoute as any)("/us/")({
 });
 
 function USAPage() {
+  const { roadmap, now } = Route.useLoaderData();
   return (
     <main
       data-interactive-page
       className="min-h-screen overflow-x-clip bg-paper font-sans text-ink antialiased"
     >
       <Header />
-      <TopBanner region="us" announcement={announcementFor(Route.useLoaderData(), "us")} />
+      <TopBanner region="us" announcement={announcementFor(roadmap, "us")} />
       <HowItWorks region="us" />
+      <BeforeAfter region="us" />
       <InfoCards region="us" />
       <NotAll region="us" />
       <Testimonials region="us" />
       <Trust region="us" />
       <Pricing region="us" />
       <Faq items={faqItemsUS} helpCenterPath="/us/faq" />
-      <Footer region="us" />
+      <Footer region="us" now={now} />
     </main>
   );
 }

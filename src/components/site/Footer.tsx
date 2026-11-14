@@ -8,6 +8,7 @@ import { StoreBadge } from "@/components/site/StoreBadge";
 import { useLang } from "@/lib/use-lang";
 import type { Lang } from "@/lib/locales";
 import { openConsentSettings } from "@/lib/consent";
+import { TaxDeadlines } from "@/components/site/TaxDeadlines";
 
 /**
  * The oversized footer wordmark reuses the logo's lettering from the same file
@@ -22,6 +23,11 @@ const WORDMARK_VIEWBOX = "7 3 106 20";
 
 type FooterProps = {
   region?: "ca" | "us";
+  /**
+   * The server's clock (ISO) from the route loader. Landing pages pass it to
+   * show the upcoming tax deadlines; without it the strip is not rendered.
+   */
+  now?: string;
 };
 
 /**
@@ -125,7 +131,7 @@ function scrollToTop() {
 const scrollOffset = () =>
   typeof window !== "undefined" && window.matchMedia("(max-width: 1023px)").matches ? 88 : 104;
 
-export function Footer({ region = "ca" }: FooterProps) {
+export function Footer({ region = "ca", now }: FooterProps) {
   const navigate = useNavigate();
   const lang: Lang = useLang() === "fr" && region === "ca" ? "fr" : "en";
   const t = FOOTER_COPY[lang];
@@ -260,6 +266,9 @@ export function Footer({ region = "ca" }: FooterProps) {
             </div>
           </div>
         </div>
+
+        {/* Upcoming tax deadlines (landing pages only); hidden once all have passed */}
+        {now && <TaxDeadlines region={region} lang={lang} now={now} />}
 
         {/* Store badges — one row, left-aligned, directly above the copyright line */}
         <div className="mt-6 flex items-center gap-2">

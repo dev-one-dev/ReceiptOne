@@ -1,9 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { getRoadmap, ROADMAP_STALE_TIME_MS } from "@/lib/roadmap.functions";
+import { getServerNow } from "@/lib/server-time.functions";
 import { announcementFor, roadmapCacheControl } from "@/lib/roadmap";
 import { Header } from "@/components/site/Header";
 import { TopBanner } from "@/components/site/TopBanner";
 import { HowItWorks } from "@/components/site/HowItWorks";
+import { BeforeAfter } from "@/components/site/BeforeAfter";
 import { InfoCards } from "@/components/site/InfoCards";
 import { NotAll } from "@/components/site/NotAll";
 import { Testimonials } from "@/components/site/Testimonials";
@@ -22,9 +24,13 @@ import { priceSummary } from "@/lib/pricing";
 
 export const Route = createFileRoute("/ca/")({
   // Roadmap data for the hero's "New · …" pill (server-rendered).
-  loader: () => getRoadmap(),
+  // Plus the server's clock, for the footer's upcoming tax deadlines.
+  loader: async () => {
+    const [roadmap, now] = await Promise.all([getRoadmap(), getServerNow()]);
+    return { roadmap, now };
+  },
   staleTime: ROADMAP_STALE_TIME_MS,
-  headers: ({ loaderData }) => ({ "Cache-Control": roadmapCacheControl(loaderData) }),
+  headers: ({ loaderData }) => ({ "Cache-Control": roadmapCacheControl(loaderData?.roadmap) }),
   head: () => {
     const seo = pageSEO({
       path: "/ca",
@@ -57,21 +63,23 @@ export const Route = createFileRoute("/ca/")({
 });
 
 function CanadaPage() {
+  const { roadmap, now } = Route.useLoaderData();
   return (
     <main
       data-interactive-page
       className="min-h-screen overflow-x-clip bg-paper font-sans text-ink antialiased"
     >
       <Header />
-      <TopBanner announcement={announcementFor(Route.useLoaderData(), "ca")} />
+      <TopBanner announcement={announcementFor(roadmap, "ca")} />
       <HowItWorks region="ca" />
+      <BeforeAfter region="ca" />
       <InfoCards />
       <NotAll />
       <Testimonials />
       <Trust region="ca" />
       <Pricing region="ca" />
       <Faq />
-      <Footer />
+      <Footer now={now} />
     </main>
   );
 }

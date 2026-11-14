@@ -126,7 +126,9 @@ export function Pricing({ region = "ca" }: { region?: Region }) {
         <div className="mx-auto mb-6 max-w-2xl text-center">
           <p className="eyebrow">{fr ? "Tarifs" : "Pricing"}</p>
           <h2 className="mt-3 text-ink">
-            {fr ? "Des tarifs simples. Annulez en tout temps." : "Simple pricing. Cancel anytime."}
+            {fr
+              ? "Coûte moins qu'un reçu d'essence perdu par mois."
+              : "Costs less than one lost gas receipt a month."}
           </h2>
           <p className="mt-4 text-body text-ink-60 sm:text-lead">
             {fr

@@ -1,9 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { getRoadmap, ROADMAP_STALE_TIME_MS } from "@/lib/roadmap.functions";
+import { getServerNow } from "@/lib/server-time.functions";
 import { announcementFor, roadmapCacheControl } from "@/lib/roadmap";
 import { Header } from "@/components/site/Header";
 import { TopBanner } from "@/components/site/TopBanner";
 import { HowItWorks } from "@/components/site/HowItWorks";
+import { BeforeAfter } from "@/components/site/BeforeAfter";
 import { InfoCards } from "@/components/site/InfoCards";
 import { NotAll } from "@/components/site/NotAll";
 import { Testimonials } from "@/components/site/Testimonials";
@@ -24,10 +26,14 @@ import { formatPrice, getPlan, TRIAL_DAYS } from "@/lib/pricing";
 /** French counterpart of /ca: the same Canadian sections, prices and stores, in fr-CA. */
 export const Route = createFileRoute("/fr/")({
   // Roadmap data for the hero's "Nouveau · …" pill (server-rendered).
-  loader: () => getRoadmap(),
+  // Plus the server's clock, for the footer's upcoming tax deadlines.
+  loader: async () => {
+    const [roadmap, now] = await Promise.all([getRoadmap(), getServerNow()]);
+    return { roadmap, now };
+  },
   staleTime: ROADMAP_STALE_TIME_MS,
   headers: ({ loaderData }) => ({
-    "Cache-Control": roadmapCacheControl(loaderData),
+    "Cache-Control": roadmapCacheControl(loaderData?.roadmap),
   }),
   head: () => {
     const seo = pageSEO({
@@ -64,21 +70,23 @@ export const Route = createFileRoute("/fr/")({
 });
 
 function FrenchPage() {
+  const { roadmap, now } = Route.useLoaderData();
   return (
     <main
       data-interactive-page
       className="min-h-screen overflow-x-clip bg-paper font-sans text-ink antialiased"
     >
       <Header />
-      <TopBanner announcement={announcementFor(Route.useLoaderData(), "fr")} />
+      <TopBanner announcement={announcementFor(roadmap, "fr")} />
       <HowItWorks region="ca" />
+      <BeforeAfter region="ca" />
       <InfoCards />
       <NotAll />
       <Testimonials />
       <Trust region="ca" />
       <Pricing region="ca" />
       <Faq items={faqItemsFR} helpCenterPath="/fr/faq" />
-      <Footer />
+      <Footer now={now} />
     </main>
   );
 }
