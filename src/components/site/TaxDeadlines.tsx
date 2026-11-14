@@ -32,6 +32,35 @@ const COPY: Record<
 };
 
 /**
+ * Renders text unchanged, but keeps words with a hyphen or slash ("YEAR-END",
+ * "self-employed", "GST/HST") on one line: browsers may break after those
+ * characters, and CSS has no switch for it. Text still wraps between words.
+ */
+function NoBreak({ text }: { text: string }) {
+  // Plain runs stay one text node each, so the SSR markup is
+  // "6 months after fiscal <span>year-end</span>", not word-by-word fragments.
+  const parts: (string | { word: string })[] = [];
+  for (const part of text.split(/(\s+)/)) {
+    if (/[-/]/.test(part)) parts.push({ word: part });
+    else if (typeof parts.at(-1) === "string") parts[parts.length - 1] += part;
+    else if (part) parts.push(part);
+  }
+  return (
+    <>
+      {parts.map((p, i) =>
+        typeof p === "string" ? (
+          p
+        ) : (
+          <span key={i} className="whitespace-nowrap">
+            {p.word}
+          </span>
+        ),
+      )}
+    </>
+  );
+}
+
+/**
  * Footer strip (/ca and /fr), on the same 4-column grid as the footer above:
  * one row per deadline type with its next date, computed by rule
  * (src/lib/tax-deadlines.ts), plus the undated T2 rule, with a source link. `now` is the server's clock from the route loader. The link to
@@ -71,12 +100,13 @@ export function TaxDeadlines({
           <span className="sr-only"> {t.newTab}</span>
         </a>
       </div>
-      <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:col-span-3 lg:grid-cols-4">
+      {/* 1 column on phones, 2 at sm, 3 at md (5 rows: 3 + 2), all 5 on one line at lg. */}
+      <ul className="grid grid-cols-1 gap-3 hyphens-none sm:grid-cols-2 md:grid-cols-3 lg:col-span-3 lg:grid-cols-5">
         {rows.map((row) => (
           <li key={row.type}>
             {row.type === "t2" ? (
               <span className="block font-mono text-label uppercase tracking-mono text-paper">
-                {T2_DATE_TEXT[lang]}
+                <NoBreak text={T2_DATE_TEXT[lang]} />
               </span>
             ) : (
               <>
@@ -84,20 +114,20 @@ export function TaxDeadlines({
                   dateTime={row.deadline.officialDate}
                   className="block font-mono text-label uppercase tracking-mono text-paper"
                 >
-                  {formatDeadlineDate(row.deadline.officialDate, lang)}
+                  <NoBreak text={formatDeadlineDate(row.deadline.officialDate, lang)} />
                 </time>
                 {row.deadline.shifted && (
                   <time
                     dateTime={row.deadline.effectiveDate}
                     className="mt-0.5 block font-sans text-sm text-paper-40"
                   >
-                    {formatOnTimeUntil(row.deadline.effectiveDate, lang)}
+                    <NoBreak text={formatOnTimeUntil(row.deadline.effectiveDate, lang)} />
                   </time>
                 )}
               </>
             )}
             <span className="mt-1 block font-sans text-sm text-paper-60">
-              {footerRowLabel(row, lang)}
+              <NoBreak text={footerRowLabel(row, lang)} />
             </span>
           </li>
         ))}

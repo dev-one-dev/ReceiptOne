@@ -104,7 +104,12 @@ const lib = (await import(pathToFileURL(OUT).href)) as {
   weekendShift: (date: string) => string;
 };
 
-const decode = (html: string) => html.replace(/&#x27;|&#39;/g, "'").replace(/&amp;/g, "&");
+// Also unwraps the strip's no-break spans (TaxDeadlines' NoBreak), so text checks read plain.
+const decode = (html: string) =>
+  html
+    .replace(/<span class="whitespace-nowrap">([^<]*)<\/span>/g, "$1")
+    .replace(/&#x27;|&#39;/g, "'")
+    .replace(/&amp;/g, "&");
 const find = (year: number, official: string) =>
   lib.craDeadlinesForYear(year).filter((d) => d.officialDate === official);
 const dow = (date: string) => new Date(`${date}T00:00:00Z`).getUTCDay();
