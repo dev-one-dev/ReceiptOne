@@ -3,6 +3,7 @@ import { ArrowLeft, ArrowRight, CheckCircle2, Clock } from "lucide-react";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { CardImage } from "@/components/site/ArticlesSection";
+import { CorrectionLine } from "@/components/site/CorrectionLine";
 import { getServerNow } from "@/lib/server-time.functions";
 import { pageSEO, breadcrumbJsonLd, faqJsonLd } from "@/lib/seo";
 import { articleHreflang } from "@/lib/help-center";
@@ -484,6 +485,12 @@ function ArticleDetailPage() {
         {/* Article body */}
         <div className="mx-auto max-w-[760px] px-4 pb-16 sm:px-6 lg:px-0">
           <ArticleBody article={article} />
+          <CorrectionLine
+            lang="en"
+            title={articleDisplayTitle(article)}
+            path={`/articles/${article.slug}`}
+            className="mb-5"
+          />
         </div>
 
         {/* Tags */}

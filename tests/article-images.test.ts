@@ -54,6 +54,7 @@ await build({
       import { Route as UsArticle } from "@/routes/us/articles/$slug";
       export { ARTICLES } from "@/lib/articles";
       export { US_ARTICLES } from "@/lib/articles.us";
+      export { ARTICLE_PARTS } from "@/lib/articles.parts";
 
       const ROUTES = {
         "/articles/": CaIndex,
@@ -108,6 +109,7 @@ const mod = (await import(pathToFileURL(OUT).href)) as {
   render: (routeId: string, path: string, params: Record<string, string>) => Promise<Rendered>;
   ARTICLES: ArticleLike[];
   US_ARTICLES: ArticleLike[];
+  ARTICLE_PARTS: { links?: { href: string; image: { path: string; alt: string } }[] }[];
 };
 
 const OWN_HOSTS = new Set(["receipt-one.com", "www.receipt-one.com"]);
@@ -205,16 +207,22 @@ test("article images: no page, head or JSON-LD uses an external image host", () 
 const SITE = "https://receipt-one.com";
 const ALL = [...mod.ARTICLES, ...mod.US_ARTICLES];
 const BY_SLUG = new Map(ALL.map((a) => [a.slug, a]));
+/** The hub's /ca/tax-deadlines link card has its own photo (it is not an article). */
+const DEADLINES_CARD = mod.ARTICLE_PARTS.flatMap((p) => p.links ?? []).find(
+  (l) => l.href === "/ca/tax-deadlines",
+)!;
+const DEADLINES_SRC = "/articles/tax-deadlines-card.webp";
 const metaContent = (page: Rendered, key: string) =>
   page.head.meta?.find((m) => m.property === key || m.name === key)?.content;
 const unescape = (s: string) =>
-  s.replace(/&#x27;|&#39;/g, "'").replace(/&quot;/g, '"').replace(/&amp;/g, "&");
+  s
+    .replace(/&#x27;|&#39;/g, "'")
+    .replace(/&quot;/g, '"')
+    .replace(/&amp;/g, "&");
 /** Article <img> tags: everything but the header and footer logos, which the
  * test bundle inlines as data: URLs. */
 const articleImgs = (page: Rendered) =>
-  [...page.html.matchAll(/<img\s[^>]*>/g)]
-    .map((m) => m[0])
-    .filter((t) => !/\ssrc="data:/.test(t));
+  [...page.html.matchAll(/<img\s[^>]*>/g)].map((m) => m[0]).filter((t) => !/\ssrc="data:/.test(t));
 
 test("article images: every article has an image whose three files exist", () => {
   const bad: string[] = [];
@@ -249,7 +257,8 @@ test("article images: cards and heroes show the article's own image at a fixed s
       const slug = src.replace(/^\/articles\//, "").replace(/(-card)?\.webp$/, "");
       const alt = unescape(/\salt="([^"]*)"/.exec(tag)?.[1] ?? "");
       assert.ok(alt.length > 0, `${path} ${src} has alt`);
-      assert.equal(alt, BY_SLUG.get(slug)?.image?.alt, `${path} ${src} alt is its article's`);
+      const want = src === DEADLINES_SRC ? DEADLINES_CARD.image.alt : BY_SLUG.get(slug)?.image?.alt;
+      assert.equal(alt, want, `${path} ${src} alt is its article's`);
     }
   }
 });
@@ -289,4 +298,20 @@ test("article images: og:image, twitter:image and JSON-LD use the article's own 
       assert.equal(metaContent(page, "og:image"), `${SITE}/og-image.png?v=2`, `${path} og:image`);
     }
   }
+});
+
+test("article images: the /articles deadlines card shows its self-hosted photo", () => {
+  assert.equal(DEADLINES_CARD.image.path, DEADLINES_SRC);
+  const file = resolve("public", DEADLINES_SRC.slice(1));
+  assert.ok(existsSync(file) && statSync(file).size > 0, `${file} exists`);
+  const page = pages.find(([p]) => p === "/articles")![1];
+  const tags = articleImgs(page).filter((t) => t.includes(`src="${DEADLINES_SRC}"`));
+  assert.equal(tags.length, 1, "one deadlines card image");
+  const [tag] = tags;
+  assert.match(tag, /\swidth="800"/);
+  assert.match(tag, /\sheight="450"/);
+  assert.match(tag, /loading="lazy"/);
+  assert.match(tag, /aspect-video/);
+  const alt = unescape(/\salt="([^"]*)"/.exec(tag)?.[1] ?? "");
+  assert.ok(alt.length > 0 && alt === DEADLINES_CARD.image.alt, "deadlines card has alt text");
 });

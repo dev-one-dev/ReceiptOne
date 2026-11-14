@@ -3,6 +3,7 @@ import { ArrowLeft, ArrowRight, CheckCircle2, Clock } from "lucide-react";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { CardImage } from "@/components/site/ArticlesSection";
+import { CorrectionLine } from "@/components/site/CorrectionLine";
 import { pageSEO, breadcrumbJsonLd, faqJsonLd } from "@/lib/seo";
 import {
   ARTICLE_BYLINE,
@@ -303,6 +304,12 @@ function USArticleDetailPage() {
         {/* Article body */}
         <div className="mx-auto max-w-[760px] px-4 pb-16 sm:px-6 lg:px-0">
           {article.body.map((block, i) => renderBlock(block, i))}
+          <CorrectionLine
+            lang="en"
+            title={articleDisplayTitle(article)}
+            path={`/us/articles/${article.slug}`}
+            className="mb-5"
+          />
         </div>
 
         {/* Tags */}

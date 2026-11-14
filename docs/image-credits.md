@@ -36,6 +36,15 @@ so each hero is the 1280 px download cropped to 16:9, never enlarged (until
 | separate-business-personal-finances-canada | `public/articles/separate-business-personal-finances-canada.webp` (+ `-card.webp`, `-og.jpg`) | https://pixabay.com/photos/back-to-school-registerbox-1538863/ | 1538863 | PIRO4D | 2026-11-14 |
 | year-end-checklist-accountant-canada | `public/articles/year-end-checklist-accountant-canada.webp` (+ `-card.webp`, `-og.jpg`) | https://pixabay.com/photos/note-box-index-box-index-8907986/ | 8907986 | danieltibi | 2026-11-14 |
 
+## Hub link cards (/articles)
+
+Cards on the hub that link to a site page rather than an article. Card size
+only (800x450); the linked page has no hero and keeps the site og:image.
+
+| Card | File | Pixabay page | Image ID | Author | Downloaded |
+|---|---|---|---|---|---|
+| /ca/tax-deadlines (Part 01) | `public/articles/tax-deadlines-card.webp` | https://pixabay.com/photos/calendar-date-time-month-week-660670/ | 660670 | tigerlily713 | 2026-11-14 |
+
 ## United States (/us/articles)
 
 | Article | File | Pixabay page | Image ID | Author | Downloaded |

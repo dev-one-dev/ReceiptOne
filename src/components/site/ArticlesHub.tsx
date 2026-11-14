@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { CalendarDays } from "lucide-react";
 import { CategoryPill, SmallCard } from "@/components/site/ArticlesSection";
 import { articleDisplayTitle } from "@/lib/articles";
 import type { HubLink, ResolvedPart } from "@/lib/articles.parts";
@@ -33,19 +32,24 @@ export function PartJumpLinks({ parts }: { parts: ResolvedPart[] }) {
 
 /* ----------------------------- Link card ---------------------------------- */
 
-/** A card for a site page, styled like an article card. The cover is drawn in
- * code (no photo), at the same 16:9 so rows stay aligned. */
+/** A card for a site page, styled like an article card: its own self-hosted
+ * 16:9 photo, lazy-loaded, so rows stay aligned with the article cards. */
 function LinkCard({ link }: { link: HubLink }) {
   return (
     <Link
       to={link.href}
       className="group flex h-full flex-col overflow-hidden rounded-card border border-hairline bg-white shadow-[0_2px_12px_rgba(0,0,0,0.06)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_40px_rgba(0,0,0,0.10)]"
     >
-      <div
-        aria-hidden
-        className="flex aspect-video w-full items-center justify-center bg-ink-05 text-ink-40"
-      >
-        <CalendarDays className="size-10" strokeWidth={1.5} />
+      <div className="overflow-hidden">
+        <img
+          src={link.image.path}
+          alt={link.image.alt}
+          width={800}
+          height={450}
+          loading="lazy"
+          decoding="async"
+          className="aspect-video w-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+        />
       </div>
       <div className="flex flex-1 flex-col p-3">
         <CategoryPill label={link.category} />

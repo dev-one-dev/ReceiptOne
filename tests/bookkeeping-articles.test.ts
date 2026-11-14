@@ -251,12 +251,17 @@ test("existing articles: rendered text and head unchanged", async () => {
   ) as Record<string, { text: string; head: string }>;
   const sha = (s: string) => createHash("sha256").update(s).digest("hex");
   assert.equal(Object.keys(fixture).length, 24);
+  // The "Spotted an error?" line (tests/correction-line.test.ts) was added to
+  // every article after this fixture was taken; drop it so the hash still
+  // guards the article's own text.
+  const withoutCorrection = (html: string) =>
+    html.replace(/<p[^>]*data-correction-line[^>]*>[\s\S]*?<\/p>/, "");
   for (const [path, want] of Object.entries(fixture)) {
     const us = path.startsWith("/us/");
     const slug = path.split("/").at(-1)!;
     const page = await mod.render(us ? "/us/articles/$slug" : "/articles/$slug", path, { slug });
     assert.ok(page.matched, `${path} renders`);
-    assert.equal(sha(pageText(page.html)), want.text, `${path} text unchanged`);
+    assert.equal(sha(pageText(withoutCorrection(page.html))), want.text, `${path} text unchanged`);
     assert.equal(sha(JSON.stringify(page.head)), want.head, `${path} head unchanged`);
   }
 });

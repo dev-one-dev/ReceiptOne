@@ -1,6 +1,7 @@
 import { Header } from "@/components/site/Header";
 import { PrimaryCta } from "@/components/site/PrimaryCta";
 import { Footer } from "@/components/site/Footer";
+import { CorrectionLine } from "@/components/site/CorrectionLine";
 import type { Lang } from "@/lib/locales";
 import {
   CRA_TIME_ZONE,
@@ -168,6 +169,12 @@ export function TaxDeadlinesPage({ lang, now }: { lang: Lang; now: string }) {
       {/* Disclaimer and sources */}
       <div className="w-full px-4 pb-6 sm:px-6 lg:px-8">
         <p className="mx-auto w-full max-w-[1200px] text-sm text-ink-60">{t.disclaimer}</p>
+        <CorrectionLine
+          lang={lang}
+          title={t.h1}
+          path={lang === "fr" ? "/fr/echeances-fiscales" : "/ca/tax-deadlines"}
+          className="mx-auto mt-2 w-full max-w-[1200px]"
+        />
         <div className="mx-auto mt-2 w-full max-w-[1200px] text-sm text-ink-60">
           <p>{t.sourcesLabel}</p>
           <ul className="mt-1 space-y-1">

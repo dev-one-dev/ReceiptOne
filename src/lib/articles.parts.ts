@@ -13,6 +13,8 @@ export interface HubLink {
   title: string;
   category: string;
   excerpt: string;
+  /** Self-hosted 800x450 card photo (Pixabay; credit in docs/image-credits.md). */
+  image: { path: string; alt: string };
 }
 
 export interface ArticlePart {
@@ -46,6 +48,10 @@ export const ARTICLE_PARTS: ArticlePart[] = [
         title: "Tax deadlines for self-employed Canadians",
         category: "Deadlines",
         excerpt: "Filing, payment, instalment and GST/HST dates for the current year.",
+        image: {
+          path: "/articles/tax-deadlines-card.webp",
+          alt: "Close-up of a printed wall calendar grid with large black dates",
+        },
       },
     ],
   },
