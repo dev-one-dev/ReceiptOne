@@ -30,9 +30,9 @@ export const Route = (createFileRoute as any)("/articles/")({
     const collectionJsonLd = {
       "@context": "https://schema.org",
       "@type": "CollectionPage",
-      name: "Tax Guides for Canadian Freelancers",
+      name: "Tax guides for self-employed Canadians",
       description:
-        "A knowledge base of Canadian tax and receipt management guides for freelancers and self-employed workers.",
+        "CRA-ready tips on receipts, GST/HST, mileage and deductions for freelancers, contractors and drivers.",
       url: `${SITE_URL}/articles`,
       publisher: {
         "@type": "Organization",
@@ -44,7 +44,7 @@ export const Route = (createFileRoute as any)("/articles/")({
     const itemListJsonLd = {
       "@context": "https://schema.org",
       "@type": "ItemList",
-      name: "Tax Guides for Canadian Freelancers",
+      name: "Tax guides for self-employed Canadians",
       url: `${SITE_URL}/articles`,
       numberOfItems: ARTICLES.length,
       itemListElement: ARTICLES.map((a, i) => ({

@@ -13,6 +13,7 @@ import {
   articleFaq,
   ARTICLE_BYLINE,
   readingMinutes,
+  formatArticleDate,
   type ContentBlock,
   type Article,
 } from "@/lib/articles";
@@ -246,13 +247,7 @@ function renderBlock(block: ContentBlock, index: number) {
 
 /* ----------------------------- Small card (related) ----------------------- */
 
-function formatDate(iso: string): string {
-  return new Date(iso).toLocaleDateString("en-CA", {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-  });
-}
+const formatDate = (iso: string) => formatArticleDate(iso);
 
 function RelatedCard({ article }: { article: Article }) {
   return (

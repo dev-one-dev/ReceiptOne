@@ -17,7 +17,7 @@ export const ARTICLES_US_ONLY: Article[] = [
       "What the IRS requires to deduct a business expense: the ordinary-and-necessary test, documentation, record retention, and a system that survives an audit.",
     category: "Tax Compliance",
     publishedAt: "2026-05-20",
-    updatedAt: "2026-11-14",
+    updatedAt: "2026-10-05",
     tags: ["IRS", "business expenses", "deductions", "self-employed", "audit", "record keeping"],
     clusterName: "IRS Expense Rules",
     relatedSlugs: [
@@ -109,7 +109,7 @@ export const ARTICLES_US_ONLY: Article[] = [
       "Exactly what the IRS wants to see on your business receipts, how long to keep them, and whether digital copies are acceptable for audit purposes.",
     category: "Tax Compliance",
     publishedAt: "2026-05-20",
-    updatedAt: "2026-11-14",
+    updatedAt: "2026-10-05",
     tags: ["IRS", "receipts", "documentation", "audit", "self-employed", "record keeping"],
     clusterName: "IRS Expense Rules",
     relatedSlugs: [
@@ -180,7 +180,7 @@ export const ARTICLES_US_ONLY: Article[] = [
       "Every deduction on IRS Schedule C explained, from home office and vehicle expenses to the QBI deduction of up to 20% of qualified business income.",
     category: "Tax Deductions",
     publishedAt: "2026-05-20",
-    updatedAt: "2026-11-14",
+    updatedAt: "2026-10-05",
     tags: ["Schedule C", "deductions", "freelancer", "IRS", "self-employed", "1099"],
     clusterName: "Schedule C & Deductions",
     relatedSlugs: [
@@ -244,7 +244,7 @@ export const ARTICLES_US_ONLY: Article[] = [
       "The most valuable deductions available to US freelancers and 1099 contractors in 2026 — including the ones most people miss.",
     category: "Tax Deductions",
     publishedAt: "2026-05-20",
-    updatedAt: "2026-11-14",
+    updatedAt: "2026-10-05",
     tags: ["deductions", "freelancer", "1099", "IRS", "self-employed", "2026", "tax savings"],
     clusterName: "Schedule C & Deductions",
     relatedSlugs: [
@@ -329,7 +329,7 @@ export const ARTICLES_US_ONLY: Article[] = [
       "What independent contractors need to know about 1099-NEC income, self-employment tax, quarterly payments, and setting cash aside to avoid April surprises.",
     category: "Tax Fundamentals",
     publishedAt: "2026-05-20",
-    updatedAt: "2026-11-14",
+    updatedAt: "2026-10-05",
     tags: ["1099", "contractor", "self-employment tax", "quarterly taxes", "freelancer", "IRS"],
     clusterName: "1099 & Estimated Taxes",
     relatedSlugs: [
@@ -393,7 +393,7 @@ export const ARTICLES_US_ONLY: Article[] = [
       "Freelancers who expect to owe $1,000 or more pay estimated tax four times a year. How to calculate it, when to pay, and how to avoid the penalty.",
     category: "Tax Fundamentals",
     publishedAt: "2026-05-20",
-    updatedAt: "2026-11-14",
+    updatedAt: "2026-10-05",
     tags: [
       "quarterly taxes",
       "estimated payments",
@@ -476,7 +476,7 @@ export const ARTICLES_US_ONLY: Article[] = [
       "The 2026 IRS business mileage rate is 72.5 cents per mile to June 30 and 76 cents from July 1. How to log trips and choose standard rate or actual costs.",
     category: "Mileage & Auto",
     publishedAt: "2026-05-20",
-    updatedAt: "2026-11-14",
+    updatedAt: "2026-10-05",
     tags: ["mileage", "IRS", "vehicle deduction", "standard mileage rate", "self-employed", "2026"],
     relatedSlugs: [
       "self-employed-tax-deductions-us-2025",
@@ -549,7 +549,7 @@ export const ARTICLES_US_ONLY: Article[] = [
       "How to claim the home office deduction with Form 8829 or the simplified method: the exclusive-use rule, which expenses qualify, and how to calculate it.",
     category: "Tax Deductions",
     publishedAt: "2026-05-20",
-    updatedAt: "2026-11-14",
+    updatedAt: "2026-05-20",
     tags: ["home office", "Form 8829", "deductions", "IRS", "self-employed", "freelancer"],
     relatedSlugs: [
       "self-employed-tax-deductions-us-2025",
@@ -619,7 +619,7 @@ export const ARTICLES_US_ONLY: Article[] = [
       "How sales tax works on business purchases, whether it's separately deductible, when you may need to collect it, and why tracking it matters.",
     category: "Tax Fundamentals",
     publishedAt: "2026-05-20",
-    updatedAt: "2026-11-14",
+    updatedAt: "2026-10-05",
     tags: ["sales tax", "business expenses", "deductions", "IRS", "freelancer", "receipts"],
     relatedSlugs: [
       "irs-business-expense-deduction-rules",

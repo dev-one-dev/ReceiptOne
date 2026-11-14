@@ -1,17 +1,11 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowRight, Clock } from "lucide-react";
-import { ARTICLES, readingMinutes, type Article } from "@/lib/articles";
+import { ARTICLES, formatArticleDate, readingMinutes, type Article } from "@/lib/articles";
 import { ArticleCover } from "@/components/site/ArticleCover";
 
 /* ----------------------------- Shared helpers ----------------------------- */
 
-function formatDate(iso: string): string {
-  return new Date(iso).toLocaleDateString("en-CA", {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-  });
-}
+const formatDate = (iso: string) => formatArticleDate(iso);
 
 /* ----------------------------- Category pill ------------------------------ */
 
@@ -158,7 +152,7 @@ export function ArticlesSection({
               <h2 className="mt-1 text-ink">
                 {region === "us"
                   ? "Tax guides for US freelancers"
-                  : "Tax guides for Canadian freelancers"}
+                  : "Tax guides for self-employed Canadians"}
               </h2>
             </div>
 

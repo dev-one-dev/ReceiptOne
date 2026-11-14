@@ -9,6 +9,7 @@ import {
   articleJsonLd,
   articleFaq,
   readingMinutes,
+  formatArticleDate,
   type ContentBlock,
   type Article,
 } from "@/lib/articles";
@@ -149,13 +150,7 @@ function renderBlock(block: ContentBlock, index: number) {
   }
 }
 
-function formatDate(iso: string): string {
-  return new Date(iso).toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-  });
-}
+const formatDate = (iso: string) => formatArticleDate(iso, "en-US");
 
 function RelatedCard({ article }: { article: Article }) {
   return (
