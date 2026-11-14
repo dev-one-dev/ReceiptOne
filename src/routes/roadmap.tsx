@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { RoadmapPage } from "@/components/site/RoadmapPage";
 import { getRoadmap, ROADMAP_STALE_TIME_MS } from "@/lib/roadmap.functions";
+import { getServerNow } from "@/lib/server-time.functions";
 import { roadmapCacheControl } from "@/lib/roadmap";
 import { pageSEO, breadcrumbJsonLd, regionHreflang } from "@/lib/seo";
 
@@ -9,9 +10,13 @@ import { pageSEO, breadcrumbJsonLd, regionHreflang } from "@/lib/seo";
  * listRoadmapItems; the French twin is /fr/roadmap.
  */
 export const Route = createFileRoute("/roadmap")({
-  loader: () => getRoadmap(),
+  // Plus the server's clock, for the footer's upcoming tax deadlines.
+  loader: async () => {
+    const [roadmap, now] = await Promise.all([getRoadmap(), getServerNow()]);
+    return { roadmap, now };
+  },
   staleTime: ROADMAP_STALE_TIME_MS,
-  headers: ({ loaderData }) => ({ "Cache-Control": roadmapCacheControl(loaderData) }),
+  headers: ({ loaderData }) => ({ "Cache-Control": roadmapCacheControl(loaderData?.roadmap) }),
   head: () => {
     const seo = pageSEO({
       path: "/roadmap",
@@ -40,5 +45,6 @@ export const Route = createFileRoute("/roadmap")({
 });
 
 function RoadmapRoute() {
-  return <RoadmapPage lang="en" data={Route.useLoaderData()} />;
+  const { roadmap, now } = Route.useLoaderData();
+  return <RoadmapPage lang="en" data={roadmap} now={now} />;
 }

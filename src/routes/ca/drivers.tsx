@@ -6,6 +6,7 @@ import { FeatureCard, CA_MILEAGE_FEATURE } from "@/components/site/InfoCards";
 import { Pricing } from "@/components/site/Pricing";
 import { FinalCta } from "@/components/site/FinalCta";
 import { Footer } from "@/components/site/Footer";
+import { getServerNow } from "@/lib/server-time.functions";
 import { ROUTES } from "@/lib/routes";
 import { pageSEO, breadcrumbJsonLd } from "@/lib/seo";
 
@@ -18,6 +19,8 @@ const CRA_SHARING_ECONOMY_URL =
  * no hreflang alternates and is absent from src/lib/locales.ts.
  */
 export const Route = createFileRoute("/ca/drivers")({
+  // The server's clock, for the footer's upcoming tax deadlines.
+  loader: async () => ({ now: await getServerNow() }),
   head: () => {
     const seo = pageSEO({
       path: "/ca/drivers",
@@ -65,6 +68,7 @@ const STEPS = [
 const CARD = "rounded-card border border-hairline bg-white shadow-[0_2px_12px_rgba(0,0,0,0.06)]";
 
 function DriversPage() {
+  const { now } = Route.useLoaderData();
   return (
     <main
       data-interactive-page
@@ -171,7 +175,7 @@ function DriversPage() {
         </p>
       </div>
 
-      <Footer region="ca" />
+      <Footer region="ca" now={now} />
     </main>
   );
 }

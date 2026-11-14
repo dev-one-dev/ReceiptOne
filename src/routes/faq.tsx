@@ -2,10 +2,13 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
+import { getServerNow } from "@/lib/server-time.functions";
 import { FaqAccordion, CATEGORIZED_FAQ, faqItems } from "@/components/site/Faq";
 import { pageSEO, breadcrumbJsonLd, faqJsonLd, regionHreflang } from "@/lib/seo";
 
 export const Route = (createFileRoute as any)("/faq")({
+  // The server's clock, for the footer's upcoming tax deadlines.
+  loader: async () => ({ now: await getServerNow() }),
   head: () => {
     const seo = pageSEO({
       path: "/faq",
@@ -33,6 +36,7 @@ export const Route = (createFileRoute as any)("/faq")({
 });
 
 function FaqPage() {
+  const { now } = Route.useLoaderData();
   return (
     <main
       data-interactive-page
@@ -107,7 +111,7 @@ function FaqPage() {
         </div>
       </section>
 
-      <Footer region="ca" />
+      <Footer region="ca" now={now} />
     </main>
   );
 }

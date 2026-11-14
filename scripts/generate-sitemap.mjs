@@ -43,7 +43,7 @@ const PRIORITY = {
  * Initialised to the last commit that touched each page's route file.
  */
 export const PAGE_LASTMOD = {
-  "/articles": "2026-10-18",
+  "/articles": "2026-11-14",
   "/ca": "2026-11-14",
   "/ca/drivers": "2026-11-09",
   "/ca/tax-deadlines": "2026-11-14",

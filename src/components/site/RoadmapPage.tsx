@@ -83,7 +83,16 @@ function ShippedItem({ item, lang }: { item: RoadmapItem; lang: Lang }) {
  * (server-rendered); null means the portal was unreachable, and the page
  * keeps its shell with one line instead of the lists (still HTTP 200).
  */
-export function RoadmapPage({ lang, data }: { lang: Lang; data: RoadmapData | null }) {
+/** `now` is the server's clock from the route loader, for the footer's tax deadlines. */
+export function RoadmapPage({
+  lang,
+  data,
+  now,
+}: {
+  lang: Lang;
+  data: RoadmapData | null;
+  now?: string;
+}) {
   const t = COPY[lang];
   const view = roadmapView(data, lang);
 
@@ -180,7 +189,7 @@ export function RoadmapPage({ lang, data }: { lang: Lang; data: RoadmapData | nu
         </>
       )}
 
-      <Footer />
+      <Footer now={now} />
     </main>
   );
 }

@@ -1,10 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
+import { getServerNow } from "@/lib/server-time.functions";
 import { ContactForm } from "@/components/site/ContactForm";
 import { pageSEO, breadcrumbJsonLd, regionHreflang } from "@/lib/seo";
 
 export const Route = createFileRoute("/contact")({
+  // The server's clock, for the footer's upcoming tax deadlines.
+  loader: async () => ({ now: await getServerNow() }),
   head: () => {
     const seo = pageSEO({
       path: "/contact",
@@ -29,6 +32,7 @@ export const Route = createFileRoute("/contact")({
 });
 
 function ContactPage() {
+  const { now } = Route.useLoaderData();
   return (
     <main
       data-interactive-page
@@ -64,7 +68,7 @@ function ContactPage() {
         </div>
       </section>
 
-      <Footer region="ca" />
+      <Footer region="ca" now={now} />
     </main>
   );
 }

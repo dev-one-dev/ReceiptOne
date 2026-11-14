@@ -2,15 +2,18 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
+import { getServerNow } from "@/lib/server-time.functions";
 import { ArticlesSection } from "@/components/site/ArticlesSection";
 import { pageSEO, breadcrumbJsonLd, SITE_URL, regionHreflang } from "@/lib/seo";
 import { ARTICLES } from "@/lib/articles";
 
 export const Route = (createFileRoute as any)("/articles/")({
+  // The server's clock, for the footer's upcoming tax deadlines.
+  loader: async () => ({ now: await getServerNow() }),
   head: () => {
     const seo = pageSEO({
       path: "/articles",
-      title: "Tax Guides for Canadian Freelancers | ReceiptOne Knowledge Base",
+      title: "Tax Guides for Self-Employed Canadians | ReceiptOne Knowledge Base",
       description:
         "CRA receipt rules, GST/HST tracking, mileage deductions, and more. Free tax guides for Canadian freelancers, contractors and the self-employed.",
       ogTitle: "Canadian Freelancer Tax Guides | ReceiptOne",
@@ -66,6 +69,7 @@ export const Route = (createFileRoute as any)("/articles/")({
 });
 
 function ArticlesIndexPage() {
+  const { now } = Route.useLoaderData();
   return (
     <main
       data-interactive-page
@@ -78,11 +82,11 @@ function ArticlesIndexPage() {
         <div className="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
           <p className="eyebrow">Knowledge Base</p>
 
-          <h1 className="mt-3 text-ink">Tax guides for Canadian freelancers</h1>
+          <h1 className="mt-3 text-ink">Tax guides for self-employed Canadians</h1>
 
           <p className="mx-auto mt-4 max-w-xl font-sans text-body text-ink-60 sm:text-lead">
-            CRA-ready tips on receipts, GST/HST, mileage, and deductions — written for independent
-            contractors and self-employed Canadians.
+            CRA-ready tips on receipts, GST/HST, mileage and deductions for freelancers, contractors
+            and drivers.
           </p>
         </div>
       </section>
@@ -93,7 +97,7 @@ function ArticlesIndexPage() {
       {/* CTA strip */}
       <CtaBanner />
 
-      <Footer region="ca" />
+      <Footer region="ca" now={now} />
     </main>
   );
 }

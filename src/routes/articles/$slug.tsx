@@ -2,6 +2,7 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight, CheckCircle2, Clock } from "lucide-react";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
+import { getServerNow } from "@/lib/server-time.functions";
 import { pageSEO, breadcrumbJsonLd, faqJsonLd } from "@/lib/seo";
 import { articleHreflang } from "@/lib/help-center";
 import {
@@ -19,8 +20,12 @@ export const Route = (createFileRoute as any)("/articles/$slug")({
   // An unknown slug throws notFound(): during SSR TanStack Start turns that
   // into a real 404 response (not a 200 "soft 404"), and the route's own
   // notFoundComponent renders the friendly page.
-  loader: ({ params }: { params: { slug: string } }) => {
-    if (!getArticle(params.slug)) throw notFound();
+  // Plus the server's clock, for the footer's upcoming tax deadlines (also
+  // carried on the notFound so the 404 page's footer matches).
+  loader: async ({ params }: { params: { slug: string } }) => {
+    const now = await getServerNow();
+    if (!getArticle(params.slug)) throw notFound({ data: { now } });
+    return { now };
   },
   head: ({ params }: { params: { slug: string } }) => {
     const article = getArticle(params.slug);
@@ -72,12 +77,14 @@ export const Route = (createFileRoute as any)("/articles/$slug")({
     };
   },
   component: ArticleDetailPage,
-  notFoundComponent: ArticleNotFound,
+  notFoundComponent: ({ data }: { data?: { now?: string } }) => (
+    <ArticleNotFound now={data?.now} />
+  ),
 });
 
 /* ----------------------------- Not found ---------------------------------- */
 
-function ArticleNotFound() {
+function ArticleNotFound({ now }: { now?: string }) {
   return (
     <main
       data-interactive-page
@@ -98,7 +105,7 @@ function ArticleNotFound() {
           Back to all articles
         </Link>
       </div>
-      <Footer region="ca" />
+      <Footer region="ca" now={now} />
     </main>
   );
 }
@@ -319,10 +326,11 @@ function CtaBanner() {
 
 function ArticleDetailPage() {
   const { slug } = (Route.useParams as any)() as { slug: string };
+  const { now } = Route.useLoaderData() as { now: string };
   const article = getArticle(slug);
 
   if (!article) {
-    return <ArticleNotFound />;
+    return <ArticleNotFound now={now} />;
   }
 
   const related = getRelatedArticles(slug, 3);
@@ -451,7 +459,7 @@ function ArticleDetailPage() {
       {/* CTA */}
       <CtaBanner />
 
-      <Footer region="ca" />
+      <Footer region="ca" now={now} />
     </main>
   );
 }
