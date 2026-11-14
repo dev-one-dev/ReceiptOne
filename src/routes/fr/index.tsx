@@ -5,7 +5,6 @@ import { announcementFor, roadmapCacheControl } from "@/lib/roadmap";
 import { Header } from "@/components/site/Header";
 import { TopBanner } from "@/components/site/TopBanner";
 import { HowItWorks } from "@/components/site/HowItWorks";
-import { BeforeAfter } from "@/components/site/BeforeAfter";
 import { InfoCards } from "@/components/site/InfoCards";
 import { NotAll } from "@/components/site/NotAll";
 import { Testimonials } from "@/components/site/Testimonials";
@@ -79,7 +78,6 @@ function FrenchPage() {
       <Header />
       <TopBanner announcement={announcementFor(roadmap, "fr")} />
       <HowItWorks region="ca" />
-      <BeforeAfter region="ca" />
       <InfoCards />
       <NotAll />
       <Testimonials />

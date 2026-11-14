@@ -151,14 +151,10 @@ test("tax-deadlines: upcoming on 2026-11-14 is Q4, Q1, 2026 balance, 2026 return
   assert.deepEqual(
     rows.map((r) => [r.officialDate, lib.craRowLabel(r, "en"), r.shifted]),
     [
-      ["2026-12-15", "Q4 instalment (if you pay by instalments)", false],
-      ["2027-03-15", "Q1 instalment (if you pay by instalments)", false],
+      ["2026-12-15", "Q4 instalment", false],
+      ["2027-03-15", "Q1 instalment", false],
       ["2027-04-30", "Pay 2026 balance owing", false],
-      [
-        "2027-06-15",
-        "File 2026 self-employed return · Q2 instalment (if you pay by instalments)",
-        false,
-      ],
+      ["2027-06-15", "File 2026 self-employed return · Q2 instalment", false],
     ],
   );
 });
@@ -194,10 +190,10 @@ test("tax-deadlines: FR labels and the FR shifted note", () => {
   assert.deepEqual(
     rows.map((r) => lib.craRowLabel(r, "fr")),
     [
-      "Acompte provisionnel du 4e trimestre (si vous payez par acomptes)",
-      "Acompte provisionnel du 1er trimestre (si vous payez par acomptes)",
+      "Acompte provisionnel du 4e trimestre",
+      "Acompte provisionnel du 1er trimestre",
       "Payer le solde de 2026",
-      "Produire la déclaration 2026 (travailleurs autonomes) · Acompte provisionnel du 2e trimestre (si vous payez par acomptes)",
+      "Produire la déclaration 2026 (travailleurs autonomes) · Acompte provisionnel du 2e trimestre",
     ],
   );
   assert.equal(lib.formatOnTimeUntil("2025-06-16", "fr"), "à temps jusqu'au lun. 16 juin");

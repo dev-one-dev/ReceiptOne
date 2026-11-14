@@ -146,11 +146,11 @@ const ORDINAL_FR = { 1: "1er", 2: "2e", 3: "3e", 4: "4e" } as const;
 export function craDeadlineLabel(d: CraDeadline, lang: Lang): string {
   if (lang === "fr") {
     if (d.kind === "instalment")
-      return `Acompte provisionnel du ${ORDINAL_FR[d.quarter!]} trimestre (si vous payez par acomptes)`;
+      return `Acompte provisionnel du ${ORDINAL_FR[d.quarter!]} trimestre`;
     if (d.kind === "balance") return `Payer le solde de ${d.taxYear}`;
     return `Produire la déclaration ${d.taxYear} (travailleurs autonomes)`;
   }
-  if (d.kind === "instalment") return `Q${d.quarter} instalment (if you pay by instalments)`;
+  if (d.kind === "instalment") return `Q${d.quarter} instalment`;
   if (d.kind === "balance") return `Pay ${d.taxYear} balance owing`;
   return `File ${d.taxYear} self-employed return`;
 }

@@ -4,7 +4,6 @@ import { announcementFor, roadmapCacheControl, type RoadmapData } from "@/lib/ro
 import { Header } from "@/components/site/Header";
 import { TopBanner } from "@/components/site/TopBanner";
 import { HowItWorks } from "@/components/site/HowItWorks";
-import { BeforeAfter } from "@/components/site/BeforeAfter";
 import { InfoCards } from "@/components/site/InfoCards";
 import { NotAll } from "@/components/site/NotAll";
 import { Testimonials } from "@/components/site/Testimonials";
@@ -69,7 +68,6 @@ function USAPage() {
       <Header />
       <TopBanner region="us" announcement={announcementFor(Route.useLoaderData(), "us")} />
       <HowItWorks region="us" />
-      <BeforeAfter region="us" />
       <InfoCards region="us" />
       <NotAll region="us" />
       <Testimonials region="us" />
