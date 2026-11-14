@@ -125,8 +125,8 @@ test("legal-fr: the precedence note is on both French pages and neither English 
 });
 
 test("legal-fr: French pages keep the English 'Last updated' dates", () => {
-  assert.match(text(pages["/privacy"].html), /Last updated: November 9, 2026/);
-  assert.match(text(pages["/fr/privacy"].html), /Dernière mise à jour : 9 novembre 2026/);
+  assert.match(text(pages["/privacy"].html), /Last updated: November 14, 2026/);
+  assert.match(text(pages["/fr/privacy"].html), /Dernière mise à jour : 14 novembre 2026/);
   assert.match(text(pages["/terms"].html), /Last updated: October 18, 2026/);
   assert.match(text(pages["/fr/terms"].html), /Dernière mise à jour : 18 octobre 2026/);
 });

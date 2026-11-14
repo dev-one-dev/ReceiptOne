@@ -159,7 +159,7 @@ function PrivacyPage() {
       header={
         <>
           <p className="text-sm font-medium text-muted-foreground">
-            Last updated: November 9, 2026
+            Last updated: November 14, 2026
           </p>
           <h1 className="mt-3 font-display text-4xl font-semibold tracking-normal sm:text-5xl">
             ReceiptOne — Privacy Policy

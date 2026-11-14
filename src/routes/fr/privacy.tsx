@@ -163,7 +163,7 @@ function FrenchPrivacyPage() {
         <>
           <FrenchPrecedenceNote />
           <p className="text-sm font-medium text-muted-foreground">
-            Dernière mise à jour : 9 novembre 2026
+            Dernière mise à jour : 14 novembre 2026
           </p>
           <h1 className="mt-3 font-display text-4xl font-semibold tracking-normal sm:text-5xl">
             ReceiptOne — Politique de confidentialité

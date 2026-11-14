@@ -1,6 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { getRoadmap, ROADMAP_STALE_TIME_MS } from "@/lib/roadmap.functions";
-import { getServerNow } from "@/lib/server-time.functions";
 import { announcementFor, roadmapCacheControl, type RoadmapData } from "@/lib/roadmap";
 import { Header } from "@/components/site/Header";
 import { TopBanner } from "@/components/site/TopBanner";
@@ -25,14 +24,10 @@ import { priceSummary } from "@/lib/pricing";
 export const Route = (createFileRoute as any)("/us/")({
   // Roadmap data for the hero pill. On /us it only shows for an item whose
   // region is not Canada-specific; items carry no region today, so none shows.
-  // Plus the server's clock, for the footer's upcoming tax deadlines.
-  loader: async () => {
-    const [roadmap, now] = await Promise.all([getRoadmap(), getServerNow()]);
-    return { roadmap, now };
-  },
+  loader: () => getRoadmap(),
   staleTime: ROADMAP_STALE_TIME_MS,
-  headers: ({ loaderData }: { loaderData?: { roadmap: RoadmapData | null; now: string } }) => ({
-    "Cache-Control": roadmapCacheControl(loaderData?.roadmap),
+  headers: ({ loaderData }: { loaderData?: RoadmapData | null }) => ({
+    "Cache-Control": roadmapCacheControl(loaderData),
   }),
   head: () => {
     const seo = pageSEO({
@@ -66,14 +61,13 @@ export const Route = (createFileRoute as any)("/us/")({
 });
 
 function USAPage() {
-  const { roadmap, now } = Route.useLoaderData();
   return (
     <main
       data-interactive-page
       className="min-h-screen overflow-x-clip bg-paper font-sans text-ink antialiased"
     >
       <Header />
-      <TopBanner region="us" announcement={announcementFor(roadmap, "us")} />
+      <TopBanner region="us" announcement={announcementFor(Route.useLoaderData(), "us")} />
       <HowItWorks region="us" />
       <BeforeAfter region="us" />
       <InfoCards region="us" />
@@ -82,7 +76,7 @@ function USAPage() {
       <Trust region="us" />
       <Pricing region="us" />
       <Faq items={faqItemsUS} helpCenterPath="/us/faq" />
-      <Footer region="us" now={now} />
+      <Footer region="us" />
     </main>
   );
 }

@@ -1,28 +1,37 @@
 import type { Lang } from "@/lib/locales";
-import { upcomingTaxDeadlines, type DeadlineRegion } from "@/lib/tax-deadlines";
+import {
+  CRA_TIME_ZONE,
+  craRowLabel,
+  dateInZone,
+  formatDeadlineDate,
+  formatOnTimeUntil,
+  getUpcomingCraDeadlines,
+} from "@/lib/tax-deadlines";
 
-const NEW_TAB: Record<Lang, string> = {
-  en: "(opens in a new tab)",
-  fr: "(s'ouvre dans un nouvel onglet)",
+const COPY: Record<Lang, { title: string; source: string; url: string; newTab: string }> = {
+  en: {
+    title: "Upcoming CRA deadlines",
+    source: "Source: ",
+    url: "https://www.canada.ca/en/revenue-agency/services/payments-cra/individual-payments/income-tax-instalments/due-dates.html",
+    newTab: "(opens in a new tab)",
+  },
+  fr: {
+    title: "Prochaines échéances de l'ARC",
+    source: "Source : ",
+    url: "https://www.canada.ca/fr/agence-revenu/services/paiements/paiements-arc/paiements-particuliers/impots-acomptes-provisionnels/dates-limites.html",
+    newTab: "(s'ouvre dans un nouvel onglet)",
+  },
 };
 
 /**
- * Footer strip, on the same 4-column grid as the footer above: the region's upcoming tax deadlines with a source link.
- * `now` is the server's clock from the route loader; renders nothing when
- * every date has passed (see src/lib/tax-deadlines.ts).
+ * Footer strip (/ca and /fr), on the same 4-column grid as the footer above:
+ * the next CRA deadlines, computed by rule (src/lib/tax-deadlines.ts), with a
+ * source link. `now` is the server's clock from the route loader.
  */
-export function TaxDeadlines({
-  region,
-  lang,
-  now,
-}: {
-  region: DeadlineRegion;
-  lang: Lang;
-  now: string;
-}) {
-  const data = upcomingTaxDeadlines(region, lang, now);
-  if (!data) return null;
-  const fr = data.lang === "fr";
+export function TaxDeadlines({ lang, now }: { lang: Lang; now: string }) {
+  const rows = getUpcomingCraDeadlines(dateInZone(now, CRA_TIME_ZONE));
+  if (rows.length === 0) return null;
+  const t = COPY[lang];
 
   return (
     <section
@@ -31,29 +40,39 @@ export function TaxDeadlines({
     >
       <div>
         <h2 id="tax-deadlines-title" className="eyebrow">
-          {data.title}
+          {t.title}
         </h2>
         <a
-          href={data.sourceUrl}
+          href={t.url}
           target="_blank"
           rel="noopener"
           className="mt-2 inline-block font-sans text-sm text-paper-40 underline underline-offset-4 transition-colors hover:text-paper"
         >
-          {fr ? "Source : " : "Source: "}
-          {data.sourceHost}
-          <span className="sr-only"> {NEW_TAB[data.lang]}</span>
+          {t.source}
+          canada.ca
+          <span className="sr-only"> {t.newTab}</span>
         </a>
       </div>
       <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:col-span-3 lg:grid-cols-4">
-        {data.items.map((d) => (
-          <li key={d.date}>
+        {rows.map((row) => (
+          <li key={row.officialDate}>
             <time
-              dateTime={d.date}
+              dateTime={row.officialDate}
               className="block font-mono text-label uppercase tracking-mono text-paper"
             >
-              {d.display}
+              {formatDeadlineDate(row.officialDate, lang)}
             </time>
-            <span className="mt-1 block font-sans text-sm text-paper-60">{d.label}</span>
+            {row.shifted && (
+              <time
+                dateTime={row.effectiveDate}
+                className="mt-0.5 block font-sans text-sm text-paper-40"
+              >
+                {formatOnTimeUntil(row.effectiveDate, lang)}
+              </time>
+            )}
+            <span className="mt-1 block font-sans text-sm text-paper-60">
+              {craRowLabel(row, lang)}
+            </span>
           </li>
         ))}
       </ul>

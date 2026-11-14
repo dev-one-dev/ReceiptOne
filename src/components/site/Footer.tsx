@@ -24,8 +24,8 @@ const WORDMARK_VIEWBOX = "7 3 106 20";
 type FooterProps = {
   region?: "ca" | "us";
   /**
-   * The server's clock (ISO) from the route loader. Landing pages pass it to
-   * show the upcoming tax deadlines; without it the strip is not rendered.
+   * The server's clock (ISO) from the route loader. /ca and /fr pass it to
+   * show the upcoming CRA deadlines; without it (or on /us) there is no strip.
    */
   now?: string;
 };
@@ -267,8 +267,8 @@ export function Footer({ region = "ca", now }: FooterProps) {
           </div>
         </div>
 
-        {/* Upcoming tax deadlines (landing pages only); hidden once all have passed */}
-        {now && <TaxDeadlines region={region} lang={lang} now={now} />}
+        {/* Upcoming CRA deadlines (/ca and /fr landing pages only) */}
+        {now && region === "ca" && <TaxDeadlines lang={lang} now={now} />}
 
         {/* Store badges — one row, left-aligned, directly above the copyright line */}
         <div className="mt-6 flex items-center gap-2">
