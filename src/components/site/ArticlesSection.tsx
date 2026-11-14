@@ -1,7 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowRight, Clock } from "lucide-react";
 import { ARTICLES, formatArticleDate, readingMinutes, type Article } from "@/lib/articles";
-import { ArticleCover } from "@/components/site/ArticleCover";
 
 /* ----------------------------- Shared helpers ----------------------------- */
 
@@ -9,19 +8,11 @@ const formatDate = (iso: string) => formatArticleDate(iso);
 
 /* ----------------------------- Category pill ------------------------------ */
 
-function CategoryPill({
-  label,
-  variant = "neutral",
-}: {
-  label: string;
-  variant?: "featured" | "neutral";
-}) {
+/** One pill style on every card. self-start: in the card's flex column it
+ * would otherwise stretch to the full width. */
+function CategoryPill({ label }: { label: string }) {
   return (
-    <span
-      className={`inline-block rounded-pill px-3 py-1 eyebrow ${
-        variant === "featured" ? "bg-ember text-ink" : "bg-ink-05 text-ink-60"
-      }`}
-    >
+    <span className="inline-block self-start rounded-pill bg-ink-05 px-3 py-1 eyebrow text-ink-60">
       {label}
     </span>
   );
@@ -36,19 +27,9 @@ function FeaturedCard({ article, basePath }: { article: Article; basePath: strin
       params={{ slug: article.slug } as any}
       className="group flex h-full flex-col overflow-hidden rounded-card border border-hairline bg-white shadow-[0_2px_12px_rgba(0,0,0,0.06)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_40px_rgba(0,0,0,0.10)]"
     >
-      {/* Image */}
-      <div className="overflow-hidden">
-        <ArticleCover
-          category={article.category}
-          title={article.title}
-          size="featured"
-          className="transition-transform duration-500 group-hover:scale-[1.02]"
-        />
-      </div>
-
       {/* Content */}
       <div className="flex flex-1 flex-col p-4 sm:p-5">
-        <CategoryPill label={article.category} variant="featured" />
+        <CategoryPill label={article.category} />
 
         <h3 className="mt-2 text-h3 text-ink">{article.title}</h3>
 
@@ -86,19 +67,9 @@ function SmallCard({ article, basePath }: { article: Article; basePath: string }
       params={{ slug: article.slug } as any}
       className="group flex h-full flex-col overflow-hidden rounded-card border border-hairline bg-white shadow-[0_2px_12px_rgba(0,0,0,0.06)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_40px_rgba(0,0,0,0.10)]"
     >
-      {/* Image */}
-      <div className="overflow-hidden">
-        <ArticleCover
-          category={article.category}
-          title={article.title}
-          size="card"
-          className="transition-transform duration-500 group-hover:scale-[1.02]"
-        />
-      </div>
-
       {/* Content */}
       <div className="flex flex-1 flex-col p-3">
-        <CategoryPill label={article.category} variant="neutral" />
+        <CategoryPill label={article.category} />
 
         <h3 className="mt-1.5 text-lead tracking-body text-ink">{article.title}</h3>
 

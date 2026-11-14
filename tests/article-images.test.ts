@@ -8,8 +8,8 @@ import { build, type Plugin } from "esbuild";
 /**
  * Article images must never come from an external host. The article photos
  * used to be hotlinked from picsum.photos, and when that service went down
- * every article image on the site broke. Covers are now rendered in code
- * (ArticleCover), and og:image / JSON-LD use the site's own /og-image.png.
+ * every article image on the site broke. Cards and article pages are now
+ * text-only, and og:image / JSON-LD use the site's own /og-image.png.
  *
  * Renders both articles indexes and every CA and US article server-side
  * through TanStack Router, and fails if the article data, the HTML, the page
@@ -194,9 +194,13 @@ test("article images: no page, head or JSON-LD uses an external image host", () 
   assert.deepEqual(bad, []);
 });
 
-test("article images: every article page renders its code cover, and og:image is our own", () => {
+test("article images: cards and article pages are text-only, and og:image is our own", () => {
   for (const [path, page] of pages) {
-    assert.ok(page.html.includes("data-article-cover"), `${path} renders an ArticleCover`);
+    // The header logo is the only <img> outside the article content.
+    const imgs = [...page.html.matchAll(/<img[^>]*>/g)].map((m) => m[0]);
+    const content = imgs.filter((t) => !/logo-(mark|wordmark)/.test(t));
+    assert.deepEqual(content, [], `${path} renders no article image`);
+    assert.ok(!page.html.includes("data-article-cover"), `${path} has no cover slot`);
     if (path.split("/").length > 2 && !path.endsWith("/articles")) {
       const og = page.head.meta?.find((m) => m.property === "og:image")?.content;
       assert.ok(og && new URL(og).pathname === "/og-image.png", `${path} og:image ${og}`);

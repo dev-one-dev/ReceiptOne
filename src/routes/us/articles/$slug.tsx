@@ -2,7 +2,6 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight, CheckCircle2, Clock } from "lucide-react";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
-import { ArticleCover } from "@/components/site/ArticleCover";
 import { pageSEO, breadcrumbJsonLd, faqJsonLd } from "@/lib/seo";
 import {
   ARTICLE_BYLINE,
@@ -159,16 +158,8 @@ function RelatedCard({ article }: { article: Article }) {
       params={{ slug: article.slug } as any}
       className="group flex flex-col overflow-hidden rounded-card border border-hairline bg-white shadow-[0_2px_12px_rgba(0,0,0,0.06)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_40px_rgba(0,0,0,0.10)]"
     >
-      <div className="overflow-hidden">
-        <ArticleCover
-          category={article.category}
-          title={article.title}
-          size="card"
-          className="transition-transform duration-500 group-hover:scale-[1.02]"
-        />
-      </div>
       <div className="flex flex-1 flex-col p-5">
-        <span className="inline-block rounded-pill bg-ink-05 px-3 py-1 eyebrow text-ink-60">
+        <span className="inline-block self-start rounded-pill bg-ink-05 px-3 py-1 eyebrow text-ink-60">
           {article.category}
         </span>
         <h3 className="mt-3 text-lead tracking-body text-ink">{article.title}</h3>
@@ -231,7 +222,7 @@ function USArticleDetailPage() {
       <Header />
 
       {/* Back link + breadcrumb */}
-      <div className="mx-auto max-w-[1200px] px-4 pt-28 pb-6 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-[760px] px-4 pt-28 pb-6 sm:px-6 lg:px-0">
         <nav
           aria-label="breadcrumb"
           className="flex items-center gap-2 font-sans text-sm text-ink-60"
@@ -263,15 +254,8 @@ function USArticleDetailPage() {
       </div>
 
       <article>
-        {/* Hero image */}
-        <div className="mx-auto max-w-[1200px] px-4 sm:px-6 lg:px-8">
-          <div className="overflow-hidden rounded-card border border-hairline">
-            <ArticleCover category={article.category} title={article.title} size="hero" />
-          </div>
-        </div>
-
         {/* Article header */}
-        <header className="mx-auto max-w-[760px] px-4 pb-8 pt-10 sm:px-6 lg:px-0">
+        <header className="mx-auto max-w-[760px] px-4 pb-8 pt-4 sm:px-6 lg:px-0">
           <span className="inline-block rounded-pill bg-ember px-3 py-1 eyebrow text-ink">
             {article.category}
           </span>
