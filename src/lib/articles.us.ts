@@ -18,6 +18,12 @@ export const ARTICLES_US_ONLY: Article[] = [
     category: "Tax Compliance",
     publishedAt: "2026-05-20",
     updatedAt: "2026-10-05",
+    image: {
+      path: "/articles/irs-business-expense-deduction-rules.webp",
+      width: 1600,
+      height: 900,
+      alt: "Desktop calculator with tax keys and a pen on grid paper",
+    },
     tags: ["IRS", "business expenses", "deductions", "self-employed", "audit", "record keeping"],
     clusterName: "IRS Expense Rules",
     relatedSlugs: [
@@ -110,6 +116,12 @@ export const ARTICLES_US_ONLY: Article[] = [
     category: "Tax Compliance",
     publishedAt: "2026-05-20",
     updatedAt: "2026-10-05",
+    image: {
+      path: "/articles/irs-receipt-documentation-requirements.webp",
+      width: 1600,
+      height: 900,
+      alt: "Crumpled paper receipts on a desk beside an open laptop in soft light",
+    },
     tags: ["IRS", "receipts", "documentation", "audit", "self-employed", "record keeping"],
     clusterName: "IRS Expense Rules",
     relatedSlugs: [
@@ -181,6 +193,12 @@ export const ARTICLES_US_ONLY: Article[] = [
     category: "Tax Deductions",
     publishedAt: "2026-05-20",
     updatedAt: "2026-10-05",
+    image: {
+      path: "/articles/schedule-c-deductions-guide-us-freelancers.webp",
+      width: 1600,
+      height: 900,
+      alt: "Tall stack of printed paper documents on a desk",
+    },
     tags: ["Schedule C", "deductions", "freelancer", "IRS", "self-employed", "1099"],
     clusterName: "Schedule C & Deductions",
     relatedSlugs: [
@@ -245,6 +263,12 @@ export const ARTICLES_US_ONLY: Article[] = [
     category: "Tax Deductions",
     publishedAt: "2026-05-20",
     updatedAt: "2026-10-05",
+    image: {
+      path: "/articles/self-employed-tax-deductions-us-2025.webp",
+      width: 1600,
+      height: 900,
+      alt: "White ceramic piggy bank on a light wooden surface",
+    },
     tags: ["deductions", "freelancer", "1099", "IRS", "self-employed", "2026", "tax savings"],
     clusterName: "Schedule C & Deductions",
     relatedSlugs: [
@@ -330,6 +354,12 @@ export const ARTICLES_US_ONLY: Article[] = [
     category: "Tax Fundamentals",
     publishedAt: "2026-05-20",
     updatedAt: "2026-10-05",
+    image: {
+      path: "/articles/1099-contractor-tax-guide-us.webp",
+      width: 1600,
+      height: 900,
+      alt: "Laptop and an open notebook with a pen on a wooden desk",
+    },
     tags: ["1099", "contractor", "self-employment tax", "quarterly taxes", "freelancer", "IRS"],
     clusterName: "1099 & Estimated Taxes",
     relatedSlugs: [
@@ -394,6 +424,12 @@ export const ARTICLES_US_ONLY: Article[] = [
     category: "Tax Fundamentals",
     publishedAt: "2026-05-20",
     updatedAt: "2026-10-05",
+    image: {
+      path: "/articles/quarterly-estimated-taxes-us-freelancers.webp",
+      width: 1600,
+      height: 900,
+      alt: "Open planner with calendar pages, a binder clip, a pen and a metal ruler on a white desk",
+    },
     tags: [
       "quarterly taxes",
       "estimated payments",
@@ -477,6 +513,12 @@ export const ARTICLES_US_ONLY: Article[] = [
     category: "Mileage & Auto",
     publishedAt: "2026-05-20",
     updatedAt: "2026-10-05",
+    image: {
+      path: "/articles/irs-mileage-rate-2025-self-employed.webp",
+      width: 1600,
+      height: 900,
+      alt: "Two-lane desert highway with a double yellow line leading toward red rock formations at sunset",
+    },
     tags: ["mileage", "IRS", "vehicle deduction", "standard mileage rate", "self-employed", "2026"],
     relatedSlugs: [
       "self-employed-tax-deductions-us-2025",
@@ -550,6 +592,12 @@ export const ARTICLES_US_ONLY: Article[] = [
     category: "Tax Deductions",
     publishedAt: "2026-05-20",
     updatedAt: "2026-05-20",
+    image: {
+      path: "/articles/home-office-deduction-form-8829-us.webp",
+      width: 1600,
+      height: 900,
+      alt: "Home office with a black glass desk, an adjustable desk lamp, a white chair and shelving",
+    },
     tags: ["home office", "Form 8829", "deductions", "IRS", "self-employed", "freelancer"],
     relatedSlugs: [
       "self-employed-tax-deductions-us-2025",
@@ -620,6 +668,12 @@ export const ARTICLES_US_ONLY: Article[] = [
     category: "Tax Fundamentals",
     publishedAt: "2026-05-20",
     updatedAt: "2026-10-05",
+    image: {
+      path: "/articles/sales-tax-business-expenses-us.webp",
+      width: 1600,
+      height: 900,
+      alt: "Close-up of vintage cash register keys with price numbers and a No Sale key",
+    },
     tags: ["sales tax", "business expenses", "deductions", "IRS", "freelancer", "receipts"],
     relatedSlugs: [
       "irs-business-expense-deduction-rules",

@@ -2,6 +2,7 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight, CheckCircle2, Clock } from "lucide-react";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
+import { CardImage } from "@/components/site/ArticlesSection";
 import { getServerNow } from "@/lib/server-time.functions";
 import { pageSEO, breadcrumbJsonLd, faqJsonLd } from "@/lib/seo";
 import { articleHreflang } from "@/lib/help-center";
@@ -12,6 +13,7 @@ import {
   articleFaq,
   ARTICLE_BYLINE,
   readingMinutes,
+  articleOgImage,
   formatArticleDate,
   type ContentBlock,
   type Article,
@@ -46,6 +48,7 @@ export const Route = (createFileRoute as any)("/articles/$slug")({
       title: article.title,
       description: article.excerpt,
       ogType: "article",
+      ogImage: articleOgImage(article),
       hreflang: articleHreflang(article.slug),
     });
 
@@ -255,6 +258,7 @@ function RelatedCard({ article }: { article: Article }) {
       params={{ slug: article.slug } as any}
       className="group flex flex-col overflow-hidden rounded-card border border-hairline bg-white shadow-[0_2px_12px_rgba(0,0,0,0.06)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_40px_rgba(0,0,0,0.10)]"
     >
+      <CardImage article={article} />
       <div className="flex flex-1 flex-col p-5">
         <span className="inline-block self-start rounded-pill bg-ink-05 px-3 py-1 eyebrow text-ink-60">
           {article.category}
@@ -326,7 +330,7 @@ function ArticleDetailPage() {
       <Header />
 
       {/* Back link + breadcrumb */}
-      <div className="mx-auto max-w-[760px] px-4 pt-28 pb-6 sm:px-6 lg:px-0">
+      <div className="mx-auto max-w-[760px] px-4 pt-24 pb-6 sm:px-6 lg:px-0">
         <nav
           aria-label="breadcrumb"
           className="flex items-center gap-2 font-sans text-sm text-ink-60"
@@ -358,8 +362,24 @@ function ArticleDetailPage() {
       </div>
 
       <article>
+        {/* Hero image: the LCP element, so eager and high priority. */}
+        <div className="mx-auto max-w-[760px] px-4 sm:px-6 lg:px-0">
+          <div className="overflow-hidden rounded-card">
+            <img
+              src={article.image.path}
+              alt={article.image.alt}
+              width={article.image.width}
+              height={article.image.height}
+              loading="eager"
+              decoding="async"
+              fetchPriority="high"
+              className="aspect-video w-full object-cover"
+            />
+          </div>
+        </div>
+
         {/* Article header */}
-        <header className="mx-auto max-w-[760px] px-4 pb-8 pt-4 sm:px-6 lg:px-0">
+        <header className="mx-auto max-w-[760px] px-4 pb-8 pt-8 sm:px-6 lg:px-0">
           {/* Category pill */}
           <span className="inline-block rounded-pill bg-ember px-3 py-1 eyebrow text-ink">
             {article.category}

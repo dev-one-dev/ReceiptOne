@@ -1,6 +1,12 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowRight, Clock } from "lucide-react";
-import { ARTICLES, formatArticleDate, readingMinutes, type Article } from "@/lib/articles";
+import {
+  ARTICLES,
+  articleCardImage,
+  formatArticleDate,
+  readingMinutes,
+  type Article,
+} from "@/lib/articles";
 
 /* ----------------------------- Shared helpers ----------------------------- */
 
@@ -18,6 +24,27 @@ function CategoryPill({ label }: { label: string }) {
   );
 }
 
+/* ----------------------------- Card image --------------------------------- */
+
+/** 16:9 photo at the top of a card; the card's overflow-hidden rounds its top
+ * corners. Explicit width/height reserve the space before it loads. Only the
+ * featured card (above the fold) loads eagerly. */
+export function CardImage({ article, eager = false }: { article: Article; eager?: boolean }) {
+  return (
+    <div className="overflow-hidden">
+      <img
+        src={articleCardImage(article)}
+        alt={article.image.alt}
+        width={800}
+        height={450}
+        loading={eager ? "eager" : "lazy"}
+        decoding="async"
+        className="aspect-video w-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+      />
+    </div>
+  );
+}
+
 /* ----------------------------- Featured card ------------------------------ */
 
 function FeaturedCard({ article, basePath }: { article: Article; basePath: string }) {
@@ -27,6 +54,8 @@ function FeaturedCard({ article, basePath }: { article: Article; basePath: strin
       params={{ slug: article.slug } as any}
       className="group flex h-full flex-col overflow-hidden rounded-card border border-hairline bg-white shadow-[0_2px_12px_rgba(0,0,0,0.06)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_40px_rgba(0,0,0,0.10)]"
     >
+      <CardImage article={article} eager />
+
       {/* Content */}
       <div className="flex flex-1 flex-col p-4 sm:p-5">
         <CategoryPill label={article.category} />
@@ -46,7 +75,7 @@ function FeaturedCard({ article, basePath }: { article: Article; basePath: strin
         </div>
 
         {/* CTA */}
-        <div className="mt-3 flex items-center gap-1.5 font-sans text-sm font-semibold text-ember-text">
+        <div className="mt-3 flex items-center gap-1.5 font-sans text-sm font-semibold text-ink">
           Read article
           <ArrowRight
             className="size-4 transition-transform duration-200 group-hover:translate-x-1"
@@ -67,6 +96,8 @@ function SmallCard({ article, basePath }: { article: Article; basePath: string }
       params={{ slug: article.slug } as any}
       className="group flex h-full flex-col overflow-hidden rounded-card border border-hairline bg-white shadow-[0_2px_12px_rgba(0,0,0,0.06)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_12px_40px_rgba(0,0,0,0.10)]"
     >
+      <CardImage article={article} />
+
       {/* Content */}
       <div className="flex flex-1 flex-col p-3">
         <CategoryPill label={article.category} />
