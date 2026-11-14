@@ -87,6 +87,7 @@ type Deadline = {
   taxYear: number;
   shifted: boolean;
 };
+type FooterRow = { type: string; deadline?: Deadline };
 type Row = { officialDate: string; effectiveDate: string; shifted: boolean; deadlines: Deadline[] };
 const lib = (await import(pathToFileURL(OUT).href)) as {
   renderStrip: (lang: string, now: string) => string;
@@ -95,8 +96,10 @@ const lib = (await import(pathToFileURL(OUT).href)) as {
   gstAnnualDeadlinesForYear: (y: number) => Deadline[];
   gstQuarterlyDeadlines: (y: number) => Deadline[];
   getCraDeadlinesNext12Months: (today: string) => Row[];
-  getUpcomingCraDeadlines: (today: string, count?: number) => Row[];
-  craRowLabel: (row: Row, lang: string) => string;
+  getFooterDeadlineRows: (today: string) => FooterRow[];
+  footerRowLabel: (row: FooterRow, lang: string) => string;
+  T2_DATE_TEXT: Record<string, string>;
+  formatDeadlineDate: (date: string, lang: string) => string;
   formatOnTimeUntil: (date: string, lang: string) => string;
   weekendShift: (date: string) => string;
 };
@@ -152,79 +155,127 @@ test("tax-deadlines: rule holds 2025-2040 (never a weekend, at most 2 days late)
   }
 });
 
-/* -------------------------------- Upcoming -------------------------------- */
+/* ------------------------- Footer: one row per type ------------------------- */
 
-test("tax-deadlines: footer on 2026-11-14 is Q4, Q1, Apr 30, Jun 15 -- 4 rows, no GST/HST quarterly", () => {
-  const rows = lib.getUpcomingCraDeadlines("2026-11-14");
-  assert.deepEqual(
-    rows.map((r) => [r.officialDate, lib.craRowLabel(r, "en"), r.shifted]),
+/** The footer rows as [date or rule text, shifted note or "", label]. */
+const footer = (today: string, lang: "en" | "fr") =>
+  lib
+    .getFooterDeadlineRows(today)
+    .map((r) =>
+      r.deadline
+        ? [
+            lib.formatDeadlineDate(r.deadline.officialDate, lang),
+            r.deadline.shifted ? lib.formatOnTimeUntil(r.deadline.effectiveDate, lang) : "",
+            lib.footerRowLabel(r, lang),
+          ]
+        : [lib.T2_DATE_TEXT[lang], "", lib.footerRowLabel(r, lang)],
+    );
+
+test("tax-deadlines: footer on 2026-11-14 -- the 5 expected rows, EN and FR", () => {
+  assert.deepEqual(footer("2026-11-14", "en"), [
+    ["Dec 15, 2026", "", "Income tax instalment (Q4)"],
+    ["Jan 31, 2027", "on time until Mon, Feb 1", "GST/HST quarterly filers (Q4 2026)"],
+    ["Apr 30, 2027", "", "2026 income tax and GST/HST balance"],
+    ["Jun 15, 2027", "", "2026 self-employed and GST/HST returns"],
+    ["6 months after fiscal year-end", "", "T2 corporate return"],
+  ]);
+  assert.deepEqual(footer("2026-11-14", "fr"), [
+    ["15 déc. 2026", "", "Acompte provisionnel d'impôt (4e trimestre)"],
     [
-      ["2026-12-15", "Q4 instalment", false],
-      ["2027-03-15", "Q1 instalment", false],
-      ["2027-04-30", "Pay 2026 income tax and GST/HST balance", false],
-      ["2027-06-15", "File 2026 self-employed and GST/HST returns · Q2 instalment", false],
+      "31 janv. 2027",
+      "à temps jusqu'au lun. 1er février",
+      "Déclarants trimestriels de TPS/TVH (4e trimestre 2026)",
+    ],
+    ["30 avr. 2027", "", "Solde 2026 d'impôt et de TPS/TVH"],
+    ["15 juin 2027", "", "Déclarations 2026 (travailleurs autonomes et TPS/TVH)"],
+    ["6 mois après la fin de l'exercice", "", "Déclaration T2 des sociétés"],
+  ]);
+});
+
+test("tax-deadlines: footer rows roll over per type", () => {
+  const row = (today: string, type: string) =>
+    lib.getFooterDeadlineRows(today).find((r) => r.type === type)!;
+  const q1 = row("2026-12-16", "instalment");
+  assert.equal(q1.deadline!.officialDate, "2027-03-15");
+  assert.equal(lib.footerRowLabel(q1, "en"), "Income tax instalment (Q1)");
+
+  const gst = row("2027-02-02", "gst-quarterly");
+  assert.equal(gst.deadline!.officialDate, "2027-04-30");
+  assert.equal(lib.footerRowLabel(gst, "en"), "GST/HST quarterly filers (Q1 2027)");
+
+  const bal = row("2027-05-01", "balance");
+  assert.equal(bal.deadline!.officialDate, "2028-04-30");
+  assert.equal(lib.footerRowLabel(bal, "en"), "2027 income tax and GST/HST balance");
+
+  const ret = row("2027-06-16", "return");
+  assert.equal(ret.deadline!.officialDate, "2028-06-15");
+  assert.equal(lib.footerRowLabel(ret, "en"), "2027 self-employed and GST/HST returns");
+});
+
+test("tax-deadlines: a footer row stays through its last on-time day", () => {
+  const gst = (today: string) =>
+    lib.getFooterDeadlineRows(today).find((r) => r.type === "gst-quarterly")!.deadline!;
+  // Jan 31, 2027 is a Sunday: on time until Monday Feb 1.
+  assert.equal(gst("2027-02-01").officialDate, "2027-01-31");
+  assert.equal(gst("2027-02-02").officialDate, "2027-04-30");
+  // Same for the income tax rows: Jun 15, 2025 (Sunday) is listed on Jun 16.
+  const ret = lib.getFooterDeadlineRows("2025-06-16").find((r) => r.type === "return")!;
+  assert.equal(ret.deadline!.officialDate, "2025-06-15");
+  assert.equal(
+    lib.getFooterDeadlineRows("2025-06-17").find((r) => r.type === "return")!.deadline!
+      .officialDate,
+    "2026-06-15",
+  );
+});
+
+test("tax-deadlines: footer rows sorted by date, ties in type order, T2 last; no merging", () => {
+  const rows = lib.getFooterDeadlineRows("2027-03-16");
+  assert.deepEqual(
+    rows.map((r) => [r.type, r.deadline?.officialDate ?? null]),
+    [
+      ["gst-quarterly", "2027-04-30"],
+      ["balance", "2027-04-30"],
+      ["instalment", "2027-06-15"],
+      ["return", "2027-06-15"],
+      ["t2", null],
     ],
   );
-  assert.ok(
-    rows.every((r) => r.deadlines.every((d) => d.kind !== "gst-quarterly")),
-    "no rule-E rows in the footer",
-  );
-  // Jan 31 (GST/HST Q4) would fall between Dec 15 and Mar 15; it is not there.
-  assert.ok(!rows.some((r) => r.officialDate === "2027-01-31"));
-});
-
-test("tax-deadlines: year rollover -- on 2026-12-16 the first row is Mar 15 2027", () => {
-  assert.equal(lib.getUpcomingCraDeadlines("2026-12-16")[0].officialDate, "2027-03-15");
-});
-
-test("tax-deadlines: a deadline stays listed through its last on-time day", () => {
-  // Jun 15 2025 was a Sunday: on time until Monday Jun 16.
-  const on16 = lib.getUpcomingCraDeadlines("2025-06-16");
-  assert.equal(on16[0].officialDate, "2025-06-15");
-  assert.equal(on16[0].effectiveDate, "2025-06-16");
-  assert.equal(on16[0].shifted, true);
-  assert.ok(
-    !lib.getUpcomingCraDeadlines("2025-06-17").some((r) => r.officialDate === "2025-06-15"),
-  );
+  // Every date checked over 16 years: always 5 rows, one per type, T2 last.
+  for (let y = 2025; y <= 2040; y++)
+    for (const md of ["01-01", "02-01", "04-30", "06-16", "10-31", "12-31"]) {
+      const r = lib.getFooterDeadlineRows(`${y}-${md}`);
+      assert.equal(r.length, 5);
+      assert.equal(new Set(r.map((x) => x.type)).size, 5);
+      assert.equal(r.at(-1)!.type, "t2");
+      const dates = r.slice(0, 4).map((x) => x.deadline!.officialDate);
+      assert.deepEqual([...dates].sort(), dates);
+    }
 });
 
 test("tax-deadlines: balance and return relate to tax year Y-1, instalments to Y", () => {
   for (const d of lib.craDeadlinesForYear(2027))
     assert.equal(d.taxYear, d.kind === "instalment" ? 2027 : 2026, `${d.kind} ${d.officialDate}`);
-  const rows = lib.getUpcomingCraDeadlines("2027-01-01");
-  assert.equal(lib.craRowLabel(rows[1], "en"), "Pay 2026 income tax and GST/HST balance");
-  assert.equal(lib.craRowLabel(rows[1], "fr"), "Payer le solde 2026 d'impôt et de TPS/TVH");
-  assert.ok(
-    lib.craRowLabel(rows[2], "en").startsWith("File 2026 self-employed and GST/HST returns"),
-  );
-  for (const d of [...lib.gstAnnualDeadlinesForYear(2027)]) assert.equal(d.taxYear, 2026);
+  for (const d of lib.gstAnnualDeadlinesForYear(2027)) assert.equal(d.taxYear, 2026);
 });
 
 /* ---------------------------- Labels and render ---------------------------- */
 
-test("tax-deadlines: FR labels and the FR shifted note", () => {
-  const rows = lib.getUpcomingCraDeadlines("2026-11-14");
-  assert.deepEqual(
-    rows.map((r) => lib.craRowLabel(r, "fr")),
-    [
-      "Acompte provisionnel du 4e trimestre",
-      "Acompte provisionnel du 1er trimestre",
-      "Payer le solde 2026 d'impôt et de TPS/TVH",
-      "Produire les déclarations 2026 (travailleurs autonomes et TPS/TVH) · Acompte provisionnel du 2e trimestre",
-    ],
-  );
+test("tax-deadlines: rendered strip -- 5 rows, shifted notes, T2 rule text", () => {
   assert.equal(lib.formatOnTimeUntil("2025-06-16", "fr"), "à temps jusqu'au lun. 16 juin");
   assert.equal(lib.formatOnTimeUntil("2025-06-16", "en"), "on time until Mon, Jun 16");
 
-  // Rendered: on 2025-06-16 (Pacific) the shifted Jun 15 row carries the note.
-  const fr = decode(lib.renderStrip("fr", "2025-06-16T19:00:00Z"));
+  const en = decode(lib.renderStrip("en", "2026-11-14T18:00:00Z"));
+  assert.equal((en.match(/<li/g) ?? []).length, 5);
+  assert.ok(en.includes("Upcoming CRA deadlines"));
+  assert.ok(en.includes("on time until Mon, Feb 1"));
+  assert.ok(en.includes("6 months after fiscal year-end") && en.includes("T2 corporate return"));
+  const fr = decode(lib.renderStrip("fr", "2026-11-14T18:00:00Z"));
+  assert.equal((fr.match(/<li/g) ?? []).length, 5);
   assert.ok(fr.includes("Prochaines échéances de l'ARC"));
-  assert.ok(fr.includes("15 juin 2025"));
-  assert.ok(fr.includes("à temps jusqu'au lun. 16 juin"));
-  const en = decode(lib.renderStrip("en", "2025-06-16T19:00:00Z"));
-  assert.ok(en.includes("Upcoming CRA deadlines") && en.includes("on time until Mon, Jun 16"));
-  // Nothing shifted in the 2026-11-14 window, so no note.
-  assert.ok(!decode(lib.renderStrip("en", "2026-11-14T18:00:00Z")).includes("on time until"));
+  assert.ok(fr.includes("à temps jusqu'au lun. 1er février"));
+  assert.ok(fr.includes("6 mois après la fin de l'exercice"));
+  // On 2025-06-16 (Pacific) the shifted Jun 15 rows carry the note.
+  assert.ok(decode(lib.renderStrip("fr", "2025-06-16T19:00:00Z")).includes("15 juin 2025"));
 });
 
 test("tax-deadlines: heading has no tax-year wording; source links open canada.ca in a new tab", () => {
@@ -344,7 +395,7 @@ test("tax-deadlines: the footer links to the deadlines page per locale", () => {
   assert.ok(fr.includes('href="/fr/echeances-fiscales"') && fr.includes("Toutes les échéances →"));
 });
 
-test("tax-deadlines: French '1er' on the first of the month; Jun 15 row order", () => {
+test("tax-deadlines: French '1er' on the first of the month; Jun 15 page-row order", () => {
   const rows = lib.getCraDeadlinesNext12Months("2026-11-14");
   const jan31 = rows.find((r) => r.officialDate === "2027-01-31")!;
   assert.equal(
@@ -359,12 +410,6 @@ test("tax-deadlines: French '1er' on the first of the month; Jun 15 row order", 
     jun15.deadlines.map((d) => d.kind),
     ["return", "gst-annual-return", "instalment"],
     "returns, then payments, then instalments",
-  );
-  // The footer labels are unchanged by the reorder.
-  const footer = lib.getUpcomingCraDeadlines("2026-11-14");
-  assert.equal(
-    lib.craRowLabel(footer[3], "en"),
-    "File 2026 self-employed and GST/HST returns · Q2 instalment",
   );
 });
 

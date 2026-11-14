@@ -1,11 +1,12 @@
 import type { Lang } from "@/lib/locales";
 import {
   CRA_TIME_ZONE,
-  craRowLabel,
   dateInZone,
+  footerRowLabel,
   formatDeadlineDate,
   formatOnTimeUntil,
-  getUpcomingCraDeadlines,
+  getFooterDeadlineRows,
+  T2_DATE_TEXT,
 } from "@/lib/tax-deadlines";
 
 const COPY: Record<
@@ -32,8 +33,8 @@ const COPY: Record<
 
 /**
  * Footer strip (/ca and /fr), on the same 4-column grid as the footer above:
- * the next CRA deadlines, computed by rule (src/lib/tax-deadlines.ts), with a
- * source link. `now` is the server's clock from the route loader. The link to
+ * one row per deadline type with its next date, computed by rule
+ * (src/lib/tax-deadlines.ts), plus the undated T2 rule, with a source link. `now` is the server's clock from the route loader. The link to
  * the full deadlines page is hidden on that page itself (either language).
  */
 export function TaxDeadlines({
@@ -45,8 +46,7 @@ export function TaxDeadlines({
   now: string;
   pathname?: string;
 }) {
-  const rows = getUpcomingCraDeadlines(dateInZone(now, CRA_TIME_ZONE));
-  if (rows.length === 0) return null;
+  const rows = getFooterDeadlineRows(dateInZone(now, CRA_TIME_ZONE));
   const t = COPY[lang];
   const path = pathname && pathname !== "/" ? pathname.replace(/\/$/, "") : pathname;
   const onDeadlinesPage = path === COPY.en.allHref || path === COPY.fr.allHref;
@@ -73,23 +73,31 @@ export function TaxDeadlines({
       </div>
       <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:col-span-3 lg:grid-cols-4">
         {rows.map((row) => (
-          <li key={row.officialDate}>
-            <time
-              dateTime={row.officialDate}
-              className="block font-mono text-label uppercase tracking-mono text-paper"
-            >
-              {formatDeadlineDate(row.officialDate, lang)}
-            </time>
-            {row.shifted && (
-              <time
-                dateTime={row.effectiveDate}
-                className="mt-0.5 block font-sans text-sm text-paper-40"
-              >
-                {formatOnTimeUntil(row.effectiveDate, lang)}
-              </time>
+          <li key={row.type}>
+            {row.type === "t2" ? (
+              <span className="block font-mono text-label uppercase tracking-mono text-paper">
+                {T2_DATE_TEXT[lang]}
+              </span>
+            ) : (
+              <>
+                <time
+                  dateTime={row.deadline.officialDate}
+                  className="block font-mono text-label uppercase tracking-mono text-paper"
+                >
+                  {formatDeadlineDate(row.deadline.officialDate, lang)}
+                </time>
+                {row.deadline.shifted && (
+                  <time
+                    dateTime={row.deadline.effectiveDate}
+                    className="mt-0.5 block font-sans text-sm text-paper-40"
+                  >
+                    {formatOnTimeUntil(row.deadline.effectiveDate, lang)}
+                  </time>
+                )}
+              </>
             )}
             <span className="mt-1 block font-sans text-sm text-paper-60">
-              {craRowLabel(row, lang)}
+              {footerRowLabel(row, lang)}
             </span>
           </li>
         ))}

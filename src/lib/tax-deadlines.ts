@@ -189,19 +189,45 @@ function toRows(deadlines: CraDeadline[]): CraDeadlineRow[] {
   return rows;
 }
 
+/** The footer's dated row types, in their tie-break order (rows 1-4). */
+export type FooterDeadlineType = "instalment" | "gst-quarterly" | "balance" | "return";
+
+export type FooterDeadlineRow =
+  | { type: FooterDeadlineType; deadline: CraDeadline }
+  /** T2 corporate return: a rule (6 months after fiscal year-end), no date. */
+  | { type: "t2" };
+
 /**
- * Footer: the next `count` rows on or after `today` (YYYY-MM-DD) of income tax
- * instalments, Apr 30 and Jun 15 (rules A-D; no GST/HST quarterly rows). A
- * deadline stays listed through its effective (last on-time) date. Rows are
- * sorted by official date, and deadlines sharing an official date are merged.
+ * Footer: one row per deadline type with that type's next upcoming date
+ * (effective date >= `today`, so a deadline stays listed through its last
+ * on-time day). No merging: two types on one date are two rows. The dated
+ * rows are sorted by official date, ties in type order (instalment, GST/HST
+ * quarterly, balance, returns); the undated T2 row is always last.
  */
-export function getUpcomingCraDeadlines(today: string, count = 4): CraDeadlineRow[] {
+export function getFooterDeadlineRows(today: string): FooterDeadlineRow[] {
   const year = Number(today.slice(0, 4));
-  const candidates = [year, year + 1].flatMap((y) => [
-    ...craDeadlinesForYear(y),
-    ...gstAnnualDeadlinesForYear(y),
-  ]);
-  return toRows(candidates.filter((d) => d.effectiveDate >= today)).slice(0, count);
+  const incomeTax = [year, year + 1].flatMap((y) => craDeadlinesForYear(y));
+  const candidates: Record<FooterDeadlineType, CraDeadline[]> = {
+    instalment: incomeTax.filter((d) => d.kind === "instalment"),
+    "gst-quarterly": [year - 1, year, year + 1].flatMap((y) => gstQuarterlyDeadlines(y)),
+    balance: incomeTax.filter((d) => d.kind === "balance"),
+    return: incomeTax.filter((d) => d.kind === "return"),
+  };
+  const next = (ds: CraDeadline[]) =>
+    ds
+      .filter((d) => d.effectiveDate >= today)
+      .reduce((a, b) => (b.officialDate < a.officialDate ? b : a));
+  const dated = (Object.keys(candidates) as FooterDeadlineType[])
+    .map((type) => ({ type, deadline: next(candidates[type]) }))
+    // Array.prototype.sort is stable, so ties keep the type order above.
+    .sort((a, b) =>
+      a.deadline.officialDate < b.deadline.officialDate
+        ? -1
+        : a.deadline.officialDate > b.deadline.officialDate
+          ? 1
+          : 0,
+    );
+  return [...dated, { type: "t2" }];
 }
 
 /** The same month and day a year after `date` (Feb 29 -> Mar 1). */
@@ -214,7 +240,7 @@ function oneYearAfter(date: string): string {
 /**
  * Page: every deadline (rules A-E) whose effective date is on or after
  * `today` and whose official date is within the next 12 months (on or before
- * the same day next year), sorted and merged like the footer.
+ * the same day next year), sorted, with deadlines sharing a date merged.
  */
 export function getCraDeadlinesNext12Months(today: string): CraDeadlineRow[] {
   const year = Number(today.slice(0, 4));
@@ -242,81 +268,40 @@ export function currentFilingYear(today: string): number {
 
 const ORDINAL_FR = { 1: "1er", 2: "2e", 3: "3e", 4: "4e" } as const;
 
-/** Short footer label for one deadline. */
-export function craDeadlineLabel(d: CraDeadline, lang: Lang): string {
-  const y = d.taxYear;
+/** Footer row label. Years are the deadline's tax year (Y-1 for balance and returns). */
+export function footerRowLabel(row: FooterDeadlineRow, lang: Lang): string {
+  if (row.type === "t2")
+    return lang === "fr" ? "Déclaration T2 des sociétés" : "T2 corporate return";
+  const { quarter, taxYear: y } = row.deadline;
   if (lang === "fr") {
-    switch (d.kind) {
+    switch (row.type) {
       case "instalment":
-        return `Acompte provisionnel du ${ORDINAL_FR[d.quarter!]} trimestre`;
-      case "balance":
-        return `Payer le solde d'impôt de ${y}`;
-      case "return":
-        return `Produire la déclaration ${y} (travailleurs autonomes)`;
-      case "gst-annual-payment":
-        return `Payer la TPS/TVH de ${y}`;
-      case "gst-annual-return":
-        return `Produire la déclaration de TPS/TVH ${y}`;
+        return `Acompte provisionnel d'impôt (${ORDINAL_FR[quarter!]} trimestre)`;
       case "gst-quarterly":
-        return `TPS/TVH du ${ORDINAL_FR[d.quarter!]} trimestre ${y}`;
+        return `Déclarants trimestriels de TPS/TVH (${ORDINAL_FR[quarter!]} trimestre ${y})`;
+      case "balance":
+        return `Solde ${y} d'impôt et de TPS/TVH`;
+      case "return":
+        return `Déclarations ${y} (travailleurs autonomes et TPS/TVH)`;
     }
   }
-  switch (d.kind) {
+  switch (row.type) {
     case "instalment":
-      return `Q${d.quarter} instalment`;
-    case "balance":
-      return `Pay ${y} income tax balance`;
-    case "return":
-      return `File ${y} self-employed return`;
-    case "gst-annual-payment":
-      return `Pay ${y} GST/HST`;
-    case "gst-annual-return":
-      return `File ${y} GST/HST return`;
+      return `Income tax instalment (Q${quarter})`;
     case "gst-quarterly":
-      return `GST/HST for Q${d.quarter} ${y}`;
+      return `GST/HST quarterly filers (Q${quarter} ${y})`;
+    case "balance":
+      return `${y} income tax and GST/HST balance`;
+    case "return":
+      return `${y} self-employed and GST/HST returns`;
   }
 }
 
-/** Income tax and GST/HST annual deadlines that share a date, said once. */
-const COMBINED: Partial<
-  Record<CraDeadlineKind, [CraDeadlineKind, Record<Lang, (y: number) => string>]>
-> = {
-  balance: [
-    "gst-annual-payment",
-    {
-      en: (y) => `Pay ${y} income tax and GST/HST balance`,
-      fr: (y) => `Payer le solde ${y} d'impôt et de TPS/TVH`,
-    },
-  ],
-  return: [
-    "gst-annual-return",
-    {
-      en: (y) => `File ${y} self-employed and GST/HST returns`,
-      fr: (y) => `Produire les déclarations ${y} (travailleurs autonomes et TPS/TVH)`,
-    },
-  ],
+/** What the T2 row shows in place of a date. */
+export const T2_DATE_TEXT: Record<Lang, string> = {
+  en: "6 months after fiscal year-end",
+  fr: "6 mois après la fin de l'exercice",
 };
-
-/**
- * Footer row label: the deadlines' labels joined with " · ". The income tax
- * balance and the GST/HST annual payment (Apr 30), and the self-employed and
- * GST/HST annual returns (Jun 15), are combined into one phrase each.
- */
-export function craRowLabel(row: CraDeadlineRow, lang: Lang): string {
-  const kinds = new Set(row.deadlines.map((d) => d.kind));
-  const partners = new Set(
-    Object.entries(COMBINED)
-      .filter(([kind, [partner]]) => kinds.has(kind as CraDeadlineKind) && kinds.has(partner))
-      .map(([, [partner]]) => partner),
-  );
-  return row.deadlines
-    .filter((d) => !partners.has(d.kind))
-    .map((d) => {
-      const combo = COMBINED[d.kind];
-      return combo && kinds.has(combo[0]) ? combo[1][lang](d.taxYear) : craDeadlineLabel(d, lang);
-    })
-    .join(" · ");
-}
 
 /* ------------------------------- Page labels ------------------------------- */
 
