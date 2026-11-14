@@ -118,9 +118,10 @@ function PartsSidebar({ parts, active }: { parts: ResolvedPart[]; active: string
               <a
                 href={`#${part.id}`}
                 aria-current={isActive ? "location" : undefined}
-                className="block font-sans text-sm font-semibold text-ink hover:underline"
+                data-no-anim
+                className="group block font-sans text-sm font-semibold text-ink"
               >
-                <span className="mr-1.5 font-mono text-nav font-normal uppercase tracking-mono text-ink-60">
+                <span className="mr-1.5 font-mono text-nav font-normal uppercase tracking-mono text-ink-60 transition-colors duration-200 group-hover:text-ink">
                   {part.number}
                 </span>
                 {part.title}
@@ -131,7 +132,8 @@ function PartsSidebar({ parts, active }: { parts: ResolvedPart[]; active: string
                     <Link
                       to="/articles/$slug"
                       params={{ slug: a.slug }}
-                      className={`block font-sans text-sm transition-colors duration-200 hover:text-ink hover:underline ${
+                      data-no-anim
+                      className={`block font-sans text-sm transition-colors duration-200 hover:text-ink ${
                         isActive ? "text-ink-80" : "text-ink-60"
                       }`}
                     >
@@ -143,7 +145,8 @@ function PartsSidebar({ parts, active }: { parts: ResolvedPart[]; active: string
                   <li key={l.href}>
                     <Link
                       to={l.href}
-                      className={`block font-sans text-sm transition-colors duration-200 hover:text-ink hover:underline ${
+                      data-no-anim
+                      className={`block font-sans text-sm transition-colors duration-200 hover:text-ink ${
                         isActive ? "text-ink-80" : "text-ink-60"
                       }`}
                     >
