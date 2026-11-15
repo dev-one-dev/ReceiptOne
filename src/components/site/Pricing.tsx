@@ -59,13 +59,15 @@ const PLAN_PERIOD_FR: Record<Plan["id"], string> = {
 };
 const FEATURES_FR = [
   "Numérisation de reçus illimitée",
-  "Transférez vos reçus par courriel — chaque compte a sa propre adresse de réception; transférez un reçu et il arrive dans l'app",
+  "Transfert des reçus par courriel",
   "Suivi des dépenses et du kilométrage",
   "Suivi de la TPS / TVH / TVP",
   "Rapports de dépenses prêts pour l'ARC",
   "Synchronisation multiappareil",
   "Assistance dans l'application",
   "Applications iOS, Android et Web",
+  "Bot Telegram pour des rapports rapides",
+  "Dépenses de bureau à domicile",
 ];
 
 /** A year's worth of the Monthly price. */

@@ -1,72 +1,72 @@
-import { Briefcase, Laptop2, Palette } from "lucide-react";
+import { Briefcase, Car, Hammer } from "lucide-react";
 import { useLang } from "@/lib/use-lang";
 
 type Persona = {
   role: string;
   description: string;
-  icon: typeof Palette;
+  icon: typeof Briefcase;
 };
 
 const CA_PERSONAS: Persona[] = [
   {
-    role: "Freelance Graphic Designer",
+    role: "Freelancers and independent contractors",
     description:
-      "Snap receipts for software, client meetings, and gear the moment you buy them — no digging through your inbox come tax season.",
-    icon: Palette,
-  },
-  {
-    role: "Independent IT Contractor",
-    description:
-      "GST/HST is read from each receipt you scan, so you can see what you may be able to claim back before you even talk to your accountant.",
-    icon: Laptop2,
-  },
-  {
-    role: "Freelance Consultant",
-    description:
-      "Vehicle expenses, equipment, client meals — all sorted in one place, so tax season isn't a scramble.",
+      "Photograph the receipt for software, equipment or a client lunch when you pay, or forward the e-mail receipt. GST/HST is read from each receipt, and your expense report exports to PDF and CSV for your accountant.",
     icon: Briefcase,
+  },
+  {
+    role: "Rideshare and delivery drivers",
+    description:
+      "Turn on trip tracking and the app logs your work kilometres by GPS in the background. Snap gas and maintenance receipts as you go, and your T2125 report fills in the kilometres for Chart A.",
+    icon: Car,
+  },
+  {
+    role: "Sole proprietors and tradespeople",
+    description:
+      "Snap receipts for materials and supplies at the counter, or upload the PDF invoice from your supplier. Scan on your phone, then sort and export everything from your computer.",
+    icon: Hammer,
   },
 ];
 
 const FR_PERSONAS: Persona[] = [
   {
-    role: "Graphiste pigiste",
+    role: "Pigistes et travailleurs autonomes",
     description:
-      "Photographiez vos reçus de logiciels, de rencontres avec des clients et d'équipement dès l'achat — plus besoin de fouiller votre boîte de réception à la période des impôts.",
-    icon: Palette,
-  },
-  {
-    role: "Contractuel indépendant en TI",
-    description:
-      "La TPS/TVH est lue sur chaque reçu que vous numérisez : vous voyez ce que vous pourriez récupérer avant même de parler à votre comptable.",
-    icon: Laptop2,
-  },
-  {
-    role: "Consultant autonome",
-    description:
-      "Frais de véhicule, équipement, repas avec des clients — tout est classé au même endroit, pour une période des impôts sans course contre la montre.",
+      "Photographiez le reçu d'un logiciel, d'un équipement ou d'un dîner avec un client au moment de payer, ou transférez le reçu envoyé par courriel. La TPS/TVH est lue sur chaque reçu, et votre rapport de dépenses s'exporte en PDF et en CSV pour votre comptable.",
     icon: Briefcase,
+  },
+  {
+    role: "Chauffeurs VTC et livreurs",
+    description:
+      "Activez le suivi des trajets et l'application enregistre vos kilomètres professionnels par GPS en arrière-plan. Photographiez vos reçus d'essence et d'entretien au fur et à mesure, et votre rapport T2125 remplit les kilomètres du Tableau A.",
+    icon: Car,
+  },
+  {
+    role: "Entrepreneurs et gens de métier",
+    description:
+      "Photographiez vos reçus de matériaux et de fournitures au comptoir, ou téléversez la facture PDF de votre fournisseur. Numérisez sur votre téléphone, puis classez et exportez tout depuis votre ordinateur.",
+    icon: Hammer,
   },
 ];
 
 const US_PERSONAS: Persona[] = [
   {
-    role: "Freelance Graphic Designer",
+    role: "Freelancers and 1099 contractors",
     description:
-      "Snap receipts as they happen so your CPA gets a clean export at tax time — no more scrambling every April.",
-    icon: Palette,
-  },
-  {
-    role: "Independent IT Contractor",
-    description:
-      "Deductions get organized automatically, ready before you even sit down with your accountant.",
-    icon: Laptop2,
-  },
-  {
-    role: "Freelance Consultant",
-    description:
-      "Gear, mileage, client meals — all sorted in one place, so filing your Schedule C isn't a scramble.",
+      "Photograph the receipt for software, equipment or a client lunch when you pay, or forward the e-mail receipt. Sales tax is read from each receipt, and your expense report exports to PDF and CSV for your CPA.",
     icon: Briefcase,
+  },
+  {
+    role: "Rideshare and delivery drivers",
+    description:
+      "Turn on trip tracking and the app logs your work miles by GPS in the background. Tag each trip business or personal, and snap gas and maintenance receipts as you go.",
+    icon: Car,
+  },
+  {
+    role: "Sole proprietors and tradespeople",
+    description:
+      "Snap receipts for materials and supplies at the counter, or upload the PDF invoice from your supplier. Scan on your phone, then sort and export everything from your computer.",
+    icon: Hammer,
   },
 ];
 
@@ -75,10 +75,10 @@ export function Testimonials({ region = "ca" }: { region?: "ca" | "us" }) {
   const personas = region === "us" ? US_PERSONAS : fr ? FR_PERSONAS : CA_PERSONAS;
   const heading =
     region === "us"
-      ? "Made for US freelancers"
+      ? "Made for self-employed Americans"
       : fr
         ? "Conçu pour les travailleurs autonomes du Canada"
-        : "Built for Canadian freelancers";
+        : "Built for self-employed Canadians";
   return (
     <section className="w-full px-4 pt-4 pb-12 sm:px-6 sm:pt-6 sm:pb-16 lg:px-8">
       <div className="mx-auto w-full max-w-[1200px]">

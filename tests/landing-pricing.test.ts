@@ -11,6 +11,8 @@ import { build, type Plugin } from "esbuild";
  * app / billed through the store" paragraph (the FAQ may still say so), and the
  * footer's deadline strip shows only the official date and label, never the
  * "on time until" weekend-shift note (that stays on the deadlines pages).
+ * The pricing feature list (shared with /ca/drivers) and the "Who it's for"
+ * personas are checked too.
  */
 
 const DIR = resolve("node_modules/.cache/landing-pricing-test");
@@ -44,6 +46,7 @@ await build({
       import { Route as Ca } from "@/routes/ca/index";
       import { Route as Fr } from "@/routes/fr/index";
       import { Route as Us } from "@/routes/us/index";
+      import { Route as Drivers } from "@/routes/ca/drivers";
 
       // Jan 31, 2027 (a Sunday) is in the footer strip on this date.
       const now = "2026-11-14T18:00:00Z";
@@ -51,6 +54,7 @@ await build({
         "/ca/": [Ca, () => ({ now, roadmap: null })],
         "/fr/": [Fr, () => ({ now, roadmap: null })],
         "/us/": [Us, () => null],
+        "/ca/drivers": [Drivers, () => ({ now })],
       };
 
       export async function render(routeId, path) {
@@ -99,6 +103,13 @@ const section = (html: string, id: string) => {
   assert.ok(m, `#${id} section is rendered`);
   return text(m[0]);
 };
+const whoItsFor = (html: string, eyebrow: string) => {
+  const m = [...html.matchAll(/<section[\s\S]*?<\/section>/g)]
+    .map((x) => text(x[0]))
+    .find((t) => t.includes(eyebrow));
+  assert.ok(m, `"${eyebrow}" section is rendered`);
+  return m;
+};
 const footer = (html: string) => {
   const m = /<footer[\s\S]*?<\/footer>/.exec(html);
   assert.ok(m, "footer is rendered");
@@ -145,5 +156,58 @@ test("landing footer: deadline strip shows date and label, no weekend-shift note
       assert.ok(f.includes("Jan 31, 2027"), `${p.path} official date`);
       assert.ok(f.includes("GST/HST quarterly filers (Q4 2026)"));
     }
+  }
+});
+
+const NEW_FEATURES = {
+  en: ["Forward e-mail receipts", "Telegram bot for quick reports", "Home office expenses"],
+  fr: [
+    "Transfert des reçus par courriel",
+    "Bot Telegram pour des rapports rapides",
+    "Dépenses de bureau à domicile",
+  ],
+} as const;
+
+test("landing pricing: short e-mail item plus Telegram and home office, appended last", async () => {
+  const drivers = {
+    path: "/ca/drivers",
+    lang: "en",
+    ...(await mod.render("/ca/drivers", "/ca/drivers")),
+  };
+  assert.ok(drivers.matched, "/ca/drivers renders");
+  for (const p of [...pages, drivers]) {
+    const pricing = section(p.html, "pricing");
+    for (const f of NEW_FEATURES[p.lang])
+      assert.ok(pricing.includes(f), `${p.path} pricing has "${f}"`);
+    for (const phrase of [
+      "every account gets its own receipt address",
+      "chaque compte a sa propre adresse de réception",
+    ])
+      assert.ok(!pricing.includes(phrase), `${p.path} pricing has no "${phrase}"`);
+    // The two new items close the list, after the platforms item.
+    const [, telegram, home] = NEW_FEATURES[p.lang];
+    const apps = p.lang === "fr" ? "Applications iOS, Android et Web" : "iOS, Android and web apps";
+    assert.ok(pricing.indexOf(apps) < pricing.indexOf(telegram), `${p.path} Telegram after apps`);
+    assert.ok(pricing.indexOf(telegram) < pricing.indexOf(home), `${p.path} home office last`);
+  }
+});
+
+test("landing who it's for: names drivers and contractors, not only freelancers", () => {
+  for (const p of pages) {
+    const who = whoItsFor(p.html, p.lang === "fr" ? "Pour qui" : "Who it's for");
+    if (p.lang === "fr") {
+      for (const w of [
+        "Pigistes",
+        "travailleurs autonomes",
+        "Chauffeurs VTC et livreurs",
+        "gens de métier",
+      ])
+        assert.ok(who.includes(w), `${p.path} mentions "${w}"`);
+      continue;
+    }
+    assert.ok(/drivers/i.test(who), `${p.path} mentions drivers`);
+    assert.ok(/contractors/i.test(who), `${p.path} mentions contractors`);
+    assert.ok(/tradespeople/i.test(who), `${p.path} mentions tradespeople`);
+    if (p.path === "/us") assert.ok(who.includes("1099 contractors"), "/us says 1099 contractors");
   }
 });
