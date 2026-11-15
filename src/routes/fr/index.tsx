@@ -10,7 +10,7 @@ import { NotAll } from "@/components/site/NotAll";
 import { Testimonials } from "@/components/site/Testimonials";
 import { Trust } from "@/components/site/Trust";
 import { Pricing } from "@/components/site/Pricing";
-import { Faq } from "@/components/site/Faq";
+import { Faq, landingFaqItems } from "@/components/site/Faq";
 import { Footer } from "@/components/site/Footer";
 import { faqItemsFR } from "@/lib/faq.fr";
 import {
@@ -61,7 +61,10 @@ export const Route = createFileRoute("/fr/")({
             ]),
           ),
         },
-        { type: "application/ld+json", children: JSON.stringify(faqJsonLd(faqItemsFR)) },
+        {
+          type: "application/ld+json",
+          children: JSON.stringify(faqJsonLd(landingFaqItems(faqItemsFR))),
+        },
       ],
     };
   },

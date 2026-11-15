@@ -9,7 +9,7 @@ import { NotAll } from "@/components/site/NotAll";
 import { Testimonials } from "@/components/site/Testimonials";
 import { Trust } from "@/components/site/Trust";
 import { Pricing } from "@/components/site/Pricing";
-import { Faq, faqItemsUS } from "@/components/site/Faq";
+import { Faq, landingFaqItems, faqItemsUS } from "@/components/site/Faq";
 import { Footer } from "@/components/site/Footer";
 import {
   pageSEO,
@@ -52,7 +52,10 @@ export const Route = (createFileRoute as any)("/us/")({
             ]),
           ),
         },
-        { type: "application/ld+json", children: JSON.stringify(faqJsonLd(faqItemsUS)) },
+        {
+          type: "application/ld+json",
+          children: JSON.stringify(faqJsonLd(landingFaqItems(faqItemsUS))),
+        },
       ],
     };
   },

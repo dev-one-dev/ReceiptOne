@@ -52,11 +52,11 @@ export const PAGE_LASTMOD = {
   "/ca/drivers": "2026-11-09",
   "/ca/tax-deadlines": "2026-11-14",
   "/contact": "2026-10-18",
-  "/faq": "2026-10-18",
+  "/faq": "2026-11-15",
   "/fr": "2026-11-14",
   "/fr/contact": "2026-10-18",
   "/fr/echeances-fiscales": "2026-11-14",
-  "/fr/faq": "2026-10-18",
+  "/fr/faq": "2026-11-15",
   "/fr/privacy": "2026-11-14",
   "/fr/roadmap": "2026-11-10",
   "/fr/terms": "2026-11-11",
@@ -66,7 +66,7 @@ export const PAGE_LASTMOD = {
   "/us": "2026-11-14",
   "/us/articles": "2026-11-14",
   "/us/contact": "2026-10-18",
-  "/us/faq": "2026-10-18",
+  "/us/faq": "2026-11-15",
 };
 
 /**

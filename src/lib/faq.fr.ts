@@ -2,7 +2,7 @@ import type { QA } from "@/components/site/Faq";
 
 /**
  * French (fr-CA) translation of the Canadian FAQ in components/site/Faq.tsx:
- * the same 21 entries in the same order, so CATEGORIZED_FAQ_FR can use the
+ * the same 24 entries in the same order, so CATEGORIZED_FAQ_FR can use the
  * same indexes. Keep the two lists in step -- add, change or remove an entry
  * in both.
  *
@@ -18,7 +18,7 @@ import type { QA } from "@/components/site/Faq";
 export const faqItemsFR: QA[] = [
   {
     q: "Comment fonctionne la numérisation des reçus?",
-    a: "Ouvrez l'application, pointez votre appareil photo vers n'importe quel reçu et touchez l'écran. ReceiptOne lit automatiquement le nom du commerçant, la date, le total et les montants de TPS/TVH/TVP, et vous pouvez corriger tout ce qui a été mal lu. Reçus papier, photos et factures PDF : tout fonctionne.",
+    a: "Ouvrez l'application, pointez votre appareil photo vers n'importe quel reçu et touchez l'écran. ReceiptOne lit automatiquement le nom du commerçant, la date, le total et les montants de TPS/TVH/TVP, et vous pouvez corriger tout ce qui a été mal lu. Reçus papier, photos et factures PDF : tout fonctionne. Sur un ordinateur, ajoutez vos reçus dans l'application Web : choisissez Ajouter un reçu → Choisir un fichier, puis sélectionnez un fichier JPG, PNG ou PDF.",
   },
   {
     q: "ReceiptOne calcule-t-il mon remboursement d'impôt?",
@@ -84,7 +84,7 @@ export const faqItemsFR: QA[] = [
   },
   {
     q: "Y a-t-il une intégration Telegram?",
-    a: "Oui. Notre robot Telegram est @ReceiptOne_bot. Pour le connecter, ouvrez une session dans l'application Web ReceiptOne, ouvrez Intégrations, choisissez Connecter Telegram et scannez le code QR avec l'appareil photo de votre téléphone, ou touchez Ouvrir dans Telegram si vous êtes sur votre téléphone. Le code ne fonctionne qu'une fois et expire après 15 minutes. Envoyez ensuite au robot la photo d'un reçu, ou un fichier image ou PDF : il lit le reçu, l'enregistre dans votre compte et vous répond avec le commerçant, le montant, la date et un lien vers le reçu. Si vous envoyez un reçu que vous avez déjà, il vous le signale au lieu d'en enregistrer une copie. Vous pouvez aussi écrire une question à l'assistant ReceiptOne, ou envoyer /support pour joindre notre équipe d'assistance, qui vous répond dans la conversation et par courriel. Le robot écrit en anglais ou en français, selon votre paramètre de langue ReceiptOne. L'ajout de reçus nécessite un essai ou un abonnement actif.",
+    a: "Oui. Notre robot Telegram est @ReceiptOne_bot. Pour le connecter, ouvrez une session dans l'application Web ReceiptOne, ouvrez Intégrations, choisissez Connecter Telegram et scannez le code QR avec l'appareil photo de votre téléphone, ou touchez Ouvrir dans Telegram si vous êtes sur votre téléphone. Le code ne fonctionne qu'une fois et expire après 15 minutes. Envoyez ensuite au robot la photo d'un reçu, ou un fichier image ou PDF : il lit le reçu, l'enregistre dans votre compte et vous répond avec le commerçant, le montant, la date et un lien vers le reçu. Si vous envoyez un reçu que vous avez déjà, il vous le signale au lieu d'en enregistrer une copie. Vous pouvez aussi poser une question à l'assistant ReceiptOne en texte libre, envoyer /report pour recevoir votre rapport fiscal annuel en PDF ou en CSV, ou envoyer /support pour ouvrir une demande d'assistance; notre équipe vous répond dans la conversation et par courriel. Le robot écrit en anglais ou en français, selon votre paramètre de langue ReceiptOne. L'ajout de reçus nécessite un essai ou un abonnement actif. Pour le déconnecter, ouvrez Intégrations → Telegram → Déconnecter dans l'application Web.",
     link: { to: "https://t.me/ReceiptOne_bot", label: "Ouvrir @ReceiptOne_bot", external: true },
   },
   {
@@ -115,13 +115,32 @@ export const faqItemsFR: QA[] = [
     q: "Comment fonctionnent l'essai gratuit et le paiement?",
     a: "Chaque nouveau compte commence par un essai gratuit de 7 jours dès votre inscription, dans l'application ou sur le Web, et nous ne demandons aucun renseignement de paiement pour le démarrer. Pour continuer à ajouter des reçus après l'essai, abonnez-vous dans l'application ReceiptOne pour iPhone ou Android : les abonnements sont vendus par l'App Store et Google Play, pas sur notre site ni dans l'application Web. Vous gérez ou annulez votre abonnement dans les réglages de votre compte App Store ou Google Play. Si votre essai ou votre abonnement prend fin, votre compte passe en mode lecture seule : vos données restent consultables et modifiables, mais vous ne pouvez plus ajouter de nouveaux éléments avant de vous abonner.",
   },
+  {
+    q: "Comment fonctionne le suivi automatique des trajets?",
+    a: "Activez le suivi automatique des trajets dans l'application mobile ReceiptOne, ou dans l'application Web sous Paramètres → Suivi des trajets; le réglage s'applique sur votre téléphone à la prochaine synchronisation. Votre téléphone enregistre alors vos déplacements en arrière-plan, et chaque trajet arrive avec le statut À vérifier. Indiquez si vos trajets sont professionnels ou personnels sur votre téléphone ou dans l'application Web sous Kilométrage → À vérifier, un à la fois ou une journée entière d'un coup. Vos lieux enregistrés et les itinéraires que vous avez déjà parcourus suggèrent un statut, et si l'option Appliquer les règles automatiquement est activée, cette suggestion est appliquée aux trajets que vous n'avez pas encore vérifiés. Vous pouvez limiter le suivi à vos heures de travail ou le mettre en pause. Seuls les trajets professionnels figurent dans votre registre de kilométrage et dans les kilomètres professionnels du Tableau A de votre T2125; les trajets personnels ne sont pas comptés.",
+  },
+  {
+    q: "Puis-je téléverser plusieurs reçus à la fois?",
+    a: "Oui. Dans l'application Web, allez dans Reçus → Téléversement groupé et glissez-y des images, des PDF ou une archive ZIP. Chaque fichier est lu séparément.",
+  },
+  {
+    q: "Que peut faire l'assistant IA?",
+    a: "L'assistant est un clavardage dans l'application Web ReceiptOne, et vous pouvez aussi le joindre dans le robot Telegram. Il explique le fonctionnement de ReceiptOne et répond aux questions sur vos propres dossiers : dépenses par période ou par catégorie, TPS/TVH récupérable, principaux commerçants, kilométrage et pourcentage d'utilisation professionnelle, et total de votre T2125. Les chiffres proviennent de vos données et sont calculés par l'application. Il ne modifie pas les reçus et ne décide pas si une dépense est déductible. Il répond en anglais ou en français.",
+  },
 ];
 
 /** Same groups and indexes as CATEGORIZED_FAQ in components/site/Faq.tsx. */
 export const CATEGORIZED_FAQ_FR: { category: string; items: QA[] }[] = [
   {
     category: "Général",
-    items: [faqItemsFR[0], faqItemsFR[4], faqItemsFR[5], faqItemsFR[6]],
+    items: [
+      faqItemsFR[0],
+      faqItemsFR[4],
+      faqItemsFR[5],
+      faqItemsFR[6],
+      faqItemsFR[22],
+      faqItemsFR[23],
+    ],
   },
   {
     category: "Impôts et ARC",
@@ -140,7 +159,7 @@ export const CATEGORIZED_FAQ_FR: { category: string; items: QA[] }[] = [
   },
   {
     category: "Kilométrage et bureau à domicile",
-    items: [faqItemsFR[10], faqItemsFR[11], faqItemsFR[12], faqItemsFR[13]],
+    items: [faqItemsFR[10], faqItemsFR[21], faqItemsFR[11], faqItemsFR[12], faqItemsFR[13]],
   },
   {
     category: "Intégrations",

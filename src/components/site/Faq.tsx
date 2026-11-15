@@ -20,7 +20,7 @@ export type QA = {
  */
 const telegramQA: QA = {
   q: "Is there a Telegram integration?",
-  a: "Yes. Our Telegram bot is @ReceiptOne_bot. To connect it, sign in to the ReceiptOne web app, open Integrations, choose Connect Telegram, and scan the QR code with your phone's camera, or tap Open in Telegram if you're on your phone. The code works once and expires after 15 minutes. Then send the bot a photo of a receipt, or an image or PDF file: it reads the receipt, saves it to your account, and replies with the merchant, amount and date and a link to the receipt. If you send a receipt you already have, it tells you instead of saving a copy. You can also type a question for the ReceiptOne assistant, or send /support to reach our support team, who reply in the chat and by email. The bot writes in English or French, following your ReceiptOne language setting. Adding receipts needs an active trial or subscription.",
+  a: "Yes. Our Telegram bot is @ReceiptOne_bot. To connect it, sign in to the ReceiptOne web app, open Integrations, choose Connect Telegram, and scan the QR code with your phone's camera, or tap Open in Telegram if you're on your phone. The code works once and expires after 15 minutes. Then send the bot a photo of a receipt, or an image or PDF file: it reads the receipt, saves it to your account, and replies with the merchant, amount and date and a link to the receipt. If you send a receipt you already have, it tells you instead of saving a copy. You can also ask the ReceiptOne assistant a question in plain text, send /report to get your annual tax report as a PDF or CSV, or send /support to open a support ticket; our team replies in the chat and by email. The bot writes in English or French, following your ReceiptOne language setting. Adding receipts needs an active trial or subscription. To disconnect, open Integrations → Telegram → Disconnect in the web app.",
   link: { to: "https://t.me/ReceiptOne_bot", label: "Open @ReceiptOne_bot", external: true },
 };
 
@@ -40,7 +40,7 @@ const paymentQA: QA = {
 export const faqItems: QA[] = [
   {
     q: "How does receipt scanning work?",
-    a: "Open the app, point your camera at any receipt, and tap. ReceiptOne reads the merchant name, date, total, and GST/HST/PST amounts automatically, and you can edit anything it reads wrongly. Paper receipts, photos, and PDF invoices all work.",
+    a: "Open the app, point your camera at any receipt, and tap. ReceiptOne reads the merchant name, date, total, and GST/HST/PST amounts automatically, and you can edit anything it reads wrongly. Paper receipts, photos, and PDF invoices all work. On a computer, add receipts in the web app: choose Add receipt → Choose from file and pick a JPG, PNG or PDF.",
   },
   {
     q: "Does ReceiptOne calculate my tax refund?",
@@ -123,13 +123,26 @@ export const faqItems: QA[] = [
     a: "From the ReceiptOne web app you can export a T2125 report, in PDF and CSV, laid out like CRA Form T2125, Statement of Business or Professional Activities: Part 1 identification, your expenses by Part 4 line, Part 7 business-use-of-home expenses, and the kilometres for Chart A, Motor vehicle expenses: business kilometres, total kilometres and business-use percentage. Chart A's actual vehicle costs, such as fuel, insurance and repairs, are left blank for you to fill in. You can also export a mileage report: the CSV lists every trip in the year, business and personal, with its date, start and end addresses, purpose and distance, and the PDF lists your business trips. Both are working papers for you or your accountant; ReceiptOne does not file the form.",
   },
   paymentQA,
+  // Appended after paymentQA so the first three (shown on /ca) stay the same.
+  {
+    q: "How does automatic trip tracking work?",
+    a: "Turn on automatic trip tracking in the ReceiptOne mobile app, or in the web app under Settings → Trip tracking; the setting applies on your phone at the next sync. Your phone then records your drives in the background, and each trip arrives as To review. Mark trips business or personal on your phone or in the web app under Mileage → To review, one at a time or a whole day at once. Saved places and routes you've driven before suggest a status, and if Apply rules automatically is on, that suggestion is applied to trips you haven't reviewed yet. You can limit tracking to your work hours or pause it. Only business trips go into your mileage log and your T2125 Chart A business kilometres; personal trips aren't counted.",
+  },
+  {
+    q: "Can I upload many receipts at once?",
+    a: "Yes. In the web app, go to Receipts → Bulk Upload and drag in images, PDFs or a ZIP archive. Each file is read separately.",
+  },
+  {
+    q: "What can the AI assistant do?",
+    a: "The assistant is a chat in the ReceiptOne web app, and you can also reach it in the Telegram bot. It explains how ReceiptOne works and answers questions about your own records: spending by period or category, recoverable GST/HST, top merchants, mileage and business-use percentage, and your T2125 total. The numbers come from your data, calculated by the app. It doesn't edit receipts and doesn't decide whether an expense is deductible. It replies in English or French.",
+  },
 ];
 
 /** US FAQ list — replaces CRA/GST/PST references with IRS/sales tax equivalents. */
 export const faqItemsUS: QA[] = [
   {
     q: "How does receipt scanning work?",
-    a: "Open the app, point your camera at any receipt, and tap. ReceiptOne reads the merchant name, date, total, and sales tax automatically, and you can edit anything it reads wrongly. Paper receipts, photos, and PDF invoices all work.",
+    a: "Open the app, point your camera at any receipt, and tap. ReceiptOne reads the merchant name, date, total, and sales tax automatically, and you can edit anything it reads wrongly. Paper receipts, photos, and PDF invoices all work. On a computer, add receipts in the web app: choose Add receipt → Choose from file and pick a JPG, PNG or PDF.",
   },
   {
     q: "Does ReceiptOne calculate my tax refund?",
@@ -205,13 +218,34 @@ export const faqItemsUS: QA[] = [
     link: { to: "/privacy", label: "Read our Privacy Policy" },
   },
   paymentQA,
+  // Appended after paymentQA so the first three (shown on /us) stay the same.
+  {
+    q: "How does automatic trip tracking work?",
+    a: "Turn on automatic trip tracking in the ReceiptOne mobile app, or in the web app under Settings → Trip tracking; the setting applies on your phone at the next sync. Your phone then records your drives in the background, and each trip arrives as To review. Mark trips business or personal on your phone or in the web app under Mileage → To review, one at a time or a whole day at once. Saved places and routes you've driven before suggest a status, and if Apply rules automatically is on, that suggestion is applied to trips you haven't reviewed yet. You can limit tracking to your work hours or pause it. Only business trips go into your mileage log and your Schedule C mileage; personal trips aren't counted.",
+  },
+  {
+    q: "Can I upload many receipts at once?",
+    a: "Yes. In the web app, go to Receipts → Bulk Upload and drag in images, PDFs or a ZIP archive. Each file is read separately.",
+  },
+  {
+    q: "What can the AI assistant do?",
+    a: "The assistant is a chat in the ReceiptOne web app, and you can also reach it in the Telegram bot. It explains how ReceiptOne works and answers questions about your own records: spending by period or category, deductible totals, top merchants, mileage and business-use percentage, and your Schedule C total. The numbers come from your data, calculated by the app. It doesn't edit receipts and doesn't decide whether an expense is deductible. It replies in English or French.",
+  },
+  {
+    q: "Can I forward receipts by email?",
+    a: "Yes. Every account gets its own receipt address. Forward an email receipt to it and it lands in the app, alongside the receipts you scan with your camera or upload from your photo library.",
+  },
+  {
+    q: "What reports can I export for my Schedule C?",
+    a: "From the ReceiptOne web app you can export an annual tax report for Schedule C, as a PDF or CSV, and a mileage report. Both are working papers for you or your CPA; ReceiptOne does not file your return.",
+  },
 ];
 
 /** FAQ questions grouped by category — used on the /faq help-center page. */
 export const CATEGORIZED_FAQ: { category: string; items: QA[] }[] = [
   {
     category: "General",
-    items: [faqItems[0], faqItems[4], faqItems[5], faqItems[6]],
+    items: [faqItems[0], faqItems[4], faqItems[5], faqItems[6], faqItems[22], faqItems[23]],
   },
   {
     category: "Tax & CRA",
@@ -223,7 +257,7 @@ export const CATEGORIZED_FAQ: { category: string; items: QA[] }[] = [
   },
   {
     category: "Mileage & Home Office",
-    items: [faqItems[10], faqItems[11], faqItems[12], faqItems[13]],
+    items: [faqItems[10], faqItems[21], faqItems[11], faqItems[12], faqItems[13]],
   },
   {
     category: "Integrations",
@@ -239,11 +273,18 @@ export const CATEGORIZED_FAQ: { category: string; items: QA[] }[] = [
 export const CATEGORIZED_FAQ_US: { category: string; items: QA[] }[] = [
   {
     category: "General",
-    items: [faqItemsUS[0], faqItemsUS[4], faqItemsUS[5], faqItemsUS[6]],
+    items: [
+      faqItemsUS[0],
+      faqItemsUS[4],
+      faqItemsUS[5],
+      faqItemsUS[6],
+      faqItemsUS[19],
+      faqItemsUS[20],
+    ],
   },
   {
     category: "Tax & IRS",
-    items: [faqItemsUS[1], faqItemsUS[2], faqItemsUS[3], faqItemsUS[9]],
+    items: [faqItemsUS[1], faqItemsUS[2], faqItemsUS[3], faqItemsUS[9], faqItemsUS[22]],
   },
   {
     category: "Pricing & Plans",
@@ -251,11 +292,11 @@ export const CATEGORIZED_FAQ_US: { category: string; items: QA[] }[] = [
   },
   {
     category: "Integrations",
-    items: [faqItemsUS[10]],
+    items: [faqItemsUS[21], faqItemsUS[10]],
   },
   {
     category: "Mileage & Home Office",
-    items: [faqItemsUS[11], faqItemsUS[12], faqItemsUS[13], faqItemsUS[14]],
+    items: [faqItemsUS[11], faqItemsUS[18], faqItemsUS[12], faqItemsUS[13], faqItemsUS[14]],
   },
   {
     category: "Data & Security",
@@ -413,13 +454,24 @@ export function FaqAccordion({ items }: { items: QA[] }) {
 
 /* ----------------------------- Homepage widget ---------------------------- */
 
+/** How many questions the landing-page widget shows. */
+export const FAQ_LANDING_LIMIT = 3;
+
 /**
- * Landing-page FAQ section. Shows `limit` items (default 3) with a link
+ * The questions the landing-page widget renders. The landing FAQPage JSON-LD
+ * uses this too, so its structured data lists only questions visible on the page.
+ */
+export function landingFaqItems(items: QA[]): QA[] {
+  return items.slice(0, FAQ_LANDING_LIMIT);
+}
+
+/**
+ * Landing-page FAQ section. Shows `limit` items (default FAQ_LANDING_LIMIT) with a link
  * to the full /faq help-center page.
  */
 export function Faq({
   items = faqItems,
-  limit = 3,
+  limit = FAQ_LANDING_LIMIT,
   helpCenterPath = "/faq",
 }: {
   items?: QA[];
