@@ -7,21 +7,24 @@ import { FAQ_HEADING, type Article } from "@/lib/articles";
 /**
  * Whether search engines may index /us/articles. While false the index page
  * emits noindex, follow and is left out of public/sitemap.xml and llms.txt.
- * Each article has its own `indexable` flag below.
+ * Each article has its own `indexable` flag below. All true since the last
+ * three guides were rewritten on 2026-11-14; keep the flags for future use.
  */
-export const US_ARTICLES_INDEX_INDEXABLE = false;
+export const US_ARTICLES_INDEX_INDEXABLE = true;
 
 /** Closing line of every US article, the US counterpart of the CA "not tax advice" line. */
 export const US_ARTICLE_DISCLAIMER =
   "This article is general information, not tax advice. Tax rules and amounts change; check IRS.gov or a tax professional for your situation.";
 
 /* ─────────────── Rewritten guides (2026-11-14): shared sources ───────────────
- * Every IRS rule, rate, threshold and form or line reference in the six
+ * Every IRS rule, rate, threshold and form or line reference in the nine
  * rewritten guides below (irs-mileage-rate-self-employed,
  * quarterly-estimated-taxes-us-freelancers, self-employed-tax-deductions-us,
  * irs-business-expense-deduction-rules, schedule-c-deductions-guide-us-freelancers,
- * irs-receipt-documentation-requirements) was read on these irs.gov pages on
- * November 14, 2026. Worked examples are hypothetical and labelled that way. */
+ * irs-receipt-documentation-requirements, 1099-contractor-tax-guide-us,
+ * home-office-deduction-form-8829-us, sales-tax-business-expenses-us) was read
+ * on these irs.gov pages on November 14, 2026. Worked examples are
+ * hypothetical or quoted from an IRS publication, and labelled that way. */
 const IRS = "https://www.irs.gov";
 const IRS_SRC = {
   mileageRates: {
@@ -102,6 +105,42 @@ const IRS_SRC = {
   },
   p583: { label: "Publication 583", href: `${IRS}/publications/p583` },
   topic305: { label: "Topic 305, Recordkeeping", href: `${IRS}/taxtopics/tc305` },
+  i1099mec: {
+    label: "Instructions for Forms 1099-MISC and 1099-NEC (December 2026 revision)",
+    href: `${IRS}/instructions/i1099mec`,
+  },
+  i1099mec2025: {
+    label: "Instructions for Forms 1099-MISC and 1099-NEC (April 2025 revision)",
+    href: `${IRS}/pub/irs-prior/i1099mec--2025.pdf`,
+  },
+  f1099nec: {
+    label: "Form 1099-NEC, with instructions for recipient",
+    href: `${IRS}/pub/irs-pdf/f1099nec.pdf`,
+  },
+  fs202508: {
+    label: "Fact Sheet 2025-08, Form 1099-K FAQs",
+    href: `${IRS}/pub/taxpros/fs-2025-08.pdf`,
+  },
+  understanding1099k: {
+    label: "Understanding your Form 1099-K",
+    href: `${IRS}/businesses/understanding-your-form-1099-k`,
+  },
+  whatToDo1099k: {
+    label: "What to do with Form 1099-K",
+    href: `${IRS}/businesses/what-to-do-with-form-1099-k`,
+  },
+  i1099k: { label: "Instructions for Form 1099-K", href: `${IRS}/instructions/i1099k` },
+  w9: { label: "About Form W-9", href: `${IRS}/forms-pubs/about-form-w-9` },
+  backupWithholding: {
+    label: "Backup withholding",
+    href: `${IRS}/businesses/small-businesses-self-employed/backup-withholding`,
+  },
+  topic307: { label: "Topic 307, Backup withholding", href: `${IRS}/taxtopics/tc307` },
+  p587: { label: "Publication 587", href: `${IRS}/publications/p587` },
+  i8829: { label: "Instructions for Form 8829", href: `${IRS}/instructions/i8829` },
+  p551: { label: "Publication 551", href: `${IRS}/publications/p551` },
+  schA: { label: "Instructions for Schedule A", href: `${IRS}/instructions/i1040sca` },
+  topic503: { label: "Topic 503, Deductible taxes", href: `${IRS}/taxtopics/tc503` },
 };
 
 /** Closing "checked" line of a rewritten guide's sources, ending with the US disclaimer. */
@@ -117,6 +156,7 @@ const DEDUCTIONS_GUIDE = "/us/articles/self-employed-tax-deductions-us";
 const EXPENSE_RULES_GUIDE = "/us/articles/irs-business-expense-deduction-rules";
 const SCHEDULE_C_GUIDE = "/us/articles/schedule-c-deductions-guide-us-freelancers";
 const RECEIPTS_GUIDE = "/us/articles/irs-receipt-documentation-requirements";
+const CONTRACTOR_GUIDE = "/us/articles/1099-contractor-tax-guide-us";
 
 export const ARTICLES_US_ONLY: Article[] = [
   /* ═══════════════════════════════════════════════════════════════
@@ -940,72 +980,190 @@ export const ARTICLES_US_ONLY: Article[] = [
   {
     slug: "1099-contractor-tax-guide-us",
     regions: ["us"],
-    indexable: false,
-    title: "1099 Contractor Tax Guide: What You Owe and How to Pay It",
+    indexable: true,
+    title: "Getting Paid as a 1099 Contractor: Forms 1099-NEC, 1099-K and W-9",
     excerpt:
-      "What independent contractors need to know about 1099-NEC income, self-employment tax, quarterly payments, and setting cash aside to avoid April surprises.",
+      "What independent contractors receive and report: who sends Forms 1099-NEC and 1099-K and at what thresholds, why all income counts with or without a form, Schedule C, Form W-9, backup withholding, and fixing a wrong or missing 1099.",
     category: "Tax Fundamentals",
     publishedAt: "2026-05-20",
-    updatedAt: "2026-10-05",
+    updatedAt: "2026-11-14",
     image: {
       path: "/articles/1099-contractor-tax-guide-us.webp",
       width: 1280,
       height: 720,
       alt: "Laptop and an open notebook with a pen on a wooden desk",
     },
-    tags: ["1099", "contractor", "self-employment tax", "quarterly taxes", "freelancer", "IRS"],
+    tags: ["1099", "1099-NEC", "1099-K", "contractor", "self-employment tax", "IRS"],
     clusterName: "1099 & Estimated Taxes",
     relatedSlugs: [
-      "quarterly-estimated-taxes-us-freelancers",
       "schedule-c-deductions-guide-us-freelancers",
+      "quarterly-estimated-taxes-us-freelancers",
       "self-employed-tax-deductions-us",
     ],
+    quickAnswer:
+      "A business that pays you for services generally sends you a Form 1099-NEC once its payments reach $600 for payments made in 2025, or $2,000 for payments made after December 31, 2025. Payment apps and online marketplaces send a Form 1099-K when your payments for goods or services exceed $20,000 in more than 200 transactions, while card processors send one for any amount. Either way, you report all of your business income on Schedule C, with or without a form, and pay self-employment tax on the profit. Give each payer your correct taxpayer identification number, usually on Form W-9, or it may have to withhold 24% of your payments.",
+    receiptOneHelps: {
+      items: [
+        "Photograph a receipt, upload an image or PDF, or forward an e-mail receipt to your own ReceiptOne address, and ReceiptOne reads the merchant name, date, total and sales tax for you to check.",
+        "Bulk upload a batch of photos or PDFs if you're catching up on a few months of expenses, and ReceiptOne sorts them into categories and flags duplicates.",
+        "Mark an expense as reimbursable when a client will pay you back for it, so it stays apart from the costs you deduct.",
+        "Export your expense report to PDF or CSV with totals and categories at year end, or type /report to the Telegram bot to get your report in the chat.",
+      ],
+      link: US_CTA,
+    },
     body: [
       {
         type: "p",
-        text: "When you work as an independent contractor, a business that pays you for services generally issues a Form 1099-NEC once its payments to you reach the reporting threshold: $600 for payments made through 2025, and $2,000 for payments made after December 31, 2025. Unlike W-2 employees, no taxes are withheld from your payments — you owe both income tax and self-employment tax, and you're responsible for paying them yourself throughout the year.",
+        text: "When you work as an independent contractor, nobody withholds tax from your pay, and the paperwork about that pay arrives after the year is over, if it arrives at all. This guide covers the forms a contractor receives, the thresholds that decide whether a payer has to send them, how the income goes on your return, and what to do when a form is wrong or never comes.",
       },
-      {
-        type: "h2",
-        text: "Self-Employment Tax: The Big Surprise",
-      },
+      { type: "h2", text: "Form 1099-NEC: payments for your services" },
       {
         type: "p",
-        text: "Self-employment tax is 15.3% on the first $184,500 of net earnings (2026), plus 2.9% Medicare on amounts above that. It covers Social Security and Medicare — taxes that employees split with their employer. As a contractor, you pay the full amount. However, you can deduct 50% of SE tax from your gross income.",
+        text: "Form 1099-NEC reports nonemployee compensation. Under the IRS instructions, a business files one for each person who isn't its employee and whom it paid for services in the course of its trade or business, once the year's payments reach the reporting threshold. The payer must furnish your copy and file with the IRS by January 31. Personal payments are not reportable, so a neighbor who pays you to fix a fence sends no form, while a company that pays you for the same work may have to.",
       },
+      { type: "h3", text: "The threshold changed for 2026" },
       {
-        type: "h2",
-        text: "What You Actually Owe",
-      },
-      {
-        type: "ul",
-        items: [
-          "Self-employment tax (15.3%): on your net profit after deductions",
-          "Federal income tax: marginal rates from 10% to 37% based on taxable income",
-          "State income tax: varies by state — nine states have no income tax",
+        type: "table",
+        caption:
+          "Form 1099-NEC reporting threshold by payment year (April 2025 and December 2026 revisions of the IRS instructions).",
+        headers: ["Payments made", "Threshold"],
+        rows: [
+          ["In 2025", "$600 or more"],
+          [
+            "After December 31, 2025",
+            "$2,000 or more; may be adjusted for inflation beginning in 2027",
+          ],
         ],
       },
       {
-        type: "h2",
-        text: "Setting Money Aside",
+        type: "p",
+        text: "Several Form 1099-MISC amounts, such as rents and other income, moved to $2,000 at the same time. The threshold decides only whether the payer has to send a form. It doesn't change what you owe.",
+      },
+      { type: "h3", text: "Payments that don't go on Form 1099-NEC" },
+      {
+        type: "p",
+        text: "Payments to a corporation, including an LLC treated as a C or S corporation, are generally exempt, with exceptions such as fees paid to attorneys. Payments made by credit card or through a payment app aren't reported on Form 1099-NEC at all; they belong on Form 1099-K. Fact Sheet 2025-08 adds that a payment falling under both rules should be reported only on Form 1099-K, never twice.",
+      },
+      { type: "h2", text: "Form 1099-K: card and payment app payments" },
+      {
+        type: "p",
+        text: "Form 1099-K reports payments you received for goods or services through payment cards, meaning credit, debit and gift cards, and through payment apps and online marketplaces, which the IRS calls third party settlement organizations. The issuer sends the form to the IRS and must send you a copy by January 31.",
+      },
+      { type: "h3", text: "Two different thresholds" },
+      {
+        type: "p",
+        text: "There is no threshold for payment card transactions: if clients pay you directly by card, your card processor sends a Form 1099-K for any amount. Payment apps and online marketplaces have to report only when your payments for goods or services exceed $20,000 and there are more than 200 transactions. Fact Sheet 2025-08 explains that the One, Big, Beautiful Bill reinstated that threshold retroactively, replacing the $600 rule enacted in 2021, so it is the threshold for 2025 payments, and the current Form 1099-K instructions, written for 2026, state the same figures. A platform may still send a form below the threshold, and your state may set a lower one.",
+      },
+      { type: "h3", text: "Gross amounts, not income" },
+      {
+        type: "p",
+        text: "Box 1a shows the gross amount of the payments, with no adjustment for fees, credits, refunds, shipping or discounts, which you can deduct from it. Publication 334 adds that the gross figure may include items that aren't part of your receipts, such as sales tax. Money from friends and family as a gift or repayment of a personal expense shouldn't be on a Form 1099-K and isn't taxable income.",
+      },
+      { type: "h2", text: "All income counts, with or without a form" },
+      {
+        type: "p",
+        text: "The thresholds govern the payer's paperwork, not your tax. The IRS puts it plainly: all income, no matter the amount, is taxable unless the tax law says it isn't, even if you don't get a Form 1099-K, and that includes payments you receive in cash, property or services. The Schedule C instructions tell you to report all income attributable to your business from all sources. In a hypothetical case, a client who pays you $1,500 for services in 2026 doesn't have to send a Form 1099-NEC, but you still report the $1,500.",
+      },
+      { type: "h3", text: "Keep your own income record" },
+      {
+        type: "p",
+        text: "Because some payers send forms and others don't, the forms can't be your income record. Keep your invoices and your bank and payment app statements, note what each client paid and when, and compare that list with the forms you receive. Your expenses need the same care, since every one you can document lowers the profit you pay tax on.",
+        link: { label: "Read the IRS receipt requirements guide.", href: RECEIPTS_GUIDE },
+      },
+      { type: "h2", text: "Where the income goes on your return" },
+      {
+        type: "p",
+        text: "As a sole proprietor, you report contractor income on Schedule C, line 1, gross receipts or sales. The instructions say line 1 should include the amounts properly shown on your Forms 1099-NEC, and if the box 1 amounts on those forms add up to more than you report on line 1, you attach a statement explaining the difference. Your expenses go in Part II, and line 31, net profit, carries to Schedule 1 (Form 1040) and to Schedule SE.",
+        link: { label: "Read the Schedule C line-by-line guide.", href: SCHEDULE_C_GUIDE },
       },
       {
         type: "p",
-        text: "There is no single right percentage to set aside: it depends on your profit, filing status, deductions and state. A better guide is your own estimate. Work through the Form 1040-ES worksheet, or start from last year's total tax, and move each quarter's share into a separate savings account as client payments come in.",
+        text: "Not every Form 1099-NEC belongs on Schedule C. Its recipient instructions say that if you aren't an employee but the amount isn't self-employment income, for example income from a sporadic activity or a hobby, you report it on the other income line of Schedule 1.",
       },
+      { type: "h2", text: "Self-employment tax and estimated payments" },
       {
-        type: "callout",
-        text: "Every tracked expense reduces your net profit — which lowers both income tax and self-employment tax. ReceiptOne captures deductions you'd otherwise miss.",
-      },
-      {
-        type: "h2",
-        text: "Quarterly Estimated Payments",
+        type: "p",
+        text: "Nothing is withheld from 1099 income, so you pay income tax and self-employment tax on your profit yourself. Self-employment tax is 15.3%, made up of 12.4% for Social Security and 2.9% for Medicare, and you owe it if your net earnings from self-employment are $400 or more. For 2026, the Social Security part applies to the first $184,500 of your combined wages, tips and net earnings. You figure the tax on Schedule SE and deduct half of it on Schedule 1 (Form 1040), line 15.",
       },
       {
         type: "p",
-        text: "If you expect to owe $1,000 or more in taxes for the year, the IRS requires quarterly estimated payments. Missing or underpaying these triggers an underpayment penalty — typically small but avoidable. For 2026, the payments are due April 15, June 15 and September 15, 2026, and January 15, 2027.",
+        text: "Because no one withholds for you, the IRS expects you to pay as you go: individuals, including sole proprietors, generally have to make estimated tax payments if they expect to owe $1,000 or more when they file. The due dates, the safe harbors and how to work out each payment are in the estimated taxes guide.",
+        link: { label: "Read the quarterly estimated taxes guide.", href: ESTIMATED_GUIDE },
       },
-      { type: "p", text: US_ARTICLE_DISCLAIMER },
+      { type: "h2", text: "Form W-9: giving payers your taxpayer ID" },
+      {
+        type: "p",
+        text: "When you begin to receive payments reportable on Form 1099, you must give the payer your taxpayer identification number in writing and, for certain payments, certify under penalties of perjury that it is correct. Form W-9 is the form for this: you use it to give your correct number to a person who has to file an information return about you. The number can be your Social Security number, an employer identification number or an individual taxpayer identification number.",
+      },
+      { type: "h3", text: "Backup withholding" },
+      {
+        type: "p",
+        text: "If you don't give the payer your number in the required manner, or the IRS notifies the payer that the number you gave is incorrect, the payer must withhold a flat 24% from your payments. This is backup withholding. You stop it by correcting the cause, usually by giving the payer your correct name and number. The money isn't lost: report it as federal income tax withheld on your return for the year you received the income. Form 1099-NEC shows it in box 4.",
+      },
+      { type: "h2", text: "When a 1099 is wrong or missing" },
+      { type: "h3", text: "A form with the wrong amount" },
+      {
+        type: "p",
+        text: "Ask the payer for a corrected form. For Form 1099-K, the IRS tells you to contact the filer named in the top left corner of the form and says it can't correct the form itself. Keep a copy of the original and your correspondence, and don't wait to file: report the income your records support, and if your Forms 1099-NEC total more than line 1, attach the statement explaining the difference.",
+      },
+      { type: "h3", text: "A form you shouldn't have received" },
+      {
+        type: "p",
+        text: "A Form 1099-K can arrive for personal payments from family or friends, for an account that isn't yours, or as a duplicate. The IRS says to contact the issuer, ask for a corrected form showing a zero amount, keep the original and file anyway. If a Form 1099-NEC treats you as a contractor and you believe you were an employee, and you can't get the payer to correct it, the form's recipient instructions tell you to report the amount as wages and attach Form 8919.",
+      },
+      { type: "h3", text: "A form that never came" },
+      {
+        type: "p",
+        text: "A missing form doesn't change what you owe; report the income from your own records. If a form you expected hasn't arrived by early February, ask the payer. If it paid you less than the threshold, it may simply not have been required to send one.",
+      },
+      { type: "h2", text: FAQ_HEADING },
+      {
+        type: "faq",
+        q: "Do I have to report income if I didn't get a 1099?",
+        a: "Yes. All income is taxable unless the tax law says it isn't, whether or not you receive a Form 1099-NEC or 1099-K, and the Schedule C instructions tell you to report all business income from all sources.",
+      },
+      {
+        type: "faq",
+        q: "What is the Form 1099-NEC threshold?",
+        a: "$600 for payments made in 2025 and $2,000 for payments made after December 31, 2025. The IRS says the $2,000 amount may be adjusted for inflation beginning in calendar year 2027.",
+      },
+      {
+        type: "faq",
+        q: "When does a payment app send a Form 1099-K?",
+        a: "When your payments for goods or services through the app exceed $20,000 and there are more than 200 transactions, the threshold the law reinstated retroactively. Card processors have no threshold, and an app may send a form for smaller amounts.",
+      },
+      {
+        type: "faq",
+        q: "What happens if I don't give a client my Form W-9?",
+        a: "If you don't provide your taxpayer identification number as required, the client may have to withhold 24% of your payments as backup withholding. You claim the amount withheld as federal income tax withheld on your return.",
+      },
+      {
+        type: "faq",
+        q: "My 1099 shows the wrong amount. What should I do?",
+        a: "Ask the payer for a corrected form, keep your records and correspondence, and don't wait to file. Report the income your records support, and if your Forms 1099-NEC total more than Schedule C, line 1, attach a statement explaining the difference.",
+      },
+      {
+        type: "sources",
+        links: [
+          IRS_SRC.i1099mec,
+          IRS_SRC.i1099mec2025,
+          IRS_SRC.f1099nec,
+          IRS_SRC.fs202508,
+          IRS_SRC.understanding1099k,
+          IRS_SRC.whatToDo1099k,
+          IRS_SRC.i1099k,
+          IRS_SRC.schC,
+          IRS_SRC.p334,
+          IRS_SRC.seTax,
+          IRS_SRC.estimated,
+          IRS_SRC.w9,
+          IRS_SRC.backupWithholding,
+          IRS_SRC.topic307,
+        ],
+        checked: irsChecked(
+          "The Form 1099-MISC and 1099-NEC instructions are the April 2025 revision, for 2025 payments, and the December 2026 revision, for 2026 payments; the Schedule C instructions and Publication 334 are the editions for 2025 returns.",
+        ),
+      },
     ],
   },
 
@@ -1434,13 +1592,13 @@ export const ARTICLES_US_ONLY: Article[] = [
   {
     slug: "home-office-deduction-form-8829-us",
     regions: ["us"],
-    indexable: false,
-    title: "Home Office Deduction for Freelancers: Form 8829 Explained",
+    indexable: true,
+    title: "Home Office Deduction: Who Qualifies and How Form 8829 Works",
     excerpt:
-      "How to claim the home office deduction with Form 8829 or the simplified method: the exclusive-use rule, which expenses qualify, and how to calculate it.",
+      "The home office deduction in depth: regular and exclusive use, principal place of business, the simplified and regular methods, direct and indirect expenses on Form 8829, depreciation, the income limit and carryover, renters and owners, and the records to keep.",
     category: "Tax Deductions",
     publishedAt: "2026-05-20",
-    updatedAt: "2026-05-20",
+    updatedAt: "2026-11-14",
     image: {
       path: "/articles/home-office-deduction-form-8829-us.webp",
       width: 1280,
@@ -1453,72 +1611,200 @@ export const ARTICLES_US_ONLY: Article[] = [
       "schedule-c-deductions-guide-us-freelancers",
       "irs-business-expense-deduction-rules",
     ],
+    quickAnswer:
+      "You can deduct business use of your home if you use a specific area regularly and exclusively for your business and it is your principal place of business, a place where you meet clients in the normal course of business, or a separate structure. The simplified method allows $5 per square foot of that space, up to 300 square feet, while the regular method on Form 8829 deducts the business share of your actual home expenses. Under either method the deduction can't be more than the gross income from the business use of your home minus your other business expenses, and only the regular method carries the excess to a later year.",
+    receiptOneHelps: {
+      items: [
+        "Enter your office's square footage, your home's total square footage and your home expenses, and ReceiptOne works out the simplified method and the regular method and shows which gives the larger deduction.",
+        "Photograph or upload rent statements, utility bills and repair bills as images or PDFs, or forward an e-mail bill to your own ReceiptOne address.",
+        "Turn on trip tracking and the app records your work trips by GPS.",
+        "Export your expense report to PDF or CSV at year end, or type /report to the Telegram bot.",
+      ],
+      link: US_CTA,
+    },
     body: [
       {
         type: "p",
-        text: "The home office deduction lets self-employed workers deduct a portion of home expenses — rent, mortgage interest, utilities, insurance, repairs — based on the percentage of the home used for business. It's one of the most valuable deductions for remote freelancers, but also one of the most misunderstood.",
+        text: "The deductions guide gives the overview of the home office deduction. This guide goes further: the tests your space has to meet, the two ways to figure the amount, how Form 8829 sorts your expenses, and what owning rather than renting changes. It follows Publication 587 and the Form 8829 instructions for 2025 returns.",
+        link: { label: "Read the self-employed deductions guide.", href: DEDUCTIONS_GUIDE },
       },
-      {
-        type: "h2",
-        text: "The Exclusive-Use Requirement",
-      },
+      { type: "h2", text: "The tests your space has to meet" },
       {
         type: "p",
-        text: "The IRS requires that your home office space be used 'regularly and exclusively' for business. This means a dedicated room or clearly defined area — your kitchen table where you also eat dinner doesn't qualify. The exclusive-use rule is strictly enforced; one auditor can disallow the entire deduction if personal use is evident.",
+        text: "Generally, you can deduct expenses for part of your home only if you use that part exclusively and regularly as your principal place of business, as a place where patients, clients or customers meet or deal with you in the normal course of your business, or, if it is a separate structure not attached to your home, in connection with your business.",
+      },
+      { type: "h3", text: "Exclusive use" },
+      {
+        type: "p",
+        text: "You must use a specific area of your home only for your business. It can be a room or another separately identifiable space, and it doesn't need a permanent partition. A den the family also uses for recreation fails. Two exceptions skip this test: space used regularly to store inventory or product samples, when your home is the only fixed location of a retail or wholesale business, and a licensed daycare facility.",
+      },
+      { type: "h3", text: "Regular use" },
+      {
+        type: "p",
+        text: "You must use the area for business on a regular basis. Incidental or occasional business use is not regular use.",
+      },
+      { type: "h2", text: "Principal place of business" },
+      {
+        type: "p",
+        text: "Your home office counts as your principal place of business if you use it exclusively and regularly for administrative or management activities of your business and you have no other fixed location where you conduct substantial administrative or management activities. The IRS's examples are billing customers or clients, keeping books and records, ordering supplies, setting up appointments, and forwarding orders or writing reports.",
+      },
+      { type: "h3", text: "Work done elsewhere doesn't disqualify you" },
+      {
+        type: "p",
+        text: "Your office still qualifies if someone else does your billing elsewhere, if you do administrative work in places that aren't fixed locations, such as a car or a hotel room, if you occasionally do minimal administrative work at a fixed location outside your home, or if you have suitable space elsewhere but choose to work at home. In Publication 587's example, a plumber who spends most of the day at customers' premises qualifies, because the estimates and records are written in the home office.",
+      },
+      { type: "h3", text: "Other ways to qualify" },
+      {
+        type: "p",
+        text: "Space you use exclusively and regularly to meet clients in the normal course of business doesn't have to be your principal place of business, and a free-standing studio, workshop or garage used exclusively and regularly for the business qualifies without either test. If your office is your principal place of business, daily trips from home to another work location in the same business become deductible transportation rather than commuting.",
+        link: { label: "Read the IRS mileage rate guide.", href: MILEAGE_GUIDE },
+      },
+      { type: "h2", text: "Simplified method or regular method" },
+      {
+        type: "p",
+        text: "You choose a method each tax year by using it on your timely filed, original return, and once you have chosen for a year, you can't change to the other method for that year. Switching from one year to the next is allowed and isn't a change in accounting method.",
+      },
+      { type: "h3", text: "Simplified method" },
+      {
+        type: "p",
+        text: "Multiply the area you use for business by $5, with the area capped at 300 square feet, so the most you can deduct is $1,500. You take no depreciation on the home, so there is no depreciation to recapture later for those years, and home-related itemized deductions such as mortgage interest and real estate taxes stay in full on Schedule A. You can still deduct business expenses unrelated to the use of the home, such as supplies, and depreciate furniture and equipment. For part-year use, the area is a monthly average.",
+      },
+      { type: "h3", text: "Regular method" },
+      {
+        type: "p",
+        text: "The regular method deducts the business percentage of your actual home expenses, figured on Form 8829, whose line 36 goes to Schedule C, line 30. Any reasonable method can set the percentage, usually the office area divided by the home's total area: a 240-square-foot office in a 1,200-square-foot home is 20%. It takes more records, but there is no 300-square-foot cap, and an amount over the income limit carries forward.",
+        link: { label: "Read the Schedule C line-by-line guide.", href: SCHEDULE_C_GUIDE },
+      },
+      { type: "h2", text: "Direct and indirect expenses on Form 8829" },
+      {
+        type: "p",
+        text: "Form 8829 finds your business percentage in Part I (lines 1 to 7), figures the allowable deduction in Part II, depreciation in Part III and the carryover in Part IV. In Part II, each home expense goes in one of two columns.",
       },
       {
-        type: "h2",
-        text: "Two Methods for Calculating the Deduction",
-      },
-      {
-        type: "ul",
-        items: [
-          "Simplified method: $5 per square foot, up to 300 sq ft = max $1,500 deduction",
-          "Regular method (Form 8829): office sq ft ÷ total home sq ft × eligible home expenses",
-          "Regular method typically yields a larger deduction for larger offices or higher housing costs",
-          "You can switch methods from year to year",
+        type: "table",
+        caption: "Types of home expenses (Publication 587). Direct and indirect amounts face the deduction limit.",
+        headers: ["Type", "What it covers", "How it is deducted", "Examples"],
+        rows: [
+          [
+            "Direct",
+            "Only the business part of your home",
+            "In full, entered in column (a)",
+            "Painting or repairs only in the office",
+          ],
+          [
+            "Indirect",
+            "Keeping up and running the entire home",
+            "Business percentage, with the full amount entered in column (b)",
+            "Insurance, utilities, general repairs",
+          ],
+          [
+            "Unrelated",
+            "Only parts of the home not used for business",
+            "Not deductible",
+            "Lawn care, painting a room not used for business",
+          ],
         ],
       },
       {
-        type: "h2",
-        text: "What Expenses Are Included (Regular Method)",
+        type: "p",
+        text: "Indirect expenses include rent, insurance, utilities such as electricity and gas, trash removal, cleaning and repairs that benefit the whole home. If you itemize, the business share of mortgage interest and real estate taxes goes on Form 8829 and the rest stays on Schedule A; the instructions cover the standard deduction case. Costs of the business activity rather than the home, such as supplies, go elsewhere on Schedule C.",
       },
+      { type: "h3", text: "The first phone line" },
       {
-        type: "ul",
-        items: [
-          "Rent (renters) or mortgage interest + real estate taxes (owners)",
-          "Utilities: electricity, gas, water proportional to office use",
-          "Homeowner's or renter's insurance",
-          "Repairs and maintenance to the home",
-          "Depreciation of the home (owners only — triggers recapture on sale)",
-        ],
+        type: "p",
+        text: "The basic local service charge for the first landline into your home is a personal expense. Business long-distance calls and a second line used only for business go on Schedule C, line 25, not on Form 8829.",
       },
+      { type: "h2", text: "Renters and owners" },
       {
-        type: "callout",
-        text: "Home office expenses require careful documentation. ReceiptOne captures utility bills, insurance statements, and repair receipts throughout the year — so your Form 8829 is accurate and audit-ready.",
+        type: "p",
+        text: "The home office deduction is available to homeowners and renters and applies to all types of homes. A renter deducts the business percentage of the rent. An owner can't deduct the fair rental value of the home, but deducts depreciation on the business part instead, along with the business share of mortgage interest and real estate taxes. Insurance, utilities and repairs are indirect expenses for both.",
       },
+      { type: "h2", text: "Depreciation of a home you own" },
       {
-        type: "h2",
-        text: "The Income Limitation",
+        type: "p",
+        text: "Depreciation is the allowance for wear and tear on the business part of your home. Publication 587 says that if you began using your home for business in 2025, you depreciate the business part as nonresidential real property, straight line over 39 years; if you began earlier, you keep your existing method. The depreciable basis is the business percentage times the smaller of the home's adjusted basis and its fair market value, both excluding land, when business use began. Later improvements to the business part, such as a new roof, are depreciated separately.",
+      },
+      { type: "h3", text: "What it means when you sell" },
+      {
+        type: "p",
+        text: "When you sell a home with an office inside it, you don't split the gain between business and personal parts, but you can't exclude the part of the gain equal to the depreciation you deducted, or could have deducted, for periods after May 6, 1997. The simplified method avoids this for the years you use it, because the depreciation for those years is treated as zero.",
+      },
+      { type: "h2", text: "The income limit and carryover" },
+      {
+        type: "p",
+        text: "If the gross income from the business use of your home is at least your total business expenses, including depreciation, you can deduct all your home expenses. If not, start with that gross income and subtract the business part of expenses you could deduct even without an office, such as mortgage interest and real estate taxes, and the business expenses not related to the home, such as supplies. What remains caps the other home expenses, such as insurance, utilities and repairs, with depreciation of the home taken last.",
       },
       {
         type: "p",
-        text: "The home office deduction cannot exceed your net business income from that business. If you're in a loss year, the excess carries forward to the next year — it isn't lost. This limits the deduction's value in low-income years but makes it fully recoverable when business picks up.",
+        text: "Under the regular method, expenses over the limit carry over to the next year you use actual expenses, subject to that year's limit, even if you have moved; Form 8829 figures them on lines 43 and 44. Under the simplified method, any amount over the limit is lost, and a carryover from an earlier regular-method year waits until you use actual expenses again.",
       },
-      { type: "p", text: US_ARTICLE_DISCLAIMER },
+      { type: "h3", text: "Publication 587's example" },
+      {
+        type: "p",
+        text: "A taxpayer uses 20% of the home for business and has $6,000 of business gross income. Subtracting $3,000 of mortgage interest and real estate taxes (the business share) and $2,000 of other business expenses leaves a $1,000 limit. The $800 business share of maintenance, insurance and utilities fits in full, leaving room for $200 of the $1,600 of home depreciation. The other $1,400 carries over.",
+      },
+      { type: "h2", text: "Records to keep" },
+      {
+        type: "p",
+        text: "No particular method is required, but your records must show the part of your home you use for business, that you use it exclusively and regularly as your principal place of business or to meet clients, and the depreciation and expenses for the business part. Keep canceled checks, receipts and other evidence of what you paid. Owners also keep records of the purchase, improvements and depreciation; copies of each year's Form 8829 can serve as the depreciation record.",
+      },
+      {
+        type: "p",
+        text: "Publication 587 says to keep records usually for the later of 3 years from the return's due date or filing date, or 2 years after the tax was paid. Keep the home's basis records until the period of limitations runs out for the year you sell it.",
+      },
+      { type: "h2", text: FAQ_HEADING },
+      {
+        type: "faq",
+        q: "Can I claim my kitchen table as a home office?",
+        a: "Not if it is also used for meals or other personal purposes. The space must be used only for business, though it needn't be walled off.",
+      },
+      {
+        type: "faq",
+        q: "Can renters claim the home office deduction?",
+        a: "Yes. It is available to homeowners and renters, and a renter deducts the business percentage of the rent along with the other indirect expenses.",
+      },
+      {
+        type: "faq",
+        q: "Should I use the simplified or the regular method?",
+        a: "The simplified method is capped at $1,500 and needs fewer records. The regular method can give more where home costs are high, but brings depreciation and more records. You choose each year.",
+      },
+      {
+        type: "faq",
+        q: "What if my home office expenses are more than my business income?",
+        a: "The deduction is limited to the gross income from the business use of your home minus your other business expenses. Under the regular method, the excess carries over to the next year you use actual expenses; under the simplified method, it can't be carried over.",
+      },
+      {
+        type: "faq",
+        q: "Does the home office deduction affect selling my house?",
+        a: "You can't exclude the part of your gain equal to depreciation deducted, or that could have been, for periods after May 6, 1997. Simplified-method years carry none.",
+      },
+      {
+        type: "sources",
+        links: [
+          IRS_SRC.p587,
+          IRS_SRC.i8829,
+          IRS_SRC.homeOffice,
+          IRS_SRC.simplified,
+          IRS_SRC.schC,
+          IRS_SRC.howLong,
+        ],
+        checked: irsChecked(
+          "Publication 587 and the Form 8829 and Schedule C instructions are the editions for 2025 returns.",
+        ),
+      },
     ],
   },
 
   {
     slug: "sales-tax-business-expenses-us",
     regions: ["us"],
-    indexable: false,
-    title: "Sales Tax on Business Expenses: A Guide for US Freelancers",
+    indexable: true,
+    title: "Sales Tax on Business Purchases: How Freelancers Deduct It",
     excerpt:
-      "How sales tax works on business purchases, whether it's separately deductible, when you may need to collect it, and why tracking it matters.",
+      "How the sales tax you pay on business purchases is deducted: as part of the cost of the item or added to an asset's basis, not as a separate tax. Plus the sales tax you collect, use tax and resale certificates, in brief.",
     category: "Tax Fundamentals",
     publishedAt: "2026-05-20",
-    updatedAt: "2026-10-05",
+    updatedAt: "2026-11-14",
     image: {
       path: "/articles/sales-tax-business-expenses-us.webp",
       width: 1280,
@@ -1531,48 +1817,126 @@ export const ARTICLES_US_ONLY: Article[] = [
       "irs-receipt-documentation-requirements",
       "schedule-c-deductions-guide-us-freelancers",
     ],
+    quickAnswer:
+      "Sales tax you pay on a business purchase is part of the cost of what you bought, not a separate deduction. If the purchase is a deductible expense, such as supplies or a software subscription, you deduct the tax with it; if it is depreciable property, such as a computer you depreciate, you add the tax to its basis. Sales tax imposed on your customers that you collect and pay over to the state is neither income nor a deduction, and what is taxable, use tax and resale certificates are matters of state law that vary by state.",
+    receiptOneHelps: {
+      items: [
+        "Photograph a receipt, upload an image or PDF, or forward an e-mail receipt to your own ReceiptOne address, and ReceiptOne reads the merchant name, date, total and sales tax for you to check.",
+        "Sales tax is tracked receipt by receipt, so you can see the tax inside each total you deduct.",
+        "Bulk upload a batch of photos or PDFs and ReceiptOne sorts them into categories and flags duplicates.",
+        "Export your expenses to PDF or CSV with totals, categories and receipt links, or type /report to the Telegram bot to get your report in the chat.",
+      ],
+      link: US_CTA,
+    },
     body: [
       {
         type: "p",
-        text: "US sales tax on business purchases isn't separately refundable — but it is deductible. The sales tax is treated as part of the total cost of the purchase, so the full amount (including tax) is a legitimate business expense on Schedule C.",
+        text: "Almost every receipt for a business purchase shows a line for sales tax, and it is natural to ask whether that line is a deduction of its own. Under federal tax rules it isn't, but that doesn't mean you lose it. This guide covers how the IRS treats the sales tax you pay, what changes when you collect it from customers, and the basics of use tax. Sales tax itself is a state and local tax, so what is taxed and at what rate varies by state.",
       },
+      { type: "h2", text: "Sales tax is part of the cost" },
       {
-        type: "h2",
-        text: "How Sales Tax Affects Your Deductions",
+        type: "p",
+        text: "Publication 334 states the rule directly: treat any sales tax you pay on a service or on the purchase or use of property as part of the cost of the service or property. The Schedule C instructions say the same from the other side. Line 23, Taxes and licenses, is not the place for state and local sales taxes on property purchased for use in your business; instead, you treat these taxes as part of the cost of the property.",
+      },
+      { type: "h3", text: "Deductible expenses: deduct the tax with the item" },
+      {
+        type: "p",
+        text: "If the service or the property is a deductible business expense, you deduct the tax as part of that cost. In a hypothetical case, you buy printer paper and ink for $80 plus $6 of sales tax. Your office expense is $86, entered as one amount on that line, not $80 there and $6 on line 23. The same goes for a repair, a subscription or anything else you deduct in the year you pay for it.",
+      },
+      { type: "h3", text: "Depreciable property: add the tax to the basis" },
+      {
+        type: "p",
+        text: "If the property is depreciable, Publication 334 says to add the sales tax to the basis for depreciation. Publication 551 lists sales tax among the amounts included in the cost basis of property you buy, along with freight and installation and testing. You then recover the tax through depreciation with the rest of the cost, or at once with it if you expense the item under section 179 or the de minimis safe harbor.",
+        link: { label: "Read the IRS business expense rules guide.", href: EXPENSE_RULES_GUIDE },
+      },
+      { type: "h3", text: "Merchandise you resell" },
+      {
+        type: "p",
+        text: "If you pay sales tax on merchandise bought for resale, the tax is part of the cost of the merchandise. That cost runs through cost of goods sold in Part III of Schedule C rather than through an expense line.",
+      },
+      { type: "h2", text: "Partly personal purchases and vehicles" },
+      {
+        type: "p",
+        text: "When something you buy is partly for personal use, only the business part of its cost is deductible, and the tax goes with the cost: you deduct or depreciate the business share of the price including tax. A car is the usual case. The sales tax you paid is part of the car's basis. If you use the standard mileage rate, you can't deduct depreciation on top of it, so there is no separate deduction for the tax either; under actual expenses, the business share of the basis, tax included, is depreciated.",
+        link: { label: "Read the Schedule C line-by-line guide.", href: SCHEDULE_C_GUIDE },
+      },
+      { type: "h2", text: "Sales tax you collect from customers" },
+      {
+        type: "p",
+        text: "If you sell taxable goods or services, your state may require you to collect sales tax and pay it over. The federal treatment depends on whom the tax is imposed on. Sales tax imposed on the buyer that you are required to collect and pay over is not income: it isn't included in gross receipts and isn't a deductible expense. If the state lets you keep part of what you collect, that part is income on Schedule C, line 6. Sales tax imposed on you as the seller works differently: if you collected it from the buyer, you include it in gross receipts on line 1 and deduct it on line 23.",
       },
       {
         type: "p",
-        text: "For example, using illustrative figures: if you buy a $200 software license and pay $18 in sales tax, your deductible expense is $218 — the full amount. The IRS doesn't require you to separate the sales tax from the purchase price on Schedule C; the total cost is the deduction.",
+        text: "Whether your products or services are taxable at all, and whether you have to register to collect, varies by state; check your state revenue department.",
       },
-      {
-        type: "h2",
-        text: "State Income Tax Deduction (Sales Tax Alternative)",
-      },
+      { type: "h3", text: "Form 1099-K totals" },
       {
         type: "p",
-        text: "On Schedule A (if you itemize), you can deduct either state income taxes or state and local general sales taxes — not both. Sales tax already deducted as a business expense on Schedule C can't be claimed again here. For freelancers in no-income-tax states like Texas, Florida, or Washington, tracking the sales tax you pay on personal purchases can add to your itemized deductions. The total state and local tax (SALT) deduction is capped: for 2025, $40,000 ($20,000 if married filing separately), reduced when modified AGI is over $500,000 ($250,000 if married filing separately) but not below $10,000 ($5,000). Check the Schedule A instructions for the year you file, and itemize only if your total beats the standard deduction.",
+        text: "Publication 334 notes that the gross amount on a Form 1099-K may include items that aren't part of your receipts, such as sales tax. If customers pay you by card or through a payment app, work out your income from your own records rather than reporting the form's gross figure as it stands.",
+        link: { label: "Read the 1099 contractor guide.", href: CONTRACTOR_GUIDE },
       },
-      {
-        type: "h2",
-        text: "When You May Need to Collect Sales Tax",
-      },
+      { type: "h2", text: "Use tax" },
       {
         type: "p",
-        text: "If you sell taxable products or certain services, you may be required to collect and remit sales tax to your state. Service taxability varies widely by state — digital services, consulting, and SaaS products are taxable in some states but not others. Check your state's revenue department rules or consult a CPA if you're unsure.",
+        text: "Use tax is the state tax that can apply when you use taxable property in a state without having paid that state's sales tax on it, as can happen with purchases from out-of-state sellers. Whether you owe it, at what rate and how you report it varies by state; check your state revenue department. The federal treatment doesn't change: Publication 334's rule covers tax on the purchase or use of property, so use tax on a business purchase is part of its cost, the same as sales tax.",
       },
-      {
-        type: "callout",
-        text: "ReceiptOne reads the sales tax line from each receipt you scan and keeps it with the receipt, so the amounts are there when you prepare Schedule C or Schedule A.",
-      },
-      {
-        type: "h2",
-        text: "Nexus and Online Sales",
-      },
+      { type: "h2", text: "Resale certificates, briefly" },
       {
         type: "p",
-        text: "After the 2018 South Dakota v. Wayfair Supreme Court decision, states can require out-of-state sellers to collect sales tax once they meet an economic nexus threshold set by each state. The South Dakota law in that case used $100,000 in sales or 200 separate transactions, but South Dakota dropped the transaction test from July 1, 2023 and now uses more than $100,000 in gross sales only. Other states set their own tests, so check each state where you have customers. If you sell taxable products online to customers in multiple states, this can apply to you regardless of your physical location.",
+        text: "If you buy goods to resell, your state may let you buy them without paying sales tax by giving the seller a resale or exemption certificate, and you then collect tax when you sell. Who qualifies, which form to use and what records to keep varies by state; check your state revenue department. For federal purposes, tax you didn't pay is simply not part of the cost.",
       },
-      { type: "p", text: US_ARTICLE_DISCLAIMER },
+      { type: "h2", text: "Sales tax on personal purchases" },
+      {
+        type: "p",
+        text: "There is one place where sales tax is deducted as a tax, and it is personal. If you itemize on Schedule A, you can elect to deduct state and local general sales taxes instead of state and local income taxes, but not both. The Schedule A instructions tell you not to include sales taxes paid on items used in your trade or business; those stay with the business cost. For 2025, the overall state and local tax deduction is limited to $40,000 ($20,000 if married filing separately), reduced when modified adjusted gross income is more than $500,000 ($250,000 if married filing separately) but not below $10,000 ($5,000).",
+      },
+      { type: "h2", text: "Keep the receipt" },
+      {
+        type: "p",
+        text: "Because the tax is part of the cost, the record that proves the purchase proves the tax too. Keep the receipt or invoice showing the seller, the date and the amount. For property you depreciate, keep the purchase records until the period of limitations runs out for the year you dispose of it, because you need them to figure depreciation and any gain or loss.",
+        link: { label: "Read the IRS receipt requirements guide.", href: RECEIPTS_GUIDE },
+      },
+      { type: "h2", text: FAQ_HEADING },
+      {
+        type: "faq",
+        q: "Is sales tax on business purchases deductible?",
+        a: "Yes, as part of the cost of what you bought. You deduct it with the expense or add it to the basis of depreciable property; you don't claim it separately as a tax on Schedule C.",
+      },
+      {
+        type: "faq",
+        q: "Does sales tax I paid go on Schedule C, line 23?",
+        a: "Not sales tax on property you bought for the business. The Schedule C instructions say to treat it as part of the cost of the property. Line 23 takes, among other taxes, sales tax imposed on you as a seller.",
+      },
+      {
+        type: "faq",
+        q: "Is sales tax I collect from customers income?",
+        a: "Not if the tax is imposed on the buyer and you must pay it over to the state or local government. It is neither income nor a deduction, although any part the state lets you keep is income.",
+      },
+      {
+        type: "faq",
+        q: "Can I deduct the sales tax on a laptop I depreciate?",
+        a: "Yes, through depreciation. Add the sales tax to the laptop's basis and recover it with the rest of the cost, or deduct it at once with the cost if you expense the laptop under section 179 or the de minimis safe harbor.",
+      },
+      {
+        type: "faq",
+        q: "Do I have to charge sales tax on my services?",
+        a: "It depends on your state and on the services. Sales tax is set by states and localities, so check your state revenue department.",
+      },
+      {
+        type: "sources",
+        links: [
+          IRS_SRC.p334,
+          IRS_SRC.schC,
+          IRS_SRC.p551,
+          IRS_SRC.p946,
+          IRS_SRC.schA,
+          IRS_SRC.topic503,
+          IRS_SRC.howLong,
+        ],
+        checked: irsChecked(
+          "Publications 334 and 946 and the Schedule C and Schedule A instructions are the editions for 2025 returns; Publication 551 is the December 2025 revision.",
+        ),
+      },
     ],
   },
 ];

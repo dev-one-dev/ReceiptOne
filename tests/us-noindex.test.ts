@@ -7,13 +7,14 @@ import { loadArticleRenderer, pageText, type Head } from "./lib/render-articles.
 import { generateSitemap, OUTPUT } from "../scripts/generate-sitemap.mjs";
 
 /**
- * Some US articles are kept out of search for now: three US article pages and
- * /us/articles emit <meta name="robots" content="noindex, follow">
- * (per-article `indexable: false` and US_ARTICLES_INDEX_INDEXABLE in
- * src/lib/articles.us.ts), and none of them is in the sitemap or llms.txt.
- * The six guides rewritten on 2026-11-14 (INDEXABLE_US below) are indexable
- * and listed in the sitemap. CA articles and every other page stay indexable. Each US article ends with
- * the US "not tax advice" line, once, before the correction line.
+ * The per-article `indexable` flag and US_ARTICLES_INDEX_INDEXABLE (both in
+ * src/lib/articles.us.ts) can keep US pages out of search with
+ * <meta name="robots" content="noindex, follow"> and out of the sitemap and
+ * llms.txt. Since all nine US guides were rewritten on 2026-11-14, every US
+ * article and /us/articles is indexable, carries no robots meta and is in the
+ * sitemap; /us/articles is back in llms.txt. CA articles and every other page
+ * stay indexable. Each US article ends with the US "not tax advice" line,
+ * once, before the correction line.
  */
 
 type Article = { slug: string; indexable?: boolean };
@@ -33,12 +34,16 @@ const INDEXABLE_US = [
   "irs-business-expense-deduction-rules",
   "schedule-c-deductions-guide-us-freelancers",
   "irs-receipt-documentation-requirements",
+  "1099-contractor-tax-guide-us",
+  "home-office-deduction-form-8829-us",
+  "sales-tax-business-expenses-us",
 ];
 
 const robots = (head: Head) => (head.meta ?? []).filter((m) => m.name === "robots");
 
-test("noindex: three US articles and /us/articles are noindex, follow; the six guides are not", async () => {
+test("noindex: no US article and not /us/articles carries a robots meta", async () => {
   assert.equal(mod.US_ARTICLES.length, 9);
+  assert.equal(INDEXABLE_US.length, 9);
   for (const a of mod.US_ARTICLES) {
     const indexable = INDEXABLE_US.includes(a.slug);
     assert.equal(a.indexable, indexable, `${a.slug} carries indexable: ${indexable}`);
@@ -59,7 +64,7 @@ test("noindex: three US articles and /us/articles are noindex, follow; the six g
   }
   const index = await mod.render("/us/articles/", "/us/articles", {});
   assert.ok(index.matched);
-  assert.deepEqual(robots(index.head), [{ name: "robots", content: "noindex, follow" }]);
+  assert.deepEqual(robots(index.head), []);
   assert.ok(
     (index.head.links ?? []).some(
       (l) => l.rel === "canonical" && l.href === "https://receipt-one.com/us/articles",
@@ -110,27 +115,27 @@ test("noindex: no other route emits noindex", () => {
   assert.doesNotMatch(ca, /NOINDEX_FOLLOW/);
 });
 
-test("noindex: sitemap has no noindexed URL, every CA article and the six US guides", async () => {
+test("noindex: sitemap lists /us/articles, every CA article and all nine US guides", async () => {
   const { xml } = await generateSitemap();
   const committed = readFileSync(OUTPUT, "utf8").replaceAll("\r\n", "\n");
   assert.equal(committed, xml);
   const locs = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
-  assert.ok(!locs.includes("https://receipt-one.com/us/articles"), "/us/articles left out");
+  assert.ok(locs.includes("https://receipt-one.com/us/articles"), "/us/articles listed");
   for (const a of mod.US_ARTICLES)
     assert.equal(
       locs.includes(`https://receipt-one.com/us/articles/${a.slug}`),
       INDEXABLE_US.includes(a.slug),
       `${a.slug} listed only if indexable`,
     );
-  assert.equal(locs.filter((l) => l.includes("/us/articles")).length, INDEXABLE_US.length);
+  assert.equal(locs.filter((l) => l.includes("/us/articles/")).length, INDEXABLE_US.length);
   for (const a of mod.ARTICLES)
     assert.ok(locs.includes(`https://receipt-one.com/articles/${a.slug}`), `${a.slug} listed`);
   assert.ok(locs.includes("https://receipt-one.com/articles"));
 });
 
-test("noindex: llms.txt does not list /us/articles", () => {
+test("noindex: llms.txt lists /us/articles", () => {
   const llms = readFileSync("public/llms.txt", "utf8");
-  assert.doesNotMatch(llms, /\/us\/articles/);
+  assert.match(llms, /https:\/\/receipt-one\.com\/us\/articles\)/);
   assert.match(llms, /https:\/\/receipt-one\.com\/articles\)/);
 });
 

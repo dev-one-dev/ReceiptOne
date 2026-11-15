@@ -31,6 +31,7 @@ ReceiptOne organizes records; it is not a tax filing service and does not calcul
 ## Docs
 
 - [Tax guides for Canadian freelancers](https://receipt-one.com/articles): CRA receipt rules, GST/HST, mileage and deductions
+- [Tax guides for US freelancers](https://receipt-one.com/us/articles): IRS expense rules, Schedule C, mileage and deductions
 - [Help Center (Canada)](https://receipt-one.com/faq): frequently asked questions
 - [Help Center (US)](https://receipt-one.com/us/faq): frequently asked questions
 - [Contact (Canada)](https://receipt-one.com/contact)

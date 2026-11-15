@@ -7,14 +7,16 @@ import { loadArticleRenderer, pageText, type Rendered } from "./lib/render-artic
 import { loadTs } from "../scripts/lib/load-ts.mjs";
 
 /**
- * The six US guides rewritten on 2026-11-14 to the CA article template
- * (three in ea7a5c5, then the expense rules, Schedule C and receipt guides):
+ * The nine US guides rewritten on 2026-11-14 to the CA article template
+ * (three in ea7a5c5, three in ab0358f, then the 1099, home office and sales
+ * tax guides):
  * Quick answer box, H2/H3 body, How ReceiptOne helps box (landing-site
  * features only), 4-6 FAQ items matching the FAQPage JSON-LD, irs.gov-only
  * sources, and the US disclaimer and correction line once at the end. Each
- * links 3-5 of the other guides and /us, never a noindexed US article, and
- * no two indexable US articles share an H1 or a primary title phrase. Two
- * slugs lost their year; the old paths 301 to the new ones.
+ * links 3-5 of the other guides and /us, and no two indexable US articles
+ * share an H1 or a primary title phrase. No US article is noindexed any more
+ * (the flag stays for future use). Two slugs lost their year; the old paths
+ * 301 to the new ones.
  */
 
 type Block =
@@ -54,6 +56,9 @@ const GUIDES = [
   "irs-business-expense-deduction-rules",
   "schedule-c-deductions-guide-us-freelancers",
   "irs-receipt-documentation-requirements",
+  "1099-contractor-tax-guide-us",
+  "home-office-deduction-form-8829-us",
+  "sales-tax-business-expenses-us",
 ];
 const path = (slug: string) => `/us/articles/${slug}`;
 const BY_SLUG = new Map(mod.US_ARTICLES.map((a) => [a.slug, a]));
@@ -79,7 +84,7 @@ const US_DISCLAIMER =
   "This article is general information, not tax advice. Tax rules and amounts change; check IRS.gov or a tax professional for your situation.";
 
 test("us guides: render, indexable, dated, 1,400-2,000 words", () => {
-  assert.equal(NOINDEXED.length, 3);
+  assert.equal(NOINDEXED.length, 0);
   for (const a of NEW) {
     assert.ok(pages.get(a.slug)!.matched, `${a.slug} renders`);
     assert.equal(a.indexable, true, `${a.slug} is indexable`);
@@ -264,7 +269,7 @@ test("us guides: no two indexable US articles share an H1 or a primary title phr
   );
 });
 
-test("us guides: the later three state their core IRS rules", () => {
+test("us guides: the expense rules, Schedule C and receipt guides state their core IRS rules", () => {
   const text = (slug: string) => pageText(articleHtml(pages.get(slug)!));
   const rules = text("irs-business-expense-deduction-rules");
   assert.match(rules, /common and accepted in your field of business/);
@@ -278,6 +283,31 @@ test("us guides: the later three state their core IRS rules", () => {
   assert.match(receipts, /less than \$75/);
   assert.match(receipts, /3 years in most cases/);
   assert.match(receipts, /more than 25% of the gross income/);
+});
+
+test("us guides: the 1099, home office and sales tax guides state their core IRS rules", () => {
+  const text = (slug: string) => pageText(articleHtml(pages.get(slug)!));
+  const c1099 = text("1099-contractor-tax-guide-us");
+  // 1099-NEC: $600 for 2025 payments, $2,000 for payments after 2025.
+  assert.match(c1099, /In 2025 \$600 or more/);
+  assert.match(c1099, /After December 31, 2025 \$2,000 or more/);
+  assert.match(c1099, /adjusted for inflation beginning in/);
+  // 1099-K: TPSO over $20,000 and more than 200 transactions; cards any amount.
+  assert.match(c1099, /exceed \$20,000 and there are more than 200 transactions/);
+  assert.match(c1099, /for any amount/);
+  assert.match(c1099, /flat 24%/);
+  assert.match(c1099, /\$400 or more/);
+  const home = text("home-office-deduction-form-8829-us");
+  assert.match(home, /\$5, with the area capped at 300 square feet/);
+  assert.match(home, /straight line over 39 years/);
+  assert.match(home, /lines 43 and 44/);
+  assert.match(home, /Schedule C, line 30/);
+  const sales = text("sales-tax-business-expenses-us");
+  assert.match(sales, /part of the cost of the service or property/);
+  assert.match(sales, /add the sales tax to the basis for depreciation/);
+  assert.match(sales, /check your state revenue department/);
+  // No state-specific rates or thresholds in the sales tax guide.
+  assert.doesNotMatch(sales, /\d+(\.\d+)?% (sales|use) tax|economic nexus|Wayfair/i);
 });
 
 test("us guides: no banned wording, emoji, or em-dash habit", () => {
