@@ -183,7 +183,7 @@ export const faqItemsUS: QA[] = [
   telegramQA,
   {
     q: "How does mileage tracking work?",
-    a: "Turn on trip tracking once and the mobile app records your work trips by GPS, in the background. Or add a trip by entering its start and end addresses, on mobile or web, and ReceiptOne calculates the route and distance via Google Maps. Tag each trip business or personal. Set your per-mile rate in settings and your mileage report multiplies your business miles by it, so check that rate against the IRS standard mileage rate for the period you drove. Your Schedule C report shows your business miles for the year in Part IV, Information on Your Vehicle.",
+    a: "Turn on trip tracking once and the mobile app records your work trips by GPS, in the background. Or add a trip by entering its start and end addresses, on mobile or web, and ReceiptOne calculates the route and distance via Google Maps. Tag each trip business or personal. Set your per-mile rate in settings and your mileage report multiplies your business miles by it, so check that rate against the IRS standard mileage rate for the period you drove. Your Schedule C report shows each car's business miles for the year and the car and truck expenses for line 9.",
   },
   {
     q: "What counts as IRS-acceptable mileage documentation?",
@@ -205,7 +205,7 @@ export const faqItemsUS: QA[] = [
   },
   {
     q: "Can I claim both mileage and home office deductions?",
-    a: "Yes. They're tracked independently in the app, and both appear in your Schedule C report: business miles in Part IV and business use of your home on line 30.",
+    a: "Yes. They're tracked independently in the app, and both appear in your Schedule C report: your business miles with the car and truck expenses for line 9, and business use of your home on line 30.",
   },
   {
     q: "Where is my data stored?",

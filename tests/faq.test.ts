@@ -242,6 +242,18 @@ test("faq: no answer counts personal trips in a total, percentage or export", ()
   );
 });
 
+test("faq: no US answer claims the report fills in or shows Schedule C Part IV", () => {
+  // The US annual tax report has no Part IV rows (portal taxFormRows.ts
+  // usVehicleSection); the only allowed mention says ReceiptOne doesn't fill it in.
+  const ALLOWED = "ReceiptOne doesn't fill in Schedule C Part IV";
+  for (const it of mod.faqItemsUS)
+    for (const sentence of it.a.split(/(?<=[.!?])\s+/))
+      if (/Part IV/.test(sentence))
+        assert.ok(sentence.startsWith(ALLOWED), `"${it.q}" claims Part IV: ${sentence}`);
+  const usMileage = find(mod.faqItemsUS, "How does mileage tracking work?").a;
+  assert.ok(usMileage.includes("car and truck expenses for line 9"));
+});
+
 test("faq: every entry is in exactly one category; no numeric caps or banned words", () => {
   const BANNED = /game-changer|seamless|effortless|hassle-free|unlock|supercharge/i;
   for (const [k, { items, cats }] of Object.entries(LISTS)) {
