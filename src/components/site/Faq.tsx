@@ -268,7 +268,6 @@ export const faqItemsUS: QA[] = [
   {
     q: "How do I change my language or country?",
     a: "In the web app, open Settings. A change to the interface language applies straight away. Your country decides which tax rules and categories apply, so set it before you add receipts. Trip tracking options are in Settings too.",
-    videos: [FAQ_VIDEOS.settings],
   },
   {
     q: "Can I send my report to my accountant?",

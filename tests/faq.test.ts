@@ -363,8 +363,9 @@ test("faq videos: the right clips on the right questions", () => {
     ["How does receipt scanning work?", ["upload-receipt", "add-receipt-manual"]],
     ["Can I upload many receipts at once?", ["upload-receipt"]],
     ["Is there a Telegram integration?", ["telegram-connect"]],
-    ["How do I change my language or country?", ["settings"]],
   ];
+  // The US settings question stays, without the clip (it shows a province).
+  assert.deepEqual(videoIds(mod.faqItemsUS, "How do I change my language or country?"), []);
   for (const [q, ids] of CA) assert.deepEqual(videoIds(mod.faqItems, q), ids, `CA "${q}"`);
   for (const [q, ids] of US) assert.deepEqual(videoIds(mod.faqItemsUS, q), ids, `US "${q}"`);
   // Nothing else carries a clip, and no item has more than two.
@@ -377,12 +378,25 @@ test("faq videos: the right clips on the right questions", () => {
   for (const it of mod.faqItemsFR) assert.ok(!it.videos?.length, `FR "${it.q}" has no clip`);
 });
 
-test("faq videos: no km, T2125, home-office or accountant clip on US", () => {
-  for (const id of ["add-trip", "home-office", "report", "accountant"])
+test("faq videos: no km, T2125, home-office, accountant or settings clip on US", () => {
+  for (const id of ["add-trip", "home-office", "report", "accountant", "settings"])
     assert.ok(mod.CA_ONLY_FAQ_VIDEO_IDS.includes(id), `${id} is CA-only`);
   for (const it of mod.faqItemsUS)
     for (const v of it.videos ?? [])
       assert.ok(!mod.CA_ONLY_FAQ_VIDEO_IDS.includes(v.id), `US "${it.q}" has ${v.id}`);
+  // Neither the US FAQ page's JSON-LD nor any US page embeds the settings clip.
+  const usLd = mod.head("/us/faq").scripts.map((s) => JSON.parse(s.children));
+  assert.ok(
+    !usLd.some((j) => j["@type"] === "VideoObject" && String(j.contentUrl).includes("settings")),
+    "/us/faq has no settings VideoObject",
+  );
+  for (const id of ["/us/", "/us/faq"])
+    assert.ok(!JSON.stringify(mod.head(id)).includes("/videos/faq/settings"), `${id} head`);
+  // /faq keeps it.
+  const caLd = mod.head("/faq").scripts.map((s) => JSON.parse(s.children));
+  assert.ok(
+    caLd.some((j) => j["@type"] === "VideoObject" && j.contentUrl.endsWith("/settings.mp4")),
+  );
 });
 
 test("faq videos: files exist and the player loads nothing until play", () => {

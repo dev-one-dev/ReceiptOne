@@ -6,8 +6,9 @@
  * ("blurred here" and the like).
  *
  * Region: report, home-office and add-trip show kilometres, T2125 or the
- * Canadian (CRA) home-office wizard, and accountant is attached on the CA list
- * only, so none of those may be attached to a US question.
+ * Canadian (CRA) home-office wizard; settings shows a Canadian province; and
+ * accountant is attached on the CA list only. None of those may be attached
+ * to a US question.
  */
 export type FaqVideo = {
   id: string;
@@ -87,8 +88,17 @@ export const FAQ_VIDEOS = {
   ),
 } satisfies Record<string, FaqVideo>;
 
-/** Clips that show kilometres, T2125, the CRA home-office wizard or are CA-only. */
-export const CA_ONLY_FAQ_VIDEO_IDS = ["add-trip", "home-office", "report", "accountant"];
+/**
+ * Clips that show kilometres, T2125, the CRA home-office wizard or a Canadian
+ * province, or are CA-only.
+ */
+export const CA_ONLY_FAQ_VIDEO_IDS = [
+  "add-trip",
+  "home-office",
+  "report",
+  "accountant",
+  "settings",
+];
 
 /** Seconds → ISO 8601 duration, e.g. 26 → "PT26S", 75 → "PT1M15S". */
 export function isoDuration(seconds: number): string {
