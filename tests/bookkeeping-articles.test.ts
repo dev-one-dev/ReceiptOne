@@ -13,7 +13,7 @@ import { loadArticleRenderer, pageText, type Rendered } from "./lib/render-artic
  * 4-6 FAQ items whose FAQPage JSON-LD matches the visible text, at least three
  * internal links that resolve to existing routes, a sources list of canada.ca
  * links only, its own three image files with alt text, and none of the banned
- * marketing phrases. The 24 existing article pages must render exactly the
+ * marketing phrases. The 21 existing article pages must render exactly the
  * text and head they did before the change (hashes in
  * tests/fixtures/existing-article-text.json, taken at commit 33fb4fd). The
  * 15 CA text hashes were retaken when the footer deadline strip dropped its
@@ -22,6 +22,10 @@ import { loadArticleRenderer, pageText, type Rendered } from "./lib/render-artic
  * "not tax advice" line and the noindex, follow robots meta: verified as the
  * only differences, plus the reading time of irs-mileage-rate-2025-self-employed
  * (2 -> 3 min, on its page and its related card), which the added words tip over.
+ * On 2026-11-14 three US guides were rewritten (tests/us-guides.test.ts) and
+ * dropped from the fixture (24 -> 21). Five of the remaining US text hashes
+ * were retaken: their related cards now show the rewritten guides' titles and
+ * reading times, verified as the only difference; their heads are unchanged.
  */
 
 type Block =
@@ -256,7 +260,7 @@ test("existing articles: rendered text and head unchanged", async () => {
     readFileSync("tests/fixtures/existing-article-text.json", "utf8"),
   ) as Record<string, { text: string; head: string }>;
   const sha = (s: string) => createHash("sha256").update(s).digest("hex");
-  assert.equal(Object.keys(fixture).length, 24);
+  assert.equal(Object.keys(fixture).length, 21);
   // The "Spotted an error?" line (tests/correction-line.test.ts) was added to
   // every article after this fixture was taken; drop it so the hash still
   // guards the article's own text.

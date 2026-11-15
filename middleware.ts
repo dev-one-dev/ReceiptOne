@@ -32,6 +32,8 @@ export const config = {
     "/articles/excel-vs-expense-app-canada",
     "/articles/manual-vs-automated-expense-tracking-canada",
     "/articles/tax-instalment-payments-canada-self-employed",
+    "/us/articles/irs-mileage-rate-2025-self-employed",
+    "/us/articles/self-employed-tax-deductions-us-2025",
   ],
 };
 
@@ -66,6 +68,10 @@ const MERGED_ARTICLES: Record<string, string> = {
   "/articles/manual-vs-automated-expense-tracking-canada": "/articles/spreadsheet-vs-expense-app",
   "/articles/tax-instalment-payments-canada-self-employed":
     "/articles/freelancer-taxes-canada-guide",
+  // US slugs that dropped their year when the guides were rewritten (2026-11-14).
+  "/us/articles/irs-mileage-rate-2025-self-employed": "/us/articles/irs-mileage-rate-self-employed",
+  "/us/articles/self-employed-tax-deductions-us-2025":
+    "/us/articles/self-employed-tax-deductions-us",
 };
 
 export default function middleware(request: Request) {

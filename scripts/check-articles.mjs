@@ -8,8 +8,9 @@
  * Questions" h2 up to the next h2) may hold only faq blocks, callouts and a
  * closing sources block, so nothing renders there that the schema would miss.
  *
- * Redirects: every retired /articles/ path in the middleware matcher must 301
- * to a live article and carry the query string across.
+ * Redirects: every retired /articles/ or /us/articles/ path in the middleware
+ * matcher must 301 to a live article of the same region and carry the query
+ * string across.
  */
 import { loadTs } from "./lib/load-ts.mjs";
 
@@ -73,18 +74,26 @@ for (const { region, article } of articles) {
 /* ------------------------------- Redirects -------------------------------- */
 
 const ORIGIN = "https://receipt-one.com";
-const live = new Set(articles.filter((a) => a.region === "ca").map((a) => a.article.slug));
+const liveIn = (region) =>
+  new Set(articles.filter((a) => a.region === region).map((a) => a.article.slug));
+const REGIONS = [
+  { prefix: "/articles/", live: liveIn("ca"), name: "CA" },
+  { prefix: "/us/articles/", live: liveIn("us"), name: "US" },
+];
 let redirects = 0;
-for (const path of matcher.filter((p) => p.startsWith("/articles/"))) {
-  const slug = path.slice("/articles/".length);
+for (const path of matcher) {
+  const region = REGIONS.find((r) => path.startsWith(r.prefix));
+  if (!region) continue;
+  const { prefix, live, name } = region;
+  const slug = path.slice(prefix.length);
   if (live.has(slug)) errors.push(`${path}: redirected by middleware but still a live article`);
   const res = middleware(new Request(`${ORIGIN}${path}?utm_source=check&x=1`));
   const location = res.headers.get("location") ?? "";
   const target = new URL(location, ORIGIN);
-  const targetSlug = target.pathname.replace(/^\/articles\//, "");
+  const targetSlug = target.pathname.slice(prefix.length);
   if (res.status !== 301) errors.push(`${path}: expected 301, got ${res.status}`);
-  else if (!target.pathname.startsWith("/articles/") || !live.has(targetSlug))
-    errors.push(`${path}: redirects to ${location}, which is not a live CA article`);
+  else if (!target.pathname.startsWith(prefix) || !live.has(targetSlug))
+    errors.push(`${path}: redirects to ${location}, which is not a live ${name} article`);
   else if (target.search !== "?utm_source=check&x=1")
     errors.push(`${path}: query string dropped (got ${location})`);
   redirects++;

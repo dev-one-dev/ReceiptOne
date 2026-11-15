@@ -61,7 +61,9 @@ test("display titles: explicit, year-free, and only set where they differ", () =
       assert.notEqual(a.displayTitle, a.title, `${a.slug}: displayTitle repeats title`);
   }
   // The year stays in the SEO title of the articles that had one.
-  assert.equal(all.filter((a) => YEAR.test(a.title)).length, 14);
+  // 13 since 2026-11-14: the rewritten US deductions guide dropped its year
+  // (only the mileage guide, which quotes the 2026 rate, keeps a year).
+  assert.equal(all.filter((a) => YEAR.test(a.title)).length, 13);
 });
 
 for (const [region, list, route, base] of [

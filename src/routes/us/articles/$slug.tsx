@@ -1,9 +1,10 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { ArrowLeft, ArrowRight, CheckCircle2, Clock } from "lucide-react";
+import { ArrowLeft, ArrowRight, Clock } from "lucide-react";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
 import { CardImage } from "@/components/site/ArticlesSection";
 import { CorrectionLine } from "@/components/site/CorrectionLine";
+import { ArticleBody } from "@/components/site/ArticleContent";
 import { pageSEO, breadcrumbJsonLd, faqJsonLd } from "@/lib/seo";
 import {
   ARTICLE_BYLINE,
@@ -12,7 +13,6 @@ import {
   readingMinutes,
   articleOgImage,
   formatArticleDate,
-  type ContentBlock,
   type Article,
   articleDisplayTitle,
   isArticleIndexable,
@@ -109,54 +109,6 @@ function ArticleNotFound() {
   );
 }
 
-function renderBlock(block: ContentBlock, index: number) {
-  switch (block.type) {
-    case "p":
-      return (
-        <p key={index} className="mb-5 font-sans text-body text-ink-80">
-          {block.text}
-        </p>
-      );
-    case "faq":
-      return (
-        <p key={index} className="mb-5 font-sans text-body text-ink-80">
-          {block.q} {block.a}
-        </p>
-      );
-    case "h2":
-      return (
-        <h2 key={index} className="mb-4 mt-10 text-h3 text-ink">
-          {block.text}
-        </h2>
-      );
-    case "ul":
-      return (
-        <ul key={index} className="mb-5 space-y-3">
-          {block.items.map((item, i) => (
-            <li key={i} className="flex gap-3">
-              <CheckCircle2 className="mt-0.5 size-5 shrink-0 text-ember" aria-hidden />
-              <span className="font-sans text-body text-ink-80">{item}</span>
-            </li>
-          ))}
-        </ul>
-      );
-    case "callout":
-      return (
-        <div
-          key={index}
-          className="mb-5 overflow-hidden rounded-card border border-hairline bg-paper"
-        >
-          <div className="flex gap-0">
-            <div className="w-1 shrink-0 bg-ember" aria-hidden />
-            <p className="p-6 font-sans text-body text-ink-80">{block.text}</p>
-          </div>
-        </div>
-      );
-    default:
-      return null;
-  }
-}
-
 const formatDate = (iso: string) => formatArticleDate(iso, "en-US");
 
 function RelatedCard({ article }: { article: Article }) {
@@ -221,7 +173,13 @@ function USArticleDetailPage() {
 
   if (!article) return <ArticleNotFound />;
 
-  const related = getHelpCenterRelated(slug, US_ARTICLES, 3);
+  // An indexable article only suggests indexable ones, so it never links to a
+  // page kept out of search.
+  const related = getHelpCenterRelated(
+    slug,
+    isArticleIndexable(article) ? US_ARTICLES.filter(isArticleIndexable) : US_ARTICLES,
+    3,
+  );
 
   return (
     <main
@@ -306,7 +264,7 @@ function USArticleDetailPage() {
 
         {/* Article body */}
         <div className="mx-auto max-w-[760px] px-4 pb-16 sm:px-6 lg:px-0">
-          {article.body.map((block, i) => renderBlock(block, i))}
+          <ArticleBody article={article} />
           <CorrectionLine
             lang="en"
             title={articleDisplayTitle(article)}

@@ -2,7 +2,7 @@
  * US-specific knowledge base articles.
  * Imported by help-center.ts to populate US_HELP_CENTER.articles.
  */
-import type { Article } from "@/lib/articles";
+import { FAQ_HEADING, type Article } from "@/lib/articles";
 
 /**
  * Whether search engines may index /us/articles. While false the index page
@@ -14,6 +14,89 @@ export const US_ARTICLES_INDEX_INDEXABLE = false;
 /** Closing line of every US article, the US counterpart of the CA "not tax advice" line. */
 export const US_ARTICLE_DISCLAIMER =
   "This article is general information, not tax advice. Tax rules and amounts change; check IRS.gov or a tax professional for your situation.";
+
+/* ─────────────── Rewritten guides (2026-11-14): shared sources ───────────────
+ * Every IRS rule, rate, threshold and form or line reference in the three
+ * rewritten guides below (irs-mileage-rate-self-employed,
+ * quarterly-estimated-taxes-us-freelancers, self-employed-tax-deductions-us)
+ * was read on these irs.gov pages on November 14, 2026. Worked examples are
+ * hypothetical and labelled that way. */
+const IRS = "https://www.irs.gov";
+const IRS_SRC = {
+  mileageRates: {
+    label: "Standard mileage rates",
+    href: `${IRS}/tax-professionals/standard-mileage-rates`,
+  },
+  ir2025128: {
+    label: "IR-2025-128 (2026 rate from January 1)",
+    href: `${IRS}/newsroom/irs-sets-2026-business-standard-mileage-rate-at-725-cents-per-mile-up-25-cents`,
+  },
+  ann202611: { label: "Announcement 2026-11 (IRB 2026-29)", href: `${IRS}/irb/2026-29_irb` },
+  topic510: { label: "Topic 510, Business use of car", href: `${IRS}/taxtopics/tc510` },
+  p463: { label: "Publication 463", href: `${IRS}/publications/p463` },
+  schC: { label: "Instructions for Schedule C", href: `${IRS}/instructions/i1040sc` },
+  howLong: {
+    label: "How long should I keep records?",
+    href: `${IRS}/businesses/small-businesses-self-employed/how-long-should-i-keep-records`,
+  },
+  records: {
+    label: "What kind of records should I keep",
+    href: `${IRS}/businesses/small-businesses-self-employed/what-kind-of-records-should-i-keep`,
+  },
+  estimated: {
+    label: "Estimated taxes",
+    href: `${IRS}/businesses/small-businesses-self-employed/estimated-taxes`,
+  },
+  p505: { label: "Publication 505", href: `${IRS}/publications/p505` },
+  f1040es: { label: "Form 1040-ES", href: `${IRS}/forms-pubs/about-form-1040-es` },
+  penalty: {
+    label: "Underpayment of estimated tax penalty",
+    href: `${IRS}/payments/underpayment-of-estimated-tax-by-individuals-penalty`,
+  },
+  seTax: {
+    label: "Self-employment tax",
+    href: `${IRS}/businesses/small-businesses-self-employed/self-employment-tax-social-security-and-medicare-taxes`,
+  },
+  onlineAccount: {
+    label: "Online account for individuals",
+    href: `${IRS}/payments/online-account-for-individuals`,
+  },
+  directPay: { label: "Direct Pay", href: `${IRS}/payments/direct-pay-with-bank-account` },
+  eftps: {
+    label: "EFTPS",
+    href: `${IRS}/payments/eftps-the-electronic-federal-tax-payment-system`,
+  },
+  homeOffice: {
+    label: "Home office deduction",
+    href: `${IRS}/businesses/small-businesses-self-employed/home-office-deduction`,
+  },
+  simplified: {
+    label: "Simplified option for home office deduction",
+    href: `${IRS}/businesses/small-businesses-self-employed/simplified-option-for-home-office-deduction`,
+  },
+  p334: { label: "Publication 334", href: `${IRS}/publications/p334` },
+  i7206: { label: "Instructions for Form 7206", href: `${IRS}/instructions/i7206` },
+  cola: {
+    label: "Retirement plan limits (COLA)",
+    href: `${IRS}/retirement-plans/cola-increases-for-dollar-limitations-on-benefits-and-contributions`,
+  },
+  p560: { label: "Publication 560", href: `${IRS}/publications/p560` },
+  qbi: {
+    label: "Qualified business income deduction",
+    href: `${IRS}/newsroom/qualified-business-income-deduction`,
+  },
+};
+
+/** Closing "checked" line of a rewritten guide's sources, ending with the US disclaimer. */
+const irsChecked = (editions: string) =>
+  `All read on irs.gov on November 14, 2026. ${editions} ${US_ARTICLE_DISCLAIMER}`;
+
+/** The closing call to action inside each "How ReceiptOne helps" box. */
+const US_CTA = { label: "See how ReceiptOne works.", href: "/us" };
+
+const MILEAGE_GUIDE = "/us/articles/irs-mileage-rate-self-employed";
+const ESTIMATED_GUIDE = "/us/articles/quarterly-estimated-taxes-us-freelancers";
+const DEDUCTIONS_GUIDE = "/us/articles/self-employed-tax-deductions-us";
 
 export const ARTICLES_US_ONLY: Article[] = [
   /* ═══════════════════════════════════════════════════════════════
@@ -41,7 +124,7 @@ export const ARTICLES_US_ONLY: Article[] = [
     relatedSlugs: [
       "schedule-c-deductions-guide-us-freelancers",
       "irs-receipt-documentation-requirements",
-      "self-employed-tax-deductions-us-2025",
+      "self-employed-tax-deductions-us",
     ],
     body: [
       {
@@ -140,7 +223,7 @@ export const ARTICLES_US_ONLY: Article[] = [
     clusterName: "IRS Expense Rules",
     relatedSlugs: [
       "irs-business-expense-deduction-rules",
-      "self-employed-tax-deductions-us-2025",
+      "self-employed-tax-deductions-us",
       "quarterly-estimated-taxes-us-freelancers",
     ],
     body: [
@@ -219,7 +302,7 @@ export const ARTICLES_US_ONLY: Article[] = [
     clusterName: "Schedule C & Deductions",
     relatedSlugs: [
       "irs-business-expense-deduction-rules",
-      "self-employed-tax-deductions-us-2025",
+      "self-employed-tax-deductions-us",
       "home-office-deduction-form-8829-us",
     ],
     body: [
@@ -272,92 +355,178 @@ export const ARTICLES_US_ONLY: Article[] = [
   },
 
   {
-    slug: "self-employed-tax-deductions-us-2025",
+    slug: "self-employed-tax-deductions-us",
     regions: ["us"],
-    indexable: false,
-    title: "Top Self-Employed Tax Deductions in the US (2026)",
-    displayTitle: "Top Self-Employed Tax Deductions in the US",
+    indexable: true,
+    title: "Self-Employed Tax Deductions in the US: What to Claim and What to Keep",
     excerpt:
-      "The most valuable deductions available to US freelancers and 1099 contractors in 2026 — including the ones most people miss.",
+      "The main deductions for US freelancers and 1099 contractors, from home office and vehicle to health insurance, retirement, half of self-employment tax and QBI, with the records each needs.",
     category: "Tax Deductions",
     publishedAt: "2026-05-20",
-    updatedAt: "2026-10-05",
+    updatedAt: "2026-11-14",
     image: {
-      path: "/articles/self-employed-tax-deductions-us-2025.webp",
+      path: "/articles/self-employed-tax-deductions-us.webp",
       width: 1280,
       height: 720,
       alt: "White ceramic piggy bank on a light wooden surface",
     },
-    tags: ["deductions", "freelancer", "1099", "IRS", "self-employed", "2026", "tax savings"],
+    tags: ["deductions", "Schedule C", "self-employed", "1099", "IRS", "record keeping"],
     clusterName: "Schedule C & Deductions",
-    relatedSlugs: [
-      "schedule-c-deductions-guide-us-freelancers",
-      "home-office-deduction-form-8829-us",
-      "irs-mileage-rate-2025-self-employed",
-    ],
+    relatedSlugs: ["irs-mileage-rate-self-employed", "quarterly-estimated-taxes-us-freelancers"],
+    quickAnswer:
+      "As a sole proprietor you deduct ordinary and necessary business costs on Schedule C, including a home office, the business share of your car, phone and internet, supplies, software, travel and, in most cases, 50% of business meals. Some large deductions sit outside Schedule C: self-employed health insurance, retirement plan contributions and half of your self-employment tax go on Schedule 1, and the qualified business income deduction is figured on Form 8995. Each one needs records that show the amount, the date and the business purpose.",
+    receiptOneHelps: {
+      items: [
+        "Photograph a paper receipt, upload an image or PDF, or forward an e-mail receipt to your own ReceiptOne address, and ReceiptOne reads the details for you to check.",
+        "Bulk upload a batch of photos or PDFs if you're catching up on a few months of expenses.",
+        "Turn on trip tracking and the app records your work trips by GPS, building the mileage logbook your vehicle deduction depends on.",
+        "Mark an expense as reimbursable when a client will pay you back for it, so it stays apart from the costs you deduct.",
+        "Export your expense report at year end, or type /report to the Telegram bot to get your report in the chat.",
+      ],
+      link: US_CTA,
+    },
     body: [
       {
         type: "p",
-        text: "The IRS gives self-employed workers significant deductions that employees can't access. Used correctly, these deductions can reduce your effective tax rate substantially — but only if you track your expenses throughout the year. Here are the most valuable deductions for 2026.",
+        text: "Every business expense you can support lowers your net profit, and with it the income your income tax and self-employment tax are figured on. The word that matters is support: a deduction is only as good as the record behind it. This guide walks through the main deductions for freelancers and independent contractors, where each one goes on your return, and what to keep for it.",
       },
+      { type: "h2", text: "What makes an expense deductible" },
       {
-        type: "h2",
-        text: "1. Home Office Deduction",
+        type: "p",
+        text: "Schedule C is for ordinary and necessary business expenses. If an expense is partly for business and partly personal, Publication 334 says to separate the two; the personal part is generally not deductible. For each expense, the IRS says your supporting documents should show the payee, the amount paid, proof of payment, the date, and a description that shows the amount was for your business. It notes that you may need a combination of documents, such as a receipt and a card statement, to cover every element.",
       },
       {
         type: "p",
-        text: "If you use a portion of your home exclusively and regularly for business, you can deduct either $5 per square foot (simplified method, up to 300 sq ft) or a percentage of actual home expenses based on the office's share of your home's square footage. The simplified method is easier; actual expenses usually yield a larger deduction.",
+        text: "Keep those records until the period of limitations for the return runs out: generally three years after you file, or six years if you leave out income that is more than 25% of the gross income shown on your return.",
       },
+      { type: "h2", text: "Home office" },
       {
-        type: "h2",
-        text: "2. Vehicle / Mileage",
+        type: "p",
+        text: "You can deduct business use of your home if you use part of it regularly and exclusively for your business and it is your principal place of business. Space you use to meet clients or customers in the normal course of business can also qualify, as can a separate structure such as a studio or garage used regularly and exclusively for the business. Space that is merely appropriate and helpful for your work doesn't. The deduction is open to homeowners and renters alike.",
+      },
+      { type: "h3", text: "Simplified method" },
+      {
+        type: "p",
+        text: "The simplified option lets you deduct $5 per square foot of the space you use for business, up to 300 square feet, so the most it can give is $1,500. You don't figure depreciation, and home-related itemized deductions such as mortgage interest and real estate taxes stay in full on Schedule A. The deduction can't be more than the gross income from the business use of your home minus your business expenses, and under this method any excess can't be carried over to a later year.",
+      },
+      { type: "h3", text: "Regular method" },
+      {
+        type: "p",
+        text: "The regular method uses Form 8829. You deduct the business percentage of your actual home expenses, such as mortgage interest, insurance, utilities, repairs and depreciation, based on the share of your home used for business. It takes more records than the simplified method, and an amount over the income limit can be carried over.",
       },
       {
         type: "p",
-        text: "For 2026, the IRS standard mileage rate for business travel is 72.5 cents per mile from January to June and 76 cents from July 1. Alternatively, you can deduct actual vehicle costs proportional to business use. Keep a mileage log — the IRS requires contemporaneous records.",
+        text: "Either way the result goes on Schedule C, line 30. Keep a measurement of the office and of the whole home, and for the regular method, the bills for each home expense you claim.",
       },
+      { type: "h2", text: "Vehicle" },
       {
-        type: "h2",
-        text: "3. Health Insurance Premiums",
+        type: "p",
+        text: "Car and truck expenses go on Schedule C, line 9. For 2026 the standard mileage rate is 72.5 cents per business mile through June 30 and 76 cents from July 1, or you can deduct the business share of your actual costs instead. Commuting between home and a regular workplace never counts. You need a log with the date, destination, business purpose and miles of each trip, plus your total miles for the year.",
+        link: { label: "Read the IRS mileage rate guide.", href: MILEAGE_GUIDE },
+      },
+      { type: "h2", text: "Phone and internet" },
+      {
+        type: "p",
+        text: "Phone costs go on line 25, Utilities. The Schedule C instructions set one firm rule for a home phone: you can't deduct the base rate, including taxes, of the first phone line into your home, but you can deduct additional business costs above it, and for a second line, the business percentage of its charges. For a cell phone or home internet you also use personally, deduct only the business share, and keep the bills with a note of how you worked out the percentage.",
+      },
+      { type: "h2", text: "Supplies and software" },
+      {
+        type: "p",
+        text: "Office supplies and postage go on line 18. Materials and supplies go on line 22, and in most cases you deduct them to the extent you used them in your business during the year. Books, professional instruments and equipment you normally use up within a year can also be deducted; items whose usefulness lasts substantially beyond a year generally have to be depreciated.",
       },
       {
         type: "p",
-        text: "Self-employed individuals can deduct 100% of health insurance premiums for themselves, spouses, and dependents directly on Schedule 1 (not Schedule C), reducing AGI. You cannot deduct more than your net self-employment income.",
+        text: "Technology and software tools that are ordinary and necessary for your business, such as tax preparation software and subscription services you pay for to manage the business, are listed in Part V, Other expenses, which carries to line 27b. The instructions add that this doesn't cover software that must be depreciated or amortized, and that most computer software expenses must be capitalized and depreciated or expensed under section 179. Keep the receipt or invoice for each purchase and each subscription renewal.",
+      },
+      { type: "h2", text: "Travel and meals" },
+      { type: "h3", text: "Travel away from home" },
+      {
+        type: "p",
+        text: "Lodging and transportation for overnight business travel away from your tax home go on line 24a. Your tax home is generally your main place of business. You can't deduct travel costs for a spouse, dependent or anyone else unless that person is your employee, the travel has a bona fide business purpose and the costs would otherwise be deductible by them. For each trip, Publication 463 asks you to record the cost of each expense, the dates you left and returned, the days spent on business, the destination and the business purpose.",
+      },
+      { type: "h3", text: "Business meals: the 50% rule" },
+      {
+        type: "p",
+        text: "Business meals go on line 24b, and in most cases you can deduct 50% of the cost, including meals while traveling away from home for business. The meal must be ordinary and necessary and not lavish, you must be present, and it must be with a current or potential client, customer, consultant or similar business contact. Entertainment, such as tickets to a game or a show, is generally not deductible at all; food at an entertainment event counts as a meal only if it is bought or billed separately. Record the amount, date, place, business purpose and the business relationship of the people you ate with.",
+      },
+      { type: "h2", text: "Deductions outside Schedule C" },
+      {
+        type: "p",
+        text: "The deductions in this section don't go on Schedule C. You claim them on Schedule 1 (Form 1040) or a separate form, and they lower the income your income tax is figured on.",
+      },
+      { type: "h3", text: "Self-employed health insurance" },
+      {
+        type: "p",
+        text: "If you had a net profit on Schedule C, you may be able to deduct medical, dental, vision and qualified long-term care insurance you paid for yourself, your spouse and your dependents, and for a child under 27 at the end of the year. You figure it on Form 7206 and claim it on Schedule 1, line 17. You can't use the premiums for any month you were eligible to take part in a subsidized health plan through an employer, including your spouse's, even if you didn't enroll. Keep the premium statements.",
+      },
+      { type: "h3", text: "Retirement contributions" },
+      {
+        type: "p",
+        text: "With a SEP-IRA, a self-employed person can contribute for themselves up to 20% of net earnings from self-employment, figured with the rate table in Publication 560. For 2026 the most that can go into a SEP for one person is $72,000. A one-participant 401(k) allows elective deferrals of up to $24,500 for 2026, with total contributions limited to $72,000. Contributions you make for yourself go on Schedule 1, line 16, not on Schedule C. Keep the plan statements showing each contribution.",
+      },
+      { type: "h3", text: "Half of self-employment tax" },
+      {
+        type: "p",
+        text: "You deduct half of your self-employment tax on Schedule 1, line 15. It reduces your adjusted gross income, and so your income tax, but not the self-employment tax itself. The figure comes from Schedule SE, so it needs no records beyond those behind your Schedule C.",
+      },
+      { type: "h3", text: "Qualified business income deduction" },
+      {
+        type: "p",
+        text: "The QBI deduction, also called the Section 199A deduction, lets eligible sole proprietors deduct up to 20% of their qualified business income, whether they itemize or take the standard deduction. It is limited by taxable income and, depending on income, by the type of business and the wages it pays. Legislation made it permanent, and beginning in 2026 a minimum deduction of $400 is available if you have at least $1,000 of qualified business income from an active trade or business. You figure it on Form 8995 or Form 8995-A.",
+      },
+      { type: "h2", text: "Keep the records as you go" },
+      {
+        type: "p",
+        text: "The IRS lets you use any recordkeeping system that clearly shows your income and expenses, including an electronic one, as long as it meets the same basic principles. What counts is that each deduction traces back to a document, such as a receipt, invoice, bill or statement, with a note of the business purpose where the document doesn't show it. Recording expenses through the year also keeps your quarterly estimates close to what you will actually owe.",
+        link: { label: "Read the quarterly estimated taxes guide.", href: ESTIMATED_GUIDE },
+      },
+      { type: "h2", text: FAQ_HEADING },
+      {
+        type: "faq",
+        q: "Can I take the home office deduction if I rent?",
+        a: "Yes. The home office deduction is available to homeowners and renters and applies to all types of homes, as long as the space is used regularly and exclusively for business and is your principal place of business.",
       },
       {
-        type: "h2",
-        text: "4. Retirement Contributions",
+        type: "faq",
+        q: "How much of a business meal can I deduct?",
+        a: "In most cases 50%, if the meal is ordinary and necessary, not lavish, you are present, and it is with a client, customer or similar business contact. Entertainment is generally not deductible.",
       },
       {
-        type: "ul",
-        items: [
-          "SEP-IRA: up to 25% of compensation, max $72,000 for 2026. For your own account, compensation is net earnings from self-employment after deducting half your self-employment tax and the contribution itself, so the effective rate is about 20%; Publication 560 has the worksheet",
-          "Solo 401(k): employee contribution up to $24,500 for 2026, plus an employer contribution worked out on the same reduced self-employed basis as a SEP",
-          "SIMPLE IRA: up to $17,000 employee contribution for 2026",
-          "Contributions reduce AGI dollar-for-dollar — one of the most powerful deductions available",
+        type: "faq",
+        q: "Is health insurance a Schedule C expense?",
+        a: "No. Self-employed health insurance is figured on Form 7206 and claimed on Schedule 1 (Form 1040), line 17, and you need a net profit from your business to claim it.",
+      },
+      {
+        type: "faq",
+        q: "Can I deduct my phone bill?",
+        a: "The business share of it. You can't deduct the base rate of the first phone line into your home, but you can deduct business costs above that base rate and the business percentage of a second line. For a cell phone you also use personally, deduct only the business share.",
+      },
+      {
+        type: "faq",
+        q: "Do I have to choose between the QBI deduction and itemizing?",
+        a: "No. The QBI deduction is available whether you itemize deductions on Schedule A or take the standard deduction.",
+      },
+      {
+        type: "sources",
+        links: [
+          IRS_SRC.schC,
+          IRS_SRC.p334,
+          IRS_SRC.records,
+          IRS_SRC.howLong,
+          IRS_SRC.homeOffice,
+          IRS_SRC.simplified,
+          IRS_SRC.mileageRates,
+          IRS_SRC.p463,
+          IRS_SRC.i7206,
+          IRS_SRC.cola,
+          IRS_SRC.p560,
+          IRS_SRC.seTax,
+          IRS_SRC.qbi,
         ],
+        checked: irsChecked(
+          "The Schedule C and Form 7206 instructions and Publications 334, 463 and 560 are the editions for 2025 returns.",
+        ),
       },
-      {
-        type: "h2",
-        text: "5. Professional Development & Education",
-      },
-      {
-        type: "p",
-        text: "Courses, certifications, books, and conferences that maintain or improve skills required in your current work are fully deductible. Education that qualifies you for a new career is not.",
-      },
-      {
-        type: "h2",
-        text: "6. Software and Subscriptions",
-      },
-      {
-        type: "p",
-        text: "Business software, project management tools, cloud storage, accounting apps, and professional subscriptions are fully deductible as business expenses under Schedule C Line 27a.",
-      },
-      {
-        type: "callout",
-        text: "ReceiptOne captures and categorizes every business expense throughout the year — so your Schedule C deductions are organized well before tax time.",
-      },
-      { type: "p", text: US_ARTICLE_DISCLAIMER },
     ],
   },
 
@@ -386,7 +555,7 @@ export const ARTICLES_US_ONLY: Article[] = [
     relatedSlugs: [
       "quarterly-estimated-taxes-us-freelancers",
       "schedule-c-deductions-guide-us-freelancers",
-      "self-employed-tax-deductions-us-2025",
+      "self-employed-tax-deductions-us",
     ],
     body: [
       {
@@ -440,13 +609,13 @@ export const ARTICLES_US_ONLY: Article[] = [
   {
     slug: "quarterly-estimated-taxes-us-freelancers",
     regions: ["us"],
-    indexable: false,
-    title: "How to Calculate and Pay Quarterly Estimated Taxes",
+    indexable: true,
+    title: "Quarterly Estimated Taxes for Freelancers: Who Pays, When and How Much",
     excerpt:
-      "Freelancers who expect to owe $1,000 or more pay estimated tax four times a year. How to calculate it, when to pay, and how to avoid the penalty.",
+      "Who has to pay estimated tax, the four due dates, how to figure the amount including self-employment tax, the safe harbors that avoid the underpayment penalty, and how to pay.",
     category: "Tax Fundamentals",
     publishedAt: "2026-05-20",
-    updatedAt: "2026-10-05",
+    updatedAt: "2026-11-14",
     image: {
       path: "/articles/quarterly-estimated-taxes-us-freelancers.webp",
       width: 1280,
@@ -455,72 +624,199 @@ export const ARTICLES_US_ONLY: Article[] = [
     },
     tags: [
       "quarterly taxes",
-      "estimated payments",
+      "estimated tax",
       "Form 1040-ES",
-      "freelancer",
+      "self-employment tax",
       "IRS",
       "self-employed",
     ],
     clusterName: "1099 & Estimated Taxes",
-    relatedSlugs: [
-      "1099-contractor-tax-guide-us",
-      "self-employed-tax-deductions-us-2025",
-      "schedule-c-deductions-guide-us-freelancers",
-    ],
+    relatedSlugs: ["self-employed-tax-deductions-us", "irs-mileage-rate-self-employed"],
+    quickAnswer:
+      "If you work for yourself and expect to owe $1,000 or more in federal tax when you file, you generally pay estimated tax during the year instead of all at once. The payments are due April 15, June 15, September 15 and January 15, moved to the next day that isn't a Saturday, Sunday or legal holiday when a date falls on one. You avoid the underpayment penalty if you pay at least 90% of this year's tax or 100% of last year's (110% if last year's AGI was over $150,000), whichever is smaller.",
+    receiptOneHelps: {
+      items: [
+        "Photograph receipts, upload images or PDFs, or forward e-mail receipts to your own ReceiptOne address, so expenses are recorded as you go rather than in a rush before a due date.",
+        "Bulk upload a batch of photos or PDFs if you're catching up before a payment is due.",
+        "Ask the AI assistant questions about the expenses you've recorded when you sit down to refigure an estimate.",
+        "Export an expense report at any point in the year, or type /report to the Telegram bot to get your report in the chat.",
+      ],
+      link: US_CTA,
+    },
     body: [
       {
         type: "p",
-        text: "Freelancers don't have an employer withholding taxes from paychecks. Instead, the IRS requires you to pay estimated taxes four times a year using Form 1040-ES. If you skip or underpay, you'll owe a penalty — even if you pay the full amount at tax time in April.",
+        text: "When you work for yourself, no employer withholds income tax from your pay. The IRS still expects tax to be paid as you earn the income, so if you're in business for yourself you generally send it in four times a year as estimated tax. Estimated tax covers more than income tax: it is also how you pay self-employment tax, the Social Security and Medicare tax on your own earnings. This guide covers who has to pay, when, how to work out the amount, how to stay clear of the penalty and how to pay.",
+      },
+      { type: "h2", text: "Who has to pay estimated tax" },
+      {
+        type: "p",
+        text: "According to the IRS, individuals, including sole proprietors, partners and S corporation shareholders, generally have to make estimated tax payments if they expect to owe tax of $1,000 or more when their return is filed. That is the tax left after your withholding and credits.",
       },
       {
-        type: "h2",
-        text: "2026 Payment Deadlines",
+        type: "p",
+        text: "You don't have to pay estimated tax for the current year if all three of these are true:",
       },
       {
         type: "ul",
         items: [
-          "Q1 (Jan 1 – Mar 31): due April 15, 2026",
-          "Q2 (Apr 1 – May 31): due June 15, 2026",
-          "Q3 (Jun 1 – Aug 31): due September 15, 2026",
-          "Q4 (Sep 1 – Dec 31): due January 15, 2027 — or skip it if you file your 2026 return by February 1, 2027 and pay the full balance with it",
+          "You had no tax liability for the prior year, meaning your total tax was zero or you didn't have to file a return",
+          "You were a U.S. citizen or resident alien for the whole year",
+          "Your prior tax year covered a 12-month period",
         ],
       },
       {
-        type: "h2",
-        text: "The Safe Harbor Rule",
+        type: "p",
+        text: "If you also have a job, you can cover the tax on your freelance income by asking your employer to withhold more. File a new Form W-4, which has a line for an additional amount to withhold from each paycheck.",
       },
+      { type: "h2", text: "The four due dates" },
       {
         type: "p",
-        text: "You generally avoid the underpayment penalty if your payments cover at least 90% of this year's tax or 100% of last year's total tax (110% if last year's AGI was more than $150,000, or $75,000 if married filing separately). This is the 'safe harbor' approach — you don't need to estimate this year's income precisely. Pay what you paid last year and you're protected.",
-      },
-      {
-        type: "h2",
-        text: "How to Calculate Each Payment",
+        text: "For estimated tax, the year is divided into four payment periods of uneven length, each with its own due date:",
       },
       {
         type: "ul",
         items: [
-          "Estimate your annual net profit (income minus deductions)",
-          "Calculate self-employment tax: net profit × 0.9235 × 0.153",
-          "Deduct 50% of SE tax from net profit to get adjusted income",
-          "Apply your marginal federal income tax rate",
-          "Add state income tax if applicable",
-          "Divide total annual tax by 4 for each quarterly payment",
+          "Income from January 1 to March 31: due April 15",
+          "Income from April 1 to May 31: due June 15",
+          "Income from June 1 to August 31: due September 15",
+          "Income from September 1 to December 31: due January 15 of the following year",
         ],
       },
+      { type: "h3", text: "The weekend and holiday rule" },
       {
-        type: "callout",
-        text: "Accurate quarterly payments start with accurate expense tracking. ReceiptOne keeps a running total of your deductions all year — so each estimate reflects your real tax position.",
+        type: "p",
+        text: "If a due date falls on a Saturday, Sunday or legal holiday, your payment is on time if you make it on the next day that isn't a Saturday, Sunday or holiday. If you mail a payment, the U.S. postmark date counts as the payment date. Publication 505 notes that the postmark may be the date the mail is processed at a postal facility, which may be later than the day you posted it, so leave a margin.",
       },
+      { type: "h3", text: "The January exception" },
       {
-        type: "h2",
-        text: "How to Pay",
+        type: "p",
+        text: "You can skip the January 15 payment if you file your return for the year by January 31 and pay the rest of the tax you owe with it.",
       },
       {
         type: "p",
-        text: "The easiest method is IRS Direct Pay at irs.gov — free, instant, and no account required. You can also use the IRS2Go app, EFTPS (Electronic Federal Tax Payment System), or mail a check with Form 1040-ES voucher. EFTPS is recommended for freelancers who pay regularly — it allows scheduling payments in advance.",
+        text: "You don't have to wait for the due dates either. The IRS says you can pay weekly, every two weeks or monthly, as long as you've paid enough by the end of each period.",
       },
-      { type: "p", text: US_ARTICLE_DISCLAIMER },
+      { type: "h2", text: "How to calculate your estimated tax" },
+      {
+        type: "p",
+        text: "The IRS worksheet for this comes with Form 1040-ES. You estimate your adjusted gross income, taxable income, taxes, deductions and credits for the year. Last year's return is a useful starting point, adjusted for changes in your income and in the tax law. If your estimate turns out too high or too low, fill in a new worksheet and change your remaining payments.",
+      },
+      { type: "h3", text: "Start with your expected profit" },
+      {
+        type: "p",
+        text: "Your self-employment income is your net profit from Schedule C: what clients pay you minus your business expenses. Every deduction you can support lowers that figure, so a current expense record gives you a more accurate estimate.",
+        link: { label: "Read the self-employed deductions guide.", href: DEDUCTIONS_GUIDE },
+      },
+      {
+        type: "p",
+        text: "If you drive for work, mileage can be a large part of those expenses, and for 2026 the IRS changed the business rate in the middle of the year.",
+        link: { label: "Read the IRS mileage rate guide.", href: MILEAGE_GUIDE },
+      },
+      { type: "h3", text: "Add self-employment tax" },
+      {
+        type: "p",
+        text: "Self-employment tax is 15.3%: 12.4% for Social Security and 2.9% for Medicare. It applies to your net earnings from self-employment, which the self-employment tax worksheet in Publication 505 figures as 92.35% of your net profit. You owe it if those net earnings are $400 or more. For 2026, the Social Security part applies only to the first $184,500 of your combined wages, tips and net earnings. The Medicare part has no cap, and an additional 0.9% Medicare tax applies above $200,000 for single filers ($250,000 if married filing jointly, $125,000 if married filing separately).",
+      },
+      {
+        type: "p",
+        text: "You can deduct half of your self-employment tax when you figure your adjusted gross income, on Schedule 1 (Form 1040), line 15. That lowers your income tax, not the self-employment tax itself.",
+      },
+      { type: "h3", text: "A worked example (hypothetical)" },
+      {
+        type: "p",
+        text: "Say you expect a net profit of $60,000 for the year and have no wages. Your net earnings from self-employment are $60,000 × 92.35% = $55,410. Self-employment tax is $55,410 × 15.3% = $8,477.73, and half of that, about $4,239, comes off your income before income tax is figured. Add the income tax on what remains, subtract any credits, and divide the total by four if your income arrives evenly through the year.",
+      },
+      {
+        type: "p",
+        text: "If your income is uneven, for example a large project paid in the fall, four equal payments may mean paying before you've earned the money. The annualized income installment method, figured on Form 2210, lets you match payments to when you earned the income and can lower or remove a penalty.",
+      },
+      { type: "h2", text: "Safe harbors: how to avoid the underpayment penalty" },
+      {
+        type: "p",
+        text: "The penalty applies if you don't pay enough tax during the year, or pay it late, and it can apply even if you're due a refund when you file. The IRS figures it from the amount you underpaid, the period it was underpaid, and its published quarterly interest rates for underpayments. You generally avoid it in either of these cases:",
+      },
+      {
+        type: "ul",
+        items: [
+          "You owe less than $1,000 after subtracting your withholding and credits",
+          "You paid at least 90% of the tax for the current year or 100% of the tax shown on your prior-year return, whichever is smaller; the prior-year return must cover all 12 months",
+        ],
+      },
+      { type: "h3", text: "The 110% rule for higher incomes" },
+      {
+        type: "p",
+        text: "If your adjusted gross income for the prior year was more than $150,000 ($75,000 if married filing separately), the prior-year figure becomes 110% instead of 100%. Farmers and fishermen have their own rules.",
+      },
+      {
+        type: "p",
+        text: "The prior-year safe harbor is the easier one to plan around, because the number is already on last year's return. Pay a quarter of it on or before each due date and you avoid the penalty even if this year's income turns out higher; you'd still owe the balance when you file.",
+      },
+      { type: "h3", text: "When the penalty can be waived" },
+      {
+        type: "p",
+        text: "The IRS may waive the penalty if the underpayment was due to a casualty, disaster or other unusual circumstance and imposing it would be inequitable. It may also waive it if you retired after reaching age 62 or became disabled during the tax year or the year before, and the underpayment was due to reasonable cause rather than willful neglect.",
+      },
+      { type: "h2", text: "How to pay" },
+      { type: "p", text: "The IRS lists these ways to pay estimated tax:" },
+      {
+        type: "ul",
+        items: [
+          "IRS Online Account: sign in at IRS.gov/account to make a same-day payment or schedule payments up to 365 days ahead from your bank account, and see up to five years of payment history, including estimated tax payments.",
+          "IRS Direct Pay: pay estimated tax from your bank account with no sign-in required. It is free, and you can change or cancel a scheduled payment.",
+          "By mail with Form 1040-ES, by phone, or from your mobile device using the IRS app.",
+          "EFTPS: individuals can no longer enroll, and the IRS says EFTPS is no longer available for individuals to make payments as of November 12, 2026. If you used it before, move your payments to your Online Account or Direct Pay.",
+        ],
+      },
+      {
+        type: "p",
+        text: "Keep a note of the date and amount of each payment. You report the total of your estimated payments on your return, and your Online Account shows the payments the IRS has on record.",
+      },
+      { type: "h2", text: "State estimated taxes" },
+      {
+        type: "p",
+        text: "Your state may also expect estimated payments of state income tax, on its own schedule and forms. This guide covers federal tax only, so check your state's tax agency for its rules.",
+      },
+      { type: "h2", text: FAQ_HEADING },
+      {
+        type: "faq",
+        q: "When are quarterly estimated taxes due?",
+        a: "April 15, June 15, September 15 and January 15 of the following year. If a date falls on a Saturday, Sunday or legal holiday, the payment is on time on the next day that isn't one.",
+      },
+      {
+        type: "faq",
+        q: "Do I have to pay estimated tax in my first year of freelancing?",
+        a: "If you expect to owe $1,000 or more when you file, generally yes. You don't have to if you had no tax liability for the prior year, were a U.S. citizen or resident alien for the whole year, and your prior tax year covered 12 months.",
+      },
+      {
+        type: "faq",
+        q: "Does estimated tax include self-employment tax?",
+        a: "Yes. Estimated tax pays income tax and other taxes such as self-employment tax, which is 15.3% of your net earnings from self-employment, with the Social Security part limited to the first $184,500 of combined earnings for 2026.",
+      },
+      {
+        type: "faq",
+        q: "What if I miss a payment?",
+        a: "Pay as soon as you can. The penalty is figured on the amount underpaid and how long it stayed unpaid, at the IRS's quarterly underpayment interest rates, so paying late costs less than not paying at all.",
+      },
+      {
+        type: "faq",
+        q: "Can I pay more often than four times a year?",
+        a: "Yes. The IRS says you can pay weekly, every two weeks or monthly, as long as you've paid enough by the end of each payment period.",
+      },
+      {
+        type: "sources",
+        links: [
+          IRS_SRC.estimated,
+          IRS_SRC.p505,
+          IRS_SRC.f1040es,
+          IRS_SRC.penalty,
+          IRS_SRC.seTax,
+          IRS_SRC.onlineAccount,
+          IRS_SRC.directPay,
+          IRS_SRC.eftps,
+        ],
+        checked: irsChecked("Publication 505 is the 2026 edition."),
+      },
     ],
   },
 
@@ -529,84 +825,206 @@ export const ARTICLES_US_ONLY: Article[] = [
      ═══════════════════════════════════════════════════════════════ */
 
   {
-    slug: "irs-mileage-rate-2025-self-employed",
+    slug: "irs-mileage-rate-self-employed",
     regions: ["us"],
-    indexable: false,
-    title: "IRS Mileage Rates 2026: How to Claim Vehicle Deductions",
-    displayTitle: "IRS Mileage Rates: How to Claim Vehicle Deductions",
+    indexable: true,
+    title: "IRS Mileage Rate 2026 for the Self-Employed: How to Claim Business Miles",
+    displayTitle: "IRS Mileage Rate for the Self-Employed: How to Claim Business Miles",
     excerpt:
-      "The 2026 IRS business mileage rate is 72.5 cents per mile to June 30 and 76 cents from July 1. How to log trips and choose standard rate or actual costs.",
+      "The 2026 IRS business rate is 72.5 cents a mile to June 30 and 76 cents from July 1. Standard rate or actual costs, which miles count, the log to keep, and Schedule C.",
     category: "Mileage & Auto",
     publishedAt: "2026-05-20",
-    updatedAt: "2026-10-05",
+    updatedAt: "2026-11-14",
     image: {
-      path: "/articles/irs-mileage-rate-2025-self-employed.webp",
+      path: "/articles/irs-mileage-rate-self-employed.webp",
       width: 1280,
       height: 720,
       alt: "Two-lane desert highway with a double yellow line leading toward red rock formations at sunset",
     },
-    tags: ["mileage", "IRS", "vehicle deduction", "standard mileage rate", "self-employed", "2026"],
-    relatedSlugs: [
-      "self-employed-tax-deductions-us-2025",
-      "schedule-c-deductions-guide-us-freelancers",
-      "1099-contractor-tax-guide-us",
+    tags: [
+      "mileage",
+      "IRS",
+      "standard mileage rate",
+      "vehicle expenses",
+      "Schedule C",
+      "self-employed",
     ],
+    relatedSlugs: ["self-employed-tax-deductions-us", "quarterly-estimated-taxes-us-freelancers"],
+    quickAnswer:
+      "For 2026 the IRS standard mileage rate for business use is 72.5 cents a mile for driving from January 1 to June 30 and 76 cents a mile from July 1 to December 31. You can use that rate or deduct the business share of your actual car costs, but driving between home and a regular workplace is commuting and never counts. Keep a log with the date, destination, business purpose and miles of each trip, and report the deduction on Schedule C, line 9.",
+    receiptOneHelps: {
+      items: [
+        "Turn on trip tracking and the mobile app records your work trips by GPS in the background, building a mileage logbook with the date and distance of each trip.",
+        "Or enter a trip's start and end addresses and ReceiptOne works out the route and distance; tag each trip business or personal and add a note on its purpose.",
+        "Photograph parking and toll receipts, or forward e-mailed ones to your own ReceiptOne address, so they sit with the rest of your records.",
+        "Export your mileage log and expense report at year end, or type /report to the Telegram bot to get your report in the chat.",
+      ],
+      link: US_CTA,
+    },
     body: [
       {
         type: "p",
-        text: "The IRS lets self-employed workers deduct business driving costs using either the standard mileage rate or actual vehicle expenses. For most freelancers, the standard rate is simpler and often yields a comparable or better deduction without requiring detailed fuel, insurance, and maintenance records.",
+        text: "If you drive for your business, your miles can be one of the larger deductions you claim as a sole proprietor or independent contractor. The IRS gives you two ways to work out the amount: a flat rate for each business mile, or the business share of what the car actually costs to run. Either way, the deduction stands or falls on your mileage records. This guide covers the current rate, how to choose a method, which trips count, what to write down and where the numbers go on your return.",
       },
-      {
-        type: "h2",
-        text: "2026 Standard Mileage Rates",
-      },
+      { type: "h2", text: "The IRS standard mileage rate for 2026" },
       {
         type: "p",
-        text: "The IRS raised its 2026 rates in mid-year because of higher fuel prices, so 2026 has two sets. Use the rate for the period in which you drove.",
+        text: "The IRS normally sets one business rate for the whole year, and 2026 is an exception. In December 2025 it set the business rate at 72.5 cents a mile from January 1, 2026, up 2.5 cents from the 2025 rate of 70 cents. Then, in Announcement 2026-11, it raised the rate to 76 cents a mile for driving on or after July 1, 2026, citing recent increases in the price of fuel. So for 2026 you split your business miles at June 30:",
       },
       {
         type: "ul",
         items: [
-          "January 1 – June 30, 2026: business 72.5 cents per mile, medical and military moving 20.5 cents, charitable 14 cents",
-          "July 1 – December 31, 2026: business 76 cents per mile, medical and military moving 23.5 cents, charitable 14 cents",
-          "For 2025 returns: business 70 cents per mile, medical and military moving 21 cents, charitable 14 cents",
+          "January 1 to June 30, 2026: 72.5 cents per business mile",
+          "July 1 to December 31, 2026: 76 cents per business mile",
+          "2025, for comparison: 70 cents per business mile",
         ],
       },
       {
-        type: "h2",
-        text: "What Counts as a Business Mile",
+        type: "p",
+        text: "The rates apply to fully electric and hybrid cars as well as gasoline and diesel ones, and cover a car, van, pickup or panel truck. Because the rate stands in for the cost of running the vehicle, you can't also deduct gas, insurance or depreciation when you use it.",
+      },
+      { type: "h3", text: "A worked example (hypothetical)" },
+      {
+        type: "p",
+        text: "Say you drove 3,000 business miles between January and June 2026 and 2,000 business miles between July and December. Your standard mileage deduction is 3,000 × $0.725 = $2,175 plus 2,000 × $0.76 = $1,520, for a total of $3,695. Business parking fees and tolls go on top, because they are deductible separately under either method. The mid-year change is one more reason to record the date of every trip: without dates, you can't show which miles belong to which rate.",
+      },
+      { type: "h2", text: "Standard mileage rate or actual expenses" },
+      {
+        type: "p",
+        text: "The standard rate is simpler: you multiply your business miles by the rate. The actual expense method can give a larger deduction for a car that is expensive to run, but it needs a record of every cost. The IRS suggests that if you qualify for both, you figure your deduction both ways before choosing.",
+      },
+      { type: "h3", text: "Rules for using the standard rate" },
+      {
+        type: "p",
+        text: "According to IRS Topic 510, you can use the standard mileage rate only if you own or lease the car and:",
       },
       {
         type: "ul",
         items: [
-          "Driving to meet clients or customers",
-          "Travel between two business locations",
-          "Driving to a temporary work location",
-          "Business errands (post office, bank, supply store)",
-          "NOT deductible: your regular commute from home to a fixed office",
+          "You don't operate five or more cars at the same time, as in a fleet operation",
+          "You haven't claimed depreciation on the car using any method other than straight-line, and haven't used MACRS",
+          "You haven't claimed a Section 179 deduction or the special depreciation allowance on the car",
+          "You haven't claimed actual expenses for a car you lease",
         ],
       },
       {
-        type: "h2",
-        text: "Mileage Log Requirements",
+        type: "p",
+        text: "Timing matters too. For a car you own, you must choose the standard rate in the first year the car is available for use in your business; in later years you can choose either the standard rate or actual expenses. If you move to actual expenses before the car is fully depreciated, you must use straight-line depreciation over its estimated remaining useful life. For a leased car, choosing the standard rate commits you to it for the entire lease, including renewals.",
+      },
+      { type: "h3", text: "What actual expenses include" },
+      {
+        type: "p",
+        text: "Under the actual expense method you add up what the car cost to run for the year and deduct the business share. Topic 510 lists gas, oil, repairs, tires, insurance, registration fees, licenses, and depreciation or lease payments. To find the business share, divide your business miles by your total miles for the year: if 6,000 of 15,000 miles were for business, 40% of those costs is deductible (a hypothetical figure). Depreciation on cars has its own annual limits, which Publication 463 sets out.",
+      },
+      { type: "h2", text: "Which miles count as business miles" },
+      {
+        type: "p",
+        text: "Business miles are trips you make to carry on your business: driving to a client's office, meeting a supplier, picking up materials or delivering work. Personal driving doesn't count, and neither does commuting.",
+      },
+      { type: "h3", text: "Commuting doesn't count" },
+      {
+        type: "p",
+        text: "Publication 463 treats travel between your home and your regular or main place of work as a personal commuting expense, and lists it as never deductible.",
       },
       {
         type: "p",
-        text: "Publication 463 lists what to record for car use: the mileage for each business use and your total miles for the year, the date of each use, your business destination, and the business purpose. You should record these at or near the time of the trip. A log kept weekly that covers that week's use counts as timely kept, and a timely kept record has more value than a statement prepared later, when accurate recall is usually lacking.",
-      },
-      {
-        type: "callout",
-        text: "In ReceiptOne you turn on trip tracking once and the mobile app records your trips by GPS in the background, or you enter a trip's start and end addresses; the app works out the distance and multiplies it by the per-mile rate saved in your settings. Check that rate matches the IRS rate for the period you drove, since it changed on July 1, 2026.",
-      },
-      {
-        type: "h2",
-        text: "Standard Rate vs. Actual Expenses",
+        text: "Several exceptions matter to freelancers. If your home is your principal place of business, trips between your home and another work location in the same business are deductible, whether that location is temporary or permanent and regardless of the distance. Trips between your home and a temporary work location are deductible if you have a regular or main place of work elsewhere; Publication 463 defines a temporary work location as one where the work is realistically expected to last, and does last, one year or less. If you have no regular place of business, only temporary work locations outside your metropolitan area qualify. Trips between your main place of work and a temporary work location are always deductible.",
       },
       {
         type: "p",
-        text: "Actual expenses (gas, insurance, registration, depreciation, maintenance — proportional to business use) can exceed the standard rate if you drive a fuel-efficient vehicle or have high fixed costs. However, actual expenses require far more recordkeeping. If you drive a lot of business miles in a high-cost vehicle, run the numbers both ways with your accountant.",
+        text: "Whether your home counts as your principal place of business is the same question the home office deduction asks.",
+        link: { label: "Read the self-employed deductions guide.", href: DEDUCTIONS_GUIDE },
       },
-      { type: "p", text: US_ARTICLE_DISCLAIMER },
+      { type: "h2", text: "The mileage log the IRS expects" },
+      {
+        type: "p",
+        text: "The law requires you to back up car expenses with adequate records or sufficient evidence. For each business use of the car, Publication 463 asks you to record:",
+      },
+      {
+        type: "ul",
+        items: [
+          "The date of the trip",
+          "Your business destination",
+          "The business purpose of the trip",
+          "The miles driven for that business use",
+        ],
+      },
+      {
+        type: "p",
+        text: "You also need your total miles for the year, since your business miles divided by your total miles is your business-use percentage. Publication 463 also lists the cost of the car and any improvements and the date you started using it for business. If you use actual expenses, keep the receipt for each cost you claim.",
+      },
+      { type: "h3", text: "Write it down at the time" },
+      {
+        type: "p",
+        text: "A record made at or near the time of the trip carries more weight than one put together later, when recall is unreliable. You don't have to log every trip the same day: Publication 463 accepts a log kept weekly that accounts for the week's driving as a timely kept record. Keep parking and toll receipts alongside the log.",
+      },
+      { type: "h3", text: "How long to keep it" },
+      {
+        type: "p",
+        text: "Keep the log and receipts until the period of limitations for that return runs out. For most returns that is three years after you file, but it is six years if you leave out income that is more than 25% of the gross income shown on the return.",
+      },
+      { type: "h2", text: "How the deduction goes on Schedule C" },
+      {
+        type: "p",
+        text: "Self-employed car expenses go on Schedule C (Form 1040), line 9, Car and truck expenses. The Schedule C instructions describe two routes:",
+      },
+      {
+        type: "ul",
+        items: [
+          "Standard rate: multiply your business miles by the rate, add business parking fees and tolls, and enter the total on line 9. Don't also deduct depreciation, rent or lease payments, or your actual operating expenses.",
+          "Actual expenses: enter the business share of gas, oil, repairs, insurance, license plates and similar costs on line 9, depreciation on line 13, and rent or lease payments on line 20a.",
+        ],
+      },
+      {
+        type: "p",
+        text: "You also report information about the vehicle. Complete Part IV of Schedule C if you claim the standard mileage rate, lease the vehicle, or it is fully depreciated, and you aren't required to file Form 4562 for another reason. If you claim depreciation on the vehicle, complete Form 4562, Part V, instead. If you used more than one vehicle, attach a statement with the Part IV details for each additional one.",
+      },
+      {
+        type: "p",
+        text: "A mileage deduction lowers your net profit, and with it the income your income tax and self-employment tax are figured on. If you pay estimated tax, refigure it once you know roughly what your mileage will be.",
+        link: { label: "Read the quarterly estimated taxes guide.", href: ESTIMATED_GUIDE },
+      },
+      { type: "h2", text: FAQ_HEADING },
+      {
+        type: "faq",
+        q: "What is the IRS mileage rate for 2026?",
+        a: "For business use it is 72.5 cents a mile for driving from January 1 to June 30, 2026, and 76 cents a mile from July 1 to December 31, 2026. The IRS raised the rate mid-year in Announcement 2026-11. The 2025 rate was 70 cents.",
+      },
+      {
+        type: "faq",
+        q: "Can I deduct the drive from home to my office or coworking space?",
+        a: "Not if it is your regular or main place of work: Publication 463 treats that drive as commuting, which is never deductible. If your home is your principal place of business, trips from home to other work locations in the same business are deductible.",
+      },
+      {
+        type: "faq",
+        q: "Can I switch between the standard rate and actual expenses?",
+        a: "For a car you own, only if you used the standard rate in the first year the car was available for business; after that you can choose either method, with straight-line depreciation if you move to actual expenses. For a leased car, the standard rate applies for the entire lease once you choose it.",
+      },
+      {
+        type: "faq",
+        q: "Can I deduct parking and tolls as well as the standard rate?",
+        a: "Yes. Business parking fees and tolls are deductible separately under either method. Add them to your standard mileage amount on Schedule C, line 9.",
+      },
+      {
+        type: "faq",
+        q: "Do I need odometer readings?",
+        a: "Publication 463 asks for the miles of each business use and your total miles for the year. Writing down the odometer reading at the start and end of the year is a simple way to show the total.",
+      },
+      {
+        type: "sources",
+        links: [
+          IRS_SRC.mileageRates,
+          IRS_SRC.ir2025128,
+          IRS_SRC.ann202611,
+          IRS_SRC.topic510,
+          IRS_SRC.p463,
+          IRS_SRC.schC,
+          IRS_SRC.howLong,
+        ],
+        checked: irsChecked(
+          "Publication 463 and the Schedule C instructions are the editions for 2025 returns.",
+        ),
+      },
     ],
   },
 
@@ -628,7 +1046,7 @@ export const ARTICLES_US_ONLY: Article[] = [
     },
     tags: ["home office", "Form 8829", "deductions", "IRS", "self-employed", "freelancer"],
     relatedSlugs: [
-      "self-employed-tax-deductions-us-2025",
+      "self-employed-tax-deductions-us",
       "schedule-c-deductions-guide-us-freelancers",
       "irs-business-expense-deduction-rules",
     ],

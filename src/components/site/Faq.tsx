@@ -177,7 +177,7 @@ export const faqItemsUS: QA[] = [
     a: "IRS Publication 463 asks you to record, at or near the time of each trip, the miles for each business use, the date, your business destination and the business purpose, plus your total miles for the year. In ReceiptOne the mobile app records your trips by GPS once trip tracking is on, or you enter the start and end addresses; add a note on the purpose and the app saves the trip with its date and distance. ReceiptOne doesn't record odometer readings, so keep your start- and end-of-year readings yourself.",
     link: {
       to: "/us/articles/$slug",
-      slug: "irs-mileage-rate-2025-self-employed",
+      slug: "irs-mileage-rate-self-employed",
       label: "Read the IRS mileage rate guide",
     },
   },
