@@ -218,6 +218,30 @@ test("faq: updated scanning and Telegram answers", () => {
     assert.ok(tgFr.includes(p), `Telegram FR mentions "${p}"`);
 });
 
+test("faq: no answer counts personal trips in a total, percentage or export", () => {
+  // Personal trips show in the Mileage list only; they count in no total,
+  // export or tax figure (portal DATA_CONTRACT §16).
+  const CLAIMS = [
+    /business and personal/i,
+    /personal trips too/i,
+    /all the kilometres you've logged/i,
+    /every trip in the year/i,
+    /professionnels et personnels/i,
+    /trajets personnels\s*\./i,
+    /tous les kilomètres enregistrés/i,
+    /tous les trajets de l'année/i,
+  ];
+  for (const [k, { items }] of Object.entries(LISTS))
+    for (const it of items)
+      for (const re of CLAIMS) assert.ok(!re.test(it.a), `${k} "${it.q}" matches ${re}`);
+  // The Canadian percentage is odometer-based.
+  assert.match(find(mod.faqItems, "How does mileage tracking work?").a, /odometer readings/);
+  assert.match(
+    find(mod.faqItemsFR, "Comment fonctionne le suivi du kilométrage?").a,
+    /relevés de son odomètre/,
+  );
+});
+
 test("faq: every entry is in exactly one category; no numeric caps or banned words", () => {
   const BANNED = /game-changer|seamless|effortless|hassle-free|unlock|supercharge/i;
   for (const [k, { items, cats }] of Object.entries(LISTS)) {

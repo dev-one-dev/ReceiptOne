@@ -80,7 +80,7 @@ export const faqItems: QA[] = [
   },
   {
     q: "How does mileage tracking work?",
-    a: "Turn on trip tracking once and the mobile app records your work trips by GPS, in the background. Or add a trip by entering its start and end addresses, on mobile or web, and ReceiptOne calculates the route and distance via Google Maps. Either way the trip goes into your logbook. Tag each trip business or personal, and the Chart A section of your T2125 report shows your business kilometres, total kilometres and business-use percentage: business kilometres divided by all the kilometres you've logged in the app. It doesn't use your odometer readings, so the percentage is only accurate if you log your personal trips too.",
+    a: "Turn on trip tracking once and the mobile app records your work trips by GPS, in the background. Or add a trip by entering its start and end addresses, on mobile or web, and ReceiptOne calculates the route and distance via Google Maps. Either way the trip appears in your Mileage list. Tag each trip business or personal: only business trips go into your mileage log, your mileage report and your T2125 report, and personal trips stay in your Mileage list without counting toward any total. In Chart A of your T2125 report, the business-use percentage is your business kilometres divided by the total kilometres the vehicle was driven in the year, from its odometer readings at the start and end of the year. Line 9281 is the vehicle's expenses multiplied by that percentage; the per-kilometre value of a trip is not the T2125 amount.",
   },
   {
     q: "What counts as CRA-acceptable mileage documentation?",
@@ -120,7 +120,7 @@ export const faqItems: QA[] = [
   },
   {
     q: "What reports can I export for my T2125?",
-    a: "From the ReceiptOne web app you can export a T2125 report, in PDF and CSV, laid out like CRA Form T2125, Statement of Business or Professional Activities: Part 1 identification, your expenses by Part 4 line, Part 7 business-use-of-home expenses, and the kilometres for Chart A, Motor vehicle expenses: business kilometres, total kilometres and business-use percentage. Chart A's actual vehicle costs, such as fuel, insurance and repairs, are left blank for you to fill in. You can also export a mileage report: the CSV lists every trip in the year, business and personal, with its date, start and end addresses, purpose and distance, and the PDF lists your business trips. Both are working papers for you or your accountant; ReceiptOne does not file the form.",
+    a: "From the ReceiptOne web app you can export a T2125 report, in PDF and CSV, laid out like CRA Form T2125, Statement of Business or Professional Activities: Part 1 identification, your expenses by Part 4 line, Part 7 business-use-of-home expenses, and the kilometres for Chart A, Motor vehicle expenses: business kilometres, total kilometres and business-use percentage. Chart A's actual vehicle costs, such as fuel, insurance and repairs, are left blank for you to fill in. You can also export a mileage report, in PDF and CSV, listing your business trips in the year with their date, start and end addresses, purpose and distance. Both are working papers for you or your accountant; ReceiptOne does not file the form.",
   },
   paymentQA,
   // Appended after paymentQA so the first three (shown on /ca) stay the same.
