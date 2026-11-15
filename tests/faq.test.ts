@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { mkdirSync, readFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 import { build, type Plugin } from "esbuild";
@@ -50,6 +50,11 @@ await build({
       import { Route as UsFaq } from "@/routes/us/faq";
       export { faqItems, faqItemsUS, CATEGORIZED_FAQ, CATEGORIZED_FAQ_US } from "@/components/site/Faq";
       export { faqItemsFR, CATEGORIZED_FAQ_FR } from "@/lib/faq.fr";
+      export { FAQ_VIDEOS, CA_ONLY_FAQ_VIDEO_IDS, isoDuration } from "@/lib/faq-videos";
+      import { FaqVideoPlayer } from "@/components/site/Faq";
+      export function renderVideo(video) {
+        return renderToString(createElement(FaqVideoPlayer, { video }));
+      }
 
       const now = "2026-11-15T18:00:00Z";
       const ROUTES = {
@@ -96,7 +101,15 @@ await build({
   logLevel: "silent",
 });
 
-type QA = { q: string; a: string };
+type Video = {
+  id: string;
+  src: string;
+  poster: string;
+  title: string;
+  description: string;
+  duration: number;
+};
+type QA = { q: string; a: string; videos?: Video[] };
 type Cat = { category: string; items: QA[] }[];
 const mod = (await import(pathToFileURL(OUT).href)) as {
   render: (routeId: string, path: string) => Promise<{ matched: boolean; html: string }>;
@@ -107,6 +120,10 @@ const mod = (await import(pathToFileURL(OUT).href)) as {
   CATEGORIZED_FAQ: Cat;
   CATEGORIZED_FAQ_US: Cat;
   CATEGORIZED_FAQ_FR: Cat;
+  FAQ_VIDEOS: Record<string, Video>;
+  CA_ONLY_FAQ_VIDEO_IDS: string[];
+  isoDuration: (s: number) => string;
+  renderVideo: (v: Video) => string;
 };
 
 const LISTS = {
@@ -325,4 +342,133 @@ test("faq JSON-LD: landing pages list the 3 visible questions, FAQ pages list th
       assert.equal(x.acceptedAnswer.text, it.a, `${p.path} "${x.name}" answer`);
     }
   }
+});
+
+/* ------------------------------ How-to videos ------------------------------ */
+
+const videoIds = (items: QA[], q: string) => (find(items, q).videos ?? []).map((v) => v.id);
+
+test("faq videos: the right clips on the right questions", () => {
+  const CA: [string, string[]][] = [
+    ["How does receipt scanning work?", ["upload-receipt", "add-receipt-manual"]],
+    ["Can I upload many receipts at once?", ["upload-receipt"]],
+    ["Is there a Telegram integration?", ["telegram-connect"]],
+    ["How does mileage tracking work?", ["add-trip"]],
+    ["How is the home office deduction calculated?", ["home-office"]],
+    ["What reports can I export for my T2125?", ["report"]],
+    ["How do I change my language or province?", ["settings"]],
+    ["Can I send my report to my accountant?", ["accountant"]],
+  ];
+  const US: [string, string[]][] = [
+    ["How does receipt scanning work?", ["upload-receipt", "add-receipt-manual"]],
+    ["Can I upload many receipts at once?", ["upload-receipt"]],
+    ["Is there a Telegram integration?", ["telegram-connect"]],
+    ["How do I change my language or country?", ["settings"]],
+  ];
+  for (const [q, ids] of CA) assert.deepEqual(videoIds(mod.faqItems, q), ids, `CA "${q}"`);
+  for (const [q, ids] of US) assert.deepEqual(videoIds(mod.faqItemsUS, q), ids, `US "${q}"`);
+  // Nothing else carries a clip, and no item has more than two.
+  const withClip = (items: QA[]) => items.filter((x) => x.videos?.length).map((x) => x.q);
+  assert.deepEqual(withClip(mod.faqItems).sort(), CA.map(([q]) => q).sort());
+  assert.deepEqual(withClip(mod.faqItemsUS).sort(), US.map(([q]) => q).sort());
+  for (const it of [...mod.faqItems, ...mod.faqItemsUS])
+    assert.ok((it.videos?.length ?? 0) <= 2, `"${it.q}" has at most two clips`);
+  // French list: no clips for now.
+  for (const it of mod.faqItemsFR) assert.ok(!it.videos?.length, `FR "${it.q}" has no clip`);
+});
+
+test("faq videos: no km, T2125, home-office or accountant clip on US", () => {
+  for (const id of ["add-trip", "home-office", "report", "accountant"])
+    assert.ok(mod.CA_ONLY_FAQ_VIDEO_IDS.includes(id), `${id} is CA-only`);
+  for (const it of mod.faqItemsUS)
+    for (const v of it.videos ?? [])
+      assert.ok(!mod.CA_ONLY_FAQ_VIDEO_IDS.includes(v.id), `US "${it.q}" has ${v.id}`);
+});
+
+test("faq videos: files exist and the player loads nothing until play", () => {
+  for (const v of Object.values(mod.FAQ_VIDEOS)) {
+    assert.ok(existsSync(resolve("public", v.src.slice(1))), `${v.src} exists`);
+    assert.ok(existsSync(resolve("public", v.poster.slice(1))), `${v.poster} exists`);
+    assert.ok(v.title && v.description && v.duration > 0, `${v.id} metadata`);
+    const html = mod.renderVideo(v);
+    const tag = html.match(/<video[^>]*>/)?.[0] ?? "";
+    assert.ok(tag.includes('preload="none"'), `${v.id} preload none`);
+    assert.ok(tag.includes(`poster="${v.poster}"`), `${v.id} poster`);
+    assert.ok(tag.includes('width="1280"') && tag.includes('height="720"'), `${v.id} 16:9 box`);
+    assert.ok(tag.includes(`aria-label="${v.title.replace(/'/g, "&#x27;")}"`), `${v.id} label`);
+    assert.ok(tag.includes("controls"), `${v.id} controls`);
+    assert.ok(!/autoplay/i.test(html), `${v.id} no autoplay`);
+    assert.ok(html.includes(`<source src="${v.src}" type="video/mp4"`), `${v.id} source`);
+  }
+});
+
+test("faq videos: closed answers and landing pages render no video", async () => {
+  for (const p of PAGES) {
+    const { html } = await mod.render(p.routeId, p.path);
+    // Landing heroes have their own clips; only the FAQ clips are checked here.
+    assert.ok(!html.includes("/videos/faq/"), `${p.path} has no FAQ clip until opened`);
+  }
+  for (const id of ["/ca/", "/fr/", "/us/", "/fr/faq"]) {
+    const ld = mod.head(id).scripts.map((s) => JSON.parse(s.children));
+    assert.ok(!ld.some((j) => j["@type"] === "VideoObject"), `${id} has no VideoObject`);
+  }
+});
+
+test("faq videos: VideoObject JSON-LD matches the embedded clips", () => {
+  const PAIRS: [string, QA[]][] = [
+    ["/faq", mod.faqItems],
+    ["/us/faq", mod.faqItemsUS],
+  ];
+  for (const [routeId, items] of PAIRS) {
+    const ld = mod
+      .head(routeId)
+      .scripts.map((s) => JSON.parse(s.children))
+      .filter((j) => j["@type"] === "VideoObject");
+    const embedded = [...new Set(items.flatMap((x) => (x.videos ?? []).map((v) => v.id)))];
+    assert.equal(ld.length, embedded.length, `${routeId} one VideoObject per clip`);
+    for (const id of embedded) {
+      const v = mod.FAQ_VIDEOS[id];
+      const o = ld.find((j) => j.name === v.title);
+      assert.ok(o, `${routeId} has ${id}`);
+      assert.equal(o.description, v.description);
+      assert.equal(o.thumbnailUrl, `https://receipt-one.com${v.poster}`);
+      assert.equal(o.contentUrl, `https://receipt-one.com${v.src}`);
+      assert.equal(o.uploadDate, "2026-11-15");
+      assert.equal(o.duration, mod.isoDuration(v.duration));
+      assert.match(o.duration, /^PT\d+S$/);
+    }
+  }
+  assert.equal(mod.isoDuration(26), "PT26S");
+  assert.equal(mod.isoDuration(75), "PT1M15S");
+});
+
+test("faq: language and accountant questions appended to every list", () => {
+  const NEW: Record<string, [string, string, string][]> = {
+    ca: [
+      ["How do I change my language or province?", "General", "country and province"],
+      ["Can I send my report to my accountant?", "Tax & CRA", "Send to accountant"],
+    ],
+    fr: [
+      ["Comment changer ma langue ou ma province?", "Général", "pays et votre province"],
+      ["Puis-je envoyer mon rapport à mon comptable?", "Impôts et ARC", "Envoyer au comptable"],
+    ],
+    us: [
+      ["How do I change my language or country?", "General", "Your country decides"],
+      ["Can I send my report to my accountant?", "Tax & IRS", "Send to accountant"],
+    ],
+  };
+  for (const [k, rows] of Object.entries(NEW)) {
+    const { items, cats } = LISTS[k as keyof typeof LISTS];
+    assert.deepEqual(
+      items.slice(-2).map((x) => x.q),
+      rows.map((r) => r[0]),
+      `${k} appended`,
+    );
+    for (const [q, cat, phrase] of rows) {
+      assert.ok(find(items, q).a.includes(phrase), `${k} "${q}" mentions "${phrase}"`);
+      assert.equal(categoryOf(cats, q), cat, `${k} "${q}" category`);
+    }
+  }
+  // The portal stores no US state, so the US answers name no state or province.
+  for (const it of mod.faqItemsUS.slice(-2)) assert.ok(!/province|state/i.test(it.a), it.q);
 });

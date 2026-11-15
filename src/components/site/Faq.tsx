@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { Plus } from "lucide-react";
 import { useState } from "react";
 import { useLang } from "@/lib/use-lang";
+import { FAQ_VIDEOS, FAQ_VIDEO_HEIGHT, FAQ_VIDEO_WIDTH, type FaqVideo } from "@/lib/faq-videos";
 
 export type QA = {
   q: string;
@@ -11,6 +12,11 @@ export type QA = {
    * Link. `en` marks an English-only target linked from a French page.
    */
   link?: { to: string; slug?: string; label: string; external?: boolean; en?: boolean };
+  /**
+   * How-to clips (at most two) shown under the answer when it is expanded, on
+   * the /faq pages only — the landing widget leaves them out.
+   */
+  videos?: FaqVideo[];
 };
 
 /**
@@ -22,6 +28,7 @@ const telegramQA: QA = {
   q: "Is there a Telegram integration?",
   a: "Yes. Our Telegram bot is @ReceiptOne_bot. To connect it, sign in to the ReceiptOne web app, open Integrations, choose Connect Telegram, and scan the QR code with your phone's camera, or tap Open in Telegram if you're on your phone. The code works once and expires after 15 minutes. Then send the bot a photo of a receipt, or an image or PDF file: it reads the receipt, saves it to your account, and replies with the merchant, amount and date and a link to the receipt. If you send a receipt you already have, it tells you instead of saving a copy. You can also ask the ReceiptOne assistant a question in plain text, send /report to get your annual tax report as a PDF or CSV, or send /support to open a support ticket; our team replies in the chat and by email. The bot writes in English or French, following your ReceiptOne language setting. Adding receipts needs an active trial or subscription. To disconnect, open Integrations → Telegram → Disconnect in the web app.",
   link: { to: "https://t.me/ReceiptOne_bot", label: "Open @ReceiptOne_bot", external: true },
+  videos: [FAQ_VIDEOS["telegram-connect"]],
 };
 
 /**
@@ -41,6 +48,7 @@ export const faqItems: QA[] = [
   {
     q: "How does receipt scanning work?",
     a: "Open the app, point your camera at any receipt, and tap. ReceiptOne reads the merchant name, date, total, and GST/HST/PST amounts automatically, and you can edit anything it reads wrongly. Paper receipts, photos, and PDF invoices all work. On a computer, add receipts in the web app: choose Add receipt → Choose from file and pick a JPG, PNG or PDF.",
+    videos: [FAQ_VIDEOS["upload-receipt"], FAQ_VIDEOS["add-receipt-manual"]],
   },
   {
     q: "Does ReceiptOne calculate my tax refund?",
@@ -81,6 +89,7 @@ export const faqItems: QA[] = [
   {
     q: "How does mileage tracking work?",
     a: "Turn on trip tracking once and the mobile app records your work trips by GPS, in the background. Or add a trip by entering its start and end addresses, on mobile or web, and ReceiptOne calculates the route and distance via Google Maps. Either way the trip appears in your Mileage list. Tag each trip business or personal: only business trips go into your mileage log, your mileage report and your T2125 report, and personal trips stay in your Mileage list without counting toward any total. In Chart A of your T2125 report, the business-use percentage is your business kilometres divided by the total kilometres the vehicle was driven in the year, from its odometer readings at the start and end of the year. You enter these readings for each vehicle in the web app under Mileage → Vehicles. Line 9281 is the vehicle's expenses multiplied by that percentage; the per-kilometre value of a trip is not the T2125 amount.",
+    videos: [FAQ_VIDEOS["add-trip"]],
   },
   {
     q: "What counts as CRA-acceptable mileage documentation?",
@@ -94,6 +103,7 @@ export const faqItems: QA[] = [
   {
     q: "How is the home office deduction calculated?",
     a: "Based on the square footage of your workspace relative to your home's total finished square footage, applied to your home expenses — rent or mortgage interest, home insurance, utilities (heat, electricity, water), and maintenance — per CRA's business-use-of-home rules.",
+    videos: [FAQ_VIDEOS["home-office"]],
   },
   {
     q: "Can I claim both mileage and home office deductions?",
@@ -121,6 +131,7 @@ export const faqItems: QA[] = [
   {
     q: "What reports can I export for my T2125?",
     a: "From the ReceiptOne web app you can export a T2125 report, in PDF and CSV, laid out like CRA Form T2125, Statement of Business or Professional Activities: Part 1 identification, your expenses by Part 4 line, Part 7 business-use-of-home expenses, and the kilometres for Chart A, Motor vehicle expenses: business kilometres, total kilometres and business-use percentage. Chart A's actual vehicle costs, such as fuel, insurance and repairs, are left blank for you to fill in. You can also export a mileage report, in PDF and CSV, listing your business trips in the year with their date, start and end addresses, purpose and distance. Both are working papers for you or your accountant; ReceiptOne does not file the form.",
+    videos: [FAQ_VIDEOS.report],
   },
   paymentQA,
   // Appended after paymentQA so the first three (shown on /ca) stay the same.
@@ -131,10 +142,22 @@ export const faqItems: QA[] = [
   {
     q: "Can I upload many receipts at once?",
     a: "Yes. In the web app, go to Receipts → Bulk Upload and drag in images, PDFs or a ZIP archive. Each file is read separately.",
+    videos: [FAQ_VIDEOS["upload-receipt"]],
   },
   {
     q: "What can the AI assistant do?",
     a: "The assistant is a chat in the ReceiptOne web app, and you can also reach it in the Telegram bot. It explains how ReceiptOne works and answers questions about your own records: spending by period or category, recoverable GST/HST, top merchants, mileage and business-use percentage, and your T2125 total. The numbers come from your data, calculated by the app. It doesn't edit receipts and doesn't decide whether an expense is deductible. It replies in English or French.",
+  },
+  // Appended so the first three stay the same; faq.fr.ts carries both too.
+  {
+    q: "How do I change my language or province?",
+    a: "In the web app, open Settings. A change to the interface language applies straight away. Your country and province decide which tax rules and categories apply, so set them before you add receipts. Trip tracking options are in Settings too.",
+    videos: [FAQ_VIDEOS.settings],
+  },
+  {
+    q: "Can I send my report to my accountant?",
+    a: "Yes. Add your accountant's e-mail under My accountant in the web app. Then, in Reports, choose Send to accountant: ReceiptOne e-mails them your annual tax report as a PDF.",
+    videos: [FAQ_VIDEOS.accountant],
   },
 ];
 
@@ -143,6 +166,7 @@ export const faqItemsUS: QA[] = [
   {
     q: "How does receipt scanning work?",
     a: "Open the app, point your camera at any receipt, and tap. ReceiptOne reads the merchant name, date, total, and sales tax automatically, and you can edit anything it reads wrongly. Paper receipts, photos, and PDF invoices all work. On a computer, add receipts in the web app: choose Add receipt → Choose from file and pick a JPG, PNG or PDF.",
+    videos: [FAQ_VIDEOS["upload-receipt"], FAQ_VIDEOS["add-receipt-manual"]],
   },
   {
     q: "Does ReceiptOne calculate my tax refund?",
@@ -226,6 +250,7 @@ export const faqItemsUS: QA[] = [
   {
     q: "Can I upload many receipts at once?",
     a: "Yes. In the web app, go to Receipts → Bulk Upload and drag in images, PDFs or a ZIP archive. Each file is read separately.",
+    videos: [FAQ_VIDEOS["upload-receipt"]],
   },
   {
     q: "What can the AI assistant do?",
@@ -239,17 +264,43 @@ export const faqItemsUS: QA[] = [
     q: "What reports can I export for my Schedule C?",
     a: "From the ReceiptOne web app you can export an annual tax report for Schedule C, as a PDF or CSV, and a mileage report. Both are working papers for you or your CPA; ReceiptOne does not file your return.",
   },
+  // The portal stores a country but no US state, so this one says country only.
+  {
+    q: "How do I change my language or country?",
+    a: "In the web app, open Settings. A change to the interface language applies straight away. Your country decides which tax rules and categories apply, so set it before you add receipts. Trip tracking options are in Settings too.",
+    videos: [FAQ_VIDEOS.settings],
+  },
+  {
+    q: "Can I send my report to my accountant?",
+    a: "Yes. Add your accountant's email under My accountant in the web app. Then, in Reports, choose Send to accountant: ReceiptOne emails them your annual tax report as a PDF.",
+  },
 ];
 
 /** FAQ questions grouped by category — used on the /faq help-center page. */
 export const CATEGORIZED_FAQ: { category: string; items: QA[] }[] = [
   {
     category: "General",
-    items: [faqItems[0], faqItems[4], faqItems[5], faqItems[6], faqItems[22], faqItems[23]],
+    items: [
+      faqItems[0],
+      faqItems[4],
+      faqItems[5],
+      faqItems[6],
+      faqItems[22],
+      faqItems[23],
+      faqItems[24],
+    ],
   },
   {
     category: "Tax & CRA",
-    items: [faqItems[1], faqItems[2], faqItems[3], faqItems[9], faqItems[18], faqItems[19]],
+    items: [
+      faqItems[1],
+      faqItems[2],
+      faqItems[3],
+      faqItems[9],
+      faqItems[18],
+      faqItems[19],
+      faqItems[25],
+    ],
   },
   {
     category: "Pricing & Plans",
@@ -280,11 +331,19 @@ export const CATEGORIZED_FAQ_US: { category: string; items: QA[] }[] = [
       faqItemsUS[6],
       faqItemsUS[19],
       faqItemsUS[20],
+      faqItemsUS[23],
     ],
   },
   {
     category: "Tax & IRS",
-    items: [faqItemsUS[1], faqItemsUS[2], faqItemsUS[3], faqItemsUS[9], faqItemsUS[22]],
+    items: [
+      faqItemsUS[1],
+      faqItemsUS[2],
+      faqItemsUS[3],
+      faqItemsUS[9],
+      faqItemsUS[22],
+      faqItemsUS[24],
+    ],
   },
   {
     category: "Pricing & Plans",
@@ -303,6 +362,34 @@ export const CATEGORIZED_FAQ_US: { category: string; items: QA[] }[] = [
     items: [faqItemsUS[15], faqItemsUS[16]],
   },
 ];
+
+/* ------------------------------ How-to video ------------------------------ */
+
+/**
+ * One how-to clip: native controls, no autoplay, muted (the clips have no
+ * narration). width/height fix the 16:9 box before the poster arrives, so
+ * opening an answer doesn't shift the layout.
+ */
+export function FaqVideoPlayer({ video }: { video: FaqVideo }) {
+  return (
+    <figure>
+      <video
+        controls
+        playsInline
+        muted
+        preload="none"
+        poster={video.poster}
+        width={FAQ_VIDEO_WIDTH}
+        height={FAQ_VIDEO_HEIGHT}
+        aria-label={video.title}
+        className="block aspect-video h-auto w-full rounded-card border border-hairline bg-ink-05"
+      >
+        <source src={video.src} type="video/mp4" />
+      </video>
+      <figcaption className="mt-1.5 font-sans text-sm text-ink-60">{video.title}</figcaption>
+    </figure>
+  );
+}
 
 /* ----------------------------- Accordion list ----------------------------- */
 
@@ -351,7 +438,14 @@ export const CATEGORIZED_FAQ_US: { category: string; items: QA[] }[] = [
  * FaqAccordion components on the same page (e.g. one per category on /faq) are
  * fully independent and do not interfere with each other.
  */
-export function FaqAccordion({ items }: { items: QA[] }) {
+export function FaqAccordion({
+  items,
+  showVideos = true,
+}: {
+  items: QA[];
+  /** The landing widget passes false: its pages stay video-free. */
+  showVideos?: boolean;
+}) {
   const [open, setOpen] = useState<number | null>(null);
 
   return (
@@ -417,33 +511,47 @@ export function FaqAccordion({ items }: { items: QA[] }) {
                * -translate-y-1 entrance effect was removed because it caused a
                * vertical micro-bounce during the expand animation.
                */}
-              <p className="overflow-hidden font-display text-sm text-ink-60 md:text-body">
-                {it.a}
-                {it.link && (
-                  <>
-                    {" "}
-                    {it.link.external ? (
-                      <a
-                        href={it.link.to}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="font-medium text-ink underline underline-offset-2 transition-[text-underline-offset] duration-150 hover:underline-offset-4"
-                      >
-                        {it.link.label}
-                      </a>
-                    ) : (
-                      <Link
-                        to={it.link.to as any}
-                        params={it.link.slug ? ({ slug: it.link.slug } as any) : undefined}
-                        hrefLang={it.link.en ? "en" : undefined}
-                        className="font-medium text-ink underline underline-offset-2 transition-[text-underline-offset] duration-150 hover:underline-offset-4"
-                      >
-                        {it.link.label}
-                      </Link>
-                    )}
-                  </>
-                )}
-              </p>
+              <div className="min-h-0 overflow-hidden">
+                <p className="font-display text-sm text-ink-60 md:text-body">
+                  {it.a}
+                  {it.link && (
+                    <>
+                      {" "}
+                      {it.link.external ? (
+                        <a
+                          href={it.link.to}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="font-medium text-ink underline underline-offset-2 transition-[text-underline-offset] duration-150 hover:underline-offset-4"
+                        >
+                          {it.link.label}
+                        </a>
+                      ) : (
+                        <Link
+                          to={it.link.to as any}
+                          params={it.link.slug ? ({ slug: it.link.slug } as any) : undefined}
+                          hrefLang={it.link.en ? "en" : undefined}
+                          className="font-medium text-ink underline underline-offset-2 transition-[text-underline-offset] duration-150 hover:underline-offset-4"
+                        >
+                          {it.link.label}
+                        </Link>
+                      )}
+                    </>
+                  )}
+                </p>
+                {/*
+                 * Mounted only while open, so a closed item fetches neither the
+                 * poster nor the clip; preload="none" keeps the mp4 off the wire
+                 * until the user presses play.
+                 */}
+                {showVideos && isOpen && it.videos?.length ? (
+                  <div className="mt-3 space-y-3">
+                    {it.videos.slice(0, 2).map((v) => (
+                      <FaqVideoPlayer key={v.id} video={v} />
+                    ))}
+                  </div>
+                ) : null}
+              </div>
             </div>
           </li>
         );
@@ -495,7 +603,7 @@ export function Faq({
       </div>
 
       {/* Accordion */}
-      <FaqAccordion items={displayed} />
+      <FaqAccordion items={displayed} showVideos={false} />
 
       {/* Help center link */}
       <div className="mt-6 text-center">

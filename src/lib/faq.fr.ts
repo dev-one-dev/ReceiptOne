@@ -2,7 +2,7 @@ import type { QA } from "@/components/site/Faq";
 
 /**
  * French (fr-CA) translation of the Canadian FAQ in components/site/Faq.tsx:
- * the same 24 entries in the same order, so CATEGORIZED_FAQ_FR can use the
+ * the same 26 entries in the same order, so CATEGORIZED_FAQ_FR can use the
  * same indexes. Keep the two lists in step -- add, change or remove an entry
  * in both.
  *
@@ -127,6 +127,14 @@ export const faqItemsFR: QA[] = [
     q: "Que peut faire l'assistant IA?",
     a: "L'assistant est un clavardage dans l'application Web ReceiptOne, et vous pouvez aussi le joindre dans le robot Telegram. Il explique le fonctionnement de ReceiptOne et répond aux questions sur vos propres dossiers : dépenses par période ou par catégorie, TPS/TVH récupérable, principaux commerçants, kilométrage et pourcentage d'utilisation professionnelle, et total de votre T2125. Les chiffres proviennent de vos données et sont calculés par l'application. Il ne modifie pas les reçus et ne décide pas si une dépense est déductible. Il répond en anglais ou en français.",
   },
+  {
+    q: "Comment changer ma langue ou ma province?",
+    a: "Dans l'application Web, ouvrez Paramètres. Un changement de langue de l'interface s'applique tout de suite. Votre pays et votre province déterminent les règles fiscales et les catégories qui s'appliquent : réglez-les avant d'ajouter des reçus. Les options de suivi des trajets se trouvent aussi dans Paramètres.",
+  },
+  {
+    q: "Puis-je envoyer mon rapport à mon comptable?",
+    a: "Oui. Ajoutez le courriel de votre comptable sous Mon comptable dans l'application Web. Ensuite, dans Rapports, choisissez Envoyer au comptable : ReceiptOne lui envoie par courriel votre rapport fiscal annuel en PDF.",
+  },
 ];
 
 /** Same groups and indexes as CATEGORIZED_FAQ in components/site/Faq.tsx. */
@@ -140,6 +148,7 @@ export const CATEGORIZED_FAQ_FR: { category: string; items: QA[] }[] = [
       faqItemsFR[6],
       faqItemsFR[22],
       faqItemsFR[23],
+      faqItemsFR[24],
     ],
   },
   {
@@ -151,6 +160,7 @@ export const CATEGORIZED_FAQ_FR: { category: string; items: QA[] }[] = [
       faqItemsFR[9],
       faqItemsFR[18],
       faqItemsFR[19],
+      faqItemsFR[25],
     ],
   },
   {

@@ -8,6 +8,7 @@ import { SITE_URL as EXTERNAL_SITE_URL, siteUrl } from "@/lib/external";
 import { getPlans, type Plan } from "@/lib/pricing";
 import { APP_STORE_URL, PLAY_STORE_URL } from "@/lib/stores";
 import { hreflangAlternates, type Lang } from "@/lib/locales";
+import { FAQ_VIDEO_UPLOAD_DATE, isoDuration, type FaqVideo } from "@/lib/faq-videos";
 
 export const SITE_URL = EXTERNAL_SITE_URL;
 export const SITE_NAME = "ReceiptOne";
@@ -182,6 +183,26 @@ export function faqJsonLd(items: { q: string; a: string }[]) {
       acceptedAnswer: { "@type": "Answer", text: it.a },
     })),
   };
+}
+
+/**
+ * One VideoObject per how-to clip embedded on a /faq page, in page order and
+ * without duplicates (a clip under two questions is one video). Thumbnail and
+ * content URLs are absolute.
+ */
+export function faqVideosJsonLd(items: { videos?: FaqVideo[] }[]) {
+  const seen = new Map<string, FaqVideo>();
+  for (const it of items) for (const v of it.videos ?? []) if (!seen.has(v.id)) seen.set(v.id, v);
+  return [...seen.values()].map((v) => ({
+    "@context": "https://schema.org",
+    "@type": "VideoObject",
+    name: v.title,
+    description: v.description,
+    thumbnailUrl: url(v.poster),
+    contentUrl: url(v.src),
+    uploadDate: FAQ_VIDEO_UPLOAD_DATE,
+    duration: isoDuration(v.duration),
+  }));
 }
 
 /**
