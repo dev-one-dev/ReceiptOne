@@ -7,11 +7,11 @@ import { loadArticleRenderer, pageText, type Head } from "./lib/render-articles.
 import { generateSitemap, OUTPUT } from "../scripts/generate-sitemap.mjs";
 
 /**
- * Most US articles are kept out of search for now: six US article pages and
+ * Some US articles are kept out of search for now: three US article pages and
  * /us/articles emit <meta name="robots" content="noindex, follow">
  * (per-article `indexable: false` and US_ARTICLES_INDEX_INDEXABLE in
  * src/lib/articles.us.ts), and none of them is in the sitemap or llms.txt.
- * The three guides rewritten on 2026-11-14 (INDEXABLE_US below) are indexable
+ * The six guides rewritten on 2026-11-14 (INDEXABLE_US below) are indexable
  * and listed in the sitemap. CA articles and every other page stay indexable. Each US article ends with
  * the US "not tax advice" line, once, before the correction line.
  */
@@ -30,11 +30,14 @@ const INDEXABLE_US = [
   "irs-mileage-rate-self-employed",
   "quarterly-estimated-taxes-us-freelancers",
   "self-employed-tax-deductions-us",
+  "irs-business-expense-deduction-rules",
+  "schedule-c-deductions-guide-us-freelancers",
+  "irs-receipt-documentation-requirements",
 ];
 
 const robots = (head: Head) => (head.meta ?? []).filter((m) => m.name === "robots");
 
-test("noindex: six US articles and /us/articles are noindex, follow; the three guides are not", async () => {
+test("noindex: three US articles and /us/articles are noindex, follow; the six guides are not", async () => {
   assert.equal(mod.US_ARTICLES.length, 9);
   for (const a of mod.US_ARTICLES) {
     const indexable = INDEXABLE_US.includes(a.slug);
@@ -107,7 +110,7 @@ test("noindex: no other route emits noindex", () => {
   assert.doesNotMatch(ca, /NOINDEX_FOLLOW/);
 });
 
-test("noindex: sitemap has no noindexed URL, every CA article and the three US guides", async () => {
+test("noindex: sitemap has no noindexed URL, every CA article and the six US guides", async () => {
   const { xml } = await generateSitemap();
   const committed = readFileSync(OUTPUT, "utf8").replaceAll("\r\n", "\n");
   assert.equal(committed, xml);

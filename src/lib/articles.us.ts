@@ -16,11 +16,12 @@ export const US_ARTICLE_DISCLAIMER =
   "This article is general information, not tax advice. Tax rules and amounts change; check IRS.gov or a tax professional for your situation.";
 
 /* ─────────────── Rewritten guides (2026-11-14): shared sources ───────────────
- * Every IRS rule, rate, threshold and form or line reference in the three
+ * Every IRS rule, rate, threshold and form or line reference in the six
  * rewritten guides below (irs-mileage-rate-self-employed,
- * quarterly-estimated-taxes-us-freelancers, self-employed-tax-deductions-us)
- * was read on these irs.gov pages on November 14, 2026. Worked examples are
- * hypothetical and labelled that way. */
+ * quarterly-estimated-taxes-us-freelancers, self-employed-tax-deductions-us,
+ * irs-business-expense-deduction-rules, schedule-c-deductions-guide-us-freelancers,
+ * irs-receipt-documentation-requirements) was read on these irs.gov pages on
+ * November 14, 2026. Worked examples are hypothetical and labelled that way. */
 const IRS = "https://www.irs.gov";
 const IRS_SRC = {
   mileageRates: {
@@ -85,6 +86,22 @@ const IRS_SRC = {
     label: "Qualified business income deduction",
     href: `${IRS}/newsroom/qualified-business-income-deduction`,
   },
+  aboutSchC: {
+    label: "About Schedule C (Form 1040)",
+    href: `${IRS}/forms-pubs/about-schedule-c-form-1040`,
+  },
+  schC2026: {
+    label: "Schedule C (Form 1040), 2026 form",
+    href: `${IRS}/pub/irs-pdf/f1040sc.pdf`,
+  },
+  schSE: { label: "Instructions for Schedule SE", href: `${IRS}/instructions/i1040sse` },
+  p946: { label: "Publication 946", href: `${IRS}/publications/p946` },
+  tangible: {
+    label: "Tangible property final regulations",
+    href: `${IRS}/businesses/small-businesses-self-employed/tangible-property-final-regulations`,
+  },
+  p583: { label: "Publication 583", href: `${IRS}/publications/p583` },
+  topic305: { label: "Topic 305, Recordkeeping", href: `${IRS}/taxtopics/tc305` },
 };
 
 /** Closing "checked" line of a rewritten guide's sources, ending with the US disclaimer. */
@@ -97,6 +114,9 @@ const US_CTA = { label: "See how ReceiptOne works.", href: "/us" };
 const MILEAGE_GUIDE = "/us/articles/irs-mileage-rate-self-employed";
 const ESTIMATED_GUIDE = "/us/articles/quarterly-estimated-taxes-us-freelancers";
 const DEDUCTIONS_GUIDE = "/us/articles/self-employed-tax-deductions-us";
+const EXPENSE_RULES_GUIDE = "/us/articles/irs-business-expense-deduction-rules";
+const SCHEDULE_C_GUIDE = "/us/articles/schedule-c-deductions-guide-us-freelancers";
+const RECEIPTS_GUIDE = "/us/articles/irs-receipt-documentation-requirements";
 
 export const ARTICLES_US_ONLY: Article[] = [
   /* ═══════════════════════════════════════════════════════════════
@@ -106,113 +126,201 @@ export const ARTICLES_US_ONLY: Article[] = [
   {
     slug: "irs-business-expense-deduction-rules",
     regions: ["us"],
-    indexable: false,
-    title: "IRS Business Expense Deduction Rules for Freelancers",
+    indexable: true,
+    title: "IRS Business Expense Rules: The Ordinary and Necessary Test Explained",
     excerpt:
-      "What the IRS requires to deduct a business expense: the ordinary-and-necessary test, documentation, record retention, and a system that survives an audit.",
+      "How the IRS decides whether a business cost is deductible: the ordinary and necessary test, business versus personal use, splitting mixed-use costs, capital versus current expenses, and the costs you can't deduct.",
     category: "Tax Compliance",
     publishedAt: "2026-05-20",
-    updatedAt: "2026-10-05",
+    updatedAt: "2026-11-14",
     image: {
       path: "/articles/irs-business-expense-deduction-rules.webp",
       width: 1280,
       height: 720,
       alt: "Desktop calculator with tax keys and a pen on grid paper",
     },
-    tags: ["IRS", "business expenses", "deductions", "self-employed", "audit", "record keeping"],
+    tags: [
+      "IRS",
+      "business expenses",
+      "deductions",
+      "self-employed",
+      "depreciation",
+      "record keeping",
+    ],
     clusterName: "IRS Expense Rules",
     relatedSlugs: [
+      "self-employed-tax-deductions-us",
       "schedule-c-deductions-guide-us-freelancers",
       "irs-receipt-documentation-requirements",
-      "self-employed-tax-deductions-us",
     ],
+    quickAnswer:
+      "The IRS lets you deduct a business expense if it is both ordinary, meaning common and accepted in your field, and necessary, meaning helpful and appropriate for your business; it doesn't have to be indispensable. If a cost is partly personal, you deduct only the business part. Property expected to last more than a year is generally capitalized and depreciated, although the de minimis safe harbor and section 179 let you deduct some of it at once. Personal, living and family expenses, fines paid to a government for breaking the law, political contributions and entertainment are not deductible.",
+    receiptOneHelps: {
+      items: [
+        "Photograph a receipt, upload an image or PDF, or forward an e-mail receipt to your own ReceiptOne address, and ReceiptOne reads the merchant name, date, total and sales tax for you to check.",
+        "Bulk upload a batch of photos or PDFs and ReceiptOne sorts them into categories and flags duplicates.",
+        "Turn on trip tracking and the app records your work trips by GPS, so the business share of your car rests on a mileage log.",
+        "Export your expenses to PDF or CSV with totals, categories and receipt links, or type /report to the Telegram bot to get your report in the chat.",
+      ],
+      link: US_CTA,
+    },
     body: [
       {
         type: "p",
-        text: "If you're self-employed in the United States, your expense records are your financial foundation. The IRS can disallow deductions that lack proper documentation — resulting in a larger tax bill and potential penalties. This guide explains what makes an expense deductible, what records you need to keep, and how to build a system that holds up under scrutiny.",
+        text: "Most of the deductions a freelancer claims come down to one question: would the IRS accept this as a cost of running the business? The tax code answers it with a short test, and the other rules build on it. This guide explains how the test works, how to handle costs that are partly personal, when an expense is deducted at once and when it is spread over several years, and which costs never qualify. It doesn't list the deductions themselves; the deductions guide does that.",
       },
+      { type: "h2", text: "The ordinary and necessary test" },
       {
-        type: "h2",
-        text: "The Ordinary-and-Necessary Test",
+        type: "p",
+        text: "Publication 334, the IRS tax guide for small business, puts the rule in two sentences. To be deductible, a business expense must be both ordinary and necessary. An ordinary expense is one that is common and accepted in your field of business, and a necessary expense is one that is helpful and appropriate for your business. The rule comes from section 162 of the Internal Revenue Code and its regulations.",
+      },
+      { type: "h3", text: "Ordinary: common in your field" },
+      {
+        type: "p",
+        text: "Ordinary doesn't mean frequent. A cost you pay once can still be ordinary if businesses like yours commonly pay it. The comparison is with your own field: a stock photo subscription is ordinary for a designer, professional liability insurance for a consultant, a commercial kitchen rental for a caterer. The less usual a cost is for your kind of work, the more it matters that you can explain why you paid it.",
+      },
+      { type: "h3", text: "Necessary: helpful, not indispensable" },
+      {
+        type: "p",
+        text: "Publication 334 adds that an expense does not have to be indispensable to be considered necessary. You don't have to show that the business would have failed without it, only that it was helpful and appropriate. Amount still matters, though: for business meals, for example, the Schedule C instructions require that the expense not be lavish or extravagant under the circumstances.",
+      },
+      { type: "h2", text: "Business or personal: the line that matters most" },
+      {
+        type: "p",
+        text: "Every cost starts on one side of that line or the other. Publication 334 lists personal, living and family expenses among the costs you usually can't deduct, and the Schedule C instructions tell you not to include them among your other expenses. Your groceries, a family vacation or the rent on your home, apart from a qualifying home office, stay personal however long your working hours are. A cost that makes it easier for you to work is not, for that reason alone, a business expense.",
+      },
+      { type: "h3", text: "Commuting is personal" },
+      {
+        type: "p",
+        text: "Driving is the classic example. Publication 463 treats travel between your home and your regular or main place of work as commuting, a personal expense, while trips from a home that is your principal place of business to other work locations in the same business can be deductible. The mileage guide covers the exceptions in detail.",
+        link: { label: "Read the IRS mileage rate guide.", href: MILEAGE_GUIDE },
+      },
+      { type: "h2", text: "Mixed-use expenses and allocation" },
+      {
+        type: "p",
+        text: "Many costs are partly business and partly personal: a phone, home internet, a car, a computer the family also uses. Publication 334 says that if you have an expense that is partly for business and partly personal, you separate the personal part from the business part. The personal part is generally not deductible.",
+      },
+      { type: "h3", text: "Use a basis you can show" },
+      {
+        type: "p",
+        text: "The split has to rest on something you can document. For a vehicle, Publication 334 divides expenses by the miles driven for each purpose: in its example, a florist who drove a van 20,000 miles, 16,000 of them delivering flowers, can claim 80% of the cost of operating the van. For a home office, the basis is the area used regularly and exclusively for business. For car use, Publication 463 also accepts an adequate record kept for part of the year, if you can show by other evidence that the period is representative of the whole year. For a phone or internet plan, keep the bills with a note of how you worked out the business share.",
+      },
+      { type: "h3", text: "Items with their own allocation rules" },
+      {
+        type: "p",
+        text: "A few items come with set rules. For a home phone, the Schedule C instructions say you can't deduct the base rate, including taxes, of the first phone line into your residence, but you can deduct business costs above it and the business percentage of a second line. Under Publication 946, you can elect section 179 for property used for both purposes only if business use is more than 50% in the year you place it in service.",
+      },
+      { type: "h2", text: "Capital or current: when you deduct the cost" },
+      {
+        type: "p",
+        text: "Passing the test tells you a cost is deductible; it doesn't tell you when. Publication 334 says that if property you acquire for the business is expected to last more than one year, you generally can't deduct the entire cost in the year you buy it. You spread the cost over more than one year through depreciation, reported on Schedule C, line 13.",
+      },
+      { type: "h3", text: "What gets depreciated" },
+      {
+        type: "p",
+        text: "You can depreciate property you own and use in your business if it has a determinable useful life that extends substantially beyond the year you place it in service. Buildings, equipment and furniture are the IRS's own examples of costs you generally capitalize. Land is never depreciated, and neither is inventory. Repairs that keep property working without improving it are deducted on line 21, while improvements, meaning betterments, restorations or work that adapts property to a new or different use, are capitalized.",
+      },
+      { type: "h3", text: "Section 179 and the de minimis safe harbor" },
+      {
+        type: "p",
+        text: "Two rules let you deduct some capital costs at once. Section 179 lets you elect to deduct all or part of the cost of qualifying property in the year you place it in service. For tax years beginning in 2025, Publication 946 puts the maximum at $2,500,000, reduced once qualifying property placed in service passes $4,000,000. You claim it on Form 4562.",
       },
       {
         type: "p",
-        text: "Under IRC Section 162, a business expense must be both 'ordinary' (common and accepted in your industry) and 'necessary' (helpful and appropriate for your business). An expense doesn't have to be indispensable — it just has to be a normal cost of doing business in your field.",
+        text: "The de minimis safe harbor is the one a freelancer is more likely to use. If you elect it, you can deduct amounts paid for tangible property up to $2,500 per item or invoice, or $5,000 if you have an applicable financial statement, as long as you also treat those amounts as expenses in your own books. You make the election each year by attaching a statement to your timely filed original return, including extensions, and you report the amounts in Part V of Schedule C, Other expenses.",
+      },
+      { type: "h2", text: "Expenses you can't deduct" },
+      {
+        type: "p",
+        text: "Some costs fail however closely they relate to your work. Publication 334 lists these among the expenses you usually can't deduct as business expenses:",
       },
       {
         type: "ul",
         items: [
-          "Ordinary: software subscriptions, client meals, professional development, office supplies",
-          "Necessary: the cost must serve a clear business purpose",
-          "Personal expenses are never deductible — even if used partly for work (see the mixed-use rules)",
-          "Lavish or extravagant expenses are not deductible regardless of business purpose",
+          "Personal, living and family expenses",
+          "Penalties and fines paid to a government agency because you broke the law; penalties for late performance or nonperformance of a contract are different and can be deductible",
+          "Political contributions and lobbying expenses",
+          "Charitable contributions, which the Schedule C instructions also keep out of Part V",
+          "Dues to business, social, athletic, luncheon, sporting, airline and hotel clubs",
+          "Entertainment expenses",
+          "Bribes and kickbacks",
+          "Improvements to property, which are capitalized instead",
         ],
-      },
-      {
-        type: "h2",
-        text: "What the IRS Requires on Every Business Receipt",
-      },
-      {
-        type: "ul",
-        items: [
-          "Date of the transaction",
-          "Vendor name and address",
-          "Amount paid (including any sales tax)",
-          "Business purpose of the purchase",
-          "For business meals: who attended and their business relationship (entertainment is no longer deductible)",
-        ],
-      },
-      {
-        type: "h2",
-        text: "How Long to Keep Records",
       },
       {
         type: "p",
-        text: "The IRS generally has three years from your return's due date to audit you — but six years if it suspects you underreported income by more than 25%. Keep all business expense records for at least six years to be safe. Digital copies are fully acceptable.",
+        text: "Federal income tax isn't a business expense either, and neither is self-employment tax, although the Schedule C instructions let you deduct half of self-employment tax on Schedule 1 (Form 1040), line 15.",
       },
+      { type: "h3", text: "Meals are limited, not banned" },
       {
-        type: "callout",
-        text: "ReceiptOne keeps your receipts until you delete them or close your account, and reads the merchant name, date, amount and sales tax from each one you scan. Add the business purpose yourself, since the receipt alone won't show it.",
+        type: "p",
+        text: "Business meals are the usual source of confusion. Entertainment is not deductible, but a meal with a current or potential customer, client, consultant or similar business contact can be, if you or an employee is present and the cost isn't lavish. In most cases only 50% is deductible, including meals while traveling away from home on business. Food at an entertainment event counts only if it is bought separately or shown separately on the bill. For the deductions themselves, from the home office to retirement contributions, see the deductions guide.",
+        link: { label: "Read the self-employed deductions guide.", href: DEDUCTIONS_GUIDE },
       },
+      { type: "h2", text: "Proof turns a valid expense into a deduction" },
       {
-        type: "h2",
-        text: "Common Deductible Categories for Freelancers",
-      },
-      {
-        type: "ul",
-        items: [
-          "Home office (Form 8829 or simplified method)",
-          "Business vehicle mileage (IRS standard rate or actual expenses)",
-          "Professional development and education",
-          "Software, tools, and subscriptions",
-          "Business meals (50% deductible with proper documentation)",
-          "Health insurance premiums (if self-employed)",
-          "Retirement contributions (SEP-IRA, Solo 401k)",
-          "Business phone and internet (proportional to business use)",
-        ],
-      },
-      {
-        type: "h2",
-        text: "Mixed-Use Expenses",
+        type: "p",
+        text: "An expense that passes every test can still be disallowed if you can't show it. The IRS says your supporting documents should identify the payee, the amount paid, proof of payment, the date and a description that shows the amount was for your business, and that a combination of documents may be needed to cover all of them. Publication 463 adds that you can't deduct amounts that you approximate or estimate. Travel, gifts and car expenses carry stricter rules, which the receipts guide sets out.",
+        link: { label: "Read the IRS receipt requirements guide.", href: RECEIPTS_GUIDE },
       },
       {
         type: "p",
-        text: "When an expense serves both personal and business purposes — your phone, internet, or car — you can only deduct the business-use percentage. Track your usage carefully and be conservative: the IRS scrutinizes mixed-use claims closely.",
+        text: "As a sole proprietor, you report allowable expenses on Schedule C, each on the line that fits it, with anything that fits no line listed in Part V. The total reduces your net profit, which carries to Schedule 1 and to Schedule SE.",
+        link: { label: "Read the Schedule C line-by-line guide.", href: SCHEDULE_C_GUIDE },
       },
-      { type: "p", text: US_ARTICLE_DISCLAIMER },
+      { type: "h2", text: FAQ_HEADING },
+      {
+        type: "faq",
+        q: "What does ordinary and necessary mean?",
+        a: "An ordinary expense is common and accepted in your field of business. A necessary expense is helpful and appropriate for your business; it does not have to be indispensable. A cost must meet both tests to be deductible.",
+      },
+      {
+        type: "faq",
+        q: "Can I deduct an expense that is partly personal?",
+        a: "Only the business part. Publication 334 says to separate the personal part from the business part, and the personal part is generally not deductible. Split the cost on a basis you can show, such as miles driven or the area of a home office.",
+      },
+      {
+        type: "faq",
+        q: "Can I deduct a new laptop in the year I buy it?",
+        a: "Property that lasts more than a year is generally depreciated. If you elect the de minimis safe harbor, you can deduct tangible property costing up to $2,500 per item or invoice, provided you also expense it in your books. Section 179 is another way to deduct qualifying property in the year you place it in service.",
+      },
+      {
+        type: "faq",
+        q: "Are traffic tickets deductible if I was driving for work?",
+        a: "No. Penalties and fines paid to a government agency because you broke the law are not deductible. Penalties you pay for late performance or nonperformance of a contract are a different matter and can be deducted.",
+      },
+      {
+        type: "faq",
+        q: "Is taking a client to a game deductible?",
+        a: "Entertainment is not deductible. A business meal with a client can be, usually at 50%, if it is not lavish and you or an employee is present; food at an entertainment event counts only if it is bought or billed separately.",
+      },
+      {
+        type: "sources",
+        links: [
+          IRS_SRC.p334,
+          IRS_SRC.schC,
+          IRS_SRC.p463,
+          IRS_SRC.p946,
+          IRS_SRC.tangible,
+          IRS_SRC.records,
+        ],
+        checked: irsChecked(
+          "Publications 334, 463 and 946 and the Schedule C instructions are the editions for 2025 returns.",
+        ),
+      },
     ],
   },
 
   {
     slug: "irs-receipt-documentation-requirements",
     regions: ["us"],
-    indexable: false,
-    title: "IRS Receipt Requirements for Self-Employed Workers",
+    indexable: true,
+    title: "IRS Receipt Requirements: What Records to Keep and for How Long",
     excerpt:
-      "Exactly what the IRS wants to see on your business receipts, how long to keep them, and whether digital copies are acceptable for audit purposes.",
+      "What a receipt or record has to show for the IRS, how to prove payment, how long to keep records, scanned copies, the stricter rules for travel, meals, gifts and vehicles, and what to do when a receipt is missing.",
     category: "Tax Compliance",
     publishedAt: "2026-05-20",
-    updatedAt: "2026-10-05",
+    updatedAt: "2026-11-14",
     image: {
       path: "/articles/irs-receipt-documentation-requirements.webp",
       width: 1280,
@@ -223,58 +331,181 @@ export const ARTICLES_US_ONLY: Article[] = [
     clusterName: "IRS Expense Rules",
     relatedSlugs: [
       "irs-business-expense-deduction-rules",
+      "irs-mileage-rate-self-employed",
       "self-employed-tax-deductions-us",
-      "quarterly-estimated-taxes-us-freelancers",
     ],
+    quickAnswer:
+      "The IRS expects each business expense to be backed by documents that show who you paid, how much, when, proof that you paid and what it was for, which often takes a receipt plus a card or bank statement. Keep them until the period of limitations for the return runs out: generally three years after you file, or six if you leave out income of more than 25% of the gross income on the return. Scanned and electronic copies are acceptable if your system reproduces them legibly. Travel, gift and car expenses need extra written detail under Publication 463, though a receipt isn't required for such an expense under $75 unless it is lodging.",
+    receiptOneHelps: {
+      items: [
+        "Photograph a paper receipt, upload an image or PDF, or forward an e-mail receipt to your own ReceiptOne address, and ReceiptOne reads the merchant name, date, total and sales tax for you to check and edit.",
+        "Your receipts are kept in the cloud until you delete them or close your account, so the image is there when you need it.",
+        "Turn on trip tracking and the app records your work trips by GPS, building a mileage log with the date and distance of each trip.",
+        "Export your expense report to PDF or CSV with receipt links, or type /report to the Telegram bot to get your report in the chat.",
+      ],
+      link: US_CTA,
+    },
     body: [
       {
         type: "p",
-        text: "The IRS expects you to support business expenses with records and, generally, documentary evidence such as receipts, canceled checks or bills. For travel, gift and car expenses, Publication 463 sets out when a receipt is not needed — and that is where the often-quoted $75 figure comes from.",
+        text: "A deduction is only as strong as the paper, or the file, behind it. If your return is examined, the IRS will ask you to show that each expense happened, that you paid it and that it was for your business. This guide pulls together what the IRS publications say a receipt must show, how long to keep it and what to do when it is gone.",
       },
-      {
-        type: "h2",
-        text: "The $75 Rule",
-      },
+      { type: "h2", text: "No required system, but every expense needs support" },
       {
         type: "p",
-        text: "Under Publication 463 (Travel, Gift, and Car Expenses), documentary evidence isn't needed if the expense, other than lodging, is less than $75, or if it is a transportation expense for which a receipt isn't readily available. Lodging always needs documentary evidence. You still have to record the elements of each expense, such as amount, date, place and business purpose. Evidence is ordinarily adequate if it shows the amount, date, place and essential character of the expense.",
+        text: "The IRS doesn't prescribe a bookkeeping method. You may choose any recordkeeping system suited to your business that clearly shows your income and expenses, and the IRS says that can be accounting software or another electronic system, as long as it meets the same basic principles. What it does expect is that your books are backed by supporting documents, such as sales slips, paid bills, invoices, receipts, deposit slips and canceled checks.",
       },
-      {
-        type: "h2",
-        text: "Are Digital Receipts Acceptable?",
-      },
+      { type: "h2", text: "What a receipt or record must show" },
       {
         type: "p",
-        text: "Yes, with conditions. Publication 583 says the requirements for paper records also apply to electronic storage systems, including electronic imaging. You may destroy the paper originals once your electronic storage system has been tested to show it reproduces them in line with IRS requirements; the details are in Revenue Procedure 97-22. Revenue Procedure 98-25 covers records kept in computerized form.",
-      },
-      {
-        type: "callout",
-        text: "ReceiptOne captures receipts with your phone camera or by uploading an image or PDF, and keeps them in the cloud until you delete them or close your account.",
-      },
-      {
-        type: "h2",
-        text: "Business Meal Documentation",
+        text: "For business expenses, the IRS says your supporting documents should identify:",
       },
       {
         type: "ul",
         items: [
-          "Amount of the expense",
-          "Date the meal took place",
-          "Name and location of the restaurant",
-          "Business purpose of the meeting",
-          "Names and business relationship of all attendees",
-          "Entertainment itself (such as tickets to events) is no longer deductible; business meals generally remain 50% deductible",
+          "The payee, meaning who you paid",
+          "The amount paid",
+          "Proof of payment",
+          "The date the expense was incurred",
+          "A description of the item or service that shows the amount was for your business",
         ],
       },
       {
-        type: "h2",
-        text: "Vehicle Mileage Logs",
+        type: "p",
+        text: "The IRS notes that a combination of documents may be needed to cover all of these. A typical register receipt shows the vendor, date and amount, but not who paid or why, so pair it with the card or bank statement and add a short note of the purpose.",
+      },
+      { type: "h3", text: "Business purpose" },
+      {
+        type: "p",
+        text: "Publication 463 says you generally must provide a written statement of the business purpose of an expense, though the degree of proof varies with the circumstances. If the purpose is clear from the surrounding facts, as with a sales representative driving an established route to call on customers, no written explanation is needed.",
+      },
+      { type: "h2", text: "Proof of payment" },
+      {
+        type: "p",
+        text: "A receipt shows a sale; it doesn't always show that you paid. Publication 583 explains that if you don't have a canceled check, you may be able to prove payment with highly legible account statements from a financial institution that show:",
+      },
+      {
+        type: "ul",
+        items: [
+          "For a check: the check number, amount, payee's name and the date the check was posted to the account",
+          "For an electronic funds transfer: the amount transferred, payee's name and the date the transfer was posted",
+          "For a credit card: the amount charged, payee's name and the transaction date",
+        ],
       },
       {
         type: "p",
-        text: "If you deduct vehicle expenses using the standard mileage rate, you must keep a contemporaneous mileage log — recorded at or near the time of each trip. It should include the date, destination, business purpose, and miles driven. Publication 463 notes that a timely kept record has more value than a statement prepared later, when accurate recall is usually lacking.",
+        text: "The reverse holds too. Publication 583 notes that proof of payment by itself doesn't establish that you are entitled to a deduction, so keep sales slips and invoices to show what you bought.",
       },
-      { type: "p", text: US_ARTICLE_DISCLAIMER },
+      { type: "h2", text: "How long to keep records" },
+      {
+        type: "p",
+        text: "You keep records that support an item of income, deduction or credit until the period of limitations for that return runs out. For income tax returns, the IRS lists these periods, counted from the date you filed; a return filed early is treated as filed on the due date:",
+      },
+      {
+        type: "ul",
+        items: [
+          "3 years in most cases",
+          "3 years from filing or 2 years from paying the tax, whichever is later, if you file a claim for credit or refund",
+          "6 years if you don't report income that you should have, and it is more than 25% of the gross income shown on the return",
+          "7 years if you file a claim for a loss from worthless securities or a bad debt deduction",
+          "Indefinitely if you don't file a return or file a fraudulent return",
+          "At least 4 years for employment tax records, if you have employees",
+        ],
+      },
+      {
+        type: "p",
+        text: "Records for property, such as equipment or a vehicle you depreciate, run on a longer clock: keep them until the period of limitations expires for the year in which you dispose of the property, because you need them to figure depreciation and the gain or loss.",
+      },
+      { type: "h2", text: "Digital copies and scanned receipts" },
+      {
+        type: "p",
+        text: "Electronic records are acceptable. Publication 583 says all requirements that apply to hard copy books and records also apply to electronic storage systems, which include electronic imaging such as scanning. The system must index, store, preserve, retrieve and reproduce the records in legible format, and you keep it for as long as the records may be material to the administration of tax law.",
+      },
+      {
+        type: "p",
+        text: "You may destroy the paper originals once your electronic storage system has been tested to establish that it reproduces them in line with IRS requirements, and you have procedures to keep it compliant. The detailed standards are in Revenue Procedure 97-22.",
+      },
+      { type: "h2", text: "Stricter rules for travel, meals, gifts and vehicles" },
+      {
+        type: "p",
+        text: "For travel, gift and transportation expenses, including car expenses, the law asks for more. Publication 463 requires you to prove specific elements of each expense with adequate records, such as an account book, diary, log, statement of expense or trip sheets, plus documentary evidence such as receipts, canceled checks or bills. A record kept on a computer counts as adequate, and you can't deduct amounts that you approximate or estimate.",
+      },
+      { type: "h3", text: "The $75 rule" },
+      {
+        type: "p",
+        text: "For these expenses, documentary evidence isn't needed if the expense, other than lodging, is less than $75, or if it is a transportation expense for which a receipt isn't readily available. Lodging needs documentary evidence at any amount. The rule removes the receipt, not the record: you still write down the elements of the expense.",
+      },
+      { type: "h3", text: "Travel away from home" },
+      {
+        type: "p",
+        text: "For each trip, record the cost of each separate expense for travel, lodging and meals, the dates you left and returned and the days spent on business, the destination, and the business purpose. A hotel receipt is enough if it shows the hotel's name and location, the dates you stayed, and separate amounts for charges such as lodging, meals and phone calls.",
+      },
+      { type: "h3", text: "Business meals" },
+      {
+        type: "p",
+        text: "A restaurant receipt is adequate evidence of a business meal if it shows the name and location of the restaurant, the number of people served, and the date and amount; if the bill includes items other than food and drink, the receipt must show that. Note the business purpose and who you ate with, since the deduction depends on the meal being with a business contact. In most cases only 50% of a business meal is deductible, and entertainment isn't deductible at all.",
+        link: { label: "Read the self-employed deductions guide.", href: DEDUCTIONS_GUIDE },
+      },
+      { type: "h3", text: "Gifts" },
+      {
+        type: "p",
+        text: "You can deduct no more than $25 for business gifts to each person during the tax year. Record the cost, the date and a description of each gift. You don't always need the name of every recipient: a general listing is enough if it is clear you aren't trying to get around the $25 limit.",
+      },
+      { type: "h3", text: "Car and truck expenses" },
+      {
+        type: "p",
+        text: "For car expenses, keep the cost of the car and any improvements, the date you started using it for business, the miles for each business use, the total miles for the year, the date of each use, your business destination and the business purpose. Record trips at or near the time: Publication 463 treats a log kept weekly as timely, and gives less weight to a statement put together later.",
+        link: { label: "Read the IRS mileage rate guide.", href: MILEAGE_GUIDE },
+      },
+      { type: "h2", text: "What to do about a missing receipt" },
+      {
+        type: "p",
+        text: "Losing a receipt doesn't automatically lose the deduction, but it shifts the weight onto other evidence. Start with what you still have: a card or bank statement can show the payee, amount and date, and many vendors can reissue a receipt or invoice.",
+      },
+      { type: "h3", text: "Incomplete records" },
+      {
+        type: "p",
+        text: "Publication 463 says that if you don't have complete records to prove an element of an expense, you must prove it with your own written or oral statement containing specific information about the element, and other supporting evidence that is sufficient to establish it. For the cost, time, place or date, that evidence must be direct, such as written statements or testimony from witnesses, or documentary, such as receipts or paid bills. For the business purpose or the business relationship of your guests, circumstantial evidence can be enough.",
+      },
+      { type: "h3", text: "Exceptional circumstances and destroyed records" },
+      {
+        type: "p",
+        text: "If the nature of the situation meant you couldn't get a receipt, you can meet the requirement with other evidence that is the best proof possible under the circumstances. If you can't produce receipts for reasons beyond your control, such as fire, flood or another casualty, you can prove a deduction by reconstructing your records or expenses. Good records support a deduction; they don't create one, so the expense still has to pass the ordinary and necessary test.",
+        link: { label: "Read the IRS business expense rules guide.", href: EXPENSE_RULES_GUIDE },
+      },
+      { type: "h2", text: FAQ_HEADING },
+      {
+        type: "faq",
+        q: "Does the IRS accept scanned or photographed receipts?",
+        a: "Yes. The requirements for paper records also apply to electronic storage systems, including electronic imaging. The images must be legible, and the system must let you index, store, retrieve and reproduce them.",
+      },
+      {
+        type: "faq",
+        q: "How long should I keep business receipts?",
+        a: "Until the period of limitations for the return runs out: generally 3 years after you file, 6 years if you left out income of more than 25% of the gross income on the return, and indefinitely if you didn't file. Keep records for property until the period runs out for the year you dispose of it.",
+      },
+      {
+        type: "faq",
+        q: "Is a credit card statement enough without a receipt?",
+        a: "It can prove payment if it shows the amount charged, the payee's name and the transaction date. Proof of payment alone doesn't show what you bought or why, so keep the receipt or invoice too, or other evidence of the business purpose.",
+      },
+      {
+        type: "faq",
+        q: "Do I need a receipt for expenses under $75?",
+        a: "For travel, gift and transportation expenses other than lodging, Publication 463 doesn't require documentary evidence under $75, but you still record the elements of the expense. Lodging needs a receipt at any amount.",
+      },
+      {
+        type: "faq",
+        q: "What if I lost a receipt?",
+        a: "Use other evidence. A bank or card statement can show payment, and Publication 463 lets you support an element with your own specific statement plus other supporting evidence. If records were destroyed by fire, flood or another casualty, you can reconstruct them.",
+      },
+      {
+        type: "sources",
+        links: [IRS_SRC.records, IRS_SRC.howLong, IRS_SRC.topic305, IRS_SRC.p583, IRS_SRC.p463],
+        checked: irsChecked(
+          "Publication 463 is the edition for 2025 returns; Publication 583 is the December 2024 revision.",
+        ),
+      },
     ],
   },
 
@@ -285,72 +516,244 @@ export const ARTICLES_US_ONLY: Article[] = [
   {
     slug: "schedule-c-deductions-guide-us-freelancers",
     regions: ["us"],
-    indexable: false,
-    title: "Schedule C Deductions Guide for US Freelancers",
+    indexable: true,
+    title: "Schedule C Line by Line: A Guide for Freelancers and Sole Proprietors",
     excerpt:
-      "Every deduction on IRS Schedule C explained, from home office and vehicle expenses to the QBI deduction of up to 20% of qualified business income.",
+      "A walk through Schedule C (Form 1040): the questions at the top, gross receipts in Part I, what goes on each expense line in Part II, cost of goods sold, vehicle information, other expenses, and where net profit goes next.",
     category: "Tax Deductions",
     publishedAt: "2026-05-20",
-    updatedAt: "2026-10-05",
+    updatedAt: "2026-11-14",
     image: {
       path: "/articles/schedule-c-deductions-guide-us-freelancers.webp",
       width: 1280,
       height: 720,
       alt: "Tall stack of printed paper documents on a desk",
     },
-    tags: ["Schedule C", "deductions", "freelancer", "IRS", "self-employed", "1099"],
+    tags: ["Schedule C", "Schedule SE", "freelancer", "IRS", "self-employed", "sole proprietor"],
     clusterName: "Schedule C & Deductions",
     relatedSlugs: [
-      "irs-business-expense-deduction-rules",
       "self-employed-tax-deductions-us",
-      "home-office-deduction-form-8829-us",
+      "irs-business-expense-deduction-rules",
+      "quarterly-estimated-taxes-us-freelancers",
     ],
+    quickAnswer:
+      "Schedule C (Form 1040) reports the profit or loss of a business you run as a sole proprietor. Part I takes your gross receipts down to gross income on line 7, Part II lists your expenses on lines 8 through 27b, and line 30 holds the home office deduction. Line 31 is your net profit, which goes to Schedule 1 (Form 1040), line 3, and to Schedule SE, line 2, where self-employment tax is figured.",
+    receiptOneHelps: {
+      items: [
+        "Photograph receipts, upload images or PDFs, or forward e-mail receipts to your own ReceiptOne address, and ReceiptOne reads the merchant name, date, total and sales tax for you to check.",
+        "Turn on trip tracking and the app records your work trips by GPS, giving you the business miles that line 9 and Part IV ask for.",
+        "Export your expense report to PDF or CSV with totals and categories at year end, or type /report to the Telegram bot to get your report in the chat.",
+      ],
+      link: US_CTA,
+    },
     body: [
       {
         type: "p",
-        text: "Schedule C (Profit or Loss from Business) is the IRS form where sole proprietors and single-member LLC owners report self-employment income and claim business deductions. Every dollar of legitimate deductions on Schedule C reduces both your income tax and your self-employment tax — a double benefit that makes thorough tracking essential.",
+        text: "If you work for yourself and haven't formed a corporation or partnership, Schedule C is where your business shows up on your tax return. This guide goes through it in order, so you know what each line asks for and which records sit behind it. It follows the 2025 form and its instructions and notes the one line that changes on the 2026 form.",
+      },
+      { type: "h2", text: "Who files Schedule C" },
+      {
+        type: "p",
+        text: "You use Schedule C to report income or loss from a business you operated or a profession you practiced as a sole proprietor. If you are the only member of a domestic LLC, you also file Schedule C unless you elected to treat the LLC as a corporation. If you own more than one business, you complete a separate Schedule C for each.",
+      },
+      { type: "h2", text: "The top section: lines A through J" },
+      {
+        type: "p",
+        text: "Lines A to E identify the business: what it does, the six-digit activity code from the chart in the instructions, its name, an employer ID number if you have one, and its address. Line F is your accounting method. Line G asks whether you materially participated, which matters if you have a loss, and line H is checked if you started or acquired the business during the year. Lines I and J ask whether you made payments that required Forms 1099, such as payments to contractors, and whether you filed them.",
+      },
+      { type: "h2", text: "Part I: Income" },
+      {
+        type: "p",
+        text: "Line 1 is gross receipts or sales. The instructions tell you to report all income attributable to your business from all sources and to check any Forms 1099 you received, such as 1099-NEC, 1099-MISC and 1099-K. Line 1 should include the amounts properly shown on your Forms 1099-NEC.",
       },
       {
-        type: "h2",
-        text: "Part II — Expenses: Line by Line",
+        type: "p",
+        text: "Line 2 is returns and allowances, the refunds and price reductions you gave customers, and line 3 subtracts it from line 1. Line 4 is cost of goods sold from Part III, and line 5, gross profit, is line 3 minus line 4. Line 6 takes business income not reported elsewhere in Part I, such as interest on accounts receivable, scrap sales, recovered bad debts and prizes related to your business. Line 7 adds lines 5 and 6 to give gross income.",
+      },
+      { type: "h2", text: "Part II: Expenses" },
+      {
+        type: "p",
+        text: "Part II has a line for each common type of expense. The form tells you to report business use of your home only on line 30, and anything that fits none of the lines goes in Part V. The table shows what each line is for; whether a particular cost is deductible at all is the subject of the business expense rules guide.",
+        link: { label: "Read the IRS business expense rules guide.", href: EXPENSE_RULES_GUIDE },
       },
       {
-        type: "ul",
-        items: [
-          "Line 8 — Advertising: paid ads, website hosting, business cards, promotional materials",
-          "Line 9 — Car and truck: either standard mileage rate or actual expenses",
-          "Line 11 — Contract labor: amounts paid to subcontractors (Form 1099-NEC is generally required for payments of $2,000 or more made after 2025; $600 before)",
-          "Line 13 — Depreciation: deduct large equipment costs over time or use Section 179 to expense upfront",
-          "Line 14 — Employee benefit programs: health insurance, retirement plans for employees",
-          "Line 15 — Insurance: liability, professional, business property (not health insurance for self)",
-          "Line 17 — Legal and professional: accounting fees, legal advice, tax preparation",
-          "Line 18 — Office expense: supplies, postage, small equipment under $2,500",
-          "Line 22 — Supplies: materials used in providing your service",
-          "Line 25 — Utilities: electricity and internet for a dedicated business location",
-          "Line 27a — Other expenses: software subscriptions, professional memberships, education",
+        type: "table",
+        caption:
+          "Schedule C, Part II expense lines and what goes on them (2025 form and instructions).",
+        headers: ["Line", "Title", "What goes there"],
+        rows: [
+          ["8", "Advertising", "Advertising costs"],
+          [
+            "9",
+            "Car and truck expenses",
+            "Standard mileage amount plus parking and tolls, or the business share of actual costs",
+          ],
+          ["10", "Commissions and fees", "Commissions and fees you paid"],
+          ["11", "Contract labor", "Payments to independent contractors"],
+          ["12", "Depletion", "Depletion deductions, such as timber depletion"],
+          [
+            "13",
+            "Depreciation and section 179",
+            "Depreciation and section 179 expense, with Form 4562 when required",
+          ],
+          [
+            "14",
+            "Employee benefit programs",
+            "Benefit programs for employees, not health insurance for yourself",
+          ],
+          ["15", "Insurance (other than health)", "Business insurance premiums"],
+          [
+            "16a, 16b",
+            "Interest",
+            "Mortgage interest on business property (16a) and other business interest (16b)",
+          ],
+          [
+            "17",
+            "Legal and professional services",
+            "Accountant and attorney fees, including business tax preparation",
+          ],
+          ["18", "Office expense", "Office supplies and postage"],
+          [
+            "19",
+            "Pension and profit-sharing plans",
+            "Contributions for employees; your own go on Schedule 1, line 16",
+          ],
+          [
+            "20a, 20b",
+            "Rent or lease",
+            "Vehicles and equipment (20a); other property such as office space (20b)",
+          ],
+          [
+            "21",
+            "Repairs and maintenance",
+            "Incidental repairs that don't add value or prolong the property's life",
+          ],
+          [
+            "22",
+            "Supplies",
+            "Materials and supplies, generally to the extent used in the business during the year",
+          ],
+          [
+            "23",
+            "Taxes and licenses",
+            "Business licenses and taxes on business property; not income or self-employment tax",
+          ],
+          [
+            "24a",
+            "Travel",
+            "Lodging and transportation for overnight business travel away from your tax home",
+          ],
+          ["24b", "Deductible meals", "The deductible part of business meals, in most cases 50%"],
+          [
+            "25",
+            "Utilities",
+            "Utilities for the business only, with a special rule for a home phone",
+          ],
+          ["26", "Wages", "Employee wages, less certain credits; never amounts paid to yourself"],
+          [
+            "27a",
+            "Energy efficient commercial buildings deduction",
+            "The deduction figured on Form 7205",
+          ],
+          ["27b", "Other expenses", "The total from Part V, line 48"],
         ],
       },
+      { type: "h3", text: "Lines with rules worth knowing" },
       {
-        type: "h2",
-        text: "The Qualified Business Income (QBI) Deduction",
+        type: "p",
+        text: "On line 9, you can't deduct depreciation, lease payments or operating costs on top of the standard mileage rate; under actual expenses, depreciation goes on line 13 and lease payments on line 20a. On line 23, sales tax you pay on property bought for the business is part of the cost of that property, not a deductible tax. On line 25, you can't deduct the base rate of the first phone line into your home.",
+      },
+      { type: "h3", text: "The 2026 form splits line 16" },
+      {
+        type: "p",
+        text: "The 2026 Schedule C, already posted on IRS.gov, divides line 16 into three parts: 16a for mortgage interest paid to banks and similar lenders, a new 16b for vehicle loan interest, and 16c for other interest. The 2025 form has only 16a and 16b.",
+      },
+      { type: "h2", text: "Lines 28 to 32: from expenses to net profit" },
+      {
+        type: "p",
+        text: "Line 28 adds lines 8 through 27b. Line 29, tentative profit or loss, subtracts line 28 from line 7. Line 30 is business use of your home: either the amount from Form 8829, or under the simplified method $5 per square foot of space used regularly and exclusively for business, up to 300 square feet, with your home's total square footage and the office's entered beside the line. Line 31 subtracts line 30 from line 29 to give your net profit or loss. Who qualifies for the home office deduction is covered in the deductions guide.",
+        link: { label: "Read the self-employed deductions guide.", href: DEDUCTIONS_GUIDE },
       },
       {
         type: "p",
-        text: "Under Section 199A, most freelancers can deduct up to 20% of their qualified business income from their taxable income. This deduction is separate from Schedule C — it's claimed on Form 8995. Income limits and phase-outs apply for certain 'specified service trades or businesses' (law, health, consulting, etc.) at higher income levels.",
+        text: "If line 31 is a loss, line 32 asks whether all your investment in the activity is at risk. If some of it isn't, you check box 32b and attach Form 6198, and your loss may be limited.",
       },
+      { type: "h2", text: "Part III: Cost of goods sold" },
       {
-        type: "callout",
-        text: "The QBI deduction is one of the most valuable available to freelancers — but it depends on clean income records. ReceiptOne keeps your expenses organized year-round so your accountant can make the most of every deduction.",
+        type: "p",
+        text: "Part III applies when making, buying or selling merchandise is part of how the business earns income. It starts with inventory at the beginning of the year on line 35, adds purchases, cost of labor, materials and supplies and other costs on lines 36 to 39, and subtracts inventory at the end of the year on line 41. The result on line 42 goes to line 4. A small business taxpayer (average annual gross receipts of $31 million or less for the 3 prior tax years, under the 2025 instructions) can choose not to keep an inventory. If you sell only services, you generally leave Part III blank.",
       },
+      { type: "h2", text: "Part IV: Information on your vehicle" },
       {
-        type: "h2",
-        text: "Self-Employment Tax Deduction",
+        type: "p",
+        text: "If you claim car or truck expenses on line 9 and aren't required to file Form 4562, Part IV asks when you placed the vehicle in service for business (line 43), how many of the year's miles were business, commuting and other (lines 44a to 44c), questions about personal use (lines 45 and 46), and whether you have written evidence for the deduction (lines 47a and 47b). If you claim depreciation on the vehicle, complete Form 4562, Part V, instead.",
       },
       {
         type: "p",
-        text: "You pay self-employment tax (15.3%) on your net Schedule C profit. But you can deduct 50% of that SE tax on Schedule 1 — reducing your adjusted gross income before income taxes are calculated. It's automatic but easy to miss if you're filing manually.",
+        text: "Lines 44 and 47 are where a mileage log pays off: you need your total miles for the year and written evidence for the business ones.",
+        link: { label: "Read the IRS mileage rate guide.", href: MILEAGE_GUIDE },
       },
-      { type: "p", text: US_ARTICLE_DISCLAIMER },
+      { type: "h2", text: "Part V: Other expenses" },
+      {
+        type: "p",
+        text: "Part V lists ordinary and necessary business expenses that don't fit lines 8 to 27a or line 30. You list the type and amount of each one separately and enter the total on line 48 and on line 27b. The instructions name amortization, business bad debts, deductible startup costs, de minimis safe harbor amounts, and software tools paid for to run the business. Equipment, furniture, permanent improvements, personal expenses, charitable contributions and government fines don't belong here.",
+      },
+      { type: "h2", text: "Where net profit goes next" },
+      {
+        type: "p",
+        text: "Your net profit from line 31 goes to two places: Schedule 1 (Form 1040), line 3, as business income, and Schedule SE, line 2, where self-employment tax is figured.",
+      },
+      { type: "h3", text: "Schedule SE" },
+      {
+        type: "p",
+        text: "Schedule SE multiplies your net profit by 92.35% to get net earnings from self-employment, and you owe self-employment tax if that figure is $400 or more. For 2026, the maximum amount of self-employment income subject to Social Security tax is $184,500. The tax from Schedule SE goes on Schedule 2 (Form 1040), line 4, and you deduct half of it on Schedule 1, line 15.",
+      },
+      { type: "h3", text: "Form 1040 and the QBI deduction" },
+      {
+        type: "p",
+        text: "Income you report on Schedule C may also be qualified business income, which can give you a deduction on Form 1040, line 13a (2025 form), figured on Form 8995 or 8995-A. Because Schedule C profit drives both income tax and self-employment tax, it is the starting point for your quarterly estimates too.",
+        link: { label: "Read the quarterly estimated taxes guide.", href: ESTIMATED_GUIDE },
+      },
+      { type: "h2", text: FAQ_HEADING },
+      {
+        type: "faq",
+        q: "Do I report income that wasn't on a Form 1099?",
+        a: "Yes. The Schedule C instructions tell you to report all income attributable to your business from all sources. Forms 1099 are a check on line 1, not its limit.",
+      },
+      {
+        type: "faq",
+        q: "Where do software subscriptions go on Schedule C?",
+        a: "Technology and software tools you pay for to run the business, such as subscription services, are listed in Part V and carried to line 27b. Software that must be depreciated or amortized doesn't go there; most software purchases are capitalized and depreciated or expensed under section 179 on line 13.",
+      },
+      {
+        type: "faq",
+        q: "Is health insurance for myself a Schedule C expense?",
+        a: "No. Line 14 excludes contributions for yourself to an accident and health plan. Self-employed health insurance is claimed on Schedule 1 (Form 1040), line 17.",
+      },
+      {
+        type: "faq",
+        q: "Where does Schedule C net profit go?",
+        a: "To Schedule 1 (Form 1040), line 3, and to Schedule SE, line 2. Schedule SE figures self-employment tax, and half of that tax is deducted on Schedule 1, line 15.",
+      },
+      {
+        type: "faq",
+        q: "Do I fill in Part IV if I use the standard mileage rate?",
+        a: "Yes, unless you are required to file Form 4562 for another reason. Part IV asks for the date the vehicle was placed in service and your business, commuting and other miles for the year.",
+      },
+      {
+        type: "sources",
+        links: [
+          IRS_SRC.schC,
+          IRS_SRC.aboutSchC,
+          IRS_SRC.schC2026,
+          IRS_SRC.p334,
+          IRS_SRC.schSE,
+          IRS_SRC.p463,
+        ],
+        checked: irsChecked(
+          "The Schedule C instructions and Publications 334 and 463 are the editions for 2025 returns; the Schedule SE instructions are the 2026 edition.",
+        ),
+      },
     ],
   },
 

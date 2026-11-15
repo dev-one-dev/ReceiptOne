@@ -7,11 +7,13 @@ import { loadArticleRenderer, pageText, type Rendered } from "./lib/render-artic
 import { loadTs } from "../scripts/lib/load-ts.mjs";
 
 /**
- * The three US guides rewritten on 2026-11-14 to the CA article template:
+ * The six US guides rewritten on 2026-11-14 to the CA article template
+ * (three in ea7a5c5, then the expense rules, Schedule C and receipt guides):
  * Quick answer box, H2/H3 body, How ReceiptOne helps box (landing-site
  * features only), 4-6 FAQ items matching the FAQPage JSON-LD, irs.gov-only
- * sources, and the US disclaimer and correction line once at the end. They
- * link to each other and to /us, never to the noindexed US articles. Two
+ * sources, and the US disclaimer and correction line once at the end. Each
+ * links 3-5 of the other guides and /us, never a noindexed US article, and
+ * no two indexable US articles share an H1 or a primary title phrase. Two
  * slugs lost their year; the old paths 301 to the new ones.
  */
 
@@ -41,10 +43,17 @@ const mod = await loadArticleRenderer<{
   articleDisplayTitle: (a: ArticleLike) => string;
 }>("us-guides-test");
 
-const GUIDES = [
+/** The first three rewritten guides (ea7a5c5), which link each other. */
+const FIRST_GUIDES = [
   "irs-mileage-rate-self-employed",
   "quarterly-estimated-taxes-us-freelancers",
   "self-employed-tax-deductions-us",
+];
+const GUIDES = [
+  ...FIRST_GUIDES,
+  "irs-business-expense-deduction-rules",
+  "schedule-c-deductions-guide-us-freelancers",
+  "irs-receipt-documentation-requirements",
 ];
 const path = (slug: string) => `/us/articles/${slug}`;
 const BY_SLUG = new Map(mod.US_ARTICLES.map((a) => [a.slug, a]));
@@ -70,7 +79,7 @@ const US_DISCLAIMER =
   "This article is general information, not tax advice. Tax rules and amounts change; check IRS.gov or a tax professional for your situation.";
 
 test("us guides: render, indexable, dated, 1,400-2,000 words", () => {
-  assert.equal(NOINDEXED.length, 6);
+  assert.equal(NOINDEXED.length, 3);
   for (const a of NEW) {
     assert.ok(pages.get(a.slug)!.matched, `${a.slug} renders`);
     assert.equal(a.indexable, true, `${a.slug} is indexable`);
@@ -189,7 +198,7 @@ test("us guides: disclaimer and correction line once each, disclaimer last befor
   }
 });
 
-test("us guides: link each other and /us, never a noindexed article", () => {
+test("us guides: link 3-5 guides and /us, never a noindexed article", () => {
   for (const a of NEW) {
     const page = pages.get(a.slug)!;
     const all = [...page.html.matchAll(/href="([^"]+)"/g)].map((m) => m[1].split(/[?#]/)[0]);
@@ -198,17 +207,77 @@ test("us guides: link each other and /us, never a noindexed article", () => {
     const inArticle = new Set(
       [...articleHtml(page).matchAll(/href="(\/[^"]*)"/g)].map((m) => m[1].replace(/\/$/, "")),
     );
-    const wanted = [...GUIDES.filter((s) => s !== a.slug).map(path), "/us"];
-    for (const href of wanted) assert.ok(inArticle.has(href), `${a.slug} links ${href}`);
+    assert.ok(inArticle.has("/us"), `${a.slug} links /us`);
+    assert.ok(!inArticle.has(path(a.slug)), `${a.slug} doesn't link itself`);
+    // Every article link inside the body goes to an indexable guide.
+    for (const href of inArticle)
+      if (href.startsWith("/us/articles/"))
+        assert.ok(GUIDES.includes(href.slice("/us/articles/".length)), `${a.slug} links ${href}`);
+    if (FIRST_GUIDES.includes(a.slug))
+      for (const other of FIRST_GUIDES.filter((s) => s !== a.slug))
+        assert.ok(inArticle.has(path(other)), `${a.slug} links ${other}`);
     const guideLinks = [...inArticle].filter(
       (h) => h === "/us" || GUIDES.some((g) => h === path(g)),
     );
     assert.ok(guideLinks.length >= 3 && guideLinks.length <= 5, `${a.slug}: ${guideLinks.length}`);
-    // Related cards: only the other two guides.
+    // Related cards: only other indexable guides.
     const related = page.html.slice(page.html.indexOf("More guides"));
-    const cards = [...related.matchAll(/href="\/us\/articles\/([a-z0-9-]+)"/g)].map((m) => m[1]);
-    assert.deepEqual([...new Set(cards)].sort(), GUIDES.filter((s) => s !== a.slug).sort());
+    const cards = [
+      ...new Set([...related.matchAll(/href="\/us\/articles\/([a-z0-9-]+)"/g)].map((m) => m[1])),
+    ];
+    assert.ok(cards.length >= 2 && cards.length <= 3, `${a.slug}: ${cards.length} related cards`);
+    for (const slug of cards)
+      assert.ok(GUIDES.includes(slug) && slug !== a.slug, `${a.slug} related card ${slug}`);
   }
+});
+
+test("us guides: no two indexable US articles share an H1 or a primary title phrase", async () => {
+  const indexable = mod.US_ARTICLES.filter((a) => a.indexable !== false);
+  assert.equal(indexable.length, GUIDES.length);
+  // The primary phrase is the part of the title before the colon, without a year.
+  const norm = (s: string) =>
+    s
+      .toLowerCase()
+      .replace(/\b20\d{2}\b/g, "")
+      .replace(/[^a-z0-9]+/g, " ")
+      .trim();
+  const h1s: string[] = [];
+  const phrases: string[] = [];
+  for (const a of indexable) {
+    const page =
+      pages.get(a.slug) ?? (await mod.render("/us/articles/$slug", path(a.slug), { slug: a.slug }));
+    const found = [...page.html.matchAll(/<h1\b[^>]*>([\s\S]*?)<\/h1>/g)].map((m) =>
+      unescape(m[1].replace(/<[^>]+>/g, "")).trim(),
+    );
+    assert.equal(found.length, 1, `${a.slug} has one h1`);
+    assert.equal(found[0], mod.articleDisplayTitle(a), `${a.slug} h1 is the display title`);
+    h1s.push(norm(found[0]));
+    phrases.push(norm(a.title.split(":")[0]));
+  }
+  assert.equal(new Set(h1s).size, h1s.length, `duplicate H1: ${h1s.join(" | ")}`);
+  assert.equal(new Set(phrases).size, phrases.length, `duplicate phrase: ${phrases.join(" | ")}`);
+  // Nor does one article's primary phrase appear inside another's H1.
+  phrases.forEach((p, i) =>
+    h1s.forEach((h, j) => {
+      if (i !== j) assert.ok(!h.includes(p), `"${p}" also appears in "${h}"`);
+    }),
+  );
+});
+
+test("us guides: the later three state their core IRS rules", () => {
+  const text = (slug: string) => pageText(articleHtml(pages.get(slug)!));
+  const rules = text("irs-business-expense-deduction-rules");
+  assert.match(rules, /common and accepted in your field of business/);
+  assert.match(rules, /does not have to be indispensable/);
+  assert.match(rules, /up to \$2,500 per item or invoice/);
+  const schC = text("schedule-c-deductions-guide-us-freelancers");
+  assert.match(schC, /Schedule 1 \(Form 1040\), line 3/);
+  assert.match(schC, /Schedule SE, line 2/);
+  assert.match(schC, /92\.35%/);
+  const receipts = text("irs-receipt-documentation-requirements");
+  assert.match(receipts, /less than \$75/);
+  assert.match(receipts, /3 years in most cases/);
+  assert.match(receipts, /more than 25% of the gross income/);
 });
 
 test("us guides: no banned wording, emoji, or em-dash habit", () => {
