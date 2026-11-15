@@ -8,6 +8,7 @@ import {
   type Article,
   articleDisplayTitle,
 } from "@/lib/articles";
+import { FormNames } from "@/components/site/FormNames";
 
 /* ----------------------------- Shared helpers ----------------------------- */
 
@@ -61,7 +62,9 @@ function FeaturedCard({ article, basePath }: { article: Article; basePath: strin
       <div className="flex flex-1 flex-col p-4 sm:p-5">
         <CategoryPill label={article.category} />
 
-        <h3 className="mt-2 text-h3 text-ink">{articleDisplayTitle(article)}</h3>
+        <h3 className="mt-2 text-h3 text-ink">
+          <FormNames text={articleDisplayTitle(article)} />
+        </h3>
 
         <p className="mt-1.5 flex-1 font-sans text-body text-ink-60">{article.excerpt}</p>
 
@@ -112,7 +115,9 @@ export function SmallCard({
       <div className="flex flex-1 flex-col p-3">
         <CategoryPill label={article.category} />
 
-        <h3 className="mt-1.5 text-lead tracking-body text-ink">{articleDisplayTitle(article)}</h3>
+        <h3 className="mt-1.5 text-lead tracking-body text-ink">
+          <FormNames text={articleDisplayTitle(article)} />
+        </h3>
 
         {/* Meta row */}
         <div className="mt-auto pt-2 flex items-center gap-3 text-label text-ink-60">

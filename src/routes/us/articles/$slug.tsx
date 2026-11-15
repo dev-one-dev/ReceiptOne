@@ -5,6 +5,7 @@ import { Footer } from "@/components/site/Footer";
 import { CardImage } from "@/components/site/ArticlesSection";
 import { CorrectionLine } from "@/components/site/CorrectionLine";
 import { ArticleBody } from "@/components/site/ArticleContent";
+import { FormNames } from "@/components/site/FormNames";
 import { pageSEO, breadcrumbJsonLd, faqJsonLd } from "@/lib/seo";
 import {
   ARTICLE_BYLINE,
@@ -123,7 +124,9 @@ function RelatedCard({ article }: { article: Article }) {
         <span className="inline-block self-start rounded-pill bg-ink-05 px-3 py-1 eyebrow text-ink-60">
           {article.category}
         </span>
-        <h3 className="mt-3 text-lead tracking-body text-ink">{articleDisplayTitle(article)}</h3>
+        <h3 className="mt-3 text-lead tracking-body text-ink">
+          <FormNames text={articleDisplayTitle(article)} />
+        </h3>
         <div className="mt-auto flex items-center gap-3 pt-4 text-label text-ink-60">
           <span className="flex items-center gap-1">
             <Clock className="size-3" aria-hidden />
@@ -242,7 +245,9 @@ function USArticleDetailPage() {
           <span className="inline-block rounded-pill bg-ember px-3 py-1 eyebrow text-ink">
             {article.category}
           </span>
-          <h1 className="mt-4 text-ink">{articleDisplayTitle(article)}</h1>
+          <h1 className="mt-4 text-ink">
+            <FormNames text={articleDisplayTitle(article)} />
+          </h1>
           <p className="mt-4 font-sans text-lead text-ink-60">{article.excerpt}</p>
           <div className="mt-6 flex flex-wrap items-center gap-4 border-t border-hairline pt-6">
             <div className="flex size-10 shrink-0 items-center justify-center rounded-pill bg-[#fed7aa] font-display text-sm font-semibold text-[#9a3412]">
