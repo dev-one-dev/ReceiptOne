@@ -229,6 +229,10 @@ export const SALES_TAX_ARTICLES: Article[] = [
       {
         type: "p",
         text: "You must register to collect PST if you are located in B.C. and, in the ordinary course of your business there, sell or lease taxable goods, or provide software or taxable services such as repairs to taxable goods or legal services. The general rate is 7%.",
+        link: {
+          label: "Read our guide to B.C. PST for the self-employed.",
+          href: article("bc-pst-self-employed"),
+        },
       },
       {
         type: "p",

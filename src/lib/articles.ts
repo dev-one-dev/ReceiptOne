@@ -7,6 +7,7 @@ import { getPlan } from "@/lib/pricing";
 import { BOOKKEEPING_ARTICLES } from "@/lib/articles.bookkeeping";
 import { DRIVER_ARTICLES } from "@/lib/articles.drivers";
 import { SALES_TAX_ARTICLES } from "@/lib/articles.sales-tax";
+import { BC_PST_ARTICLES } from "@/lib/articles.bc-pst";
 
 /** "CA$4.99/wk, CA$9.99/mo or CA$129.99/yr" -- ReceiptOne's Canadian prices, read from src/lib/pricing.ts. */
 const caPrice = (id: "week" | "month" | "year") => `CA$${getPlan("ca", id).price}`;
@@ -4028,6 +4029,8 @@ export const ARTICLES: Article[] = [
   ...DRIVER_ARTICLES,
   /* Sales tax by province, 2026-11-16: src/lib/articles.sales-tax.ts */
   ...SALES_TAX_ARTICLES,
+  /* B.C. PST for the self-employed, 2026-11-16: src/lib/articles.bc-pst.ts */
+  ...BC_PST_ARTICLES,
 ];
 
 /* ----------------------------- Helpers ------------------------------------ */

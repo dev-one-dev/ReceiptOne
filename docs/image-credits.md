@@ -37,6 +37,7 @@ so each hero is the 1280 px download cropped to 16:9, never enlarged (until
 | year-end-checklist-accountant-canada | `public/articles/year-end-checklist-accountant-canada.webp` (+ `-card.webp`, `-og.jpg`) | https://pixabay.com/photos/note-box-index-box-index-8907986/ | 8907986 | danieltibi | 2026-11-14 |
 | tax-deductions-rideshare-delivery-drivers-canada | `public/articles/tax-deductions-rideshare-delivery-drivers-canada.webp` (+ `-card.webp`, `-og.jpg`) | https://pixabay.com/photos/car-blur-blurry-bokeh-background-1168158/ | 1168158 | IgorShubin | 2026-11-16 |
 | sales-tax-by-province-self-employed-canada | `public/articles/sales-tax-by-province-self-employed-canada.webp` (+ `-card.webp`, `-og.jpg`) | https://pixabay.com/photos/accounting-finances-coins-343067/ | 343067 | wilkernet | 2026-11-16 |
+| bc-pst-self-employed | `public/articles/bc-pst-self-employed.webp` (+ `-card.webp`, `-og.jpg`) | https://pixabay.com/photos/vancouver-canada-skyline-sky-107348/ | 107348 | 12019 | 2026-11-16 |
 
 ## Hub link cards (/articles)
 

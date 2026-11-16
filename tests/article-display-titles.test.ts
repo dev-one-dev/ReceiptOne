@@ -66,7 +66,8 @@ test("display titles: explicit, year-free, and only set where they differ", () =
   // 14 since 2026-11-16: the rideshare and delivery drivers guide (CA) carries
   // "(2026 Guide)" in its SEO title like the other CA guides.
   // 15 since later on 2026-11-16: the sales tax by province guide (CA), same pattern.
-  assert.equal(all.filter((a) => YEAR.test(a.title)).length, 15);
+  // 16 since later on 2026-11-16: the B.C. PST guide (CA), same pattern.
+  assert.equal(all.filter((a) => YEAR.test(a.title)).length, 16);
 });
 
 for (const [region, list, route, base] of [
