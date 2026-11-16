@@ -94,12 +94,20 @@ function DriversPage() {
                 the landing hero (xl) the row fits from lg. */}
             <div
               data-hero-cta
-              className="mt-4 flex w-full flex-col items-stretch gap-3 sm:w-auto sm:flex-row sm:flex-wrap sm:items-center lg:w-max lg:flex-nowrap"
+              className="mt-4 flex w-full flex-col items-stretch gap-3 sm:w-auto sm:flex-row sm:flex-wrap sm:items-center lg:w-max lg:flex-nowrap lg:items-start"
             >
-              <PrimaryCta href={ROUTES.signup}>Start 7-day free trial</PrimaryCta>
+              {/* Below lg: display:contents, so the button is a direct item of the
+                  row exactly as before. From lg: a block as tall as the QR tile,
+                  the button at its top edge and the no-card line under it. */}
+              <div className="contents lg:flex lg:flex-col lg:self-stretch">
+                <PrimaryCta href={ROUTES.signup}>Start 7-day free trial</PrimaryCta>
+                <p className="hidden text-sm text-ink-60 lg:mt-2 lg:block">
+                  No credit card required
+                </p>
+              </div>
               {/* display:none below lg, so it is not even fetched there. */}
               <AppQrImage src={heroQr} variant="light" className="hidden lg:block" />
-              <div className="flex flex-wrap items-center justify-center gap-3 sm:justify-start lg:flex-col lg:flex-nowrap lg:items-stretch lg:gap-2">
+              <div className="flex flex-wrap items-center justify-center gap-3 sm:justify-start lg:flex-col lg:flex-nowrap lg:items-stretch lg:justify-between lg:self-stretch">
                 <span className="sr-only">Available on:</span>
                 <StoreBadge platform="apple" region="ca" />
                 <StoreBadge platform="google" region="ca" />

@@ -267,6 +267,7 @@ for (const [path, qrFrom, trial] of [
   ["/us", "xl", "Start 7-day free trial"],
   ["/ca/drivers", "lg", "Start 7-day free trial"],
 ] as const) {
+  const noCard = path === "/fr" ? "Aucune carte de crédit requise" : "No credit card required";
   test(`hero: ${path} has one trial button, one set of badges, and the hero QR from ${qrFrom}`, async () => {
     const html = await mod.render(path);
     const hero = heroOf(html);
@@ -305,5 +306,44 @@ for (const [path, qrFrom, trial] of [
     assert.match(row, new RegExp(`class="[^"]*${qrFrom}:flex-col[^"]*"><span class="sr-only">`));
     // Hero links stay inside the hero's cta_click location.
     assert.ok(hero.startsWith('<section data-cta-location="hero"'));
+  });
+
+  test(`hero: ${path} no-card line, in its language, only from ${qrFrom}`, async () => {
+    const row = heroOf(await mod.render(path));
+    const lines = [...row.matchAll(/<p class="([^"]*)">([^<]*)<\/p>/g)].filter((m) =>
+      /carte|card/i.test(m[2]),
+    );
+    assert.equal(lines.length, 1, "one no-card line in the hero");
+    assert.equal(lines[0][2], noCard);
+    const other = path === "/fr" ? "No credit card required" : "Aucune carte de crédit requise";
+    assert.ok(!row.includes(other), "not the other language");
+    const classes = lines[0][1].split(/\s+/);
+    assert.ok(classes.includes("hidden"), "hidden below " + qrFrom);
+    assert.ok(classes.includes(`${qrFrom}:block`), "shown from " + qrFrom);
+    assert.ok(!classes.some((c) => /^(sm|md|lg|xl):block$/.test(c) && c !== `${qrFrom}:block`));
+    assert.ok(
+      classes.includes("text-ink-60") && !classes.some((c) => /ember/.test(c)),
+      "muted, no orange",
+    );
+  });
+
+  // Layout (measured in a browser at 1280/1440 and 1024 for drivers: button,
+  // QR and first badge tops equal; last badge bottom = QR bottom). Here the
+  // classes that produce it are pinned.
+  test(`hero: ${path} row is top-aligned from ${qrFrom}: button top = QR top`, async () => {
+    const hero = heroOf(await mod.render(path));
+    const rowTag = /<div data-hero-cta="[^"]*" class="([^"]*)"/.exec(hero)!;
+    assert.ok(rowTag[1].split(/\s+/).includes(`${qrFrom}:items-start`), "row items at the top");
+    // The button block: display:contents below the breakpoint (the button is
+    // a row item exactly as before), a QR-tall column from it, button first.
+    const block = new RegExp(
+      `<div class="contents ${qrFrom}:flex ${qrFrom}:flex-col ${qrFrom}:self-stretch"><a href="[^"]*/signup"`,
+    );
+    assert.match(hero, block, "button at the top of a QR-tall block");
+    // The badge stack spans the QR tile: stretched, first at top, last at bottom.
+    const badges = new RegExp(
+      `class="[^"]*${qrFrom}:flex-col[^"]*${qrFrom}:justify-between ${qrFrom}:self-stretch"><span class="sr-only">`,
+    );
+    assert.match(hero, badges, "badge stack spans the QR tile");
   });
 }
