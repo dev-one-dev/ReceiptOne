@@ -4,13 +4,14 @@ import { readFileSync } from "node:fs";
 import sharp from "sharp";
 
 /**
- * The pricing card's peeking mascot must never cover feature-list text, at
- * any width from 375 to 1920. Checked in a headless browser when this landed
- * (2026-11-15: no text rect intersects the mascot's box on /ca, /fr, /us at
- * 375-1920); here the geometry that guarantees it is recomputed from the
- * classes in Pricing.tsx and the images' real proportions, so changing the
- * mascot's size or offset, the card's padding or the list's width without
- * redoing the maths fails.
+ * The pricing card's peeking mascot must never cover the plan title, price,
+ * feature-list text or the buttons. Checked in a headless browser when this
+ * landed (2026-11-15: sm+ — no feature text intersects the mascot's box on
+ * /ca, /fr, /us at 640-1920; below sm — nothing in the card intersects it on
+ * /ca, /fr, /us, /ca/drivers at 320, 375, 414, 480, 600, 639); here the
+ * geometry that guarantees it is recomputed from the classes in Pricing.tsx
+ * and the images' real proportions, so changing the mascot's size or offset,
+ * the card's padding or the list's width without redoing the maths fails.
  *
  * Coordinates are inside the card's border (its padding box, which is what the
  * absolutely positioned mascot is placed in).
@@ -18,6 +19,8 @@ import sharp from "sharp";
 
 const SRC = readFileSync("src/components/site/Pricing.tsx", "utf8");
 const REM = 16;
+/** Tallest mascot image, height per unit of width (checked below). */
+const MAX_RATIO = 0.922;
 
 function num(re: RegExp, what: string): number {
   const m = re.exec(SRC);
@@ -25,17 +28,21 @@ function num(re: RegExp, what: string): number {
   return Number(m[1]);
 }
 
-// The mascot <img>: bottom-0 -right-36 w-[28rem] ... sm:-right-40 sm:w-[30rem]
-const mascotClass = /className=\{cn\(\s*"(pointer-events-none absolute bottom-0[^"]*)"/.exec(
-  SRC,
-)?.[1];
+// The mascot <img>: top-6 -right-3 w-[5.5rem] ... sm:top-auto sm:bottom-0 sm:-right-40 sm:w-[30rem]
+const mascotClass = /className=\{cn\(\s*"(pointer-events-none absolute [^"]*)"/.exec(SRC)?.[1];
 assert.ok(mascotClass, "mascot class string");
-const pick = (re: RegExp) => Number(re.exec(mascotClass!)?.[1]);
+const pick = (re: RegExp) => {
+  const m = re.exec(mascotClass!);
+  assert.ok(m, `${re} in the mascot's classes`);
+  return Number(m[1]);
+};
 // -right-n puts the image n * 4px past the card's right edge.
+const MOBILE_TOP = pick(/(?:^|\s)top-(\d+)(?:\s|$)/) * 4;
 const MOBILE_OVERHANG = pick(/(?:^|\s)-right-(\d+)(?:\s|$)/) * 4;
-const MOBILE_W = pick(/(?:^|\s)w-\[(\d+)rem\]/) * REM;
+const MOBILE_W = pick(/(?:^|\s)w-\[([\d.]+)rem\]/) * REM;
 const SM_OVERHANG = pick(/sm:-right-(\d+)/) * 4;
 const SM_W = pick(/sm:w-\[(\d+)rem\]/) * REM;
+assert.match(mascotClass!, /\bsm:top-auto sm:bottom-0\b/, "from sm the mascot is bottom-anchored");
 
 // The card: max-w-xl (576px) with a 1px border, p-7 / sm:p-9.
 const CARD_MAX = 576;
@@ -46,14 +53,9 @@ const SM_PAD = num(/max-w-xl[^"]*\ssm:p-(\d+)/, "card sm padding") * 4;
 // The feature list's sm width: sm:max-w-[calc(100%-Npx)].
 const SM_LIST_CUT = num(/<ul className="[^"]*sm:max-w-\[calc\(100%-(\d+)px\)\]/, "list sm width");
 
-// The spacer under the list, below sm.
-const spacer = /MASCOT_SPACER =\s*"([^"]+)"/.exec(SRC)?.[1] ?? "";
-const sp = /pt-\[calc\(min\(100%_\+_(\d+)px,(\d+)px\)_\*_([\d.]+)_-_(\d+)px\)\]/.exec(spacer);
-assert.ok(sp, "MASCOT_SPACER padding formula");
-const [SP_ADD, SP_CAP, SP_RATIO, SP_SUB] = sp!.slice(1).map(Number);
-assert.match(spacer, /\bsm:hidden\b/);
-const CTA_MARGIN = 24; // mt-6 on the spacer/CTA cell
-assert.match(SRC, /<div className="mt-6 grid">\s*<div aria-hidden className=\{MASCOT_SPACER\} \/>/);
+// Below sm the title + price block reserves pr-N for the mascot.
+const HEAD_PR =
+  num(/<div className="pr-(\d+) sm:pr-0">\s*<h3 className="eyebrow">/, "title/price block") * 4;
 
 const IMAGES = [
   "src/assets/figma/mileage-auto/Graphic-Small.webp",
@@ -64,11 +66,11 @@ const IMAGES = [
   "src/assets/figma/mileage-auto/US/1.webp",
 ];
 
-test("pricing mascot: every mascot image is no taller than the spacer assumes", async () => {
+test("pricing mascot: every mascot image is no taller than the layout assumes", async () => {
   for (const file of IMAGES) {
     assert.ok(SRC.includes(file.replace("src/", "@/")), `${file} is a pricing mascot`);
     const { width, height } = await sharp(file).metadata();
-    assert.ok(height! / width! <= SP_RATIO, `${file}: ${height}/${width} > ${SP_RATIO}`);
+    assert.ok(height! / width! <= MAX_RATIO, `${file}: ${height}/${width} > ${MAX_RATIO}`);
   }
 });
 
@@ -82,19 +84,35 @@ test("pricing mascot: from sm, the feature list ends before the mascot's left ed
   assert.ok(listRight <= mascotLeft, `list right ${listRight} <= mascot left ${mascotLeft}`);
 });
 
-test("pricing mascot: below sm, the list ends above the mascot's top edge", () => {
-  // Phones: card = viewport - 32px, from a 375px viewport up to 639px.
+test("pricing mascot: below sm, a small avatar beside the title and price", () => {
+  // Rendered heights of the title/price block's rows (Inter Tight): eyebrow
+  // 16px line + mt-3, price row 38px (text-h2 at 36px on phones).
+  const EYEBROW = 16 + 12;
+  const PRICE_ROW = 38;
+  const DIVIDER = 24 + 1 + 24; // my-6 h-px
+  const mascotH = MOBILE_W * MAX_RATIO;
+  assert.ok(mascotH >= 80 && mascotH <= 96, `mascot ${mascotH.toFixed(1)}px tall, 80-96`);
+
+  // Phones: card = viewport - 32px, 320px up to 639px.
   for (let viewport = 320; viewport < 640; viewport++) {
     const inner = Math.min(viewport - 32, CARD_MAX) - 2;
-    const imgW = Math.min(MOBILE_W, inner); // img max-width: 100%
-    const mascotH = imgW * SP_RATIO; // bottom-anchored, so it covers this much of the card
-    assert.ok(inner - imgW + MOBILE_OVERHANG >= 0, "mascot starts inside the card");
-    const content = inner - 2 * PAD;
-    const spacerH = Math.min(content + SP_ADD, SP_CAP) * SP_RATIO - SP_SUB;
-    // List bottom -> card bottom: margin, the cell (>= spacer), padding, border.
-    const below = CTA_MARGIN + spacerH + PAD + 1;
-    assert.equal(SP_ADD, 2 * PAD, "spacer's % base adds the padding back to get the card width");
-    assert.equal(SP_CAP, MOBILE_W, "spacer caps at the mascot's width");
-    assert.ok(below >= mascotH, `${viewport}px: ${below.toFixed(1)} >= ${mascotH.toFixed(1)}`);
+    const mascotLeft = inner + MOBILE_OVERHANG - MOBILE_W;
+    // Title + price block: from the padding to the padding minus pr-N.
+    const headRight = inner - PAD - HEAD_PR;
+    assert.ok(headRight <= mascotLeft, `${viewport}px: title/price ${headRight} <= ${mascotLeft}`);
+    // The widest price ("CAD 129.99", 177px) still fits in that block.
+    assert.ok(headRight - PAD >= 177, `${viewport}px: price fits in ${headRight - PAD}px`);
+    // The overhang crops at most the images' white side margin (~12%).
+    assert.ok(MOBILE_OVERHANG <= MOBILE_W * 0.14, "overhang only crops the margin");
+    // Everything below the title/price block (list, buttons) starts under the mascot.
+    const listTop = PAD + EYEBROW + PRICE_ROW + DIVIDER;
+    const mascotBottom = MOBILE_TOP + mascotH;
+    assert.ok(mascotBottom <= listTop, `${viewport}px: mascot ${mascotBottom} <= list ${listTop}`);
   }
+});
+
+test("pricing mascot: below sm, the list and divider use the full width", () => {
+  assert.match(SRC, /<ul className="flex flex-col gap-2\.5 sm:max-w-\[calc\(100%-\d+px\)\]">/);
+  assert.match(SRC, /<div className="my-6 h-px bg-ink-05 sm:max-w-\[60%\]" \/>/);
+  assert.doesNotMatch(SRC, /MASCOT_SPACER/, "no spacer under the list");
 });

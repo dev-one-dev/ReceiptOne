@@ -72,17 +72,6 @@ const FEATURES_FR = [
   "Calendrier des échéances fiscales",
 ];
 
-/**
- * Below sm the mascot is as wide as the card, capped at 448px (w-[28rem] with
- * img max-width: 100%), and bottom-anchored; its images are 0.921 tall per unit
- * of width. The spacer's padding (a % of the content width, card - 56px) makes
- * the space from the list's bottom to the card's bottom at least the mascot's
- * height: 24px margin above + this cell + 28px padding + 1px border, with 2px of
- * slack. From sm the list's width keeps it clear instead, so no spacer.
- */
-export const MASCOT_SPACER =
-  "col-start-1 row-start-1 pt-[calc(min(100%_+_56px,448px)_*_0.922_-_51px)] sm:hidden";
-
 /** A year's worth of the Monthly price. */
 function monthlyBasisPerYear(monthly: Plan): number {
   return parseFloat(monthly.price) * 12;
@@ -195,7 +184,10 @@ export function Pricing({ region = "ca" }: { region?: Region }) {
         <div className="relative mx-auto mt-8 w-full max-w-xl overflow-hidden rounded-card border border-hairline bg-white p-7 shadow-[0_2px_12px_rgba(0,0,0,0.06)] sm:p-9">
           {/*
            * Peek-a-boo asset — z-0, sits behind the z-10 content layer.
-           * Anchored to bottom-right; overflow-hidden on the card crops it.
+           * From sm: anchored to bottom-right; overflow-hidden on the card
+           * crops it. Below sm: a small 88px avatar in the top-right corner,
+           * beside the plan title and price, whose block reserves pr-12 for it
+           * (see below). The 12px overhang only crops the images' white margin.
            * All three mascots are stacked in the same spot and crossfaded via
            * opacity (see the price block below for why: a key-remount fade-in
            * can only fade the incoming element IN, never fade the outgoing one
@@ -210,7 +202,7 @@ export function Pricing({ region = "ca" }: { region?: Region }) {
               loading="lazy"
               decoding="async"
               className={cn(
-                "pointer-events-none absolute bottom-0 -right-36 z-0 w-[28rem] select-none object-contain transition-opacity duration-300 sm:-right-40 sm:w-[30rem]",
+                "pointer-events-none absolute top-6 -right-3 z-0 w-[5.5rem] select-none object-contain transition-opacity duration-300 sm:top-auto sm:bottom-0 sm:-right-40 sm:w-[30rem]",
                 plan.id === selectedId ? "opacity-100" : "opacity-0",
               )}
             />
@@ -218,49 +210,54 @@ export function Pricing({ region = "ca" }: { region?: Region }) {
 
           {/* Content layer — z-10 keeps text and CTA above the asset */}
           <div className="relative z-10">
-            <h3 className="eyebrow">{planName(selectedPlan)}</h3>
+            {/* Title + price. Below sm, pr-12 ends it at the mascot's left edge
+                (card - 28px padding - 48px = card + 12px overhang - 88px); the
+                period wraps under the price when the row runs out of room. */}
+            <div className="pr-12 sm:pr-0">
+              <h3 className="eyebrow">{planName(selectedPlan)}</h3>
 
-            {/*
-             * grid + col/row-start-1 stacks all three periods' price blocks in
-             * the same cell, so the container's width/height is sized to the
-             * WIDEST/TALLEST of the three (e.g. "CAD 129.99") at all times —
-             * switching periods only crossfades opacity between them in place,
-             * instead of resizing a single block to fit whichever price string
-             * is currently rendered (which produced the horizontal jump).
-             */}
-            <div className="mt-3 grid">
-              {plans.map((plan) => {
-                const isActive = plan.id === selectedId;
-                return (
-                  <div
-                    key={plan.id}
-                    aria-hidden={!isActive}
-                    className={cn(
-                      "col-start-1 row-start-1 transition-opacity duration-300",
-                      isActive ? "opacity-100" : "pointer-events-none opacity-0",
-                    )}
-                  >
-                    <div className="flex flex-wrap items-baseline gap-x-1.5 gap-y-0">
-                      <span className="font-display text-h2 font-semibold tracking-display whitespace-nowrap text-ink">
-                        {formatPrice(plan, plan.price)}
-                      </span>
-                      <span className="font-sans text-body text-ink-60">{planPeriod(plan)}</span>
+              {/*
+               * grid + col/row-start-1 stacks all three periods' price blocks in
+               * the same cell, so the container's width/height is sized to the
+               * WIDEST/TALLEST of the three (e.g. "CAD 129.99") at all times —
+               * switching periods only crossfades opacity between them in place,
+               * instead of resizing a single block to fit whichever price string
+               * is currently rendered (which produced the horizontal jump).
+               */}
+              <div className="mt-3 grid">
+                {plans.map((plan) => {
+                  const isActive = plan.id === selectedId;
+                  return (
+                    <div
+                      key={plan.id}
+                      aria-hidden={!isActive}
+                      className={cn(
+                        "col-start-1 row-start-1 transition-opacity duration-300",
+                        isActive ? "opacity-100" : "pointer-events-none opacity-0",
+                      )}
+                    >
+                      <div className="flex flex-wrap items-baseline gap-x-1.5 gap-y-0">
+                        <span className="font-display text-h2 font-semibold tracking-display whitespace-nowrap text-ink">
+                          {formatPrice(plan, plan.price)}
+                        </span>
+                        <span className="font-sans text-body text-ink-60">{planPeriod(plan)}</span>
+                      </div>
                     </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
             </div>
 
-            {/* Divider — max-w-[60%] keeps it in the text column, away from the peeking animal image */}
-            <div className="my-6 h-px max-w-[60%] bg-ink-05" />
+            {/* Divider — from sm, max-w-[60%] keeps it in the text column, away
+                from the peeking animal image; below sm the mascot is above it. */}
+            <div className="my-6 h-px bg-ink-05 sm:max-w-[60%]" />
 
             {/* Features — identical regardless of the selected period. From sm the
                 mascot's box (480px wide, -right-40) starts 254px in from the card's
                 inner edge and spans almost the whole list, so the list stops short
-                of it: 502px of content - 284px, with 2px of slack. Below sm the box
-                only covers the bottom of the card; the spacer under the list keeps
-                the list above it instead (see MASCOT_SPACER). */}
-            <ul className="flex max-w-[60%] flex-col gap-2.5 sm:max-w-[calc(100%-286px)]">
+                of it: 502px of content - 284px, with 2px of slack. Below sm the
+                mascot sits above the divider, so the list uses the full width. */}
+            <ul className="flex flex-col gap-2.5 sm:max-w-[calc(100%-286px)]">
               {features.map((f) => (
                 <li key={f} className="flex items-start gap-2.5">
                   <span
@@ -274,13 +271,8 @@ export function Pricing({ region = "ca" }: { region?: Region }) {
               ))}
             </ul>
 
-            {/* The spacer and the CTA share one grid cell, so the cell is as tall
-                as whichever is taller and the CTA sits at its bottom. */}
-            <div className="mt-6 grid">
-              <div aria-hidden className={MASCOT_SPACER} />
-              <div className="col-start-1 row-start-1 self-end">
-                <StoreCTA region={region} />
-              </div>
+            <div className="mt-6">
+              <StoreCTA region={region} />
             </div>
           </div>
         </div>
