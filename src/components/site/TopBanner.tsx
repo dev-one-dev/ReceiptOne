@@ -26,7 +26,11 @@ export function TopBanner({
       <div className="mx-auto w-full max-w-[1200px]">
         <div className="grid items-start gap-10 lg:grid-cols-2 lg:gap-12">
           {/* ── LEFT COLUMN ── */}
-          <div className="flex flex-col items-center text-center lg:items-start lg:text-left">
+          {/* xl:pb-12: from xl the CTA row is this column's last element and,
+              where the column sets the hero's height (/ca, /fr), it sat on
+              the hero's bottom edge. 48px under it; where the mascot is
+              taller (/us) the hero does not grow. */}
+          <div className="flex flex-col items-center text-center lg:items-start lg:text-left xl:pb-12">
             {/* TODO(eyebrow): the hero has no label above the h1. Add
                 <p className="eyebrow"> with real copy -- deliberately not
                 invented here. */}
@@ -70,11 +74,11 @@ export function TopBanner({
 
             {/* Web CTA + store badges: see HeroCtaRow. Below xl the row it
                 always was (button, then badges; stacked on phones, wrapping
-                from sm). From xl: [button + no-card line] | [or get the app:
-                QR + badges]. Only from xl: at 1024 the left column is 456px,
-                too narrow. At 1280+ it is 576px and the hero's content runs on
-                into a 48px gap before the mascot column (624px in all); the FR
-                row needs 628 with a 112px QR, so FR uses a 96px tile (612). */}
+                from sm). From xl: [button + no-card line], a 56px gap, [or get
+                the app: QR + badges]. Only from xl: at 1024 the left column is
+                456px, too narrow. At 1280+ it is 576px and the hero's content
+                runs on into a 48px gap before the mascot column (624px in
+                all). FR uses a 96px tile and a 52px gap: its row is 622.5. */}
             {/* relative z-10: the mascot video below is 190% wide and later in
                 DOM order, so without a stacking context it sat on top of the
                 Google Play badge at desktop widths and swallowed its clicks. */}
@@ -83,6 +87,7 @@ export function TopBanner({
               lang={fr ? "fr" : "en"}
               region={region}
               qrSize={fr ? 96 : 112}
+              gap={fr ? 52 : 56}
               className="relative z-10 mt-6"
               badgeAlign="lg:justify-start"
             />

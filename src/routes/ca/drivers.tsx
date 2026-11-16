@@ -75,7 +75,9 @@ function DriversPage() {
       <Header />
 
       {/* Hero */}
-      <section data-cta-location="hero" className="w-full px-4 pt-24 pb-4 sm:px-6 lg:px-8">
+      {/* lg:pb-12: from lg the CTA row (QR) is the hero's last element; 48px
+          under it instead of 16. */}
+      <section data-cta-location="hero" className="w-full px-4 pt-24 pb-4 sm:px-6 lg:px-8 lg:pb-12">
         <div className="mx-auto w-full max-w-[1200px]">
           <div className="max-w-3xl">
             <p className="eyebrow">For rideshare and delivery drivers</p>

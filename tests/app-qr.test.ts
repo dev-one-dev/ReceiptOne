@@ -331,8 +331,10 @@ for (const [path, qrFrom, trial] of [
   });
 
   // Layout was measured in a browser (1280/1440; drivers also 1024): button
-  // top = QR top, divider as tall as the QR with 20px either side, badges 8px
-  // apart and centred on the QR. Here the classes that produce it are pinned.
+  // top = QR top, a plain gap between the groups (56px; FR 52, its row then
+  // ends 1.5px short of the mascot column), badges 8px apart and centred on
+  // the QR, the QR >= 48px above the hero's bottom edge (more on /us, where the
+  // mascot sets the height). Here the classes that produce it are pinned.
   const bp = qrFrom;
   const classesOf = (hero: string, re: RegExp) => {
     const m = re.exec(hero);
@@ -351,12 +353,23 @@ for (const [path, qrFrom, trial] of [
     );
   };
 
-  test(`hero: ${path} two groups and a divider from ${bp}; button top = QR top`, async () => {
+  test(`hero: ${path} two groups, a plain gap, no divider from ${bp}; button top = QR top`, async () => {
     const hero = heroOf(await mod.render(path));
     const row = classesOf(hero, /<div data-hero-cta="[^"]*" class="([^"]*)"/);
-    for (const c of [`${bp}:grid`, `${bp}:grid-cols-[auto_auto_auto]`, `${bp}:items-start`])
+    for (const c of [`${bp}:grid`, `${bp}:grid-cols-[auto_auto]`, `${bp}:items-start`])
       assert.ok(row.includes(c), c);
-    assert.ok(row.includes(`${bp}:gap-x-5`), "20px gutters: a ~41px separator round the divider");
+    // 56px between the groups; FR on the landing hero 52 (56 would reach the
+    // mascot column). One column gap, and only from the breakpoint.
+    const gap = path === "/fr" ? `${bp}:gap-x-13` : `${bp}:gap-x-14`;
+    assert.deepEqual(
+      row.filter((c) => /gap-x-/.test(c)),
+      [gap],
+      gap,
+    );
+    // No divider: no element, no vertical rule anywhere in the row.
+    assert.ok(!hero.includes("data-hero-cta-divider"), "no divider element");
+    const rowHtml = hero.slice(hero.indexOf("<div data-hero-cta"));
+    assert.ok(!/border-l|divide-x/.test(rowHtml), "no vertical rule");
     // Primary group: the button (first) and the no-card line, column 1, row 2.
     const primary = classesOf(
       hero,
@@ -365,31 +378,14 @@ for (const [path, qrFrom, trial] of [
     shownOnlyFrom(primary, "flex");
     for (const c of [`${bp}:col-start-1`, `${bp}:row-start-2`, `${bp}:flex-col`])
       assert.ok(primary.includes(c), c);
-    // Divider: hairline token (not orange), column 2, row 2 -- the QR row --
-    // stretched to its height; decorative.
-    const divider = classesOf(
-      hero,
-      /<span data-hero-cta-divider="[^"]*" aria-hidden="true" class="([^"]*)"><\/span>/,
-    );
-    shownOnlyFrom(divider, "block");
-    for (const c of [
-      "border-l",
-      "border-hairline",
-      `${bp}:col-start-2`,
-      `${bp}:row-start-2`,
-      `${bp}:self-stretch`,
-    ])
-      assert.ok(divider.includes(c), c);
-    assert.ok(!divider.some((c) => /ember|orange/.test(c)), "not orange");
-    // Secondary group: QR then badges, column 3, row 2 (same row as the
+    // Secondary group: QR then badges, column 2, row 2 (same row as the
     // button, so its top edge is the QR's), centred on the QR.
     const secondary = classesOf(hero, /<div data-hero-cta-secondary="[^"]*" class="([^"]*)"><img/);
     shownOnlyFrom(secondary, "flex");
-    for (const c of [`${bp}:col-start-3`, `${bp}:row-start-2`, `${bp}:items-center`, `${bp}:gap-3`])
+    for (const c of [`${bp}:col-start-2`, `${bp}:row-start-2`, `${bp}:items-center`, `${bp}:gap-3`])
       assert.ok(secondary.includes(c), c);
     const at2 = (re: RegExp) => hero.search(re);
-    assert.ok(at2(/data-hero-cta-primary/) < at2(/data-hero-cta-divider/));
-    assert.ok(at2(/data-hero-cta-divider/) < at2(/data-hero-cta-secondary/));
+    assert.ok(at2(/data-hero-cta-primary/) < at2(/data-hero-cta-secondary/));
     assert.ok(
       at2(/data-hero-cta-secondary/) < at2(/alt="QR code/) && at2(/alt="QR code/) < at(hero, APPLE),
     );
@@ -415,7 +411,7 @@ for (const [path, qrFrom, trial] of [
     const classes = m[1].split(/\s+/);
     assert.ok(classes.includes("eyebrow"), "the one eyebrow treatment");
     shownOnlyFrom(classes, "block");
-    for (const c of [`${bp}:col-start-3`, `${bp}:row-start-1`]) assert.ok(classes.includes(c), c);
+    for (const c of [`${bp}:col-start-2`, `${bp}:row-start-1`]) assert.ok(classes.includes(c), c);
   });
 
   test(`hero: ${path} below ${bp} the row is the row it was`, async () => {
@@ -449,11 +445,10 @@ for (const [path, qrFrom, trial] of [
       "gap-3",
       path === "/ca/drivers" ? "sm:justify-start" : "lg:justify-start",
     ]);
-    // Everything new is display:none (line, divider, label, QR) or
-    // display:contents (the two group wrappers) below the breakpoint.
+    // Everything new is display:none (line, label, QR) or display:contents
+    // (the two group wrappers) below the breakpoint.
     const hiddenBelow = [
       /<p class="([^"]*)">(?:No credit|Aucune carte)/,
-      /<span data-hero-cta-divider="[^"]*" aria-hidden="true" class="([^"]*)"/,
       /<p class="(eyebrow[^"]*)">/,
       /<img[^>]*alt="QR code[^"]*"[^>]*class="([^"]*)"/,
     ];
@@ -474,3 +469,40 @@ for (const [path, qrFrom, trial] of [
       assert.equal(classesOf(hero, re)[0], "contents", re.source);
   });
 }
+
+// Bottom breathing room: from the QR breakpoint the CTA row is the hero's
+// last element; 48px (pb-12) under it, measured in a browser at 1280/1440
+// (drivers also 1024): QR bottom to hero bottom 48 on /ca, /fr, /ca/drivers;
+// /us 113-118, where the mascot column sets the height. Nothing below.
+for (const path of ["/ca", "/fr", "/us"] as const) {
+  test(`hero: ${path} 48px under the CTA row from xl only`, async () => {
+    const hero = heroOf(await mod.render(path));
+    // The section itself is untouched: no bottom padding at any width.
+    const section = /^<section data-cta-location="hero" class="([^"]*)"/.exec(hero)![1];
+    assert.equal(
+      section,
+      "relative w-full overflow-visible px-4 pt-20 sm:px-6 sm:pt-24 lg:px-8 lg:pt-28",
+    );
+    // The left column (the one with the h1) pads its bottom from xl.
+    const col = /<div class="([^"]*)">(?:(?!<div class=)[\s\S])*?<h1/.exec(hero);
+    assert.ok(col, "left column");
+    const classes = col[1].split(/\s+/);
+    assert.ok(classes.includes("xl:pb-12"), "xl:pb-12");
+    assert.deepEqual(
+      classes.filter((c) => /(^|:)p[by]-/.test(c)),
+      ["xl:pb-12"],
+      "no bottom padding below xl",
+    );
+  });
+}
+
+test("hero: /ca/drivers 48px under the CTA row from lg only", async () => {
+  const hero = heroOf(await mod.render("/ca/drivers"));
+  const section = /^<section data-cta-location="hero" class="([^"]*)"/.exec(hero)![1].split(/\s+/);
+  assert.ok(section.includes("pb-4"), "16px below lg, as before");
+  assert.ok(section.includes("lg:pb-12"), "48px from lg");
+  assert.deepEqual(
+    section.filter((c) => /(^|:)p[by]-/.test(c)),
+    ["pb-4", "lg:pb-12"],
+  );
+});
