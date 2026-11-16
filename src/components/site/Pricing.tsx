@@ -72,6 +72,17 @@ const FEATURES_FR = [
   "Calendrier des échéances fiscales",
 ];
 
+/**
+ * Below sm the mascot is as wide as the card, capped at 448px (w-[28rem] with
+ * img max-width: 100%), and bottom-anchored; its images are 0.921 tall per unit
+ * of width. The spacer's padding (a % of the content width, card - 56px) makes
+ * the space from the list's bottom to the card's bottom at least the mascot's
+ * height: 24px margin above + this cell + 28px padding + 1px border, with 2px of
+ * slack. From sm the list's width keeps it clear instead, so no spacer.
+ */
+export const MASCOT_SPACER =
+  "col-start-1 row-start-1 pt-[calc(min(100%_+_56px,448px)_*_0.922_-_51px)] sm:hidden";
+
 /** A year's worth of the Monthly price. */
 function monthlyBasisPerYear(monthly: Plan): number {
   return parseFloat(monthly.price) * 12;
@@ -243,8 +254,13 @@ export function Pricing({ region = "ca" }: { region?: Region }) {
             {/* Divider — max-w-[60%] keeps it in the text column, away from the peeking animal image */}
             <div className="my-6 h-px max-w-[60%] bg-ink-05" />
 
-            {/* Features — identical regardless of the selected period */}
-            <ul className="flex max-w-[60%] flex-col gap-2.5">
+            {/* Features — identical regardless of the selected period. From sm the
+                mascot's box (480px wide, -right-40) starts 254px in from the card's
+                inner edge and spans almost the whole list, so the list stops short
+                of it: 502px of content - 284px, with 2px of slack. Below sm the box
+                only covers the bottom of the card; the spacer under the list keeps
+                the list above it instead (see MASCOT_SPACER). */}
+            <ul className="flex max-w-[60%] flex-col gap-2.5 sm:max-w-[calc(100%-286px)]">
               {features.map((f) => (
                 <li key={f} className="flex items-start gap-2.5">
                   <span
@@ -258,8 +274,13 @@ export function Pricing({ region = "ca" }: { region?: Region }) {
               ))}
             </ul>
 
-            <div className="mt-6">
-              <StoreCTA region={region} />
+            {/* The spacer and the CTA share one grid cell, so the cell is as tall
+                as whichever is taller and the CTA sits at its bottom. */}
+            <div className="mt-6 grid">
+              <div aria-hidden className={MASCOT_SPACER} />
+              <div className="col-start-1 row-start-1 self-end">
+                <StoreCTA region={region} />
+              </div>
             </div>
           </div>
         </div>
