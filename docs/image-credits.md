@@ -44,6 +44,7 @@ only (800x450); the linked page has no hero and keeps the site og:image.
 | Card | File | Pixabay page | Image ID | Author | Downloaded |
 |---|---|---|---|---|---|
 | /ca/tax-deadlines (Part 01) | `public/articles/tax-deadlines-card.webp` | https://pixabay.com/photos/calendar-date-time-month-week-660670/ | 660670 | tigerlily713 | 2026-11-14 |
+| /ca/mileage-log-template (Part 04) | `public/articles/mileage-log-template-card.webp` | https://pixabay.com/photos/notepad-glasses-travel-planning-1130743/ | 1130743 | DariuszSankowski | 2026-11-16 |
 
 ## United States (/us/articles)
 
@@ -58,7 +59,3 @@ only (800x450); the linked page has no hero and keeps the site og:image.
 | irs-mileage-rate-self-employed | `public/articles/irs-mileage-rate-self-employed.webp` (+ `-card.webp`, `-og.jpg`) | https://pixabay.com/photos/road-sandstone-sunset-pavement-1303617/ | 1303617 | elizabethannphotolv | 2026-11-14 |
 | home-office-deduction-form-8829-us | `public/articles/home-office-deduction-form-8829-us.webp` (+ `-card.webp`, `-og.jpg`) | https://pixabay.com/photos/office-home-house-desk-chair-lamp-1078869/ | 1078869 | ErikaWittlieb | 2026-11-14 |
 | sales-tax-business-expenses-us | `public/articles/sales-tax-business-expenses-us.webp` (+ `-card.webp`, `-og.jpg`) | https://pixabay.com/photos/vintage-cash-register-no-sale-842337/ | 842337 | rose_mcavoy | 2026-11-14 |
-
-## Site-rendered images
-
-`public/articles/mileage-log-template-card.webp` (800x450, the /ca/mileage-log-template card in Part 04 of /articles) is not a Pixabay photo: `scripts/generate-mileage-templates.mjs` renders it from the template's own column headers with sample trips. No credit needed.

@@ -320,3 +320,22 @@ test("article images: the /articles deadlines card shows its self-hosted photo",
   const alt = unescape(/\salt="([^"]*)"/.exec(tag)?.[1] ?? "");
   assert.ok(alt.length > 0 && alt === DEADLINES_CARD.image.alt, "deadlines card has alt text");
 });
+
+test("article images: the /articles mileage template card shows its self-hosted photo", () => {
+  const SRC = "/articles/mileage-log-template-card.webp";
+  const card = mod.ARTICLE_PARTS.flatMap((p) => p.links ?? []).find(
+    (l) => l.href === "/ca/mileage-log-template",
+  )!;
+  assert.equal(card.image.path, SRC);
+  const file = resolve("public", SRC.slice(1));
+  assert.ok(existsSync(file) && statSync(file).size > 0, `${file} exists`);
+  const page = pages.find(([p]) => p === "/articles")![1];
+  const tags = articleImgs(page).filter((t) => t.includes(`src="${SRC}"`));
+  assert.equal(tags.length, 1, "one mileage template card image");
+  const [tag] = tags;
+  assert.match(tag, /\swidth="800"/);
+  assert.match(tag, /\sheight="450"/);
+  assert.match(tag, /loading="lazy"/);
+  const alt = unescape(/\salt="([^"]*)"/.exec(tag)?.[1] ?? "");
+  assert.ok(alt.length > 0 && alt === card.image.alt, "mileage template card has alt text");
+});

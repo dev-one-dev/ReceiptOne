@@ -13,8 +13,7 @@ export interface HubLink {
   title: string;
   category: string;
   excerpt: string;
-  /** Self-hosted 800x450 card image: a Pixabay photo (credit in
-   * docs/image-credits.md) or one the site renders itself. */
+  /** Self-hosted 800x450 card photo (Pixabay; credit in docs/image-credits.md). */
   image: { path: string; alt: string };
 }
 
@@ -97,7 +96,7 @@ export const ARTICLE_PARTS: ArticlePart[] = [
           "A mileage logbook in Excel or printable PDF, with a business-use percentage that adds itself up.",
         image: {
           path: "/articles/mileage-log-template-card.webp",
-          alt: "Preview of the ReceiptOne mileage log with columns for date, destination, purpose and kilometres",
+          alt: "Open blank notebook with a pencil, reading glasses and travel photos on an old map",
         },
       },
     ],

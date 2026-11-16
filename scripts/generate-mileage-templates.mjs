@@ -1,11 +1,10 @@
 #!/usr/bin/env node
 /**
  * Writes the free mileage log templates served by /ca/mileage-log-template
- * and /fr/modele-registre-kilometrage, plus the articles-hub card image:
+ * and /fr/modele-registre-kilometrage:
  *
  *   public/downloads/receiptone-mileage-log-template.{xlsx,pdf}        (EN)
  *   public/downloads/receiptone-modele-registre-kilometrage.{xlsx,pdf} (FR)
- *   public/articles/mileage-log-template-card.webp                     (800x450)
  *
  * File names, sheet names, column headers and summary labels all come from
  * src/lib/mileage-log-template.ts, the same module the page renders from.
@@ -27,7 +26,6 @@ import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 import ExcelJS from "exceljs";
 import { chromium } from "playwright";
-import sharp from "sharp";
 import { loadTs } from "./lib/load-ts.mjs";
 
 const {
@@ -40,7 +38,6 @@ const {
 } = await loadTs(`export * from "@/lib/mileage-log-template";`);
 
 const OUT_DIR = resolve("public/downloads");
-const CARD_OUT = resolve("public/articles/mileage-log-template-card.webp");
 /** Fixed so regenerating an unchanged template gives the same workbook metadata. */
 const STAMP = new Date("2026-11-16T00:00:00Z");
 
@@ -289,69 +286,6 @@ export function pdfHtml(lang) {
   </style></head><body>${pages}${summaryPage(L)}</body></html>`;
 }
 
-/** 800x450 card for the articles hub: a slice of the log with sample trips. */
-export function cardHtml() {
-  const L = TEMPLATE_LABELS.en;
-  const sample = [
-    [
-      "2026-03-02",
-      "Home office",
-      "Client site, Laval",
-      "Kitchen renovation quote",
-      "48,210",
-      "48,262",
-      "52",
-      "Yes",
-    ],
-    [
-      "2026-03-04",
-      "Home office",
-      "Supplier, Montréal",
-      "Pick up tile samples",
-      "48,301",
-      "48,325",
-      "24",
-      "Yes",
-    ],
-    ["2026-03-05", "Home office", "Grocery store", "Personal", "48,325", "48,333", "8", "No"],
-    [
-      "2026-03-09",
-      "Home office",
-      "Client site, Laval",
-      "Site visit, progress check",
-      "48,410",
-      "48,462",
-      "52",
-      "Yes",
-    ],
-    ["", "", "", "", "", "", "", ""],
-    ["", "", "", "", "", "", "", ""],
-  ];
-  const rows = sample
-    .map(
-      (r) =>
-        `<tr>${r.map((c, i) => `<td class="${i >= 4 && i <= 6 ? "num" : ""}">${esc(c)}</td>`).join("")}</tr>`,
-    )
-    .join("");
-  return `<!DOCTYPE html><html><head><meta charset="utf-8"><link rel="stylesheet" href="${FONTS}">
-  <style>${BASE_CSS}
-    body { width: 800px; height: 450px; background: #f5f4f0; overflow: hidden; }
-    .sheet { position: absolute; left: 44px; top: 40px; width: 900px; height: 460px; background: #fff; border: 1px solid rgba(13,13,20,.1); border-radius: 12px; box-shadow: 0 12px 40px rgba(0,0,0,.10); padding: 26px 28px; }
-    .eyebrow { font-size: 12px; color: rgba(13,13,20,.6); }
-    h1 { font-size: 30px; font-weight: 600; letter-spacing: -0.025em; margin-top: 4px; }
-    .bar { height: 6px; width: 64px; background: #f97316; border-radius: 999px; margin-top: 12px; }
-    table { border-collapse: collapse; margin-top: 18px; font-size: 13px; table-layout: fixed; width: 980px; }
-    th, td { border: 1px solid rgba(13,13,20,.14); padding: 0 8px; height: 36px; white-space: nowrap; overflow: hidden; }
-    th { background: #edece7; font-weight: 600; text-align: left; font-size: 12px; }
-    td.num { text-align: right; font-family: "Geist Mono", monospace; }
-  </style></head><body><div class="sheet">
-    <p class="mono eyebrow">Free template · CRA logbook</p>
-    <h1>${esc(L.title)}</h1><div class="bar"></div>
-    <table><colgroup><col style="width:100px"><col style="width:110px"><col style="width:150px"><col style="width:200px"><col style="width:100px"><col style="width:100px"><col style="width:90px"><col style="width:130px"></colgroup>
-    <thead><tr>${L.columns.map((c) => `<th>${esc(c)}</th>`).join("")}</tr></thead><tbody>${rows}</tbody></table>
-  </div></body></html>`;
-}
-
 /* --------------------------------- main ---------------------------------- */
 
 async function main() {
@@ -379,16 +313,6 @@ async function main() {
       writeFileSync(file, pdf);
       console.log(`✓ wrote ${file}`);
     }
-
-    const card = await browser.newPage({
-      viewport: { width: 800, height: 450 },
-      deviceScaleFactor: 1,
-    });
-    await card.setContent(cardHtml(), { waitUntil: "networkidle" });
-    await card.evaluate(() => document.fonts.ready);
-    const png = await card.screenshot({ type: "png" });
-    await sharp(png).webp({ quality: 82 }).toFile(CARD_OUT);
-    console.log(`✓ wrote ${CARD_OUT}`);
   } finally {
     await browser.close();
   }
