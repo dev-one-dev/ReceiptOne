@@ -262,6 +262,7 @@ export function Header() {
               window.scrollTo({ top: 0, behavior: "smooth" });
             }}
             className="flex min-w-0 shrink items-center gap-1.5 sm:gap-2"
+            aria-label="ReceiptOne"
           >
             <LogoMark />
             <LogoWordmark compact={!isUS} />
@@ -430,8 +431,20 @@ function MenuCloseIcon() {
 
 /* ---------- Inline SVGs (no external assets needed) ---------- */
 
+/**
+ * Bing counts alt="" as a missing alt, so the mark carries text. It stays
+ * aria-hidden: the home link's aria-label names it (and still does below
+ * 360px, where the wordmark is hidden and the mark stands alone).
+ */
 function LogoMark() {
-  return <img src={logoMark} alt="" aria-hidden className="block size-8 shrink-0 sm:size-10" />;
+  return (
+    <img
+      src={logoMark}
+      alt="ReceiptOne logo"
+      aria-hidden
+      className="block size-8 shrink-0 sm:size-10"
+    />
+  );
 }
 
 /**

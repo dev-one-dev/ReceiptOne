@@ -303,6 +303,7 @@ Removed in September 2026 and no longer read anywhere: `SUPABASE_*`, `VITE_SUPAB
 | `npm run check:routes` | Verify `routeTree.gen.ts` matches `src/routes` |
 | `npm run sitemap` | Regenerate `public/sitemap.xml` (`SITE_ORIGIN` overrides the origin) |
 | `npm run llms` | Regenerate `public/llms.txt` |
+| `npm run indexnow` | Submit sitemap URLs (or the URLs given) to IndexNow — run after a production deploy finishes, see [Deployment](#after-a-production-deploy-indexnow) |
 | `npm run og` | Regenerate `public/og-image.png` with Playwright |
 | `node scripts/regen-route-tree.mjs` | Regenerate `routeTree.gen.ts` without starting `vite dev` |
 
@@ -328,6 +329,24 @@ A `wrangler.jsonc` is also present for optional **Cloudflare Workers** deploymen
 
 > **Every merge to `main` deploys to production automatically.**
 > See [docs/pull-request-workflow.md](./docs/pull-request-workflow.md) for the branch and PR process.
+
+### After a production deploy: IndexNow
+
+Once the Vercel production deploy has **finished** (the new pages are live),
+run:
+
+```bash
+npm run indexnow                       # every URL in public/sitemap.xml
+npm run indexnow -- https://receipt-one.com/us/faq   # or only specific URLs
+```
+
+This pings IndexNow (Bing, Yandex and the other participating engines) at
+`https://api.indexnow.org/indexnow`. HTTP 200 or 202 means accepted. The key is
+public by design: it lives in `scripts/indexnow.mjs` and in the key file
+`public/49ccd386b1ec0e3fcc337fb2edcd609d.txt`, served at
+`https://receipt-one.com/49ccd386b1ec0e3fcc337fb2edcd609d.txt`. If you rotate the key,
+change both. It is deliberately **not** run during the build: at build time the
+new pages are not live yet.
 
 ---
 

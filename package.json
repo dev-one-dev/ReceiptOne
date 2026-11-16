@@ -12,6 +12,7 @@
     "check:routes": "node scripts/check-routes.mjs",
     "check:articles": "node scripts/check-articles.mjs",
     "sitemap": "node scripts/generate-sitemap.mjs",
+    "indexnow": "node scripts/indexnow.mjs",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
     "test": "node --experimental-strip-types --no-warnings=ExperimentalWarning --test \"tests/**/*.test.ts\"",

@@ -232,3 +232,11 @@ an App Check token. The function contracts live in the
 `ReceiptOne-Web-Portal` repo (`functions/src/support`, `functions/src/ideas`,
 `docs/SUPPORT_AND_IDEAS.md`). The old Supabase helpdesk (`/helpdesk*`) was
 removed; `middleware.ts` 301s it to the portal's `/support`.
+
+## Deploy
+
+Every push to `main` deploys to production on Vercel. After the production
+deploy has finished (new pages live), run `npm run indexnow` to ping IndexNow
+with every sitemap URL (or `npm run indexnow -- <url>...` for specific ones);
+200/202 means accepted. Never run it from the build. The key is public and lives
+in `scripts/indexnow.mjs` and `public/{key}.txt`; change both together.

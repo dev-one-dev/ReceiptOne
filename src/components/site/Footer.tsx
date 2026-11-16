@@ -169,7 +169,7 @@ export function Footer({ region = "ca", now }: FooterProps) {
               className="flex items-center gap-2.5 focus-visible:outline-none"
               aria-label={t.backToTop}
             >
-              <img src={logoMark} alt="" aria-hidden className="size-8 shrink-0" />
+              <img src={logoMark} alt="ReceiptOne logo" aria-hidden className="size-8 shrink-0" />
               <img
                 src={logoWordmark}
                 alt="ReceiptOne"
