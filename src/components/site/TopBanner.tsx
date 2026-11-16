@@ -4,6 +4,8 @@ import eagleHeroVideo from "@/assets/figma/hero-eagle-hq.mp4";
 import eagleHeroPoster from "@/assets/figma/hero-eagle-poster.png";
 import { StoreBadge } from "@/components/site/StoreBadge";
 import { PrimaryCta } from "@/components/site/PrimaryCta";
+import { AppQrImage } from "@/components/site/AppQr";
+import heroQr from "@/assets/app-qr-hero.svg";
 import { ROUTES } from "@/lib/routes";
 import { useLang } from "@/lib/use-lang";
 import { AnnouncementPill } from "@/components/site/AnnouncementPill";
@@ -70,17 +72,28 @@ export function TopBanner({
               </p>
             </div>
 
-            {/* Web CTA + store badges — one 44px row on desktop (12px gaps),
-                stacked with the button first on mobile. PrimaryCta and
-                StoreBadge share the same height and radius on purpose. */}
+            {/* Web CTA + store badges — stacked with the button first on
+                mobile, a wrapping row from sm. PrimaryCta and StoreBadge share
+                the same height and radius on purpose.
+                xl and up: one row, [trial button] [app QR] [badges stacked],
+                all vertically centred. Only from xl: at 1024 the left column
+                is 456px and the row needs 472 (EN) / 599 (FR), so between lg
+                and xl the QR is not rendered and the row is as before. At
+                1280+ the column is 576px; the FR row (599) runs 23px into the
+                48px column gap, short of the mascot column. */}
             {/* relative z-10: the mascot video below is 190% wide and later in
                 DOM order, so without a stacking context it sat on top of the
                 Google Play badge at desktop widths and swallowed its clicks. */}
-            <div className="relative z-10 mt-6 flex w-full flex-col items-stretch gap-3 sm:w-auto sm:flex-row sm:flex-wrap sm:items-center">
+            <div
+              data-hero-cta
+              className="relative z-10 mt-6 flex w-full flex-col items-stretch gap-3 sm:w-auto sm:flex-row sm:flex-wrap sm:items-center xl:w-max xl:flex-nowrap"
+            >
               <PrimaryCta href={ROUTES.signup}>
                 {fr ? "Commencer l'essai gratuit de 7 jours" : "Start 7-day free trial"}
               </PrimaryCta>
-              <div className="flex flex-wrap items-center justify-center gap-3 lg:justify-start">
+              {/* display:none below xl, so it is not even fetched there. */}
+              <AppQrImage src={heroQr} variant="light" className="hidden xl:block" />
+              <div className="flex flex-wrap items-center justify-center gap-3 lg:justify-start xl:flex-col xl:flex-nowrap xl:items-stretch xl:gap-2">
                 {/* Kept for screen readers; visually the badges speak for
                     themselves, and the label pushed the row past the column. */}
                 <span className="sr-only">{fr ? "Offert sur :" : "Available on:"}</span>

@@ -2,6 +2,8 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Header } from "@/components/site/Header";
 import { PrimaryCta } from "@/components/site/PrimaryCta";
 import { StoreBadge } from "@/components/site/StoreBadge";
+import { AppQrImage } from "@/components/site/AppQr";
+import heroQr from "@/assets/app-qr-hero.svg";
 import { FeatureCard, CA_MILEAGE_FEATURE } from "@/components/site/InfoCards";
 import { Pricing } from "@/components/site/Pricing";
 import { FinalCta } from "@/components/site/FinalCta";
@@ -87,9 +89,17 @@ function DriversPage() {
               personal, so your T2125 gets the right kilometres. Snap your fuel and maintenance
               receipts in the same app.
             </p>
-            <div className="mt-4 flex w-full flex-col items-stretch gap-3 sm:w-auto sm:flex-row sm:flex-wrap sm:items-center">
+            {/* lg and up: one row, [trial button] [app QR] [badges stacked],
+                as on the landing hero. This column is 768px wide, so unlike
+                the landing hero (xl) the row fits from lg. */}
+            <div
+              data-hero-cta
+              className="mt-4 flex w-full flex-col items-stretch gap-3 sm:w-auto sm:flex-row sm:flex-wrap sm:items-center lg:w-max lg:flex-nowrap"
+            >
               <PrimaryCta href={ROUTES.signup}>Start 7-day free trial</PrimaryCta>
-              <div className="flex flex-wrap items-center justify-center gap-3 sm:justify-start">
+              {/* display:none below lg, so it is not even fetched there. */}
+              <AppQrImage src={heroQr} variant="light" className="hidden lg:block" />
+              <div className="flex flex-wrap items-center justify-center gap-3 sm:justify-start lg:flex-col lg:flex-nowrap lg:items-stretch lg:gap-2">
                 <span className="sr-only">Available on:</span>
                 <StoreBadge platform="apple" region="ca" />
                 <StoreBadge platform="google" region="ca" />

@@ -7,6 +7,8 @@ import { build, type Plugin } from "esbuild";
 import QRCode from "qrcode";
 import {
   APP_QR_FILE,
+  APP_QR_HERO_FILE,
+  APP_QR_HERO_PAYLOAD,
   APP_QR_OPTIONS,
   APP_QR_PAYLOAD,
   renderAppQr,
@@ -25,6 +27,15 @@ import {
  */
 
 const URL_ON_QR = "https://receipt-one.com/app?utm_source=site&utm_medium=qr&utm_campaign=app_qr";
+const URL_ON_HERO_QR =
+  "https://receipt-one.com/app?utm_source=site&utm_medium=qr&utm_campaign=app_qr_hero";
+
+const qrText = (payload: string) =>
+  QRCode.create(payload, { errorCorrectionLevel: "M" })
+    .segments.map((s: { data: Uint8Array | string }) =>
+      typeof s.data === "string" ? s.data : Buffer.from(s.data).toString("utf8"),
+    )
+    .join("");
 const ALT = "QR code to download the ReceiptOne app";
 
 test("app qr: the generator encodes the exact smart-link URL, EC level M, #111 on white", () => {
@@ -37,6 +48,22 @@ test("app qr: the generator encodes the exact smart-link URL, EC level M, #111 o
     typeof s.data === "string" ? s.data : Buffer.from(s.data).toString("utf8"),
   );
   assert.equal(data.join(""), URL_ON_QR, "the QR segments carry the URL");
+});
+
+test("app qr: the hero QR is the same link with utm_campaign=app_qr_hero", () => {
+  assert.equal(APP_QR_HERO_PAYLOAD, URL_ON_HERO_QR);
+  assert.equal(new URL(APP_QR_HERO_PAYLOAD).searchParams.get("utm_campaign"), "app_qr_hero");
+  // Only the campaign differs from the footer QR.
+  const footer = new URL(APP_QR_PAYLOAD);
+  footer.searchParams.set("utm_campaign", "app_qr_hero");
+  assert.equal(footer.toString(), APP_QR_HERO_PAYLOAD);
+  assert.equal(qrText(APP_QR_HERO_PAYLOAD), URL_ON_HERO_QR, "the QR segments carry the URL");
+});
+
+test("app qr: the committed hero SVG is exactly what the generator produces", async () => {
+  const committed = readFileSync(APP_QR_HERO_FILE, "utf8").replace(/\r\n/g, "\n");
+  assert.equal(committed, await renderAppQr(APP_QR_HERO_PAYLOAD), "run `npm run qr` and commit");
+  assert.notEqual(committed, readFileSync(APP_QR_FILE, "utf8").replace(/\r\n/g, "\n"));
 });
 
 test("app qr: the committed SVG is exactly what the generator produces", async () => {
@@ -79,6 +106,7 @@ await build({
       import { Route as Ca } from "@/routes/ca/index";
       import { Route as Fr } from "@/routes/fr/index";
       import { Route as Us } from "@/routes/us/index";
+      import { Route as Drivers } from "@/routes/ca/drivers";
       export { FOOTER_GRID_LG } from "@/components/site/TaxDeadlines";
 
       const now = "2026-11-15T18:00:00Z";
@@ -86,6 +114,7 @@ await build({
         "/ca/": [Ca, () => ({ now, roadmap: null })],
         "/fr/": [Fr, () => ({ now, roadmap: null })],
         "/us/": [Us, () => null],
+        "/ca/drivers": [Drivers, () => ({ now })],
       };
 
       export async function render(path) {
@@ -213,5 +242,68 @@ for (const [path, label] of [
       ),
       "nav subgrid unchanged",
     );
+  });
+}
+
+// --- Hero CTA row ----------------------------------------------------------
+
+const heroOf = (html: string) => {
+  const at = html.indexOf('<section data-cta-location="hero"');
+  assert.ok(at >= 0, "the page has a hero");
+  return html.slice(at, html.indexOf("</section>", at));
+};
+const unescapeHtml = (v: string) =>
+  v
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&quot;/g, '"')
+    .replace(/&#x27;/g, "'")
+    .replace(/&amp;/g, "&");
+const SVG_DATA_URL = "data:image/svg+xml,";
+
+for (const [path, qrFrom, trial] of [
+  ["/ca", "xl", "Start 7-day free trial"],
+  ["/fr", "xl", "Commencer l&#x27;essai gratuit de 7 jours"],
+  ["/us", "xl", "Start 7-day free trial"],
+  ["/ca/drivers", "lg", "Start 7-day free trial"],
+] as const) {
+  test(`hero: ${path} has one trial button, one set of badges, and the hero QR from ${qrFrom}`, async () => {
+    const html = await mod.render(path);
+    const hero = heroOf(html);
+    // One trial button, same copy, visible at every width.
+    const trials = [...hero.matchAll(/<a href="([^"]*\/signup)"[^>]*>([\s\S]*?)<\/a>/g)];
+    assert.equal(trials.length, 1, "one trial button");
+    assert.ok(trials[0][2].startsWith(trial), `copy: ${trial}`);
+    assert.ok(!/(^| )(hidden|[a-z]+:hidden)( |")/.test(trials[0][0]), "never hidden");
+    // One set of badges, App Store first, never hidden at any breakpoint.
+    assert.equal(count(hero, APPLE), 1, "one App Store badge");
+    assert.equal(count(hero, GOOGLE), 1, "one Google Play badge");
+    assert.ok(at(hero, APPLE) < at(hero, GOOGLE));
+    // The row: trial button, then the QR, then the badges.
+    const row = hero.slice(hero.indexOf("data-hero-cta"));
+    const imgs = [...row.matchAll(/<img[^>]*alt="QR code[^"]*"[^>]*>/g)].map((m) => m[0]);
+    assert.equal(imgs.length, 1, "one QR in the hero");
+    const img = imgs[0];
+    assert.match(img, new RegExp(`alt="${ALT}"`));
+    assert.match(img, /width="112" height="112"/, "sized: no layout shift");
+    const classes = /class="([^"]*)"/.exec(img)![1].split(/\s+/);
+    assert.ok(classes.includes("hidden"), "QR hidden below " + qrFrom);
+    assert.ok(classes.includes(`${qrFrom}:block`), "QR shown from " + qrFrom);
+    assert.ok(!classes.some((c) => /^(sm|md|lg|xl):block$/.test(c) && c !== `${qrFrom}:block`));
+    assert.ok(row.indexOf("/signup") < row.indexOf(img), "QR after the trial button");
+    assert.ok(row.indexOf(img) < at(row, APPLE), "badges after the QR");
+    // The hero QR is the app_qr_hero SVG, not the footer's.
+    // (The test bundler inlines the SVG as a data URL; Vite emits a file.)
+    const src = unescapeHtml(/src="([^"]*)"/.exec(img)![1]);
+    assert.ok(src.startsWith(SVG_DATA_URL), "inlined SVG");
+    assert.equal(
+      decodeURIComponent(src.slice(SVG_DATA_URL.length)),
+      readFileSync(APP_QR_HERO_FILE, "utf8"),
+      "src is app-qr-hero.svg",
+    );
+    // The badges stack from the same breakpoint, beside the QR.
+    assert.match(row, new RegExp(`class="[^"]*${qrFrom}:flex-col[^"]*"><span class="sr-only">`));
+    // Hero links stay inside the hero's cta_click location.
+    assert.ok(hero.startsWith('<section data-cta-location="hero"'));
   });
 }

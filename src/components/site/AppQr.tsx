@@ -27,6 +27,37 @@ const LABEL: Record<Lang, string> = {
 
 export const APP_QR_ALT = "QR code to download the ReceiptOne app";
 
+/**
+ * The QR image alone, 112px on its own white rounded tile. Shared by the
+ * footer block below and the landing hero's CTA row (which passes the
+ * app-qr-hero.svg variant, utm_campaign=app_qr_hero). width/height are set,
+ * so it never shifts layout while loading.
+ */
+export function AppQrImage({
+  src = appQr,
+  variant,
+  className = "",
+}: {
+  src?: string;
+  /** light = on paper/white; dark = on the ink footer. */
+  variant: "light" | "dark";
+  className?: string;
+}) {
+  return (
+    <img
+      src={src}
+      alt={APP_QR_ALT}
+      width={112}
+      height={112}
+      loading="lazy"
+      decoding="async"
+      className={`size-28 shrink-0 rounded-card border bg-white ${
+        variant === "dark" ? "border-hairline-void" : "border-hairline"
+      } ${className}`}
+    />
+  );
+}
+
 export function AppQr({
   lang,
   region,
@@ -41,17 +72,7 @@ export function AppQr({
 }) {
   return (
     <div data-app-qr className={`hidden flex-wrap items-center gap-3 lg:flex ${className}`}>
-      <img
-        src={appQr}
-        alt={APP_QR_ALT}
-        width={112}
-        height={112}
-        loading="lazy"
-        decoding="async"
-        className={`size-28 shrink-0 rounded-card border bg-white ${
-          variant === "dark" ? "border-hairline-void" : "border-hairline"
-        }`}
-      />
+      <AppQrImage variant={variant} />
       <div data-app-badges className="flex flex-col gap-2">
         {/* w-0 min-w-full: the badges set the column's width, not the label.
             "OBTENIR L'APPLICATION" (158px) would otherwise push the column
