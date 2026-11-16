@@ -35,10 +35,13 @@ export const APP_QR_ALT = "QR code to download the ReceiptOne app";
  */
 export function AppQrImage({
   src = appQr,
+  size = 112,
   variant,
   className = "",
 }: {
   src?: string;
+  /** Tile size in px: 112 (size-28) by default, 96 (size-24) where space is short. */
+  size?: 112 | 96;
   /** light = on paper/white; dark = on the ink footer. */
   variant: "light" | "dark";
   className?: string;
@@ -47,11 +50,11 @@ export function AppQrImage({
     <img
       src={src}
       alt={APP_QR_ALT}
-      width={112}
-      height={112}
+      width={size}
+      height={size}
       loading="lazy"
       decoding="async"
-      className={`size-28 shrink-0 rounded-card border bg-white ${
+      className={`${size === 96 ? "size-24" : "size-28"} shrink-0 rounded-card border bg-white ${
         variant === "dark" ? "border-hairline-void" : "border-hairline"
       } ${className}`}
     />

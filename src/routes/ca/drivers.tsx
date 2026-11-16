@@ -1,15 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Header } from "@/components/site/Header";
-import { PrimaryCta } from "@/components/site/PrimaryCta";
-import { StoreBadge } from "@/components/site/StoreBadge";
-import { AppQrImage } from "@/components/site/AppQr";
-import heroQr from "@/assets/app-qr-hero.svg";
+import { HeroCtaRow } from "@/components/site/HeroCtaRow";
 import { FeatureCard, CA_MILEAGE_FEATURE } from "@/components/site/InfoCards";
 import { Pricing } from "@/components/site/Pricing";
 import { FinalCta } from "@/components/site/FinalCta";
 import { Footer } from "@/components/site/Footer";
 import { getServerNow } from "@/lib/server-time.functions";
-import { ROUTES } from "@/lib/routes";
 import { pageSEO, breadcrumbJsonLd } from "@/lib/seo";
 
 const CRA_SHARING_ECONOMY_URL =
@@ -89,30 +85,15 @@ function DriversPage() {
               personal, so your T2125 gets the right kilometres. Snap your fuel and maintenance
               receipts in the same app.
             </p>
-            {/* lg and up: one row, [trial button] [app QR] [badges stacked],
-                as on the landing hero. This column is 768px wide, so unlike
-                the landing hero (xl) the row fits from lg. */}
-            <div
-              data-hero-cta
-              className="mt-4 flex w-full flex-col items-stretch gap-3 sm:w-auto sm:flex-row sm:flex-wrap sm:items-center lg:w-max lg:flex-nowrap lg:items-start"
-            >
-              {/* Below lg: display:contents, so the button is a direct item of the
-                  row exactly as before. From lg: a block as tall as the QR tile,
-                  the button at its top edge and the no-card line under it. */}
-              <div className="contents lg:flex lg:flex-col lg:self-stretch">
-                <PrimaryCta href={ROUTES.signup}>Start 7-day free trial</PrimaryCta>
-                <p className="hidden text-sm text-ink-60 lg:mt-2 lg:block">
-                  No credit card required
-                </p>
-              </div>
-              {/* display:none below lg, so it is not even fetched there. */}
-              <AppQrImage src={heroQr} variant="light" className="hidden lg:block" />
-              <div className="flex flex-wrap items-center justify-center gap-3 sm:justify-start lg:flex-col lg:flex-nowrap lg:items-stretch lg:justify-between lg:self-stretch">
-                <span className="sr-only">Available on:</span>
-                <StoreBadge platform="apple" region="ca" />
-                <StoreBadge platform="google" region="ca" />
-              </div>
-            </div>
+            {/* The landing hero's CTA (HeroCtaRow). This column is 768px wide,
+                so unlike the landing hero (xl) the full row fits from lg. */}
+            <HeroCtaRow
+              from="lg"
+              lang="en"
+              region="ca"
+              className="mt-4"
+              badgeAlign="sm:justify-start"
+            />
           </div>
         </div>
       </section>

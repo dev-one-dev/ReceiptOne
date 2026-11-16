@@ -2,11 +2,7 @@ import beaverHeroVideo from "@/assets/figma/hero-beaver-hq.mp4";
 import beaverHeroPoster from "@/assets/figma/hero-beaver-poster.png";
 import eagleHeroVideo from "@/assets/figma/hero-eagle-hq.mp4";
 import eagleHeroPoster from "@/assets/figma/hero-eagle-poster.png";
-import { StoreBadge } from "@/components/site/StoreBadge";
-import { PrimaryCta } from "@/components/site/PrimaryCta";
-import { AppQrImage } from "@/components/site/AppQr";
-import heroQr from "@/assets/app-qr-hero.svg";
-import { ROUTES } from "@/lib/routes";
+import { HeroCtaRow } from "@/components/site/HeroCtaRow";
 import { useLang } from "@/lib/use-lang";
 import { AnnouncementPill } from "@/components/site/AnnouncementPill";
 import type { Announcement } from "@/lib/roadmap";
@@ -72,45 +68,24 @@ export function TopBanner({
               </p>
             </div>
 
-            {/* Web CTA + store badges — stacked with the button first on
-                mobile, a wrapping row from sm. PrimaryCta and StoreBadge share
-                the same height and radius on purpose.
-                xl and up: one row, [trial button + no-card line] [app QR]
-                [badges stacked], top-aligned: the button and the first badge
-                start at the QR tile's top edge, the last badge ends at its
-                bottom edge. Only from xl: at 1024 the left column
-                is 456px and the row needs 472 (EN) / 599 (FR), so between lg
-                and xl the QR is not rendered and the row is as before. At
-                1280+ the column is 576px; the FR row (599) runs 23px into the
-                48px column gap, short of the mascot column. */}
+            {/* Web CTA + store badges: see HeroCtaRow. Below xl the row it
+                always was (button, then badges; stacked on phones, wrapping
+                from sm). From xl: [button + no-card line] | [or get the app:
+                QR + badges]. Only from xl: at 1024 the left column is 456px,
+                too narrow. At 1280+ it is 576px and the hero's content runs on
+                into a 48px gap before the mascot column (624px in all); the FR
+                row needs 628 with a 112px QR, so FR uses a 96px tile (612). */}
             {/* relative z-10: the mascot video below is 190% wide and later in
                 DOM order, so without a stacking context it sat on top of the
                 Google Play badge at desktop widths and swallowed its clicks. */}
-            <div
-              data-hero-cta
-              className="relative z-10 mt-6 flex w-full flex-col items-stretch gap-3 sm:w-auto sm:flex-row sm:flex-wrap sm:items-center xl:w-max xl:flex-nowrap xl:items-start"
-            >
-              {/* Below xl: display:contents, so the button is a direct item of the
-                  row exactly as before. From xl: a block as tall as the QR tile,
-                  the button at its top edge and the no-card line under it. */}
-              <div className="contents xl:flex xl:flex-col xl:self-stretch">
-                <PrimaryCta href={ROUTES.signup}>
-                  {fr ? "Commencer l'essai gratuit de 7 jours" : "Start 7-day free trial"}
-                </PrimaryCta>
-                <p className="hidden text-sm text-ink-60 xl:mt-2 xl:block">
-                  {fr ? "Aucune carte de crédit requise" : "No credit card required"}
-                </p>
-              </div>
-              {/* display:none below xl, so it is not even fetched there. */}
-              <AppQrImage src={heroQr} variant="light" className="hidden xl:block" />
-              <div className="flex flex-wrap items-center justify-center gap-3 lg:justify-start xl:flex-col xl:flex-nowrap xl:items-stretch xl:justify-between xl:self-stretch">
-                {/* Kept for screen readers; visually the badges speak for
-                    themselves, and the label pushed the row past the column. */}
-                <span className="sr-only">{fr ? "Offert sur :" : "Available on:"}</span>
-                <StoreBadge platform="apple" region={region} />
-                <StoreBadge platform="google" region={region} />
-              </div>
-            </div>
+            <HeroCtaRow
+              from="xl"
+              lang={fr ? "fr" : "en"}
+              region={region}
+              qrSize={fr ? 96 : 112}
+              className="relative z-10 mt-6"
+              badgeAlign="lg:justify-start"
+            />
           </div>
 
           {/* ── RIGHT COLUMN — Mascot ── */}

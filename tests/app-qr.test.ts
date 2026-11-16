@@ -286,7 +286,10 @@ for (const [path, qrFrom, trial] of [
     assert.equal(imgs.length, 1, "one QR in the hero");
     const img = imgs[0];
     assert.match(img, new RegExp(`alt="${ALT}"`));
-    assert.match(img, /width="112" height="112"/, "sized: no layout shift");
+    // FR uses a 96px tile: at 112 its row does not clear the mascot column.
+    const size = path === "/fr" ? 96 : 112;
+    assert.match(img, new RegExp(`width="${size}" height="${size}"`), "sized: no layout shift");
+    assert.ok(img.includes(size === 96 ? "size-24" : "size-28"));
     const classes = /class="([^"]*)"/.exec(img)![1].split(/\s+/);
     assert.ok(classes.includes("hidden"), "QR hidden below " + qrFrom);
     assert.ok(classes.includes(`${qrFrom}:block`), "QR shown from " + qrFrom);
@@ -327,23 +330,147 @@ for (const [path, qrFrom, trial] of [
     );
   });
 
-  // Layout (measured in a browser at 1280/1440 and 1024 for drivers: button,
-  // QR and first badge tops equal; last badge bottom = QR bottom). Here the
-  // classes that produce it are pinned.
-  test(`hero: ${path} row is top-aligned from ${qrFrom}: button top = QR top`, async () => {
+  // Layout was measured in a browser (1280/1440; drivers also 1024): button
+  // top = QR top, divider as tall as the QR with 20px either side, badges 8px
+  // apart and centred on the QR. Here the classes that produce it are pinned.
+  const bp = qrFrom;
+  const classesOf = (hero: string, re: RegExp) => {
+    const m = re.exec(hero);
+    assert.ok(m, `found: ${re.source}`);
+    return m[1].split(/\s+/);
+  };
+  const shownOnlyFrom = (classes: string[], display: string) => {
+    // Nothing below the breakpoint: hidden or display:contents at base, and
+    // no sm:/md: (or lg: when the breakpoint is xl) display override.
+    assert.ok(classes.includes("hidden") || classes.includes("contents"), classes.join(" "));
+    assert.ok(classes.includes(`${bp}:${display}`), `${bp}:${display}`);
+    const earlier = bp === "xl" ? "sm|md|lg" : "sm|md";
+    assert.ok(
+      !classes.some((c) => new RegExp(`^(${earlier}):(block|flex|grid|inline-flex)$`).test(c)),
+      "nothing shows below " + bp,
+    );
+  };
+
+  test(`hero: ${path} two groups and a divider from ${bp}; button top = QR top`, async () => {
     const hero = heroOf(await mod.render(path));
-    const rowTag = /<div data-hero-cta="[^"]*" class="([^"]*)"/.exec(hero)!;
-    assert.ok(rowTag[1].split(/\s+/).includes(`${qrFrom}:items-start`), "row items at the top");
-    // The button block: display:contents below the breakpoint (the button is
-    // a row item exactly as before), a QR-tall column from it, button first.
-    const block = new RegExp(
-      `<div class="contents ${qrFrom}:flex ${qrFrom}:flex-col ${qrFrom}:self-stretch"><a href="[^"]*/signup"`,
+    const row = classesOf(hero, /<div data-hero-cta="[^"]*" class="([^"]*)"/);
+    for (const c of [`${bp}:grid`, `${bp}:grid-cols-[auto_auto_auto]`, `${bp}:items-start`])
+      assert.ok(row.includes(c), c);
+    assert.ok(row.includes(`${bp}:gap-x-5`), "20px gutters: a ~41px separator round the divider");
+    // Primary group: the button (first) and the no-card line, column 1, row 2.
+    const primary = classesOf(
+      hero,
+      /<div data-hero-cta-primary="[^"]*" class="([^"]*)"><a href="[^"]*\/signup"/,
     );
-    assert.match(hero, block, "button at the top of a QR-tall block");
-    // The badge stack spans the QR tile: stretched, first at top, last at bottom.
-    const badges = new RegExp(
-      `class="[^"]*${qrFrom}:flex-col[^"]*${qrFrom}:justify-between ${qrFrom}:self-stretch"><span class="sr-only">`,
+    shownOnlyFrom(primary, "flex");
+    for (const c of [`${bp}:col-start-1`, `${bp}:row-start-2`, `${bp}:flex-col`])
+      assert.ok(primary.includes(c), c);
+    // Divider: hairline token (not orange), column 2, row 2 -- the QR row --
+    // stretched to its height; decorative.
+    const divider = classesOf(
+      hero,
+      /<span data-hero-cta-divider="[^"]*" aria-hidden="true" class="([^"]*)"><\/span>/,
     );
-    assert.match(hero, badges, "badge stack spans the QR tile");
+    shownOnlyFrom(divider, "block");
+    for (const c of [
+      "border-l",
+      "border-hairline",
+      `${bp}:col-start-2`,
+      `${bp}:row-start-2`,
+      `${bp}:self-stretch`,
+    ])
+      assert.ok(divider.includes(c), c);
+    assert.ok(!divider.some((c) => /ember|orange/.test(c)), "not orange");
+    // Secondary group: QR then badges, column 3, row 2 (same row as the
+    // button, so its top edge is the QR's), centred on the QR.
+    const secondary = classesOf(hero, /<div data-hero-cta-secondary="[^"]*" class="([^"]*)"><img/);
+    shownOnlyFrom(secondary, "flex");
+    for (const c of [`${bp}:col-start-3`, `${bp}:row-start-2`, `${bp}:items-center`, `${bp}:gap-3`])
+      assert.ok(secondary.includes(c), c);
+    const at2 = (re: RegExp) => hero.search(re);
+    assert.ok(at2(/data-hero-cta-primary/) < at2(/data-hero-cta-divider/));
+    assert.ok(at2(/data-hero-cta-divider/) < at2(/data-hero-cta-secondary/));
+    assert.ok(
+      at2(/data-hero-cta-secondary/) < at2(/alt="QR code/) && at2(/alt="QR code/) < at(hero, APPLE),
+    );
+  });
+
+  test(`hero: ${path} badges stack 8px apart, centred on the QR, from ${bp}`, async () => {
+    const hero = heroOf(await mod.render(path));
+    const badges = classesOf(hero, /<div class="([^"]*)"><span class="sr-only">/);
+    for (const c of [`${bp}:flex-col`, `${bp}:gap-2`, `${bp}:flex-nowrap`])
+      assert.ok(badges.includes(c), c);
+    // The 707972e stretch is gone: no justify-between, no self-stretch.
+    assert.ok(!badges.some((c) => /justify-between|self-stretch/.test(c)), "not stretched");
+  });
+
+  test(`hero: ${path} "or get the app" label in its language, above the QR, from ${bp}`, async () => {
+    const hero = heroOf(await mod.render(path));
+    const label = path === "/fr" ? "ou obtenez l&#x27;application" : "or get the app";
+    const other = path === "/fr" ? "or get the app" : "ou obtenez l&#x27;application";
+    const m = /<p class="([^"]*)">([^<]*)<\/p><div data-hero-cta-secondary/.exec(hero);
+    assert.ok(m, "label right before the secondary group");
+    assert.equal(m[2], label);
+    assert.ok(!hero.includes(other), "not the other language");
+    const classes = m[1].split(/\s+/);
+    assert.ok(classes.includes("eyebrow"), "the one eyebrow treatment");
+    shownOnlyFrom(classes, "block");
+    for (const c of [`${bp}:col-start-3`, `${bp}:row-start-1`]) assert.ok(classes.includes(c), c);
+  });
+
+  test(`hero: ${path} below ${bp} the row is the row it was`, async () => {
+    const hero = heroOf(await mod.render(path));
+    const base = (classes: string[]) =>
+      classes.filter(
+        (c) => !c.includes(":") || /^sm:|^md:/.test(c) || (bp === "xl" && /^lg:/.test(c)),
+      );
+    // The row's own classes below the breakpoint, as before the QR row.
+    const row = classesOf(hero, /<div data-hero-cta="[^"]*" class="([^"]*)"/);
+    const margin = path === "/ca/drivers" ? ["mt-4"] : ["relative", "z-10", "mt-6"];
+    assert.deepEqual(base(row), [
+      ...margin,
+      "flex",
+      "w-full",
+      "flex-col",
+      "items-stretch",
+      "gap-3",
+      "sm:w-auto",
+      "sm:flex-row",
+      "sm:flex-wrap",
+      "sm:items-center",
+    ]);
+    // The badge strip: same classes as before below the breakpoint.
+    const badges = classesOf(hero, /<div class="([^"]*)"><span class="sr-only">/);
+    assert.deepEqual(base(badges), [
+      "flex",
+      "flex-wrap",
+      "items-center",
+      "justify-center",
+      "gap-3",
+      path === "/ca/drivers" ? "sm:justify-start" : "lg:justify-start",
+    ]);
+    // Everything new is display:none (line, divider, label, QR) or
+    // display:contents (the two group wrappers) below the breakpoint.
+    const hiddenBelow = [
+      /<p class="([^"]*)">(?:No credit|Aucune carte)/,
+      /<span data-hero-cta-divider="[^"]*" aria-hidden="true" class="([^"]*)"/,
+      /<p class="(eyebrow[^"]*)">/,
+      /<img[^>]*alt="QR code[^"]*"[^>]*class="([^"]*)"/,
+    ];
+    // Only inside the row (drivers has its own eyebrow above the h1).
+    const rowHtml = hero.slice(hero.indexOf("<div data-hero-cta"));
+    for (const re of hiddenBelow) {
+      const c = classesOf(rowHtml, re);
+      assert.ok(c.includes("hidden"), re.source);
+      assert.ok(
+        !c.some((x) => /^(sm|md):/.test(x) || (bp === "xl" && /^lg:(block|flex)$/.test(x))),
+        re.source,
+      );
+    }
+    for (const re of [
+      /<div data-hero-cta-primary="[^"]*" class="([^"]*)"/,
+      /<div data-hero-cta-secondary="[^"]*" class="([^"]*)"/,
+    ])
+      assert.equal(classesOf(hero, re)[0], "contents", re.source);
   });
 }
