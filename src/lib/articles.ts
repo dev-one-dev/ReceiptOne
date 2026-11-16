@@ -5,6 +5,7 @@
 import { LOGO_URL, SITE_URL } from "@/lib/seo";
 import { getPlan } from "@/lib/pricing";
 import { BOOKKEEPING_ARTICLES } from "@/lib/articles.bookkeeping";
+import { DRIVER_ARTICLES } from "@/lib/articles.drivers";
 
 /** "CA$4.99/wk, CA$9.99/mo or CA$129.99/yr" -- ReceiptOne's Canadian prices, read from src/lib/pricing.ts. */
 const caPrice = (id: "week" | "month" | "year") => `CA$${getPlan("ca", id).price}`;
@@ -1616,6 +1617,14 @@ export const ARTICLES: Article[] = [
         type: "p",
         text: "Drive for a rideshare or delivery app?",
         link: { label: "See how ReceiptOne works for drivers.", href: "/ca/drivers" },
+      },
+      {
+        type: "p",
+        text: "Rideshare and delivery drivers have their own GST/HST rules.",
+        link: {
+          label: "Read our guide to tax deductions for rideshare and delivery drivers.",
+          href: "/articles/tax-deductions-rideshare-delivery-drivers-canada",
+        },
       },
       {
         type: "h2",
@@ -4006,6 +4015,8 @@ export const ARTICLES: Article[] = [
   },
   /* Bookkeeping cluster, 2026-11-14: src/lib/articles.bookkeeping.ts */
   ...BOOKKEEPING_ARTICLES,
+  /* Rideshare and delivery drivers, 2026-11-16: src/lib/articles.drivers.ts */
+  ...DRIVER_ARTICLES,
 ];
 
 /* ----------------------------- Helpers ------------------------------------ */

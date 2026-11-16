@@ -181,6 +181,17 @@ function DriversPage() {
           </a>
         </p>
         <p className="mx-auto mt-2 w-full max-w-[1200px] text-sm text-ink-60">
+          What can you deduct as a driver?{" "}
+          <Link
+            to="/articles/$slug"
+            params={{ slug: "tax-deductions-rideshare-delivery-drivers-canada" }}
+            className="underline underline-offset-2 hover:text-ink"
+          >
+            Read our tax guide for rideshare and delivery drivers
+          </Link>
+          .
+        </p>
+        <p className="mx-auto mt-2 w-full max-w-[1200px] text-sm text-ink-60">
           ReceiptOne is not affiliated with Uber, Lyft, DoorDash or SkipTheDishes. This page is
           general information, not tax advice.
         </p>

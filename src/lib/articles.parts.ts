@@ -86,7 +86,11 @@ export const ARTICLE_PARTS: ArticlePart[] = [
     number: "04",
     title: "Mileage and vehicle",
     subtitle: "Log work kilometres and claim the business share of your car.",
-    slugs: ["mileage-deduction-canada-freelancers", "mileage-tracking-apps-canada"],
+    slugs: [
+      "mileage-deduction-canada-freelancers",
+      "mileage-tracking-apps-canada",
+      "tax-deductions-rideshare-delivery-drivers-canada",
+    ],
     links: [
       {
         href: "/ca/mileage-log-template",

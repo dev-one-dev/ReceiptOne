@@ -35,6 +35,9 @@ import { loadArticleRenderer, pageText, type Rendered } from "./lib/render-artic
  * was retaken after it gained one paragraph linking the free mileage log
  * template (/ca/mileage-log-template): verified as the only difference by
  * reverting that block, which restores the old hash; its head is unchanged.
+ * Later on 2026-11-16 it was retaken again when the same article gained one
+ * paragraph linking the rideshare and delivery drivers guide
+ * (tests/driver-article.test.ts): verified the same way, head unchanged.
  */
 
 type Block =

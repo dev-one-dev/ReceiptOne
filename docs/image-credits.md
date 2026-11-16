@@ -35,6 +35,7 @@ so each hero is the 1280 px download cropped to 16:9, never enlarged (until
 | month-end-bookkeeping-checklist-canada | `public/articles/month-end-bookkeeping-checklist-canada.webp` (+ `-card.webp`, `-og.jpg`) | https://pixabay.com/photos/checklist-goals-box-notebook-pen-2589418/ | 2589418 | StockSnap | 2026-11-14 |
 | separate-business-personal-finances-canada | `public/articles/separate-business-personal-finances-canada.webp` (+ `-card.webp`, `-og.jpg`) | https://pixabay.com/photos/back-to-school-registerbox-1538863/ | 1538863 | PIRO4D | 2026-11-14 |
 | year-end-checklist-accountant-canada | `public/articles/year-end-checklist-accountant-canada.webp` (+ `-card.webp`, `-og.jpg`) | https://pixabay.com/photos/note-box-index-box-index-8907986/ | 8907986 | danieltibi | 2026-11-14 |
+| tax-deductions-rideshare-delivery-drivers-canada | `public/articles/tax-deductions-rideshare-delivery-drivers-canada.webp` (+ `-card.webp`, `-og.jpg`) | https://pixabay.com/photos/car-blur-blurry-bokeh-background-1168158/ | 1168158 | IgorShubin | 2026-11-16 |
 
 ## Hub link cards (/articles)
 

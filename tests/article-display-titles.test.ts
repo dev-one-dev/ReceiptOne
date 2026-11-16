@@ -63,7 +63,9 @@ test("display titles: explicit, year-free, and only set where they differ", () =
   // The year stays in the SEO title of the articles that had one.
   // 13 since 2026-11-14: the rewritten US deductions guide dropped its year
   // (only the mileage guide, which quotes the 2026 rate, keeps a year).
-  assert.equal(all.filter((a) => YEAR.test(a.title)).length, 13);
+  // 14 since 2026-11-16: the rideshare and delivery drivers guide (CA) carries
+  // "(2026 Guide)" in its SEO title like the other CA guides.
+  assert.equal(all.filter((a) => YEAR.test(a.title)).length, 14);
 });
 
 for (const [region, list, route, base] of [
