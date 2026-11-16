@@ -214,3 +214,62 @@ test("cta_click: non-CTA links and CTAs outside a known location are ignored", (
   env.analytics.handleClick({ target: null });
   assert.deepEqual(env.events("cta_click"), []);
 });
+
+test("file_download: a /downloads/ template link sends file_download with its file name", () => {
+  const env = fakeEnv();
+  env.analytics.grant();
+  env.analytics.handleClick({
+    target: fakeAnchor(
+      "https://receipt-one.com/downloads/receiptone-mileage-log-template.xlsx",
+      null,
+    ),
+  });
+  env.analytics.handleClick({
+    target: fakeAnchor(
+      "https://receipt-one.com/downloads/receiptone-modele-registre-kilometrage.pdf",
+      "hero",
+    ),
+  });
+  assert.deepEqual(env.events("file_download"), [
+    {
+      file_name: "receiptone-mileage-log-template.xlsx",
+      file_extension: "xlsx",
+      link_url: "https://receipt-one.com/downloads/receiptone-mileage-log-template.xlsx",
+      transport_type: "beacon",
+    },
+    {
+      file_name: "receiptone-modele-registre-kilometrage.pdf",
+      file_extension: "pdf",
+      link_url: "https://receipt-one.com/downloads/receiptone-modele-registre-kilometrage.pdf",
+      transport_type: "beacon",
+    },
+  ]);
+  assert.deepEqual(env.events("cta_click"), []);
+});
+
+test("file_download: nothing without consent, and other links are not downloads", () => {
+  const before = fakeEnv();
+  before.analytics.handleClick({
+    target: fakeAnchor(
+      "https://receipt-one.com/downloads/receiptone-mileage-log-template.pdf",
+      null,
+    ),
+  });
+  assert.equal(before.win.dataLayer, undefined);
+
+  const env = fakeEnv();
+  env.analytics.grant();
+  env.analytics.deny();
+  env.analytics.trackFileDownload(
+    "https://receipt-one.com/downloads/receiptone-mileage-log-template.pdf",
+  );
+  assert.deepEqual(env.events("file_download"), []);
+  env.analytics.grant();
+  for (const href of [
+    "https://receipt-one.com/ca/mileage-log-template",
+    "https://receipt-one.com/articles/x.pdf",
+    "https://receipt-one.com/downloads/notes.txt",
+  ])
+    env.analytics.handleClick({ target: fakeAnchor(href, null) });
+  assert.deepEqual(env.events("file_download"), []);
+});

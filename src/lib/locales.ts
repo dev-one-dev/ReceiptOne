@@ -22,6 +22,8 @@ export const FRENCH_PAGES: Record<string, string> = {
   "/terms": "/fr/terms",
   // CRA deadlines page: Canadian only (no /us copy) and its French twin.
   "/ca/tax-deadlines": "/fr/echeances-fiscales",
+  // Free mileage log template: Canadian only (no /us copy) and its French twin.
+  "/ca/mileage-log-template": "/fr/modele-registre-kilometrage",
 };
 
 /** Canadian English page -> its US equivalent. */

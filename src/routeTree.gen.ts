@@ -22,11 +22,13 @@ import { Route as ArticlesIndexRouteImport } from './routes/articles/index'
 import { Route as ArticlesSlugRouteImport } from './routes/articles/$slug'
 import { Route as CaIndexRouteImport } from './routes/ca/index'
 import { Route as CaDriversRouteImport } from './routes/ca/drivers'
+import { Route as CaMileageLogTemplateRouteImport } from './routes/ca/mileage-log-template'
 import { Route as CaTaxDeadlinesRouteImport } from './routes/ca/tax-deadlines'
 import { Route as FrIndexRouteImport } from './routes/fr/index'
 import { Route as FrContactRouteImport } from './routes/fr/contact'
 import { Route as FrEcheancesFiscalesRouteImport } from './routes/fr/echeances-fiscales'
 import { Route as FrFaqRouteImport } from './routes/fr/faq'
+import { Route as FrModeleRegistreKilometrageRouteImport } from './routes/fr/modele-registre-kilometrage'
 import { Route as FrPrivacyRouteImport } from './routes/fr/privacy'
 import { Route as FrRoadmapRouteImport } from './routes/fr/roadmap'
 import { Route as FrTermsRouteImport } from './routes/fr/terms'
@@ -102,6 +104,11 @@ const CaDriversRoute = CaDriversRouteImport.update({
   path: '/drivers',
   getParentRoute: () => CaRoute,
 } as any)
+const CaMileageLogTemplateRoute = CaMileageLogTemplateRouteImport.update({
+  id: '/mileage-log-template',
+  path: '/mileage-log-template',
+  getParentRoute: () => CaRoute,
+} as any)
 const CaTaxDeadlinesRoute = CaTaxDeadlinesRouteImport.update({
   id: '/tax-deadlines',
   path: '/tax-deadlines',
@@ -127,6 +134,12 @@ const FrFaqRoute = FrFaqRouteImport.update({
   path: '/faq',
   getParentRoute: () => FrRoute,
 } as any)
+const FrModeleRegistreKilometrageRoute =
+  FrModeleRegistreKilometrageRouteImport.update({
+    id: '/modele-registre-kilometrage',
+    path: '/modele-registre-kilometrage',
+    getParentRoute: () => FrRoute,
+  } as any)
 const FrPrivacyRoute = FrPrivacyRouteImport.update({
   id: '/privacy',
   path: '/privacy',
@@ -185,10 +198,12 @@ export interface FileRoutesByFullPath {
   '/us': typeof UsRouteWithChildren
   '/articles/$slug': typeof ArticlesSlugRoute
   '/ca/drivers': typeof CaDriversRoute
+  '/ca/mileage-log-template': typeof CaMileageLogTemplateRoute
   '/ca/tax-deadlines': typeof CaTaxDeadlinesRoute
   '/fr/contact': typeof FrContactRoute
   '/fr/echeances-fiscales': typeof FrEcheancesFiscalesRoute
   '/fr/faq': typeof FrFaqRoute
+  '/fr/modele-registre-kilometrage': typeof FrModeleRegistreKilometrageRoute
   '/fr/privacy': typeof FrPrivacyRoute
   '/fr/roadmap': typeof FrRoadmapRoute
   '/fr/terms': typeof FrTermsRoute
@@ -211,10 +226,12 @@ export interface FileRoutesByTo {
   '/terms': typeof TermsRoute
   '/articles/$slug': typeof ArticlesSlugRoute
   '/ca/drivers': typeof CaDriversRoute
+  '/ca/mileage-log-template': typeof CaMileageLogTemplateRoute
   '/ca/tax-deadlines': typeof CaTaxDeadlinesRoute
   '/fr/contact': typeof FrContactRoute
   '/fr/echeances-fiscales': typeof FrEcheancesFiscalesRoute
   '/fr/faq': typeof FrFaqRoute
+  '/fr/modele-registre-kilometrage': typeof FrModeleRegistreKilometrageRoute
   '/fr/privacy': typeof FrPrivacyRoute
   '/fr/roadmap': typeof FrRoadmapRoute
   '/fr/terms': typeof FrTermsRoute
@@ -241,10 +258,12 @@ export interface FileRoutesById {
   '/us': typeof UsRouteWithChildren
   '/articles/$slug': typeof ArticlesSlugRoute
   '/ca/drivers': typeof CaDriversRoute
+  '/ca/mileage-log-template': typeof CaMileageLogTemplateRoute
   '/ca/tax-deadlines': typeof CaTaxDeadlinesRoute
   '/fr/contact': typeof FrContactRoute
   '/fr/echeances-fiscales': typeof FrEcheancesFiscalesRoute
   '/fr/faq': typeof FrFaqRoute
+  '/fr/modele-registre-kilometrage': typeof FrModeleRegistreKilometrageRoute
   '/fr/privacy': typeof FrPrivacyRoute
   '/fr/roadmap': typeof FrRoadmapRoute
   '/fr/terms': typeof FrTermsRoute
@@ -272,10 +291,12 @@ export interface FileRouteTypes {
     | '/us'
     | '/articles/$slug'
     | '/ca/drivers'
+    | '/ca/mileage-log-template'
     | '/ca/tax-deadlines'
     | '/fr/contact'
     | '/fr/echeances-fiscales'
     | '/fr/faq'
+    | '/fr/modele-registre-kilometrage'
     | '/fr/privacy'
     | '/fr/roadmap'
     | '/fr/terms'
@@ -298,10 +319,12 @@ export interface FileRouteTypes {
     | '/terms'
     | '/articles/$slug'
     | '/ca/drivers'
+    | '/ca/mileage-log-template'
     | '/ca/tax-deadlines'
     | '/fr/contact'
     | '/fr/echeances-fiscales'
     | '/fr/faq'
+    | '/fr/modele-registre-kilometrage'
     | '/fr/privacy'
     | '/fr/roadmap'
     | '/fr/terms'
@@ -327,10 +350,12 @@ export interface FileRouteTypes {
     | '/us'
     | '/articles/$slug'
     | '/ca/drivers'
+    | '/ca/mileage-log-template'
     | '/ca/tax-deadlines'
     | '/fr/contact'
     | '/fr/echeances-fiscales'
     | '/fr/faq'
+    | '/fr/modele-registre-kilometrage'
     | '/fr/privacy'
     | '/fr/roadmap'
     | '/fr/terms'
@@ -453,6 +478,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CaDriversRouteImport
       parentRoute: typeof CaRoute
     }
+    '/ca/mileage-log-template': {
+      id: '/ca/mileage-log-template'
+      path: '/mileage-log-template'
+      fullPath: '/ca/mileage-log-template'
+      preLoaderRoute: typeof CaMileageLogTemplateRouteImport
+      parentRoute: typeof CaRoute
+    }
     '/ca/tax-deadlines': {
       id: '/ca/tax-deadlines'
       path: '/tax-deadlines'
@@ -486,6 +518,13 @@ declare module '@tanstack/react-router' {
       path: '/faq'
       fullPath: '/fr/faq'
       preLoaderRoute: typeof FrFaqRouteImport
+      parentRoute: typeof FrRoute
+    }
+    '/fr/modele-registre-kilometrage': {
+      id: '/fr/modele-registre-kilometrage'
+      path: '/modele-registre-kilometrage'
+      fullPath: '/fr/modele-registre-kilometrage'
+      preLoaderRoute: typeof FrModeleRegistreKilometrageRouteImport
       parentRoute: typeof FrRoute
     }
     '/fr/privacy': {
@@ -556,12 +595,14 @@ declare module '@tanstack/react-router' {
 
 interface CaRouteChildren {
   CaDriversRoute: typeof CaDriversRoute
+  CaMileageLogTemplateRoute: typeof CaMileageLogTemplateRoute
   CaTaxDeadlinesRoute: typeof CaTaxDeadlinesRoute
   CaIndexRoute: typeof CaIndexRoute
 }
 
 const CaRouteChildren: CaRouteChildren = {
   CaDriversRoute: CaDriversRoute,
+  CaMileageLogTemplateRoute: CaMileageLogTemplateRoute,
   CaTaxDeadlinesRoute: CaTaxDeadlinesRoute,
   CaIndexRoute: CaIndexRoute,
 }
@@ -572,6 +613,7 @@ interface FrRouteChildren {
   FrContactRoute: typeof FrContactRoute
   FrEcheancesFiscalesRoute: typeof FrEcheancesFiscalesRoute
   FrFaqRoute: typeof FrFaqRoute
+  FrModeleRegistreKilometrageRoute: typeof FrModeleRegistreKilometrageRoute
   FrPrivacyRoute: typeof FrPrivacyRoute
   FrRoadmapRoute: typeof FrRoadmapRoute
   FrTermsRoute: typeof FrTermsRoute
@@ -582,6 +624,7 @@ const FrRouteChildren: FrRouteChildren = {
   FrContactRoute: FrContactRoute,
   FrEcheancesFiscalesRoute: FrEcheancesFiscalesRoute,
   FrFaqRoute: FrFaqRoute,
+  FrModeleRegistreKilometrageRoute: FrModeleRegistreKilometrageRoute,
   FrPrivacyRoute: FrPrivacyRoute,
   FrRoadmapRoute: FrRoadmapRoute,
   FrTermsRoute: FrTermsRoute,

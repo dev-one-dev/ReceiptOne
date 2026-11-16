@@ -31,6 +31,10 @@ import { loadArticleRenderer, pageText, type Rendered } from "./lib/render-artic
  * their related cards changed (new titles and reading times); heads unchanged.
  * Then the last three US guides were rewritten and dropped too (18 -> 15); the
  * 15 CA hashes that remain are unchanged.
+ * On 2026-11-16 the text hash of /articles/mileage-deduction-canada-freelancers
+ * was retaken after it gained one paragraph linking the free mileage log
+ * template (/ca/mileage-log-template): verified as the only difference by
+ * reverting that block, which restores the old hash; its head is unchanged.
  */
 
 type Block =

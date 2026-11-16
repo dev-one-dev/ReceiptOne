@@ -47,9 +47,10 @@ const PRIORITY = {
  * Initialised to the last commit that touched each page's route file.
  */
 export const PAGE_LASTMOD = {
-  "/articles": "2026-11-14",
+  "/articles": "2026-11-16",
   "/ca": "2026-11-15",
-  "/ca/drivers": "2026-11-09",
+  "/ca/drivers": "2026-11-16",
+  "/ca/mileage-log-template": "2026-11-16",
   "/ca/tax-deadlines": "2026-11-14",
   "/contact": "2026-10-18",
   "/faq": "2026-11-15",
@@ -57,6 +58,7 @@ export const PAGE_LASTMOD = {
   "/fr/contact": "2026-10-18",
   "/fr/echeances-fiscales": "2026-11-14",
   "/fr/faq": "2026-11-15",
+  "/fr/modele-registre-kilometrage": "2026-11-16",
   "/fr/privacy": "2026-11-14",
   "/fr/roadmap": "2026-11-10",
   "/fr/terms": "2026-11-11",
@@ -159,7 +161,8 @@ export async function generateSitemap() {
         `Add the page to PAGE_LASTMOD in scripts/generate-sitemap.mjs.`,
     );
   for (const [path, date] of pages)
-    if (!DATE.test(date ?? "")) throw new Error(`generate-sitemap: bad lastmod "${date}" for ${path}`);
+    if (!DATE.test(date ?? ""))
+      throw new Error(`generate-sitemap: bad lastmod "${date}" for ${path}`);
 
   const urls = [...pages.keys()]
     .sort()

@@ -1550,6 +1550,11 @@ export const ARTICLES: Article[] = [
         text: 'Make the purpose specific: "site visit, kitchen renovation quote" ties a trip to the business in a way "client meeting" does not. Log trips when they happen rather than from memory at month end, include short trips, and if a business trip includes a personal errand, log only the business kilometres.',
       },
       {
+        type: "p",
+        text: "Want a ready-made logbook with these columns?",
+        link: { label: "Download a free mileage log template", href: "/ca/mileage-log-template" },
+      },
+      {
         type: "h2",
         text: "The Base Year and the Three-Month Sample",
       },

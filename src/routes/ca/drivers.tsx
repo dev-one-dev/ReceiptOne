@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { Header } from "@/components/site/Header";
 import { HeroCtaRow } from "@/components/site/HeroCtaRow";
 import { FeatureCard, CA_MILEAGE_FEATURE } from "@/components/site/InfoCards";
@@ -151,6 +151,16 @@ function DriversPage() {
               </li>
             ))}
           </ol>
+          <p className="mt-3 text-body text-ink-60">
+            Rather keep a paper log?{" "}
+            <Link
+              to="/ca/mileage-log-template"
+              className="text-ink underline underline-offset-2 hover:text-ink-80"
+            >
+              Download a free mileage log template
+            </Link>
+            .
+          </p>
         </div>
       </section>
 

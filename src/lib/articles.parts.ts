@@ -9,11 +9,12 @@ import { ARTICLES, getArticlesByRegion, type Article } from "@/lib/articles";
 
 /** A card that links to a site page rather than an article. */
 export interface HubLink {
-  href: "/ca/tax-deadlines";
+  href: "/ca/tax-deadlines" | "/ca/mileage-log-template";
   title: string;
   category: string;
   excerpt: string;
-  /** Self-hosted 800x450 card photo (Pixabay; credit in docs/image-credits.md). */
+  /** Self-hosted 800x450 card image: a Pixabay photo (credit in
+   * docs/image-credits.md) or one the site renders itself. */
   image: { path: string; alt: string };
 }
 
@@ -87,6 +88,19 @@ export const ARTICLE_PARTS: ArticlePart[] = [
     title: "Mileage and vehicle",
     subtitle: "Log work kilometres and claim the business share of your car.",
     slugs: ["mileage-deduction-canada-freelancers", "mileage-tracking-apps-canada"],
+    links: [
+      {
+        href: "/ca/mileage-log-template",
+        title: "Free CRA mileage log template",
+        category: "Template",
+        excerpt:
+          "A mileage logbook in Excel or printable PDF, with a business-use percentage that adds itself up.",
+        image: {
+          path: "/articles/mileage-log-template-card.webp",
+          alt: "Preview of the ReceiptOne mileage log with columns for date, destination, purpose and kilometres",
+        },
+      },
+    ],
   },
   {
     id: "compare",

@@ -207,11 +207,11 @@ test("article images: no page, head or JSON-LD uses an external image host", () 
 const SITE = "https://receipt-one.com";
 const ALL = [...mod.ARTICLES, ...mod.US_ARTICLES];
 const BY_SLUG = new Map(ALL.map((a) => [a.slug, a]));
-/** The hub's /ca/tax-deadlines link card has its own photo (it is not an article). */
-const DEADLINES_CARD = mod.ARTICLE_PARTS.flatMap((p) => p.links ?? []).find(
-  (l) => l.href === "/ca/tax-deadlines",
-)!;
-const DEADLINES_SRC = "/articles/tax-deadlines-card.webp";
+/** The hub's link cards (/ca/tax-deadlines, /ca/mileage-log-template) have
+ * their own images (they are not articles), keyed by src. */
+const LINK_CARD_ALT = new Map(
+  mod.ARTICLE_PARTS.flatMap((p) => p.links ?? []).map((l) => [l.image.path, l.image.alt]),
+);
 const metaContent = (page: Rendered, key: string) =>
   page.head.meta?.find((m) => m.property === key || m.name === key)?.content;
 const unescape = (s: string) =>
@@ -257,7 +257,7 @@ test("article images: cards and heroes show the article's own image at a fixed s
       const slug = src.replace(/^\/articles\//, "").replace(/(-card)?\.webp$/, "");
       const alt = unescape(/\salt="([^"]*)"/.exec(tag)?.[1] ?? "");
       assert.ok(alt.length > 0, `${path} ${src} has alt`);
-      const want = src === DEADLINES_SRC ? DEADLINES_CARD.image.alt : BY_SLUG.get(slug)?.image?.alt;
+      const want = LINK_CARD_ALT.get(src) ?? BY_SLUG.get(slug)?.image?.alt;
       assert.equal(alt, want, `${path} ${src} alt is its article's`);
     }
   }
@@ -299,6 +299,11 @@ test("article images: og:image, twitter:image and JSON-LD use the article's own 
     }
   }
 });
+
+const DEADLINES_CARD = mod.ARTICLE_PARTS.flatMap((p) => p.links ?? []).find(
+  (l) => l.href === "/ca/tax-deadlines",
+)!;
+const DEADLINES_SRC = "/articles/tax-deadlines-card.webp";
 
 test("article images: the /articles deadlines card shows its self-hosted photo", () => {
   assert.equal(DEADLINES_CARD.image.path, DEADLINES_SRC);
