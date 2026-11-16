@@ -27,8 +27,8 @@ const BUTTON_STYLE: Record<TemplateFormat, string> = {
  * /ca/mileage-log-template and /fr/modele-registre-kilometrage: the free
  * mileage logbook downloads, the CRA's logbook rules and the business-use
  * arithmetic. Layout and spacing follow TaxDeadlinesPage. Download links are
- * plain <a download> to /downloads/; the consent-gated click listener reports
- * them as GA4 file_download (lib/analytics.ts).
+ * plain <a download> to /downloads/; GA4 Enhanced measurement logs their
+ * file_download itself, so the site sends no download event of its own.
  */
 export function MileageLogTemplatePage({ lang, now }: { lang: Lang; now: string }) {
   const t = mileageTemplateCopy(lang);

@@ -85,31 +85,6 @@ export function parseCtaLocation(value: string | null | undefined): CtaLocation 
     : null;
 }
 
-/** Downloadable files served from public/downloads/ (the mileage log templates). */
-const DOWNLOAD_PATH = /^\/downloads\/([^/]+\.(xlsx|pdf))$/i;
-
-/**
- * The file a link downloads, or null for any other link. Only our own
- * /downloads/ files count, on whichever origin the page is served from.
- */
-export function downloadFile(
-  href: string,
-): { file_name: string; file_extension: string; link_url: string } | null {
-  let url: URL;
-  try {
-    url = new URL(href);
-  } catch {
-    return null;
-  }
-  const m = DOWNLOAD_PATH.exec(url.pathname);
-  if (!m) return null;
-  return {
-    file_name: decodeURIComponent(m[1]),
-    file_extension: m[2].toLowerCase(),
-    link_url: url.origin + url.pathname,
-  };
-}
-
 type Gtag = (...args: unknown[]) => void;
 
 type AnalyticsWindow = {
@@ -200,27 +175,15 @@ export function createAnalytics(deps: AnalyticsDeps) {
     gtag("event", "cta_click", { cta, location, transport_type: "beacon" });
   }
 
-  /** GA4's recommended file_download event, for a /downloads/ template. */
-  function trackFileDownload(href: string): void {
-    if (!loaded || !granted) return;
-    const file = downloadFile(href);
-    if (file) gtag("event", "file_download", { ...file, transport_type: "beacon" });
-  }
-
   /**
    * Delegated click handler: classifies the clicked <a> by its href and the
-   * nearest [data-cta-location] ancestor, and reports /downloads/ links as
-   * file_download. Never prevents or delays the click.
+   * nearest [data-cta-location] ancestor. Never prevents or delays the click.
    */
   function handleClick(event: { target: unknown }): void {
     if (!loaded || !granted) return;
     const target = event.target as { closest?: (selector: string) => Element | null } | null;
     const anchor = target?.closest?.("a[href]") as HTMLAnchorElement | null | undefined;
     if (!anchor) return;
-    if (downloadFile(anchor.href)) {
-      trackFileDownload(anchor.href);
-      return;
-    }
     const cta = classifyCta(anchor.href);
     if (!cta) return;
     const location = parseCtaLocation(
@@ -233,7 +196,6 @@ export function createAnalytics(deps: AnalyticsDeps) {
     grant,
     deny,
     trackCtaClick,
-    trackFileDownload,
     handleClick,
     get loaded() {
       return loaded;
