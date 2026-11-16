@@ -29,7 +29,9 @@ const APPLE_CT_MAX = 40;
 /**
  * Where /app sends this visitor.
  * - iOS: the App Store listing (US storefront for US visitors, CA otherwise),
- *   with ct=<utm_source>-<utm_medium> for App Store Connect's campaign report.
+ *   with ct for App Store Connect's campaign report: utm_campaign when present
+ *   (app_qr for the footer QR, app_qr_hero for the hero QR), else
+ *   <utm_source>-<utm_medium>. Truncated to Apple's 40 characters.
  * - Android: the Play listing, with the UTMs URL-encoded into `referrer`
  *   (what the Play Console's acquisition report reads).
  * - Anything else: /us#pricing for US visitors, /ca#pricing otherwise, with
@@ -59,10 +61,13 @@ export function appLinkTarget({
   switch (appLinkPlatform(userAgent)) {
     case "ios": {
       const url = new URL(APP_STORE_URL[isUs ? "us" : "ca"]);
-      const ct = [params.get("utm_source")?.trim(), params.get("utm_medium")?.trim()]
-        .filter(Boolean)
-        .join("-")
-        .slice(0, APPLE_CT_MAX);
+      const campaign = params.get("utm_campaign")?.trim();
+      const ct = (
+        campaign ||
+        [params.get("utm_source")?.trim(), params.get("utm_medium")?.trim()]
+          .filter(Boolean)
+          .join("-")
+      ).slice(0, APPLE_CT_MAX);
       if (ct) url.searchParams.set("ct", ct);
       return url.toString();
     }

@@ -48,6 +48,7 @@ const UA = {
 };
 
 const QR_QUERY = "?utm_source=site&utm_medium=qr&utm_campaign=app_qr";
+const HERO_QR_QUERY = "?utm_source=site&utm_medium=qr&utm_campaign=app_qr_hero";
 const ORIGIN = "https://receipt-one.com";
 const target = (userAgent: string | null, search = QR_QUERY, country: string | null = null) =>
   appLinkTarget({ userAgent, search, country, origin: ORIGIN });
@@ -62,17 +63,31 @@ test("app link: user agents route to the right platform", () => {
     assert.equal(appLinkPlatform(ua), "other", String(ua));
 });
 
-test("app link: iOS -> App Store with ct=<utm_source>-<utm_medium>", () => {
-  assert.equal(target(UA.iphone), `${APP_STORE_URL.ca}?ct=site-qr`);
-  assert.equal(target(UA.ipad, QR_QUERY, "CA"), `${APP_STORE_URL.ca}?ct=site-qr`);
+test("app link: iOS -> App Store with ct=<utm_campaign>, else <utm_source>-<utm_medium>", () => {
+  // Footer QR and hero QR are told apart by their campaign.
+  assert.equal(target(UA.iphone), `${APP_STORE_URL.ca}?ct=app_qr`);
+  assert.equal(target(UA.iphone, HERO_QR_QUERY), `${APP_STORE_URL.ca}?ct=app_qr_hero`);
+  assert.equal(target(UA.ipad, QR_QUERY, "CA"), `${APP_STORE_URL.ca}?ct=app_qr`);
   // US visitors get the US storefront.
-  assert.equal(target(UA.iphone, QR_QUERY, "US"), `${APP_STORE_URL.us}?ct=site-qr`);
+  assert.equal(target(UA.iphone, HERO_QR_QUERY, "US"), `${APP_STORE_URL.us}?ct=app_qr_hero`);
+  // No campaign (or a blank one): <utm_source>-<utm_medium>.
+  assert.equal(
+    target(UA.iphone, "?utm_source=site&utm_medium=qr"),
+    `${APP_STORE_URL.ca}?ct=site-qr`,
+  );
+  assert.equal(
+    target(UA.iphone, "?utm_source=site&utm_medium=qr&utm_campaign=%20"),
+    `${APP_STORE_URL.ca}?ct=site-qr`,
+  );
   // Only one UTM present: ct is that one; none: the bare listing.
   assert.equal(target(UA.iphone, "?utm_source=flyer"), `${APP_STORE_URL.ca}?ct=flyer`);
+  assert.equal(target(UA.iphone, "?utm_campaign=spring"), `${APP_STORE_URL.ca}?ct=spring`);
   assert.equal(target(UA.iphone, ""), APP_STORE_URL.ca);
-  // Apple caps ct at 40 characters.
+  // Apple caps ct at 40 characters, from either source.
   const long = target(UA.iphone, `?utm_source=${"a".repeat(30)}&utm_medium=${"b".repeat(30)}`);
-  assert.equal(new URL(long).searchParams.get("ct")!.length, 40);
+  assert.equal(new URL(long).searchParams.get("ct"), `${"a".repeat(30)}-${"b".repeat(9)}`);
+  const longCampaign = target(UA.iphone, `?utm_campaign=${"c".repeat(50)}`);
+  assert.equal(new URL(longCampaign).searchParams.get("ct"), "c".repeat(40));
 });
 
 test("app link: Android -> Google Play with the UTMs in referrer", () => {
@@ -100,7 +115,7 @@ test("app link: everything else -> pricing, query string kept", () => {
 test("app link: middleware answers /app with a 302, noindex, varying on UA", () => {
   assert.ok(matcher.includes("/app"), "/app is in the middleware matcher");
   const cases: [string, string][] = [
-    [UA.iphone, `${APP_STORE_URL.ca}?ct=site-qr`],
+    [UA.iphone, `${APP_STORE_URL.ca}?ct=app_qr`],
     [
       UA.android,
       `${PLAY_STORE_URL}&referrer=utm_source%3Dsite%26utm_medium%3Dqr%26utm_campaign%3Dapp_qr`,
