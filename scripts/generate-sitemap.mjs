@@ -51,7 +51,7 @@ export const PAGE_LASTMOD = {
   "/ca": "2026-11-15",
   "/ca/drivers": "2026-11-16",
   "/ca/mileage-log-template": "2026-11-16",
-  "/ca/tax-deadlines": "2026-11-14",
+  "/ca/tax-deadlines": "2026-11-16",
   "/contact": "2026-10-18",
   "/faq": "2026-11-15",
   "/fr": "2026-11-15",

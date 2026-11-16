@@ -67,7 +67,7 @@ test("articles hub: every CA article appears in exactly one part", () => {
     );
   const caSlugs = new Set(CA.map((a) => a.slug));
   for (const s of seen.keys()) assert.ok(caSlugs.has(s), `${s} is a CA article`);
-  assert.equal(CA.length, 21);
+  assert.equal(CA.length, 22);
 });
 
 test("articles hub: renders the H1 and five H2s with the part ids, in order", () => {
@@ -122,7 +122,7 @@ test("articles hub: jump buttons and sidebar links point to existing anchors and
     for (const h of hrefs.filter((h) => !h.startsWith("#")))
       assert.ok(routeExists(h), `${label}: ${h} resolves`);
     if (label === "Contents")
-      assert.equal(hrefs.filter((h) => h.startsWith("/articles/")).length, 21, "all 21 articles");
+      assert.equal(hrefs.filter((h) => h.startsWith("/articles/")).length, 22, "all 22 articles");
   }
 });
 
@@ -130,12 +130,12 @@ test("articles hub: no part is highlighted in the server HTML (client-only, no h
   assert.doesNotMatch(html, /aria-current="location"/);
 });
 
-test("articles hub: CollectionPage + ItemList of all 21 CA articles in display order", () => {
+test("articles hub: CollectionPage + ItemList of all 22 CA articles in display order", () => {
   const ld = (page.head.scripts ?? []).map((s) => JSON.parse(s.children));
   assert.ok(ld.some((j) => j["@type"] === "CollectionPage"));
   const list = ld.find((j) => j["@type"] === "ItemList");
   const order = parts.flatMap((p) => p.slugs);
-  assert.equal(list.numberOfItems, 21);
+  assert.equal(list.numberOfItems, 22);
   assert.deepEqual(
     list.itemListElement.map((e: { url: string }) => e.url.split("/articles/")[1]),
     order,

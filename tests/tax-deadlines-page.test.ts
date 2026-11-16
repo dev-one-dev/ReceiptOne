@@ -249,7 +249,9 @@ test("tax-deadlines page: pair registered for hreflang and the sitemap; no /us p
   const locales = readFileSync("src/lib/locales.ts", "utf8");
   assert.ok(locales.includes('"/ca/tax-deadlines": "/fr/echeances-fiscales"'));
   const sitemap = readFileSync("public/sitemap.xml", "utf8");
-  assert.ok(sitemap.includes(`<loc>${ORIGIN}/ca/tax-deadlines</loc><lastmod>2026-11-14</lastmod>`));
+  // 2026-11-16: the English page gained one link to the sales tax by province
+  // guide (tests/sales-tax-article.test.ts); the French page is unchanged.
+  assert.ok(sitemap.includes(`<loc>${ORIGIN}/ca/tax-deadlines</loc><lastmod>2026-11-16</lastmod>`));
   assert.ok(
     sitemap.includes(`<loc>${ORIGIN}/fr/echeances-fiscales</loc><lastmod>2026-11-14</lastmod>`),
   );

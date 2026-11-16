@@ -76,7 +76,16 @@ export interface PageCopy {
   h1: string;
   lead: string;
   next12: { eyebrow: string; h2: string; date: string; what: string; who: string };
-  rules: { eyebrow: string; h2: string; blocks: { h3: string; paragraphs: string[] }[] };
+  rules: {
+    eyebrow: string;
+    h2: string;
+    /** `link` renders as one closing sentence: "{before} {label}." -- an article link. */
+    blocks: {
+      h3: string;
+      paragraphs: string[];
+      link?: { before: string; label: string; slug: string };
+    }[];
+  };
   faq: { eyebrow: string; h2: string; items: { q: string; a: string }[] };
   cta: { h2: string; body: string; button: string };
   disclaimer: string;
@@ -229,6 +238,11 @@ export function taxDeadlinesCopy(lang: Lang, today: string): PageCopy {
           paragraphs: [
             `If you are an individual with business income and a December 31 fiscal year-end and you file GST/HST annually, your ${T} payment is due ${d(4, 30, F)} and your return is due ${d(6, 15, F)}.`,
           ],
+          link: {
+            before: "For the rate to charge in each province, see",
+            label: "our guide to GST, HST, PST and QST by province",
+            slug: "sales-tax-by-province-self-employed-canada",
+          },
         },
         {
           h3: "GST/HST: quarterly filers and instalments",

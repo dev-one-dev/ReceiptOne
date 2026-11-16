@@ -38,6 +38,11 @@ import { loadArticleRenderer, pageText, type Rendered } from "./lib/render-artic
  * Later on 2026-11-16 it was retaken again when the same article gained one
  * paragraph linking the rideshare and delivery drivers guide
  * (tests/driver-article.test.ts): verified the same way, head unchanged.
+ * Also on 2026-11-16, track-gst-hst-business-expenses gained one paragraph
+ * linking the sales tax by province guide (tests/sales-tax-article.test.ts)
+ * and its updatedAt moved to 2026-11-16 so its sitemap lastmod follows; both
+ * hashes retaken. Verified by reverting those two changes, which restores
+ * both old hashes exactly.
  */
 
 type Block =

@@ -6,6 +6,7 @@ import { LOGO_URL, SITE_URL } from "@/lib/seo";
 import { getPlan } from "@/lib/pricing";
 import { BOOKKEEPING_ARTICLES } from "@/lib/articles.bookkeeping";
 import { DRIVER_ARTICLES } from "@/lib/articles.drivers";
+import { SALES_TAX_ARTICLES } from "@/lib/articles.sales-tax";
 
 /** "CA$4.99/wk, CA$9.99/mo or CA$129.99/yr" -- ReceiptOne's Canadian prices, read from src/lib/pricing.ts. */
 const caPrice = (id: "week" | "month" | "year") => `CA$${getPlan("ca", id).price}`;
@@ -936,7 +937,7 @@ export const ARTICLES: Article[] = [
       "When to register for GST/HST, which rate to charge, input tax credits and receipt tiers, PST and QST, the quick method, and 2026 filing deadlines.",
     category: "GST / HST",
     publishedAt: "2026-10-06",
-    updatedAt: "2026-10-06",
+    updatedAt: "2026-11-16",
     image: {
       path: "/articles/track-gst-hst-business-expenses.webp",
       width: 1280,
@@ -1036,6 +1037,14 @@ export const ARTICLES: Article[] = [
       {
         type: "p",
         text: "Where GST and a provincial tax both apply, the GST is calculated on the price before the provincial tax. Services you perform wholly outside Canada are generally not subject to GST/HST, and certain advisory, professional or consulting services supplied to a non-resident are zero-rated: taxable at 0%, so you charge nothing but can still claim ITCs on the costs of making them.",
+      },
+      {
+        type: "p",
+        text: "British Columbia, Saskatchewan, Manitoba and Quebec each have their own rules for registering and collecting the provincial tax.",
+        link: {
+          label: "Read our guide to sales tax by province.",
+          href: "/articles/sales-tax-by-province-self-employed-canada",
+        },
       },
       {
         type: "h2",
@@ -4017,6 +4026,8 @@ export const ARTICLES: Article[] = [
   ...BOOKKEEPING_ARTICLES,
   /* Rideshare and delivery drivers, 2026-11-16: src/lib/articles.drivers.ts */
   ...DRIVER_ARTICLES,
+  /* Sales tax by province, 2026-11-16: src/lib/articles.sales-tax.ts */
+  ...SALES_TAX_ARTICLES,
 ];
 
 /* ----------------------------- Helpers ------------------------------------ */

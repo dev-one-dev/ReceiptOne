@@ -41,6 +41,7 @@ export const ARTICLE_PARTS: ArticlePart[] = [
       "self-employed-tax-deductions-canada",
       "home-office-deduction-canadian-freelancers",
       "track-gst-hst-business-expenses",
+      "sales-tax-by-province-self-employed-canada",
     ],
     links: [
       {

@@ -1,3 +1,4 @@
+import { Link } from "@tanstack/react-router";
 import { Header } from "@/components/site/Header";
 import { PrimaryCta } from "@/components/site/PrimaryCta";
 import { Footer } from "@/components/site/Footer";
@@ -124,6 +125,19 @@ export function TaxDeadlinesPage({ lang, now }: { lang: Lang; now: string }) {
                     {p}
                   </p>
                 ))}
+                {block.link && (
+                  <p className="mt-2 text-body text-ink-60">
+                    {block.link.before}{" "}
+                    <Link
+                      to="/articles/$slug"
+                      params={{ slug: block.link.slug }}
+                      className="underline underline-offset-2 hover:text-ink"
+                    >
+                      {block.link.label}
+                    </Link>
+                    .
+                  </p>
+                )}
               </div>
             ))}
           </div>
