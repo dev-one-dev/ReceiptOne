@@ -268,9 +268,12 @@ test("existing articles: rendered text and head unchanged", async () => {
   assert.equal(Object.keys(fixture).length, 15);
   // The "Spotted an error?" line (tests/correction-line.test.ts) was added to
   // every article after this fixture was taken; drop it so the hash still
-  // guards the article's own text.
+  // guards the article's own text. Same for the footer's app QR block
+  // (tests/app-qr.test.ts), added later still.
   const withoutCorrection = (html: string) =>
-    html.replace(/<p[^>]*data-correction-line[^>]*>[\s\S]*?<\/p>/, "");
+    html
+      .replace(/<p[^>]*data-correction-line[^>]*>[\s\S]*?<\/p>/, "")
+      .replace(/<div data-app-qr[^>]*>[\s\S]*?<\/div>/g, "");
   for (const [path, want] of Object.entries(fixture)) {
     const us = path.startsWith("/us/");
     const slug = path.split("/").at(-1)!;

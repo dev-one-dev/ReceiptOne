@@ -5,6 +5,7 @@ import logoWordmark from "@/assets/figma/logo-wordmark.svg";
 import logoWordmarkSource from "@/assets/figma/logo-wordmark.svg?raw";
 import { ROUTES, type AppRoute } from "@/lib/routes";
 import { StoreBadge } from "@/components/site/StoreBadge";
+import { AppQr } from "@/components/site/AppQr";
 import { useLang } from "@/lib/use-lang";
 import type { Lang } from "@/lib/locales";
 import { openConsentSettings } from "@/lib/consent";
@@ -194,6 +195,9 @@ export function Footer({ region = "ca", now }: FooterProps) {
                 </a>
               ))}
             </div>
+
+            {/* App QR, lg and up only; stays inside the brand column. */}
+            <AppQr lang={lang} variant="dark" className="mt-4" />
           </div>
 
           {/* Nav columns: 3 across below lg. At lg, a subgrid on columns 2-6 with

@@ -1,8 +1,10 @@
 import { APP_URL, appUrl } from "./src/lib/external";
+import { appLinkResponse } from "./src/lib/app-link";
 
 export const config = {
   matcher: [
     "/",
+    "/app",
     "/login",
     "/signup",
     "/dashboard",
@@ -82,6 +84,9 @@ export default function middleware(request: Request) {
   // Permanent redirects so old deep links, bookmarks and indexed URLs land
   // on the app rather than a 404 here. Query strings are carried across for
   // /login and /signup (e.g. ?ref= from a referral link).
+  // The smart app link on the QR code: phones to their store, the rest to
+  // pricing. 302 + noindex, so it is never cached as a page or indexed.
+  if (pathname === "/app") return appLinkResponse(request);
   if (pathname === "/login" || pathname === "/signup") {
     return Response.redirect(appUrl(pathname) + url.search, 301);
   }
