@@ -19,6 +19,9 @@ export const FRENCH_ARTICLE_SLUGS: Record<string, string> = {
   "t2125-form-guide-canada": "guide-formulaire-t2125",
   "self-employed-tax-deductions-canada": "deductions-travailleurs-autonomes-canada",
   "cra-receipt-rules-canada": "regles-recus-arc",
+  "track-gst-hst-business-expenses": "tps-tvh-travailleurs-autonomes",
+  "mileage-deduction-canada-freelancers": "deduction-frais-vehicule-kilometrage",
+  "sales-tax-by-province-self-employed-canada": "taxes-de-vente-par-province-travailleurs-autonomes",
 };
 
 /** Canadian English page -> its French (fr-CA) equivalent. */

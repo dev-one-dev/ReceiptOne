@@ -293,6 +293,8 @@ test("existing articles: rendered text and head unchanged", async () => {
     "/articles/t2125-form-guide-canada",
     "/articles/self-employed-tax-deductions-canada",
     "/articles/cra-receipt-rules-canada",
+    "/articles/track-gst-hst-business-expenses",
+    "/articles/mileage-deduction-canada-freelancers",
   ]);
   const withoutFrAlternates = (path: string, head: { links?: { rel: string }[] }) =>
     TRANSLATED.has(path)

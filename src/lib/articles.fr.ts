@@ -84,9 +84,30 @@ function fr(article: Omit<FrArticle, "slug">): FrArticle {
     excerpt: t(article.excerpt),
     image: { ...article.image, alt: t(article.image.alt) },
     quickAnswer: article.quickAnswer && t(article.quickAnswer),
+    receiptOneHelps: article.receiptOneHelps && {
+      items: article.receiptOneHelps.items.map(t),
+      link: { ...article.receiptOneHelps.link, label: t(article.receiptOneHelps.link.label) },
+    },
     body: article.body.map(typesetBlock),
   };
 }
+
+/** Marker after a link to a page that exists only in English. */
+export const EN_ONLY = "(en anglais)";
+
+/** A link from a French article to an English-only page: labelled and hrefLang="en". */
+const enOnly = (label: string, href: string) => ({
+  label: `${label} ${EN_ONLY}`,
+  href,
+  hrefLang: "en",
+});
+
+/** /fr/articles/{slug} of the French translation of an English article. */
+const frArticle = (enSlug: string) => {
+  const slug = FRENCH_ARTICLE_SLUGS[enSlug];
+  if (!slug) throw new Error(`articles.fr: ${enSlug} has no French translation`);
+  return `/fr/articles/${slug}`;
+};
 
 /** Byline on every French article, as on the English ones ("ReceiptOne Team"). */
 export const FR_ARTICLE_BYLINE = "Équipe ReceiptOne";
@@ -110,6 +131,15 @@ const T4002_FR = `${CANADA_FR}/formulaires-publications/publications/t4002`;
 const RECORDS_FR = `${CANADA_FR}/impot/entreprises/sujets/tenue-registres-comptables`;
 const DISCLAIMER =
   "Ces renseignements sont d'ordre général et ne constituent pas des conseils fiscaux.";
+const GST_FR = `${CANADA_FR}/impot/entreprises/sujets/tps-tvh-entreprises`;
+const SOLE_PROP_FR = `${CANADA_FR}/impot/entreprises/sujets/entreprise-individuelle-societe-personnes`;
+const VEHICLE_FR = `${SOLE_PROP_FR}/depenses-entreprise/depenses-relatives-vehicules-a-moteur`;
+const RQ_FR = "https://www.revenuquebec.ca/fr/entreprises/taxes/tpstvh-et-tvq";
+const MB = "https://www.gov.mb.ca/finance/taxation";
+/** English-only provincial sources: B.C. and Saskatchewan publish no French PST pages. */
+const BC_EN = "https://www2.gov.bc.ca";
+const SK_EN =
+  "https://www.saskatchewan.ca/business/taxes-licensing-and-reporting/provincial-taxes-policies-and-bulletins/provincial-sales-tax";
 
 export const FR_ARTICLES: FrArticle[] = [
   /* ------------------------------------------------------------------ */
@@ -970,6 +1000,992 @@ export const FR_ARTICLES: FrArticle[] = [
           },
         ],
         checked: `Pages françaises de canada.ca consultées le 16 novembre 2026. ${DISCLAIMER}`,
+      },
+    ],
+  }),
+  /* ------------------------------------------------------------------ */
+  /* track-gst-hst-business-expenses                                     */
+  /* ------------------------------------------------------------------ */
+  fr({
+    enSlug: "track-gst-hst-business-expenses",
+    title: "TPS/TVH pour les travailleurs autonomes au Canada (guide 2026)",
+    displayTitle: "TPS/TVH pour les travailleurs autonomes au Canada",
+    excerpt:
+      "Quand s'inscrire à la TPS/TVH, quel taux exiger, les crédits de taxe sur les intrants et les seuils des reçus, la TVP et la TVQ, la méthode rapide et les dates limites de 2026.",
+    category: "TPS/TVH",
+    publishedAt: "2026-11-16",
+    updatedAt: "2026-11-16",
+    image: {
+      path: "/articles/track-gst-hst-business-expenses.webp",
+      width: 1280,
+      height: 720,
+      alt: "Pile de pièces canadiennes en argent ornées d'une feuille d'érable",
+    },
+    tags: [
+      "TPS",
+      "TVH",
+      "TVP",
+      "TVQ",
+      "crédits de taxe sur les intrants",
+      "CTI",
+      "méthode rapide",
+      "inscription à la TPS/TVH",
+      "travailleur autonome",
+    ],
+    relatedSlugs: [
+      "taxes-de-vente-par-province-travailleurs-autonomes",
+      "regles-recus-arc",
+      "guide-formulaire-t2125",
+    ],
+    body: [
+      {
+        type: "p",
+        text: "La TPS/TVH touche une entreprise autonome dans deux sens. Une fois inscrit, vous l'exigez sur vos ventes et la versez à l'ARC, et vous récupérez la TPS/TVH payée sur vos achats d'entreprise en demandant des crédits de taxe sur les intrants (CTI). Pour bien faire les choses, quatre points comptent : savoir quand l'inscription commence, exiger le taux du lieu où la vente est effectuée, conserver des reçus qui respectent les seuils de documentation de l'ARC, et produire vos déclarations à temps.",
+      },
+      {
+        type: "p",
+        text: "Ce guide s'adresse aux propriétaires uniques. Chaque règle provient de canada.ca, principalement du guide RC4022, et les règles de la TVQ, de Revenu Québec (sources à la fin). Les exemples sont fictifs.",
+      },
+      { type: "h2", text: "Quand vous devez vous inscrire : le critère du petit fournisseur" },
+      {
+        type: "p",
+        text: "Vous n'avez pas à vous inscrire tant que vous êtes un petit fournisseur. Pour un propriétaire unique, cela signifie que vos revenus tirés de fournitures taxables effectuées dans le monde entier, provenant de toutes vos entreprises et de celles de vos associés, sont de 30 000 $ ou moins au cours d'un seul trimestre civil et au cours des quatre derniers trimestres civils consécutifs. Il s'agit des revenus avant dépenses, et ils comprennent les fournitures détaxées, comme la plupart des exportations. Ils excluent les services financiers, les ventes d'immobilisations et l'achalandage provenant de la vente d'une entreprise. Les trimestres civils commencent le 1er janvier, le 1er avril, le 1er juillet et le 1er octobre.",
+      },
+      {
+        type: "p",
+        text: "Dépasser 30 000 $ selon l'un ou l'autre critère met fin au statut de petit fournisseur, mais les deux critères font commencer l'inscription à des moments différents :",
+      },
+      {
+        type: "ul",
+        items: [
+          "Plus de 30 000 $ au cours d'un seul trimestre civil : vous cessez immédiatement d'être un petit fournisseur. La date d'entrée en vigueur de votre inscription est au plus tard le jour de la vente qui vous a fait dépasser le seuil, et vous exigez la TPS/TVH sur cette vente.",
+          "Plus de 30 000 $ sur quatre trimestres consécutifs, mais dans aucun trimestre pris isolément : vous restez un petit fournisseur jusqu'à la fin du mois qui suit le trimestre où vous avez dépassé le seuil. La date d'entrée en vigueur est au plus tard le jour de votre première vente après ce moment, et vous exigez la TPS/TVH à partir de là.",
+          "Dans les deux cas, vous avez 29 jours à compter de la date d'entrée en vigueur pour vous inscrire.",
+        ],
+      },
+      {
+        type: "p",
+        text: "Dans les exemples de l'ARC, un consultant dont le troisième trimestre a atteint 38 000 $ s'est inscrit à compter de la vente qui lui a fait dépasser 30 000 $, et a exigé la taxe sur cette vente. Un vendeur dont les quatre trimestres se terminant le 31 mars totalisaient 32 000 $, sans qu'aucun ne dépasse le seuil à lui seul, a cessé d'être un petit fournisseur le 30 avril et a commencé à exiger la taxe sur sa vente suivante, le 2 mai.",
+      },
+      {
+        type: "p",
+        text: "Les chauffeurs de taxi et de covoiturage commercial doivent s'inscrire même s'ils sont de petits fournisseurs.",
+      },
+      { type: "h2", text: "S'inscrire volontairement" },
+      {
+        type: "p",
+        text: "Un petit fournisseur peut s'inscrire volontairement s'il effectue des ventes taxables au Canada; en général, vous ne pouvez pas vous inscrire si vous n'effectuez que des fournitures exonérées. La date d'entrée en vigueur est habituellement le jour où vous demandez votre compte de TPS/TVH, et elle peut remonter jusqu'à 30 jours avant cette date. Une fois inscrit, vous devez exiger, percevoir et verser la TPS/TVH sur vos fournitures taxables, produire une déclaration pour chaque période de déclaration et rester inscrit pendant au moins un an avant de pouvoir annuler votre inscription, sauf si vous cessez vos activités commerciales.",
+      },
+      {
+        type: "p",
+        text: "En contrepartie, vous pouvez demander des CTI. À titre de nouvel inscrit, vous pourriez aussi demander des CTI pour la TPS/TVH payée sur les biens que vous avez en main le jour de votre inscription, comme de l'équipement. Le compromis dépend de vos clients : les entreprises inscrites récupèrent la TPS/TVH que vous leur exigez, mais pas les consommateurs; pour eux, votre prix augmente du montant de la taxe.",
+      },
+      { type: "h2", text: "Exiger le bon taux selon la province" },
+      {
+        type: "p",
+        text: "Le taux dépend du lieu où la vente est effectuée, et non de l'endroit où vous habitez. Pour la plupart des services, la règle générale du guide RC4022 est que la fourniture est effectuée dans la province de l'adresse domiciliaire ou d'affaires du client que vous obtenez dans le cours normal de vos activités. L'exemple du RC4022 : un cabinet comptable de Calgary dont la seule adresse pour son client se trouve à London, en Ontario, exige la TVH de 13 %, et non la TPS de 5 %. Les services personnels, les services liés à des immeubles et certains autres services ont leurs propres règles.",
+      },
+      {
+        type: "table",
+        caption:
+          "Taux tirés de la page des taux de l'ARC. Le taux de 14 % de la Nouvelle-Écosse s'applique depuis le 1er avril 2025.",
+        headers: ["Province ou territoire", "TPS/TVH à exiger", "Taxe provinciale distincte"],
+        rows: [
+          ["Ontario", "TVH de 13 %", "Aucune"],
+          ["Nouvelle-Écosse", "TVH de 14 %", "Aucune"],
+          [
+            "Nouveau-Brunswick, Terre-Neuve-et-Labrador, Île-du-Prince-Édouard",
+            "TVH de 15 %",
+            "Aucune",
+          ],
+          ["Alberta, Territoires du Nord-Ouest, Nunavut, Yukon", "TPS de 5 %", "Aucune"],
+          ["Colombie-Britannique", "TPS de 5 %", "TVP de 7 %"],
+          ["Manitoba", "TPS de 5 %", "TVD de 7 %"],
+          ["Saskatchewan", "TPS de 5 %", "TVP de 6 %"],
+          ["Québec", "TPS de 5 %", "TVQ de 9,975 %"],
+        ],
+      },
+      {
+        type: "p",
+        text: "Lorsque la TPS et une taxe provinciale s'appliquent toutes deux, la TPS est calculée sur le prix avant la taxe provinciale. Les services que vous rendez entièrement à l'extérieur du Canada ne sont généralement pas assujettis à la TPS/TVH, et certains services de consultation, de conseil ou professionnels fournis à un non-résident sont détaxés : taxables au taux de 0 %, de sorte que vous n'exigez rien, mais pouvez quand même demander des CTI sur les coûts engagés pour les fournir.",
+      },
+      {
+        type: "p",
+        text: "La Colombie-Britannique, la Saskatchewan, le Manitoba et le Québec ont chacun leurs propres règles d'inscription et de perception de la taxe provinciale.",
+        link: {
+          label: "Lisez notre guide sur les taxes de vente par province.",
+          href: frArticle("sales-tax-by-province-self-employed-canada"),
+        },
+      },
+      { type: "h2", text: "Crédits de taxe sur les intrants : ce que vous pouvez demander" },
+      {
+        type: "p",
+        text: "Un CTI permet de récupérer la TPS/TVH payée ou payable sur les achats que vous utilisez dans le cadre de vos activités commerciales. Vous ne pouvez le demander que dans la mesure où l'achat sert à ces activités, et il doit être raisonnable quant à sa qualité, sa nature et son coût pour votre entreprise. Si 90 % ou plus d'une dépense d'exploitation sert à des fins commerciales, vous demandez 100 % de la taxe payée sur celle-ci. Si une dépense est partagée, la part de l'entreprise doit résulter d'une répartition juste et raisonnable appliquée de façon constante toute l'année. Si vos CTI d'une période dépassent la TPS/TVH que vous avez perçue, l'ARC vous rembourse la différence.",
+      },
+      { type: "p", text: "Vous ne pouvez pas demander de CTI pour :" },
+      {
+        type: "ul",
+        items: [
+          "Les achats à des fins personnelles, ou la part personnelle d'une dépense à usage mixte",
+          "Les achats utilisés pour effectuer des fournitures exonérées",
+          "Les droits d'adhésion ou cotisations à un club dont le but principal est d'offrir des loisirs, des repas ou des activités sportives, comme un centre de conditionnement physique ou un club de golf",
+          "Certaines immobilisations (le RC4022 prévoit des règles distinctes pour les immobilisations)",
+          "Les achats exonérés et détaxés, parce qu'aucune TPS/TVH n'a été exigée",
+          "Les taxes de vente provinciales : la TVP et la TVD ne font jamais partie d'un CTI",
+          "La TPS/TVH exigée par un fournisseur inscrit uniquement sous le régime simplifié visant les entreprises de l'économie numérique. Donnez votre numéro de TPS/TVH à ces fournisseurs pour qu'ils ne l'exigent pas.",
+        ],
+      },
+      {
+        type: "p",
+        text: "Vous demandez normalement un CTI dans la déclaration de la période où vous avez fait l'achat, mais vous pouvez le faire plus tard. Pour la plupart des inscrits, la date limite est la date d'échéance de la déclaration visant la dernière période de déclaration qui se termine dans les quatre ans suivant la période où le CTI aurait pu être demandé pour la première fois.",
+      },
+      { type: "h2", text: "Ce qu'un reçu doit indiquer : les seuils de 100 $ et de 500 $" },
+      {
+        type: "p",
+        text: "Vous devez avoir des preuves documentaires suffisantes avant de demander un CTI, et ce qui est exigé dépend du total de la vente. Ces seuils ont remplacé les anciens seuils de 30 $ et de 150 $ le 20 avril 2021 :",
+      },
+      {
+        type: "ul",
+        items: [
+          "Moins de 100 $ : le nom ou le nom commercial du fournisseur (ou de l'intermédiaire), la date de la facture (ou la date à laquelle la TPS/TVH a été payée ou est devenue payable) et le montant total payé ou payable.",
+          "De 100 $ à 499,99 $ : tout ce qui précède, plus la TPS/TVH exigée (ou une mention que le prix la comprend au taux applicable), le statut de chaque fourniture si des articles taxables et exonérés sont combinés, et le numéro d'inscription à la TPS/TVH du fournisseur ou de l'intermédiaire.",
+          "500 $ ou plus : tout ce qui précède, plus votre nom ou votre nom commercial (ou celui de votre mandataire autorisé), une brève description des biens ou des services et les modalités de paiement.",
+        ],
+      },
+      {
+        type: "p",
+        text: "Exemple fictif : une imprimante de 240 $ achetée chez un détaillant ontarien n'appuie un CTI que si le reçu indique la TVH (ou précise qu'elle est comprise) et le numéro d'inscription du détaillant. Vous pouvez vérifier un numéro dans le registre de la TPS/TVH de l'ARC, un service gratuit, avant de faire votre demande, et demander un reçu corrigé pendant que l'achat est récent.",
+      },
+      { type: "h2", text: "Repas et frais de représentation : la restriction de 50 %" },
+      {
+        type: "p",
+        text: "Le CTI suit la limite de l'impôt sur le revenu. Lorsque votre déduction pour les repas et les frais de représentation est limitée à 50 % du coût, vous pouvez demander 50 % de la TPS/TVH payée sur ceux-ci comme CTI. Le RC4022 prévoit deux façons de procéder : demander 50 % de la taxe réelle pour chaque période de déclaration, sans rajustement en fin d'exercice, ou demander 100 % pendant l'année et rajouter l'excédent par la suite. Les déclarants annuels font ce rajustement dans la déclaration de la même année; les déclarants mensuels et trimestriels, dans la première déclaration de l'exercice suivant.",
+      },
+      { type: "h2", text: "Comment les CTI réduisent vos dépenses au T2125" },
+      {
+        type: "p",
+        text: "Vous ne pouvez pas récupérer la même taxe deux fois. Le guide T4002 indique que lorsque vous demandez la TPS/TVH comme CTI, vous réduisez la dépense d'entreprise inscrite sur le formulaire T2125 du montant du crédit, au moment où la taxe a été payée ou est devenue payable, selon la première de ces dates, et vous inscrivez le montant net. Un CTI sur un bien amortissable réduit son coût en capital aux fins de la déduction pour amortissement. Si vous n'êtes pas inscrit, la TPS/TVH que vous payez fait simplement partie de chaque dépense.",
+      },
+      {
+        type: "callout",
+        text: "Exemple fictif, Ontario (TVH de 13 %) : un pigiste inscrit achète un logiciel de 1 000 $ plus 130 $ de TVH. Il demande un CTI de 130 $ et déduit 1 000 $ au T2125. Un pigiste non inscrit déduit 1 130 $ et ne récupère rien. Pour un dîner d'affaires de 200 $ plus 26 $ de TVH, le pigiste inscrit demande un CTI de 13 $ (50 % de la taxe), ce qui laisse un coût de 213 $, dont 50 %, soit 106,50 $, est déductible.",
+      },
+      { type: "h2", text: "La TVP : une affaire provinciale" },
+      {
+        type: "p",
+        text: "La Colombie-Britannique (TVP de 7 %), le Manitoba (TVD de 7 %) et la Saskatchewan (TVP de 6 %) appliquent leurs propres taxes de vente en plus de la TPS de 5 %. L'ARC ne les administre pas : l'obligation de vous inscrire pour percevoir une taxe de vente provinciale, et ce à quoi elle s'applique, relèvent de chaque province, et le RC4022 vous invite à communiquer avec le bureau de la taxe de vente de votre province. L'Ontario et les provinces de l'Atlantique n'ont pas de TVP distincte, parce qu'elle est intégrée à la TVH.",
+      },
+      {
+        type: "p",
+        text: "Du côté des coûts, la TVP que vous payez sur vos achats d'entreprise ne se récupère pas au moyen d'un CTI dans votre déclaration de TPS/TVH; elle reste donc incluse dans la dépense que vous déduisez au T2125. Inscrivez la TPS/TVH et la TVP comme des montants distincts pour chaque reçu. Un seul montant de taxe combiné empêche de demander le bon CTI.",
+      },
+      { type: "h2", text: "La TVQ : le régime propre à Revenu Québec" },
+      {
+        type: "p",
+        text: "La taxe de vente du Québec est administrée par Revenu Québec, et non par l'ARC, et si votre entreprise est physiquement située au Québec, Revenu Québec administre généralement aussi votre TPS/TVH : vous produisez donc vos déclarations auprès de Revenu Québec, sur ses formulaires. Selon Revenu Québec :",
+      },
+      {
+        type: "ul",
+        items: [
+          "En règle générale, vous devez vous inscrire aux fichiers de la TPS et de la TVQ si vous exercez des activités commerciales au Québec et que vos fournitures taxables mondiales, avec celles de vos associés, dépassent 30 000 $ au cours d'un trimestre civil ou des quatre trimestres civils précédents. Le moment où le statut de petit fournisseur prend fin suit le critère fédéral.",
+          "Une entreprise qui exerce des activités commerciales au Québec et s'inscrit au fichier de la TVQ doit aussi s'inscrire au fichier de la TPS/TVH, et rester inscrite pendant au moins un an.",
+          "Les entreprises de taxi doivent s'inscrire aux deux, quel que soit leur revenu.",
+          "Le taux de la TVQ est de 9,975 %, calculé sur le prix de vente, et non sur le prix majoré de la TPS. Ensemble, les deux taxes totalisent 14,975 %.",
+          "Les inscrits récupèrent la TVQ payée sur leurs intrants d'entreprise en demandant des remboursements de la taxe sur les intrants (RTI), l'équivalent québécois des CTI, avec des exclusions semblables, comme les achats à des fins personnelles.",
+          "Vous ne pouvez pas demander de RTI pour la TVQ payée à un fournisseur hors Québec inscrit selon le régime particulier (un numéro contenant les lettres NR). Donnez-lui votre numéro de TVQ, qui commence par les lettres TQ, avant la vente pour qu'il ne l'exige pas.",
+        ],
+      },
+      { type: "h2", text: "La méthode rapide" },
+      {
+        type: "p",
+        text: "La méthode rapide de comptabilité est une façon facultative de calculer le montant à verser. Vous exigez toujours la TPS/TVH au taux normal, mais au lieu de suivre la taxe sur chaque dépense, vous versez un pourcentage fixe de vos ventes, TPS/TVH comprise. En échange, vous renoncez aux CTI sur les dépenses d'exploitation; vous pouvez toutefois en demander sur les immobilisations, comme les ordinateurs et les véhicules. Vous obtenez aussi un crédit de 1 % sur la première tranche de 30 000 $ de ventes admissibles, TPS/TVH comprise, de chaque exercice.",
+      },
+      {
+        type: "ul",
+        items: [
+          "Admissibilité : des fournitures taxables mondiales annuelles, y compris la TPS/TVH et celles de vos associés, de 400 000 $ ou moins, et un établissement stable au Canada.",
+          "Exclusions : les personnes qui offrent des services de tenue de livres, de conseils financiers, de conseils fiscaux ou de préparation de déclarations de revenus, ainsi que les professionnels du droit, de la comptabilité ou de l'actuariat.",
+          "Taux pour les entreprises de services selon l'emplacement de votre établissement stable : 3,6 % si votre établissement et la vente se trouvent tous deux dans une province où la TPS de 5 % s'applique; 8,8 % s'ils se trouvent tous deux en Ontario; 9,4 % pour la Nouvelle-Écosse; 10,0 % pour une province où la TVH de 15 % s'applique. Les autres combinaisons ont leurs propres taux dans le guide RC4058.",
+          "Comment faire le choix : dans Mon dossier d'entreprise ou au moyen du formulaire GST74. Les déclarants annuels doivent faire ce choix au plus tard le premier jour de leur deuxième trimestre d'exercice.",
+        ],
+      },
+      {
+        type: "callout",
+        text: "Exemple fictif : un graphiste de l'Alberta facture 50 000 $ plus 2 500 $ de TPS et paie 400 $ de TPS sur ses dépenses d'exploitation. Méthode ordinaire : 2 500 $ − 400 $ = 2 100 $ versés. Méthode rapide : 52 500 $ × 3,6 % = 1 890 $, moins le crédit de 1 % sur 30 000 $ (300 $), soit 1 590 $. Avant l'impôt sur le revenu, la méthode rapide est avantageuse pour ce graphiste, sauf si ses CTI sur les dépenses d'exploitation dépassent 910 $. Selon le T4002, la TPS/TVH perçue moins le montant calculé selon la méthode rapide est ajoutée au revenu sur le formulaire T2125.",
+      },
+      { type: "h2", text: "Dates limites de production et de paiement" },
+      {
+        type: "p",
+        text: "L'ARC vous attribue une période de déclaration selon vos revenus annuels provenant de fournitures taxables : 1 500 000 $ ou moins, période annuelle; plus de 1 500 000 $ jusqu'à 6 000 000 $, période trimestrielle; au-delà, période mensuelle. Vous pouvez choisir de produire vos déclarations plus souvent.",
+      },
+      {
+        type: "ul",
+        items: [
+          "Les déclarants mensuels et trimestriels produisent leur déclaration et paient un mois après la fin de chaque période.",
+          "La plupart des déclarants annuels produisent leur déclaration et paient trois mois après la fin de leur exercice.",
+          "Un propriétaire unique dont l'exercice se termine le 31 décembre et qui a un revenu d'entreprise pour l'année paie au plus tard le 30 avril et produit sa déclaration au plus tard le 15 juin. Selon les mêmes règles, les dates pour 2026 tombent le 30 avril et le 15 juin 2027, mais l'ARC n'avait pas encore publié son calendrier daté de 2026 au moment de la rédaction; vérifiez-les avant de produire votre déclaration.",
+          "Si votre taxe nette était de 3 000 $ ou plus à la fois pour l'exercice précédent et pour l'exercice en cours, un déclarant annuel verse des acomptes provisionnels trimestriels, chacun dû un mois après la fin d'un trimestre d'exercice.",
+          "Produisez une déclaration pour chaque période, y compris une « déclaration nulle » lorsque vous n'avez rien à déclarer.",
+          "Les déclarations visant des périodes se terminant en 2024 ou après doivent être produites par voie électronique, sauf par les organismes de bienfaisance et certaines institutions financières désignées particulières; une déclaration papier entraîne une pénalité.",
+        ],
+      },
+      { type: "h2", text: "Ce qu'il faut conserver" },
+      {
+        type: "ul",
+        items: [
+          "Chaque facture de vente que vous avez émise, indiquant la TPS/TVH exigée",
+          "Chaque reçu ou facture d'achat, conforme au seuil de documentation applicable à son montant",
+          "La TPS/TVH, la TVP et la TVQ inscrites comme montants distincts pour chaque dépense",
+          "Vos déclarations produites, la confirmation de votre inscription et tout choix d'utiliser la méthode rapide",
+        ],
+      },
+      {
+        type: "p",
+        text: "Conservez vos registres de TPS/TVH pendant six ans à partir de la fin de l'année à laquelle ils se rapportent. L'ARC peut vous demander de les conserver plus longtemps, et il vous faut son autorisation écrite pour les détruire plus tôt.",
+      },
+      {
+        type: "callout",
+        text: "ReceiptOne lit les montants de TPS/TVH et de TVP sur chaque reçu que vous numérisez et les conserve dans des champs distincts, la TVP étant marquée comme non remboursable, de sorte que la taxe que vous pouvez demander comme CTI ne se mêle jamais à celle que vous ne pouvez pas demander. Comparez ce qu'il a lu avec le reçu, et conservez l'original jusqu'à la fin des six ans.",
+      },
+      { type: "h2", text: FR_FAQ_HEADING },
+      {
+        type: "faq",
+        q: "Les ventes à des clients à l'étranger comptent-elles dans le seuil de 30 000 $?",
+        a: "Oui. Le critère du petit fournisseur tient compte des revenus tirés de fournitures taxables effectuées dans le monde entier, y compris les fournitures détaxées comme la plupart des services exportés. Un pigiste dont les clients sont surtout étrangers peut donc devoir s'inscrire même s'il exige peu ou pas de TPS/TVH.",
+      },
+      {
+        type: "faq",
+        q: "Devrais-je m'inscrire volontairement avant d'atteindre 30 000 $?",
+        a: "Cela peut être avantageux si vous avez des dépenses d'entreprise importantes ou surtout des clients d'affaires inscrits, puisque vous récupérez la TPS/TVH au moyen des CTI et que vos clients récupèrent celle que vous leur exigez. Si vos clients sont des consommateurs, votre prix augmente pour eux du montant de la taxe. L'inscription volontaire signifie aussi produire des déclarations et rester inscrit pendant au moins un an.",
+      },
+      {
+        type: "faq",
+        q: "J'habite en Alberta. Dois-je exiger la TVH à un client de l'Ontario?",
+        a: "En général, oui. Pour la plupart des services, la vente est effectuée dans la province de l'adresse du client que vous obtenez dans le cours normal de vos activités : un client dont l'adresse d'affaires est en Ontario se voit donc exiger la TVH de 13 %. Les services personnels et les services liés à des immeubles suivent d'autres règles.",
+      },
+      {
+        type: "faq",
+        q: "Puis-je demander la TVP ou la TVQ comme crédit de taxe sur les intrants?",
+        a: "Non. Les CTI ne visent que la TPS et la TVH. La TVP et la TVD ne sont pas récupérables dans votre déclaration de TPS/TVH et restent incluses dans la dépense. La TVQ se récupère séparément, au moyen de remboursements de la taxe sur les intrants demandés auprès de Revenu Québec, si vous êtes inscrit au fichier de la TVQ.",
+      },
+      {
+        type: "faq",
+        q: "J'ai oublié de demander des CTI l'an dernier. Les ai-je perdus?",
+        a: "Habituellement, non. La plupart des inscrits peuvent demander un CTI jusqu'à la date d'échéance de la déclaration visant la dernière période de déclaration qui se termine dans les quatre ans suivant la période où il aurait pu être demandé pour la première fois, à condition d'avoir des reçus conformes aux exigences en matière de documentation.",
+      },
+      {
+        type: "faq",
+        q: "Un teneur de livres ou un préparateur de déclarations peut-il utiliser la méthode rapide?",
+        a: "Non. Les personnes qui offrent des services de tenue de livres, de conseils financiers, de conseils fiscaux ou de préparation de déclarations de revenus, ainsi que les professionnels du droit, de la comptabilité ou de l'actuariat, ne peuvent pas utiliser la méthode rapide. Elles calculent leur taxe nette selon la méthode ordinaire, avec les CTI.",
+      },
+      {
+        type: "sources",
+        links: [
+          {
+            label: "Quand s'inscrire et commencer à facturer la TPS/TVH",
+            href: `${GST_FR}/quand-inscrire-facture.html`,
+          },
+          {
+            label: "S'inscrire volontairement au compte de TPS/TVH",
+            href: `${GST_FR}/compte-inscrire-volontairement.html`,
+          },
+          {
+            label: "Calculatrice de la TPS/TVH (et tableau des taux)",
+            href: `${GST_FR}/facturer-percevoir-quel-taux/calculatrice.html`,
+          },
+          {
+            label: "Guide RC4022",
+            href: `${CANADA_FR}/formulaires-publications/publications/rc4022/renseignements-generaux-tps-tvh-inscrits.html`,
+          },
+          {
+            label: "Nouvelles sur l'accise et la TPS/TVH no 118",
+            href: `${CANADA_FR}/formulaires-publications/publications/news118/news118-nouvelles-accise-tps-tvh-no-118.html`,
+          },
+          {
+            label: "Avis 322 (régime simplifié)",
+            href: `${CANADA_FR}/formulaires-publications/publications/notice322/recuperation-tps-tvh-application-mesures-matiere-economie-numerique.html`,
+          },
+          {
+            label: "Guide RC4058, Méthode rapide de comptabilité",
+            href: `${CANADA_FR}/formulaires-publications/publications/rc4058/methode-rapide-comptabilite-tps-tvh.html`,
+          },
+          {
+            label: "Dates limites de la TPS/TVH",
+            href: `${GST_FR}/produire-declaration-tps-tvh/exigences-dates-limites-matiere-declaration.html`,
+          },
+          { label: "T4002, chapitre 2", href: `${T4002_FR}/t4002-4.html` },
+          { label: "T4002, chapitre 3", href: `${T4002_FR}/t4002-5.html` },
+          {
+            label: "Registre de la TPS/TVH",
+            href: `${CANADA_FR}/services-electroniques/services-numeriques-entreprises/confirmation-numero-compte-tps-tvh.html`,
+          },
+          {
+            label: "Revenu Québec : inscription aux fichiers de la TPS et de la TVQ",
+            href: `${RQ_FR}/inscription-aux-fichiers-de-la-tps-et-de-la-tvq/`,
+          },
+          {
+            label: "Revenu Québec : petit fournisseur",
+            href: "https://www.revenuquebec.ca/fr/citoyens/taxes/biens-et-services-taxables-detaxes-ou-exoneres/tps-et-tvq/autres-situations/petit-fournisseur/",
+          },
+          {
+            label: "Revenu Québec : CTI et RTI",
+            href: `${RQ_FR}/credit-de-taxe-sur-les-intrants-et-remboursement-de-la-taxe-sur-les-intrants/`,
+          },
+          {
+            label: "Revenu Québec : calcul des taxes",
+            href: `${RQ_FR}/perception-de-la-tps-et-de-la-tvq/calcul-des-taxes/`,
+          },
+        ],
+        checked: `Pages françaises de canada.ca et de revenuquebec.ca consultées le 16 novembre 2026. Les guides RC4022 et RC4058 en sont à la révision 25. ${DISCLAIMER}`,
+      },
+    ],
+  }),
+
+  /* ------------------------------------------------------------------ */
+  /* mileage-deduction-canada-freelancers                                */
+  /* ------------------------------------------------------------------ */
+  fr({
+    enSlug: "mileage-deduction-canada-freelancers",
+    title: "Déductions pour frais de véhicule et kilométrage au Canada (guide 2026)",
+    displayTitle: "Déductions pour frais de véhicule et kilométrage au Canada",
+    excerpt:
+      "Comment les travailleurs autonomes du Canada déduisent leurs frais de véhicule pour 2026 : le registre de l'ARC, le tableau A, les plafonds d'intérêts et de location, les catégories de DPA 10 et 10.1, et l'utilisation pour l'entreprise.",
+    category: "Kilométrage et automobile",
+    publishedAt: "2026-11-16",
+    updatedAt: "2026-11-16",
+    image: {
+      path: "/articles/mileage-deduction-canada-freelancers.webp",
+      width: 1280,
+      height: 720,
+      alt: "Tableau de bord d'une voiture la nuit, avec un indicateur de vitesse en km/h et le compteur kilométrique",
+    },
+    tags: [
+      "kilométrage",
+      "frais de véhicule",
+      "déduction pour automobile",
+      "registre",
+      "DPA",
+      "location",
+      "T2125",
+      "ARC",
+      "travailleur autonome",
+    ],
+    relatedSlugs: [
+      "guide-formulaire-t2125",
+      "deductions-travailleurs-autonomes-canada",
+      "tps-tvh-travailleurs-autonomes",
+    ],
+    body: [
+      {
+        type: "p",
+        text: "Si vous êtes travailleur autonome au Canada et utilisez votre propre véhicule pour le travail, vous déduisez la part d'entreprise de ce que le véhicule vous coûte réellement : les kilomètres parcourus pour l'entreprise divisés par le total des kilomètres, multipliés par vos dépenses admissibles, sur le formulaire T2125. Le taux par kilomètre que vous avez peut-être entendu citer (73 cents pour les 5 000 premiers kilomètres en 2026) n'est pas cette déduction. C'est le plafond des allocations exonérées d'impôt que les employeurs versent à leurs employés, et il ne vous concerne que si quelqu'un, par exemple votre propre société, vous verse une allocation.",
+      },
+      {
+        type: "p",
+        text: "Ce guide porte sur l'année d'imposition 2026 : les frais déductibles, le tableau A, les plafonds d'intérêts et de location, la déduction pour amortissement (DPA), le registre de l'ARC et le pourcentage d'utilisation pour l'entreprise. Chaque règle et chaque montant proviennent de canada.ca (sources à la fin); le guide T4002 et le formulaire T2125 les plus récents sont les éditions 2025, et nous signalons donc les montants de 2026 qui ne sont pas encore publiés. Les exemples sont fictifs.",
+      },
+      { type: "h2", text: "Les taux et plafonds de 2026" },
+      {
+        type: "p",
+        text: "Le ministère des Finances a annoncé les plafonds de 2026 pour les automobiles le 14 janvier 2026. Ils s'appliquent à compter du 1er janvier 2026 :",
+      },
+      {
+        type: "ul",
+        items: [
+          "Plafond des allocations par kilomètre, provinces : 73 cents pour les 5 000 premiers kilomètres et 67 cents par kilomètre supplémentaire (2025 : 72 cents et 66 cents)",
+          "Plafond des allocations par kilomètre, territoires : 77 cents pour les 5 000 premiers kilomètres et 71 cents par kilomètre supplémentaire (2025 : 76 cents et 70 cents)",
+          "Plafond du coût en capital des voitures de tourisme de la catégorie 10.1 : 39 000 $ avant taxes (contre 38 000 $ en 2025)",
+          "Plafond du coût en capital des voitures de tourisme zéro émission de la catégorie 54 : 61 000 $ avant taxes (inchangé)",
+          "Frais de location déductibles : 1 100 $ par mois avant taxes pour les nouveaux baux conclus le 1er janvier 2026 ou après (inchangé)",
+          "Intérêts déductibles : 350 $ par mois pour les nouveaux prêts automobiles conclus le 1er janvier 2026 ou après (inchangé)",
+        ],
+      },
+      {
+        type: "p",
+        text: "Les plafonds de location, d'intérêts et de coût en capital ne s'appliquent qu'aux « voitures de tourisme » : les véhicules que vous possédez (autres que les véhicules zéro émission) ou que vous louez, qui sont conçus principalement pour le transport de personnes et comptent un conducteur et au plus huit passagers. Le tableau Types de véhicule de l'ARC classe les camionnettes, les fourgonnettes et les VUS selon leur usage : par exemple, une camionnette utilisée à plus de 50 % pour transporter des marchandises ou du matériel n'est pas une voiture de tourisme.",
+      },
+      { type: "h2", text: "Deux méthodes : les dépenses réelles ou l'allocation par kilomètre" },
+      {
+        type: "p",
+        text: "La méthode des dépenses réelles est la seule méthode prévue pour les véhicules sur le formulaire T2125 : additionnez ce que le véhicule vous a coûté pendant l'année, puis déduisez la part d'utilisation pour l'entreprise. La DPA sur un véhicule que vous possédez se demande séparément, selon le même pourcentage.",
+      },
+      {
+        type: "p",
+        text: "L'allocation par kilomètre est une règle d'emploi : un employeur verse à un employé un montant fixe par kilomètre parcouru pour affaires, exonéré d'impôt s'il est fondé uniquement sur les kilomètres parcourus pour affaires et que le taux est raisonnable. Si votre propre société vous en verse une, c'est cette méthode qui s'applique. Un propriétaire unique qui produit un formulaire T2125 ne peut pas la choisir.",
+      },
+      { type: "h2", text: "Quels frais de véhicule sont déductibles" },
+      {
+        type: "p",
+        text: "Le T4002 énumère les dépenses que vous pouvez déduire pour faire fonctionner un véhicule à moteur que vous utilisez pour gagner un revenu d'entreprise. Chacune est ramenée à votre pourcentage d'utilisation pour l'entreprise, et l'ARC ne les accepte que si elles sont raisonnables et appuyées par des reçus :",
+      },
+      {
+        type: "ul",
+        items: [
+          "Carburant et huile, avec chaque reçu, et pas seulement le relevé de carte",
+          "Électricité pour un véhicule zéro émission",
+          "Assurance",
+          "Permis et droits d'immatriculation",
+          "Entretien et réparations, avec chaque facture",
+          "Intérêts sur l'argent emprunté pour acheter le véhicule, plafonnés pour les voitures de tourisme (tableau B)",
+          "Frais de location, plafonnés pour les voitures de tourisme (tableau C). Conservez le bail : il indique le prix de liste.",
+        ],
+      },
+      {
+        type: "p",
+        text: "Deux frais ne sont pas réduits selon le pourcentage d'utilisation pour l'entreprise. L'ARC vous permet de déduire la totalité des frais de stationnement liés à vos activités commerciales et de l'assurance commerciale supplémentaire du véhicule. Le prix d'achat d'un véhicule que vous possédez n'est jamais déduit comme une dépense. Il passe par la DPA, expliquée plus bas.",
+      },
+      { type: "h2", text: "Comment fonctionne le tableau A" },
+      {
+        type: "p",
+        text: "Le tableau A, Dépenses relatives aux véhicules à moteur, fait partie du formulaire T2125. Sur le formulaire 2025, ses montants numérotés se présentent dans cet ordre :",
+      },
+      {
+        type: "ul",
+        items: [
+          "Montants 1 et 2 : les kilomètres parcourus pendant l'exercice pour gagner un revenu d'entreprise, et le total des kilomètres parcourus. Les deux proviennent de votre registre et des relevés du compteur kilométrique.",
+          "Montants 3 à 11 : carburant et huile, intérêts (tirés du tableau B), assurance, permis et immatriculation, entretien et réparations, location (tirée du tableau C), électricité pour les véhicules zéro émission, et autres dépenses que vous précisez.",
+          "Montant 12 : le total des montants 3 à 11.",
+          "Montant 13, la partie entreprise : montant 1 ÷ montant 2 × montant 12.",
+          "Montants 14 et 15 : les frais de stationnement d'affaires et l'assurance commerciale supplémentaire, ajoutés en entier.",
+          "Montant 16 : la somme des montants 13 à 15. C'est le montant que vous inscrivez à la ligne 9281, Dépenses relatives aux véhicules à moteur (sans la DPA).",
+        ],
+      },
+      {
+        type: "p",
+        text: "Ce sont les montants plafonnés qui entrent dans le calcul, et non ce que vous avez payé : le résultat du tableau B va au montant 4 et celui du tableau C, au montant 8. La DPA sur le véhicule est calculée à la section A du formulaire et va à la ligne 9936. Les associés qui utilisent un véhicule personnel pour les affaires de la société de personnes font plutôt leur demande à la ligne 9943. Si vous utilisez plus d'un véhicule pour l'entreprise, tenez un registre distinct pour chacun et calculez les dépenses de chaque véhicule séparément.",
+      },
+      { type: "h2", text: "Le plafond des intérêts : tableau B" },
+      {
+        type: "p",
+        text: "Si vous avez emprunté pour acheter une voiture de tourisme ou une voiture de tourisme zéro émission, le tableau B limite les intérêts qui entrent dans le tableau A. Les intérêts admissibles correspondent au moindre des intérêts à payer (méthode de comptabilité d'exercice) ou payés (méthode de comptabilité de caisse) pendant l'exercice, et de 350 $ ÷ 30 × le nombre de jours de l'exercice pour lesquels des intérêts étaient à payer ou ont été payés. Pour une année complète de 365 jours, cela donne 4 258 $. Le formulaire 2025 fixe ce montant à 350 $ pour les voitures de tourisme achetées après 2023, et à 300 $ pour celles achetées après 2000 et avant 2024. Les intérêts qui dépassent le plafond ne sont pas déductibles, et le montant plafonné est quand même ramené à votre part d'utilisation pour l'entreprise dans le tableau A.",
+      },
+      { type: "h2", text: "Le plafond de location : tableau C" },
+      {
+        type: "p",
+        text: "Le tableau C, Frais de location admissibles pour les voitures de tourisme, applique le plafond mensuel de 1 100 $ et un deuxième plafond lié au prix de liste du véhicule, puis retient le moindre des deux. Sur le formulaire 2025 :",
+      },
+      {
+        type: "ul",
+        items: [
+          "Montant 20 : les frais de location engagés pour le véhicule pendant l'exercice en cours.",
+          "Montant 21 : les paiements de location déduits pour ce véhicule pendant les exercices précédents.",
+          "Montant 22 : le nombre total de jours de location du véhicule pendant l'exercice en cours et les exercices précédents.",
+          "Montant 23 : le prix de liste du fabricant.",
+          "Montant 24 : le montant 23 ou 44 706 $ plus la taxe de vente, selon le plus élevé des deux, × 85 %.",
+          "Montant 25 : (1 100 $ plus la taxe de vente) × montant 22 ÷ 30. Le montant 26 est le montant 25 moins le montant 21.",
+          "Montant 27 : (38 000 $ plus la taxe de vente) × montant 20 ÷ montant 24.",
+          "Montant 28, les frais de location admissibles : le montant 26 ou 27, selon le moins élevé des deux. Il va au montant 8 du tableau A.",
+        ],
+      },
+      {
+        type: "p",
+        text: "Les montants de 44 706 $ et de 38 000 $ découlent du plafond de 2025 de la catégorie 10.1 (38 000 $ × 100 ÷ 85 = 44 706 $) : vérifiez donc les montants du formulaire 2026 avant de le remplir. Si un remboursement vous est dû en vertu du bail, ou si des intérêts réputés découlent de dépôts remboursables de plus de 1 000 $, l'ARC indique que vous ne pouvez pas utiliser le tableau tel qu'il est imprimé.",
+      },
+      {
+        type: "callout",
+        text: "Exemple fictif, selon les montants du formulaire 2025 : un pigiste de l'Ontario (TVH de 13 %) loue à compter du 1er janvier une voiture dont le prix de liste est de 60 000 $ et paie 12 000 $ de frais de location dans l'année. Le montant 24 est de 60 000 $ × 85 % = 51 000 $, parce que 60 000 $ dépasse 44 706 $ + TVH (50 517,78 $). Le montant 26 est de 1 243 $ × 365 ÷ 30 = 15 123,17 $. Le montant 27 est de 42 940 $ × 12 000 $ ÷ 51 000 $ = 10 103,53 $. Les frais de location admissibles correspondent au moindre des deux, soit 10 103,53 $. C'est ce montant, et non 12 000 $, qui entre dans le tableau A.",
+      },
+      { type: "h2", text: "Déduction pour amortissement : catégories 10 et 10.1" },
+      {
+        type: "p",
+        text: "Si vous êtes propriétaire du véhicule, vous en récupérez le coût au moyen de la DPA plutôt que comme une dépense. La catégorie 10 a un taux de 30 % et comprend les véhicules à moteur et certaines voitures de tourisme. Vous utilisez la méthode du solde dégressif : la DPA de chaque année est un pourcentage du solde restant de la catégorie, de sorte que la déduction diminue avec le temps. Une voiture de tourisme qui coûte plus que le plafond de l'année où vous l'avez acquise va plutôt dans la catégorie 10.1, aussi au taux de 30 %, mais avec ses propres règles :",
+      },
+      {
+        type: "ul",
+        items: [
+          "Coût plafonné : le coût en capital est limité au plafond plus la TPS/TVH ou la TVP sur ce montant. Les plafonds sont de 30 000 $ pour les véhicules acquis avant 2022, de 34 000 $ en 2022, de 36 000 $ en 2023, de 37 000 $ en 2024, de 38 000 $ en 2025 et de 39 000 $ à compter du 1er janvier 2026.",
+          "Une catégorie par véhicule : chaque véhicule de la catégorie 10.1 est inscrit séparément, et non regroupé.",
+          "Année de la vente : si vous possédiez le véhicule à la fin de l'année précédente, vous pourriez demander 50 % de la DPA de l'année au cours de l'année où vous le vendez.",
+          "Ni récupération ni perte finale : ces règles ne s'appliquent pas aux voitures de tourisme de la catégorie 10.1, sauf si elles étaient des biens relatifs à la passation en charges immédiate désignés.",
+        ],
+      },
+      {
+        type: "p",
+        text: "L'année où vous acquérez un bien, la règle de la demi-année limite habituellement la DPA à la moitié de l'ajout net. L'incitatif à l'investissement accéléré suspend cette règle pour les biens admissibles acquis après le 20 novembre 2018 et prêts à être mis en service avant 2028 : pour les biens prêts à être mis en service de 2024 à 2027, l'ARC fixe la déduction de la première année à deux fois la déduction normale de la première année. Le T4002 de 2025 décrit aussi un incitatif proposé de réaccélération pour les biens acquis après 2024 : vérifiez donc dans le guide de 2026 le traitement de votre véhicule pour la première année.",
+      },
+      {
+        type: "p",
+        text: "Les véhicules zéro émission ont leurs propres catégories : la catégorie 54 (30 %) pour ceux qui feraient autrement partie de la catégorie 10 ou 10.1, et la catégorie 55 (40 %) pour ceux qui feraient autrement partie de la catégorie 16. Chaque voiture de tourisme zéro émission de la catégorie 54 a un plafond de coût en capital de 61 000 $ plus la taxe de vente.",
+      },
+      {
+        type: "p",
+        text: "Dans chaque catégorie, la DPA sur un véhicule que vous utilisez aussi à des fins personnelles est ramenée à la part d'utilisation pour l'entreprise : dans l'exemple du T4002, 12 000 km sur 18 000 km appliqués à 3 000 $ de DPA donnent 2 000 $.",
+      },
+      {
+        type: "callout",
+        text: "Exemple fictif : un pigiste de l'Ontario achète une voiture de tourisme de 45 000 $ en 2026. Elle va dans sa propre catégorie 10.1, et son coût en capital est plafonné à 39 000 $ + TVH de 13 % = 44 070 $. Une année complète de DPA à 30 % sur ce montant serait de 13 221 $ et, à 40 % d'utilisation pour l'entreprise, la déduction serait de 5 288,40 $. Le montant de la première année dépend de la règle qui s'applique à la première année, comme expliqué plus haut.",
+      },
+      { type: "h2", text: "Exemple détaillé en dollars canadiens" },
+      {
+        type: "p",
+        text: "Les montants ci-dessous sont fictifs et choisis pour illustrer le calcul. Supposons qu'un propriétaire unique dont l'exercice se termine le 31 décembre parcourt 20 000 km en 2026, dont 8 000 km pour des déplacements d'affaires inscrits dans un registre. L'utilisation pour l'entreprise est de 8 000 ÷ 20 000 = 40 %. Les frais de véhicule de l'année sont les suivants :",
+      },
+      {
+        type: "ul",
+        items: [
+          "Carburant : 2 600 $",
+          "Assurance : 1 800 $",
+          "Entretien et réparations : 900 $",
+          "Permis et immatriculation : 150 $",
+          "Intérêts sur le prêt : 1 500 $, sous le plafond annuel de 4 258 $, donc entièrement pris en compte",
+          "Total (montant 12) : 6 950 $ × 40 % = 2 780 $",
+          "Stationnement d'affaires : 240 $, déduit en entier plutôt qu'à 40 %",
+          "Montant inscrit à la ligne 9281 : 3 020 $",
+        ],
+      },
+      {
+        type: "p",
+        text: "La DPA sur le véhicule va à la ligne 9936, elle aussi ramenée à 40 %. À titre de comparaison, une allocation d'employeur pour les mêmes 8 000 kilomètres d'affaires aux taux provinciaux de 2026 pourrait être d'au plus 5 000 × 0,73 $ + 3 000 × 0,67 $ = 5 660 $. Il s'agit d'un paiement exonéré d'impôt versé par un employeur, utile si vous vous demandez si votre société devrait vous rembourser, mais pas d'une déduction qu'un propriétaire unique peut demander.",
+      },
+      { type: "h2", text: "Le registre attendu par l'ARC" },
+      {
+        type: "p",
+        text: "Selon l'ARC, « la meilleure façon de démontrer qu'un véhicule est utilisé à des fins commerciales » est de tenir un registre exact des déplacements d'affaires pour toute l'année. Pour chaque déplacement d'affaires, inscrivez :",
+      },
+      {
+        type: "ul",
+        items: ["La date", "La destination", "Le but", "Le nombre de kilomètres parcourus"],
+      },
+      {
+        type: "p",
+        text: "Notez aussi le relevé du compteur kilométrique de chaque véhicule au début et à la fin de votre exercice et, si vous achetez, vendez ou échangez un véhicule pendant l'année, son relevé à cette date. Les deux relevés donnent le total des kilomètres, le dénominateur de votre pourcentage d'utilisation pour l'entreprise. Le point de départ ne figure pas dans la liste de l'ARC, mais l'inscrire rend chaque entrée plus facile à vérifier.",
+      },
+      {
+        type: "p",
+        text: "Précisez le but : « visite de chantier, soumission pour une rénovation de cuisine » rattache un déplacement à l'entreprise d'une façon que « rencontre avec un client » ne permet pas. Inscrivez les déplacements au moment où ils ont lieu plutôt que de mémoire à la fin du mois, incluez les courts trajets et, si un déplacement d'affaires comprend une course personnelle, n'inscrivez que les kilomètres d'affaires.",
+      },
+      {
+        type: "p",
+        text: "Vous voulez un registre tout prêt avec ces colonnes?",
+        link: {
+          label: "Téléchargez un modèle gratuit de registre de kilométrage",
+          href: "/fr/modele-registre-kilometrage",
+        },
+      },
+      { type: "h2", text: "L'année de base et la période d'échantillonnage de trois mois" },
+      {
+        type: "p",
+        text: "Vous n'avez pas à inscrire chaque déplacement indéfiniment. La règle simplifiée de l'ARC sur le registre fonctionne ainsi :",
+      },
+      {
+        type: "ul",
+        items: [
+          "Tenez un registre complet pendant une période complète de 12 mois. C'est votre année de base.",
+          "Les années suivantes, tenez plutôt un registre pendant une période d'échantillonnage de trois mois.",
+          "Calculez l'utilisation annuelle pour l'entreprise ainsi : (% de la période d'échantillonnage ÷ % de l'année de base pour les mêmes mois) × % annuel de l'année de base.",
+          "L'échantillon tient lieu de l'année seulement si le résultat se situe à 10 points de pourcentage près de l'année de base, et si l'année de base reflète toujours votre utilisation habituelle du véhicule.",
+          "Si le résultat varie de plus de 10 points, l'échantillon ne vaut que pour ses trois mois. Pour le reste de l'année, il vous faut un registre réel des déplacements, et l'ARC suggère de commencer une nouvelle année de base de 12 mois.",
+        ],
+      },
+      {
+        type: "p",
+        text: "L'exemple de l'ARC : une année de base avec une utilisation annuelle pour l'entreprise de 49 %, et de 46 % pour la période d'avril à juin. L'échantillon d'avril à juin d'une année ultérieure indique 51 %. L'utilisation calculée est de (51 % ÷ 46 %) × 49 % = 54 %. Ce résultat se situe dans l'intervalle de 39 % à 59 %; l'ARC accepterait donc 54 % en l'absence de preuve contraire. Choisissez les mois de l'échantillon à l'avance. Comme l'année de base continue de servir les années suivantes, son registre doit être conservé pendant six ans à partir de la fin de la dernière année d'imposition qu'il sert à appuyer. Tous les autres registres suivent la règle habituelle de six ans à partir de la fin de l'année d'imposition à laquelle ils se rapportent.",
+      },
+      { type: "h2", text: "Comment calculer votre pourcentage d'utilisation pour l'entreprise" },
+      {
+        type: "p",
+        text: "La formule est : kilomètres parcourus pour l'entreprise ÷ total des kilomètres. À la fin de l'année, votre registre devrait vous fournir :",
+      },
+      {
+        type: "ul",
+        items: [
+          "Le total des kilomètres parcourus : le relevé du compteur kilométrique à la fin de l'année moins celui du début de l'année.",
+          "Les kilomètres parcourus pour l'entreprise : la somme de tous les déplacements d'affaires inscrits.",
+          "Le pourcentage d'utilisation pour l'entreprise : kilomètres d'affaires ÷ total des kilomètres × 100.",
+        ],
+      },
+      {
+        type: "p",
+        text: "Ce pourcentage s'applique à chaque dépense du tableau A et à la DPA du véhicule. L'exemple publié par l'ARC : 27 000 kilomètres d'affaires sur 30 000 au total, avec 5 400 $ de dépenses, donnent 27 000 ÷ 30 000 × 5 400 $ = 4 860 $. L'ajout en entier de 40 $ de stationnement et de 100 $ d'assurance commerciale supplémentaire porte la déduction à 5 000 $.",
+      },
+      {
+        type: "p",
+        text: "La question délicate est de savoir quels déplacements sont des déplacements d'affaires. La position de longue date de l'ARC, énoncée dans le Bulletin d'interprétation IT-521R archivé, est que les déplacements entre votre domicile et votre lieu d'affaires sont personnels, sauf si votre domicile est la base de vos activités commerciales. Si vous avez un bureau ou un autre lieu de travail fixe ailleurs, votre domicile n'est normalement pas admissible. Si vous exploitez l'entreprise à partir de chez vous et vous rendez chez des clients ou sur des chantiers, ces déplacements peuvent être des déplacements d'affaires. Les déplacements entre différents locaux de la même entreprise sont déductibles.",
+      },
+      {
+        type: "callout",
+        text: "ReceiptOne enregistre la date et la distance de l'itinéraire de chaque déplacement, soit par GPS dans l'application mobile, en arrière-plan, une fois le suivi des déplacements activé, soit en la calculant à partir des adresses de départ et d'arrivée que vous entrez, avec votre note sur le but. Marquez chaque déplacement comme professionnel ou personnel, et le rapport T2125 indique les kilomètres d'affaires divisés par tous les kilomètres que vous avez inscrits dans l'application. Il n'utilise pas les relevés de votre compteur kilométrique : ce pourcentage n'est donc exact que si vous inscrivez aussi vos déplacements personnels. Notez vous-même les relevés du compteur au début et à la fin de l'année.",
+      },
+      { type: "h2", text: "Dates limites pour l'année d'imposition 2026" },
+      {
+        type: "p",
+        text: "Les travailleurs autonomes produisent leur déclaration au plus tard le 15 juin, mais tout solde dû doit être payé au plus tard le 30 avril. Pour les déclarations de 2025, ces dates étaient le 30 avril et le 15 juin 2026. Selon les mêmes règles, elles tombent le 30 avril et le 15 juin 2027 pour 2026, mais l'ARC n'avait pas encore publié son calendrier daté de 2026 au moment de la rédaction; vérifiez-les avant de produire votre déclaration.",
+      },
+      {
+        type: "p",
+        text: "Vous conduisez pour une application de covoiturage ou de livraison?",
+        link: enOnly("Découvrez comment ReceiptOne fonctionne pour les chauffeurs", "/ca/drivers"),
+      },
+      {
+        type: "p",
+        text: "Les chauffeurs de covoiturage et de livraison ont leurs propres règles de TPS/TVH.",
+        link: enOnly(
+          "Lisez notre guide sur les déductions fiscales des chauffeurs de covoiturage et de livraison",
+          "/articles/tax-deductions-rideshare-delivery-drivers-canada",
+        ),
+      },
+      { type: "h2", text: FR_FAQ_HEADING },
+      {
+        type: "faq",
+        q: "Puis-je simplement déduire le taux de 73 cents le kilomètre sur mon T2125?",
+        a: "Non. Ce taux est le plafond des allocations exonérées d'impôt que les employeurs versent à leurs employés. Un propriétaire unique déduit la part d'entreprise des frais réels du véhicule au moyen du tableau A et de la ligne 9281, plus la DPA à la ligne 9936.",
+      },
+      {
+        type: "faq",
+        q: "Les déplacements entre mon domicile et le bureau d'un client sont-ils déductibles?",
+        a: "Cela dépend de l'endroit où votre entreprise est établie. Si votre domicile est la base de vos activités commerciales et que vous n'avez pas de bureau ailleurs, les déplacements vers vos clients peuvent compter comme des déplacements d'affaires. Si vous avez un bureau ou un autre lieu de travail fixe, les déplacements entre votre domicile et ce lieu de travail sont personnels.",
+      },
+      {
+        type: "faq",
+        q: "Dois-je tenir un registre chaque année?",
+        a: "Il vous faut un registre complet de 12 mois pour établir une année de base. Ensuite, un registre d'échantillonnage de trois mois chaque année suffit, tant que l'utilisation annuelle calculée pour l'entreprise reste à 10 points de pourcentage près de l'année de base.",
+      },
+      {
+        type: "faq",
+        q: "Les frais de stationnement sont-ils réduits selon mon pourcentage d'utilisation pour l'entreprise?",
+        a: "Non. L'ARC vous permet de déduire la totalité des frais de stationnement liés à votre entreprise, ainsi que l'assurance commerciale supplémentaire, sans les répartir.",
+      },
+      {
+        type: "faq",
+        q: "Puis-je déduire la totalité de mes paiements de location?",
+        a: "Pas toujours. Pour une voiture de tourisme, le tableau C plafonne les frais de location admissibles au moindre d'un plafond de 1 100 $ par mois et d'un plafond lié au prix de liste du fabricant. Le montant plafonné est ensuite ramené à votre part d'utilisation pour l'entreprise.",
+      },
+      {
+        type: "faq",
+        q: "J'ai acheté une voiture de 45 000 $ en 2026. Que puis-je déduire?",
+        a: "S'il s'agit d'une voiture de tourisme, elle va dans sa propre catégorie 10.1, et son coût en capital est plafonné à 39 000 $ plus la TPS/TVH ou la TVP sur ce montant. La DPA se demande au taux de 30 % sur le montant plafonné, sous réserve des règles de la première année du guide T4002, et elle est ramenée à votre part d'utilisation pour l'entreprise. Une voiture de tourisme zéro émission va plutôt dans la catégorie 54, avec un plafond de 61 000 $.",
+      },
+      {
+        type: "faq",
+        q: "Je suis employé, pas travailleur autonome. Ces règles s'appliquent-elles?",
+        a: "En partie. Les employés font leur demande à la ligne 22900 au moyen du formulaire T777, et seulement si les conditions de l'ARC sont remplies, notamment un formulaire T2200 signé par l'employeur et aucune allocation non imposable pour l'usage d'un véhicule. Les règles sur le registre et l'utilisation pour l'entreprise sont les mêmes.",
+      },
+      {
+        type: "sources",
+        links: [
+          {
+            label: "Plafonds de 2026 pour les automobiles",
+            href: "https://www.canada.ca/fr/ministere-finances/nouvelles/2026/01/le-gouvernement-annonce-les-plafonds-de-deduction-des-frais-dautomobile-et-les-taux-des-avantages-relatifs-a-lutilisation-dune-automobile-pour-les-.html",
+          },
+          { label: "T4002, chapitre 3 (ligne 9281)", href: `${T4002_FR}/t4002-5.html` },
+          { label: "T4002, chapitre 4 (DPA)", href: `${T4002_FR}/t4002-6.html` },
+          {
+            label: "Formulaire T2125 (2025)",
+            href: "https://www.canada.ca/content/dam/cra-arc/formspubs/pbg/t2125/t2125-25f.pdf",
+          },
+          {
+            label: "Registres pour les véhicules à moteur",
+            href: `${VEHICLE_FR}/registres-vehicules-a-moteur.html`,
+          },
+          { label: "Types de véhicule", href: `${VEHICLE_FR}/types-vehicule.html` },
+          {
+            label: "Calculer vos dépenses relatives aux véhicules à moteur",
+            href: `${SOLE_PROP_FR}/declarer-vos-revenus-depenses-entreprise/comment-remplir-formulaire-t2125/calculer-vos-depenses-relatives-vehicules-a-moteur.html`,
+          },
+          {
+            label: "Véhicule à moteur – frais de location",
+            href: `${VEHICLE_FR}/frais-deductibles/vehicule-a-moteur-frais-location.html`,
+          },
+          {
+            label: "Incitatif à l'investissement accéléré",
+            href: `${SOLE_PROP_FR}/declarer-vos-revenus-depenses-entreprise/reclamer-deduction-amortissement/incitatif-investissement-accelere.html`,
+          },
+          {
+            label: "IT-521R (archivé)",
+            href: `${CANADA_FR}/formulaires-publications/publications/it521r/archivee-frais-vehicule-a-moteur-deduits-travailleurs-independants.html`,
+          },
+        ],
+        checked: `Pages françaises de canada.ca consultées le 16 novembre 2026. Le guide T4002 et le formulaire T2125 les plus récents sont les éditions 2025. ${DISCLAIMER}`,
+      },
+    ],
+  }),
+
+  /* ------------------------------------------------------------------ */
+  /* sales-tax-by-province-self-employed-canada                          */
+  /* ------------------------------------------------------------------ */
+  fr({
+    enSlug: "sales-tax-by-province-self-employed-canada",
+    title:
+      "TPS, TVH, TVP et TVQ : les taxes de vente par province pour les travailleurs autonomes (guide 2026)",
+    displayTitle:
+      "TPS, TVH, TVP et TVQ : les taxes de vente par province pour les travailleurs autonomes",
+    excerpt:
+      "Les taux de TPS, de TVH et de taxe de vente provinciale dans les 13 provinces et territoires, quand un travailleur autonome doit s'inscrire, quelles taxes provinciales vous pouvez récupérer et quel taux exiger aux clients d'ailleurs.",
+    category: "TPS/TVH",
+    publishedAt: "2026-11-16",
+    updatedAt: "2026-11-16",
+    image: {
+      path: "/articles/sales-tax-by-province-self-employed-canada.webp",
+      width: 1280,
+      height: 720,
+      alt: "Une calculatrice noire et deux pièces de monnaie éclairées par un faisceau de lumière rasant sur une table sombre",
+    },
+    tags: [
+      "TPS/TVH",
+      "TVP",
+      "TVQ",
+      "TVD",
+      "taxe de vente",
+      "provinces",
+      "ARC",
+      "travailleur autonome",
+    ],
+    relatedSlugs: ["tps-tvh-travailleurs-autonomes", "regles-recus-arc"],
+    quickAnswer:
+      "L'Alberta et les trois territoires n'exigent que la TPS de 5 %; l'Ontario exige la TVH de 13 %, la Nouvelle-Écosse, de 14 %, et le Nouveau-Brunswick, Terre-Neuve-et-Labrador et l'Île-du-Prince-Édouard, de 15 %; la Colombie-Britannique, la Saskatchewan, le Manitoba et le Québec exigent la TPS de 5 % plus leur propre taxe provinciale. En tant que travailleur autonome, vous devez vous inscrire à la TPS/TVH dès que vos ventes taxables dépassent 30 000 $ au cours d'un seul trimestre civil ou sur quatre trimestres consécutifs, et chaque taxe provinciale a ses propres règles d'inscription. Pour la plupart des services, le taux que vous exigez est celui de la province de l'adresse de votre client.",
+    receiptOneHelps: {
+      items: [
+        "Photographiez un reçu papier ou téléversez une photo ou un PDF : ReceiptOne lit le commerçant, la date, le total et les montants de TPS/TVH et de TVP, que vous vérifiez ensuite.",
+        "Taxes remboursables estimées tient un total courant de la TPS/TVH et, s'il y a lieu, de la TVQ de vos reçus, tandis que la TVP est signalée séparément comme non remboursable.",
+        "Si vous êtes inscrit, la feuille de travail de déclaration de TPS/TVH remplit la ligne 106 à partir de vos reçus; vous entrez vos ventes et la taxe perçue, et elle ajoute les lignes de la TVQ lorsque la TVQ s'applique. Elle ne produit rien auprès de l'ARC ni de Revenu Québec.",
+        "Le Calendrier fiscal affiche vos échéances de l'ARC pour les 12 prochains mois, selon la fréquence de production de vos déclarations de TPS/TVH et vos acomptes provisionnels.",
+        "Exportez vos registres, ou une feuille de travail de déclaration terminée, en PDF ou en CSV pour votre comptable.",
+      ],
+      link: { label: "Découvrez comment fonctionne ReceiptOne.", href: "/fr" },
+    },
+    body: [
+      {
+        type: "p",
+        text: "Au Canada, les taxes de vente s'empilent : la TPS fédérale partout, une taxe de vente harmonisée (TVH) dans cinq provinces, et une taxe provinciale distincte qui s'ajoute à la TPS dans quatre autres. Ce guide couvre les taux, l'inscription, les taxes provinciales et le taux à exiger aux clients d'ailleurs. Les règles fédérales proviennent de canada.ca, et chaque règle provinciale, du site gouvernemental de la province concernée; les sources sont énumérées à la fin.",
+      },
+      { type: "h2", text: "Taux des taxes de vente dans chaque province et territoire" },
+      {
+        type: "p",
+        text: "La page des taux de l'ARC indique la TPS ou la TVH de chaque province et territoire, ainsi que toute taxe provinciale distincte. Le seul changement récent qu'elle signale : le taux de la TVH de la Nouvelle-Écosse a diminué à 14 % le 1er avril 2025. Les taux ci-dessous sont ceux qu'indiquent les pages citées.",
+      },
+      {
+        type: "table",
+        caption:
+          "TPS, TVH et taux de la TVQ : page des taux de TPS/TVH de l'ARC. Taux provinciaux : sites gouvernementaux de la Colombie-Britannique, de la Saskatchewan et du Manitoba. Consultés le 16 novembre 2026.",
+        headers: ["Province ou territoire", "Taxes applicables", "TPS ou TVH", "Taxe provinciale"],
+        rows: [
+          ["Alberta", "TPS seulement", "TPS de 5 %", "Aucune"],
+          ["Colombie-Britannique", "TPS + TVP", "TPS de 5 %", "TVP de 7 % (taux général)"],
+          ["Manitoba", "TPS + TVD", "TPS de 5 %", "TVD de 7 % (taux général)"],
+          ["Nouveau-Brunswick", "TVH", "TVH de 15 %", "Comprise dans la TVH"],
+          ["Terre-Neuve-et-Labrador", "TVH", "TVH de 15 %", "Comprise dans la TVH"],
+          ["Territoires du Nord-Ouest", "TPS seulement", "TPS de 5 %", "Aucune"],
+          [
+            "Nouvelle-Écosse",
+            "TVH",
+            "TVH de 14 %, depuis le 1er avril 2025",
+            "Comprise dans la TVH",
+          ],
+          ["Nunavut", "TPS seulement", "TPS de 5 %", "Aucune"],
+          ["Ontario", "TVH", "TVH de 13 %", "Comprise dans la TVH"],
+          ["Île-du-Prince-Édouard", "TVH", "TVH de 15 %", "Comprise dans la TVH"],
+          ["Québec", "TPS + TVQ", "TPS de 5 %", "TVQ de 9,975 %"],
+          ["Saskatchewan", "TPS + TVP", "TPS de 5 %", "TVP de 6 %"],
+          ["Yukon", "TPS seulement", "TPS de 5 %", "Aucune"],
+        ],
+      },
+      {
+        type: "p",
+        text: "Lorsqu'une taxe de vente provinciale s'applique, l'ARC indique de calculer la TPS sur le prix sans cette taxe. Lorsque la TVH s'applique, votre reçu ou votre facture indique le taux total de la TVH, et non ses parties fédérale et provinciale.",
+      },
+      { type: "h2", text: "Inscription à la TPS/TVH pour les travailleurs autonomes" },
+      { type: "h3", text: "Le critère du petit fournisseur de 30 000 $" },
+      {
+        type: "p",
+        text: "Vous n'avez pas à vous inscrire à la TPS/TVH tant que vous êtes un petit fournisseur : vos ventes taxables n'ont pas dépassé 30 000 $ au cours d'un seul trimestre civil ni sur quatre trimestres civils consécutifs. En tant que propriétaire unique, vous comptez les revenus avant dépenses tirés de vos fournitures taxables effectuées dans le monde entier, provenant de toutes vos entreprises et de celles de vos associés. Les trimestres civils commencent le 1er janvier, le 1er avril, le 1er juillet et le 1er octobre.",
+      },
+      {
+        type: "p",
+        text: "Dépasser 30 000 $ au cours d'un trimestre met fin au statut de petit fournisseur au moment de cette vente : votre inscription entre en vigueur au plus tard ce jour-là, et vous exigez la TPS/TVH sur cette vente. Dépasser le seuil sur quatre trimestres y met fin à la fin du mois qui suit le trimestre où vous l'avez dépassé, avec une inscription en vigueur au plus tard à votre vente suivante. Dans les exemples de l'ARC, vous avez ensuite 29 jours à compter de la date d'entrée en vigueur pour vous inscrire.",
+      },
+      { type: "h3", text: "S'inscrire volontairement" },
+      {
+        type: "p",
+        text: "Sous le seuil, vous pouvez vous inscrire volontairement si vous effectuez des ventes taxables au Canada; l'inscription prend habituellement effet le jour où vous demandez votre compte, ou jusqu'à 30 jours plus tôt. Vous exigez, percevez et versez alors la taxe, produisez des déclarations et restez inscrit pendant au moins un an, sauf si vous cessez vos activités commerciales. Si vous ne vous inscrivez pas, vous n'exigez pas de TPS/TVH et ne demandez pas de crédits de taxe sur les intrants.",
+      },
+      { type: "h3", text: "Les chauffeurs de covoiturage s'inscrivent dès la première course" },
+      {
+        type: "p",
+        text: "Le seuil ne s'applique pas au covoiturage commercial. Un chauffeur de taxi ou de covoiturage travaillant de façon autonome doit s'inscrire à la TPS/TVH même s'il est un petit fournisseur, et la date d'entrée en vigueur de l'inscription est le jour où vous commencez à fournir des services taxables de transport de passagers.",
+        link: enOnly(
+          "Lisez notre guide fiscal pour les chauffeurs de covoiturage et de livraison",
+          "/articles/tax-deductions-rideshare-delivery-drivers-canada",
+        ),
+      },
+      { type: "h3", text: "Une fois inscrit" },
+      {
+        type: "p",
+        text: "Vous exigez la TPS/TVH au taux du lieu de fourniture, la détenez en fiducie jusqu'à ce que vous la versiez et produisez une déclaration pour chaque période de déclaration. La date de la facture détermine dans quelle déclaration une vente doit figurer, que vous ayez été payé ou non.",
+        link: {
+          label: "Consultez les échéances actuelles de l'ARC.",
+          href: "/fr/echeances-fiscales",
+        },
+      },
+      {
+        type: "p",
+        text: "Vous récupérez la TPS/TVH payée sur vos achats d'entreprise en demandant des crédits de taxe sur les intrants (CTI) à la ligne 106, dans la mesure où ces achats servent à vos activités commerciales. Selon la méthode rapide de comptabilité, vous ne pouvez pas demander de CTI pour les dépenses d'exploitation. Pour la plupart des inscrits, un CTI oublié peut être demandé jusqu'à la date d'échéance de la déclaration visant la dernière période de déclaration qui se termine dans les quatre ans suivant la période où il aurait pu être demandé pour la première fois.",
+        link: {
+          label: "Lisez notre guide sur le suivi de la TPS/TVH sur les dépenses d'entreprise.",
+          href: frArticle("track-gst-hst-business-expenses"),
+        },
+      },
+      { type: "h2", text: "Taxes de vente provinciales : inscription et récupération" },
+      { type: "h3", text: "La TVP de la Colombie-Britannique" },
+      {
+        type: "p",
+        text: "Vous devez vous inscrire pour percevoir la TVP si vous êtes situé en Colombie-Britannique et que, dans le cours normal de vos activités dans la province, vous vendez ou louez des biens taxables, ou fournissez des logiciels ou des services taxables, comme la réparation de biens taxables ou des services juridiques. Le taux général est de 7 %.",
+        link: enOnly(
+          "Lisez notre guide sur la TVP de la Colombie-Britannique pour les travailleurs autonomes",
+          "/articles/bc-pst-self-employed",
+        ),
+      },
+      {
+        type: "p",
+        text: "Un petit vendeur (« small seller ») n'a pas à s'inscrire : il est situé en Colombie-Britannique, ne vend pas régulièrement à partir de locaux commerciaux établis et a tiré 10 000 $ ou moins de revenus bruts de ventes au détail de biens, de logiciels et de services admissibles au cours des 12 mois précédents, et prévoit la même chose pour les 12 prochains mois. La province précise que cette liste de conditions n'est pas complète. Ses pages sur la TVP indiquent aussi que l'extension prévue de la TVP aux services de comptabilité, d'architecture, d'ingénierie, de géoscience, d'immobilier non résidentiel et de sécurité est suspendue.",
+      },
+      {
+        type: "p",
+        text: "En matière de récupération, la province est claire : contrairement à la TPS/TVH, il n'existe pas de crédits de taxe sur les intrants pour la TVP payée sur les biens achetés par une entreprise. La TVP s'applique aux biens taxables que vous achetez ou louez pour votre entreprise et, si un fournisseur ne l'exige pas, vous devez l'autocotiser.",
+      },
+      { type: "h3", text: "La TVP de la Saskatchewan" },
+      {
+        type: "p",
+        text: "La TVP de la Saskatchewan est une taxe de six pour cent sur les biens et services taxables consommés ou utilisés dans la province. Les entreprises qui y exercent leurs activités doivent s'inscrire pour obtenir un numéro de TVP, soit un numéro de permis de vendeur (« vendor's licence »), soit un numéro de consommateur inscrit (« registered consumer »); les pages que nous avons consultées ne décrivent aucune exception pour les petits vendeurs. Les entreprises paient la TVP sur les biens qu'elles achètent et l'autocotisent lorsqu'un fournisseur ne l'a pas perçue.",
+      },
+      { type: "h3", text: "La TVD du Manitoba" },
+      {
+        type: "p",
+        text: "La taxe sur les ventes au détail (TVD) du Manitoba s'applique à la vente au détail ou à la location de la plupart des biens et de certains services, à un taux général de 7 % calculé sur le prix avant la TPS. Depuis avril 2024, les entreprises dont les ventes taxables annuelles sont inférieures à 30 000 $ n'ont pas à s'inscrire, sauf si elles font appel à des fournisseurs de l'extérieur de la province qui ne perçoivent pas la TVD du Manitoba ou vendent du tabac ou de l'alcool. Une entreprise qui dépasse 30 000 $ dispose d'un mois pour s'inscrire.",
+      },
+      {
+        type: "p",
+        text: "Les petites entreprises non inscrites paient la TVD sur ce qu'elles achètent, pour leur propre usage comme pour la revente. L'inscription ne change rien pour vos propres achats : le Manitoba précise qu'un numéro de TVD ne permet pas d'acheter des biens ou des services taxables sans payer la TVD, sauf s'ils sont destinés à la revente ou à une autre fin exonérée.",
+      },
+      { type: "h3", text: "La TVQ du Québec" },
+      {
+        type: "p",
+        text: "Au Québec, la TPS et la taxe de vente du Québec (TVQ) sont toutes deux perçues sur la plupart des biens et des services. Revenu Québec présente les obligations ensemble : s'inscrire aux fichiers de la TPS et de la TVQ, percevoir les taxes, calculer vos crédits de taxe sur les intrants (CTI) et vos remboursements de la taxe sur les intrants (RTI), et produire les déclarations de TPS et de TVQ. La page des taux de l'ARC indique que le taux de la TVQ est de 9,975 %.",
+      },
+      {
+        type: "p",
+        text: "Le seuil du petit fournisseur est le même, soit 30 000 $, au cours d'un trimestre civil ou des quatre trimestres précédents. Un inscrit perçoit les taxes et peut demander des CTI et des RTI sur les achats faits pour effectuer des fournitures taxables : contrairement à la TVP et à la TVD, la TVQ que vous payez sur vos achats d'entreprise peut donc être récupérée. Une entreprise qui s'inscrit au fichier de la TVQ doit aussi s'inscrire au fichier de la TPS/TVH et rester inscrite pendant au moins un an.",
+      },
+      { type: "h2", text: "Quel taux exiger aux clients d'autres provinces" },
+      {
+        type: "p",
+        text: "Le taux dépend du lieu de fourniture, et non de l'endroit où vous habitez. Pour les services, si vous obtenez l'adresse domiciliaire ou d'affaires de votre client au Canada dans le cours normal de vos activités, le lieu de fourniture est la province de cette adresse. L'exemple de l'ARC : un fournisseur qui travaille entièrement au Québec conçoit un site Web pour une société dont l'adresse d'affaires est en Ontario; la TVH s'applique donc au taux de l'Ontario.",
+      },
+      {
+        type: "p",
+        text: "Sans adresse, le lieu de fourniture dépend de l'endroit où vous rendez le service : la TPS seulement si la partie canadienne n'est pas rendue principalement (plus de 50 %) dans des provinces participantes, celles qui exigent la TVH, et sinon la province participante où elle est rendue dans la plus grande proportion. Les services personnels, généralement ceux qui sont rendus à 90 % ou plus en présence du client, ont leurs propres règles, tout comme les services liés à des biens ou à des immeubles.",
+        link: {
+          label: "Lisez les règles de l'ARC sur le lieu de fourniture.",
+          href: `${GST_FR}/facturer-percevoir-lieu-fourniture.html`,
+        },
+      },
+      {
+        type: "p",
+        text: "Ces règles ne déterminent que la TPS ou la TVH. Une taxe de vente provinciale a sa propre portée : la Colombie-Britannique, par exemple, indique qu'une entreprise située à l'extérieur de la province qui vend à des clients de la province pourrait devoir s'inscrire à sa TVP.",
+      },
+      { type: "h2", text: "Conservez des reçus qui indiquent la taxe" },
+      {
+        type: "p",
+        text: "Pour demander un CTI, il vous faut des documents qui indiquent la taxe. Pour un achat de 100 $ à 499,99 $, le reçu ou la facture doit notamment indiquer la TPS/TVH exigée (ou qu'elle est comprise) et le numéro d'inscription à la TPS/TVH du fournisseur; à partir de 500 $, il doit aussi indiquer votre nom ou votre nom commercial. Vous pouvez confirmer un numéro de TPS/TVH auprès de l'ARC, et un numéro de TVQ auprès de Revenu Québec. Conservez vos registres pendant six ans à partir de la fin de la dernière année à laquelle ils se rapportent.",
+        link: {
+          label: "Lisez notre guide sur les règles de l'ARC concernant les reçus.",
+          href: frArticle("cra-receipt-rules-canada"),
+        },
+      },
+      { type: "h2", text: FR_FAQ_HEADING },
+      {
+        type: "faq",
+        q: "Quelles provinces exigent la TVH?",
+        a: "L'Ontario (13 %), la Nouvelle-Écosse (14 % depuis le 1er avril 2025), et le Nouveau-Brunswick, Terre-Neuve-et-Labrador et l'Île-du-Prince-Édouard (15 %). L'Alberta et les trois territoires n'exigent que la TPS de 5 %, et la Colombie-Britannique, la Saskatchewan, le Manitoba et le Québec exigent la TPS de 5 % plus leur propre taxe provinciale.",
+      },
+      {
+        type: "faq",
+        q: "Dois-je exiger la TPS/TVH si je gagne moins de 30 000 $?",
+        a: "Pas tant que vous êtes un petit fournisseur, sauf si vous êtes chauffeur pour un service de covoiturage commercial, qui exige l'inscription dès le départ. Vous pouvez quand même vous inscrire volontairement, ce qui vous permet de demander des crédits de taxe sur les intrants, mais vous oblige à exiger et à verser la taxe.",
+      },
+      {
+        type: "faq",
+        q: "Puis-je récupérer la TVP que je paie sur mes achats d'entreprise?",
+        a: "Pas comme vous récupérez la TPS/TVH. La Colombie-Britannique indique qu'il n'existe pas de crédits de taxe sur les intrants pour la TVP sur les biens achetés par une entreprise, et le Manitoba précise qu'un numéro de TVD ne vous permet pas d'acheter des biens ou des services taxables sans payer la TVD, sauf s'ils sont destinés à la revente ou à une autre fin exonérée. La TVQ est différente : les inscrits peuvent demander des remboursements de la taxe sur les intrants.",
+      },
+      {
+        type: "faq",
+        q: "Quel taux dois-je exiger à un client d'une autre province?",
+        a: "Pour la plupart des services, le taux de la province de l'adresse domiciliaire ou d'affaires de votre client, si vous obtenez cette adresse dans le cours normal de vos activités. Dans l'exemple de l'ARC, un fournisseur du Québec qui conçoit un site Web pour une société dont l'adresse d'affaires est en Ontario exige la TVH au taux de l'Ontario.",
+      },
+      {
+        type: "faq",
+        q: "Existe-t-il une exception pour les petits vendeurs à l'égard de la TVP?",
+        a: "En Colombie-Britannique, un petit vendeur dont les ventes au détail admissibles sont de 10 000 $ ou moins au cours des 12 mois précédents, et qui prévoit la même chose pour les 12 prochains mois, n'a pas à s'inscrire. Au Manitoba, les entreprises dont les ventes taxables annuelles sont inférieures à 30 000 $ n'ont généralement pas à s'inscrire à la TVD. La Saskatchewan indique que les entreprises qui y exercent leurs activités doivent s'inscrire.",
+      },
+      {
+        type: "sources",
+        links: [
+          {
+            label: "Calculatrice de la TPS/TVH (et tableau des taux)",
+            href: `${GST_FR}/facturer-percevoir-quel-taux/calculatrice.html`,
+          },
+          {
+            label: "Facturer ou percevoir la TPS/TVH",
+            href: `${GST_FR}/facturer-percevoir-quel-taux.html`,
+          },
+          {
+            label: "La TPS/TVH et les règles sur le lieu de fourniture",
+            href: `${GST_FR}/facturer-percevoir-lieu-fourniture.html`,
+          },
+          {
+            label: "Quand s'inscrire et commencer à facturer la TPS/TVH",
+            href: `${GST_FR}/quand-inscrire-facture.html`,
+          },
+          {
+            label: "S'inscrire volontairement au compte de TPS/TVH",
+            href: `${GST_FR}/compte-inscrire-volontairement.html`,
+          },
+          {
+            label: "Crédits de taxe sur les intrants pour la TPS/TVH",
+            href: `${GST_FR}/calculer-preparer-declarer/credits-taxe-intrants.html`,
+          },
+          enOnly(
+            "C.-B. : taxe de vente provinciale (PST)",
+            `${BC_EN}/gov/content/taxes/sales-taxes/pst`,
+          ),
+          enOnly(
+            "C.-B. : s'inscrire pour percevoir la PST",
+            `${BC_EN}/gov/content/taxes/sales-taxes/pst/register`,
+          ),
+          enOnly(
+            "C.-B. : guide de la PST pour les petites entreprises",
+            `${BC_EN}/gov/content/taxes/sales-taxes/pst/publications/small-business-guide`,
+          ),
+          enOnly(
+            "C.-B. : bulletin PST 003, Small Sellers",
+            `${BC_EN}/assets/gov/taxes/sales-taxes/publications/pst-003-small-sellers.pdf`,
+          ),
+          enOnly("Saskatchewan : taxe de vente provinciale (PST)", SK_EN),
+          enOnly("Saskatchewan : demande de numéro de PST", `${SK_EN}/apply-for-a-pst-number`),
+          enOnly(
+            "Saskatchewan : payer la PST sur les biens de votre entreprise",
+            `${SK_EN}/pay-pst-on-your-business-assets`,
+          ),
+          {
+            label: "Manitoba : la taxe sur les ventes au détail",
+            href: `${MB}/taxes/retail.fr.html`,
+          },
+          enOnly(
+            "Manitoba : avis RST 24-01, fin de l'obligation d'inscription pour les petites entreprises",
+            `${MB}/pubs/bulletins/noticerst2401.pdf`,
+          ),
+          enOnly("Manitoba : dois-je m'inscrire?", `${MB}/pubs/bulletins/register.pdf`),
+          enOnly(
+            "Manitoba : bulletin RST 004, renseignements pour les vendeurs",
+            `${MB}/pubs/bulletins/004.pdf`,
+          ),
+          { label: "Revenu Québec : TPS/TVH et TVQ", href: `${RQ_FR}/` },
+          {
+            label: "Revenu Québec : particularités concernant le petit fournisseur",
+            href: `${RQ_FR}/inscription-aux-fichiers-de-la-tps-et-de-la-tvq/petit-fournisseur/`,
+          },
+        ],
+        checked: `Tous consultés le 16 novembre 2026, sur canada.ca et les sites officiels de la Colombie-Britannique, de la Saskatchewan, du Manitoba et de Revenu Québec. Les pages de la Colombie-Britannique et de la Saskatchewan sur la taxe de vente et les bulletins du Manitoba n'existent qu'en anglais. ${DISCLAIMER}`,
       },
     ],
   }),

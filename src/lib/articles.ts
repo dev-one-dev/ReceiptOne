@@ -15,7 +15,7 @@ const RECEIPTONE_CA_PRICES = `${caPrice("week")}/wk, ${caPrice("month")}/mo or $
 
 export type ContentBlock =
   /** `link` renders after `text` as an internal link, e.g. to a landing page. */
-  | { type: "p"; text: string; link?: { label: string; href: string } }
+  | { type: "p"; text: string; link?: ArticleLink }
   | { type: "h2"; text: string }
   /** A sub-heading inside an h2 section. */
   | { type: "h3"; text: string }
@@ -25,7 +25,11 @@ export type ContentBlock =
   | { type: "faq"; q: string; a: string }
   | { type: "table"; caption: string; headers: string[]; rows: string[][] }
   /** Linked sources under a table: one link per vendor, then a checked-on line. */
-  | { type: "sources"; links: { label: string; href: string }[]; checked: string };
+  | { type: "sources"; links: ArticleLink[]; checked: string };
+
+/** A link in an article. `hrefLang` marks a target in another language than
+ * the article, e.g. an English-only page linked from a French article. */
+export type ArticleLink = { label: string; href: string; hrefLang?: string };
 
 export type Region = "ca" | "us";
 

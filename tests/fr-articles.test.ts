@@ -100,9 +100,11 @@ type Block = {
   caption?: string;
   headers?: string[];
   rows?: string[][];
-  links?: { label: string; href: string }[];
+  links?: Link[];
+  link?: Link;
   checked?: string;
 };
+type Link = { label: string; href: string; hrefLang?: string };
 type Art = {
   slug: string;
   title: string;
@@ -115,6 +117,7 @@ type Art = {
   tags: string[];
   body: Block[];
   quickAnswer?: string;
+  receiptOneHelps?: { items: string[]; link: Link };
 };
 type FrArt = Art & { enSlug: string };
 type Head = {
@@ -141,7 +144,18 @@ const EXPECTED_SLUGS: Record<string, string> = {
   "t2125-form-guide-canada": "guide-formulaire-t2125",
   "self-employed-tax-deductions-canada": "deductions-travailleurs-autonomes-canada",
   "cra-receipt-rules-canada": "regles-recus-arc",
+  "track-gst-hst-business-expenses": "tps-tvh-travailleurs-autonomes",
+  "mileage-deduction-canada-freelancers": "deduction-frais-vehicule-kilometrage",
+  "sales-tax-by-province-self-employed-canada":
+    "taxes-de-vente-par-province-travailleurs-autonomes",
 };
+/** French pages that translate an English, non-article page (internal links must use them). */
+const FR_TWINS: Record<string, string> = {
+  "/ca": "/fr",
+  "/ca/tax-deadlines": "/fr/echeances-fiscales",
+  "/ca/mileage-log-template": "/fr/modele-registre-kilometrage",
+};
+const EN_ONLY = "(en anglais)";
 const en = (slug: string) => mod.ARTICLES.find((a) => a.slug === slug)!;
 
 const text = (html: string) =>
@@ -166,12 +180,24 @@ const canonical = (head: Head) => head.links.find((l) => l.rel === "canonical")?
 function strings(a: Art): string[] {
   const out = [a.title, a.displayTitle ?? "", a.excerpt, a.category, a.image.alt, ...a.tags];
   if (a.quickAnswer) out.push(a.quickAnswer);
+  if (a.receiptOneHelps) out.push(...a.receiptOneHelps.items, a.receiptOneHelps.link.label);
   for (const b of a.body) {
     out.push(b.text ?? "", ...(b.items ?? []), b.q ?? "", b.a ?? "", b.caption ?? "");
     out.push(...(b.headers ?? []), ...(b.rows ?? []).flat(), b.checked ?? "");
-    out.push(...(b.links ?? []).map((l) => l.label));
+    out.push(...(b.links ?? []).map((l) => l.label), b.link?.label ?? "");
   }
   return out.filter(Boolean);
+}
+
+/** Every link inside an article: paragraph links, the helps box link and sources. */
+function articleLinks(a: Art): (Link & { source: boolean })[] {
+  const out: (Link & { source: boolean })[] = [];
+  if (a.receiptOneHelps) out.push({ ...a.receiptOneHelps.link, source: false });
+  for (const b of a.body) {
+    if (b.link) out.push({ ...b.link, source: false });
+    for (const l of b.links ?? []) out.push({ ...l, source: true });
+  }
+  return out;
 }
 
 const pages = new Map<string, Awaited<ReturnType<typeof mod.render>>>();
@@ -187,7 +213,7 @@ const enIndex = await mod.render("/articles/", "/articles", {});
 
 test("fr articles: slugs are the natural French ones and each declares its English counterpart", () => {
   assert.deepEqual(mod.FRENCH_ARTICLE_SLUGS, EXPECTED_SLUGS);
-  assert.equal(mod.FR_ARTICLES.length, 3);
+  assert.equal(mod.FR_ARTICLES.length, 6);
   for (const a of mod.FR_ARTICLES) {
     assert.equal(EXPECTED_SLUGS[a.enSlug], a.slug, a.slug);
     assert.ok(en(a.enSlug), `English counterpart exists: ${a.enSlug}`);
@@ -236,8 +262,14 @@ test("fr articles: index and articles lay out with French category labels and no
   assert.deepEqual(categories, [
     "Conformité fiscale",
     "Déductions fiscales",
+    "Kilométrage et automobile",
     "Notions fiscales de base",
+    "TPS/TVH",
+    "TPS/TVH",
   ]);
+  // The index shows all six, one card each.
+  const cards = frIndex.html.match(/href="\/fr\/articles\/[^"]+"/g) ?? [];
+  assert.equal(new Set(cards).size, 6);
   for (const c of categories) assert.ok(text(frIndex.html).includes(c));
   assert.ok(!frIndex.html.includes("data-part"), "no parts sidebar on /fr/articles");
 });
@@ -329,19 +361,36 @@ test("fr articles: FAQPage JSON-LD matches the visible French FAQ", () => {
 
 /* -------------------------------- Sources -------------------------------- */
 
-test("fr articles: sources are French canada.ca pages (French Justice Laws for the Act)", () => {
+/** French versions of official pages: canada.ca (pages and the French T2125 PDF), Justice Laws, Revenu Québec, Manitoba. */
+const FRENCH_SOURCE =
+  /^https:\/\/(www\.canada\.ca\/fr\/|www\.canada\.ca\/content\/dam\/cra-arc\/formspubs\/pbg\/[a-z0-9]+\/[a-z0-9]+-\d+f\.pdf$|laws-lois\.justice\.gc\.ca\/fra\/lois\/|www\.revenuquebec\.ca\/fr\/|www\.gov\.mb\.ca\/finance\/taxation\/[\w/]+\.fr\.html$)/;
+/** Official pages with no French version: B.C. and Saskatchewan PST, Manitoba's PDF bulletins. */
+const ENGLISH_ONLY_SOURCE =
+  /^https:\/\/(www2\.gov\.bc\.ca\/|www\.saskatchewan\.ca\/business\/|www\.gov\.mb\.ca\/finance\/taxation\/pubs\/bulletins\/[\w-]+\.pdf$)/;
+
+test("fr articles: sources are the French official pages; English-only ones are marked", () => {
   for (const a of mod.FR_ARTICLES) {
     const sources = a.body.filter((b) => b.type === "sources");
     assert.equal(sources.length, 1, `${a.slug}: one sources block`);
     assert.equal(a.body.at(-1)!.type, "sources", `${a.slug}: sources close the article`);
     const links = sources[0].links!;
     assert.ok(links.length >= 3);
-    for (const l of links)
-      assert.match(
-        l.href,
-        /^https:\/\/(www\.canada\.ca\/fr\/|laws-lois\.justice\.gc\.ca\/fra\/lois\/)/,
-        `${a.slug}: ${l.href}`,
-      );
+    for (const l of links) {
+      if (FRENCH_SOURCE.test(l.href)) {
+        assert.ok(!l.label.endsWith(EN_ONLY) && !l.hrefLang, `${a.slug}: ${l.href} is French`);
+        continue;
+      }
+      assert.match(l.href, ENGLISH_ONLY_SOURCE, `${a.slug}: ${l.href} is not an allowed source`);
+      assert.ok(l.label.endsWith(EN_ONLY), `${a.slug}: ${l.label} marked (en anglais)`);
+      assert.equal(l.hrefLang, "en", `${a.slug}: ${l.href} hrefLang`);
+    }
+    // English sources only where the English article cites the same English-only site.
+    const enHrefs = new Set(articleLinks(en(a.enSlug)).map((l) => l.href));
+    for (const l of links.filter((x) => x.hrefLang === "en"))
+      assert.ok(enHrefs.has(l.href), `${a.slug}: ${l.href} is the English article's own source`);
+    // Same number of sources as the English article where it has a sources block.
+    const enSources = en(a.enSlug).body.find((b) => b.type === "sources");
+    if (enSources) assert.equal(links.length, enSources.links!.length, `${a.slug}: source count`);
     assert.ok(links.some((l) => l.href.startsWith("https://www.canada.ca/fr/")));
     assert.ok(new Set(links.map((l) => l.href)).size === links.length, `${a.slug}: no duplicates`);
     // No English page linked from anywhere in the article.
@@ -350,6 +399,75 @@ test("fr articles: sources are French canada.ca pages (French Justice Laws for t
     for (const l of links)
       assert.ok(pages.get(a.slug)!.html.includes(`href="${l.href}"`), `rendered: ${l.href}`);
   }
+});
+
+test("fr articles: internal links go to the French counterpart where one exists, otherwise to English", () => {
+  const frBySlug = new Map(mod.FR_ARTICLES.map((a) => [a.enSlug, a.slug]));
+  for (const a of mod.FR_ARTICLES) {
+    const enLinks = articleLinks(en(a.enSlug)).filter((l) => !l.source && l.href.startsWith("/"));
+    const frLinks = articleLinks(a).filter((l) => !l.source && l.href.startsWith("/"));
+    assert.equal(frLinks.length, enLinks.length, `${a.slug}: same internal links`);
+    enLinks.forEach((e, i) => {
+      const f = frLinks[i];
+      const enSlug = e.href.match(/^\/articles\/([^/]+)$/)?.[1];
+      const twin = enSlug
+        ? frBySlug.get(enSlug) && `/fr/articles/${frBySlug.get(enSlug)}`
+        : FR_TWINS[e.href];
+      if (twin) {
+        assert.equal(f.href, twin, `${a.slug}: ${e.href} -> ${twin}`);
+        assert.ok(!f.label.endsWith(EN_ONLY) && !f.hrefLang);
+      } else {
+        assert.equal(f.href, e.href, `${a.slug}: ${e.href} stays English`);
+        assert.ok(f.label.endsWith(EN_ONLY), `${a.slug}: ${f.label} marked (en anglais)`);
+        assert.equal(f.hrefLang, "en");
+        assert.match(pages.get(a.slug)!.html, new RegExp(`href="${e.href}" hrefLang="en"`));
+      }
+    });
+    // A canada.ca link inside the text points to the French page, like the sources.
+    for (const l of articleLinks(a).filter((x) => !x.source && x.href.startsWith("http")))
+      assert.match(l.href, FRENCH_SOURCE, `${a.slug}: ${l.href}`);
+  }
+});
+
+test("fr articles: Quick answer and How ReceiptOne helps appear in French where the English has them", () => {
+  for (const a of mod.FR_ARTICLES) {
+    const e = en(a.enSlug);
+    assert.equal(!!a.quickAnswer, !!e.quickAnswer, `${a.slug}: quick answer`);
+    assert.equal(!!a.receiptOneHelps, !!e.receiptOneHelps, `${a.slug}: helps box`);
+    const html = pages.get(a.slug)!.html;
+    if (a.quickAnswer) {
+      assert.ok(html.includes("Réponse rapide"));
+      assert.ok(text(html).includes(a.quickAnswer));
+    }
+    if (a.receiptOneHelps) {
+      assert.equal(a.receiptOneHelps.items.length, e.receiptOneHelps!.items.length);
+      assert.ok(html.includes('aria-label="Comment ReceiptOne vous aide"'));
+      for (const item of a.receiptOneHelps.items) assert.ok(text(html).includes(item), item);
+    }
+  }
+});
+
+test("fr articles: the province rates table has 13 rows with French province names", () => {
+  const a = mod.FR_ARTICLES.find((x) => x.enSlug === "sales-tax-by-province-self-employed-canada")!;
+  const table = a.body.find((b) => b.type === "table")!;
+  assert.deepEqual(
+    table.rows!.map((r) => r[0]),
+    [
+      "Alberta",
+      "Colombie-Britannique",
+      "Manitoba",
+      "Nouveau-Brunswick",
+      "Terre-Neuve-et-Labrador",
+      "Territoires du Nord-Ouest",
+      "Nouvelle-Écosse",
+      "Nunavut",
+      "Ontario",
+      "Île-du-Prince-Édouard",
+      "Québec",
+      "Saskatchewan",
+      "Yukon",
+    ],
+  );
 });
 
 /* ------------------------------ Banned words ------------------------------ */
@@ -425,9 +543,11 @@ function figures(a: Art, lang: "en" | "fr"): string[] {
   const body = [...a.body];
   const at = body.findIndex((b) => b.type === "h2" && b.text === "Sources");
   if (at !== -1) body.splice(at);
+  const boxes = [a.quickAnswer ?? "", ...(a.receiptOneHelps?.items ?? [])];
   const all = body
     .filter((b) => b.type !== "sources")
     .flatMap((b) => [
+      ...boxes.splice(0),
       b.text ?? "",
       ...(b.items ?? []),
       b.q ?? "",
@@ -467,7 +587,8 @@ test("fr articles: numbers use Canadian French formatting (1 500 $, 13 %)", () =
   for (const a of mod.FR_ARTICLES)
     for (const s of strings(a)) {
       assert.ok(!/\$\s?\d/.test(s), `${a.slug}: dollar sign before the amount: ${s}`);
-      assert.ok(!/\d,\d{3}\b/.test(s), `${a.slug}: comma thousands separator: ${s}`);
+      // A decimal comma before a percentage (9,975 %) is not a thousands separator.
+      assert.ok(!/\d,\d{3}\b(?! %)/.test(s), `${a.slug}: comma thousands separator: ${s}`);
       assert.ok(!/\d\.\d{2} ?\$/.test(s), `${a.slug}: decimal point in an amount: ${s}`);
       assert.ok(!/\d \d{3}(?!\d)/.test(s), `${a.slug}: breaking space in a number: ${s}`);
       assert.ok(!/\d( |)[$%]/.test(s), `${a.slug}: $ or % without a non-breaking space: ${s}`);
@@ -491,8 +612,11 @@ test("fr articles: CRA's official French terms are used", () => {
     "Repas et frais de représentation",
   ])
     assert.ok(all.includes(term), term);
-  // At most one Québec sentence per article, naming Revenu Québec.
+  // Where the English article covers GST/HST only, at most one added Québec
+  // sentence, naming Revenu Québec. Articles whose English already covers the
+  // QST translate it instead.
   for (const a of mod.FR_ARTICLES) {
+    if (/\bQST\b/.test(JSON.stringify(en(a.enSlug)))) continue;
     const qst =
       strings(a)
         .join("\n")

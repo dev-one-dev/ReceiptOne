@@ -56,7 +56,7 @@ ${regionSection("United States", "/us", regions.us, "sales tax tracking and IRS-
 
 - [Page d'accueil](${ORIGIN}/fr): the Canadian site in Canadian French (fr-CA); same plans and prices as /ca.
 - [Centre d'aide](${ORIGIN}/fr/faq): frequently asked questions in French
-- [Guides fiscaux](${ORIGIN}/fr/articles): CRA tax guides in French (T2125, deductions, receipt rules)
+- [Guides fiscaux](${ORIGIN}/fr/articles): CRA tax guides in French (T2125, deductions, receipt rules, GST/HST, vehicle and mileage, sales tax by province)
 - [Nous joindre](${ORIGIN}/fr/contact): contact form in French
 
 ## Apps

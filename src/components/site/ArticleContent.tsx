@@ -41,6 +41,7 @@ export function renderBlock(block: ContentBlock, index: number, lang: Lang = "en
               {" "}
               <a
                 href={block.link.href}
+                hrefLang={block.link.hrefLang}
                 className="text-ink underline underline-offset-2 hover:text-ink-80"
               >
                 {block.link.label}
@@ -152,6 +153,7 @@ export function renderBlock(block: ContentBlock, index: number, lang: Lang = "en
                 {i > 0 && " · "}
                 <a
                   href={link.href}
+                  hrefLang={link.hrefLang}
                   {...(link.href.startsWith("http")
                     ? { target: "_blank", rel: "noopener noreferrer" }
                     : {})}
