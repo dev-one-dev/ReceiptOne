@@ -13,9 +13,12 @@ import {
 } from "../scripts/generate-app-qr.mjs";
 
 /**
- * The "Scan to get the app" QR block: a committed static SVG of the /app smart
- * link, shown at lg and up in the footer brand column only (it was removed
- * from the pricing card). Below lg it is display:none (Tailwind `hidden lg:flex`).
+ * The footer's one app-download block: a committed static SVG QR of the /app
+ * smart link with a "Get the app" label and the two store badges beside it,
+ * shown at lg and up in the footer brand column only (it was removed from the
+ * pricing card). Below lg it is display:none (Tailwind `hidden lg:flex`) and
+ * the footer's own badge row (`lg:hidden`) takes over, so exactly one set of
+ * store badges shows at every width.
  * Pixel alignment of the footer columns was measured in a browser; here the
  * structure that keeps it (the shared grid template, the QR inside the brand
  * column) is pinned.
@@ -117,16 +120,26 @@ const mod = (await import(pathToFileURL(OUT).href)) as {
   render: (path: string) => Promise<string>;
 };
 
+// The block holds one nested <div>, so its inner HTML runs to the second </div>.
 const blocks = (html: string) =>
-  [...html.matchAll(/<div data-app-qr="[^"]*" class="([^"]*)">([\s\S]*?)<\/div>/g)].map((m) => ({
+  [
+    ...html.matchAll(
+      /<div data-app-qr="[^"]*" class="([^"]*)">((?:(?!<\/div>)[\s\S])*<\/div>[\s\S]*?)<\/div>/g,
+    ),
+  ].map((m) => ({
     classes: m[1].split(/\s+/),
     inner: m[2],
   }));
 
+const APPLE = /<a href="https:\/\/apps\.apple\.com\/[^"]*"/g;
+const GOOGLE = /<a href="https:\/\/play\.google\.com\/[^"]*"/g;
+const count = (html: string, re: RegExp) => [...html.matchAll(re)].length;
+const at = (html: string, re: RegExp) => html.search(new RegExp(re.source));
+
 for (const [path, label] of [
-  ["/ca", "Scan to get the app"],
-  ["/fr", "Numérisez pour obtenir l&#x27;application"],
-  ["/us", "Scan to get the app"],
+  ["/ca", "Get the app"],
+  ["/fr", "Obtenir l&#x27;application"],
+  ["/us", "Get the app"],
 ] as const) {
   test(`app qr: ${path} shows the block in the footer only, lg and up only`, async () => {
     const html = await mod.render(path);
@@ -142,11 +155,42 @@ for (const [path, label] of [
       assert.match(inner, new RegExp(`<img[^>]*alt="${ALT}"`), "alt text");
       assert.match(inner, /width="112" height="112"/);
       assert.ok(inner.includes(label), `label: ${label}`);
+      assert.ok(!inner.includes("Scan to get") && !inner.includes("Numérisez"), "old label gone");
+      // The label sits above the badges, App Store first, then Google Play.
+      assert.ok(inner.indexOf(label) < at(inner, APPLE), "label above the badges");
+      assert.ok(at(inner, APPLE) < at(inner, GOOGLE), "App Store, then Google Play");
+      assert.equal(count(inner, APPLE), 1, "one App Store badge in the block");
+      assert.equal(count(inner, GOOGLE), 1, "one Google Play badge in the block");
     }
     const pricing = html.slice(html.indexOf('id="pricing"'), html.indexOf("<footer"));
     assert.ok(html.includes('id="pricing"'), "the page has a pricing section");
     assert.equal(blocks(pricing).length, 0, "no QR in the pricing section");
     assert.ok(!pricing.includes(ALT), "no QR image in the pricing section");
+  });
+
+  test(`app qr: ${path} footer shows exactly one set of store badges per breakpoint`, async () => {
+    const html = await mod.render(path);
+    const footer = html.slice(html.indexOf("<footer"));
+    assert.equal(count(footer, APPLE), 2, "two App Store links in the footer markup");
+    assert.equal(count(footer, GOOGLE), 2, "two Google Play links in the footer markup");
+    // lg and up: the set inside the app block (hidden below lg, tested above).
+    // Below lg: the badge row, hidden from lg. Never both, never neither.
+    const rows = [
+      ...footer.matchAll(
+        /<div class="([^"]*)">(<a href="https:\/\/apps\.apple\.com\/[\s\S]*?)<\/div>/g,
+      ),
+    ];
+    assert.equal(rows.length, 1, "one badge row outside the app block");
+    const row = rows[0][1].split(/\s+/);
+    assert.ok(row.includes("lg:hidden"), "badge row hidden at lg");
+    assert.ok(!row.includes("hidden") && row.includes("flex"), "badge row visible below lg");
+    assert.ok(!row.some((c) => /^(sm|md):hidden$/.test(c)), "no earlier breakpoint");
+    assert.equal(count(rows[0][2], APPLE), 1);
+    assert.equal(count(rows[0][2], GOOGLE), 1);
+    // The app block's badges come before the row, which follows the grid.
+    assert.ok(footer.indexOf("data-app-qr") < footer.indexOf(rows[0][0]));
+    // Both sets sit inside the footer's cta_click location.
+    assert.match(html, /<footer[^>]*data-cta-location="footer"/);
   });
 
   test(`app qr: ${path} footer keeps its grid; the QR sits in the brand column`, async () => {
@@ -160,7 +204,7 @@ for (const [path, label] of [
     const qrAt = footer.indexOf("data-app-qr");
     assert.ok(footer.indexOf('aria-label="Facebook"') < qrAt, "under the social icons");
     assert.ok(
-      qrAt < footer.indexOf('class="eyebrow"'),
+      qrAt < footer.search(/<p class="eyebrow">(Product|Produit)<\/p>/),
       "before PRODUCT (still in the brand column)",
     );
     assert.ok(

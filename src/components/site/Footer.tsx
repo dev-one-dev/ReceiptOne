@@ -196,8 +196,9 @@ export function Footer({ region = "ca", now }: FooterProps) {
               ))}
             </div>
 
-            {/* App QR, lg and up only; stays inside the brand column. */}
-            <AppQr lang={lang} variant="dark" className="mt-4" />
+            {/* App download (QR + store badges), lg and up only; stays inside
+                the brand column. */}
+            <AppQr lang={lang} region={region} variant="dark" className="mt-4" />
           </div>
 
           {/* Nav columns: 3 across below lg. At lg, a subgrid on columns 2-6 with
@@ -278,8 +279,9 @@ export function Footer({ region = "ca", now }: FooterProps) {
         {/* Upcoming CRA deadlines (/ca and /fr landing pages only) */}
         {now && region === "ca" && <TaxDeadlines lang={lang} now={now} pathname={pathname} />}
 
-        {/* Store badges — one row, left-aligned, directly above the copyright line */}
-        <div className="mt-6 flex items-center gap-2">
+        {/* Store badges below lg — one row, left-aligned. At lg and up the
+            badges live in the brand column's app block (AppQr) instead. */}
+        <div className="mt-6 flex items-center gap-2 lg:hidden">
           <StoreBadge platform="apple" region={region} variant="dark" size="sm" />
           <StoreBadge platform="google" region={region} variant="dark" size="sm" />
         </div>
