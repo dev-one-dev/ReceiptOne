@@ -202,6 +202,7 @@ export function faqVideosJsonLd(items: { videos?: FaqVideo[] }[]) {
     contentUrl: url(v.src),
     uploadDate: FAQ_VIDEO_UPLOAD_DATE,
     duration: isoDuration(v.duration),
+    ...(v.inLanguage ? { inLanguage: v.inLanguage } : {}),
   }));
 }
 

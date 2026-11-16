@@ -5,7 +5,7 @@ import { Footer } from "@/components/site/Footer";
 import { getServerNow } from "@/lib/server-time.functions";
 import { FaqAccordion } from "@/components/site/Faq";
 import { CATEGORIZED_FAQ_FR, faqItemsFR } from "@/lib/faq.fr";
-import { pageSEO, breadcrumbJsonLd, faqJsonLd, regionHreflang } from "@/lib/seo";
+import { pageSEO, breadcrumbJsonLd, faqJsonLd, faqVideosJsonLd, regionHreflang } from "@/lib/seo";
 
 export const Route = createFileRoute("/fr/faq")({
   // The server's clock, for the footer's upcoming tax deadlines.
@@ -30,6 +30,10 @@ export const Route = createFileRoute("/fr/faq")({
       scripts: [
         { type: "application/ld+json", children: JSON.stringify(breadcrumb) },
         { type: "application/ld+json", children: JSON.stringify(faqJsonLd(faqItemsFR)) },
+        ...faqVideosJsonLd(CATEGORIZED_FAQ_FR.flatMap((c) => c.items)).map((v) => ({
+          type: "application/ld+json",
+          children: JSON.stringify(v),
+        })),
       ],
     };
   },

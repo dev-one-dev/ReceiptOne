@@ -50,7 +50,7 @@ await build({
       import { Route as UsFaq } from "@/routes/us/faq";
       export { faqItems, faqItemsUS, CATEGORIZED_FAQ, CATEGORIZED_FAQ_US } from "@/components/site/Faq";
       export { faqItemsFR, CATEGORIZED_FAQ_FR } from "@/lib/faq.fr";
-      export { FAQ_VIDEOS, CA_ONLY_FAQ_VIDEO_IDS, isoDuration } from "@/lib/faq-videos";
+      export { FAQ_VIDEOS, FAQ_VIDEOS_FR, CA_ONLY_FAQ_VIDEO_IDS, isoDuration } from "@/lib/faq-videos";
       import { FaqVideoPlayer } from "@/components/site/Faq";
       export function renderVideo(video) {
         return renderToString(createElement(FaqVideoPlayer, { video }));
@@ -108,6 +108,7 @@ type Video = {
   title: string;
   description: string;
   duration: number;
+  inLanguage?: string;
 };
 type QA = { q: string; a: string; videos?: Video[] };
 type Cat = { category: string; items: QA[] }[];
@@ -121,6 +122,7 @@ const mod = (await import(pathToFileURL(OUT).href)) as {
   CATEGORIZED_FAQ_US: Cat;
   CATEGORIZED_FAQ_FR: Cat;
   FAQ_VIDEOS: Record<string, Video>;
+  FAQ_VIDEOS_FR: Record<string, Video>;
   CA_ONLY_FAQ_VIDEO_IDS: string[];
   isoDuration: (s: number) => string;
   renderVideo: (v: Video) => string;
@@ -364,18 +366,35 @@ test("faq videos: the right clips on the right questions", () => {
     ["Can I upload many receipts at once?", ["upload-receipt"]],
     ["Is there a Telegram integration?", ["telegram-connect"]],
   ];
+  // French list: the CA mapping, with the French recordings.
+  const FR: [string, string[]][] = [
+    ["Comment fonctionne la numérisation des reçus?", ["upload-receipt", "add-receipt-manual"]],
+    ["Puis-je téléverser plusieurs reçus à la fois?", ["upload-receipt"]],
+    ["Y a-t-il une intégration Telegram?", ["telegram-connect"]],
+    ["Comment fonctionne le suivi du kilométrage?", ["add-trip"]],
+    ["Comment la déduction pour bureau à domicile est-elle calculée?", ["home-office"]],
+    ["Quels rapports puis-je exporter pour mon formulaire T2125?", ["report"]],
+    ["Comment changer ma langue ou ma province?", ["settings"]],
+    ["Puis-je envoyer mon rapport à mon comptable?", ["accountant"]],
+  ];
   // The US settings question stays, without the clip (it shows a province).
   assert.deepEqual(videoIds(mod.faqItemsUS, "How do I change my language or country?"), []);
   for (const [q, ids] of CA) assert.deepEqual(videoIds(mod.faqItems, q), ids, `CA "${q}"`);
   for (const [q, ids] of US) assert.deepEqual(videoIds(mod.faqItemsUS, q), ids, `US "${q}"`);
+  for (const [q, ids] of FR) assert.deepEqual(videoIds(mod.faqItemsFR, q), ids, `FR "${q}"`);
   // Nothing else carries a clip, and no item has more than two.
   const withClip = (items: QA[]) => items.filter((x) => x.videos?.length).map((x) => x.q);
   assert.deepEqual(withClip(mod.faqItems).sort(), CA.map(([q]) => q).sort());
   assert.deepEqual(withClip(mod.faqItemsUS).sort(), US.map(([q]) => q).sort());
-  for (const it of [...mod.faqItems, ...mod.faqItemsUS])
+  assert.deepEqual(withClip(mod.faqItemsFR).sort(), FR.map(([q]) => q).sort());
+  for (const it of [...mod.faqItems, ...mod.faqItemsUS, ...mod.faqItemsFR])
     assert.ok((it.videos?.length ?? 0) <= 2, `"${it.q}" has at most two clips`);
-  // French list: no clips for now.
-  for (const it of mod.faqItemsFR) assert.ok(!it.videos?.length, `FR "${it.q}" has no clip`);
+  // French items carry the French recordings, English items the English ones.
+  const frSet = new Set(Object.values(mod.FAQ_VIDEOS_FR));
+  for (const it of mod.faqItemsFR)
+    for (const v of it.videos ?? []) assert.ok(frSet.has(v), `FR "${it.q}" uses a French clip`);
+  for (const it of [...mod.faqItems, ...mod.faqItemsUS])
+    for (const v of it.videos ?? []) assert.ok(!frSet.has(v), `"${it.q}" uses no French clip`);
 });
 
 test("faq videos: no km, T2125, home-office, accountant or settings clip on US", () => {
@@ -400,7 +419,7 @@ test("faq videos: no km, T2125, home-office, accountant or settings clip on US",
 });
 
 test("faq videos: files exist and the player loads nothing until play", () => {
-  for (const v of Object.values(mod.FAQ_VIDEOS)) {
+  for (const v of [...Object.values(mod.FAQ_VIDEOS), ...Object.values(mod.FAQ_VIDEOS_FR)]) {
     assert.ok(existsSync(resolve("public", v.src.slice(1))), `${v.src} exists`);
     assert.ok(existsSync(resolve("public", v.poster.slice(1))), `${v.poster} exists`);
     assert.ok(v.title && v.description && v.duration > 0, `${v.id} metadata`);
@@ -422,7 +441,7 @@ test("faq videos: closed answers and landing pages render no video", async () =>
     // Landing heroes have their own clips; only the FAQ clips are checked here.
     assert.ok(!html.includes("/videos/faq/"), `${p.path} has no FAQ clip until opened`);
   }
-  for (const id of ["/ca/", "/fr/", "/us/", "/fr/faq"]) {
+  for (const id of ["/ca/", "/fr/", "/us/"]) {
     const ld = mod.head(id).scripts.map((s) => JSON.parse(s.children));
     assert.ok(!ld.some((j) => j["@type"] === "VideoObject"), `${id} has no VideoObject`);
   }
@@ -432,7 +451,9 @@ test("faq videos: VideoObject JSON-LD matches the embedded clips", () => {
   const PAIRS: [string, QA[]][] = [
     ["/faq", mod.faqItems],
     ["/us/faq", mod.faqItemsUS],
+    ["/fr/faq", mod.faqItemsFR],
   ];
+  const isFr = (routeId: string) => routeId.startsWith("/fr/");
   for (const [routeId, items] of PAIRS) {
     const ld = mod
       .head(routeId)
@@ -441,7 +462,7 @@ test("faq videos: VideoObject JSON-LD matches the embedded clips", () => {
     const embedded = [...new Set(items.flatMap((x) => (x.videos ?? []).map((v) => v.id)))];
     assert.equal(ld.length, embedded.length, `${routeId} one VideoObject per clip`);
     for (const id of embedded) {
-      const v = mod.FAQ_VIDEOS[id];
+      const v = (isFr(routeId) ? mod.FAQ_VIDEOS_FR : mod.FAQ_VIDEOS)[id];
       const o = ld.find((j) => j.name === v.title);
       assert.ok(o, `${routeId} has ${id}`);
       assert.equal(o.description, v.description);
@@ -450,10 +471,47 @@ test("faq videos: VideoObject JSON-LD matches the embedded clips", () => {
       assert.equal(o.uploadDate, "2026-11-15");
       assert.equal(o.duration, mod.isoDuration(v.duration));
       assert.match(o.duration, /^PT\d+S$/);
+      if (isFr(routeId)) {
+        assert.equal(o.inLanguage, "fr-CA", `${id} inLanguage`);
+        assert.ok(o.contentUrl.includes("/videos/faq/fr/"), `${id} French file`);
+      } else assert.equal(o.inLanguage, undefined, `${routeId} ${id} has no inLanguage`);
     }
   }
   assert.equal(mod.isoDuration(26), "PT26S");
   assert.equal(mod.isoDuration(75), "PT1M15S");
+});
+
+test("faq videos: French clips only on /fr/faq", async () => {
+  // Titles and durations from the recorder's faq-clips-fr.json.
+  const META: Record<string, [string, number]> = {
+    "add-receipt-manual": ["Ajouter un reçu manuellement", 28],
+    "upload-receipt": ["Téléverser la photo d’un reçu", 42],
+    "telegram-connect": ["Connecter Telegram", 17],
+    "add-trip": ["Enregistrer un trajet", 39],
+    "home-office": ["Calculer la déduction pour bureau à domicile", 40],
+    settings: ["Changer la langue et les paramètres", 27],
+    accountant: ["Travailler avec votre comptable", 41],
+    report: ["Télécharger vos rapports", 38],
+  };
+  assert.deepEqual(Object.keys(mod.FAQ_VIDEOS_FR).sort(), Object.keys(META).sort());
+  for (const [id, [title, duration]] of Object.entries(META)) {
+    const v = mod.FAQ_VIDEOS_FR[id];
+    assert.equal(v.title, title);
+    assert.equal(v.duration, duration);
+    assert.equal(v.src, `/videos/faq/fr/${id}.mp4`);
+    assert.equal(v.poster, `/videos/faq/fr/${id}-poster.jpg`);
+    assert.ok(!/flout|rien d.autre/i.test(v.description), `${id} has no recording note`);
+  }
+  // No English page references the French files, in its head or its HTML.
+  for (const p of PAGES.filter((x) => !x.routeId.startsWith("/fr/"))) {
+    assert.ok(!JSON.stringify(mod.head(p.routeId)).includes("/videos/faq/fr/"), `${p.path} head`);
+    const { html } = await mod.render(p.routeId, p.path);
+    assert.ok(!html.includes("/videos/faq/fr/"), `${p.path} html`);
+  }
+  // The French landing page carries no FAQ clip either; /fr/faq carries all eight.
+  assert.ok(!JSON.stringify(mod.head("/fr/")).includes("/videos/faq/"), "/fr/ head");
+  const frLd = JSON.stringify(mod.head("/fr/faq"));
+  for (const v of Object.values(mod.FAQ_VIDEOS_FR)) assert.ok(frLd.includes(v.src), v.src);
 });
 
 test("faq: language and accountant questions appended to every list", () => {

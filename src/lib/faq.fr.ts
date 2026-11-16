@@ -1,4 +1,5 @@
 import type { QA } from "@/components/site/Faq";
+import { FAQ_VIDEOS_FR } from "@/lib/faq-videos";
 
 /**
  * French (fr-CA) translation of the Canadian FAQ in components/site/Faq.tsx:
@@ -19,6 +20,7 @@ export const faqItemsFR: QA[] = [
   {
     q: "Comment fonctionne la numérisation des reçus?",
     a: "Ouvrez l'application, pointez votre appareil photo vers n'importe quel reçu et touchez l'écran. ReceiptOne lit automatiquement le nom du commerçant, la date, le total et les montants de TPS/TVH/TVP, et vous pouvez corriger tout ce qui a été mal lu. Reçus papier, photos et factures PDF : tout fonctionne. Sur un ordinateur, ajoutez vos reçus dans l'application Web : choisissez Ajouter un reçu → Choisir un fichier, puis sélectionnez un fichier JPG, PNG ou PDF.",
+    videos: [FAQ_VIDEOS_FR["upload-receipt"], FAQ_VIDEOS_FR["add-receipt-manual"]],
   },
   {
     q: "ReceiptOne calcule-t-il mon remboursement d'impôt?",
@@ -59,6 +61,7 @@ export const faqItemsFR: QA[] = [
   {
     q: "Comment fonctionne le suivi du kilométrage?",
     a: "Activez le suivi des trajets une seule fois et l'application mobile enregistre vos trajets professionnels par GPS, en arrière-plan. Ou ajoutez un trajet en entrant ses adresses de départ et d'arrivée, sur mobile ou sur le Web, et ReceiptOne calcule l'itinéraire et la distance au moyen de Google Maps. Dans les deux cas, le trajet apparaît dans votre liste Kilométrage. Indiquez si chaque trajet est professionnel ou personnel : seuls les trajets professionnels figurent dans votre registre de kilométrage, votre rapport de kilométrage et votre rapport T2125, et les trajets personnels restent dans votre liste Kilométrage sans être comptés dans aucun total. Dans le Tableau A de votre rapport T2125, le pourcentage d'utilisation professionnelle correspond aux kilomètres parcourus pour gagner un revenu d'entreprise divisés par le total des kilomètres parcourus par le véhicule dans l'année, selon les relevés de son odomètre au début et à la fin de l'année. Vous saisissez ces relevés pour chaque véhicule dans l'application Web, sous Kilométrage → Véhicules. La ligne 9281 correspond aux dépenses du véhicule multipliées par ce pourcentage; la valeur par kilomètre d'un trajet n'est pas le montant du T2125.",
+    videos: [FAQ_VIDEOS_FR["add-trip"]],
   },
   {
     q: "Quels documents de kilométrage l'ARC accepte-t-elle?",
@@ -73,6 +76,7 @@ export const faqItemsFR: QA[] = [
   {
     q: "Comment la déduction pour bureau à domicile est-elle calculée?",
     a: "Selon la superficie de votre espace de travail par rapport à la superficie habitable totale de votre domicile, appliquée à vos dépenses du domicile — loyer ou intérêts hypothécaires, assurance habitation, services publics (chauffage, électricité, eau) et entretien — conformément aux règles de l'ARC sur les frais d'utilisation de la résidence aux fins de l'entreprise.",
+    videos: [FAQ_VIDEOS_FR["home-office"]],
   },
   {
     q: "Puis-je demander à la fois la déduction pour kilométrage et celle pour bureau à domicile?",
@@ -86,6 +90,7 @@ export const faqItemsFR: QA[] = [
     q: "Y a-t-il une intégration Telegram?",
     a: "Oui. Notre robot Telegram est @ReceiptOne_bot. Pour le connecter, ouvrez une session dans l'application Web ReceiptOne, ouvrez Intégrations, choisissez Connecter Telegram et scannez le code QR avec l'appareil photo de votre téléphone, ou touchez Ouvrir dans Telegram si vous êtes sur votre téléphone. Le code ne fonctionne qu'une fois et expire après 15 minutes. Envoyez ensuite au robot la photo d'un reçu, ou un fichier image ou PDF : il lit le reçu, l'enregistre dans votre compte et vous répond avec le commerçant, le montant, la date et un lien vers le reçu. Si vous envoyez un reçu que vous avez déjà, il vous le signale au lieu d'en enregistrer une copie. Vous pouvez aussi poser une question à l'assistant ReceiptOne en texte libre, envoyer /report pour recevoir votre rapport fiscal annuel en PDF ou en CSV, ou envoyer /support pour ouvrir une demande d'assistance; notre équipe vous répond dans la conversation et par courriel. Le robot écrit en anglais ou en français, selon votre paramètre de langue ReceiptOne. L'ajout de reçus nécessite un essai ou un abonnement actif. Pour le déconnecter, ouvrez Intégrations → Telegram → Déconnecter dans l'application Web.",
     link: { to: "https://t.me/ReceiptOne_bot", label: "Ouvrir @ReceiptOne_bot", external: true },
+    videos: [FAQ_VIDEOS_FR["telegram-connect"]],
   },
   {
     q: "Où mes données sont-elles stockées?",
@@ -110,6 +115,7 @@ export const faqItemsFR: QA[] = [
   {
     q: "Quels rapports puis-je exporter pour mon formulaire T2125?",
     a: "Depuis l'application Web ReceiptOne, vous pouvez exporter un rapport T2125, en PDF et en CSV, présenté comme le formulaire T2125 de l'ARC, État des résultats des activités d'une entreprise ou d'une profession libérale : Partie 1 – Identification, vos dépenses par ligne de la partie 4, Partie 7 – Calcul des frais d'utilisation de la résidence aux fins de l'entreprise, et les kilomètres du Tableau A – Dépenses relatives aux véhicules à moteur : kilomètres parcourus dans l'exercice pour gagner un revenu d'entreprise, total des kilomètres parcourus dans l'exercice et pourcentage d'utilisation professionnelle. Les frais réels de véhicule du Tableau A, comme le carburant et l'huile, les assurances ou l'entretien et la réparation, sont laissés en blanc pour que vous les remplissiez. Vous pouvez aussi exporter un rapport de kilométrage, en PDF et en CSV, qui liste vos trajets professionnels de l'année avec leur date, leurs adresses de départ et d'arrivée, leur motif et leur distance. Ce sont des documents de travail pour vous ou votre comptable; ReceiptOne ne produit pas le formulaire.",
+    videos: [FAQ_VIDEOS_FR.report],
   },
   {
     q: "Comment fonctionnent l'essai gratuit et le paiement?",
@@ -122,6 +128,7 @@ export const faqItemsFR: QA[] = [
   {
     q: "Puis-je téléverser plusieurs reçus à la fois?",
     a: "Oui. Dans l'application Web, allez dans Reçus → Téléversement groupé et glissez-y des images, des PDF ou une archive ZIP. Chaque fichier est lu séparément.",
+    videos: [FAQ_VIDEOS_FR["upload-receipt"]],
   },
   {
     q: "Que peut faire l'assistant IA?",
@@ -130,10 +137,12 @@ export const faqItemsFR: QA[] = [
   {
     q: "Comment changer ma langue ou ma province?",
     a: "Dans l'application Web, ouvrez Paramètres. Un changement de langue de l'interface s'applique tout de suite. Votre pays et votre province déterminent les règles fiscales et les catégories qui s'appliquent : réglez-les avant d'ajouter des reçus. Les options de suivi des trajets se trouvent aussi dans Paramètres.",
+    videos: [FAQ_VIDEOS_FR.settings],
   },
   {
     q: "Puis-je envoyer mon rapport à mon comptable?",
     a: "Oui. Ajoutez le courriel de votre comptable sous Mon comptable dans l'application Web. Ensuite, dans Rapports, choisissez Envoyer au comptable : ReceiptOne lui envoie par courriel votre rapport fiscal annuel en PDF.",
+    videos: [FAQ_VIDEOS_FR.accountant],
   },
 ];
 
