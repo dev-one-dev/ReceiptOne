@@ -68,6 +68,8 @@ const FEATURES_FR = [
   "Applications iOS, Android et Web",
   "Bot Telegram pour des rapports rapides",
   "Dépenses de bureau à domicile",
+  "Feuille de travail de déclaration de TPS/TVH",
+  "Calendrier des échéances fiscales",
 ];
 
 /** A year's worth of the Monthly price. */

@@ -62,6 +62,8 @@ export const CA_FEATURES = [
   "iOS, Android and web apps",
   "Telegram bot for quick reports",
   "Home office expenses",
+  "GST/HST return worksheet",
+  "Tax deadline calendar",
 ];
 
 export const US_FEATURES = [

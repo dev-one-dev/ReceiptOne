@@ -531,8 +531,10 @@ test("faq: language and accountant questions appended to every list", () => {
   };
   for (const [k, rows] of Object.entries(NEW)) {
     const { items, cats } = LISTS[k as keyof typeof LISTS];
+    // Followed by the GST/HST, deadlines and File Manager entries (3 on CA/FR, 1 on US).
+    const after = k === "us" ? 1 : 3;
     assert.deepEqual(
-      items.slice(-2).map((x) => x.q),
+      items.slice(-2 - after, -after).map((x) => x.q),
       rows.map((r) => r[0]),
       `${k} appended`,
     );
@@ -542,5 +544,92 @@ test("faq: language and accountant questions appended to every list", () => {
     }
   }
   // The portal stores no US state, so the US answers name no state or province.
-  for (const it of mod.faqItemsUS.slice(-2)) assert.ok(!/province|state/i.test(it.a), it.q);
+  for (const it of mod.faqItemsUS.slice(-3, -1)) assert.ok(!/province|state/i.test(it.a), it.q);
+});
+
+test("faq: GST/HST return, tax deadlines and File Manager questions appended", () => {
+  const NEW: Record<string, [string, string, string[]][]> = {
+    ca: [
+      [
+        "Can ReceiptOne help with my GST/HST return?",
+        "Tax & CRA",
+        ["line 106", "113A", "FPZ-500", "Quick Method", "Check before filing", "PDF or CSV"],
+      ],
+      [
+        "Does ReceiptOne remind me about tax deadlines?",
+        "Tax & CRA",
+        ["Tax calendar", "How to pay", "Google Calendar", ".ics", "mobile app"],
+      ],
+      ["Where can I find my original receipt files?", "General", ["File Manager"]],
+    ],
+    fr: [
+      [
+        "ReceiptOne peut-il m'aider à préparer ma déclaration de TPS/TVH?",
+        "Impôts et ARC",
+        ["ligne 106", "113A", "FPZ-500", "méthode rapide", "À vérifier avant de produire", "CSV"],
+      ],
+      [
+        "ReceiptOne me rappelle-t-il mes échéances fiscales?",
+        "Impôts et ARC",
+        ["Calendrier fiscal", "Comment payer", "Google Agenda", ".ics", "application mobile"],
+      ],
+      [
+        "Où puis-je trouver mes fichiers de reçus originaux?",
+        "Général",
+        ["Gestionnaire de fichiers"],
+      ],
+    ],
+    us: [["Where can I find my original receipt files?", "General", ["File Manager"]]],
+  };
+  for (const [k, rows] of Object.entries(NEW)) {
+    const { items, cats } = LISTS[k as keyof typeof LISTS];
+    assert.deepEqual(
+      items.slice(-rows.length).map((x) => x.q),
+      rows.map((r) => r[0]),
+      `${k} appended last`,
+    );
+    for (const [q, cat, phrases] of rows) {
+      for (const p of phrases) assert.ok(find(items, q).a.includes(p), `${k} "${q}" has "${p}"`);
+      assert.equal(categoryOf(cats, q), cat, `${k} "${q}" category`);
+    }
+  }
+  // Deadline links point at the deadlines pages.
+  type Linked = QA & { link?: { to: string; label: string } };
+  const caCal = find(mod.faqItems, "Does ReceiptOne remind me about tax deadlines?") as Linked;
+  assert.deepEqual(caCal.link, { to: "/ca/tax-deadlines", label: "See all CRA deadlines" });
+  const frCal = find(
+    mod.faqItemsFR,
+    "ReceiptOne me rappelle-t-il mes échéances fiscales?",
+  ) as Linked;
+  assert.deepEqual(frCal.link, {
+    to: "/fr/echeances-fiscales",
+    label: "Voir toutes les échéances de l'ARC",
+  });
+  // Canada-only features stay off the US list.
+  for (const it of mod.faqItemsUS)
+    assert.ok(!/GST\/HST return|Tax calendar|tax deadlines/i.test(it.q + it.a), `US "${it.q}"`);
+  // No answer promises e-mail reminders or a storage quota.
+  for (const [k, { items }] of Object.entries(LISTS))
+    for (const it of items) {
+      assert.ok(
+        !/(e-?mail|courriel)[^.]*(remind|rappel)|(remind|rappel)[^.]*(e-?mail|courriel)/i.test(
+          it.a,
+        ),
+        `${k} "${it.q}" mentions e-mail reminders`,
+      );
+      assert.ok(
+        !/\b\d+(\.\d+)?\s*(GB|Go)\b|\bGB\b|gigabyte|gigaoctet/i.test(it.a),
+        `${k} "${it.q}" GB`,
+      );
+    }
+  // New answers: no banned marketing words, no emoji.
+  const BANNED = /game-changer|seamless|effortless|hassle-free|stress-free|unlock|supercharge/i;
+  for (const it of [
+    ...mod.faqItems.slice(-3),
+    ...mod.faqItemsFR.slice(-3),
+    ...mod.faqItemsUS.slice(-1),
+  ]) {
+    assert.ok(!BANNED.test(it.a), `"${it.q}" banned word`);
+    assert.ok(!/\p{Extended_Pictographic}/u.test(it.q + it.a), `"${it.q}" emoji`);
+  }
 });

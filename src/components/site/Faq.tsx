@@ -43,6 +43,16 @@ const paymentQA: QA = {
   a: "Every new account starts with a 7-day free trial as soon as you sign up, in the app or on the web, and we don't ask for any payment details to start it. To keep adding receipts after the trial, subscribe in the ReceiptOne app for iPhone or Android: subscriptions are sold through the App Store and Google Play, not on our website or in the web app. You manage or cancel your subscription in your App Store or Google Play account settings. If your trial or subscription ends, your account becomes read-only: you can still view and edit your records, but you can't add new ones until you subscribe.",
 };
 
+/**
+ * File Manager, the same in both regions: the portal's web-app File Manager
+ * page (fileManagerPage). Deleting a file deletes the receipt or report it
+ * belongs to.
+ */
+const fileManagerQA: QA = {
+  q: "Where can I find my original receipt files?",
+  a: "In the File Manager in the ReceiptOne web app. It keeps your original receipt images and PDFs and your saved reports in one place, by folder and year. You can search, preview, download or delete a file, and upload images or PDFs. Deleting a file also deletes the receipt or report it belongs to.",
+};
+
 /** Shared FAQ list (used both for UI rendering and FAQPage JSON-LD). */
 export const faqItems: QA[] = [
   {
@@ -159,6 +169,18 @@ export const faqItems: QA[] = [
     a: "Yes. Add your accountant's e-mail under My accountant in the web app. Then, in Reports, choose Send to accountant: ReceiptOne e-mails them your annual tax report as a PDF.",
     videos: [FAQ_VIDEOS.accountant],
   },
+  // Appended so the first three stay the same; faq.fr.ts carries all three too.
+  // GST/HST returns and Tax calendar are Canada-only portal features.
+  {
+    q: "Can ReceiptOne help with my GST/HST return?",
+    a: "Yes, if you're registered for GST/HST. Set your registration in Settings, then open GST/HST returns and pick a reporting period: monthly, quarterly or annual. ReceiptOne fills line 106, your input tax credits, from your receipts and lists each receipt it claims with the supplier's GST/HST number. You enter your sales and the GST/HST you collected, and it calculates the GST34 lines through line 113A, your balance owing or refund. When QST applies, it adds the QST lines for Revenu Québec's FPZ-500, and it supports the Quick Method. Before you file, the Check before filing list flags issues such as a missing supplier GST/HST number. Export the return as a PDF or CSV, and mark it as filed once you've filed it. ReceiptOne doesn't file anything with the CRA or Revenu Québec. Starting a new return needs an active trial or subscription.",
+  },
+  {
+    q: "Does ReceiptOne remind me about tax deadlines?",
+    a: "Yes. The Tax calendar shows your CRA deadlines for the next 12 months, based on your GST/HST registration and filing frequency, your instalments and whether you're an individual. You can mark a deadline as done, open How to pay on canada.ca, add a deadline to Google Calendar, or download all upcoming deadlines as an .ics file. The ReceiptOne mobile app can also send you a reminder before each deadline once you turn reminders on.",
+    link: { to: "/ca/tax-deadlines", label: "See all CRA deadlines" },
+  },
+  fileManagerQA,
 ];
 
 /** US FAQ list — replaces CRA/GST/PST references with IRS/sales tax equivalents. */
@@ -273,6 +295,7 @@ export const faqItemsUS: QA[] = [
     q: "Can I send my report to my accountant?",
     a: "Yes. Add your accountant's email under My accountant in the web app. Then, in Reports, choose Send to accountant: ReceiptOne emails them your annual tax report as a PDF.",
   },
+  fileManagerQA,
 ];
 
 /** FAQ questions grouped by category — used on the /faq help-center page. */
@@ -287,6 +310,7 @@ export const CATEGORIZED_FAQ: { category: string; items: QA[] }[] = [
       faqItems[22],
       faqItems[23],
       faqItems[24],
+      faqItems[28],
     ],
   },
   {
@@ -299,6 +323,8 @@ export const CATEGORIZED_FAQ: { category: string; items: QA[] }[] = [
       faqItems[18],
       faqItems[19],
       faqItems[25],
+      faqItems[26],
+      faqItems[27],
     ],
   },
   {
@@ -331,6 +357,7 @@ export const CATEGORIZED_FAQ_US: { category: string; items: QA[] }[] = [
       faqItemsUS[19],
       faqItemsUS[20],
       faqItemsUS[23],
+      faqItemsUS[25],
     ],
   },
   {

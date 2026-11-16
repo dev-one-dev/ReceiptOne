@@ -3,7 +3,7 @@ import { FAQ_VIDEOS_FR } from "@/lib/faq-videos";
 
 /**
  * French (fr-CA) translation of the Canadian FAQ in components/site/Faq.tsx:
- * the same 26 entries in the same order, so CATEGORIZED_FAQ_FR can use the
+ * the same 29 entries in the same order, so CATEGORIZED_FAQ_FR can use the
  * same indexes. Keep the two lists in step -- add, change or remove an entry
  * in both.
  *
@@ -144,6 +144,19 @@ export const faqItemsFR: QA[] = [
     a: "Oui. Ajoutez le courriel de votre comptable sous Mon comptable dans l'application Web. Ensuite, dans Rapports, choisissez Envoyer au comptable : ReceiptOne lui envoie par courriel votre rapport fiscal annuel en PDF.",
     videos: [FAQ_VIDEOS_FR.accountant],
   },
+  {
+    q: "ReceiptOne peut-il m'aider à préparer ma déclaration de TPS/TVH?",
+    a: "Oui, si vous êtes inscrit à la TPS/TVH. Indiquez votre inscription dans Paramètres, puis ouvrez Déclarations de TPS/TVH et choisissez une période de déclaration : mensuelle, trimestrielle ou annuelle. ReceiptOne remplit la ligne 106, vos crédits de taxe sur les intrants (CTI), à partir de vos reçus et affiche chaque reçu demandé avec le numéro de TPS/TVH du fournisseur. Vous entrez vos ventes et la TPS/TVH perçue, et la feuille de travail calcule les lignes de la déclaration GST34 jusqu'à la ligne 113A, soit votre solde à payer ou votre remboursement. Si la TVQ s'applique, elle ajoute les lignes de TVQ du formulaire FPZ-500 de Revenu Québec, et elle prend en charge la méthode rapide. Avant de produire votre déclaration, la liste À vérifier avant de produire signale les points à corriger, comme un numéro de TPS/TVH du fournisseur manquant. Exportez la déclaration en PDF ou en CSV, et marquez-la comme produite une fois que vous l'avez produite. ReceiptOne ne transmet rien à l'ARC ni à Revenu Québec. Pour commencer une nouvelle déclaration, il faut un essai ou un abonnement actif.",
+  },
+  {
+    q: "ReceiptOne me rappelle-t-il mes échéances fiscales?",
+    a: "Oui. Le Calendrier fiscal affiche vos échéances de l'ARC pour les 12 prochains mois, selon votre inscription à la TPS/TVH et votre fréquence de déclaration, vos acomptes provisionnels et le fait que vous soyez un particulier ou non. Vous pouvez marquer une échéance comme faite, ouvrir Comment payer sur canada.ca, ajouter une échéance à Google Agenda ou télécharger toutes les échéances à venir dans un fichier .ics. L'application mobile ReceiptOne peut aussi vous envoyer un rappel avant chaque échéance, une fois les rappels activés.",
+    link: { to: "/fr/echeances-fiscales", label: "Voir toutes les échéances de l'ARC" },
+  },
+  {
+    q: "Où puis-je trouver mes fichiers de reçus originaux?",
+    a: "Dans le Gestionnaire de fichiers de l'application Web ReceiptOne. Il regroupe au même endroit vos images et PDF de reçus originaux et vos rapports enregistrés, classés par dossier et par année. Vous pouvez rechercher, prévisualiser, télécharger ou supprimer un fichier, et téléverser des images ou des PDF. Supprimer un fichier supprime aussi le reçu ou le rapport auquel il appartient.",
+  },
 ];
 
 /** Same groups and indexes as CATEGORIZED_FAQ in components/site/Faq.tsx. */
@@ -158,6 +171,7 @@ export const CATEGORIZED_FAQ_FR: { category: string; items: QA[] }[] = [
       faqItemsFR[22],
       faqItemsFR[23],
       faqItemsFR[24],
+      faqItemsFR[28],
     ],
   },
   {
@@ -170,6 +184,8 @@ export const CATEGORIZED_FAQ_FR: { category: string; items: QA[] }[] = [
       faqItemsFR[18],
       faqItemsFR[19],
       faqItemsFR[25],
+      faqItemsFR[26],
+      faqItemsFR[27],
     ],
   },
   {

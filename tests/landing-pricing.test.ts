@@ -168,7 +168,7 @@ const NEW_FEATURES = {
   ],
 } as const;
 
-test("landing pricing: short e-mail item plus Telegram and home office, appended last", async () => {
+test("landing pricing: short e-mail item plus Telegram and home office, after the platforms item", async () => {
   const drivers = {
     path: "/ca/drivers",
     lang: "en",
@@ -184,11 +184,12 @@ test("landing pricing: short e-mail item plus Telegram and home office, appended
       "chaque compte a sa propre adresse de réception",
     ])
       assert.ok(!pricing.includes(phrase), `${p.path} pricing has no "${phrase}"`);
-    // The two new items close the list, after the platforms item.
+    // Telegram and home office follow the platforms item (the GST/HST worksheet
+    // and tax calendar come after them; see the test below).
     const [, telegram, home] = NEW_FEATURES[p.lang];
     const apps = p.lang === "fr" ? "Applications iOS, Android et Web" : "iOS, Android and web apps";
     assert.ok(pricing.indexOf(apps) < pricing.indexOf(telegram), `${p.path} Telegram after apps`);
-    assert.ok(pricing.indexOf(telegram) < pricing.indexOf(home), `${p.path} home office last`);
+    assert.ok(pricing.indexOf(telegram) < pricing.indexOf(home), `${p.path} home office after Telegram`);
   }
 });
 
@@ -209,5 +210,31 @@ test("landing who it's for: names drivers and contractors, not only freelancers"
     assert.ok(/contractors/i.test(who), `${p.path} mentions contractors`);
     assert.ok(/tradespeople/i.test(who), `${p.path} mentions tradespeople`);
     if (p.path === "/us") assert.ok(who.includes("1099 contractors"), "/us says 1099 contractors");
+  }
+});
+
+test("landing pricing: GST/HST worksheet and tax calendar close the CA list, absent on /us", async () => {
+  const drivers = {
+    path: "/ca/drivers",
+    lang: "en",
+    ...(await mod.render("/ca/drivers", "/ca/drivers")),
+  };
+  const NEW = {
+    en: ["GST/HST return worksheet", "Tax deadline calendar"],
+    fr: ["Feuille de travail de déclaration de TPS/TVH", "Calendrier des échéances fiscales"],
+  } as const;
+  for (const p of [...pages, drivers]) {
+    const pricing = section(p.html, "pricing");
+    if (p.path === "/us") {
+      for (const f of [...NEW.en, ...NEW.fr, "GST", "TPS"])
+        assert.ok(!pricing.includes(f), `/us pricing has no "${f}"`);
+      continue;
+    }
+    const [worksheet, calendar] = NEW[p.lang as "en" | "fr"];
+    const home = p.lang === "fr" ? "Dépenses de bureau à domicile" : "Home office expenses";
+    // Existing items keep their order; the two new ones follow home office.
+    assert.ok(pricing.indexOf(home) > 0, `${p.path} has home office`);
+    assert.ok(pricing.indexOf(home) < pricing.indexOf(worksheet), `${p.path} worksheet after home`);
+    assert.ok(pricing.indexOf(worksheet) < pricing.indexOf(calendar), `${p.path} calendar last`);
   }
 });
