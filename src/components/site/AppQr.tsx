@@ -2,8 +2,8 @@ import appQr from "@/assets/app-qr.svg";
 import type { Lang } from "@/lib/locales";
 
 /**
- * "Scan to get the app": the QR code for the smart app link (/app), desktop
- * only (lg and up). On a phone the store badges beside it are the way in, so
+ * "Scan to get the app": the QR code for the smart app link (/app), in the
+ * footer, desktop only (lg and up). On a phone the store badges are the way in, so
  * below lg nothing renders. The SVG is static (scripts/generate-app-qr.mjs);
  * its own quiet zone is white, so the white rounded tile is the image itself.
  * No extra tracking: the UTMs in the encoded URL identify QR installs in the
@@ -22,7 +22,7 @@ export function AppQr({
   className = "",
 }: {
   lang: Lang;
-  /** light = on paper/white (pricing card); dark = on the ink footer. */
+  /** light = on paper/white; dark = on the ink footer. */
   variant: "light" | "dark";
   className?: string;
 }) {

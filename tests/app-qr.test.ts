@@ -14,8 +14,8 @@ import {
 
 /**
  * The "Scan to get the app" QR block: a committed static SVG of the /app smart
- * link, shown at lg and up in the footer brand column and under the pricing
- * card's store badges. Below lg it is display:none (Tailwind `hidden lg:flex`).
+ * link, shown at lg and up in the footer brand column only (it was removed
+ * from the pricing card). Below lg it is display:none (Tailwind `hidden lg:flex`).
  * Pixel alignment of the footer columns was measured in a browser; here the
  * structure that keeps it (the shared grid template, the QR inside the brand
  * column) is pinned.
@@ -128,10 +128,12 @@ for (const [path, label] of [
   ["/fr", "Numérisez pour obtenir l&#x27;application"],
   ["/us", "Scan to get the app"],
 ] as const) {
-  test(`app qr: ${path} shows the block in pricing and footer, lg and up only`, async () => {
+  test(`app qr: ${path} shows the block in the footer only, lg and up only`, async () => {
     const html = await mod.render(path);
-    const found = blocks(html);
-    assert.equal(found.length, 2, "one in the pricing card, one in the footer");
+    const footer = html.slice(html.indexOf("<footer"));
+    const found = blocks(footer);
+    assert.equal(found.length, 1, "one in the footer");
+    assert.equal(blocks(html).length, 1, "nowhere else on the page");
     for (const { classes, inner } of found) {
       // display:none below lg, flex from lg.
       assert.ok(classes.includes("hidden"), "hidden below lg");
@@ -142,7 +144,9 @@ for (const [path, label] of [
       assert.ok(inner.includes(label), `label: ${label}`);
     }
     const pricing = html.slice(html.indexOf('id="pricing"'), html.indexOf("<footer"));
-    assert.equal(blocks(pricing).length, 1, "pricing block inside #pricing");
+    assert.ok(html.includes('id="pricing"'), "the page has a pricing section");
+    assert.equal(blocks(pricing).length, 0, "no QR in the pricing section");
+    assert.ok(!pricing.includes(ALT), "no QR image in the pricing section");
   });
 
   test(`app qr: ${path} footer keeps its grid; the QR sits in the brand column`, async () => {

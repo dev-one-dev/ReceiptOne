@@ -8,7 +8,6 @@ import usMonthlyImg from "@/assets/figma/mileage-auto/US/3-removebg-preview.webp
 import usAnnualImg from "@/assets/figma/mileage-auto/US/1.webp";
 import { StoreBadge } from "@/components/site/StoreBadge";
 import { PrimaryCta } from "@/components/site/PrimaryCta";
-import { AppQr } from "@/components/site/AppQr";
 import { ROUTES } from "@/lib/routes";
 import { cn } from "@/lib/utils";
 import { formatPrice, getPlanFeatures, getPlans, TRIAL_DAYS, type Plan } from "@/lib/pricing";
@@ -104,13 +103,6 @@ function StoreCTA({ region }: { region: Region }) {
       </div>
     </div>
   );
-}
-
-/** Below the CTA row, lg and up only: the badges' row above is untouched. */
-function PricingAppQr({ region }: { region: Region }) {
-  const fr = useLang() === "fr" && region === "ca";
-  // Capped at half the card so the label stays clear of the peeking mascot.
-  return <AppQr lang={fr ? "fr" : "en"} variant="light" className="mt-4 max-w-[50%]" />;
 }
 
 export function Pricing({ region = "ca" }: { region?: Region }) {
@@ -268,7 +260,6 @@ export function Pricing({ region = "ca" }: { region?: Region }) {
 
             <div className="mt-6">
               <StoreCTA region={region} />
-              <PricingAppQr region={region} />
             </div>
           </div>
         </div>
