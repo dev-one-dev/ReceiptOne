@@ -20,6 +20,7 @@ ReceiptOne organizes records; it is not a tax filing service and does not calcul
 
 - [Page d'accueil](https://receipt-one.com/fr): the Canadian site in Canadian French (fr-CA); same plans and prices as /ca.
 - [Centre d'aide](https://receipt-one.com/fr/faq): frequently asked questions in French
+- [Guides fiscaux](https://receipt-one.com/fr/articles): CRA tax guides in French (T2125, deductions, receipt rules)
 - [Nous joindre](https://receipt-one.com/fr/contact): contact form in French
 
 ## Apps

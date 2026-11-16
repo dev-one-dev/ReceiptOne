@@ -6,9 +6,20 @@
  * The Canadian English page is the anchor of every cluster: it is canonical
  * for x-default, and the US and French equivalents are looked up from it.
  * Only list genuine equivalents. A Canadian page with no French version
- * (articles, for now) is simply absent from FRENCH_PAGES.
+ * (most articles, for now) is simply absent from FRENCH_PAGES.
  */
 export type Lang = "en" | "fr";
+
+/**
+ * English article slug -> the slug of its French translation, i.e.
+ * /articles/{en} <-> /fr/articles/{fr}. Only translated articles are listed;
+ * src/lib/articles.fr.ts reads each French article's slug from here.
+ */
+export const FRENCH_ARTICLE_SLUGS: Record<string, string> = {
+  "t2125-form-guide-canada": "guide-formulaire-t2125",
+  "self-employed-tax-deductions-canada": "deductions-travailleurs-autonomes-canada",
+  "cra-receipt-rules-canada": "regles-recus-arc",
+};
 
 /** Canadian English page -> its French (fr-CA) equivalent. */
 export const FRENCH_PAGES: Record<string, string> = {
@@ -24,6 +35,14 @@ export const FRENCH_PAGES: Record<string, string> = {
   "/ca/tax-deadlines": "/fr/echeances-fiscales",
   // Free mileage log template: Canadian only (no /us copy) and its French twin.
   "/ca/mileage-log-template": "/fr/modele-registre-kilometrage",
+  // Articles: the index and each translated article.
+  "/articles": "/fr/articles",
+  ...Object.fromEntries(
+    Object.entries(FRENCH_ARTICLE_SLUGS).map(([en, fr]) => [
+      `/articles/${en}`,
+      `/fr/articles/${fr}`,
+    ]),
+  ),
 };
 
 /** Canadian English page -> its US equivalent. */

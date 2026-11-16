@@ -5,7 +5,7 @@
  *
  * FAQ: every article must emit exactly one FAQPage Question per FAQ item it
  * renders. An item is a faq block; the FAQ section (the "Frequently Asked
- * Questions" h2 up to the next h2) may hold only faq blocks, callouts and a
+ * Questions" h2, "Foire aux questions" on French articles, up to the next h2) may hold only faq blocks, callouts and a
  * closing sources block, so nothing renders there that the schema would miss.
  *
  * Redirects: every retired /articles/ or /us/articles/ path in the middleware
@@ -14,17 +14,20 @@
  */
 import { loadTs } from "./lib/load-ts.mjs";
 
-const { articles, FAQ_HEADING, articleFaq, faqJsonLd, middleware, matcher } = await loadTs(`
+const { articles, FAQ_HEADING, FR_FAQ_HEADING, articleFaq, faqJsonLd, middleware, matcher } =
+  await loadTs(`
   import { ARTICLES, FAQ_HEADING, articleFaq } from "@/lib/articles";
   import { US_ARTICLES } from "@/lib/articles.us";
+  import { FR_ARTICLES, FR_FAQ_HEADING } from "@/lib/articles.fr";
   import { faqJsonLd } from "@/lib/seo";
   import middleware, { config } from "./middleware";
   export const articles = [
     ...ARTICLES.map((a) => ({ region: "ca", article: a })),
     ...US_ARTICLES.map((a) => ({ region: "us", article: a })),
+    ...FR_ARTICLES.map((a) => ({ region: "fr", article: a })),
   ];
   export const matcher = config.matcher;
-  export { FAQ_HEADING, articleFaq, faqJsonLd, middleware };
+  export { FAQ_HEADING, FR_FAQ_HEADING, articleFaq, faqJsonLd, middleware };
 `);
 
 const errors = [];
@@ -36,13 +39,14 @@ let faqQuestions = 0;
 for (const { region, article } of articles) {
   const id = `${region}/${article.slug}`;
   const body = article.body;
-  const start = body.findIndex((b) => b.type === "h2" && b.text === FAQ_HEADING);
+  const heading = region === "fr" ? FR_FAQ_HEADING : FAQ_HEADING;
+  const start = body.findIndex((b) => b.type === "h2" && b.text === heading);
   const next = start === -1 ? -1 : body.findIndex((b, i) => i > start && b.type === "h2");
   const end = next === -1 ? body.length : next;
 
   body.forEach((b, i) => {
     if (b.type === "faq" && (start === -1 || i < start || i >= end))
-      errors.push(`${id}: faq block at body[${i}] is outside the "${FAQ_HEADING}" section`);
+      errors.push(`${id}: faq block at body[${i}] is outside the "${heading}" section`);
   });
   if (start === -1) continue;
 
@@ -64,7 +68,7 @@ for (const { region, article } of articles) {
   const emitted = faqJsonLd(articleFaq(article)).mainEntity.filter(
     (e) => e["@type"] === "Question",
   ).length;
-  if (rendered === 0) errors.push(`${id}: "${FAQ_HEADING}" section has no faq blocks`);
+  if (rendered === 0) errors.push(`${id}: "${heading}" section has no faq blocks`);
   if (emitted !== rendered)
     errors.push(`${id}: FAQPage emits ${emitted} Questions but the page renders ${rendered}`);
   faqArticles++;

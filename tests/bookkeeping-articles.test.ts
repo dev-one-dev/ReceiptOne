@@ -286,12 +286,28 @@ test("existing articles: rendered text and head unchanged", async () => {
     html
       .replace(/<p[^>]*data-correction-line[^>]*>[\s\S]*?<\/p>/, "")
       .replace(/<div data-app-qr[^>]*>[\s\S]*?<\/div>/g, "");
+  // Articles translated into French later gained hreflang alternates (en-CA,
+  // fr-CA, x-default) in <head> only; tests/fr-articles.test.ts asserts that
+  // exact set. Drop them so the hash still guards the rest of the head.
+  const TRANSLATED = new Set([
+    "/articles/t2125-form-guide-canada",
+    "/articles/self-employed-tax-deductions-canada",
+    "/articles/cra-receipt-rules-canada",
+  ]);
+  const withoutFrAlternates = (path: string, head: { links?: { rel: string }[] }) =>
+    TRANSLATED.has(path)
+      ? { ...head, links: head.links?.filter((l) => l.rel !== "alternate") }
+      : head;
   for (const [path, want] of Object.entries(fixture)) {
     const us = path.startsWith("/us/");
     const slug = path.split("/").at(-1)!;
     const page = await mod.render(us ? "/us/articles/$slug" : "/articles/$slug", path, { slug });
     assert.ok(page.matched, `${path} renders`);
     assert.equal(sha(pageText(withoutCorrection(page.html))), want.text, `${path} text unchanged`);
-    assert.equal(sha(JSON.stringify(page.head)), want.head, `${path} head unchanged`);
+    assert.equal(
+      sha(JSON.stringify(withoutFrAlternates(path, page.head))),
+      want.head,
+      `${path} head unchanged`,
+    );
   }
 });

@@ -32,8 +32,8 @@ type FooterProps = {
 };
 
 /**
- * `en` marks a link from a French page to a page that is still English-only
- * (articles): it gets hrefLang="en" and a visible "(en anglais)",
+ * `en` marks a link from a French page to a page that is still English-only:
+ * it gets hrefLang="en" and a visible "(en anglais)",
  * so a French reader is not dropped into English without warning.
  */
 type FooterLink = { label: string; href: string; en?: boolean };
@@ -47,7 +47,7 @@ function productLinks(region: "ca" | "us", lang: Lang): FooterLink[] {
       { label: "Avantages", href: "#benefits" },
       { label: "Tarifs", href: "#pricing" },
       { label: "Nouveautés", href: "/fr/roadmap" },
-      { label: "Articles", href: "/articles", en: true },
+      { label: "Articles", href: "/fr/articles" },
       { label: "Centre d'aide", href: "/fr/faq" },
       { label: "Nous joindre", href: "/fr/contact" },
     ];

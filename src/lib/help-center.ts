@@ -6,6 +6,7 @@ import type { Article, Region } from "@/lib/articles";
 import { ARTICLES, getArticlesByRegion } from "@/lib/articles";
 import { US_ARTICLES } from "@/lib/articles.us";
 import { regionHreflang } from "@/lib/seo";
+import { FRENCH_PAGES } from "@/lib/locales";
 import type { QA } from "@/components/site/Faq";
 import { faqItems, faqItemsUS, CATEGORIZED_FAQ, CATEGORIZED_FAQ_US } from "@/components/site/Faq";
 
@@ -104,13 +105,18 @@ export function getHelpCenterRelated(slug: string, allArticles: Article[], count
 }
 
 /**
- * hreflang for an article slug: only when the same slug is published in both
- * regions (/articles/$slug and /us/articles/$slug); otherwise none.
+ * hreflang for a Canadian or US article slug: when the same slug is published
+ * in both regions (/articles/$slug and /us/articles/$slug), and/or when the
+ * Canadian article has a French translation (FRENCH_PAGES, from
+ * FRENCH_ARTICLE_SLUGS in src/lib/locales.ts). Otherwise none.
  */
 export function articleHreflang(slug: string) {
+  const caPath = `/articles/${slug}`;
   const inCa = ARTICLES.some((a) => a.slug === slug);
   const inUs = US_ARTICLES.some((a) => a.slug === slug);
-  return inCa && inUs ? regionHreflang(`/articles/${slug}`, `/us/articles/${slug}`) : undefined;
+  const usPath = inCa && inUs ? `/us/articles/${slug}` : undefined;
+  const inFr = inCa && caPath in FRENCH_PAGES;
+  return usPath || inFr ? regionHreflang(caPath, usPath) : undefined;
 }
 
 export function getHelpCenter(region: Region): HelpCenterConfig {

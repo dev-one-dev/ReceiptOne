@@ -36,6 +36,8 @@ import { Route as RCodeRouteImport } from './routes/r/$code'
 import { Route as UsIndexRouteImport } from './routes/us/index'
 import { Route as UsContactRouteImport } from './routes/us/contact'
 import { Route as UsFaqRouteImport } from './routes/us/faq'
+import { Route as FrArticlesIndexRouteImport } from './routes/fr/articles/index'
+import { Route as FrArticlesSlugRouteImport } from './routes/fr/articles/$slug'
 import { Route as UsArticlesIndexRouteImport } from './routes/us/articles/index'
 import { Route as UsArticlesSlugRouteImport } from './routes/us/articles/$slug'
 
@@ -175,6 +177,16 @@ const UsFaqRoute = UsFaqRouteImport.update({
   path: '/faq',
   getParentRoute: () => UsRoute,
 } as any)
+const FrArticlesIndexRoute = FrArticlesIndexRouteImport.update({
+  id: '/articles/',
+  path: '/articles/',
+  getParentRoute: () => FrRoute,
+} as any)
+const FrArticlesSlugRoute = FrArticlesSlugRouteImport.update({
+  id: '/articles/$slug',
+  path: '/articles/$slug',
+  getParentRoute: () => FrRoute,
+} as any)
 const UsArticlesIndexRoute = UsArticlesIndexRouteImport.update({
   id: '/articles/',
   path: '/articles/',
@@ -214,7 +226,9 @@ export interface FileRoutesByFullPath {
   '/ca/': typeof CaIndexRoute
   '/fr/': typeof FrIndexRoute
   '/us/': typeof UsIndexRoute
+  '/fr/articles/$slug': typeof FrArticlesSlugRoute
   '/us/articles/$slug': typeof UsArticlesSlugRoute
+  '/fr/articles/': typeof FrArticlesIndexRoute
   '/us/articles/': typeof UsArticlesIndexRoute
 }
 export interface FileRoutesByTo {
@@ -242,7 +256,9 @@ export interface FileRoutesByTo {
   '/ca': typeof CaIndexRoute
   '/fr': typeof FrIndexRoute
   '/us': typeof UsIndexRoute
+  '/fr/articles/$slug': typeof FrArticlesSlugRoute
   '/us/articles/$slug': typeof UsArticlesSlugRoute
+  '/fr/articles': typeof FrArticlesIndexRoute
   '/us/articles': typeof UsArticlesIndexRoute
 }
 export interface FileRoutesById {
@@ -274,7 +290,9 @@ export interface FileRoutesById {
   '/ca/': typeof CaIndexRoute
   '/fr/': typeof FrIndexRoute
   '/us/': typeof UsIndexRoute
+  '/fr/articles/$slug': typeof FrArticlesSlugRoute
   '/us/articles/$slug': typeof UsArticlesSlugRoute
+  '/fr/articles/': typeof FrArticlesIndexRoute
   '/us/articles/': typeof UsArticlesIndexRoute
 }
 export interface FileRouteTypes {
@@ -307,7 +325,9 @@ export interface FileRouteTypes {
     | '/ca/'
     | '/fr/'
     | '/us/'
+    | '/fr/articles/$slug'
     | '/us/articles/$slug'
+    | '/fr/articles/'
     | '/us/articles/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -335,7 +355,9 @@ export interface FileRouteTypes {
     | '/ca'
     | '/fr'
     | '/us'
+    | '/fr/articles/$slug'
     | '/us/articles/$slug'
+    | '/fr/articles'
     | '/us/articles'
   id:
     | '__root__'
@@ -366,7 +388,9 @@ export interface FileRouteTypes {
     | '/ca/'
     | '/fr/'
     | '/us/'
+    | '/fr/articles/$slug'
     | '/us/articles/$slug'
+    | '/fr/articles/'
     | '/us/articles/'
   fileRoutesById: FileRoutesById
 }
@@ -576,6 +600,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UsFaqRouteImport
       parentRoute: typeof UsRoute
     }
+    '/fr/articles/': {
+      id: '/fr/articles/'
+      path: '/articles'
+      fullPath: '/fr/articles/'
+      preLoaderRoute: typeof FrArticlesIndexRouteImport
+      parentRoute: typeof FrRoute
+    }
+    '/fr/articles/$slug': {
+      id: '/fr/articles/$slug'
+      path: '/articles/$slug'
+      fullPath: '/fr/articles/$slug'
+      preLoaderRoute: typeof FrArticlesSlugRouteImport
+      parentRoute: typeof FrRoute
+    }
     '/us/articles/': {
       id: '/us/articles/'
       path: '/articles'
@@ -618,6 +656,8 @@ interface FrRouteChildren {
   FrRoadmapRoute: typeof FrRoadmapRoute
   FrTermsRoute: typeof FrTermsRoute
   FrIndexRoute: typeof FrIndexRoute
+  FrArticlesSlugRoute: typeof FrArticlesSlugRoute
+  FrArticlesIndexRoute: typeof FrArticlesIndexRoute
 }
 
 const FrRouteChildren: FrRouteChildren = {
@@ -629,6 +669,8 @@ const FrRouteChildren: FrRouteChildren = {
   FrRoadmapRoute: FrRoadmapRoute,
   FrTermsRoute: FrTermsRoute,
   FrIndexRoute: FrIndexRoute,
+  FrArticlesSlugRoute: FrArticlesSlugRoute,
+  FrArticlesIndexRoute: FrArticlesIndexRoute,
 }
 
 const FrRouteWithChildren = FrRoute._addFileChildren(FrRouteChildren)

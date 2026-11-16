@@ -93,6 +93,7 @@ test("noindex: no other route emits noindex", () => {
     "src/routes/us/articles/$slug.tsx",
     "src/routes/us/articles/index.tsx",
     "src/routes/articles/$slug.tsx",
+    "src/routes/fr/articles/$slug.tsx",
     "src/routes/r/$code.tsx",
   ]);
   const files: string[] = [];
@@ -113,6 +114,10 @@ test("noindex: no other route emits noindex", () => {
   const ca = readFileSync("src/routes/articles/$slug.tsx", "utf8");
   assert.equal(ca.match(/noindex/gi)?.length, 1);
   assert.doesNotMatch(ca, /NOINDEX_FOLLOW/);
+  // Same for the French article route.
+  const fr = readFileSync("src/routes/fr/articles/$slug.tsx", "utf8");
+  assert.equal(fr.match(/noindex/gi)?.length, 1);
+  assert.doesNotMatch(fr, /NOINDEX_FOLLOW/);
 });
 
 test("noindex: sitemap lists /us/articles, every CA article and all nine US guides", async () => {

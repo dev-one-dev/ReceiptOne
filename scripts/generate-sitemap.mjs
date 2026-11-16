@@ -3,7 +3,7 @@
  * Generates public/sitemap.xml from src/routes/*.tsx so new pages are
  * indexed without manual edits. Runs in `prebuild`.
  *
- * Dynamic article routes (/articles/$slug, /us/articles/$slug) are expanded
+ * Dynamic article routes (/articles/$slug, /us/articles/$slug, /fr/articles/$slug) are expanded
  * from the article data in src/lib (lastmod = the article's updatedAt, or
  * publishedAt when there is none); any other dynamic segment is excluded.
  *
@@ -55,6 +55,7 @@ export const PAGE_LASTMOD = {
   "/contact": "2026-10-18",
   "/faq": "2026-11-15",
   "/fr": "2026-11-15",
+  "/fr/articles": "2026-11-16",
   "/fr/contact": "2026-10-18",
   "/fr/echeances-fiscales": "2026-11-14",
   "/fr/faq": "2026-11-15",
@@ -84,6 +85,7 @@ const EXCLUDE_PREFIXES = ["/r", "/dashboard"];
 const ARTICLE_ROUTES = {
   "/articles/$slug": "ca",
   "/us/articles/$slug": "us",
+  "/fr/articles/$slug": "fr",
 };
 
 const DATE = /^\d{4}-\d{2}-\d{2}$/;
@@ -127,10 +129,12 @@ export async function generateSitemap() {
     import { ARTICLES } from "@/lib/articles";
     import { isArticleIndexable } from "@/lib/articles";
     import { US_ARTICLES, US_ARTICLES_INDEX_INDEXABLE } from "@/lib/articles.us";
+    import { FR_ARTICLES } from "@/lib/articles.fr";
     const dated = (list) =>
       list.filter(isArticleIndexable).map((a) => [a.slug, a.updatedAt || a.publishedAt]);
     export const ca = dated(ARTICLES);
     export const us = dated(US_ARTICLES);
+    export const fr = dated(FR_ARTICLES);
     export const noindexPages = US_ARTICLES_INDEX_INDEXABLE ? [] : ["/us/articles"];
   `);
   const noindex = new Set(articles.noindexPages);
@@ -178,7 +182,11 @@ export async function generateSitemap() {
     .join("\n");
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n${urls}\n</urlset>\n`;
-  return { xml, pages, articleCounts: { ca: articles.ca.length, us: articles.us.length } };
+  return {
+    xml,
+    pages,
+    articleCounts: { ca: articles.ca.length, us: articles.us.length, fr: articles.fr.length },
+  };
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1])).href) {
@@ -186,6 +194,6 @@ if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1]
   mkdirSync("public", { recursive: true });
   writeFileSync(OUTPUT, xml);
   console.log(
-    `✓ wrote ${OUTPUT} (${pages.size} urls; ${articleCounts.ca} CA + ${articleCounts.us} US articles)`,
+    `✓ wrote ${OUTPUT} (${pages.size} urls; ${articleCounts.ca} CA + ${articleCounts.us} US + ${articleCounts.fr} FR articles)`,
   );
 }

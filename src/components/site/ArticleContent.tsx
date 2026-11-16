@@ -2,14 +2,35 @@
  * Article body template: content blocks, the "Quick answer" box and the
  * "How ReceiptOne helps" box. Markup matches the CA article route
  * (src/routes/articles/$slug.tsx) so a US article written to the same
- * structure renders the same way. Used by /us/articles/$slug.
+ * structure renders the same way. Used by /us/articles/$slug and, with
+ * lang="fr", by /fr/articles/$slug.
  */
 import { CheckCircle2 } from "lucide-react";
 import { FAQ_HEADING, type Article, type ContentBlock } from "@/lib/articles";
+import type { Lang } from "@/lib/locales";
+
+/** The template's own labels. French follows OQLF spacing (space before ":"). */
+const ARTICLE_LABELS: Record<
+  Lang,
+  { sources: string; quickAnswer: string; helps: string; faqHeading: string }
+> = {
+  en: {
+    sources: "Sources:",
+    quickAnswer: "Quick answer",
+    helps: "How ReceiptOne helps",
+    faqHeading: FAQ_HEADING,
+  },
+  fr: {
+    sources: "Sources\u00a0:",
+    quickAnswer: "Réponse rapide",
+    helps: "Comment ReceiptOne vous aide",
+    faqHeading: "Foire aux questions",
+  },
+};
 
 /* ----------------------------- Content blocks ----------------------------- */
 
-export function renderBlock(block: ContentBlock, index: number) {
+export function renderBlock(block: ContentBlock, index: number, lang: Lang = "en") {
   switch (block.type) {
     case "p":
       return (
@@ -125,7 +146,7 @@ export function renderBlock(block: ContentBlock, index: number) {
       return (
         <div key={index} className="mb-5 font-sans text-sm text-ink-60">
           <p>
-            Sources:{" "}
+            {ARTICLE_LABELS[lang].sources}{" "}
             {block.links.map((link, i) => (
               <span key={link.href}>
                 {i > 0 && " · "}
@@ -153,27 +174,33 @@ export function renderBlock(block: ContentBlock, index: number) {
 /* ----------------------------- Optional boxes ----------------------------- */
 
 /** "Quick answer" above the body. Ember is the border only; the text is ink. */
-function QuickAnswer({ text }: { text: string }) {
+function QuickAnswer({ text, lang }: { text: string; lang: Lang }) {
   return (
     <div data-quick-answer className="mb-8 rounded-card border border-ember bg-white p-5 sm:p-6">
-      <p className="eyebrow">Quick answer</p>
+      <p className="eyebrow">{ARTICLE_LABELS[lang].quickAnswer}</p>
       <p className="mt-2 font-sans text-body text-ink-80">{text}</p>
     </div>
   );
 }
 
 /** "How ReceiptOne helps", before the FAQ: the callout's stripe with a checklist and a CTA link. */
-function ReceiptOneHelps({ helps }: { helps: NonNullable<Article["receiptOneHelps"]> }) {
+function ReceiptOneHelps({
+  helps,
+  lang,
+}: {
+  helps: NonNullable<Article["receiptOneHelps"]>;
+  lang: Lang;
+}) {
   return (
     <aside
       data-receiptone-helps
-      aria-label="How ReceiptOne helps"
+      aria-label={ARTICLE_LABELS[lang].helps}
       className="mb-5 mt-10 overflow-hidden rounded-card border border-hairline bg-white"
     >
       <div className="flex gap-0">
         <div className="w-1 shrink-0 bg-ember" aria-hidden />
         <div className="p-6">
-          <p className="eyebrow">How ReceiptOne helps</p>
+          <p className="eyebrow">{ARTICLE_LABELS[lang].helps}</p>
           <ul className="mt-3 space-y-3">
             {helps.items.map((item, i) => (
               <li key={i} className="flex gap-3">
@@ -197,15 +224,16 @@ function ReceiptOneHelps({ helps }: { helps: NonNullable<Article["receiptOneHelp
 }
 
 /** Body blocks, with the optional helps box inserted before the FAQ heading (or at the end). */
-export function ArticleBody({ article }: { article: Article }) {
-  const faqAt = article.body.findIndex((b) => b.type === "h2" && b.text === FAQ_HEADING);
+export function ArticleBody({ article, lang = "en" }: { article: Article; lang?: Lang }) {
+  const heading = ARTICLE_LABELS[lang].faqHeading;
+  const faqAt = article.body.findIndex((b) => b.type === "h2" && b.text === heading);
   const split = faqAt === -1 ? article.body.length : faqAt;
   return (
     <>
-      {article.quickAnswer && <QuickAnswer text={article.quickAnswer} />}
-      {article.body.slice(0, split).map((block, i) => renderBlock(block, i))}
-      {article.receiptOneHelps && <ReceiptOneHelps helps={article.receiptOneHelps} />}
-      {article.body.slice(split).map((block, i) => renderBlock(block, split + i))}
+      {article.quickAnswer && <QuickAnswer text={article.quickAnswer} lang={lang} />}
+      {article.body.slice(0, split).map((block, i) => renderBlock(block, i, lang))}
+      {article.receiptOneHelps && <ReceiptOneHelps helps={article.receiptOneHelps} lang={lang} />}
+      {article.body.slice(split).map((block, i) => renderBlock(block, split + i, lang))}
     </>
   );
 }
