@@ -20,15 +20,15 @@ export interface Plan {
 export const TRIAL_DAYS = 7;
 
 export const CA_PLANS: Plan[] = [
-  { id: "week", name: "Weekly", price: "4.99", period: "/ week", currency: "CAD" },
+  { id: "week", name: "Weekly", price: "3.99", period: "/ week", currency: "CAD" },
   { id: "month", name: "Monthly", price: "9.99", period: "/ month", currency: "CAD" },
-  { id: "year", name: "Yearly", price: "129.99", period: "/ year", currency: "CAD" },
+  { id: "year", name: "Yearly", price: "99.99", period: "/ year", currency: "CAD" },
 ];
 
 export const US_PLANS: Plan[] = [
-  { id: "week", name: "Weekly", price: "3.99", period: "/ week", currency: "USD" },
-  { id: "month", name: "Monthly", price: "9.99", period: "/ month", currency: "USD" },
-  { id: "year", name: "Yearly", price: "99.99", period: "/ year", currency: "USD" },
+  { id: "week", name: "Weekly", price: "2.99", period: "/ week", currency: "USD" },
+  { id: "month", name: "Monthly", price: "7.99", period: "/ month", currency: "USD" },
+  { id: "year", name: "Yearly", price: "79.99", period: "/ year", currency: "USD" },
 ];
 
 export function getPlans(region: PricingRegion): Plan[] {
