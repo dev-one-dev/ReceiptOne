@@ -171,7 +171,7 @@ export function Pricing({ region = "ca" }: { region?: Region }) {
                     <span
                       className={`ml-1.5 text-label font-medium ${isActive ? "text-paper-60" : "text-ember-text"}`}
                     >
-                      Save {yearlySaving}%
+                      {fr ? "Économisez " : "Save "}{yearlySaving}%
                     </span>
                   )}
                 </TabsPrimitive.Trigger>
@@ -304,3 +304,4 @@ function CheckIcon() {
     </svg>
   );
 }
+
