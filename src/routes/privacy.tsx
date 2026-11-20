@@ -776,7 +776,7 @@ function PrivacyPage() {
                   "The name part (before the @) of your receipt email address, with no link to you or your data, so the address is never issued to another person and mail meant for you never reaches a stranger",
                   "Records that an accountant's access was revoked or an invitation cancelled, and accountant access logs, kept as security and audit records",
                   "Audit records of actions our staff took on support requests or for moderation",
-                  "Short-lived technical counters and storage records without content (for example, rate limits), which expire automatically",
+                  "Technical counters and storage records without the content of your receipts or files (for example, rate limits, and the storage path of each deleted file, which may include its file name), linked only to a random account identifier",
                   "Server logs and backup copies for the limited periods described in section 7, and any records we must keep by law",
                 ]}
               />
