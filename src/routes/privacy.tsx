@@ -51,6 +51,7 @@ const SECTIONS: { number: string; title: string; subsections?: { id: string; tit
       { id: "8.2", title: "8.2 United States (California and other states)", region: "us" },
       { id: "8.3", title: "8.3 How to Submit Requests" },
       { id: "8.4", title: "8.4 Verification and Appeals" },
+      { id: "8.5", title: "8.5 Account Deletion" },
     ],
   },
   {
@@ -93,7 +94,11 @@ const PRIVACY_SUMMARY: SummaryItem[] = [
   },
   {
     title: "Sharing",
-    body: "Limited to service providers (hosting, analytics, payments) under contract, plus legal/compliance disclosures when required.",
+    body: "Limited to service providers under contract (Google Firebase/Cloud, Google Maps Platform, RevenueCat, Mailgun, Resend), an accountant you invite, and legal/compliance disclosures when required.",
+  },
+  {
+    title: "Account deletion",
+    body: "Delete your account in the app (Profile → Edit profile → Delete account) or on the web. Your account and its data are deleted within 7 days. Store subscriptions must be cancelled separately.",
   },
   {
     title: "Your rights",
@@ -238,7 +243,7 @@ function PrivacyPage() {
 
       <article className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8 lg:py-12">
         <header className="border-b border-border pb-8">
-          <p className="text-sm font-medium text-muted-foreground">Last updated: April 23, 2026</p>
+          <p className="text-sm font-medium text-muted-foreground">Last updated: November 20, 2026</p>
           <h1 className="mt-3 font-display text-4xl font-semibold tracking-normal sm:text-5xl">
             ReceiptOne — Privacy Policy
           </h1>
@@ -322,7 +327,9 @@ function PrivacyPage() {
                 items={[
                   "Name",
                   "Email address",
-                  "Account credentials",
+                  "Account credentials, or the name and email address shared by Apple or Google when you choose Sign in with Apple or Sign in with Google",
+                  "Optional profile details, such as gender (with a \"prefer not to say\" option) and a profile photo",
+                  "Optional business details for the T2125 statement (Canada), such as your Social Insurance Number (SIN), business name and address, business number, industry code, and gross income",
                   "Subscription and billing status information received from app store platforms (Apple App Store, Google Play Store)",
                   "App preferences and settings",
                   "Country, province/state, and other configuration data relevant to tax logic and reporting",
@@ -340,7 +347,9 @@ function PrivacyPage() {
                   "Images of receipts and documents uploaded by you",
                   "Data extracted from receipts or documents using OCR, such as merchant name, transaction date, amount, taxes, and currency",
                   "Manually entered expenses and related notes",
-                  "Mileage and trip records",
+                  "Mileage and trip records, including vehicles, saved places, and trip start and end points, addresses, distance, and a simplified route",
+                  "Precise location, only if you turn on automatic trip tracking: the detailed GPS points recorded during a trip stay on your device, and we store the trip details listed above",
+                  "Emails with receipts that you or your senders forward to your personal ReceiptOne receipt address, and their attachments",
                   "Home office information, such as square footage, allocation percentages, and related expense inputs",
                   "Tax-related forms, reports, or documents that you upload or generate through the Services",
                 ]}
@@ -380,7 +389,8 @@ function PrivacyPage() {
                   "Device type, operating system, and app version",
                   "IP address and approximate location derived from IP address",
                   "Usage, interaction, and feature activity data",
-                  "Crash reports, diagnostics, and performance information",
+                  "Diagnostics and performance information (such as app start time, network latency, and device model) collected through Firebase Performance Monitoring, and app instance identifiers used by Firebase Performance Monitoring and Remote Config",
+                  "Crash reports that Apple or Google may provide to us through their developer consoles (we do not use a separate crash reporting SDK or advertising SDKs)",
                   "Security and log information necessary to detect misuse, fraud, or service errors",
                 ]}
               />
@@ -392,7 +402,17 @@ function PrivacyPage() {
                 rows={[
                   ["Camera", "Capture receipt or document images when you initiate a scan", "Yes"],
                   ["Photo Library / Storage", "Select files or images that you choose to upload", "Yes"],
-                  ["Push Notifications", "Send service-related reminders, alerts, and updates", "Yes"],
+                  [
+                    "Location (precise; in the background only if you turn on automatic trip tracking)",
+                    "Record business trips for mileage logs, and suggest nearby addresses",
+                    "Yes",
+                  ],
+                  [
+                    "Physical activity / Motion",
+                    "Detect when you start and stop driving so automatic trips begin and end on their own (activity data stays on your device)",
+                    "Yes",
+                  ],
+                  ["Notifications", "Show service-related reminders, alerts, and trip tracking status", "Yes"],
                 ]}
               />
               <p>
@@ -413,7 +433,7 @@ function PrivacyPage() {
                   ["Approximate geolocation", "Derived from IP address"],
                   [
                     "Sensitive personal information",
-                    "Financial or expense-related information contained in receipts, reports, and uploaded documents",
+                    "Financial or expense-related information contained in receipts, reports, and uploaded documents; precise geolocation of trips (only if you turn on trip tracking); Social Insurance Number (only if you enter it)",
                   ],
                 ]}
               />
@@ -488,6 +508,9 @@ function PrivacyPage() {
                 "OCR, document analysis, and AI service providers",
                 "Analytics, diagnostics, logging, and crash reporting providers",
                 "Email and customer communication providers",
+                "Subscription management and app store platforms",
+                "Mapping and address lookup providers",
+                "An accountant or bookkeeper you invite to your account, for the data you choose to give them access to (you can revoke this access at any time)",
                 "Professional advisors, auditors, insurers, and legal compliance providers where reasonably necessary",
                 "Government authorities, courts, regulators, law enforcement, or other third parties where required by law or legal process",
               ]}
@@ -498,11 +521,33 @@ function PrivacyPage() {
             <DataTable
               headers={["Provider", "Purpose"]}
               rows={[
-                ["Firebase / Google Cloud", "Authentication, storage, database, cloud functions, messaging, remote config"],
-                ["Google Cloud Vision API", "OCR processing of receipt images"],
-                ["Google Cloud Vertex AI / Gemini", "AI-assisted analysis and processing"],
-                ["OpenAI, LLC", "AI-assisted merchant categorization and extraction support"],
-                ["Logo.dev (Simple Casual, LLC)", "Retrieval of merchant logo assets based on merchant domain information"],
+                [
+                  "Google Firebase / Google Cloud (Google LLC)",
+                  "Sign-in (Firebase Authentication), database (Cloud Firestore), file storage for receipt photos and documents (Cloud Storage), server functions (Cloud Functions), Remote Config, Performance Monitoring, hosting, and logging",
+                ],
+                ["Google Cloud Vision API", "OCR (text recognition) of receipt images and PDF documents"],
+                [
+                  "Google Cloud Vertex AI / Gemini",
+                  "AI-assisted receipt recognition and data extraction, category suggestions, and the AI assistant in the web application",
+                ],
+                ["OpenAI, LLC", "Alternative AI provider for the same receipt recognition and assistant tasks, used only when we route AI processing to it"],
+                [
+                  "Google Maps Platform (Google LLC)",
+                  "Address search and autocomplete, converting trip coordinates into addresses, and map images and maps of your trips",
+                ],
+                ["Sign in with Apple (Apple Inc.) and Google Sign-In (Google LLC)", "Sign-in, when you choose one of these options"],
+                [
+                  "RevenueCat, Inc.",
+                  "Subscription management: receives your account identifier and the subscription and purchase records from the app stores",
+                ],
+                ["Apple App Store and Google Play (Apple Inc., Google LLC)", "Processing of subscription payments; we never see your card details"],
+                ["Mailgun Technologies, Inc.", "Receiving the emails with receipts sent to your personal ReceiptOne receipt address"],
+                [
+                  "Resend (Plus Five Five, Inc.)",
+                  "Sending service emails, such as trial and account notices, accountant invitations, reports you choose to send, and support replies",
+                ],
+                ["Telegram (Telegram Messenger Inc.)", "Only if you connect the ReceiptOne Telegram bot: messages and files you send to the bot"],
+                ["Logo.dev (Simple Casual, LLC)", "Retrieval of merchant logo assets based on merchant name or domain information"],
               ]}
             />
             <p>
@@ -562,11 +607,15 @@ function PrivacyPage() {
                   "Limited period necessary for troubleshooting, fraud prevention, security, and performance monitoring",
                 ],
                 ["Backup copies", "Limited period according to backup, disaster recovery, and record management processes"],
+                [
+                  "After you delete your account",
+                  "Deleted within 7 days of your request, except the limited records described in section 8.5 (Account Deletion)",
+                ],
               ]}
             />
             <p>
               <strong>Important note regarding service provider caching:</strong> Despite deletion from our active
-              systems, our service providers (including Google Cloud and OpenAI) may retain hashed, logged, or cached
+              systems, our service providers (including Google Cloud, OpenAI, and Mailgun) may retain hashed, logged, or cached
               copies of data for a limited period (typically up to 30 days) for security, abuse prevention, and fraud
               detection purposes. This is permitted under their respective terms of service and applicable law. After
               such period, residual copies are deleted or rendered unreadable.
@@ -618,6 +667,17 @@ function PrivacyPage() {
                 </a>{" "}
                 <strong>Subject line:</strong> &quot;Privacy Request&quot;
               </p>
+              <p>
+                To delete your account, you can also use the in-app and web options described in section 8.5 (Account
+                Deletion) or at{" "}
+                <a
+                  className="font-medium text-foreground underline underline-offset-4"
+                  href="https://app.receipt-one.com/delete-account"
+                >
+                  app.receipt-one.com/delete-account
+                </a>
+                .
+              </p>
               <p>In your request, please include:</p>
               <BulletList
                 items={[
@@ -664,6 +724,71 @@ function PrivacyPage() {
                 <strong>Response timing:</strong> We will respond to verified requests within the timeframes required by
                 applicable law (typically 30 days for PIPEDA, 45 days for CCPA/CPRA, with possible extensions where
                 permitted).
+              </p>
+            </SubSection>
+
+            <SubSection title="8.5 Account Deletion">
+              <p>You can delete your ReceiptOne account and its data at any time, in any of these ways:</p>
+              <BulletList
+                items={[
+                  "In the mobile app (Android or iPhone): Profile → Edit profile → Delete account → Delete profile permanently. Accountant accounts can also start from Accountant Settings.",
+                  "On the web: sign in at app.receipt-one.com → Settings → Danger zone → Delete account.",
+                  'By email: write to support@receipt-one.com from the email address of your account with the subject "Delete my account". We verify the request as described in section 8.4.',
+                ]}
+              />
+              <p>
+                Step-by-step instructions are also available without signing in at{" "}
+                <a
+                  className="font-medium text-foreground underline underline-offset-4"
+                  href="https://app.receipt-one.com/delete-account"
+                >
+                  https://app.receipt-one.com/delete-account
+                </a>
+                .
+              </p>
+              <p>
+                <strong>What happens:</strong> When you confirm, your account is scheduled for deletion and your T2125
+                business details, including your Social Insurance Number, are deleted right away. If you sign in with
+                Apple, we also revoke ReceiptOne&apos;s access to your Apple ID. Our deletion process runs weekly, so
+                within 7 days we delete your sign-in account and all data linked to it, including:
+              </p>
+              <BulletList
+                items={[
+                  "Your profile and settings",
+                  "Receipts and expenses, with their photos, PDFs, and other uploaded files",
+                  "Trips, routes, saved places, and vehicles",
+                  "Reports and the files generated for them, home office records, tax years, and GST/HST returns",
+                  "Your receipt email inbox, the emails received there, and the receipts waiting for review",
+                  "Support requests and their attachments, AI assistant conversations, notifications, and activity logs linked to your account",
+                  "Your subscription status records and the Telegram bot link, if any",
+                ]}
+              />
+              <p>
+                Any accountant access ends: active access you granted (or, for accountants, received) is revoked,
+                pending invitations are cancelled, and export files prepared for an accountant are deleted. Deletion
+                cannot be undone. If a step fails, it is retried in the next weekly run.
+              </p>
+              <p>
+                <strong>What we keep:</strong>
+              </p>
+              <BulletList
+                items={[
+                  "The name part (before the @) of your receipt email address, with no link to you or your data, so the address is never issued to another person and mail meant for you never reaches a stranger",
+                  "Records that an accountant's access was revoked or an invitation cancelled, and accountant access logs, kept as security and audit records",
+                  "Audit records of actions our staff took on support requests or for moderation",
+                  "Short-lived technical counters and storage records without content (for example, rate limits), which expire automatically",
+                  "Server logs and backup copies for the limited periods described in section 7, and any records we must keep by law",
+                ]}
+              />
+              <p>
+                <strong>Subscriptions:</strong> Deleting your account does not cancel a subscription purchased through
+                Google Play or the Apple App Store. Cancel it separately in Google Play (Payments &amp; subscriptions →
+                Subscriptions) or in your Apple ID settings (Subscriptions), preferably before you delete your account.
+                Apple, Google, and RevenueCat keep their own records of your purchases under their own policies.
+              </p>
+              <p>
+                You can also delete individual receipts, trips, reports, and photos in the app at any time without
+                deleting your account.
               </p>
             </SubSection>
           </Section>
